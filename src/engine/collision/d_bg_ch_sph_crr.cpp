@@ -24,15 +24,14 @@ void dBgCh_SphCrr::SetObjAndSphere(const Vector3 &pos, Fix12i radius, dActor_c *
        null-checked MI adjustment (movs/addne), the ROM's is unconditional */
     ((dM3dGSph &)*this).Set(pos, radius);
     SetActor(actor);
-    func_02037b5c();
+    ResetQuery();
     mMaxNormalY = 0x1000;
 }
 
 /* Reset the whole query state: bounds, every flag bit, the base record and
    all three result slots, then the floor normal (Y back to -0x1000). */
-// @symbol _ZN12dBgCh_SphCrr13func_02037b5cEv
-void dBgCh_SphCrr::func_02037b5c()
-{
+// @symbol _ZN12dBgCh_SphCrr10ResetQueryEv
+void dBgCh_SphCrr::ResetQuery() {
     ResetDisplacement();
     flags &= ~1;
     flags &= ~4;
@@ -146,10 +145,9 @@ void dBgCh_SphCrr::SetFloorNormal(const s32 *normal) {
     mFloorNormal.z = normal[2];
 }
 
-/* Merge another query's flag byte, dropping its hit-result bits (0x1c). */
-// @symbol _ZN12dBgCh_SphCrr13func_02037940Eh
-void dBgCh_SphCrr::func_02037940(u8 flags_)
-{
+/* Set the query flag byte, dropping the floor/wall/under contact bits (0x1c). */
+// @symbol _ZN12dBgCh_SphCrr13SetQueryFlagsEh
+void dBgCh_SphCrr::SetQueryFlags(u8 flags_) {
     flags = flags_ & ~0x1c;
 }
 

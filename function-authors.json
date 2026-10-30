@@ -4379,7 +4379,7 @@
     },
     "arm9:0x0202e118": {
       "author": "tangosdev",
-      "name": "func_0202e118"
+      "name": "GetStageDebugName"
     },
     "arm9:0x0202e140": {
       "author": "tangosdev",

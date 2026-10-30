@@ -233,7 +233,8 @@
     "Text-verified 11/11 (2026-09-28, tu-ov002-batch-0928). The earlier Behavior near-miss (0xcf8 against 0xcfc) was not a register-allocation limit: under '#pragma defer_codegen off' mwccarm generates a function at the next top-level token after its closing brace, not at the brace, so the '#pragma opt_strength_reduction off' written directly after Behavior was still in force when Behavior was generated. Compiled alone with defer_codegen off, Behavior matches; with a trailing opt_strength_reduction off and nothing between, it does not; with any top-level declaration between, it does. The TU now places InitResources' own extern block between the two, and all eleven members match with emission order exact.",
     "RTTI/vtable: this is dMap_c's key-function TU, so the object emits _ZTV6dMap_c plus the _ZTI/_ZTS chain up to fBase_c. Every one has a ROM home (ov002 _ZTS6dMap_c 0x0210c158, _ZTI6dMap_c 0x0210c168, _ZTV6dMap_c address point 0x0210c1c0; arm9 dBase_c/fBase_c records) and is licensed deadstrip-data in compiler_only_output, the daCoin_c shape. The homeless D2 and the duplicate Vector3 D1 are deadstripped the same way.",
     "classInit tail fold (0930c): folded the registry factory dMap_c_classInit (0x020fb8bc..0x020fb8f8) into this promoted TU and widened the complete delinks.txt claim to 0x020f975c..0x020fb8f8. The loose source hand-called fBase_c::operator new(sizeof(dMap_c)), fBase_c's base constructor, and stored _ZTV7dBase_c then _ZTV6dMap_c. dMap_c and dBase_c declare no constructor, so the implicit default constructor emits exactly that sequence and the factory is `return new dMap_c();`, which binds fBase_c's inline operator new. The TU keeps `#pragma defer_codegen off`, so the factory is written last, after GetPosOnMinimap. The embedded verification.linkcheck block predates this fold and records the pre-fold range; link proof for the widened range is the lane's full rombuild and prepush_linkcheck run.",
-    "Static initializer folded: sMapScreenCenter, a file-scope Vector3(0x80000, 0, 0x60000), replaces the extern data_ov002_0211116c and the handwritten src/unnamed/ov002/__sinit_ov002_0210804c.c. mwcc emits __sinit_d_map.cpp, its .ctor word and the @NNN registration node itself; all three plus the vector's .bss are byte- and relocation-identical to retail. The handwritten shard is retired."
+    "Static initializer folded: sMapScreenCenter, a file-scope Vector3(0x80000, 0, 0x60000), replaces the extern data_ov002_0211116c and the handwritten src/unnamed/ov002/__sinit_ov002_0210804c.c. mwcc emits __sinit_d_map.cpp, its .ctor word and the @NNN registration node itself; all three plus the vector's .bss are byte- and relocation-identical to retail. The handwritten shard is retired.",
+    "Collision property member calls replace local helper declarations. Reconciled 1 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (26 sections, 222 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -458,7 +459,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@516",
+      "from": "@515",
       "to": "@528",
       "evidence": "compiler temp: mwcc numbers sMapScreenCenter's registration node @511, which ov091 already defines; this row maps it to the unused same-length @528. No bytes or relocations change."
     }

@@ -397,82 +397,82 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@969",
+      "from": "@968",
       "to": "@960",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@971",
+      "from": "@970",
       "to": "@958",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@973",
+      "from": "@972",
       "to": "@218",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it; the 0x02108160 pin is spelled @218 because daObjSwitch_c already pins @91 in ov002 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@975",
+      "from": "@974",
       "to": "@985",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@977",
+      "from": "@976",
       "to": "@987",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@979",
+      "from": "@978",
       "to": "@956",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@981",
+      "from": "@980",
       "to": "@954",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@983",
+      "from": "@982",
       "to": "@952",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@985",
+      "from": "@984",
       "to": "@950",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@987",
+      "from": "@986",
       "to": "@986",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@991",
+      "from": "@990",
       "to": "@944",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@993",
+      "from": "@992",
       "to": "@942",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@995",
+      "from": "@994",
       "to": "@948",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@967",
+      "from": "@966",
       "to": "@266",
       "evidence": "the compiler emits @967, which ov077 daJgm_c already defines as a global, so the pin is the unused @266"
     },
     {
-      "from": "@989",
+      "from": "@988",
       "to": "@262",
       "evidence": "the compiler emits @989, which ov074 daKuriKing_c already defines as a global, so the pin is the unused @262"
     },
     {
-      "from": "@997",
+      "from": "@996",
       "to": "@946",
       "evidence": "compiler temp; mwcc's per-TU @NNN uniquifier also counts this TU's named locals, so it emits the temp under this name; paired to its pin by the relocation sites that reference it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }
@@ -485,7 +485,8 @@
     "Members are spelled over the real classes wherever the cartridge bytes allow it, and each claim below was measured, not assumed: ordinal 6 (_ZN12dEnemyBase_c15IsGoingOffCliffER10dBgCh_Actrisbbi) is a real dEnemyBase_c::IsGoingOffCliff method taking its two by-value Fix12i parameters as themselves over real dBgCh_Lin/dBgPi locals; ordinals 2 and 4 use types.h's Vector3 rather than a POD shadow of it; and ordinal 26 uses the real 0x14-byte SurfaceInfo from include/SurfaceInfo.h. All 31 functions still reproduce byte-for-byte with objisolate and reloc-destination checks clean.",
     "The file-scope PMF tables data_ov002_0210db80 and data_ov002_0210dbc0 are defined in this TU as non-const arrays, so mwcc emits __sinit_d_enemy_base.cpp, the ctor word, and the sixteen anonymous pointer-to-member descriptors. The thirteen PMF targets became real member definitions: eight on the TU-local dispatch receiver struct Aea30C (the type the first table's PMF representation was already formed on, kept so the (c->*pmf) call codegen is unchanged) and five on dEnemyBase_c for the UpdateDeath table. The handwritten src/__sinit_ov002_02100938.c is retired.",
     "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set (f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b), symbol inventory, and the five owned ranges matched.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, symbol inventory and the five owned ranges all equal the canonical records)."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, symbol inventory and the five owned ranges all equal the canonical records).",
+    "Collision property member calls replace local helper declarations. Reconciled 16 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (63 sections, 214 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {

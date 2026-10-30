@@ -210,7 +210,8 @@
     "Native static initialization: the scene position is an ordinary C++ Vector3 definition. It emits the original .init and .ctor, owns the vector and its destructor-registration node, and replaces the handwritten initializer shard. All existing text bodies are unchanged. RTTI/vtable and particle layout reconstruction remain under their existing explicit policies.",
     "The final Vector3 occupies exactly 12 bytes at 0x02113d10: the original ROM initializer writes offsets 0, 4 and 8, and the unchanged Vector3 definition is three 32-bit coordinates. An inferred address-only label at 0x02113d1c marks the end of that object, leaving the four bytes through the existing module BSS end 0x02113d20 as ROM-owned alignment padding. The label does not claim an original identifier or add source storage.",
     "Native metadata continuation preserves the existing84-byte scene-position initializer, ctor word and24-byte BSS ownership. The initializer landed in PR3887; native-inits-three1015-review-snm remains a pending historical review and the cancelled batch is not treated as accepted ancestry. Fresh independent review must cover the whole current TU and retain its interface/layout limitations.",
-    "Historical compiler-only reasons called this a text-only TU even after native initialization was owned. Leaf metadata now stays native; ancestor externalization and all prior text/init/ctor/BSS policies are unchanged. Previous proof remains in exact base1b981; fresh final-configuration gates establish this expanded assignment."
+    "Historical compiler-only reasons called this a text-only TU even after native initialization was owned. Leaf metadata now stays native; ancestor externalization and all prior text/init/ctor/BSS policies are unchanged. Previous proof remains in exact base1b981; fresh final-configuration gates establish this expanded assignment.",
+    "Collision property member calls replace local helper declarations. Reconciled 1 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (35 sections, 140 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -517,7 +518,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@816",
+      "from": "@815",
       "to": "@930",
       "evidence": "The emitted 12-byte registration node at ov027:0x02113d04 is @818 in this TU, a spelling ov065 already owns (it was @826, owned by ov018, when @930 was chosen). @930 has no other configured home and preserves the native storage/relocations."
     }

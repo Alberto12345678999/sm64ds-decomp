@@ -57,8 +57,8 @@ struct dBgCh_Lin : dBgCh, dBgPi, dM3dGLin {
        2026-08-19 because a survey claimed the field was misnamed and should
        be `clsnPos'; it is not misnamed, it is dual-purpose:
 
-         IN   func_02037608 seeds it with the line END --
-              func_ov002_020fea4c(&b, thiz+0x38) reads b[3..5], i.e. 0x44, the
+         IN   ResetResult seeds it with the line END --
+              dM3dGLin::GetEnd() reads 0x44, the
               dM3dGLin's second Vector3. It then sets 0x60 = Vec3_Dist(0x54,
               start), the full segment length. dBgW_KcMbg::DetectClsn
               relies on this, transforming 0x38 and 0x54 as the two endpoints.
@@ -123,7 +123,8 @@ struct dBgCh_Lin : dBgCh, dBgPi, dM3dGLin {
     /* methods */
     Vector3 GetClsnPos();
     void SetClsnPos(const Vector3 &pos);
-    void func_02037608();
+    /* Inferred: restore the full segment endpoint/distance and clear its hit. */
+    void ResetResult();
     void SetObjAndLine(const Vector3 &start, const Vector3 &end, dActor_c *actor);
     bool DetectClsn();
 };
@@ -147,8 +148,8 @@ struct dBgCh_Lin {
        those three method bodies are. See notes/collision-system.md.
 
        Its two accessors are named BACKWARDS in some notes. Read the bodies:
-         func_ov002_020fea4c  a[0..2] = b[3..5]  -> reads 0x44  -> GetEnd
-         func_ov002_020fea68  a[0..2] = b[0..2]  -> reads 0x38  -> GetStart */
+         dM3dGLin::GetEnd  a[0..2] = b[3..5]  -> reads 0x44  -> GetEnd
+         dM3dGLin::GetStart  a[0..2] = b[0..2]  -> reads 0x38  -> GetStart */
     u8  mLineBase;            /* 0x038 -- dM3dGLin base: start 0x38, end 0x44 */
     u8  pad_039[0x17];
     u8  hasClsn;            /* 0x050 */

@@ -1,45 +1,39 @@
 //cpp
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 
 extern void func_020589ac(void* node, void* self);
-extern void OS_SleepThread(void* self);
 
-struct Node {
-    char pad_0[0x78];
-    void* f78;
+/* The Nitro SDK's OSMutex, this SDK's layout (see func_02058b9c.c). */
+struct OSMutex {
+    u16 queue;        /* 0x00 -- threads waiting for the mutex */
+    OSThread *thread; /* 0x04 -- the owner, 0 while free */
+    s32 count;        /* 0x08 */
 };
 
-struct Obj {
-    char pad_0[4];
-    struct Node* f4;
-    int f8;
-};
-
-struct Globals { char pad_0[8]; struct Node* f8; };
-extern struct Globals data_020a6134;
-
-void func_02058b08(struct Obj* self)
-{
+/* The Nitro SDK's OS_LockMutex: take the mutex, or sleep on its queue until
+ * the owner releases it. A thread that already owns it locks it again. */
+void func_02058b08(struct OSMutex *mutex) {
     u32 saved = IRQ::Disable();
-    struct Node* cur = data_020a6134.f8;
+    OSThread *current = data_020a6134.current;
 
     for (;;) {
-        if (self->f4 == 0) {
-            self->f4 = cur;
-            *(int*)(((int)self + 8)) += 1;
-            func_020589ac(cur, self);
+        if (mutex->thread == 0) {
+            mutex->thread = current;
+            mutex->count++;
+            func_020589ac(current, mutex);
             break;
         }
-        if (self->f4 == cur) {
-            *(int*)(((int)self + 8)) += 1;
+        if (mutex->thread == current) {
+            mutex->count++;
             break;
         }
-        cur->f78 = self;
-        OS_SleepThread(self);
-        cur->f78 = 0;
+        current->mutex = mutex;
+        OS_SleepThread(&mutex->queue);
+        current->mutex = 0;
     }
 
     IRQ::Restore(saved);

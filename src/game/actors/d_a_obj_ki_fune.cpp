@@ -1,6 +1,6 @@
 //cpp
 /* What stays:
- * - func_020393a4 and func_020393d4 stay the arm9 dBgW hook names.
+ * - dBgW::SetClipRadius and func_020393d4 stay the arm9 dBgW hook names.
  *   data_02082214 is the sine table. data_0209f220 is the star index.
  * - data_ov016_021136dc, 021136e4 and 021149d4 are the overlay file
  *   and CLPS tables, indexed by mModelIndex. This TU does not own them.
@@ -43,7 +43,6 @@ typedef char KiFuneClsnFileHandle_size_must_be_8[sizeof(KiFuneClsnFileHandle) ==
 
 /* local extern: no shared header declares these. */
 extern "C" {
-extern void func_020393a4(int *p, int v);
 extern void func_020393d4(int *p, int v);
 
 extern int IsStarCollected(int a, int b);
@@ -106,7 +105,7 @@ int daObjKi_Fune_c::Behavior() {
     if (mMeshCollider.IsEnabled() == 0) {
         mMeshCollider.Enable(this);
     }
-    func_020393a4((int *)&mMeshCollider, 0x2000000);
+    mMeshCollider.SetClipRadius(0x2000000);
     if (mModelIndex == 0) {
         *(s16 *)&mBobAngle += 0xda;
         mAngleX = (s16)((data_02082214[(mBobAngle >> 4) * 2] << 0xa) >> 0xc);

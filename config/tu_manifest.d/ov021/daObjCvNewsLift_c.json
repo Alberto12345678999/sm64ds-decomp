@@ -308,7 +308,8 @@
     "FOLD: tu_map splits this class at 0x02111ec4, but the eleven functions from 0x02111ec4 through daObjCvNewsLift_c_classInit (0x02112168) belong to it. InitResources registers MainMeshCallback (0x02112128) and Platform0Callback to Platform3Callback (0x02111fe4, 0x02111f8c, 0x02111f34 and 0x02111edc) as the main-mesh and platform collision callbacks; each callback checks the other actor's actorID for 0xbf (the player) and calls a setter (OnPlatform3Ride to OnPlatform0Ride at 0x02111ec4, 0x02111f1c, 0x02111f74 and 0x02111fcc, or OnMainMeshRide at 0x02112024) that writes this class's fields at +0xc74..+0xc7e (OnMainMeshRide also writes mTargetRotation at +0xc5c..+0xc68, by direct stores or through Quaternion_FromVector3); the factory is this class's classInit and sits immediately before daGrock_c's D1 at 0x021121e8. So the run from D1 through classInit is one TU, as in the sibling ov021/daObjCvShutter_c.",
     "UpdateModelTransforms (0x02111434) was a fake match (a static asm helper standing in for the ROM's inline ands); it is now a real match as a void function that ends in Render's blink test with nothing after it, a dead test the ROM keeps, and it was enrolled complete before this promotion.",
     "Data continuation: notes/agents/handoffs/data-cvnews-metadata1017.md. Preserve the known13-word native initializer floor; the historical cvnews-sinit1015 issue2438 link is unrelated Dossunbar metadata, and current continuation authority is issue4048.",
-    "Static initializer folded: the four model/collision handles (ids 0x5d5..0x5d8) and the four-entry Vector3 platform-offset table are real definitions in d_a_obj_cv_news_lift.cpp, replacing the handwritten src/unnamed/ov021/__sinit_ov021_02113500.c. mwcc emits __sinit_d_a_obj_cv_news_lift.cpp (0x188), its .ctor word and the eight registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov021 .init, .ctor and .bss run in .text TU order; this TU's .bss 0x021149a0..0x02114a50 ends where d_a_grock's begins, and InitResources, CleanupResources, UpdateModelTransforms and UpdateClsnTransforms in this TU are the only .text that read the handles and table. Interior element addresses that dsd names by their own labels are recorded as table + offset, as mwcc emits them."
+    "Static initializer folded: the four model/collision handles (ids 0x5d5..0x5d8) and the four-entry Vector3 platform-offset table are real definitions in d_a_obj_cv_news_lift.cpp, replacing the handwritten src/unnamed/ov021/__sinit_ov021_02113500.c. mwcc emits __sinit_d_a_obj_cv_news_lift.cpp (0x188), its .ctor word and the eight registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov021 .init, .ctor and .bss run in .text TU order; this TU's .bss 0x021149a0..0x02114a50 ends where d_a_grock's begins, and InitResources, CleanupResources, UpdateModelTransforms and UpdateClsnTransforms in this TU are the only .text that read the handles and table. Interior element addresses that dsd names by their own labels are recorded as table + offset, as mwcc emits them.",
+    "Collision property member calls replace local helper declarations. Reconciled 8 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (49 sections, 223 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1384,42 +1385,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@510",
+      "from": "@509",
       "to": "data_ov021_021149c0",
       "evidence": "compiler temp mapped to 0x021149c0 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@511",
+      "from": "@510",
       "to": "data_ov021_02114a14",
       "evidence": "compiler temp mapped to 0x02114a14 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@512",
+      "from": "@511",
       "to": "data_ov021_021149e4",
       "evidence": "compiler temp mapped to 0x021149e4 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@513",
+      "from": "@512",
       "to": "data_ov021_021149f0",
       "evidence": "compiler temp mapped to 0x021149f0 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@515",
+      "from": "@514",
       "to": "data_ov021_021149fc",
       "evidence": "compiler temp mapped to 0x021149fc by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@518",
+      "from": "@517",
       "to": "data_ov021_02114a08",
       "evidence": "compiler temp mapped to 0x02114a08 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@521",
+      "from": "@520",
       "to": "data_ov021_021149d8",
       "evidence": "compiler temp mapped to 0x021149d8 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@524",
+      "from": "@523",
       "to": "data_ov021_021149cc",
       "evidence": "compiler temp mapped to 0x021149cc by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     }

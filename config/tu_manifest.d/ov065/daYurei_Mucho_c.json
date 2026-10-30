@@ -394,7 +394,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov065_0211d608' differs between the legacy file that used to hold func_ov065_02116588 and the one that held _ZN15daYurei_Mucho_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov065_0211d670' differs between the legacy file that used to hold func_ov065_02116364 and the one that held _ZN15daYurei_Mucho_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov065_0211691c' differs between the legacy file that used to hold func_ov065_02115ff0 and the one that held _ZN15daYurei_Mucho_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "Static initializer folded: the two model handles (ids 0x42f/0x42d), the two animation handles (0x430/0x42e) and the four {enter, main} State records are real definitions in d_a_yurei_mucho.cpp, replacing the handwritten src/unnamed/ov065/__sinit_ov065_0211c110.cpp. mwcc emits __sinit_d_a_yurei_mucho.cpp (0x198), its .ctor word, the eight PMF literals and the four registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov065 .init, .ctor and .bss run in .text TU order; this initializer is the .ctor word at 0x0211cae0 directly ahead of d_a_basabasa's 0x0211cae4, its .bss 0x0211d600..0x0211d690 ends where basabasa's begins, and the eight literals name only daYurei_Mucho_c members. The same change licenses the TU's whole .data run 0x0211cb20..0x0211cc20 (PMF literals, _ZTI/_ZTS, the new typed g_profile_YUREI_MUCHO and the vtable, whose 0x84-byte storage starts at 0x0211cb9c, two words ahead of the configured address point) and makes the TU intact-object. d_a_propeller_heyho_fire.cpp keeps reading the shot model through an extern."
+    "Static initializer folded: the two model handles (ids 0x42f/0x42d), the two animation handles (0x430/0x42e) and the four {enter, main} State records are real definitions in d_a_yurei_mucho.cpp, replacing the handwritten src/unnamed/ov065/__sinit_ov065_0211c110.cpp. mwcc emits __sinit_d_a_yurei_mucho.cpp (0x198), its .ctor word, the eight PMF literals and the four registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov065 .init, .ctor and .bss run in .text TU order; this initializer is the .ctor word at 0x0211cae0 directly ahead of d_a_basabasa's 0x0211cae4, its .bss 0x0211d600..0x0211d690 ends where basabasa's begins, and the eight literals name only daYurei_Mucho_c members. The same change licenses the TU's whole .data run 0x0211cb20..0x0211cc20 (PMF literals, _ZTI/_ZTS, the new typed g_profile_YUREI_MUCHO and the vtable, whose 0x84-byte storage starts at 0x0211cb9c, two words ahead of the configured address point) and makes the TU intact-object. d_a_propeller_heyho_fire.cpp keeps reading the shot model through an extern.",
+    "Collision property member calls replace local helper declarations. Reconciled 12 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (59 sections, 242 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -761,62 +762,62 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@530",
+      "from": "@529",
       "to": "data_ov065_0211d644",
       "evidence": "compiler temp mapped to 0x0211d644 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@531",
+      "from": "@530",
       "to": "data_ov065_0211d620",
       "evidence": "compiler temp mapped to 0x0211d620 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@532",
+      "from": "@531",
       "to": "data_ov065_0211d62c",
       "evidence": "compiler temp mapped to 0x0211d62c by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@533",
+      "from": "@532",
       "to": "data_ov065_0211d638",
       "evidence": "compiler temp mapped to 0x0211d638 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@773",
+      "from": "@772",
       "to": "data_ov065_0211cb30",
       "evidence": "compiler temp mapped to 0x0211cb30 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@775",
+      "from": "@774",
       "to": "data_ov065_0211cb58",
       "evidence": "compiler temp mapped to 0x0211cb58 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@777",
+      "from": "@776",
       "to": "data_ov065_0211cb20",
       "evidence": "compiler temp mapped to 0x0211cb20 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@779",
+      "from": "@778",
       "to": "data_ov065_0211cb40",
       "evidence": "compiler temp mapped to 0x0211cb40 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@780",
+      "from": "@779",
       "to": "data_ov065_0211cb28",
       "evidence": "compiler temp mapped to 0x0211cb28 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@782",
+      "from": "@781",
       "to": "data_ov065_0211cb50",
       "evidence": "compiler temp mapped to 0x0211cb50 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@784",
+      "from": "@783",
       "to": "data_ov065_0211cb38",
       "evidence": "compiler temp mapped to 0x0211cb38 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@786",
+      "from": "@785",
       "to": "data_ov065_0211cb48",
       "evidence": "compiler temp mapped to 0x0211cb48 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

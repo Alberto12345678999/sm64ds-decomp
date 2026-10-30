@@ -1,14 +1,8 @@
 //cpp
-/* leftovers:
- * - func_ov002_020fea68 and func_ov002_020fea4c stay extern "C"
- *   int* copies. The first argument is the caller's out-buffer, not
- *   the line, and a Vector3 copy emits a destructor. 020fea68 copies
- *   the start (words 0..2). 020fea4c copies the end (words 3..5).
- *   dBgCh_Lin calls them by those addresses.
- * - Only D2 is in the ROM. The D1 this definition also emits is
- *   deadstripped.
- *
- * dM3dGLin, a line of two endpoints. Set copies both. No vtable.
+/* dM3dGLin, a line of two endpoints. Set copies both. No vtable.
+ * Only D2 has a ROM home; the compiler's D1 is deadstripped.
+ * GetStart/GetEnd return Vector3 through the hidden result pointer in r0,
+ * with this in r1, as dBgCh_Lin::ResetResult's calls require.
  */
 
 #include "dM3dGLin.h"
@@ -28,21 +22,13 @@ void dM3dGLin::Set(const Vector3 &start_, const Vector3 &end_) {
     end.z = end_.z;
 }
 
-extern "C" {
-/* The two endpoint accessors, dM3dGLin::GetStart/GetEnd in the header docs:
-   each copies one Vector3 out of the line into the caller's out-param. Defined
-   last so reverse source-order emission places them at the head of the run. */
-// @symbol func_ov002_020fea68
-void func_ov002_020fea68(int *out, int *line) {
-    out[0] = line[0];
-    out[1] = line[1];
-    out[2] = line[2];
+/* Defined last so reverse emission places the getters first in the run. */
+// @symbol _ZNK8dM3dGLin8GetStartEv
+Vector3 dM3dGLin::GetStart() const {
+    return start;
 }
 
-// @symbol func_ov002_020fea4c
-void func_ov002_020fea4c(int *out, int *line) {
-    out[0] = line[3];
-    out[1] = line[4];
-    out[2] = line[5];
-}
+// @symbol _ZNK8dM3dGLin6GetEndEv
+Vector3 dM3dGLin::GetEnd() const {
+    return end;
 }

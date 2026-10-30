@@ -1,63 +1,70 @@
 #include "types.h"
 extern int __aeabi_idiv(int a, int b);
 extern u32 data_020a4d30;
-struct Dst
-{
-  char pad0[0x40];
-  u16 u40;
+
+/* The particle's 0x40 halfword (SPL's visibility): the base alpha in bits 0-4,
+ * the animated alpha in bits 5-9. */
+struct Particle {
+    char pad0[0x40];
+    u16 visibility; /* 0x40 */
 };
-struct Color555
-{
-  u16 r : 5;
-  u16 g : 5;
-  u16 b : 5;
-  u16 a : 1;
+
+/* Three 5-bit alpha stops in one halfword. */
+struct AlphaStops {
+    u16 start : 5;
+    u16 mid : 5;
+    u16 end : 5;
+    u16 pad : 1;
 };
-struct ColorEntry
-{
-  struct Color555 color;
-  u8 field2;
-  u8 pad3;
-  u8 lo;
-  u8 hi;
+
+/* The particle definition's alpha animation (SPL's SPLAlphaAnim): the alpha
+ * ramps start -> mid over life rates [0, in), holds mid until out, then ramps
+ * mid -> end, and each step is scaled down by up to randomRange / 256. */
+struct AlphaAnim {
+    struct AlphaStops alpha; /* 0x0 */
+    u8 randomRange;          /* 0x2 */
+    u8 flags;                /* 0x3 */
+    u8 in;                   /* 0x4 */
+    u8 out;                  /* 0x5 */
 };
-struct Src
-{
-  char pad0[0xc];
-  struct ColorEntry *p0c;
+
+/* The particle definition (func_0204a730's PtclDef; SPL's SPLResource). */
+struct PtclDef {
+    void *data;
+    void *scaleAnim;
+    void *colorAnim;
+    struct AlphaAnim *alphaAnim; /* 0x0c */
 };
-void func_0204d1b4(struct Dst *dst, struct Src *src, int t)
-{
-  struct ColorEntry *e = src->p0c;
-  int lo = e->lo;
-  int hi = e->hi;
-  int r1;
-  if (t < lo)
-  {
-    int rr = e->color.r;
-    int gg = e->color.g;
-    int c = gg - rr;
-    int tmp = __aeabi_idiv(t * c, lo);
-    r1 = tmp + rr;
-  }
-  else
-    if (t < hi)
-  {
-    r1 = e->color.g;
-  }
-  else
-  {
-    int gg = e->color.g;
-    int bb = e->color.b;
-    int d = bb - gg;
-    int tmp = __aeabi_idiv((t - 0xff) * d, 0xff - hi);
-    r1 = tmp + bb;
-  }
-  u16 *p_d = (u16 *) ((unsigned long long) ((unsigned int) (&dst->u40)));
-  u32 s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
-  data_020a4d30 = s;
-  int b = e->field2;
-  u16 old = *p_d;
-  *p_d = (u16) ((old & (~0x3e0)) |
-    ((((u32) ((r1 * (0xff - ((b * (int) (s >> 0x18)) >> 8))) << 8) >> 0x10) & 0x1f) << 5));
+
+/* The alpha animation callback (pret's SPL: SPLAnim_Alpha). data_020a4d30 is
+ * the particle code's random seed (the same LCG as func_0204c584). */
+void func_0204d1b4(struct Particle *ptcl, struct PtclDef *def, int lifeRate) {
+    struct AlphaAnim *anim = def->alphaAnim;
+    int in = anim->in;
+    int out = anim->out;
+    int value;
+    if (lifeRate < in) {
+        int start = anim->alpha.start;
+        int mid = anim->alpha.mid;
+        int diff = mid - start;
+        int step = __aeabi_idiv(lifeRate * diff, in);
+        value = step + start;
+    } else if (lifeRate < out) {
+        value = anim->alpha.mid;
+    } else {
+        int mid = anim->alpha.mid;
+        int end = anim->alpha.end;
+        int diff = end - mid;
+        int step = __aeabi_idiv((lifeRate - 0xff) * diff, 0xff - out);
+        value = step + end;
+    }
+    u16 *visibility = &ptcl->visibility;
+    u32 s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
+    data_020a4d30 = s;
+    int range = anim->randomRange;
+    u16 old = *visibility;
+    *visibility =
+        (u16)((old & ~0x3e0) |
+              ((((u32)((value * (0xff - ((range * (int)(s >> 0x18)) >> 8))) << 8) >> 0x10) & 0x1f)
+               << 5));
 }
