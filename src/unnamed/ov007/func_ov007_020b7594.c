@@ -1,6 +1,6 @@
 #include "Ov007Display.h"
 
-extern int func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c0354(int (*words)[2], unsigned count);
 extern Ov007OamList *func_ov007_020c1068(void);
 extern Ov007BgList *func_ov007_020c0604(int engines, int mask);
@@ -9,9 +9,9 @@ extern Ov007BgList *func_ov007_020c0604(int engines, int mask);
  * engine (each with its own layer mask) and two cleared 128-entry OAM
  * buffers; every table starts empty. */
 Ov007Display *func_ov007_020b7594(int maskMain, int maskSub) {
-    Ov007Display *d = (Ov007Display *)func_ov007_020c3df4(0, sizeof(Ov007Display));
-    d->oamMain = (void *)func_ov007_020c3df4(0, 0x400);
-    d->oamSub = (void *)func_ov007_020c3df4(0, 0x400);
+    Ov007Display *d = func_ov007_020c3df4(0, sizeof(Ov007Display));
+    d->oamMain = func_ov007_020c3df4(0, 0x400);
+    d->oamSub = func_ov007_020c3df4(0, 0x400);
     func_ov007_020c0354((int(*)[2])d->oamMain, 0x80);
     func_ov007_020c0354((int(*)[2])d->oamSub, 0x80);
     d->oamListMain = func_ov007_020c1068();
