@@ -20,9 +20,10 @@ extern void func_0200f46c(void);
    both 2D engines and the 3D engine (POWCNT1 0x20e, GX_SetPower), enable the
    V-blank IRQ (func_02053be0, GX_VBlankIntr), give every VRAM bank to the
    LCDC (func_02054430, GX_SetBankForLCDC 0x1ff) and clear all 0xa4000 bytes
-   of it, hand the banks back, hide every OAM entry (fill 0xc0) and clear the
-   palettes. It then drops the three fader/callback pointers and runs the 3D
-   setup (func_0200f4f4). The volatile fill values are what the ROM loads. */
+   of it, switch the LCDC mapping off again (GX_DisableBankForLCDC), hide
+   every OAM entry (fill 0xc0) and clear the palettes. It then drops the
+   three fader/callback pointers and runs the 3D setup (func_0200f4f4). The
+   volatile fill values are what the ROM loads. */
 void func_02019440(void) {
     volatile int b;
     volatile int a;

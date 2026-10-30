@@ -2,8 +2,10 @@
 #define ARM9_ARCHIVE_TABLE_H
 
 /* The game's thirteen NARC archives, data_0208ecf4. File ids from 0x8000 up
- * live in them, 0x400 ids to an archive: an entry holds [firstFileId,
- * endFileId). The ROM's initialised table, in order:
+ * live in them: an entry holds [firstFileId, endFileId), endFileId being
+ * firstFileId plus the archive's file count. The first ids step by 0x400;
+ * that is only the spacing of the ranges, not their size. The ROM's
+ * initialised table of first ids, in order:
  *
  *   ar0 0x8000  en1 0x8400  vs1 0x8800  vs2 0x8c00  vs3 0x9000  vs4 0x9400
  *   c2d 0x9800  ar1 0x9c00  cee 0xa000  cef 0xa400  ceg 0xa800  cei 0xac00
