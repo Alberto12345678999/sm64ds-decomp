@@ -1,13 +1,13 @@
-/* func_020426f8 at 0x020426f8
- * Wrapper that swaps arg2->r0 and arg3->r2 before calling 0x0205a61c
- * (an unaligned halfword copy), then returns 0.
- * Register trace: mov r0,r2; mov r2,r3; bl 0x0205a61c(src=arg2,dst=arg1,size=arg3)
- */
+/* The read callback func_020423dc gives the child's "rom" archive, a
+   NitroSDK FS_ARCHIVE_READ_FUNC: the archive's tables are in memory, so a
+   read copies size bytes from address pos to dst and succeeds (0). */
+#include "types.h"
 
-extern void CpuCopy8(const void *src, void *dst, unsigned int size);
+struct FSArchive;
 
-int func_020426f8(int arg0, void *dst, const void *src, unsigned int size)
-{
-    CpuCopy8(src, dst, size);
+extern void CpuCopy8(const void *src, void *dst, u32 size);
+
+int func_020426f8(struct FSArchive *p_arc, void *dst, u32 pos, u32 size) {
+    CpuCopy8((const void *)pos, dst, size);
     return 0;
 }

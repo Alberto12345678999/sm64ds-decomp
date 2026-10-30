@@ -1,13 +1,26 @@
+#include "types.h"
+
+/* NitroSDK FSArchive and FSFile, as src/engine/fs/FS_Archive.cpp lays them
+   out; this file only passes them on. */
+struct FSArchive;
+struct FSFile;
+
+typedef int (*FS_ARCHIVE_READ_FUNC)(struct FSArchive *p_arc, void *dst, u32 pos, u32 size);
+typedef int (*FS_ARCHIVE_WRITE_FUNC)(struct FSArchive *p_arc, const void *src, u32 pos, u32 size);
+typedef int (*FS_ARCHIVE_PROC_FUNC)(struct FSFile *p_file, int command);
+
 extern void *FS_FindArchive(void *p, int a);
-extern int FS_UnloadArchive(int *p_arc);
-extern void FS_SetArchiveProc(void *p, void *fn, int b);
-extern void FS_LoadArchive(void *p, int a, int b0, int b4, int c0, int c4, void *fn1, void *fn2);
+extern int FS_UnloadArchive(struct FSArchive *p_arc);
+extern void FS_SetArchiveProc(struct FSArchive *p_arc, FS_ARCHIVE_PROC_FUNC proc, u32 flags);
+extern int FS_LoadArchive(struct FSArchive *p_arc, u32 base, u32 fat, u32 fat_size, u32 fnt,
+                          u32 fnt_size, FS_ARCHIVE_READ_FUNC read_func,
+                          FS_ARCHIVE_WRITE_FUNC write_func);
 extern void func_0205db88(int idx, int a, int b);
 
 extern int data_02099e6c;
-extern void func_02042668(void);
-extern void func_020426f8(void);
-extern void func_020426f0(void);
+extern int func_02042668(struct FSFile *p_file, int command);
+extern int func_020426f8(struct FSArchive *p_arc, void *dst, u32 pos, u32 size);
+extern int func_020426f0(struct FSArchive *p_arc, const void *src, u32 pos, u32 size);
 
 struct Pair {
     int *f0;
@@ -28,7 +41,7 @@ struct Pair {
  * Returns the block's leading word. */
 int func_020423dc(int *r6) {
     int r5;
-    void *h;
+    struct FSArchive *h;
     int r3;
     struct Pair arr[4];
 
@@ -42,7 +55,7 @@ int func_020423dc(int *r6) {
         arr[r3].f4 = *r6;
         r6 = (int *)((char *)arr[r3].f0 + ((arr[r3].f4 + 0x1f) & ~0x1f));
     }
-    FS_LoadArchive(h, 0, (int)arr[0].f0, arr[0].f4, (int)arr[1].f0, arr[1].f4, &func_020426f8,
+    FS_LoadArchive(h, 0, (u32)arr[0].f0, arr[0].f4, (u32)arr[1].f0, arr[1].f4, &func_020426f8,
                    &func_020426f0);
     func_0205db88(0, (int)arr[2].f0, arr[2].f4);
     func_0205db88(1, (int)arr[3].f0, arr[3].f4);
