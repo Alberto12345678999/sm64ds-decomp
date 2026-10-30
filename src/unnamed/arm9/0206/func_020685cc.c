@@ -3,6 +3,11 @@ extern int func_0205d518(int *s, int a);
 extern void FS_CloseFile(int *s);
 extern void FS_ReadFile(int *s, int a, int b);
 
+/* Read one icon file into a game record (func_02068680): with flag set,
+   0x200 bytes of character data to dst + 0x20; otherwise 0x20 bytes of
+   palette to dst. Opens path with FS_InitFile and func_0205d518, and fails
+   (0) on a null path, a failed open, or a file whose length (bottom - top,
+   words 9 and 8 of the FSFile) is not exactly that size. */
 int func_020685cc(int a, int b, int flag)
 {
     int local[0x12];
