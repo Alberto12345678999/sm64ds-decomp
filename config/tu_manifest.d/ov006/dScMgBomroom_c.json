@@ -4,6 +4,7 @@
   "source": "src/minigames/d_s_mg_bomroom.cpp",
   "promoted_source": "src/minigames/d_s_mg_bomroom.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "The whole dScMgBomroom_c linker unit, 0x020d5a54..0x020d9574, 80 functions, as build/tu_map.json (tools/tu_map.py) calls it: from D1 (0x020d5a54) through InitResources (0x020d9244, 0x330). The previous delinks entry, src/minigames/d_s_mg_amida.cpp, ends at 0x020d5a54 with dScMgAmida_c's own helper AmidaPiece_ElemCtor, and the next one, src/d_s_mg_bomroom.cpp (dScMgBomroom_c_classInit, 0x020d9574..0x020d95a4), is followed by the promoted src/minigames/d_s_mg_card.cpp at 0x020d95a4, so the unit is bounded by another class below and by its own factory above. The factory keeps its own file and is not folded here.",
@@ -18,6 +19,21 @@
       "name": ".text",
       "start": "0x020d5a54",
       "end": "0x020d95a4"
+    },
+    {
+      "name": ".init",
+      "start": "0x0212fd48",
+      "end": "0x021300b0"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02133580",
+      "end": "0x02133584"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02141660",
+      "end": "0x02141768"
     }
   ],
   "functions": [
@@ -590,7 +606,501 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "sBomroomTopDoorStateTable",
+      "address": "0x02141660",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four pointer-to-member top-door states; the initializer copies them from the ROM pmf constants"
+    },
+    {
+      "symbol": "sBomroomHatchPanelStateTable",
+      "address": "0x02141680",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four pointer-to-member hatch-panel states; the initializer copies them from the ROM pmf constants"
+    },
+    {
+      "symbol": "sBomroomRoundEndTable",
+      "address": "0x021416a0",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four pointer-to-member round-end states; Round_StateEnd reads each entry as a function word plus a this-adjust"
+    },
+    {
+      "symbol": "sBomroomPenGateStateTable",
+      "address": "0x021416c0",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four pointer-to-member pen-gate states; the initializer copies them from the ROM pmf constants"
+    },
+    {
+      "symbol": "sBomroomRoundStateTable",
+      "address": "0x021416e0",
+      "size": "0x28",
+      "binding": "STB_GLOBAL",
+      "evidence": "five pointer-to-member round states; Behavior indexes the table by mSceneState"
+    },
+    {
+      "symbol": "sBomroomBombMarchTable",
+      "address": "0x02141708",
+      "size": "0x28",
+      "binding": "STB_GLOBAL",
+      "evidence": "five pointer-to-member bomb-march states; Bomb_StateMarch indexes the table by substate"
+    },
+    {
+      "symbol": "sBomroomBombStateTable",
+      "address": "0x02141730",
+      "size": "0x38",
+      "binding": "STB_GLOBAL",
+      "evidence": "seven pointer-to-member bomb states; UpdateBombs indexes the table by bomb state"
+    }
+  ],
+  "init": [
+    {
+      "symbol": "__sinit_d_s_mg_bomroom.cpp",
+      "address": "0x0212fd48",
+      "size": "0x368",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov006_0212fd48 (0x368) and carries the same 40 relocation sites: 33 pointer-to-member copies into the seven state tables"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_d_s_mg_bomroom.cpp",
+      "address": "0x02133580",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_d_s_mg_bomroom.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_d_s_mg_bomroom.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x02130010",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Round_StateSetup",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba0c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130014",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Round_StateStart",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba6c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130018",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomRoundStateTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021416e0"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213001c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Round_StatePlay",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba3c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130020",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Round_StateEnd",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213baf4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130024",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Round_StateGameOver",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213baec"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130028",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_RoundEnd_StartMarch",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba2c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213002c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomRoundEndTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021416a0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130030",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateExploding",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba9c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130034",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213bad4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130038",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_RoundEnd_Tally",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba24"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213003c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_RoundEnd_Finish",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213bac4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130040",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateInPen",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba94"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130044",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateWaiting",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba14"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130048",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomBombStateTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141730"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213004c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateMarch",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba5c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130050",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_BombMarch_ToGate",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba74"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130054",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomBombMarchTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141708"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130058",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_BombMarch_Exit",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba84"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213005c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateWalk",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213baac"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130060",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_BombMarch_Offscreen",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba8c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130064",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateHeld",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba1c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130068",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_BombMarch_ToLine",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba04"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213006c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_BombMarch_LinedUp",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213babc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130070",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_Bomb_StateChainDelay",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213baa4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130074",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_HatchPanel_StateIdle",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba44"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130078",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_HatchPanel_StateRevert",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213bae4"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213007c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomHatchPanelStateTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141680"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130080",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_HatchPanel_StateAnimate",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213b9f4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130084",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_HatchPanel_StateHeld",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba34"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130088",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_PenGate_StateShut",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba4c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213008c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_PenGate_StateOpening",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba54"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130090",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_PenGate_StateHold",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba64"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130094",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_TopDoor_StateShut",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213bab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130098",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_PenGate_StateClosing",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213ba7c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213009c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_TopDoor_StateOpening",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213bacc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021300a0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomPenGateStateTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021416c0"
+    },
+    {
+      "section": ".init",
+      "source": "0x021300a4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_TopDoor_StateOpen",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213b9ec"
+    },
+    {
+      "section": ".init",
+      "source": "0x021300a8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "pmf_dScMgBomroom_c_TopDoor_StateClosing",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213b9fc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021300ac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sBomroomTopDoorStateTable",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141660"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02133580",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_d_s_mg_bomroom.cpp",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212fd48"
+    }
+  ],
   "compiler_only_output": [
     {
       "symbol": "_ZN14dScMgBomroom_cD2Ev",
@@ -680,7 +1190,9 @@
     "Written ROM-ASCENDING because `#pragma defer_codegen off` makes CodeWarrior emit each definition as it is encountered rather than in reverse source order. With the out-of-line destructor first in the file it emits D1, D0 at ordinals 0 and 1, and the homeless D2 is dispositioned deadstrip.",
     "include/decl_common.h declares several of this TU's members. Those declared `void f(void*)` are defined with that spelling and cast to the recovered type on the first line, which is byte-neutral; call sites that reach a member defined with a typed parameter (_ZN14dScMgBomroom_c15PenGate_HideAllEv, _020d669c, _020d5dd4, _020d65c8, _020d6278, _020d5fec) cast at the call. _ZN14dScMgBomroom_c13DrawRemainingEv was declared `int f()` there -- decl_headers.py had read a legacy shard's K&R forward declaration -- and is corrected to `void f(void*)`. _ZN14dScMgBomroom_c12TopDoor_DrawEv was declared `void f()`, which C++ reads as taking no arguments and which conflicts with its `char *` definition here; that declaration is removed, since this file is its only caller. Bomroom_DrawScore keeps decl_common.h's `void f(void)`: it takes no argument, and Render calls it without one (the retired Render file passed `this`, which the callee never read; bytes are unchanged).",
     "Each member keeps its own legacy shadow types, suffixed with the member's address (S_604c, Obj_6098, PMF_6278, Ent_816c, Work_893c, ...) so that the shards' independently-invented `S`/`C`/`Rec`/`Obj`/`Work`/`Ent`/`Entry` tags coexist. Members derived from .c shards had their `this` parameter renamed to `self_` -- a C++ keyword in the merged TU. The .c shards' `_ZN5Sound12PlayBank2_2DEj` calls are spelled Sound::PlayBank2_2D through include/Sound.h, and _ZN14dScMgBomroom_c15Round_StatePlayEv, recovered as returning the result of a void function through K&R declarations, is void.",
-    "The incomplete structs and PMF typedefs above the pointer-to-member dispatchers (C_5fec, C_6278, C_65c8, C_7c00, C_836c, C_91b0) are load-bearing: they are the representation the tables at sBomroomTopDoorStateTable..sBomroomBombStateTable are filled with, and completing a struct changes the pointer-to-member representation mwcc emits."
+    "The incomplete structs and PMF typedefs above the pointer-to-member dispatchers (C_5fec, C_6278, C_65c8, C_7c00, C_836c, C_91b0) are load-bearing: they are the representation the tables at sBomroomTopDoorStateTable..sBomroomBombStateTable are filled with, and completing a struct changes the pointer-to-member representation mwcc emits.",
+    "Static initializer folded: the seven state tables move out of src/unnamed/ov006/__sinit_ov006_0212fd48.c into this TU. Each table is the pointer-to-member type its dispatcher already calls through, plain-copied from the ROM pmf_dScMgBomroom_c_* constants in retail order. mwcc emits __sinit_d_s_mg_bomroom.cpp at 0x368 with the same 40 relocations. .init 0x0212fd48..0x021300b0, .ctor 0x02133580..0x02133584 and .bss 0x02141660..0x02141768 are this TU's. The PMF constants stay ROM data. No compiler temporaries.",
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 that every intact entry shares."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -754,7 +1266,7 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov006-dScMgBomroom_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -762,38 +1274,52 @@
         "compile": true,
         "link": true,
         "checkModules": true,
-        "checkSymbols": false,
+        "checkSymbols": true,
         "rom": true
       },
       "tuRange": {
-        "start": "0x020d5eb8",
-        "end": "0x020d7c4c",
+        "start": "0x020d5a54",
+        "end": "0x020d95a4",
         "differingBytes": 0,
         "firstDiff": null
       },
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x020d5eb8",
-          "end": "0x020d7c4c",
+          "start": "0x020d5a54",
+          "end": "0x020d95a4",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x0212fd48",
+          "end": "0x021300b0",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02133580",
+          "end": "0x02133584",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02141660",
+          "end": "0x02141768",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 41
+          "LICENSED": 90
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
-      "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
-        "errors": null
-      },
-      "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
       "symbolCheckErrors": [],
       "symbolCheckBaselineErrors": [],
