@@ -5,5 +5,5 @@ extern unsigned char data_020a1166[];
    data_020a1040. The accessors func_02020028..func_02020388 give the bits
    their roles (ready, go, course, slot mask, controller mode). */
 unsigned char GetPlayerFlagByte(int i, int p) {
-    return *(unsigned char*)((char*)data_020a1166 + i * 0x24 + p);
+    return *(unsigned char *)((char *)data_020a1166 + i * 0x24 + p);
 }

@@ -6,8 +6,7 @@ extern void func_0203db3c(int i, int v);
    console's) become b, the rest of player a's byte kept. dScEntry_c::
    UpdateControlSettings calls it with this console's index right after
    SetControllerMode, so the other consoles see the choice. */
-void func_02020028(int a, int b)
-{
+void func_02020028(int a, int b) {
     int x = GetPlayerFlagByte(a, 4);
     x = b | (x & ~3);
     func_0203db3c(4, x & 0xff);

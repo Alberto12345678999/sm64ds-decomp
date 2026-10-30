@@ -1,8 +1,7 @@
 #include "types.h"
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
-typedef struct InputPair
-{
+typedef struct InputPair {
     u16 cur;
     u16 pressed;
 } InputPair;
@@ -14,13 +13,11 @@ extern InputPair data_020a0e58[4];
 
 extern u16 func_0203dae4(int idx);
 
-void func_0203bc7c(void)
-{
+void func_0203bc7c(void) {
     InputPair *p = data_020a0e58;
     int i;
     data_020a0e44 = 0;
-    for (i = 0; i < 4; i++)
-    {
+    for (i = 0; i < 4; i++) {
         u16 keys = func_0203dae4(i);
         u16 old;
         int changed;
