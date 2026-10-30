@@ -5,8 +5,10 @@ extern void func_02072dac(void *x, void *b);
  * The default-case call keeps the 0x80 test result live in r1 at zero cost
  * (r1 is untouched between the dispatch and the call), which is what pins the
  * entry-loop opcode byte to r0. This is std::terminate, spelled by its
- * mangled name because the file is C. As C++ it would need the
- * argument-less call, which does not match. */
+ * mangled name: std::terminate() takes no arguments, and the
+ * argument-less call does not match. A C++ file would need the same
+ * mangled-name spelling (extern "C" _ZSt9terminatev(...) also matches),
+ * so the file gains nothing from C++ and stays C. */
 extern void _ZSt9terminatev();
 extern void func_02071864(void *a, void *b);
 extern u8 *ReadSignedVarInt(u8 *p, int *out);
