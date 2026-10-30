@@ -21590,11 +21590,6 @@
         "arity:3"
       ]
     },
-    "func_0207180c": {
-      "src/unnamed/arm9/0207/func_02072dac.c": [
-        "return:unsigned char *"
-      ]
-    },
     "func_02071844": {
       "src/unnamed/arm9/0207/func_02072dac.c": [
         "arity:2"
