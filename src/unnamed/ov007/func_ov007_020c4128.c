@@ -7,9 +7,10 @@ typedef struct {
 extern void SubVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 
 /* Draws sprite `child` relative to sprite `parent`: child takes parent's
- * scale, colour and alpha, is offset by parent's screen position for the
- * screen -> world pass through the camera, drawn with its world position
- * relative to parent's, and then has its own screen position restored. */
+ * scale, colour and alpha, is offset by parent's screen position and depth
+ * for the screen -> world pass through the camera, drawn with its world
+ * position relative to parent's, and then has its own screen position and
+ * depth restored. */
 void func_ov007_020c4128(Ov007Sprite *parent, Ov007Sprite *child, struct Ov007Camera *camera) {
     int savedDepth, savedX, savedY;
 

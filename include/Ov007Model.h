@@ -84,9 +84,13 @@ typedef struct Ov007Model {
     s16 blendFrameCount; /* 0x8e: the cross-fade's length; blendFrames / it is the weight */
     char pad_90[4];
     /* 0x94: func_ov007_020bbff0 renders the model only while it is nonzero.
-     * func_ov007_020be980 (with the animation) and func_ov007_020b2614 set
-     * it; func_ov007_020b066c, func_ov007_020be9ac and func_ov007_020bfcec
-     * clear it */
+     * Set by func_ov007_020bc47c (when it binds the model's file),
+     * func_ov007_020be980 (with the animation), func_ov007_020b2614,
+     * func_ov007_020b0da0 (on the figure's first tick) and
+     * func_ov007_020bf790 (show). Cleared by func_ov007_020b066c,
+     * func_ov007_020be9ac, the fade's constructor func_ov007_020bfcec,
+     * func_ov007_020bfbdc, func_ov007_020bf790 (hide) and
+     * func_ov007_020bf690 (at the end of the transition) */
     s32 visible;
     /* 0x98: 1 on the frames that step the animations; with flags & 3 it
      * alternates, so they run at half rate (func_ov007_020bc47c seeds 1) */
