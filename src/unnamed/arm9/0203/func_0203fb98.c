@@ -1,4 +1,4 @@
-extern void func_02040014(void);
+extern void func_02040014(char *cb);
 extern int WM_StartParent(void *p);
 
 /* Start as parent: WM_StartParent sends WM command 8 (the SDK's

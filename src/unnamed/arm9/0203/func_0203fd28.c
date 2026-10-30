@@ -1,5 +1,5 @@
 extern int WM_Enable(void *cb);
-extern void func_020405b4(void);
+extern void func_020405b4(unsigned short *result);
 extern int data_020a0f94;
 
 /* Enable the wireless hardware: WM_Enable sends WM command 3 (the

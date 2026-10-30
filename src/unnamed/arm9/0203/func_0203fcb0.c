@@ -1,5 +1,5 @@
 extern int WM_PowerOn(void *cb);
-extern void func_02040408(void);
+extern void func_02040408(unsigned short *result);
 extern int data_020a0f94;
 
 /* Power the wireless hardware on: WM_PowerOn sends WM command 5 (the

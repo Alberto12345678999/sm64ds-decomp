@@ -18302,11 +18302,6 @@
         "param:#1 L *"
       ]
     },
-    "func_0203b9bc": {
-      "src/unnamed/arm9/0203/func_0203df40.c": [
-        "param:#1 Col4 *"
-      ]
-    },
     "func_0203c178": {
       "include/decl_common.h": [
         "arity:4"
@@ -18480,71 +18475,14 @@
         "arity:0"
       ]
     },
-    "func_0203ea5c": {
-      "src/unnamed/arm9/0203/func_0203df40.c": [
-        "return:int"
-      ]
-    },
     "func_0203f604": {
       "src/unnamed/arm9/0203/func_0203ea5c.c": [
         "arity:0",
         "return:void"
       ]
     },
-    "func_0203f920": {
-      "src/unnamed/arm9/0203/func_0203f6b4.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0203/func_0203f818.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0203/func_0203f9d4.c": [
-        "arity:0",
-        "return:int"
-      ]
-    },
-    "func_0203fdac": {
-      "src/unnamed/arm9/0203/func_0203faa8.c": [
-        "arity:0"
-      ]
-    },
-    "func_0203fec4": {
-      "src/unnamed/arm9/0203/func_0203fb5c.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040014": {
-      "src/unnamed/arm9/0203/func_0203fb98.c": [
-        "arity:0"
-      ]
-    },
-    "func_020401e8": {
-      "src/unnamed/arm9/0203/func_0203fbc4.c": [
-        "arity:0"
-      ]
-    },
     "func_020402a0": {
       "src/Wireless_Reset.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040388": {
-      "src/unnamed/arm9/0203/func_0203fc74.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040408": {
-      "src/unnamed/arm9/0203/func_0203fcb0.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040504": {
-      "src/unnamed/arm9/0203/func_0203fcec.c": [
-        "arity:0"
-      ]
-    },
-    "func_020405b4": {
-      "src/unnamed/arm9/0203/func_0203fd28.c": [
         "arity:0"
       ]
     },
@@ -18573,11 +18511,6 @@
     "func_02040a5c": {
       "src/unnamed/arm9/0203/func_0203ea5c.c": [
         "arity:0"
-      ]
-    },
-    "func_02040a94": {
-      "src/unnamed/arm9/0203/func_0203f644.c": [
-        "return:void"
       ]
     },
     "func_02040c34": {

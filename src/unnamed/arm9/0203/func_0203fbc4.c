@@ -1,5 +1,5 @@
 extern int func_020620b0(void *f, int x);
-extern void func_020401e8(void);
+extern void func_020401e8(unsigned short *result);
 extern int data_020a0f44;
 /* Set the parent parameters: WM_SetParentParameter (func_020620b0) on the
    WMParentParam in data_020a0f44, with func_020401e8 as the callback, which
