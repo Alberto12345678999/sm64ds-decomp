@@ -9655,11 +9655,11 @@
     },
     "arm9:0x0205865c": {
       "author": "tangosdev",
-      "name": "func_0205865c"
+      "name": "OSi_IsRunOnDebugger"
     },
     "arm9:0x02058690": {
       "author": "ruspecial",
-      "name": "func_02058690"
+      "name": "OSi_GetDeviceType"
     },
     "arm9:0x02058764": {
       "author": "tangosdev",

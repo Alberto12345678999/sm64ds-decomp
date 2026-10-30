@@ -47,7 +47,7 @@ void OS_InitException(void) {
     else
         data_020a63a8 = 0;
     /* 0x40000000 is the console-type bit OS_GetConsoleType sets when
-     * func_0205865c's probe succeeds. */
+     * OSi_IsRunOnDebugger's probe succeeds. */
     if (data_020a63a8 == 0 || (OS_GetConsoleType() & 0x40000000) == 0) {
         /* base + 0xfdc is HW_EXCP_VECTOR_BUF, the exception vector in the
          * DTCM system reserve. Written as one constant address, it no longer

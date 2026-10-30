@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "One contiguous run of the Nitro SDK's os_message.c, 0x020587e4..0x02058960: 3 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_message.c defines, in this order, OS_InitMessageQueue, OS_SendMessage, OS_ReceiveMessage, OS_JamMessage and OS_ReadMessage. Three are here, each identified by body: OS_ReceiveMessage 0xb0, OS_SendMessage 0xac, OS_InitMessageQueue 0x20.",
     "Order: mwccarm emits deferred bodies in reverse. The ROM run is pret's source order reversed, OS_ReceiveMessage lowest and OS_InitMessageQueue highest. Nothing calls OS_JamMessage or OS_ReadMessage, so the linker dropped them.",
-    "BOTTOM EDGE: OS_IsRunOnEmulator (0x020587dc..0x020587e4, 8 bytes) is not message-queue code.",
+    "BOTTOM EDGE: OS_IsRunOnEmulator (0x020587dc..0x020587e4, 8 bytes), the highest of os_emulator.c (arm9/OS_Emulator).",
     "TOP EDGE: func_02058960 (0x02058960) is the last function of os_mutex.c (arm9/OS_Mutex), whose run is likewise reversed."
   ],
   "sections": [

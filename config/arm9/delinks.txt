@@ -2208,12 +2208,9 @@ src/ARMRestoreContext.c:
     complete
     .text start:0x02058618 end:0x0205865c
 
-src/unnamed/arm9/0205/func_0205865c.cpp:
+src/engine/os/OS_Emulator.cpp:
     complete
-    .text start:0x0205865c end:0x020587dc
-src/OS_IsRunOnEmulator.c:
-    complete
-    .text start:0x020587dc end:0x020587e4
+    .text start:0x0205865c end:0x020587e4
 
 src/engine/os/OS_Message.cpp:
     complete

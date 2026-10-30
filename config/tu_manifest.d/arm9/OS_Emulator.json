@@ -1,0 +1,82 @@
+{
+  "id": "arm9/OS_Emulator",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Emulator.cpp",
+  "promoted_source": "src/engine/os/OS_Emulator.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_emulator.c, 0x0205865c..0x020587e4: 4 functions, gapless in config/arm9/delinks.txt, each identified by its body against pret's pmd-sky os_emulator.c. OSi_IsRunOnDebugger reads HW_CHECK_DEBUGGER_BUF1 or BUF2 as HW_CHECK_DEBUGGER_SW picks. OSi_GetDeviceType tests the GBA-slot ROM for 'NINTENDO' under the cartridge lock. OS_GetConsoleType ORs ENSATA, ISDEBUGGER, ISEMULATOR or NITRO onto the device type, adds HW_MMEMCHECKER_SUB and caches the result. OS_IsRunOnEmulator returns FALSE, as pret's pokediamond OS_emulator.c does.",
+    "Order: pmd-sky's file defines OS_IsRunOnEmulator, OS_GetConsoleType, OSi_GetDeviceType and OSi_IsRunOnDebugger. mwccarm emits the bodies in reverse, so OSi_IsRunOnDebugger is lowest and OS_IsRunOnEmulator highest. Nothing else calls the two OSi_ helpers.",
+    "BOTTOM EDGE: ARMRestoreContext (0x02058618..0x0205865c), os_context.c's asm.",
+    "TOP EDGE: OS_ReceiveMessage at 0x020587e4, the lowest of os_message.c (arm9/OS_Message)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205865c",
+      "end": "0x020587e4"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OSi_IsRunOnDebugger",
+      "address": "0x0205865c",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205865c.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OSi_GetDeviceType",
+      "address": "0x02058690",
+      "size": "0x000000d4",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205865c.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_GetConsoleType",
+      "address": "0x02058764",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205865c.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OS_IsRunOnEmulator",
+      "address": "0x020587dc",
+      "size": "0x00000008",
+      "legacy_source": "src/OS_IsRunOnEmulator.c",
+      "ordinal": 3
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Rom: tu_map cannot segment arm9/main.",
+    "func_0205865c and func_02058690 were renamed OSi_IsRunOnDebugger and OSi_GetDeviceType from their bodies in this change. symbols/actor_renames.tsv records the evidence. OS_IsRunOnEmulator was named the same way earlier, in batch 31.",
+    "Text-only. data_0209a040 (OSi_ConsoleTypeCache) keeps its address name and owner."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Emulator/OS_Emulator.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 4,
+    "functions_declared": 4,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
