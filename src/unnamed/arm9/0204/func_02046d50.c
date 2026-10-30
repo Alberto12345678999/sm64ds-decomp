@@ -16,6 +16,10 @@ struct Tbl {
     char* p3;
 };
 
+/* dExtAnmTexPat_c::Prepare's body (see dExtAnmTexPat_c.h): resolve the
+   texture-pattern file's three name tables against the BMD, the first
+   to texture indices (func_020471ac), the second to palette indices
+   (func_02047144) and the third to material indices (func_02046590). */
 void func_02046d50(void* arg, struct Tbl* t)
 {
     int i;
