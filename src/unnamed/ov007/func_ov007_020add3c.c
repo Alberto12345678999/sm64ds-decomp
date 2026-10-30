@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007OamNode.h"
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020ae834 and func_ov007_020ae810, only the slots this file
@@ -12,14 +13,6 @@ typedef struct Ov007Item {
     char pad_10[0x10];
     int ready; /* 0x20: set once the state settles, cleared on reset */
 } Ov007Item;
-
-/* The 0x44-byte OAM node func_ov007_020c11ac allocates; names as in
- * func_ov007_020c10ec, only the slots this file writes. */
-typedef struct Ov007OamNode {
-    int x;       /* 0x00: Q12 screen x */
-    int y;       /* 0x04: Q12 screen y */
-    int visible; /* 0x08 */
-} Ov007OamNode;
 
 /* The 8-byte record func_ov007_020ade58 returns: an item and the OAM node
  * drawn for it. */

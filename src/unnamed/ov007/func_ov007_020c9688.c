@@ -115,7 +115,7 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
         cnt = *p;
         p = p + 4;
         cell = &s->cells[i];
-        cell->oam = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
+        cell->oam = (Ov007CellEntry *)func_ov007_020c3df4(heap, cnt * 6);
         cell->count = cnt;
         for (j = 0; j < cnt; j++) {
             s16 x;
@@ -167,9 +167,9 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
                 }
             }
             attrs.attr2 = tile | (priority << 10) | (palette << 12);
-            *(u16 *)((u8 *)cell->oam + j * 6) = ((u16 *)&attrs)[0];
-            *(u16 *)((u8 *)cell->oam + j * 6 + 2) = ((u16 *)&attrs)[1];
-            *(u16 *)((u8 *)cell->oam + j * 6 + 4) = ((u16 *)&attrs)[2];
+            cell->oam[j].attr0 = ((u16 *)&attrs)[0];
+            cell->oam[j].attr1 = ((u16 *)&attrs)[1];
+            cell->oam[j].attr2 = ((u16 *)&attrs)[2];
         }
     }
 

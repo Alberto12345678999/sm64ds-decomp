@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "Ov007BgLayer.h"
+#include "Ov007OamNode.h"
 #include "Ov007SpriteBank.h"
 #include "Ov007Transition.h"
 
@@ -37,8 +38,8 @@ typedef struct Ov007CharRecord {
 typedef struct Ov007Display {
     /* 0x00/0x04: the OAM node lists (func_ov007_020c1068) drawn into the
      * main and sub OAM buffers; func_ov007_020c0af4 appends a node */
-    struct Ov007OamList *oamListMain;
-    struct Ov007OamList *oamListSub;
+    Ov007OamList *oamListMain;
+    Ov007OamList *oamListSub;
     /* 0x08/0x0c: func_ov007_020c0604's BG layer lists for engine bit 1
      * (main) and 2 (sub); func_ov007_020c0384 appends a layer */
     Ov007BgList *bgListMain;
@@ -47,18 +48,18 @@ typedef struct Ov007Display {
      * the main and sub OAM */
     void *oamMain;
     void *oamSub;
-    int transitionCount;            /* 0x18 */
-    Ov007Transition **transitions;  /* 0x1c: func_ov007_020c8b10 records */
-    int characterCount;             /* 0x20 */
-    Ov007CharRecord **characters;   /* 0x24: func_ov007_020c99d8 records */
-    int paletteCount;               /* 0x28 */
-    Ov007Palette **palettes;        /* 0x2c: func_ov007_020c9988 records */
-    int bgLayerCount;               /* 0x30 */
-    Ov007BgLayer **bgLayers;        /* 0x34: func_ov007_020c95fc layers */
-    int spriteBankCount;            /* 0x38 */
-    Ov007SpriteBank **spriteBanks;  /* 0x3c: func_ov007_020c9688 banks */
-    int oamNodeCount;               /* 0x40 */
-    struct Ov007OamNode **oamNodes; /* 0x44: func_ov007_020c11ac nodes */
+    int transitionCount;           /* 0x18 */
+    Ov007Transition **transitions; /* 0x1c: func_ov007_020c8b10 records */
+    int characterCount;            /* 0x20 */
+    Ov007CharRecord **characters;  /* 0x24: func_ov007_020c99d8 records */
+    int paletteCount;              /* 0x28 */
+    Ov007Palette **palettes;       /* 0x2c: func_ov007_020c9988 records */
+    int bgLayerCount;              /* 0x30 */
+    Ov007BgLayer **bgLayers;       /* 0x34: func_ov007_020c95fc layers */
+    int spriteBankCount;           /* 0x38 */
+    Ov007SpriteBank **spriteBanks; /* 0x3c: func_ov007_020c9688 banks */
+    int oamNodeCount;              /* 0x40 */
+    Ov007OamNode **oamNodes;       /* 0x44: func_ov007_020c11ac nodes */
 } Ov007Display;
 
 #ifndef SM64DS_PLATFORM_PC

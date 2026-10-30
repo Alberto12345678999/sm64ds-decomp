@@ -1,12 +1,13 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007OamNode.h"
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
-extern void Sprite_SetAnimation(void *node, int animIndex, int mode, int rev, int frame);
+extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
 
 /* The 10-byte layout row an item points at (names as in
  * func_ov007_020b5bf0); only its kind is read here. */
@@ -24,13 +25,6 @@ typedef struct Ov007Item {
     Ov007ItemLayout *layout; /* 0x24 */
     char pad_28[4];
 } Ov007Item;
-
-/* The 0x44-byte OAM node func_ov007_020c11ac allocates; names as in
- * func_ov007_020c10ec, only the slot this file reads. */
-typedef struct Ov007OamNode {
-    char pad_00[0x1d];
-    unsigned char animIndex; /* 0x1d: Sprite_SetAnimation's first argument */
-} Ov007OamNode;
 
 /* The 8-byte record func_ov007_020ade58 returns: an item and the OAM node
  * drawn for it. */

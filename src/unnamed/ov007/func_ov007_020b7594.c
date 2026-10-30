@@ -2,7 +2,7 @@
 
 extern int func_ov007_020c3df4(int a, int b);
 extern void func_ov007_020c0354(int (*words)[2], unsigned count);
-extern void *func_ov007_020c1068(void);
+extern Ov007OamList *func_ov007_020c1068(void);
 extern Ov007BgList *func_ov007_020c0604(int engines, int mask);
 
 /* Builds the display record: two OAM node lists, a BG layer list per

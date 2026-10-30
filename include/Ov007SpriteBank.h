@@ -8,12 +8,19 @@
  * file, func_ov007_020c121c frees one, and func_ov007_020b6d40 keeps six
  * in the display record. */
 
-/* One 8-byte cell: `count` OAM entries, each packed by func_ov007_020c9688
- * into three attribute halfwords (attr0..attr2). func_ov007_020c13f4 frees
- * the list. */
+/* One OAM entry of a cell: its three attribute halfwords, packed by
+ * func_ov007_020c9688 and read by func_ov007_020c0eb0. */
+typedef struct Ov007CellEntry {
+    u16 attr0; /* 0x00 */
+    u16 attr1; /* 0x02 */
+    u16 attr2; /* 0x04 */
+} Ov007CellEntry;
+
+/* One 8-byte cell: `count` OAM entries. func_ov007_020c13f4 frees the
+ * list. */
 typedef struct Ov007Cell {
-    u16 *oam;  /* 0x00 */
-    int count; /* 0x04 */
+    Ov007CellEntry *oam; /* 0x00 */
+    int count;           /* 0x04 */
 } Ov007Cell;
 
 /* One 0x10-byte cell animation, sized by func_ov007_020c13a4: a cell and a
@@ -39,6 +46,7 @@ typedef struct Ov007SpriteBank {
 } Ov007SpriteBank;
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char Ov007CellEntry_size_must_be_0x6[sizeof(Ov007CellEntry) == 0x6 ? 1 : -1];
 typedef char Ov007Cell_size_must_be_0x8[sizeof(Ov007Cell) == 0x8 ? 1 : -1];
 typedef char Ov007CellAnim_size_must_be_0x10[sizeof(Ov007CellAnim) == 0x10 ? 1 : -1];
 typedef char Ov007SpriteBank_size_must_be_0x10[sizeof(Ov007SpriteBank) == 0x10 ? 1 : -1];

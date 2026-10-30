@@ -1,7 +1,8 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
-extern void Sprite_SetAnimation(void *node, int animIndex, int mode, int rev, int frame);
+#include "Ov007OamNode.h"
+extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020b5bf0, only the slots this file reads. */
@@ -17,7 +18,7 @@ typedef struct Ov007Item {
  * here. */
 typedef struct Ov007ItemNode {
     Ov007Item *item; /* 0x00: func_ov007_020aea6c */
-    char *node;      /* 0x04: func_ov007_020c11ac; Sprite_SetAnimation's target */
+    Ov007OamNode *node; /* 0x04: func_ov007_020c11ac; Sprite_SetAnimation's target */
 } Ov007ItemNode;
 
 typedef char

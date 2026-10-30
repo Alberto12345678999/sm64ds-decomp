@@ -11,29 +11,16 @@ extern u8 data_ov007_020ccb7c[];
 
 extern int func_ov007_020c3df4(int a, int b);
 extern char *func_ov007_020aea6c(int a, void *b, void *c);
-extern void *func_ov007_020c11ac(int n);
-extern void func_ov007_020c10b0(void *a, void *b);
-extern void func_ov007_020c0af4(void *c, void *x);
-extern void Sprite_SetAnimation(void *c, int r1, int r2, int r3, int sp0);
+extern Ov007OamNode *func_ov007_020c11ac(int n);
+extern void func_ov007_020c10b0(Ov007OamNode *parent, Ov007OamNode *child);
+extern void func_ov007_020c0af4(Ov007OamList *list, Ov007OamNode *node);
+extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020ae070, only the slot this file reads. */
 typedef struct Ov007Item {
     u16 id; /* 0x00: aea6c's first argument */
 } Ov007Item;
-
-/* The 0x44-byte OAM sprite node func_ov007_020c11ac allocates; names as in
- * func_ov007_020c10ec, only the slots this file touches. */
-typedef struct Ov007OamNode {
-    int x; /* 0x00: Q12 screen x; func_ov007_020c0b78 adds it to the parent's */
-    char pad_04[0x10];
-    unsigned char priority; /* 0x14: OAM priority, used when the caller passes none (> 3) */
-    char pad_15[3];
-    void **anims;            /* 0x18: animCount animations (func_ov007_020c11ac) */
-    unsigned char animCount; /* 0x1c: func_ov007_020c1180 frees anims only when nonzero */
-    char pad_1d[0x1b];
-    struct Ov007OamNode *head; /* 0x38: first child (func_ov007_020c10b0) */
-} Ov007OamNode;
 
 /* data_ov007_020ccb7c: one 8-byte row per item. data_ov007_020ccb7d is
  * the same table's animCount byte, read by its own symbol. */
@@ -65,7 +52,7 @@ void *func_ov007_020ade58(int self)
     int cnt;
 
     s->item = (Ov007Item *)func_ov007_020aea6c(self, &data_ov007_020ccbc4[self * 0xa], 0);
-    r4 = (Ov007OamNode *)func_ov007_020c11ac(data_ov007_020ccb7d[self * 8]);
+    r4 = func_ov007_020c11ac(data_ov007_020ccb7d[self * 8]);
     s->node = r4;
 
     switch (s->item->id) {

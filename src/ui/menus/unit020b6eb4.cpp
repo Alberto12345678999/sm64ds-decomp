@@ -34,6 +34,7 @@
 #include "types.h"
 #include "G2x.h"
 #include "Ov007Work.h"
+#include "Ov007Display.h"
 #include "Ov007Settings.h"
 
 extern "C" {
@@ -79,7 +80,7 @@ extern void func_ov007_020b7764(void);
 extern void func_ov007_020b782c(void);
 extern void func_ov007_020b8690(void);
 extern void func_ov007_020b8714(int a0, int a1, int a2);
-extern void func_ov007_020bc9c8(int x);
+extern void func_ov007_020bc9c8(Ov007Display *d);
 extern void func_ov007_020bcf90(void);
 extern void func_ov007_020bd4e8(void);
 extern void func_ov007_020bd500(void);
@@ -167,7 +168,7 @@ int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4) {
 // @symbol func_ov007_020b7040
 int func_ov007_020b7040(void) {
     func_ov007_020bcf90();
-    func_ov007_020bc9c8((int)WORK->display);
+    func_ov007_020bc9c8(WORK->display);
     WORK->frameCount++;
     data_ov007_02103430 = 1;
     return 1;
