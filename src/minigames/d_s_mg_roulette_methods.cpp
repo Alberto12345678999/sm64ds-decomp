@@ -848,7 +848,7 @@ void RouletteRacer_Init(void *racer) {
         sRouletteRacerGoal[0] = 0xc000;
         sRouletteRacerGoal[1] = 0xc000;
         __register_global_object(sRouletteRacerGoal, (void *)NullDestructor_0203d47c,
-                      &sRouletteRacerGoalDtorRec);
+                                 &sRouletteRacerGoalDtorRec);
         sRouletteRacerGoalGuard |= 1;
     }
     RouletteRacer_SetVelocityToward((int *)racer, sRouletteRacerGoal, 0x80);

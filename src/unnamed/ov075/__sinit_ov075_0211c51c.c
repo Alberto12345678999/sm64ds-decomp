@@ -28,7 +28,8 @@ extern EntryMeshHandler data_ov075_0211d35c; /* &EntryMesh::DrawGrid */
 
 void __sinit_ov075_0211c51c(void) {
     func_020178cc(&EntryMeshTextureFile, 0x8418);
-    __register_global_object(&EntryMeshTextureFile, (void *)func_020178b4, EntryMeshTextureFileLink);
+    __register_global_object(&EntryMeshTextureFile, (void *)func_020178b4,
+                             EntryMeshTextureFileLink);
     EntryMeshHandlers[0] = data_ov075_0211d354;
     EntryMeshHandlers[1] = data_ov075_0211d34c;
     EntryMeshHandlers[2] = data_ov075_0211d35c;

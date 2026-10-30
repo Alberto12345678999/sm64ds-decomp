@@ -125,9 +125,11 @@ extern "C" void __sinit_ov002_02100560(void) {
     func_02017acc(&data_ov002_0210da28, 0x800b);
     __register_global_object(&data_ov002_0210da28, (void *)func_02017ab4, data_ov002_0210daa8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210d9e8, 0x800a);
-    __register_global_object(&data_ov002_0210d9e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210db08);
+    __register_global_object(&data_ov002_0210d9e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210db08);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210da08, ASSET_S_NUMBER_BTP);
-    __register_global_object(&data_ov002_0210da08, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210db5c);
+    __register_global_object(&data_ov002_0210da08, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210db5c);
     func_02017acc(&data_ov002_0210da38, 0x8004);
     __register_global_object(&data_ov002_0210da38, (void *)func_02017ab4, data_ov002_0210dab4);
     func_02017acc(&data_ov002_0210da10, ASSET_W_RING_BMD);

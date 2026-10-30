@@ -1,4 +1,4 @@
-extern void __register_global_object(short* a, void* b, void* node);
+extern void __register_global_object(short *a, void *b, void *node);
 extern short data_020a0dbc[];
 extern short data_020a0db8[];
 extern char NoOpDestructor[];

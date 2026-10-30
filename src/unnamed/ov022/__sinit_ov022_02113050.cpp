@@ -33,5 +33,6 @@ extern "C" void __sinit_ov022_02113050(void) {
     func_02017acc(&gFlLogModelFile, ASSET_FL_LOG_BMD);
     __register_global_object(&gFlLogModelFile, (void *)func_02017ab4, data_ov022_02114678);
     func_02017b4c(&gFlLogCollisionFile, ASSET_FL_LOG_KCL);
-    __register_global_object(&gFlLogCollisionFile, (void *)SharedFilePtr_Destruct_Clsn, data_ov022_02114684);
+    __register_global_object(&gFlLogCollisionFile, (void *)SharedFilePtr_Destruct_Clsn,
+                             data_ov022_02114684);
 }
