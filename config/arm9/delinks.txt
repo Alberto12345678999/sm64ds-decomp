@@ -2764,23 +2764,23 @@ src/FS_UnloadOverlayImage.c:
     complete
     .text start:0x0205dc60 end:0x0205dc7c
 
-src/unnamed/arm9/0205/func_0205dc7c.cpp:
+src/FS_EndOverlay.cpp:
     complete
     .text start:0x0205dc7c end:0x0205dd9c
 
-src/unnamed/arm9/0205/func_0205dd9c.c:
+src/FS_StartOverlay.c:
     complete
     .text start:0x0205dd9c end:0x0205de9c
 
-src/unnamed/arm9/0205/func_0205de9c.c:
+src/FSi_CompareDigest.c:
     complete
     .text start:0x0205de9c end:0x0205df40
 
-src/unnamed/arm9/0205/func_0205df40.c:
+src/FS_LoadOverlayInfo.c:
     complete
     .text start:0x0205df40 end:0x0205dffc
 
-src/unnamed/arm9/0205/func_0205dffc.c:
+src/FSi_LoadOverlayInfoCore.c:
     complete
     .text start:0x0205dffc end:0x0205e088
 
@@ -2788,11 +2788,11 @@ src/FS_GetOverlayFileID.c:
     complete
     .text start:0x0205e088 end:0x0205e0b0
 
-src/unnamed/arm9/0205/func_0205e0b0.cpp:
+src/FS_ClearOverlayImage.cpp:
     complete
     .text start:0x0205e0b0 end:0x0205e0f4
 
-src/unnamed/arm9/0205/func_0205e0f4.c:
+src/DGT_Hash2CalcHmac.c:
     complete
     .text start:0x0205e0f4 end:0x0205e280
 

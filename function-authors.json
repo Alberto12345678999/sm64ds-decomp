@@ -10543,23 +10543,23 @@
     },
     "arm9:0x0205dc7c": {
       "author": "ruspecial",
-      "name": "func_0205dc7c"
+      "name": "FS_EndOverlay"
     },
     "arm9:0x0205dd9c": {
       "author": "tangosdev",
-      "name": "func_0205dd9c"
+      "name": "FS_StartOverlay"
     },
     "arm9:0x0205de9c": {
       "author": "tangosdev",
-      "name": "func_0205de9c"
+      "name": "FSi_CompareDigest"
     },
     "arm9:0x0205df40": {
       "author": "tangosdev",
-      "name": "func_0205df40"
+      "name": "FS_LoadOverlayInfo"
     },
     "arm9:0x0205dffc": {
       "author": "ruspecial",
-      "name": "func_0205dffc"
+      "name": "FSi_LoadOverlayInfoCore"
     },
     "arm9:0x0205e088": {
       "author": "tangosdev",
@@ -10567,11 +10567,11 @@
     },
     "arm9:0x0205e0b0": {
       "author": "tangosdev",
-      "name": "func_0205e0b0"
+      "name": "FS_ClearOverlayImage"
     },
     "arm9:0x0205e0f4": {
       "author": "tangosdev",
-      "name": "func_0205e0f4"
+      "name": "DGT_Hash2CalcHmac"
     },
     "arm9:0x0205e280": {
       "author": "ruspecial",

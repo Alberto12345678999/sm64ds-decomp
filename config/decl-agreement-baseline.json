@@ -312,7 +312,7 @@
       "src/unnamed/arm9/0205/func_0205d2dc.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205df40.c": [
+      "src/FS_LoadOverlayInfo.c": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_0206062c.cpp": [
@@ -722,7 +722,7 @@
         "param:#1 int *",
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205dffc.c": [
+      "src/FSi_LoadOverlayInfoCore.c": [
         "param:#1 void *",
         "param:#2 void *"
       ],
@@ -9471,7 +9471,7 @@
         "param:#3 struct Node *"
       ]
     },
-    "func_0205de9c": {
+    "FSi_CompareDigest": {
       "src/unnamed/arm9/0205/func_0205db88.cpp": [
         "param:#1 Obj *",
         "param:#2 void *",
@@ -9496,7 +9496,7 @@
       ]
     },
     "func_0206cf98": {
-      "src/unnamed/arm9/0205/func_0205dc7c.cpp": [
+      "src/FS_EndOverlay.cpp": [
         "return:void"
       ]
     },
@@ -16102,7 +16102,7 @@
       ]
     },
     "MIi_UncompressBackward": {
-      "src/unnamed/arm9/0205/func_0205dd9c.c": [
+      "src/FS_StartOverlay.c": [
         "arity:1"
       ]
     },
@@ -20138,10 +20138,10 @@
       "src/unnamed/arm9/0205/func_0205cd34.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205dd9c.c": [
+      "src/FS_StartOverlay.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205e0b0.cpp": [
+      "src/FS_ClearOverlayImage.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02061e38.cpp": [
@@ -20473,8 +20473,8 @@
         "return:void"
       ]
     },
-    "func_0205dffc": {
-      "src/unnamed/arm9/0205/func_0205df40.c": [
+    "FSi_LoadOverlayInfoCore": {
+      "src/FS_LoadOverlayInfo.c": [
         "param:#4 void *"
       ]
     },
@@ -20485,7 +20485,7 @@
       ]
     },
     "func_0205e6e4": {
-      "src/unnamed/arm9/0205/func_0205e0f4.c": [
+      "src/DGT_Hash2CalcHmac.c": [
         "param:#1 unsigned int *",
         "param:#2 const unsigned char *",
         "return:void"

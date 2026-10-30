@@ -2,8 +2,8 @@
 #define NITRO_FS_OVERLAY_H
 
 /*
- * NitroSDK FSOverlayInfo, the record FS_LoadOverlayInfo (func_02018c00)
- * fills: overlay `id`'s 0x20-byte entry from the overlay table, then the
+ * NitroSDK FSOverlayInfo, the record FS_LoadOverlayInfo (and the game's
+ * copy of it, func_02018c00) fills: overlay `id`'s 0x20-byte entry from the overlay table, then the
  * target processor at +0x20. The names are the SDK's, as pret's pokediamond
  * FS_overlay.h spells them. That later SDK appends a CARDRomRegion
  * file_pos after target (0x2c bytes); this one stops at 0x24, the size

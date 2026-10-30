@@ -2,7 +2,7 @@ extern int func_0205e89c(unsigned int *ctx);
 extern void func_0205e6e4(unsigned int *ctx, const unsigned char *data, int len);
 extern int func_0205e7e0(unsigned int *ctx, unsigned char *out);
 
-void func_0205e0f4(unsigned char *out, unsigned char *msg, int msglen, unsigned char *key, int keylen)
+void DGT_Hash2CalcHmac(unsigned char *out, unsigned char *msg, int msglen, unsigned char *key, int keylen)
 {
     unsigned char ipad[64];
     unsigned char opad[64];
