@@ -68,7 +68,7 @@ void LoadBGPltt(const void *, unsigned int, unsigned int);
 }
 
 extern "C" {
-void func_020308b4(void *self);
+void func_020308b4(void);
 void func_020551f0(void *s, int v);
 extern int data_0209fc68;
 
@@ -1423,11 +1423,11 @@ void dScEntry_c::EnterResults() {
 }
 
 /* The behavior of the step set at data_ov075_0211d7c8, which the static
- * initializer fills and no code installs. A tail call that hands the
- * scene pointer through in r0. */
+ * initializer fills and no code installs. It only arms the link
+ * handshake (func_020308b4). */
 // @symbol _ZN10dScEntry_c19func_ov075_02118a78Ev
 void dScEntry_c::func_ov075_02118a78() {
-    func_020308b4(this);
+    func_020308b4();
 }
 
 // local extern: the Fix12-by-value overload retains its measured scalar ABI bridge.
@@ -1686,7 +1686,7 @@ void dScEntry_c::UpdatePlayerSync() {
         u8 activePlayers = data_0209fc50;
         int sessionPlayers = func_0203d890();
         if (activePlayers == sessionPlayers) {
-            func_020308b4((void *)sessionPlayers);
+            func_020308b4();
             ++mStepPhase;
         } else {
             ++mWaiting.playerWaitTicks;
@@ -1702,7 +1702,7 @@ void dScEntry_c::UpdatePlayerSync() {
     case 2: {
         int hostReady = func_0203d8fc();
         if (hostReady) {
-            func_020308b4((void *)hostReady);
+            func_020308b4();
             ++mStepPhase;
         }
         break;
@@ -2109,7 +2109,7 @@ void dScEntry_c::SetSteps(const StepSet *steps) {
  * model-data array. */
 // @symbol _ZN10dScEntry_c16CleanupResourcesEv
 s32 dScEntry_c::CleanupResources() {
-    func_020308b4(this);
+    func_020308b4();
     if (data_0209b2e8 != (void *)0) {
         Deallocate(data_0209b2e8);
         data_0209b2e8 = (void *)0;

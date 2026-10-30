@@ -4,7 +4,11 @@
 extern "C" {
 
 /* NitroSDK WMBssDesc, cut to the two fields read here (the layout as a
-   pokeheartgold fork's wm_internal.h spells it; func_020672d0 fills one). */
+   pokeheartgold fork's wm_internal.h spells it). Two other views share
+   the layout: func_020672d0.c, which fills this one and splits ggid and
+   the ssid into halfwords the way this SDK writes them, and WmWork.h's
+   opaque 0xc0-byte WmBssDesc. They stay apart because their field types
+   differ, and the types choose the load and store widths. */
 typedef struct WMBssDesc {
     unsigned char pad_00[0x36];
     unsigned short channel; /* 0x36 */

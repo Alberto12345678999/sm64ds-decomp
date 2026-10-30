@@ -186,7 +186,7 @@ void Camera_InitDealerView(char *c);
 int Dealer_IsAnimDone(char *a);
 int Dealer_IsIdle(char *c);
 void Dealer_Draw(char *c);
-void Dealer_Update(char *thiz);
+void Dealer_Update(Dealer *dealer);
 int Dealer_Load(char *c);
 
 extern int sRouletteResultsTimer;
@@ -535,7 +535,7 @@ s32 dScMgRoulette_c::Behavior() {
         }
     }
     RouletteBoard_Update(&mBoard);
-    Dealer_Update((char *)&mDealer);
+    Dealer_Update(&mDealer);
     MgCoins_Update();
     return 1;
 }

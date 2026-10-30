@@ -67,7 +67,7 @@ extern "C" void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 extern "C" void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
 extern "C" void Dealer_Draw(void *c);
 extern int data_ov006_02134028;
-void Dealer_Update(void *table);
+void Dealer_Update(Dealer *table);
 void MgCoins_Update(void);
 extern int Dealer_IsBusy(void *p);
 extern int Dealer_IsIdle(void *p);

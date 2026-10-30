@@ -1,3 +1,4 @@
+#include "nitro/fs/overlay.h"
 extern void func_0205dc0c(int a, int b);
 extern void func_02018c00(void *info, int a, int b);
 extern int func_0203d7b8(void);
@@ -10,11 +11,6 @@ struct OverlaySlot {
     int size;
 };
 extern struct OverlaySlot data_0209d3c4[];
-
-/* NitroSDK FSOverlayInfo (see LoadOverlay.c); only its size matters here. */
-typedef struct FSOverlayInfo {
-    unsigned int words[9];
-} FSOverlayInfo;
 
 /* UnloadOverlay for an overlay that may not be loaded: free its slot, and if
    it had one, unload ARM9 overlay `key` (func_0205dc0c, NitroSDK's
