@@ -1,19 +1,22 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ff97d8 at 0x01ff97d8 (ITCM) -- the largest routine in the soft-float runtime
-// block at 0x01ff8000, 0xb6c bytes of straight-line double-precision work with no frame,
-// no callee-saved discipline and no compiled control flow. Assembly in the original,
-// like every other function in that block.
+// func_01ff97d8 at 0x01ff97d8 (ITCM) -- not one routine but the soft-float runtime's
+// comparison entries, 0xb6c bytes laid end to end and transcribed as one asm block.
+// Counting every entry that starts right after an unconditional return: thirteen float
+// compares (0x01ff97d8..0x01ff9b98, each opening with `mov r3, #0xff000000` and a
+// `cmp r3, rN, lsl #1` NaN test on a single-precision word) and thirteen double compares
+// (0x01ff9b98..0x01ffa344, opening with `mov r12, #0x200000`, the same test on the high
+// word of a pair). The first entry is a three-way compare that returns 0, 1 or 2; the
+// others are the ==, !=, <, <= ... predicates the compiler calls for float and double
+// comparisons. config/arm9/itcm/symbols.txt names four of the interior entries
+// (func_01ff98f4, func_01ff99a4, _deq at 0x01ff9d40, func_01ff9e2c); the lcf defines them
+// inside this block's object. Splitting the block into one source per entry is matching
+// work that has not been done.
 //
-// It runs the same house style as _dadd and _dmul around it: 64-bit operands kept in
-// register pairs, mantissa alignment done with explicit `lsl`/`lsr` pairs and carries
-// chained by hand, and one straight-line tail per special case (zero, denormal, infinity,
-// NaN, overflow, underflow) instead of a merged epilogue.
-//
-// The eight `bl func_0207322c` sites are the FP status word reads that set the inexact,
-// overflow and underflow flags and then test the matching enable bits; when a trap is
+// Every NaN path reads the FP status word through func_0207322c and sets bit 0 (the
+// invalid-operation flag, the same bit _ll_ufrom_d sets on overflow); when that trap is
 // enabled the routine leaves through func_0206dd30 or func_0206dc7c carrying a packed
-// exception code. Those ten calls and two pool words are its only outside references.
+// exception code.
 
 extern int func_0207322c(void);
 extern void func_0206dd30(void);

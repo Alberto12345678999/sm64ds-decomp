@@ -1392,24 +1392,24 @@ src/engine/fader/_ZN9dFdWipe_cD0Ev.c	DTOR-ONLY	arm9	dFdWipe_c	dFdWipe_c/dFdWipe_
 src/engine/fader/_ZN9dFdWipe_cD1Ev.c	DTOR-ONLY	arm9	dFdWipe_c	dFdWipe_c/dFdWipe_c	_ZN9dFdWipe_cD1Ev	1		True	_ZTV9dFdWipe_c	-
 src/ui/messages/func_0201cb2c.c	PURE-C	arm9				1		None		-
 src/ui/messages/func_0201fe08.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/01ff/func_01ff859c.c	PURE-C					0		None		not-in-delinks
+src/_ll_ufrom_d.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ff97d8.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/01ff/func_01ffa344.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/01ff/func_01ffa4bc.c	PURE-C					0		None		not-in-delinks
+src/_ffix.c	PURE-C					0		None		not-in-delinks
+src/_fflt.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffafd4.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffb008.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffb030.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffd9d4.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/01ff/func_01ffdb28.c	PURE-C					0		None		not-in-delinks
+src/OSi_DoBoot.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffdd08.c	WEAK-refs-only					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffdd98.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/01ff/func_01ffde98.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/0200/func_020048d8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200497c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0200/func_02005000.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_02005060.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_02005098.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_020050dc.c	PURE-C	arm9				1		None		-
+src/MI_SendGXCommand.c	PURE-C					0		None		not-in-delinks
+src/MIi_UncompressBackward.c	PURE-C	arm9				1		None		-
+src/do_autoload.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
+src/unnamed/arm9/0200/func_02005000.cpp	PURE-C	arm9				1		None		-
+src/unnamed/arm9/0200/func_02005060.cpp	PURE-C	arm9				1		None		-
+src/unnamed/arm9/0200/func_02005098.cpp	PURE-C	arm9				1		None		-
+src/unnamed/arm9/0200/func_020050dc.cpp	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0200/func_02005110.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0200/func_02005324.c	WEAK-refs-only	arm9				1		None		-
 src/func_02005348.c	WEAK-refs-only	arm9				1		None		-
@@ -1630,7 +1630,7 @@ src/unnamed/arm9/0201/func_02018ac4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018b64.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018c00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018cbc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_02018d48.c	PURE-C	arm9				1		None		-
+src/myFS_ReadFile.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018d98.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018dc4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018e00.c	PURE-C	arm9				1		None		-

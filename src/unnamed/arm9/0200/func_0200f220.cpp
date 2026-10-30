@@ -10,6 +10,11 @@ extern u32 LoadCompressedFileAt(u32 fileID, void *target);
 extern u32 data_0208a10c[];
 extern u32 data_0208a134[];
 
+/* Loads the sub-engine BG graphics: per-language BG2 characters (and BG3
+ * characters at +0x6000, both indexed by GetLanguageIndex()), file 0x8405 at
+ * BG3 characters +0x3000, files 0x9802, 0x9800 and 0x8408 into BG2 screen
+ * memory at +0x800, +0x2000 and +0x2800, and file 0x8407 as BG3's screen.
+ * func_0200f13c loads the main-engine side. */
 void func_0200f220(void) {
     s32 idx;
     idx = GetLanguageIndex();

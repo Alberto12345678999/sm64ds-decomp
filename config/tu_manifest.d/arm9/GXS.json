@@ -6,16 +6,17 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x02055dec..0x02056870, 29 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start).",
-    "TOP EDGE: src/engine/gx/G3i.cpp ends at 0x02055dec exactly where the run begins -- G3i's TU ends here (see G3i.json); that is a delinks-run boundary, not independent proof of where the GXS TU starts.",
-    "BOTTOM EDGE: src/engine/gx/GX.cpp starts at 0x02056870 exactly where the run ends -- the GX/GXS file pair meets here; the GX TU continues to 0x02056c1c (see GX.json).",
-    "GXS is a namespace (Nitro SDK sub-screen family), not a class: no this, no vtable, no layout -- plain static functions only. GX/GXS are one original file pair, so GX:: members that lie inside this stretch (LoadBG1Char, LoadBG0Char, LoadOBJ, LoadOBJPltt) are owned here too."
+    "One contiguous run of the Nitro SDK's gx_load2d.c, 0x02055dec..0x020568cc: 30 functions. pret/pokediamond's arm9/lib/NitroSDK/src/GX_load2d.c, compiled with its own pinned mwccarm 1.2/sp2p3, emits 36; every function here lines up with one in the same order. The run ends with GXS_LoadOBJ 0x60, GX_LoadOBJ 0x60, GXS_LoadOAM 0x68, GX_LoadOAM 0x5c, GXS_LoadOBJPltt 0x68, GX_LoadOBJPltt 0x68, GXS_LoadBGPltt 0x68 and GX_LoadBGPltt 0x5c, eight exact sizes at 0x020565b4..0x020568cc. The six GX_ (main-engine) extended-palette loaders are absent because nothing in this game calls them, so the linker dropped them; the BG char/screen loaders run 0x60 here against pret's 0x68 (SDK version drift).",
+    "The file holds both engines' loaders, so GX:: members inside the run (LoadBGPltt, LoadOBJPltt, LoadOBJ, LoadBG0Char, LoadBG1Char) belong here: the edge to gx_load3d.c is the file edge 0x020568cc, not the GX/GXS namespace change at 0x02056870.",
+    "TOP EDGE: GX::EndLoadTexPltt at 0x020568cc is GX_EndLoadTexPltt, the first gx_load3d.c function here (arm9/GX).",
+    "BOTTOM EDGE: src/engine/gx/G3i.cpp ends at 0x02055dec where the run begins.",
+    "GXS is a namespace (Nitro SDK sub-screen family), not a class: no this, no vtable, no layout -- plain static functions only."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02055dec",
-      "end": "0x02056870"
+      "end": "0x020568cc"
     }
   ],
   "functions": [
@@ -221,6 +222,13 @@
       "size": "0x00000068",
       "legacy_source": "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp",
       "ordinal": 28
+    },
+    {
+      "symbol": "_ZN2GX10LoadBGPlttEPKvjj",
+      "address": "0x02056870",
+      "size": "0x0000005c",
+      "legacy_source": "src/_ZN2GX10LoadBGPlttEPKvjj.cpp",
+      "ordinal": 29
     }
   ],
   "data": [],
@@ -232,8 +240,8 @@
     "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-GXS/GXS.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 29,
-    "functions_declared": 29,
+    "functions_matched": 30,
+    "functions_declared": 30,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

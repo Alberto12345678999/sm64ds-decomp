@@ -34,7 +34,7 @@
  * func_ov007_020beaa0) lies between data_ov007_020d7c58
  * (func_ov007_020be0dc, func_ov007_020be7a8) and data_ov007_020d7c6c
  * (func_ov007_020be50c), and one unit's .rodata is contiguous.
- * func_ov007_020beaa0 alone uses the bss words 0x02104bc4/0x02104bc8,
+ * func_ov007_020beaa0 alone uses the bss array 0x02104bc4..0x02104bd4,
  * right after 0x02104bc0. func_ov007_020beb80 references no ov007 data; its
  * one caller is func_ov007_020be9ac and it works on the same figure record.
  * The previous function, func_ov007_020be098, is the last of the sound
@@ -277,7 +277,7 @@ extern void *func_ov007_020c3f00(int *layout, int extraAnims);
 extern void func_ov007_020c3fe4(void *self);
 
 /* the figure and its files */
-extern int data_ov007_020d7c5c[2][2]; /* [figureIndex][index]: model file */
+extern int data_ov007_020d7c5c[2][2]; /* [figureIndex][index]: animation file */
 extern void *data_ov007_02104bc4[2][2];
 extern int func_02053644(s16 *v);
 extern void func_02053380(s16 *in, s16 *out);
@@ -358,8 +358,10 @@ void func_ov007_020beb80(Ov007Figure *fig) {
 
 // @symbol func_ov007_020beaa0
 /* Builds figure `index` (0 the figure, 1 the second) for the work block's
- * figureIndex: loads its model file and the shared texture file (0xe, or
- * 0xf when func_ov007_020aebac says so) and makes the model from them. */
+ * figureIndex: makes the model from file 3, then hands func_ov007_020bc6b4
+ * two animation files to bind to it -- the figure's own from
+ * data_ov007_020d7c5c and a shared one (0xe, or 0xf when
+ * func_ov007_020aebac returns 0). */
 Ov007Figure *func_ov007_020beaa0(int index, int figureIndex) {
     Ov007Figure *fig;
     void *file;
@@ -392,7 +394,8 @@ Ov007Figure *func_ov007_020beaa0(int index, int figureIndex) {
 
 // @symbol func_ov007_020bea44
 /* Frees a figure built by func_ov007_020beaa0: releases its files (3, its
- * model file, 0xe) and its model. */
+ * animation file, 0xe) and its model. It always releases 0xe, even when
+ * func_ov007_020beaa0 loaded 0xf instead. */
 void func_ov007_020bea44(Ov007Figure *fig) {
     func_ov007_020b3edc(3);
     func_ov007_020b3edc(data_ov007_020d7c5c[fig->figureIndex][fig->index]);

@@ -16,11 +16,11 @@ typedef struct CardCommon {
     void *mCallbackArg; /* 0x2c */
     unsigned char pad_30[4];
     /* 0x34 -- CARD_STAT_* bits: 4 busy, 8 a task for the card thread (set by
-     * func_02060228, waited for by func_020602bc); with 0x10 set, ending a
+     * CARDi_SetTask, waited for by func_020602bc); with 0x10 set, ending a
      * task also wakes mThread */
     unsigned int mFlags;
     unsigned char pad_38[4];
-    /* 0x3c -- the card task thread: func_02060228 points mCurThread (0xd0) at
+    /* 0x3c -- the card task thread: CARDi_SetTask points mCurThread (0xd0) at
      * it and wakes it with func_02058048 (OS_WakeupThreadDirect: mark it
      * ready and reschedule) */
     char mThread[0x94];

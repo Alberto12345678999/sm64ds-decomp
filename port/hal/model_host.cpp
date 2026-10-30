@@ -77,7 +77,7 @@ void func_02052514(int *a, int *b)
  * func_0205a358 (func_02044534 calls that one with identical arguments), so
  * the host forwards to the pump that gate 4a already proved byte-exact. */
 void func_0205a358(int ch, int src, int size, void (*cb)(int), int arg);
-void func_01ffde98(int ch, int src, int size)
+void MI_SendGXCommand(int ch, int src, int size)
 {
     func_0205a358(ch, src, size, 0, 0);
 }

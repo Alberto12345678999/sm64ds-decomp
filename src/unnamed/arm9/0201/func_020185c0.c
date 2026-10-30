@@ -14,7 +14,7 @@ struct Entry {
 
 extern void FS_InitFile(int *s);
 extern void func_02018598(struct P *c, unsigned int arg);
-extern int func_02018dc4(int a, struct P v);
+extern int myFS_OpenFileFast(int a, struct P v);
 extern int LoadArchive(int idx);
 extern void Crash(void);
 extern int func_0204eda4(int r0, char *a, unsigned int idx);
@@ -34,7 +34,7 @@ int func_020185c0(int a0, unsigned int a1)
         func_02018598(&v, a1);
         arg.a = v.a;
         arg.b = v.b;
-        result = func_02018dc4(a0, arg);
+        result = myFS_OpenFileFast(a0, arg);
     } else {
         unsigned int i = 0;
         struct Entry *e = data_0208ecf4;

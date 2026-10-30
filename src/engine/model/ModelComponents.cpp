@@ -166,7 +166,7 @@ void func_02055388(void *m);
 void MulMat3x3Mat3x3(void *a, void *b, void *dst);
 void func_02052514(void *a, void *b);
 void func_02055998(int *n);
-void func_01ffde98(int a, int b, int c);
+void MI_SendGXCommand(int a, int b, int c);
 void func_02044b30(char *obj, int idx);
 void func_02044534(char *self, int index, Mtx43 *mtx, Vec3 *light);
 void func_0204488c(char *self, int index, int *color);
@@ -575,7 +575,7 @@ void func_0204488c(char* self, int index, int* color)
             *(volatile int*)0x400044c = 0;
         }
 
-        func_01ffde98(3, part->fc, part->f8);
+        MI_SendGXCommand(3, part->fc, part->f8);
     }
 }
 }

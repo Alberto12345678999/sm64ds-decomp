@@ -24,6 +24,14 @@
 #define DISPLAY_CONTROL_BG_EXT_PALETTE  (1u << 30)
 #define DISPLAY_CONTROL_OBJ_EXT_PALETTE (1u << 31)
 
+/* BG control: engine A's BG0CNT..BG3CNT are 0x04000008..0x0400000e, engine B's
+   0x04001008..0x0400100e. Bits 0-1 are the priority and bit 6 the mosaic enable. */
+#define REG_BG2CNT    (*(volatile u16 *)0x0400000c)
+#define REG_BG3CNT    (*(volatile u16 *)0x0400000e)
+#define REG_DB_BG0CNT (*(volatile u16 *)0x04001008)
+#define REG_DB_BG2CNT (*(volatile u16 *)0x0400100c)
+#define REG_DB_BG3CNT (*(volatile u16 *)0x0400100e)
+
 #define REG_VCOUNT (*(volatile u16 *)0x04000006)
 
 /* BG0HOFS is 0x04000010 and BG0VOFS 0x04000012; the ROM sets the pair with one

@@ -27,12 +27,12 @@ SetFogTable and the 0x18 table loader after SetClearColor come in the other orde
 |---|---|---|---|
 | GX.c | 0x02053a90.. (7 exact, GX_Init drifts 0x184 to 0x15c) | arm9/GX_Init | yes, both edges |
 | GX_bgcnt.c | 0x02054d38..0x020551f0, 16/16 exact | arm9/G2 | yes, both edges |
-| GX_vramcnt.c | 0x02053ea0..0x02054d38, 37 exact + 1 drift | arm9/GX_VramCnt | top edge yes; the TU also takes 3 functions below (0x02053e1c..0x02053ea0) that pret's file doesn't have |
-| OS_system.c | 0x02059d08..0x02059d98, 8/8 | arm9/IRQ3 | yes; IRQ3 leaves out OS_SpinWait (func_02059d8c, the asm hatch) on purpose |
+| GX_vramcnt.c | 0x02053ea0..0x02054d38, 37 exact + 1 drift | arm9/GX_VramCnt | yes, both edges: the 3 functions below (0x02053e1c..0x02053ea0) are gx_vramcnt.c's GX_GetSizeOfX_, GetSizeOfTex and GetSizeOfTexPltt, which pret's file leaves out (Pokemon doesn't link them); RushRE's NitroSDK gx_vramctrl.c ends with them |
+| OS_system.c | 0x02059d08..0x02059d98, 8/8 | arm9/IRQ3 | yes; IRQ3 leaves out OS_SpinWait (src/OS_SpinWait.c, the asm hatch) on purpose |
 | OS_tcm.c, OS_protectionUnit.c | 1 and 2 exact | arm9/CP15_TCM, arm9/CP15_ProtectionUnit | yes |
 | OS_cache.c | 0x02058bdc.., 5 exact + 1 drift | arm9/CP15 | yes |
 | OS_irqTable.c + OS_interrupt.c | 0x02056c40..0x02056d64, then ..0x02057014 | arm9/OS_IrqTable + arm9/OS_Interrupt | fixed: arm9/IRQ held both files; split at 0x02056d64 (func_02057000 is OS_InitIrqTable, 0x14 here) |
-| GX_load2d.c + GX_load3d.c | 0x02055dec..0x020568cc, then ..0x02056c1c | arm9/GXS + arm9/GX | no: split by namespace at 0x02056870, not at the file edge 0x020568cc |
+| GX_load2d.c + GX_load3d.c | 0x02055dec..0x020568cc, then ..0x02056c1c | arm9/GXS + arm9/GX | fixed: the edge was the namespace change at 0x02056870; GX::LoadBGPltt moved to GXS, edge now 0x020568cc |
 | GX_g2.c | func_020551f0 + the 3 G2x members | arm9/G2x | partial: G2x_ChangeBlendBrightness_ (func_020551f0) is outside it |
 | GX_g3x.c | 0x020553c0..0x02055998 | arm9/G3X (0x02055454..0x02055998, 13 functions) + func_020553c0.c | fixed: G3X holds the whole file except GXi_NopClearFifo128_ (func_020553c0, asm), which stays its own source because port/tools/hostgen.py skips any file with an asm block and the port hostgens G3X.cpp |
 
@@ -47,10 +47,13 @@ check against, and they don't.
 |---|---|---|
 | MI_memory.c | 0x0205a448..0x0205a74c | 11/11 exact, 2 pret functions dropped by the linker: folded as arm9/MI_Memory |
 | FX_mtx33.c | 0x020524f0..0x020527c0 | 6 exact, 1 extra 0x3c function here (func_02052514) |
-| OS_spinLock.c | 0x02057014..0x02057410 | 17 exact, 1 drift, 1 extra (func_020570a8) |
+| OS_spinLock.c | 0x02057014..0x02057410 | 18 of 19: 17 exact, OSi_DoLockByWord 0x54 to 0x58, OS_LockCartridge dropped by the linker, 1 extra (OSi_WaitByLoop, out of line here): folded as arm9/OS_SpinLock |
 | OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
 | OS_exception.c, OS_tick.c, OS_alarm.c | 0x020593f4..0x02059cb4 | 4, 4 and 8 exact, edges unresolved |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |
+| CARD_common.c | 0x0205ff70..0x020602bc | 9 of 14: 5 exact, 4 drift from an older SDK (CARDi_InitCommon 0x100 to 0xb4, CARDi_UnlockResource 0xa4 to 0xa8, CARDi_LockResource 0x9c to 0xa0, CARDi_SetTask 0x48 to 0x94), in pret's source order reversed; the other 5 dropped by the linker: folded as arm9/CARD_Common |
+| CARD_rom.c | 0x02060890..0x02060a64 | 3 renamed by body (CARD_WaitRomAsync, CARDi_ReadRom, CARDi_ReadRomSyncCore) and CARD_Init identified (still func_02060890), not folded; the order is not pret's reversed (CARD_Init sits below CARD_WaitRomAsync here) |
+| CTRDG_common.c | 0x0206a318..0x0206a600 | 7 of 24: 6 exact, CTRDG_IsExisting 0x11c to 0x120, in pret's source order reversed; the other 17 dropped by the linker: folded as arm9/CTRDG_Common |
 
 The single-function SDK files sit between these runs: GX_state.c's GX_InitGXState
-is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is func_0205a74c.
+is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is src/MI_SwapWord.c (0x0205a74c).
