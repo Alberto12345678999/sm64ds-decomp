@@ -4,6 +4,8 @@ typedef struct {
     int x, y;
 } Vec2_Fix12;
 
+/* Scale a Vector2 by a Fix12 factor into out (Vector2.h). dScMgCard_c
+   uses it. */
 void func_0203d680(Vec2_Fix12 *out, const Vec2_Fix12 *in, int scale) {
     int rx = FX_MUL(in->x, scale);
     int ry = FX_MUL(in->y, scale);
@@ -11,6 +13,8 @@ void func_0203d680(Vec2_Fix12 *out, const Vec2_Fix12 *in, int scale) {
     out->y = ry;
 }
 
+/* Scale a Vector2 by a Fix12 factor in place (Vector2.h); the amida and
+   base minigame scenes damp velocities with it. */
 void func_0203d630(int *p, int m) {
     p[0] = FX_MUL(p[0], m);
     p[1] = FX_MUL(p[1], m);
