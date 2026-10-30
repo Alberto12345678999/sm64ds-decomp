@@ -1,12 +1,12 @@
-struct S {
-    unsigned char pad0[2];
-    short count;
-    unsigned char len;
-    unsigned char digits[1];
-};
+#include "Decimal.h"
 
-void func_0206f338(struct S *s, int p)
-{
+/* MSL printf.c's round_decimal: round dec to new_length digits, half to
+   even (a 5 followed only by zeros rounds toward an even last digit), and
+   trim the trailing zeros the rounding leaves. A carry out of the top digit
+   leaves "1" and bumps the exponent. A negative length, or rounding down to
+   no digits, leaves "0". The digits are ASCII here. float2str
+   (func_0206ece0) calls it. */
+void func_0206f338(Decimal *dec, int new_length) {
     unsigned char *digits;
     unsigned char *q;
     unsigned char *end;
@@ -15,18 +15,19 @@ void func_0206f338(struct S *s, int p)
     int carry;
     int len;
 
-    if (p < 0) {
+    if (new_length < 0) {
     reset:
-        s->count = 0;
-        s->len = 1;
-        s->digits[0] = 0x30;
+        dec->exp = 0;
+        dec->sig.length = 1;
+        dec->sig.text[0] = 0x30;
         return;
     }
-    len = s->len;
-    if (p >= len) return;
+    len = dec->sig.length;
+    if (new_length >= len)
+        return;
 
-    digits = &s->digits[0];
-    q = digits + p + 1;
+    digits = &dec->sig.text[0];
+    q = digits + new_length + 1;
     d = (*--q - 0x30) & 0xff;
     if (d == 5) {
         end = digits + len;
@@ -41,27 +42,27 @@ void func_0206f338(struct S *s, int p)
         carry = (d > 5) ? 1 : 0;
     }
 
-    if (p != 0) {
+    if (new_length != 0) {
         do {
             e = ((*--q - 0x30) + carry) & 0xff;
             carry = (e > 9) ? 1 : 0;
             if (carry != 0 || e == 0) {
-                p--;
+                new_length--;
             } else {
                 *q = e + 0x30;
                 break;
             }
-        } while (p != 0);
+        } while (new_length != 0);
     }
 
     if (carry != 0) {
-        short *pc = (short *)((int)s + 2);
+        short *pc = (short *)((int)dec + 2);
         *pc = *pc + 1;
-        s->len = 1;
-        s->digits[0] = 0x31;
+        dec->sig.length = 1;
+        dec->sig.text[0] = 0x31;
         return;
     }
-    if (p == 0)
-        goto reset; /* kept: MSL's round_decimal shares the zero result this way */
-    s->len = p;
+    if (new_length == 0)
+        goto reset; /* kept: MSL'dec round_decimal shares the zero result this way */
+    dec->sig.length = new_length;
 }

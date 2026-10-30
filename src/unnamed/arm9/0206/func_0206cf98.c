@@ -5,14 +5,18 @@
 #define LM(x) ((int*)(long long)(int)(x))
 #define LM2(x) ((int*)(long long)(unsigned)(x))
 
+/* Field names from isdoverlay.c's assert strings (data_0208690c..). */
 struct Elem {
-    u32 a, b, c, d;
+    u32 m_VMA;     /* load address */
+    u32 romOffset; /* func_02018b64 passes the overlay's ROM offset */
+    u32 m_SIZE;
+    u32 unused; /* zeroed on insert, never read */
 };
 
 struct Arr {
     u32 count;
-    int pad[3];
-    struct Elem elems[1];
+    int pad[3]; /* [0] the swp lock word; [1] has 2 set while editing */
+    struct Elem m_info[1];
 };
 
 typedef struct {
@@ -30,86 +34,93 @@ extern const char data_0208698c;
 
 extern void func_0206d890(SavedIntState *state);
 extern void func_0206d868(const SavedIntState *state);
-extern u32 func_0206dab4(u32 val, void *addr);
+extern u32 func_0206dab4(u32 val, void *nVMA);
 extern void func_0206d940(struct Arr *s, u32 index);
 extern void func_0206d8c4(struct Arr *s, u32 index);
 extern void _ZN4cstd8__assertEPKcS1_S1_i(const char *, const char *, const char *, int);
 
-int func_0206cf98(int type, u32 addr, u32 size) {
+/* isdoverlay.c (the debugger's overlay table, named by the assert strings):
+   remove [nVMA, nVMA + size) from table type (0 or 1; func_0205dc7c passes
+   its overlay's target processor). An entry inside the range is deleted, an
+   entry crossing either end is split or trimmed. Interrupts are off and the
+   table's lock word is held for the edit. Returns 0 for a bad type. */
+int func_0206cf98(int type, u32 nVMA, u32 size) {
     unsigned long long end;
     unsigned long long addr64;
     int found;
     u32 i;
     SavedIntState state;
-    struct Arr *table;
+    struct Arr *pInfo;
 
-    table = ((unsigned)type >= 2) ? 0 : data_020a9ec0[type];
-    if (!table)
+    pInfo = ((unsigned)type >= 2) ? 0 : data_020a9ec0[type];
+    if (!pInfo)
         return 0;
     if (size == 0)
         return 1;
 
     func_0206d890(&state);
-    while (func_0206dab4(0x80, &table->pad[0]) != 0) { }
+    while (func_0206dab4(0x80, &pInfo->pad[0]) != 0) {
+    }
 
-    *LM(&table->pad[1]) |= 2;
-    addr64 = (u32)addr;
+    *LM(&pInfo->pad[1]) |= 2;
+    addr64 = (u32)nVMA;
     if (addr64 + (u32)size > 0x100000000ULL) {
         size = (u32)(0x100000000ULL - addr64);
     }
     end = addr64 + (u32)size;
 
     found = 0;
-    for (i = 0; i < table->count && !found; i++) {
-        u32 ea = table->elems[i].a;
-        if (ea > addr) {
-            if ((unsigned long long)(u32)ea + (u32)table->elems[i].c <= end) {
-                size -= ea - addr;
-                addr = ea;
+    for (i = 0; i < pInfo->count && !found; i++) {
+        u32 ea = pInfo->m_info[i].m_VMA;
+        if (ea > nVMA) {
+            if ((unsigned long long)(u32)ea + (u32)pInfo->m_info[i].m_SIZE <= end) {
+                size -= ea - nVMA;
+                nVMA = ea;
                 found = 1;
             }
         }
-        if (ea <= addr) {
-            if (addr < (unsigned long long)(u32)ea + (u32)table->elems[i].c) {
+        if (ea <= nVMA) {
+            if (nVMA < (unsigned long long)(u32)ea + (u32)pInfo->m_info[i].m_SIZE) {
                 found = 1;
             }
         }
         if (!found) continue;
 
-        if (!(ea <= addr)) {
+        if (!(ea <= nVMA)) {
             _ZN4cstd8__assertEPKcS1_S1_i(&data_020868fc, (const char *)0x1a9, &data_0208690c, 1);
         }
-        if (!((unsigned long long)(u32)table->elems[i].a + (u32)table->elems[i].c > addr)) {
+        if (!((unsigned long long)(u32)pInfo->m_info[i].m_VMA + (u32)pInfo->m_info[i].m_SIZE >
+              nVMA)) {
             _ZN4cstd8__assertEPKcS1_S1_i(&data_020868fc, (const char *)0x1aa, &data_0208692c, 1);
         }
 
-        if (addr != table->elems[i].a) {
+        if (nVMA != pInfo->m_info[i].m_VMA) {
             u32 ni;
             struct Arr *dstb;
             struct Arr *srcb;
-            func_0206d940(table, i);
+            func_0206d940(pInfo, i);
             ni = i + 1;
-            dstb = (struct Arr *)((char *)table + (i << 4));
-            srcb = (struct Arr *)((char *)table + (ni << 4));
+            dstb = (struct Arr *)((char *)pInfo + (i << 4));
+            srcb = (struct Arr *)((char *)pInfo + (ni << 4));
             i = ni;
-            dstb->elems[0] = srcb->elems[0];
-            dstb->elems[0].c = addr - dstb->elems[0].a;
-            *LM(&srcb->elems[0].a) += dstb->elems[0].c;
-            *LM(&srcb->elems[0].b) += dstb->elems[0].c;
-            *LM(&srcb->elems[0].c) -= dstb->elems[0].c;
+            dstb->m_info[0] = srcb->m_info[0];
+            dstb->m_info[0].m_SIZE = nVMA - dstb->m_info[0].m_VMA;
+            *LM(&srcb->m_info[0].m_VMA) += dstb->m_info[0].m_SIZE;
+            *LM(&srcb->m_info[0].romOffset) += dstb->m_info[0].m_SIZE;
+            *LM(&srcb->m_info[0].m_SIZE) -= dstb->m_info[0].m_SIZE;
         }
 
-        if (!(addr == table->elems[i].a)) {
+        if (!(nVMA == pInfo->m_info[i].m_VMA)) {
             _ZN4cstd8__assertEPKcS1_S1_i(&data_020868fc, (const char *)0x1b7, &data_0208696c, 1);
         }
 
-        if (table->elems[i].c <= size) {
-            func_0206d8c4(table, i);
-            while (i < table->count) {
-                u32 wc = table->elems[i].c;
-                u32 wa = table->elems[i].a;
+        if (pInfo->m_info[i].m_SIZE <= size) {
+            func_0206d8c4(pInfo, i);
+            while (i < pInfo->count) {
+                u32 wc = pInfo->m_info[i].m_SIZE;
+                u32 wa = pInfo->m_info[i].m_VMA;
                 if ((unsigned long long)(u32)wa + (u32)wc <= end) {
-                    func_0206d8c4(table, i);
+                    func_0206d8c4(pInfo, i);
                     continue;
                 }
                 {
@@ -118,21 +129,22 @@ int func_0206cf98(int type, u32 addr, u32 size) {
                     if (!(wc > (u32)ov)) {
                         _ZN4cstd8__assertEPKcS1_S1_i(&data_020868fc, (const char *)0x1ca, &data_0208698c, 1);
                     }
-                    *LM(&((struct Arr *)((char *)table + (i << 4)))->elems[0].a) += (u32)ov;
-                    *LM(&((struct Arr *)((char *)table + (i << 4)))->elems[0].b) += (u32)ov;
-                    *LM(&((struct Arr *)((char *)table + (i << 4)))->elems[0].c) -= (u32)ov;
+                    *LM(&((struct Arr *)((char *)pInfo + (i << 4)))->m_info[0].m_VMA) += (u32)ov;
+                    *LM(&((struct Arr *)((char *)pInfo + (i << 4)))->m_info[0].romOffset) +=
+                        (u32)ov;
+                    *LM(&((struct Arr *)((char *)pInfo + (i << 4)))->m_info[0].m_SIZE) -= (u32)ov;
                 }
             }
         } else {
-            struct Arr *eb = (struct Arr *)((char *)table + (i << 4));
-            *LM(&eb->elems[0].a) += size;
-            *LM(&eb->elems[0].b) += size;
-            *LM(&eb->elems[0].c) -= size;
+            struct Arr *eb = (struct Arr *)((char *)pInfo + (i << 4));
+            *LM(&eb->m_info[0].m_VMA) += size;
+            *LM(&eb->m_info[0].romOffset) += size;
+            *LM(&eb->m_info[0].m_SIZE) -= size;
         }
     }
 
-    *LM2(&table->pad[1]) &= ~2;
-    table->pad[0] = 0;
+    *LM2(&pInfo->pad[1]) &= ~2;
+    pInfo->pad[0] = 0;
     func_0206d868(&state);
     return 1;
 }

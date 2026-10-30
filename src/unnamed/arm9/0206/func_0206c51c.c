@@ -29,6 +29,10 @@ inline u64 shr_n(u64 x, int n, int *pj)
     return x;
 }
 
+/* Soft-double add of two non-negative doubles for func_0206a928: the
+   smaller operand's significand is shifted to the larger exponent, the two
+   are added and renormalized. A zero operand returns the other one as it
+   is. The sign is never read and the result's sign bit is 0. */
 u64 func_0206c51c(u64 a, u64 b)
 {
     int tmp;
