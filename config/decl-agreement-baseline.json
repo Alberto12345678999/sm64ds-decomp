@@ -828,11 +828,6 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0205/func_0205f8b0.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/unnamed/arm9/0206/func_0206a600.c": [
         "return:unsigned int"
       ]
@@ -10747,11 +10742,6 @@
         "return:char []"
       ]
     },
-    "data_020a8108": {
-      "src/unnamed/arm9/0205/func_0205fcfc.c": [
-        "return:int"
-      ]
-    },
     "data_020a8114": {
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
@@ -19904,109 +19894,6 @@
     "TPi_TpCallback": {
       "src/TP_Init.c": [
         "arity:0"
-      ]
-    },
-    "func_0205f5c0": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205f5fc": {
-      "src/unnamed/arm9/0205/func_0205f5c0.c": [
-        "param:#2 void *",
-        "param:#3 int *"
-      ]
-    },
-    "func_0205f68c": {
-      "src/unnamed/arm9/0205/func_0205fc44.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f77c": {
-      "src/unnamed/arm9/0201/func_02019ed0.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f8e0": {
-      "src/unnamed/arm9/0201/func_02019dfc.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f958": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205f994": {
-      "src/unnamed/arm9/0205/func_0205f958.c": [
-        "param:#1 void *",
-        "param:#2 int *",
-        "return:int"
-      ]
-    },
-    "func_0205f9e8": {
-      "src/unnamed/arm9/0205/func_0205f9ac.c": [
-        "param:#3 void *",
-        "param:#4 int *"
-      ]
-    },
-    "func_0205fa78": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205fab4": {
-      "src/unnamed/arm9/0205/func_0205fa78.c": [
-        "param:#2 void *",
-        "param:#3 int *"
-      ]
-    },
-    "func_0205fb1c": {
-      "src/unnamed/arm9/0205/func_0205f8e0.c": [
-        "param:#2 void *"
-      ]
-    },
-    "func_0205fb58": {
-      "src/unnamed/arm9/0205/func_0205fb1c.c": [
-        "param:#3 void *",
-        "param:#4 int *"
-      ]
-    },
-    "func_0205fbd0": {
-      "src/unnamed/arm9/0205/func_0205f994.c": [
-        "return:void"
-      ]
-    },
-    "func_0205fc44": {
-      "src/unnamed/arm9/0205/func_0205f77c.cpp": [
-        "param:#1 unsigned short",
-        "param:#2 unsigned short"
-      ]
-    },
-    "func_0205ff00": {
-      "src/unnamed/arm9/0205/func_0205f5c0.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205f958.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205f9ac.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205fa78.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205fb1c.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205ff20": {
-      "src/unnamed/arm9/0205/func_0205fb58.c": [
-        "arity:4",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205fc44.c": [
-        "return:int"
       ]
     },
     "CARD_GetBackupTotalSize": {

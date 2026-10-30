@@ -10663,79 +10663,79 @@
     },
     "arm9:0x0205f5c0": {
       "author": "tangosdev",
-      "name": "func_0205f5c0"
+      "name": "PMi_SendLEDPatternCommand"
     },
     "arm9:0x0205f5fc": {
       "author": "tangosdev",
-      "name": "func_0205f5fc"
+      "name": "PMi_SendLEDPatternCommandAsync"
     },
     "arm9:0x0205f650": {
       "author": "tangosdev",
-      "name": "func_0205f650"
+      "name": "PM_GetLCDPower"
     },
     "arm9:0x0205f66c": {
       "author": "ruspecial",
-      "name": "func_0205f66c"
+      "name": "PM_SetLCDPower"
     },
     "arm9:0x0205f68c": {
       "author": "tangosdev",
-      "name": "func_0205f68c"
+      "name": "PMi_SetLCDPower"
     },
     "arm9:0x0205f77c": {
       "author": "andrewboudreau",
-      "name": "func_0205f77c"
+      "name": "PM_GoSleepMode"
     },
     "arm9:0x0205f8b0": {
       "author": "tangosdev",
-      "name": "func_0205f8b0"
+      "name": "PMi_SendPxiData"
     },
     "arm9:0x0205f8e0": {
       "author": "ruspecial",
-      "name": "func_0205f8e0"
+      "name": "PM_GetBackLight"
     },
     "arm9:0x0205f958": {
       "author": "tangosdev",
-      "name": "func_0205f958"
+      "name": "PM_ForceToPowerOff"
     },
     "arm9:0x0205f994": {
       "author": "ruspecial",
-      "name": "func_0205f994"
+      "name": "PM_ForceToPowerOffAsync"
     },
     "arm9:0x0205f9ac": {
       "author": "tangosdev",
-      "name": "func_0205f9ac"
+      "name": "PM_SetBackLight"
     },
     "arm9:0x0205f9e8": {
       "author": "tangosdev",
-      "name": "func_0205f9e8"
+      "name": "PM_SetBackLightAsync"
     },
     "arm9:0x0205fa78": {
       "author": "tangosdev",
-      "name": "func_0205fa78"
+      "name": "PMi_SetLED"
     },
     "arm9:0x0205fab4": {
       "author": "tangosdev",
-      "name": "func_0205fab4"
+      "name": "PMi_SetLEDAsync"
     },
     "arm9:0x0205fb1c": {
       "author": "tangosdev",
-      "name": "func_0205fb1c"
+      "name": "PMi_ReadRegister"
     },
     "arm9:0x0205fb58": {
       "author": "lunavyqo",
-      "name": "func_0205fb58"
+      "name": "PMi_ReadRegisterAsync"
     },
     "arm9:0x0205fbd0": {
       "author": "tangosdev",
-      "name": "func_0205fbd0"
+      "name": "PM_SendUtilityCommandAsync"
     },
     "arm9:0x0205fc44": {
       "author": "tangosdev",
-      "name": "func_0205fc44"
+      "name": "PMi_SendSleepStart"
     },
     "arm9:0x0205fcfc": {
       "author": "tangosdev",
-      "name": "func_0205fcfc"
+      "name": "PMi_CommonCallback"
     },
     "arm9:0x0205fde8": {
       "author": "tangosdev",
@@ -10743,19 +10743,19 @@
     },
     "arm9:0x0205feac": {
       "author": "ruspecial",
-      "name": "func_0205feac"
+      "name": "PMi_CallCallbackAndUnlock"
     },
     "arm9:0x0205ff00": {
       "author": "tangosdev",
-      "name": "func_0205ff00"
+      "name": "PMi_DummyCallback"
     },
     "arm9:0x0205ff08": {
       "author": "tangosdev",
-      "name": "func_0205ff08"
+      "name": "PMi_WaitBusy"
     },
     "arm9:0x0205ff20": {
       "author": "tangosdev",
-      "name": "func_0205ff20"
+      "name": "PMi_Lock"
     },
     "arm9:0x0205ff70": {
       "author": "ruspecial",
