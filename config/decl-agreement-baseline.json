@@ -13778,18 +13778,16 @@
       ]
     },
     "data_ov030_02115cf0": {
-      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
-        "return:SharedFilePtr"
+      "src/game/actors/d_a_mky.cpp": [
+        "return:MkyAnimFilePtr"
       ]
     },
     "data_ov030_02115d00": {
       "include/decl_common.h": [
         "return:char"
-      ]
-    },
-    "data_ov030_02115ddc": {
-      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
-        "return:Vector3"
+      ],
+      "src/game/actors/d_a_mky.cpp": [
+        "return:MkyModelFilePtr"
       ]
     },
     "data_ov032_02112f98": {
