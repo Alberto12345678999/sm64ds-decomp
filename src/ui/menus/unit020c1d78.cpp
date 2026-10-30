@@ -6,8 +6,8 @@
  * no class name is claimed and the file keeps the unit<addr> name.
  *
  * What the code does. func_ov007_020c1d78 clears flag i, func_ov007_020c1d8c
- * sets it to 1 and func_ov007_020c1da0 reads it. The table is the bss block
- * 0x02104bec..0x02104c14. Menu code across the overlay calls the three
+ * sets it to 1 and func_ov007_020c1da0 reads it. The table is the 0x28-byte
+ * bss block at 0x02104bec. Menu code across the overlay calls the three
  * functions, and three sites load func_ov007_020c1d78 or 020c1d8c as a
  * function pointer.
  *
