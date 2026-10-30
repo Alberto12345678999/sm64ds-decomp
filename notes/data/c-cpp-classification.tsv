@@ -2835,20 +2835,20 @@ src/unnamed/arm9/0206/func_02067e70.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067ee4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067f2c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067f68.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068188.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_020681b8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206834c.c	PURE-C	arm9				1		None		-
+src/MBi_InitSendVolatBeacon.c	PURE-C	arm9				1		None		-
+src/MBi_SendFixedBeacon.c	PURE-C	arm9				1		None		-
+src/MBi_InitSendFixedBeacon.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02068398.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0206/func_02068410.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068484.c	PURE-C	arm9				1		None		-
+src/MB_SendGameInfoBeacon.c	PURE-C	arm9				1		None		-
+src/MBi_ClearSendStatus.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020684a8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_020684d0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068514.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206853c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_020685cc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068680.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206879c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_020687f8.c	PURE-C	arm9				1		None		-
+src/MB_AddGameInfo.c	PURE-C	arm9				1		None		-
+src/mystrlen.c	PURE-C	arm9				1		None		-
+src/MB_UpdateGameInfoMember.c	PURE-C	arm9				1		None		-
+src/MBi_ReadIconInfo.c	PURE-C	arm9				1		None		-
+src/MBi_MakeGameInfo.c	PURE-C	arm9				1		None		-
+src/MBi_CheckWmErrcode.c	PURE-C	arm9				1		None		-
+src/MBi_IsStarted.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206881c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02068834.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02068844.c	PURE-C	arm9				1		None		-
@@ -2935,29 +2935,29 @@ src/unnamed/arm9/0206/func_0206e330.c	PURE-C					0		None		NONMATCHING-draft;not-
 src/unnamed/arm9/0206/func_0206e3dc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206e450.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206e4a4.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206ece0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206f338.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206f46c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206f820.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206fb08.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206fd6c.c	PURE-C	arm9				1		None		-
+src/float2str.c	PURE-C	arm9				1		None		-
+src/round_decimal.c	PURE-C	arm9				1		None		-
+src/double2hex.c	PURE-C	arm9				1		None		-
+src/longlong2str.c	PURE-C	arm9				1		None		-
+src/long2str.c	PURE-C	arm9				1		None		-
+src/parse_format.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02070348.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207037c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_020706b0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020707a4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020707cc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020707f4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020708b4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02070b98.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02070c68.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02070ec0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020712a0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02071364.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02071510.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020715e0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02071644.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
+src/copysign.c	PURE-C	arm9				1		None		-
+src/fabs.c	PURE-C	arm9				1		None		-
+src/frexp.c	PURE-C	arm9				1		None		-
+src/ldexp.c	PURE-C	arm9				1		None		-
+src/__num2dec.c	PURE-C	arm9				1		None		-
+src/__num2dec_internal.c	PURE-C	arm9				1		None		-
+src/__two_exp.c	PURE-C	arm9				1		None		-
+src/__str2dec.c	PURE-C	arm9				1		None		-
+src/__timesdec.c	PURE-C	arm9				1		None		-
+src/__ull2dec.c	PURE-C	arm9				1		None		-
+src/__rounddec.c	PURE-C	arm9				1		None		-
+src/__dorounddecup.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02071694.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02071698.c	PURE-C	arm9				1		None		-
+src/__must_round.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071708.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071784.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071790.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
@@ -2969,9 +2969,9 @@ src/unnamed/arm9/0207/func_02071910.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071974.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071988.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207199c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020719ac.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020719b4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020719ec.c	PURE-C	arm9				1		None		-
+src/__close_console.c	PURE-C	arm9				1		None		-
+src/__write_console.c	PURE-C	arm9				1		None		-
+src/__read_console.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071a50.c	PURE-C	arm9				1		None		-
 src/func_02071ba0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071be8.c	PURE-C	arm9				1		None		-
@@ -2985,15 +2985,15 @@ src/unnamed/arm9/0207/func_020729f4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02072d90.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02072dac.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02072ed0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02072f3c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02072f94.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02072fcc.c	PURE-C	arm9				1		None		-
+src/__destroy_global_chain.c	PURE-C	arm9				1		None		-
+src/__call_static_initializers.c	PURE-C	arm9				1		None		-
+src/__throw_catch_compare.c	PURE-C	arm9				1		None		-
 src/__register_global_object.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_020731fc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02073220.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207322c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02073238.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02073244.c	PURE-C	arm9				1		None		-
+src/__cxa_vec_delete.c	PURE-C	arm9				1		None		-
 src/func_020732e8.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02073300.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_0207335c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks

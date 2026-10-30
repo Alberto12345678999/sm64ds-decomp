@@ -111,7 +111,7 @@ struct OamAttr;
 
 /* The 2x2 rotate-and-scale matrix PachinkoBall_DrawAll hands the sprite
    drawer. */
-struct Matrix2x2 { int _00, _01, _10, _11; };
+#include "Matrix2x2.h"
 
 /* Launder macros: they make the compiler materialise a base address on its
    own instead of folding it into a neighbouring add, as the ROM does. */
@@ -1498,10 +1498,10 @@ void PachinkoBall_DrawAll(char *scene)
             int sinv = FX_Mul(data_02082214[idx], scale);
             int x = (BALL(ball)->x + BALL(ball)->offX) >> 12;
             int y = (BALL(ball)->y + BALL(ball)->offY) >> 12;
-            m._00 = cosv;
-            m._01 = sinv;
-            m._10 = -sinv;
-            m._11 = cosv;
+            m.m00 = cosv;
+            m.m01 = sinv;
+            m.m10 = -sinv;
+            m.m11 = cosv;
             Mg_RenderSpriteBothPalMtx((void *)sPachinkoBallSprites[sprite], x, y, -1, &m);
         }
     }

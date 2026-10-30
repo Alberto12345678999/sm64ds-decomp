@@ -3,9 +3,10 @@
  * function-local static on first use, calls it after constructing an object
  * with a destructor, passing the object, the destructor and a 12-byte .bss
  * node the compiler reserves for it. The node is pushed onto
- * __global_destructor_chain as {next, destructor, object}. func_02072f3c
- * runs the chain at exit, and FS_EndOverlay unlinks and runs the nodes whose
- * object or destructor lies in an overlay being unloaded. */
+ * __global_destructor_chain as {next, destructor, object}.
+ * __destroy_global_chain pops the chain at exit, and FS_EndOverlay unlinks
+ * and runs the nodes whose object or destructor lies in an overlay being
+ * unloaded. */
 
 typedef struct DestructorChain {
     struct DestructorChain *next;

@@ -1,4 +1,6 @@
 #pragma opt_common_subs off
+/* The 11-bit biased exponent of a double, read a byte at a time through
+   u16 loads (bytes 7 and 6). 0x3ff is 1.0. */
 int func_0206c8b4(double x)
 {
     int hi, lo;

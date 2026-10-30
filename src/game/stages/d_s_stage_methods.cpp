@@ -80,14 +80,12 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "GX.h"
 #include "cstd.h"
 #include "daMugenBGM_c.h"
+#include "Matrix2x2.h"
 #include "math/CalcLib.h"
 #include "dGraph_c.h"
 #include "dClipper.h"
 
 struct OamAttr;
-struct Matrix2x2 {
-    int m[4];
-};
 
 /* Definition order is the static-init order. The callback's implicit
    constructor stores the base vptr, then this vtable, and leaves the matrix
@@ -321,10 +319,12 @@ extern u16 *data_0209214c[];
 extern s32 data_02092208[];
 extern u8 data_0209caa0[];
 extern s32 data_0209cef0;
-/* The one graph callback the frame dispatchers poll (func_02019390 and
-   friends): the scene registers its own object here and clears it on the way
-   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
-   graphCallback_c (include/dGraph_c.h). */
+/* The scene's graph callback: the scene registers its own object here and
+   clears it on the way out. The frame calls its four slots: GraphCallback0 at
+   the frame start (func_02019390), GraphCallback1 before the frame wait
+   (func_02019404), GraphCallback2 and GraphCallback3 in the VBlank IRQ
+   (func_02019144, func_02019100). dGraph_c::callback_c is the ROM-proven base
+   of every scene's nested graphCallback_c (include/dGraph_c.h). */
 extern dGraph_c::callback_c *data_0209d4a8;
 extern s32 data_0209e650;
 extern u8 data_0209f1f4;
@@ -2742,8 +2742,8 @@ int IsButtonInputValid(void) {
    blx r1` with r0 = the callback object. The matrix at +0x4 stays zero until
    UpdateMinimap; the static initializer does not seed it. */
 int dScStage_c::graphCallback_c::GraphCallback2() {
-    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, (Matrix2x2 *)matrix, originX,
-                      originY, targetX, targetY);
+    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, &matrix, originX, originY, targetX,
+                      targetY);
     return 1;
 }
 
@@ -2763,7 +2763,7 @@ int dScStage_c::graphCallback_c::GraphCallback1() {
    a single ldm/stm block move and a struct copy of four named fields
    scalarizes. */
 extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
-    *(MinimapDesc *)(((long long)(int)data_0209f3c4.matrix)) = *desc;
+    *(MinimapDesc *)(((long long)(int)&data_0209f3c4.matrix)) = *desc;
     data_0209f3c4.originX = a;
     data_0209f3c4.originY = b;
     data_0209f3c4.targetX = c;
@@ -2772,7 +2772,7 @@ extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
 
 // @symbol StartEntranceFaderWipe
 /* The fader wipe array. dScStage_c::InitResources fills data_0209f324 with
-   func_02073470(7, 0x60, 8, &dFdWipe_cC1, &dFdWipe_cD1): seven objects of 0x60,
+   __cxa_vec_new(7, 0x60, 8, &dFdWipe_cC1, &dFdWipe_cD1): seven objects of 0x60,
    which is sizeof(dFdWipe_c). dScStage_c::CleanupResources tears the array
    down and zeroes it. */
 extern "C" void StartEntranceFaderWipe(int index) {
@@ -4456,7 +4456,7 @@ extern "C" {
 void EndKuppaScript(void);
 void UnloadArchive(int);
 // local extern: the fader array's destructor is passed by address to
-// func_02073244 here and to func_02073470 in InitResources, which member
+// __cxa_vec_delete here and to __cxa_vec_new in InitResources, which member
 // syntax cannot express.
 void _ZN9dFdWipe_cD1Ev(void *thiz);
 }
@@ -4509,7 +4509,7 @@ int dScStage_c::CleanupResources() {
     data_0209f314 = 0;
     dScene_c::SetAndStopColorFader();
     data_0209d4b0 = 0;
-    func_02073244(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
+    __cxa_vec_delete(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
     data_0209f324 = 0;
     CleanCommonModelDataArr();
     mMeshCollider.Disable();
@@ -4592,10 +4592,10 @@ int func_0203da9c(void);
 int func_0203da3c(void);
 u32 func_0203dad4(void);
 void func_0203b9b4(int *p, int v);
-void *func_02073470(int a, int b, int c, void *ctor, void *dtor);
+void *__cxa_vec_new(int a, int b, int c, void *ctor, void *dtor);
 void func_ov001_020ab2e4(void);
 // local extern: the fader array's constructor is passed by address to
-// func_02073470, which member syntax cannot express.
+// __cxa_vec_new, which member syntax cannot express.
 void *_ZN9dFdWipe_cC1Ev(void *thiz);
 }
 
@@ -4817,7 +4817,7 @@ int dScStage_c::InitResources() {
         }
 
         data_0209f324 =
-            func_02073470(7, 0x60, 8, (void *)&_ZN9dFdWipe_cC1Ev, (void *)&_ZN9dFdWipe_cD1Ev);
+            __cxa_vec_new(7, 0x60, 8, (void *)&_ZN9dFdWipe_cC1Ev, (void *)&_ZN9dFdWipe_cD1Ev);
         int faderIndex = 0;
         int faderOffset = 0;
         do {
