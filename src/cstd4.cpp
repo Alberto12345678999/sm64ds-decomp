@@ -215,7 +215,7 @@ float func_0206ddcc(float a, int op) {
  * is the same pre-2005 codegen difference recorded in notes/mwccarm-codegen.md
  * 6ai for the fBase_c::Process wrappers.
  */
-extern int func_01ffb008(int a, int b);
+extern unsigned int __ieee_status(unsigned int mask, unsigned int flags);
 extern int raise(int sig);
 
 typedef void (*DispatchFn)(int a0, Pair p1, Pair p2, unsigned int flags);
@@ -235,7 +235,7 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
   DispatchFn fn;
   if ((flags & 0xc00000) == 0)
   {
-    flags |= func_01ffb008(0, 0) & 0xc00000;
+    flags |= __ieee_status(0, 0) & 0xc00000;
   }
   switch (flags & 0x7c000000)
   {

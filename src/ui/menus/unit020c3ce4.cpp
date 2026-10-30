@@ -82,17 +82,15 @@ void func_ov007_020c3e1c(int v) {
 }
 
 // @symbol func_ov007_020c3df4
-/* The hook is typed as its default, func_ov007_020c3e64 (size in, block
- * out). This definition keeps its (int, void *) -> int spelling because
- * its callers' externs disagree on it (most say void *(int, int)), so the
- * size and the block are converted here; the bytes are the same. */
-int func_ov007_020c3df4(int heapName, void *size) {
-    return (int)data_ov007_02103258((unsigned int)size);
+/* The menu's allocator: forwards the size to the alloc hook and returns
+ * the block. The first argument (a heap-name string, or 0) is dropped. */
+void *func_ov007_020c3df4(int heapName, int size) {
+    return data_ov007_02103258(size);
 }
 
 // @symbol func_ov007_020c3d40
 int func_ov007_020c3d40(int a, int n) {
-    int *r = (int *)func_ov007_020c3df4(a, (void *)n);
+    int *r = (int *)func_ov007_020c3df4(a, n);
     volatile unsigned short v16;
     volatile unsigned v32;
     volatile int vint;

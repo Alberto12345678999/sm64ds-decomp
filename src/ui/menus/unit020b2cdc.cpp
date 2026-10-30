@@ -88,7 +88,7 @@ extern void func_ov007_020bdeb0(int a);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020c2090(char *c);
 extern void func_ov007_020c3d1c(void *self);
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c92d0(char *record);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int initialState);
@@ -636,7 +636,7 @@ void func_ov007_020b30b0(void) {
     Ov007Sprite *sprite;
     if (data_ov007_02103360 != 0)
         return;
-    data_ov007_02103360 = (Ov007Cursor *)func_ov007_020c3df4(0, (void *)0x1c);
+    data_ov007_02103360 = (Ov007Cursor *)func_ov007_020c3df4(0, 0x1c);
     data_ov007_02103360->state = (Ov007MenuState *)func_ov007_020c9388(0xff);
     data_ov007_02103360->sprite = func_ov007_020c44e4(1);
     data_ov007_02103360->mode = 1;
