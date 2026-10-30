@@ -4,11 +4,13 @@
 
 extern "C" {
 
-/* FSFile, the two words this reads: the read position and the file's end. */
+/* FSFile, the two words this reads: top and bottom of prop.file (at 0x1c),
+   the file's extent in its archive. bottom - top is its length
+   (FS_GetLength). */
 struct Obj {
     char pad[0x20];
-    unsigned int cur;
-    unsigned int end;
+    unsigned int top;    /* 0x20 */
+    unsigned int bottom; /* 0x24 */
 };
 
 extern int myFS_ReadFile(struct Obj *a, void *b, unsigned int c);
@@ -26,7 +28,7 @@ extern void func_02018770(void);
    mounted, and with flag set flushes the result from the data cache. */
 unsigned int func_0201834c(struct Obj *self, int flag) {
     unsigned int result = 0;
-    unsigned int len = self->end - self->cur;
+    unsigned int len = self->bottom - self->top;
     if (len > 8) {
         void *buf = Memory::Allocate(len, -4);
         CP15::FlushAndInvalidateDataCache((unsigned int)buf, len);
