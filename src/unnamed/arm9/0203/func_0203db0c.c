@@ -2,7 +2,7 @@
  * Rec). data_020a1164 is the first record's inputYaw field (0x10), so a view
  * one record long, starting there, steps to player idx's. */
 struct RecInputYaw {
-    unsigned short inputYaw; /* Rec 0x10 -- the camera's input yaw */
+    short inputYaw; /* Rec 0x10 -- the camera's input yaw; GetAngleToCamera reads it ldrsh */
     char rest[0x24 - 2];
 };
 extern struct RecInputYaw data_020a1164[];

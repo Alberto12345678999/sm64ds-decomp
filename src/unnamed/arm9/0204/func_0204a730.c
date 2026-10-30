@@ -79,8 +79,8 @@ typedef struct {
 } PtclDef;
 
 typedef struct {
-    void *previous;      /* 0x00 */
-    void *next;          /* 0x04 */
+    void *next;          /* 0x00 */
+    void *previous;      /* 0x04 */
     PtclList particles;  /* 0x08 */
     PtclList particles2; /* 0x10 */
     PtclDef *def;        /* 0x18 */
@@ -110,8 +110,7 @@ extern void func_0204d0b8(void *, void *, u32);
 
 #pragma opt_common_subs off
 
-void func_0204a730(void *arg0, void *self)
-{
+void func_0204a730(void *arg0, void *self) {
 
     PtclDef *sb;
     void *next;

@@ -739,11 +739,6 @@
         "return:void"
       ]
     },
-    "GetAngleToCamera": {
-      "src/_ZN6Player8BehaviorEv.cpp": [
-        "param:#1 unsigned char"
-      ]
-    },
     "GetLevelPart": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"

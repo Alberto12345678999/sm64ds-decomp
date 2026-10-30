@@ -124,9 +124,9 @@ typedef struct ParticleElement {
     u16 lifetime;         /* 0x2c */
     u16 age;              /* 0x2e */
     int scale;            /* 0x30 */
-    u16 animScale;        /* 0x34 */
+    s16 animScale;        /* 0x34 */
     u16 angle;            /* 0x36 */
-    u16 angularSpeed;     /* 0x38 */
+    s16 angularSpeed;     /* 0x38 */
     u16 color;            /* 0x3a */
     u16 loopTimeFactor;   /* 0x3c */
     u16 lifeRateFactor;   /* 0x3e */
@@ -181,7 +181,7 @@ void func_0204cebc(void *c) {
     sys->basisV.z = (s16)(FX_MUL(vecB.x, sys->basisU.y) - FX_MUL(vecB.y, sys->basisU.x));
 }
 
-void func_0204cd5c(int *out, int *in, int sel, s16 *m) {
+void func_0204cd5c(int *out, int *in, int sel, ParticleSystemView *sys) {
     switch (sel) {
     case 2:
         out[0] = 0;
@@ -199,9 +199,9 @@ void func_0204cd5c(int *out, int *in, int sel, s16 *m) {
         out[2] = 0;
         break;
     case 3:
-        out[0] = FX_MUL(in[0], m[0x2e]) + FX_MUL(in[1], m[0x31]);
-        out[1] = FX_MUL(in[0], m[0x2f]) + FX_MUL(in[1], m[0x32]);
-        out[2] = FX_MUL(in[0], m[0x30]) + FX_MUL(in[1], m[0x33]);
+        out[0] = FX_MUL(in[0], sys->basisU.x) + FX_MUL(in[1], sys->basisV.x);
+        out[1] = FX_MUL(in[0], sys->basisU.y) + FX_MUL(in[1], sys->basisV.y);
+        out[2] = FX_MUL(in[0], sys->basisU.z) + FX_MUL(in[1], sys->basisV.z);
         break;
     }
 }
@@ -270,7 +270,8 @@ void func_0204c584(u8 *self, List *list) {
             func_0204d9f0(&vecB);
             vecB.x = FX_MUL(vecB.x, sys->emitRadius);
             vecB.y = FX_MUL(vecB.y, sys->emitRadius);
-            func_0204cd5c((int *)&p->offset, (int *)&vecB, def->circleAxis, (s16 *)self);
+            func_0204cd5c((int *)&p->offset, (int *)&vecB, def->circleAxis,
+                          (ParticleSystemView *)self);
             break;
         case 3: {
             int q = d10 / count;
@@ -283,7 +284,8 @@ void func_0204c584(u8 *self, List *list) {
             vecC.x = FMul(c, sys->emitRadius);
             vecC.y = FMul(sn, sys->emitRadius);
             vecC.z = d18;
-            func_0204cd5c((int *)&p->offset, (int *)&vecC, def->circleAxis, (s16 *)self);
+            func_0204cd5c((int *)&p->offset, (int *)&vecC, def->circleAxis,
+                          (ParticleSystemView *)self);
             break;
         }
         case 4:
@@ -296,7 +298,8 @@ void func_0204c584(u8 *self, List *list) {
             func_0204d9f0(&vecE);
             vecE.x = FMul(FMul(vecE.x, sys->emitRadius), RandScale());
             vecE.y = FMul(FMul(vecE.y, sys->emitRadius), RandScale());
-            func_0204cd5c((int *)&p->offset, (int *)&vecE, def->circleAxis, (s16 *)self);
+            func_0204cd5c((int *)&p->offset, (int *)&vecE, def->circleAxis,
+                          (ParticleSystemView *)self);
             break;
         }
         {
@@ -327,7 +330,7 @@ void func_0204c584(u8 *self, List *list) {
             b = def->scaleRandom;
             p->scale = (sys->callbackScale * ((b + 0xff) - ((b * (int)(s >> 0x18)) >> 7))) >> 8;
         }
-        p->animScale = (u16)d1c;
+        p->animScale = (s16)d1c;
         if (def->hasColorAnim && emitter->colorAnim->randomStartColor) {
             u32 s;
             ColorAnim *anim;
@@ -355,11 +358,11 @@ void func_0204c584(u8 *self, List *list) {
         }
         if (def->hasRotation) {
             p->angularSpeed =
-                (u16)((u32)((def->maxRotation - def->minRotation) * (int)(RandVal() >> 0x14) +
+                (s16)((u32)((def->maxRotation - def->minRotation) * (int)(RandVal() >> 0x14) +
                             (def->minRotation << 0xc)) >>
                       0xc);
         } else {
-            p->angularSpeed = (u16)d24;
+            p->angularSpeed = (s16)d24;
         }
         {
             u32 s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
