@@ -10,7 +10,7 @@
     "contiguous linker run 0x02018ea0..0x02018ec0: the four delinks entries tile it exactly once -- GraphCallback3 0x02018ea0, GraphCallback2 0x02018ea8, GraphCallback1 0x02018eb0, GraphCallback0 0x02018eb8 -- with no interior hole.",
     "class-label homogeneity: every named symbol in the run is a member of dGraph_c::callback_c (the scene-graph callback base, include/dGraph_c.h).",
     "ROM evidence says one object: the emitted vtable lands at 0x0208ee14 (_ZTVN8dGraph_c10callback_cE) whose four slots read [GraphCallback0 0x02018eb8, GraphCallback1 0x02018eb0, GraphCallback2 0x02018ea8, GraphCallback3 0x02018ea0] -- all inside this run; _ZTIN8dGraph_c10callback_cE 0x0208ee04 (a __class_type_info root -- no base pointer) and _ZTSN8dGraph_c10callback_cE 0x0208ee24 exist in the cartridge and externalize at their configured homes.",
-    "neighbour below: func_02018e68 at 0x02018e68..0x02018ea0 (unattributed C function). Neighbour above: func_02018ec0 at 0x02018ec0..0x02018efc (one of the dispatchers that calls through this vtable). The run is bracketed rather than cut out of a uniform stretch."
+    "neighbour below: func_02018e68 at 0x02018e68..0x02018ea0 (unattributed C function). Neighbour above: func_02018ec0 at 0x02018ec0..0x02018efc (the transition fader step, which calls through dFdBrightness_c's vtable, not this one). The run is bracketed rather than cut out of a uniform stretch."
   ],
   "sections": [
     {

@@ -22,19 +22,19 @@ typedef struct FSFile {
 
 extern int func_02065a4c(int x);
 extern void func_02065788(u16 type, u32 arg1, const void *src, u32 arg3);
-extern void func_02041a00(int x);
+extern void func_02041a00(FSFile *file);
 extern void func_02065730(u16 type, u32 arg1, const void *src1, u32 arg3, const void *src2,
                           u32 extra);
-extern int func_020423dc(int *r6);
+extern int func_020423dc(int *table);
 extern int func_020656d4(u16 arg0, const void *arg1, int arg2, u32 arg3);
 extern void func_020657d0(u16 id, void *obj);
 extern void func_0205cd5c(void *self, int arg);
 extern void func_02042160(void);
-extern void func_02040f30(void *arg0);
+extern void func_02040f30(void *arg);
 extern char data_020a1fc0[];
 extern char data_020a2400[];
-void func_02040f30(void *arg0) {
-    WBTCommand *cmdp = (WBTCommand *)arg0;
+void func_02040f30(void *arg) {
+    WBTCommand *cmdp = (WBTCommand *)arg;
     FileShareChildArea *child;
     int idx;
     int type;
@@ -55,7 +55,7 @@ void func_02040f30(void *arg0) {
         {
             int request = FILE_SHARE_WORK->mReadRequest;
             if (request != 0) {
-                func_02041a00(request);
+                func_02041a00((FSFile *)request);
             }
         }
         return;
@@ -122,10 +122,10 @@ void func_02040f30(void *arg0) {
 
         case 3: {
             FSFile *p = (FSFile *)FILE_SHARE_WORK->mReadRequest;
-            void *a0 = p->arc;
+            void *arc = p->arc;
             FILE_SHARE_WORK->mReadRequest = 0;
             p->pos += p->len;
-            func_0205cd5c(a0, 0);
+            func_0205cd5c(arc, 0);
             return;
         }
         }

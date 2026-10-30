@@ -1,16 +1,12 @@
 #include "types.h"
-/* A calibrated touch-panel sample, as func_0203b9bc returns it (NitroSDK
-   TPData's x, y, touch, validity). */
-struct Col4 {
-    u16 x, y, touch, validity;
-};
+#include "nitro/spi/tp.h"
 
 /* The per-frame input record at data_020a1040 (0x24 bytes; data_020a1154
    holds four of them, one per player). func_0203dafc stores the camera's
    input yaw at 0x10 (dCamera_c.h). */
 typedef struct {
     s32 frame;         /* 0x00 -- counts up once per frame here */
-    struct Col4 touch; /* 0x04 */
+    TPData touch;      /* 0x04 -- the calibrated sample func_0203b9bc returns */
     u16 flags;         /* 0x0c -- 0x8000 set every frame here */
     u16 keys;          /* 0x0e -- pressed buttons (PAD_Read inlined) */
     s16 inputYaw;      /* 0x10 -- the camera's input yaw (GetAngleToCamera reads it ldrsh) */
@@ -26,8 +22,8 @@ extern u8 data_02099e18;
 extern u16 data_020a0f1c;
 extern int data_020a0f98;
 
-extern void func_0203b9bc(struct Col4 *out);
-extern int func_0203ea5c(void);
+extern void func_0203b9bc(TPData *out);
+extern void func_0203ea5c(void);
 extern void func_0203e20c(void);
 extern void func_0203e0ac(void);
 extern void func_02040724(void);
@@ -38,18 +34,18 @@ extern void func_02040724(void);
    func_0203e20c) and count the frame. When the mode has just dropped back to
    0 from 1 or 2, it shuts the link down with func_02040724. */
 void func_0203df40(void) {
-    struct Col4 col;
+    TPData sample;
     u8 sel;
 
     data_020a1040.keys =
         ((*(volatile u16 *)0x4000130 | *(volatile u16 *)0x27fffa8) ^ 0x2fff) & 0x2fff;
 
-    func_0203b9bc(&col);
+    func_0203b9bc(&sample);
 
-    data_020a1040.touch.x = col.x;
-    data_020a1040.touch.y = col.y;
-    data_020a1040.touch.touch = col.touch;
-    data_020a1040.touch.validity = col.validity;
+    data_020a1040.touch.x = sample.x;
+    data_020a1040.touch.y = sample.y;
+    data_020a1040.touch.touch = sample.touch;
+    data_020a1040.touch.validity = sample.validity;
     data_020a1040.flags |= 0x8000;
 
     sel = data_020a0f04;

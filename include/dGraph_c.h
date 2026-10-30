@@ -13,7 +13,7 @@
  *
  * The four methods below fill that vtable's four slots (slots 0..3, in
  * address-descending order 0x02018eb8..0x02018ea0), and they are VIRTUAL in
- * the ROM: the dispatchers at func_02018ec0/func_02018efc/0x02019144 poll a
+ * the ROM: the dispatchers at func_02019390/func_02019404/0x02019144 poll a
  * registered object pointer and call `ldr r1,[r0]; ldr r1,[r1,#slot*4];
  * blx r1` with r0 = the object -- vptr dispatch, r1 never set as an
  * argument, so every slot is nullary. An earlier reading ("a table of plain

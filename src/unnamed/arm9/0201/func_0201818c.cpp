@@ -25,14 +25,14 @@ extern void func_02018770(void);
 extern unsigned int func_02018a24(unsigned int i);
 extern int func_0201834c(void *buf, int x);
 
-/* Load file arg0 (an asset handle, or an archived file id) into a new heap
+/* Load file id (an asset handle, or an archived file id) into a new heap
    block, as SharedFilePtr::Load does: a file resident in a mounted archive
    is decompressed or copied out of it, anything else read through
-   func_0201834c. arg1 nonzero flushes the result from the data cache. */
-int func_0201818c(unsigned int arg0, int arg1) {
+   func_0201834c. flush nonzero flushes the result from the data cache. */
+int func_0201818c(unsigned int id, int flush) {
     struct Obj obj;
     char buf[0x44];
-    int p = func_020186c0(arg0);
+    int p = func_020186c0(id);
     if (p != 0) {
         unsigned int size;
         int mem;
@@ -42,18 +42,18 @@ int func_0201818c(unsigned int arg0, int arg1) {
             mem = (int)Memory::Allocate(size);
             DecompressLZ16(q, (void *)mem);
         } else {
-            func_020185c0(&obj, arg0);
+            func_020185c0(&obj, id);
             size = obj.bottom - obj.top;
             FS_CloseFile(&obj);
             mem = (int)Memory::Allocate(size, 0x20);
             CpuCopy8(p, mem, size);
         }
         func_02018770();
-        if (arg1 != 0)
+        if (flush != 0)
             CP15::FlushDataCache(mem, size);
         return mem;
     }
-    func_020185c0(buf, func_02018a24(arg0));
-    return func_0201834c(buf, arg1);
+    func_020185c0(buf, func_02018a24(id));
+    return func_0201834c(buf, flush);
 }
 }

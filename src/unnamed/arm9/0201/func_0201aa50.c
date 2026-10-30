@@ -1,13 +1,14 @@
-extern int OS_IsAlarmAvailable(void);
-extern int OS_SetAlarm(void *a, void *b, void *c, void *d, int e);
+struct OSAlarm;
+typedef void (*OSAlarmHandler)(void *arg);
 
-/* OS_SetAlarm, but only once the alarm system is up
-   (OS_IsAlarmAvailable); else 0. The watchdog alarm (func_0201a8b4,
-   func_0201a96c) arms itself through it. */
-int func_0201aa50(void *a, void *b, void *c, void *d, int e)
-{
-    int r = OS_IsAlarmAvailable();
-    if (r == 0)
-        return r;
-    return OS_SetAlarm(a, b, c, d, e);
+extern int OS_IsAlarmAvailable(void);
+extern void OS_SetAlarm(struct OSAlarm *alarm, long long tick, OSAlarmHandler handler, void *arg);
+
+/* OS_SetAlarm, but only once the alarm system is up (OS_IsAlarmAvailable).
+   The watchdog alarm (func_0201a8b4, func_0201a96c), which begins with its
+   OSAlarm, arms itself through it. */
+void func_0201aa50(void *alarm, long long tick, OSAlarmHandler handler, void *arg) {
+    if (OS_IsAlarmAvailable() == 0)
+        return;
+    OS_SetAlarm(alarm, tick, handler, arg);
 }

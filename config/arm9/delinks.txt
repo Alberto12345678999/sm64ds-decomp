@@ -374,7 +374,7 @@ src/engine/graph/d_graph_c_callback.cpp:
     complete
     .text start:0x02018ea0 end:0x02018ec0
 
-src/unnamed/arm9/0201/func_02018ec0.c:
+src/unnamed/arm9/0201/func_02018ec0.cpp:
     complete
     .text start:0x02018ec0 end:0x02018f38
 src/SetSubBg3Offset.c:
@@ -432,7 +432,7 @@ src/unnamed/arm9/0201/func_02019390.cpp:
     complete
     .text start:0x02019390 end:0x02019404
 
-src/unnamed/arm9/0201/func_02019404.c:
+src/unnamed/arm9/0201/func_02019404.cpp:
     complete
     .text start:0x02019404 end:0x02019440
 

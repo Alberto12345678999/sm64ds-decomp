@@ -2,8 +2,12 @@
 #include "private/arm9_a1fc0_file_share.h"
 extern char data_020a1fc0[];
 extern void func_020418f0(void);
-extern int func_02065138(int a, int b);
-extern int func_020650a0(int a, int b);
+/* int, not its definition's u16: this call site zero-extends the result
+   itself, and a u16 return drops that (0xcc bytes, not 0xd0) */
+extern int func_02065138(int buf, int size);
+/* int, not its definition's void: this call site takes r0 as a result,
+   the same way it takes func_02065138's */
+extern int func_020650a0(int buf, int size);
 extern int func_020623ec(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
 
 /* Send the pending file-sharing packet on mPort: func_02065138 (parent) or

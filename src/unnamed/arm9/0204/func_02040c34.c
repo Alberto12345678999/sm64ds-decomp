@@ -1,9 +1,12 @@
 #include "types.h"
 #include "private/arm9_a1fc0_file_share.h"
 
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(int);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(int, int);
+/* local extern: IRQ::Disable/Restore and CP15's cache calls are C++ (IRQ.h,
+   CP15.h), and this file stays C: compiled as C++ the parent-area stores
+   CSE with `end` and come out 4 bytes longer. */
+extern unsigned int _ZN3IRQ7DisableEv(void);
+extern unsigned int _ZN3IRQ7RestoreEj(unsigned int);
+extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int, unsigned int);
 extern void _ZN4CP1516DrainWriteBufferEv(void);
 extern int WM_SetPortCallback(int a, int b, int c);
 extern void Crash(void);
@@ -12,14 +15,14 @@ extern void FS_InitFile(int *s);
 extern void func_020652fc(int a, int b, int c);
 extern void func_020424c0(void);
 extern void func_0205a588(void *p, int v, int n);
-extern int func_020658c0(void *node, int a1, void *a2, int a3, int arg5, int arg6);
+extern int func_020658c0(void *node, int a1, void *a2, int a3, int arg5, unsigned short arg6);
 extern void func_02042200(void);
 extern void func_02041224(char *thiz, int n);
 extern void func_02065234(int arg);
 
-extern void func_020417d0(void);
-extern void func_020412f0(void);
-extern void func_02040f30(void);
+extern void func_020417d0(char *arg);
+extern void func_020412f0(char *arg);
+extern void func_02040f30(void *arg);
 
 extern int data_020a0f84;
 extern int data_020a0f88;
@@ -27,31 +30,30 @@ extern char data_020a1fc0[];
 extern char data_02082158[];
 
 #pragma opt_strength_reduction off
-void func_02040c34(int a0, int a1, int a2, int a3, int a4)
-{
+void func_02040c34(int isParent, int port, int stateCallback, int allocFunc, int allocArg) {
     FileShareWork *G = (FileShareWork *)data_020a1fc0;
-    int state = _ZN3IRQ7DisableEv();
+    unsigned int state = _ZN3IRQ7DisableEv();
     if (data_020a0f84 != 0) {
         _ZN3IRQ7RestoreEj(state);
     } else {
         data_020a0f84 = 1;
         _ZN3IRQ7RestoreEj(state);
 
-        G->mIsParent = a0;
-        G->mPort = (u16)a1;
+        G->mIsParent = isParent;
+        G->mPort = (u16)port;
         G->mSendRequest = 0;
         G->mSendBusy = 0;
         G->mState = 1;
-        G->mStateCallback = a2;
-        G->mAllocFunc = a3;
-        G->mAllocArg = a4;
+        G->mStateCallback = stateCallback;
+        G->mAllocFunc = allocFunc;
+        G->mAllocArg = allocArg;
         G->mReadRequest = 0;
         G->mTableSize = 0;
         G->mTable = 0;
         G->mParentPacketSize = 0;
         G->mChildPacketSize = 0xe;
         data_020a0f88 = 0;
-        if (WM_SetPortCallback((u16)a1, (int)func_020417d0, 0) != 0)
+        if (WM_SetPortCallback((u16)port, (int)func_020417d0, 0) != 0)
             Crash();
         FS_Init(-1);
 
@@ -85,7 +87,7 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
                     } while (node + FILE_SHARE_NODE_SIZE < end);
                 }
                 ((FileShareNode *)node)->mNext = 0;
-                *(int*)(base + 0x2710) = 0;
+                ((FileShareParentArea *)base)->mReplyGroup = 0;
                 ((FileShareParentArea *)base)->mReplyPending = 0;
                 ((FileShareParentArea *)base)->mReplySending = 0;
                 ((FileShareParentArea *)base)->mReadyList = 0;

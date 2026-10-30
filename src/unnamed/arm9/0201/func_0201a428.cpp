@@ -15,18 +15,16 @@ extern "C" {
  * local extern: linker-defined symbols; no header declares them. */
 extern char OV075_BSS_END;
 extern char OV100_TEXT_START;
-extern void *data_0209d524; /* global: void* (Heap*) */
+extern mHeap::Heap_t *data_0209d524;
 
 void func_0201a458(void) {
     data_0209d524 = mHeap::Heap_t::CreateRootHeap(
         &OV075_BSS_END, (unsigned int)(&OV100_TEXT_START - &OV075_BSS_END));
 }
 
-/* func_0201a428 at 0x0201a428
- * Destroys a heap referenced by global pointer and nulls the pointer.
- */
+/* Destroy the overlay-gap heap func_0201a458 made and forget it. */
 void func_0201a428(void) {
-    ((mHeap::Heap_t *)data_0209d524)->Destroy();
+    data_0209d524->Destroy();
     data_0209d524 = 0;
 }
 }
