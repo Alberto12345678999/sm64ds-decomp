@@ -25,7 +25,9 @@ extern "C" Timer *func_0201964c(Timer *timer);
 
 struct RngSeed {
     s32 value;
-    RngSeed() { func_0203b9b4(&value, 1); }
+    RngSeed() {
+        func_0203b9b4(&value, 1);
+    }
     ~RngSeed() {}
 };
 
@@ -37,7 +39,9 @@ Timer data_0209d4c8;
    The call sits above func_0201964c's body so it is not inlined. The object
    itself is unused storage (the call does not touch this) and is deadstripped. */
 struct TimerInit {
-    TimerInit() { func_0201964c(&data_0209d4c8); }
+    TimerInit() {
+        func_0201964c(&data_0209d4c8);
+    }
 };
 static TimerInit sTimerInit;
 

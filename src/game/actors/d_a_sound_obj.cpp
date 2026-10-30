@@ -99,12 +99,9 @@ SoundObjStarter data_ov002_0210c038 = {(int)&func_ov002_020f9468, 0};
 SoundObjStarter data_ov002_0210c040 = {(int)&Sound::PlaySecretSound, 0};
 
 SoundObjectCallback data_ov002_0211110c[7] = {
-    *(SoundObjectCallback *)&data_ov002_0210c040,
-    *(SoundObjectCallback *)&data_ov002_0210c010,
-    *(SoundObjectCallback *)&data_ov002_0210c020,
-    *(SoundObjectCallback *)&data_ov002_0210c038,
-    *(SoundObjectCallback *)&data_ov002_0210c030,
-    *(SoundObjectCallback *)&data_ov002_0210c018,
+    *(SoundObjectCallback *)&data_ov002_0210c040, *(SoundObjectCallback *)&data_ov002_0210c010,
+    *(SoundObjectCallback *)&data_ov002_0210c020, *(SoundObjectCallback *)&data_ov002_0210c038,
+    *(SoundObjectCallback *)&data_ov002_0210c030, *(SoundObjectCallback *)&data_ov002_0210c018,
     *(SoundObjectCallback *)&data_ov002_0210c028,
 };
 

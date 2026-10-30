@@ -2305,10 +2305,8 @@ extern PMF pmf_dScMgBomroom_c_TopDoor_StateOpen;
 extern PMF pmf_dScMgBomroom_c_TopDoor_StateClosing;
 
 extern "C" PMFv sBomroomRoundStateTable[5] = {
-    pmf_dScMgBomroom_c_Round_StateSetup,
-    pmf_dScMgBomroom_c_Round_StateStart,
-    pmf_dScMgBomroom_c_Round_StatePlay,
-    pmf_dScMgBomroom_c_Round_StateEnd,
+    pmf_dScMgBomroom_c_Round_StateSetup,    pmf_dScMgBomroom_c_Round_StateStart,
+    pmf_dScMgBomroom_c_Round_StatePlay,     pmf_dScMgBomroom_c_Round_StateEnd,
     pmf_dScMgBomroom_c_Round_StateGameOver,
 };
 extern "C" PMFv sBomroomRoundEndTable[4] = {
@@ -2318,19 +2316,14 @@ extern "C" PMFv sBomroomRoundEndTable[4] = {
     pmf_dScMgBomroom_c_RoundEnd_Finish,
 };
 PMF sBomroomBombStateTable[7] = {
-    pmf_dScMgBomroom_c_Bomb_StateWaiting,
-    pmf_dScMgBomroom_c_Bomb_StateWalk,
-    pmf_dScMgBomroom_c_Bomb_StateHeld,
-    pmf_dScMgBomroom_c_Bomb_StateChainDelay,
-    pmf_dScMgBomroom_c_Bomb_StateExploding,
-    pmf_dScMgBomroom_c_Bomb_StateInPen,
+    pmf_dScMgBomroom_c_Bomb_StateWaiting,   pmf_dScMgBomroom_c_Bomb_StateWalk,
+    pmf_dScMgBomroom_c_Bomb_StateHeld,      pmf_dScMgBomroom_c_Bomb_StateChainDelay,
+    pmf_dScMgBomroom_c_Bomb_StateExploding, pmf_dScMgBomroom_c_Bomb_StateInPen,
     pmf_dScMgBomroom_c_Bomb_StateMarch,
 };
 extern "C" PMFEntry sBomroomBombMarchTable[5] = {
-    {pmf_dScMgBomroom_c_BombMarch_ToGate},
-    {pmf_dScMgBomroom_c_BombMarch_Exit},
-    {pmf_dScMgBomroom_c_BombMarch_Offscreen},
-    {pmf_dScMgBomroom_c_BombMarch_ToLine},
+    {pmf_dScMgBomroom_c_BombMarch_ToGate},    {pmf_dScMgBomroom_c_BombMarch_Exit},
+    {pmf_dScMgBomroom_c_BombMarch_Offscreen}, {pmf_dScMgBomroom_c_BombMarch_ToLine},
     {pmf_dScMgBomroom_c_BombMarch_LinedUp},
 };
 extern "C" PMF sBomroomHatchPanelStateTable[4] = {

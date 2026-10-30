@@ -3383,7 +3383,7 @@ Trmpln2MarioAnimFilePtr sTrmpMarioStruggleAnimFile(0x80a4);
 Trmpln2MarioAnimFilePtr sTrmpMarioSdownAnimFile(0x8092);
 
 extern "C" {
-int sTrmpRowHeights[2] = { sTrmpRowBaseHeights[0], sTrmpRowBaseHeights[1] };
+int sTrmpRowHeights[2] = {sTrmpRowBaseHeights[0], sTrmpRowBaseHeights[1]};
 int sTrmp3DFallSpeed = data_ov006_0212e000;
 int sTrmp3DGravityStep = data_ov006_0212e020;
 int sTrmp3DJumpOffSpeed = data_ov006_0212dffc;
@@ -3399,11 +3399,11 @@ TrmpGoal data_ov006_021407a8(0x30000, 0x100000, 0);
 TrmpGoal data_ov006_021407b4(0x50000, 0x100000, 0);
 
 extern "C" {
-int sTrmp2FallSpeed[1] = { data_ov006_0212e010 };
+int sTrmp2FallSpeed[1] = {data_ov006_0212e010};
 int sTrmp2GravityStep = data_ov006_0212e00c;
 int data_ov006_0214053c = data_ov006_0212e018;
 int sTrmpSpeedScale = data_ov006_0212e014;
-int sTrmp2RiseSpeedMax[1] = { data_ov006_0212dff8 };
+int sTrmp2RiseSpeedMax[1] = {data_ov006_0212dff8};
 int sTrmp2DriftScale = data_ov006_0212e01c;
 }
 

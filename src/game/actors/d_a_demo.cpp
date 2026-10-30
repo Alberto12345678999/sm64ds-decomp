@@ -178,7 +178,9 @@ typedef void (C::*PMF0)();
 typedef void (daDemo_c::*PMF3)(unsigned char*, int, int);
 
 /* 8-byte POD so a static initializer stays in .data and a copy is one move. */
-struct W { int w[2]; };
+struct W {
+    int w[2];
+};
 
 /* dispatch receiver of func_ov002_020f37a0: the StaffRoll block seen through
    window[0]'s control bytes (StaffRoll::Window active, kind, step). */
@@ -4746,122 +4748,148 @@ struct DemoTexSeqFile {
 
 extern "C" {
 /* local extern: descriptor word is the function address as an int */
-extern int _ZN8daDemo_c19func_ov002_020f79c0EPvi(daDemo_c*, void*, int); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f7bb8EPht(daDemo_c*, unsigned char*, unsigned short); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6b28EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f71c4Eii(daDemo_c*, int, int); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f26c4EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f63f8EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6448EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6a9cEv(daDemo_c*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6ab8EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6ae4EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f7038Eii(daDemo_c*, int, int); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6b4cEPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6bc0EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6c24EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6c34EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6c60EPvii(daDemo_c*, void*, int, int); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f6e48EPh(daDemo_c*, unsigned char*); /* local extern: descriptor address */
-extern int _ZN8daDemo_c19func_ov002_020f7020Ev(daDemo_c*); /* local extern: descriptor address */
+extern int _ZN8daDemo_c19func_ov002_020f79c0EPvi(daDemo_c *, void *,
+                                                 int); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f7bb8EPht(daDemo_c *, unsigned char *,
+                                      unsigned short); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6b28EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int _ZN8daDemo_c19func_ov002_020f71c4Eii(daDemo_c *, int,
+                                                int); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f26c4EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f63f8EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6448EPh(daDemo_c *,
+                                     unsigned char *);      /* local extern: descriptor address */
+extern int _ZN8daDemo_c19func_ov002_020f6a9cEv(daDemo_c *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6ab8EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6ae4EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int _ZN8daDemo_c19func_ov002_020f7038Eii(daDemo_c *, int,
+                                                int); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6b4cEPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6bc0EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6c24EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6c34EPh(daDemo_c *,
+                                     unsigned char *); /* local extern: descriptor address */
+extern int _ZN8daDemo_c19func_ov002_020f6c60EPvii(daDemo_c *, void *, int,
+                                                  int); /* local extern: descriptor address */
+extern int
+_ZN8daDemo_c19func_ov002_020f6e48EPh(daDemo_c *,
+                                     unsigned char *);      /* local extern: descriptor address */
+extern int _ZN8daDemo_c19func_ov002_020f7020Ev(daDemo_c *); /* local extern: descriptor address */
 
-int data_ov002_0210b658[2] = { (int)0x81f020f0, (int)0xffff0100 };
-int data_ov002_0210b6e8[2] = { (int)0x81f020f0, (int)0xffff0118 };
-int data_ov002_0210b768[2] = { (int)0x41f800f8, (int)0xffff701e };
-int data_ov002_0210b868[2] = { (int)0x41f800f8, (int)0xffff705e };
-struct OamAttr *data_ov002_0210b6a8[2] = {
-    (struct OamAttr *)data_ov002_0210b768,
-    (struct OamAttr *)data_ov002_0210b868
-};
+int data_ov002_0210b658[2] = {(int)0x81f020f0, (int)0xffff0100};
+int data_ov002_0210b6e8[2] = {(int)0x81f020f0, (int)0xffff0118};
+int data_ov002_0210b768[2] = {(int)0x41f800f8, (int)0xffff701e};
+int data_ov002_0210b868[2] = {(int)0x41f800f8, (int)0xffff705e};
+struct OamAttr *data_ov002_0210b6a8[2] = {(struct OamAttr *)data_ov002_0210b768,
+                                          (struct OamAttr *)data_ov002_0210b868};
 
-W data_ov002_0210b650 = { (int)func_ov002_020f5b8c, 0 };
-W data_ov002_0210b660 = { (int)func_ov002_020f5e58, 0 };
-W data_ov002_0210b668 = { (int)func_ov002_020f5894, 0 };
-W data_ov002_0210b670 = { (int)func_ov002_020f5e58, 0 };
-W data_ov002_0210b678 = { (int)_ZN8daDemo_c19func_ov002_020f79c0EPvi, 0 };
-W data_ov002_0210b680 = { (int)func_ov002_020f5c40, 0 };
-W data_ov002_0210b688 = { (int)func_ov002_020f5e98, 0 };
-W data_ov002_0210b690 = { (int)func_ov002_020f5ef0, 0 };
-W data_ov002_0210b698 = { (int)func_ov002_020f5e98, 0 };
-W data_ov002_0210b6a0 = { (int)func_ov002_020f5ee4, 0 };
-W data_ov002_0210b6b0 = { (int)func_ov002_020f35e4, 0 };
-W data_ov002_0210b6b8 = { (int)func_ov002_020f5cd0, 0 };
-W data_ov002_0210b6c0 = { (int)func_ov002_020f3310, 0 };
-W data_ov002_0210b6c8 = { (int)func_ov002_020f5bcc, 0 };
-W data_ov002_0210b6d0 = { (int)func_ov002_020f5b98, 0 };
-W data_ov002_0210b6d8 = { (int)func_ov002_020f3ba0, 0 };
-W data_ov002_0210b6e0 = { (int)func_ov002_020f2a78, 0 };
-W data_ov002_0210b6f0 = { (int)func_ov002_020f2a88, 0 };
-W data_ov002_0210b6f8 = { (int)func_ov002_020f2aec, 0 };
-W data_ov002_0210b700 = { (int)func_ov002_020f3d98, 0 };
-W data_ov002_0210b708 = { (int)_ZN8daDemo_c19func_ov002_020f7bb8EPht, 0 };
-W data_ov002_0210b710 = { (int)func_ov002_020f5328, 0 };
-W data_ov002_0210b718 = { (int)func_ov002_020f5efc, 0 };
-W data_ov002_0210b720 = { (int)func_ov002_020f5bf4, 0 };
-W data_ov002_0210b728 = { (int)func_ov002_020f40fc, 0 };
-W data_ov002_0210b730 = { (int)func_ov002_020f4710, 0 };
-W data_ov002_0210b738 = { (int)func_ov002_020f4a2c, 0 };
-W data_ov002_0210b740 = { (int)func_ov002_020f4d70, 0 };
-W data_ov002_0210b748 = { (int)func_ov002_020f5010, 0 };
-W data_ov002_0210b750 = { (int)_ZN8daDemo_c19func_ov002_020f6b28EPh, 0 };
-W data_ov002_0210b758 = { (int)func_ov002_020f55b4, 0 };
-W data_ov002_0210b760 = { (int)func_ov002_020f30f8, 0 };
-W data_ov002_0210b770 = { (int)func_ov002_020f32e4, 0 };
-W data_ov002_0210b778 = { (int)func_ov002_020f5678, 0 };
-W data_ov002_0210b780 = { (int)func_ov002_020f569c, 0 };
-W data_ov002_0210b788 = { (int)func_ov002_020f57c0, 0 };
-W data_ov002_0210b790 = { (int)func_ov002_020f2d70, 0 };
-W data_ov002_0210b798 = { (int)func_ov002_020f335c, 0 };
-W data_ov002_0210b7a0 = { (int)func_ov002_020f340c, 0 };
-W data_ov002_0210b7a8 = { (int)func_ov002_020f5848, 0 };
-W data_ov002_0210b7b0 = { (int)func_ov002_020f34bc, 0 };
-W data_ov002_0210b7b8 = { (int)func_ov002_020f5b24, 0 };
-W data_ov002_0210b7c0 = { (int)func_ov002_020f5b7c, 0 };
-W data_ov002_0210b7c8 = { (int)func_ov002_020f5b88, 0 };
-W data_ov002_0210b7d0 = { (int)func_ov002_020f3740, 0 };
-W data_ov002_0210b7d8 = { (int)func_ov002_020f378c, 0 };
-W data_ov002_0210b7e0 = { (int)func_ov002_020f5e38, 0 };
-W data_ov002_0210b7e8 = { (int)func_ov002_020f5c88, 0 };
-W data_ov002_0210b7f0 = { (int)func_ov002_020f5eb8, 0 };
-W data_ov002_0210b7f8 = { (int)func_ov002_020f5d34, 0 };
-W data_ov002_0210b800 = { (int)func_ov002_020f3ae8, 0 };
-W data_ov002_0210b808 = { (int)func_ov002_020f5e38, 0 };
-W data_ov002_0210b810 = { (int)func_ov002_020f3d38, 0 };
-W data_ov002_0210b818 = { (int)func_ov002_020f5b84, 0 };
-W data_ov002_0210b820 = { (int)func_ov002_020f5b80, 0 };
-W data_ov002_0210b828 = { (int)func_ov002_020f5e38, 0 };
-W data_ov002_0210b830 = { (int)func_ov002_020f5e98, 0 };
-W data_ov002_0210b838 = { (int)func_ov002_020f5e18, 0 };
-W data_ov002_0210b840 = { (int)func_ov002_020f5e78, 0 };
-W data_ov002_0210b848 = { (int)func_ov002_020f562c, 0 };
-W data_ov002_0210b850 = { (int)func_ov002_020f5ed8, 0 };
-W data_ov002_0210b858 = { (int)func_ov002_020f5e58, 0 };
-W data_ov002_0210b860 = { (int)func_ov002_020f5e78, 0 };
-W data_ov002_0210b870 = { (int)func_ov002_020f2bf4, 0 };
-W data_ov002_0210b878 = { (int)func_ov002_020f2d0c, 0 };
-W data_ov002_0210b880 = { (int)func_ov002_020f5e78, 0 };
-W data_ov002_0210b890 = { (int)func_ov002_020f3de4, 0 };
-W data_ov002_0210b898 = { (int)func_ov002_020f5e98, 0 };
-W data_ov002_0210b8a0 = { (int)func_ov002_020f5e78, 0 };
-W data_ov002_0210b8a8 = { (int)func_ov002_020f5e38, 0 };
-W data_ov002_0210b8b0 = { (int)func_ov002_020f43cc, 0 };
-W data_ov002_0210b8b8 = { (int)func_ov002_020f5e58, 0 };
-W data_ov002_0210b8c0 = { (int)_ZN8daDemo_c19func_ov002_020f71c4Eii, 0 };
-W data_ov002_0210b8c8 = { (int)_ZN8daDemo_c19func_ov002_020f26c4EPh, 0 };
-W data_ov002_0210b8d0 = { (int)func_ov002_020f26d4, 0 };
-W data_ov002_0210b8d8 = { (int)_ZN8daDemo_c19func_ov002_020f63f8EPh, 0 };
-W data_ov002_0210b8e0 = { (int)_ZN8daDemo_c19func_ov002_020f6448EPh, 0 };
-W data_ov002_0210b8e8 = { (int)_ZN8daDemo_c19func_ov002_020f6a9cEv, 0 };
-W data_ov002_0210b8f0 = { (int)_ZN8daDemo_c19func_ov002_020f6ab8EPh, 0 };
-W data_ov002_0210b8f8 = { (int)_ZN8daDemo_c19func_ov002_020f6ae4EPh, 0 };
-W data_ov002_0210b900 = { (int)_ZN8daDemo_c19func_ov002_020f7038Eii, 0 };
-W data_ov002_0210b908 = { (int)_ZN8daDemo_c19func_ov002_020f6b4cEPh, 0 };
-W data_ov002_0210b910 = { (int)_ZN8daDemo_c19func_ov002_020f6bc0EPh, 0 };
-W data_ov002_0210b918 = { (int)_ZN8daDemo_c19func_ov002_020f6c24EPh, 0 };
-W data_ov002_0210b920 = { (int)_ZN8daDemo_c19func_ov002_020f6c34EPh, 0 };
-W data_ov002_0210b928 = { (int)_ZN8daDemo_c19func_ov002_020f6c60EPvii, 0 };
-W data_ov002_0210b930 = { (int)_ZN8daDemo_c19func_ov002_020f6e48EPh, 0 };
-W data_ov002_0210b938 = { (int)_ZN8daDemo_c19func_ov002_020f7020Ev, 0 };
+W data_ov002_0210b650 = {(int)func_ov002_020f5b8c, 0};
+W data_ov002_0210b660 = {(int)func_ov002_020f5e58, 0};
+W data_ov002_0210b668 = {(int)func_ov002_020f5894, 0};
+W data_ov002_0210b670 = {(int)func_ov002_020f5e58, 0};
+W data_ov002_0210b678 = {(int)_ZN8daDemo_c19func_ov002_020f79c0EPvi, 0};
+W data_ov002_0210b680 = {(int)func_ov002_020f5c40, 0};
+W data_ov002_0210b688 = {(int)func_ov002_020f5e98, 0};
+W data_ov002_0210b690 = {(int)func_ov002_020f5ef0, 0};
+W data_ov002_0210b698 = {(int)func_ov002_020f5e98, 0};
+W data_ov002_0210b6a0 = {(int)func_ov002_020f5ee4, 0};
+W data_ov002_0210b6b0 = {(int)func_ov002_020f35e4, 0};
+W data_ov002_0210b6b8 = {(int)func_ov002_020f5cd0, 0};
+W data_ov002_0210b6c0 = {(int)func_ov002_020f3310, 0};
+W data_ov002_0210b6c8 = {(int)func_ov002_020f5bcc, 0};
+W data_ov002_0210b6d0 = {(int)func_ov002_020f5b98, 0};
+W data_ov002_0210b6d8 = {(int)func_ov002_020f3ba0, 0};
+W data_ov002_0210b6e0 = {(int)func_ov002_020f2a78, 0};
+W data_ov002_0210b6f0 = {(int)func_ov002_020f2a88, 0};
+W data_ov002_0210b6f8 = {(int)func_ov002_020f2aec, 0};
+W data_ov002_0210b700 = {(int)func_ov002_020f3d98, 0};
+W data_ov002_0210b708 = {(int)_ZN8daDemo_c19func_ov002_020f7bb8EPht, 0};
+W data_ov002_0210b710 = {(int)func_ov002_020f5328, 0};
+W data_ov002_0210b718 = {(int)func_ov002_020f5efc, 0};
+W data_ov002_0210b720 = {(int)func_ov002_020f5bf4, 0};
+W data_ov002_0210b728 = {(int)func_ov002_020f40fc, 0};
+W data_ov002_0210b730 = {(int)func_ov002_020f4710, 0};
+W data_ov002_0210b738 = {(int)func_ov002_020f4a2c, 0};
+W data_ov002_0210b740 = {(int)func_ov002_020f4d70, 0};
+W data_ov002_0210b748 = {(int)func_ov002_020f5010, 0};
+W data_ov002_0210b750 = {(int)_ZN8daDemo_c19func_ov002_020f6b28EPh, 0};
+W data_ov002_0210b758 = {(int)func_ov002_020f55b4, 0};
+W data_ov002_0210b760 = {(int)func_ov002_020f30f8, 0};
+W data_ov002_0210b770 = {(int)func_ov002_020f32e4, 0};
+W data_ov002_0210b778 = {(int)func_ov002_020f5678, 0};
+W data_ov002_0210b780 = {(int)func_ov002_020f569c, 0};
+W data_ov002_0210b788 = {(int)func_ov002_020f57c0, 0};
+W data_ov002_0210b790 = {(int)func_ov002_020f2d70, 0};
+W data_ov002_0210b798 = {(int)func_ov002_020f335c, 0};
+W data_ov002_0210b7a0 = {(int)func_ov002_020f340c, 0};
+W data_ov002_0210b7a8 = {(int)func_ov002_020f5848, 0};
+W data_ov002_0210b7b0 = {(int)func_ov002_020f34bc, 0};
+W data_ov002_0210b7b8 = {(int)func_ov002_020f5b24, 0};
+W data_ov002_0210b7c0 = {(int)func_ov002_020f5b7c, 0};
+W data_ov002_0210b7c8 = {(int)func_ov002_020f5b88, 0};
+W data_ov002_0210b7d0 = {(int)func_ov002_020f3740, 0};
+W data_ov002_0210b7d8 = {(int)func_ov002_020f378c, 0};
+W data_ov002_0210b7e0 = {(int)func_ov002_020f5e38, 0};
+W data_ov002_0210b7e8 = {(int)func_ov002_020f5c88, 0};
+W data_ov002_0210b7f0 = {(int)func_ov002_020f5eb8, 0};
+W data_ov002_0210b7f8 = {(int)func_ov002_020f5d34, 0};
+W data_ov002_0210b800 = {(int)func_ov002_020f3ae8, 0};
+W data_ov002_0210b808 = {(int)func_ov002_020f5e38, 0};
+W data_ov002_0210b810 = {(int)func_ov002_020f3d38, 0};
+W data_ov002_0210b818 = {(int)func_ov002_020f5b84, 0};
+W data_ov002_0210b820 = {(int)func_ov002_020f5b80, 0};
+W data_ov002_0210b828 = {(int)func_ov002_020f5e38, 0};
+W data_ov002_0210b830 = {(int)func_ov002_020f5e98, 0};
+W data_ov002_0210b838 = {(int)func_ov002_020f5e18, 0};
+W data_ov002_0210b840 = {(int)func_ov002_020f5e78, 0};
+W data_ov002_0210b848 = {(int)func_ov002_020f562c, 0};
+W data_ov002_0210b850 = {(int)func_ov002_020f5ed8, 0};
+W data_ov002_0210b858 = {(int)func_ov002_020f5e58, 0};
+W data_ov002_0210b860 = {(int)func_ov002_020f5e78, 0};
+W data_ov002_0210b870 = {(int)func_ov002_020f2bf4, 0};
+W data_ov002_0210b878 = {(int)func_ov002_020f2d0c, 0};
+W data_ov002_0210b880 = {(int)func_ov002_020f5e78, 0};
+W data_ov002_0210b890 = {(int)func_ov002_020f3de4, 0};
+W data_ov002_0210b898 = {(int)func_ov002_020f5e98, 0};
+W data_ov002_0210b8a0 = {(int)func_ov002_020f5e78, 0};
+W data_ov002_0210b8a8 = {(int)func_ov002_020f5e38, 0};
+W data_ov002_0210b8b0 = {(int)func_ov002_020f43cc, 0};
+W data_ov002_0210b8b8 = {(int)func_ov002_020f5e58, 0};
+W data_ov002_0210b8c0 = {(int)_ZN8daDemo_c19func_ov002_020f71c4Eii, 0};
+W data_ov002_0210b8c8 = {(int)_ZN8daDemo_c19func_ov002_020f26c4EPh, 0};
+W data_ov002_0210b8d0 = {(int)func_ov002_020f26d4, 0};
+W data_ov002_0210b8d8 = {(int)_ZN8daDemo_c19func_ov002_020f63f8EPh, 0};
+W data_ov002_0210b8e0 = {(int)_ZN8daDemo_c19func_ov002_020f6448EPh, 0};
+W data_ov002_0210b8e8 = {(int)_ZN8daDemo_c19func_ov002_020f6a9cEv, 0};
+W data_ov002_0210b8f0 = {(int)_ZN8daDemo_c19func_ov002_020f6ab8EPh, 0};
+W data_ov002_0210b8f8 = {(int)_ZN8daDemo_c19func_ov002_020f6ae4EPh, 0};
+W data_ov002_0210b900 = {(int)_ZN8daDemo_c19func_ov002_020f7038Eii, 0};
+W data_ov002_0210b908 = {(int)_ZN8daDemo_c19func_ov002_020f6b4cEPh, 0};
+W data_ov002_0210b910 = {(int)_ZN8daDemo_c19func_ov002_020f6bc0EPh, 0};
+W data_ov002_0210b918 = {(int)_ZN8daDemo_c19func_ov002_020f6c24EPh, 0};
+W data_ov002_0210b920 = {(int)_ZN8daDemo_c19func_ov002_020f6c34EPh, 0};
+W data_ov002_0210b928 = {(int)_ZN8daDemo_c19func_ov002_020f6c60EPvii, 0};
+W data_ov002_0210b930 = {(int)_ZN8daDemo_c19func_ov002_020f6e48EPh, 0};
+W data_ov002_0210b938 = {(int)_ZN8daDemo_c19func_ov002_020f7020Ev, 0};
 
 DemoModelFile data_ov002_02110b50(0x49b);
 DemoModelFile data_ov002_02110b98(0x3ef);
@@ -4906,44 +4934,31 @@ PMF0 data_ov002_02110f9c[22] = {
     *(PMF0 *)&data_ov002_0210b860, *(PMF0 *)&data_ov002_0210b8b8, *(PMF0 *)&data_ov002_0210b660,
     *(PMF0 *)&data_ov002_0210b858, *(PMF0 *)&data_ov002_0210b670, *(PMF0 *)&data_ov002_0210b7e0,
     *(PMF0 *)&data_ov002_0210b828, *(PMF0 *)&data_ov002_0210b8a8, *(PMF0 *)&data_ov002_0210b808,
-    *(PMF0 *)&data_ov002_0210b838
-};
+    *(PMF0 *)&data_ov002_0210b838};
 PMF0 data_ov002_02110f34[13] = {
     *(PMF0 *)&data_ov002_0210b7f8, *(PMF0 *)&data_ov002_0210b6b8, *(PMF0 *)&data_ov002_0210b7e8,
     *(PMF0 *)&data_ov002_0210b680, *(PMF0 *)&data_ov002_0210b720, *(PMF0 *)&data_ov002_0210b6c8,
     *(PMF0 *)&data_ov002_0210b6d0, *(PMF0 *)&data_ov002_0210b650, *(PMF0 *)&data_ov002_0210b7c8,
     *(PMF0 *)&data_ov002_0210b818, *(PMF0 *)&data_ov002_0210b820, *(PMF0 *)&data_ov002_0210b7c0,
-    *(PMF0 *)&data_ov002_0210b7b8
-};
-PMF data_ov002_02110e7c[4] = {
-    *(PMF *)&data_ov002_0210b668, *(PMF *)&data_ov002_0210b7a8,
-    *(PMF *)&data_ov002_0210b848, *(PMF *)&data_ov002_0210b700
-};
-PMF data_ov002_02110e64[3] = {
-    *(PMF *)&data_ov002_0210b788, *(PMF *)&data_ov002_0210b780, *(PMF *)&data_ov002_0210b778
-};
+    *(PMF0 *)&data_ov002_0210b7b8};
+PMF data_ov002_02110e7c[4] = {*(PMF *)&data_ov002_0210b668, *(PMF *)&data_ov002_0210b7a8,
+                              *(PMF *)&data_ov002_0210b848, *(PMF *)&data_ov002_0210b700};
+PMF data_ov002_02110e64[3] = {*(PMF *)&data_ov002_0210b788, *(PMF *)&data_ov002_0210b780,
+                              *(PMF *)&data_ov002_0210b778};
 PMF data_ov002_02110eec[9] = {
     *(PMF *)&data_ov002_0210b758, *(PMF *)&data_ov002_0210b710, *(PMF *)&data_ov002_0210b748,
     *(PMF *)&data_ov002_0210b740, *(PMF *)&data_ov002_0210b738, *(PMF *)&data_ov002_0210b730,
-    *(PMF *)&data_ov002_0210b8b0, *(PMF *)&data_ov002_0210b728, *(PMF *)&data_ov002_0210b890
-};
-PMF data_ov002_02110e34[3] = {
-    *(PMF *)&data_ov002_0210b810, *(PMF *)&data_ov002_0210b6d8, *(PMF *)&data_ov002_0210b800
-};
-Entry37 data_ov002_02110e4c[3] = {
-    { *(PMF37 *)&data_ov002_0210b7d8 }, { *(PMF37 *)&data_ov002_0210b7d0 },
-    { *(PMF37 *)&data_ov002_0210b6c0 }
-};
-PMF data_ov002_02110e9c[4] = {
-    *(PMF *)&data_ov002_0210b6b0, *(PMF *)&data_ov002_0210b7b0,
-    *(PMF *)&data_ov002_0210b7a0, *(PMF *)&data_ov002_0210b798
-};
-PMF data_ov002_02110e24[2] = {
-    *(PMF *)&data_ov002_0210b770, *(PMF *)&data_ov002_0210b760
-};
+    *(PMF *)&data_ov002_0210b8b0, *(PMF *)&data_ov002_0210b728, *(PMF *)&data_ov002_0210b890};
+PMF data_ov002_02110e34[3] = {*(PMF *)&data_ov002_0210b810, *(PMF *)&data_ov002_0210b6d8,
+                              *(PMF *)&data_ov002_0210b800};
+Entry37 data_ov002_02110e4c[3] = {{*(PMF37 *)&data_ov002_0210b7d8},
+                                  {*(PMF37 *)&data_ov002_0210b7d0},
+                                  {*(PMF37 *)&data_ov002_0210b6c0}};
+PMF data_ov002_02110e9c[4] = {*(PMF *)&data_ov002_0210b6b0, *(PMF *)&data_ov002_0210b7b0,
+                              *(PMF *)&data_ov002_0210b7a0, *(PMF *)&data_ov002_0210b798};
+PMF data_ov002_02110e24[2] = {*(PMF *)&data_ov002_0210b770, *(PMF *)&data_ov002_0210b760};
 Entry2dd4 data_ov002_02110ebc[6] = {
-    { *(PMF2dd4 *)&data_ov002_0210b790 }, { *(PMF2dd4 *)&data_ov002_0210b878 },
-    { *(PMF2dd4 *)&data_ov002_0210b870 }, { *(PMF2dd4 *)&data_ov002_0210b6f8 },
-    { *(PMF2dd4 *)&data_ov002_0210b6f0 }, { *(PMF2dd4 *)&data_ov002_0210b6e0 }
-};
+    {*(PMF2dd4 *)&data_ov002_0210b790}, {*(PMF2dd4 *)&data_ov002_0210b878},
+    {*(PMF2dd4 *)&data_ov002_0210b870}, {*(PMF2dd4 *)&data_ov002_0210b6f8},
+    {*(PMF2dd4 *)&data_ov002_0210b6f0}, {*(PMF2dd4 *)&data_ov002_0210b6e0}};
 }

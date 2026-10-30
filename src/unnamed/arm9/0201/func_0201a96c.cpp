@@ -28,8 +28,7 @@ extern void func_0201a8b4(void);
    the object does not define that symbol: rombuild would otherwise isolate
    the TU down to the one function and drop the static initializer. The link
    aliases func_0201a96c onto this body. */
-static u8 func_0201a96c_body(Struct_0201a96c *self, u8 newVal)
-{
+static u8 func_0201a96c_body(Struct_0201a96c *self, u8 newVal) {
     u32 saved = IRQ::Disable();
     u8 oldVal = self->suspended;
     self->suspended = newVal;
@@ -43,7 +42,6 @@ static u8 func_0201a96c_body(Struct_0201a96c *self, u8 newVal)
     IRQ::Restore(saved);
     return oldVal;
 }
-
 }
 
 /* File-scope watchdog. mwcc emits __sinit_func_0201a96c.cpp: it calls
@@ -55,17 +53,18 @@ static u8 func_0201a96c_body(Struct_0201a96c *self, u8 newVal)
    seen. Thirty-three here move it off @58, which ov002 already owns, onto
    @91. The declaration is not called. */
 extern "C" void *func_0201aa18(char *c);
-extern "C" void wdog_node_number(
-    int n01, int n02, int n03, int n04, int n05, int n06, int n07, int n08,
-    int n09, int n10, int n11, int n12, int n13, int n14, int n15, int n16,
-    int n17, int n18, int n19, int n20, int n21, int n22, int n23, int n24,
-    int n25, int n26, int n27, int n28, int n29, int n30, int n31, int n32,
-    int n33);
+extern "C" void wdog_node_number(int n01, int n02, int n03, int n04, int n05, int n06, int n07,
+                                 int n08, int n09, int n10, int n11, int n12, int n13, int n14,
+                                 int n15, int n16, int n17, int n18, int n19, int n20, int n21,
+                                 int n22, int n23, int n24, int n25, int n26, int n27, int n28,
+                                 int n29, int n30, int n31, int n32, int n33);
 
 struct WatchdogAlarm {
     unsigned char raw[0x44];
 
-    WatchdogAlarm() { func_0201aa18((char *)this); }
+    WatchdogAlarm() {
+        func_0201aa18((char *)this);
+    }
     ~WatchdogAlarm();
 };
 
