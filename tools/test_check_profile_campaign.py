@@ -71,8 +71,12 @@ class Fixture(unittest.TestCase):
     def symbols(self, module, entries):
         """entries: [(name, addr, kind)] -> that module's symbols.txt."""
         body = "".join("%s kind:%s addr:%s\n" % (n, k, a) for n, a, k in entries)
-        rel = ("config/arm9/symbols.txt" if module == "arm9"
-               else "config/arm9/overlays/%s/symbols.txt" % module)
+        if module == "arm9":
+            rel = "config/arm9/symbols.txt"
+        elif module in ("itcm", "dtcm"):
+            rel = "config/arm9/%s/symbols.txt" % module
+        else:
+            rel = "config/arm9/overlays/%s/symbols.txt" % module
         self.write(rel, body)
 
     def delinks(self, module, entries):
@@ -198,6 +202,12 @@ class CoinedLedgerRows(Fixture):
         """Not under a `main/` subdirectory, which is the spelling people write."""
         self.symbols("arm9", [("g_profile_BOOT", "0x020914a8", "data(any)")])
         self.ledger([("arm9", "0x020914a8", "old", "g_profile_BOOT", "x")])
+        self.assertEqual(self.run_tool()[0], 0)
+
+    def test_itcm_symbols_live_under_config_arm9(self):
+        """The autoload blocks sit beside the overlays, not at config/itcm/."""
+        self.symbols("itcm", [("OS_ResetSystem", "0x01ffdd98", "function(arm,size=0x68)")])
+        self.ledger([("itcm", "0x01ffdd98", "func_01ffdd98", "OS_ResetSystem", "x")])
         self.assertEqual(self.run_tool()[0], 0)
 
 
