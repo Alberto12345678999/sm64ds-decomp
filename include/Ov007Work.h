@@ -111,7 +111,9 @@ typedef struct Ov007Work {
     int pad_184; /* 0x184 */
 } Ov007Work;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007Work_size_must_be_0x188[sizeof(Ov007Work) == 0x188 ? 1 : -1];
+#endif
 
 /* The work block itself (func_ov007_020b68e8 stores it, func_ov007_020b65e0
  * frees and clears it). WORK is this tree's short name for it; the ROM

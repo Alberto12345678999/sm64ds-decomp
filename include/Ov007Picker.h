@@ -13,7 +13,7 @@
 struct Ov007Camera;
 
 /* The 0x20-byte picker parameters, data_ov007_020d7b60
- * (func_ov007_020ba9bc passes it to func_ov007_020c690c). */
+ * (func_ov007_020b9880 passes it to func_ov007_020c690c). */
 typedef struct Ov007PickerParams {
     int pointMass; /* 0x00: Q12, each group's points (func_ov007_020c798c) */
     int damping;   /* 0x04: func_ov007_020c81a0's damping for every point */
