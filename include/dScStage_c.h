@@ -141,7 +141,7 @@ struct dScStage_c : dScene_c {
    UpdateMinimap fills them. */
 class dScStage_c::graphCallback_c : public dGraph_c::callback_c {
 public:
-    Matrix2x2 matrix;     /* 0x04 -- seeded to 1.0 by __sinit_02074edc */
+    Matrix2x2 matrix;     /* 0x04 -- zero until UpdateMinimap fills it */
     volatile u32 originX; /* 0x14 */
     volatile u32 originY; /* 0x18 */
     volatile u32 targetX; /* 0x1c */
