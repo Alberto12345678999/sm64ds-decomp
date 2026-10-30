@@ -1,30 +1,24 @@
 #include "types.h"
-struct S {
-    int x00;    /* 0x00 */
-    int x04;    /* 0x04 */
-    int x08;    /* 0x08 */
-    int x0c;    /* 0x0c */
-    int x10;    /* 0x10 */
-    int x14;    /* 0x14 */
-    int x18;    /* 0x18 */
-    int x1c;    /* 0x1c */
-    int x20;    /* 0x20 */
-    int x24;    /* 0x24 */
-    int x28;    /* 0x28 */
-    int x2c;    /* 0x2c */
-};
 
-void func_0204c0a8(int r0, int r1, struct S* r2) {
-    r2->x00 = r1;
-    r2->x0c = 0;
-    r2->x18 = r0;
-    r2->x24 = 0;
-    r2->x04 = 0;
-    r2->x10 = 0x1000;
-    r2->x1c = 0;
-    r2->x28 = 0;
-    r2->x08 = -r0;
-    r2->x14 = 0;
-    r2->x20 = r1;
-    r2->x2c = 0;
+/* A 4x3 fixed-point matrix, row by row (NitroSDK MtxFx43). */
+typedef struct Mtx43 {
+    int m[4][3];
+} Mtx43;
+
+/* Build a rotation about Y from its sine and cosine. The particle draws pick
+ * it or func_0204c0e8 out of data_02099fbc by the definition's polygon
+ * rotation axis; pret's SPL names it SPLUtil_RotateY. */
+void func_0204c0a8(int sin, int cos, Mtx43 *mat) {
+    mat->m[0][0] = cos;
+    mat->m[1][0] = 0;
+    mat->m[2][0] = sin;
+    mat->m[3][0] = 0;
+    mat->m[0][1] = 0;
+    mat->m[1][1] = 0x1000;
+    mat->m[2][1] = 0;
+    mat->m[3][1] = 0;
+    mat->m[0][2] = -sin;
+    mat->m[1][2] = 0;
+    mat->m[2][2] = cos;
+    mat->m[3][2] = 0;
 }

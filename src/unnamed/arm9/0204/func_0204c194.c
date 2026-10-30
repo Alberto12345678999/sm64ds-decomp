@@ -1,20 +1,34 @@
-void func_0204c194(int a, int b)
-{
-    a = 0x1000 << a;
-    b = 0x1000 << b;
-    a = a << 8;
-    b = b << 8;
-    a = a >> 16;
-    b = b >> 16;
+/* NitroSDK geometry-engine command ports. */
+#define reg_G3_TEXCOORD   (*(volatile int *)0x04000488)
+#define reg_G3_VTX_10     (*(volatile int *)0x04000490)
+#define reg_G3_BEGIN_VTXS (*(volatile int *)0x04000500)
+#define reg_G3_END_VTXS   (*(volatile int *)0x04000504)
 
-    *(volatile int*)0x4000500 = 1;
-    *(volatile int*)0x4000488 = 0;
-    *(volatile int*)0x4000490 = 0x40003c0;
-    *(volatile int*)0x4000488 = (unsigned short)a;
-    *(volatile int*)0x4000490 = 0x4000040;
-    *(volatile int*)0x4000488 = (unsigned short)a | ((unsigned short)b << 0x10);
-    *(volatile int*)0x4000490 = 0x3c000040;
-    *(volatile int*)0x4000488 = (unsigned short)b << 0x10;
-    *(volatile int*)0x4000490 = 0x3c0003c0;
-    *(volatile int*)0x4000504 = 0;
+/* A VTX_10 vertex: three 10-bit 4.6 coordinates; 0x40 is +1.0, 0x3c0 -1.0. */
+#define VTX10(x, y, z) ((x) | ((y) << 10) | ((z) << 20))
+#define ONE  0x40
+#define MONE 0x3c0
+
+/* Draw the unit quad in the XZ plane (y = 0), with the texture repeated
+ * 2^s by 2^t times (s and t come in as the tile counts). The particle draws pick it or func_0204c24c out of
+ * data_02099fb4 by the definition's polygon reference plane; pret's SPL names
+ * it SPLUtil_DrawXZPlane (that revision adds an offset). */
+void func_0204c194(int s, int t) {
+    s = 0x1000 << s;
+    t = 0x1000 << t;
+    s = s << 8;
+    t = t << 8;
+    s = s >> 16;
+    t = t >> 16;
+
+    reg_G3_BEGIN_VTXS = 1; /* GX_BEGIN_QUADS */
+    reg_G3_TEXCOORD = 0;
+    reg_G3_VTX_10 = VTX10(MONE, 0, ONE);
+    reg_G3_TEXCOORD = (unsigned short)s;
+    reg_G3_VTX_10 = VTX10(ONE, 0, ONE);
+    reg_G3_TEXCOORD = (unsigned short)s | ((unsigned short)t << 0x10);
+    reg_G3_VTX_10 = VTX10(ONE, 0, MONE);
+    reg_G3_TEXCOORD = (unsigned short)t << 0x10;
+    reg_G3_VTX_10 = VTX10(MONE, 0, MONE);
+    reg_G3_END_VTXS = 0;
 }
