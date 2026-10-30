@@ -4,6 +4,9 @@ typedef struct Header { char pad[8]; unsigned short count; char pad2[2]; Entry *
 
 extern short func_02046590(const Table *tbl, const char *name);
 
+/* dExtAnmMaterial_c::Prepare's body (see dExtAnmMaterial_c.h): give each
+   of the material-animation file's 0x3c-byte entries the index of the
+   BMD material its name names (func_02046590). */
 void func_020470e8(const Table *tbl, Header *h)
 {
     int i = 0;

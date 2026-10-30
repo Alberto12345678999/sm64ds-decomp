@@ -12,7 +12,7 @@ extern void PXI_Init(void);
 /* PXI_IsCallbackReady and PXI_SetFifoRecvCallback (src/engine/pxi/PXI_Fifo.cpp). */
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
-extern void func_02058b9c(char *p);
+extern void OS_InitMutex(void *mutex);
 
 void PM_Init(void) {
     int i;
@@ -27,6 +27,6 @@ void PM_Init(void) {
     PXI_SetFifoRecvCallback(PXI_FIFO_TAG_PM, (void *)func_0205fcfc);
     for (i = 0; i < 4; i++)
         data_020a8138[i].flag = 0;
-    func_02058b9c(&data_020a8124);
+    OS_InitMutex(&data_020a8124);
     data_020a8110 = *(int *)0x27ffc3c;
 }

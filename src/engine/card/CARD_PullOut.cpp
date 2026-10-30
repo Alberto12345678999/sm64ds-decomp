@@ -26,7 +26,7 @@ typedef int (*CardCallback)(void);
 extern "C" {
 extern int data_020a89a0;          /* set once the card has been pulled */
 extern CardCallback data_020a89a4; /* nonzero return: terminate */
-int IPCSend(unsigned int tag, unsigned int data, unsigned int reply);
+int PXI_SendWordByFifo(unsigned int tag, unsigned int data, unsigned int reply);
 }
 
 #define IRQ_CARD_IREQ_MC 0x100000
@@ -54,7 +54,7 @@ void func_020610fc(void) {
     int tag = 0xd; /* PXI channel */
     int data = 2;
     int reply = 0;
-    while (IPCSend(tag, data, reply) != 0)
+    while (PXI_SendWordByFifo(tag, data, reply) != 0)
         ;
     for (;;)
         ;

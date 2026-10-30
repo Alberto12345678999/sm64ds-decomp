@@ -1,7 +1,7 @@
 //cpp
 #include "types.h"
 extern "C" {
-int IPCSend(unsigned int a, unsigned int c, unsigned int b);
+int PXI_SendWordByFifo(unsigned int a, unsigned int c, unsigned int b);
 }
 namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
 
@@ -33,9 +33,9 @@ extern "C" void func_0205eeac(unsigned int a, unsigned int b, int x, unsigned in
         *(u16 *)(data_020a80cc.f10 + (i << 3) + 4) = 0;
     }
     irq = IRQ::Disable();
-    if (IPCSend(6, (b & 0xff) | 0x2000100, 0) < 0)
+    if (PXI_SendWordByFifo(6, (b & 0xff) | 0x2000100, 0) < 0)
         ok = 0;
-    else if (IPCSend(6, a | 0x1010000, 0) < 0)
+    else if (PXI_SendWordByFifo(6, a | 0x1010000, 0) < 0)
         ok = 0;
     else
         ok = 1;

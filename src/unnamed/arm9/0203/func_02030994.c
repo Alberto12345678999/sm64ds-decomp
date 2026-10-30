@@ -4,6 +4,11 @@ extern signed char data_0209fc64[];
 extern signed char data_0209fc50;
 extern signed char data_0209fc58;
 
+/* Re-rank the present slots once a session is running: each present slot
+   (data_0209fc5c) gets the next rank in data_0209fc64, an absent one -1.
+   The count goes to data_0209fc50, the disconnect bits data_0209fc58 are
+   cleared, and the session state data_0209fc68 moves to 4. dScEntry_c
+   calls it when the players are settled. */
 void func_02030994(void)
 {
     signed char acc;

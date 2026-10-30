@@ -39,17 +39,12 @@
  */
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "nnsys/snd/player.h"
 
 extern "C" {
 
 typedef long long s64;
 
-extern void func_0204f73c(char **, int);
-extern void func_0204f76c(char **, int, int);
-extern void func_0204f79c(char **, int, int);
-extern void func_0204f7fc(char **, int, int);
-extern void func_0204f8cc(char **, int, int);
-extern void func_0204f924(int *, int);
 extern void func_0204f934(int **);
 extern void func_0204f94c(int *);
 extern int func_0204fa2c(int *, int);
@@ -214,8 +209,8 @@ void func_ov007_020bdbcc(int a0, int a1) {
 
     pp = &data_ov007_02104bbc[0x35];
     func_ov007_020bde2c(0x35);
-    func_0204f924(pp, r5v);
-    func_0204f7fc((char **)pp, 0xf, -(((0x1000 - t) * 0x300) >> 12));
+    NNS_SndPlayerSetVolume((NNSSndHandle *)pp, r5v);
+    NNS_SndPlayerSetTrackPitch((NNSSndHandle *)pp, 0xf, -(((0x1000 - t) * 0x300) >> 12));
 
     data_ov007_02104bac = data_ov007_02104bac + 1;
 }
@@ -233,7 +228,7 @@ static inline int scale_div(int v, int range, int scale) {
 
 // @symbol func_ov007_020bda8c
 void func_ov007_020bda8c(int a, int b) {
-    char **obj = (char **)&data_ov007_02104bbc[0x36];
+    NNSSndHandle *obj = (NNSSndHandle *)&data_ov007_02104bbc[0x36];
     int r4, r6;
 
     if (b == 0) {
@@ -244,21 +239,21 @@ void func_ov007_020bda8c(int a, int b) {
         r4 = scale_div(v, 0x1e, 0x7f);
         r6 = scale_div(v, 0x1e, 0x23) + 5;
         if (a == 0) {
-            func_0204f8cc(obj, 0, 0x1e);
+            NNS_SndPlayerMoveVolume(obj, 0, 0x1e);
         }
     }
     func_ov007_020bde2c(0x36);
-    func_0204f79c(obj, 0xf, r4);
-    func_0204f76c(obj, 0xf, r6);
+    NNS_SndPlayerSetTrackModDepth(obj, 0xf, r4);
+    NNS_SndPlayerSetTrackModSpeed(obj, 0xf, r6);
 }
 
 // @symbol func_ov007_020bda38
 void func_ov007_020bda38(int v) {
-    char **r5 = (char **)&data_ov007_02104bbc[0x37];
+    NNSSndHandle *r5 = (NNSSndHandle *)&data_ov007_02104bbc[0x37];
     func_ov007_020bde2c(0x37);
     int r4 = (v << 8) >> 12;
-    func_0204f73c(r5, r4 + 0x100);
-    func_0204f7fc(r5, 0xf, r4);
+    NNS_SndPlayerSetTempoRatio(r5, r4 + 0x100);
+    NNS_SndPlayerSetTrackPitch(r5, 0xf, r4);
 }
 
 // @symbol func_ov007_020bd9e4

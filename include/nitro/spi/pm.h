@@ -44,11 +44,12 @@ extern struct D020a8114 data_020a8114;
    `reply`; PMi_CommonCallback stores the halfword reply to commands
    0x70..0x73 through `reply` and sets `flag`.
 
-   `reply` used to carry its own symbol row, data_020a813c, because both of
-   its accesses reach it at that address. As this struct's second field, mwcc
+   `reply` also has its own symbol row, data_020a813c, because both of its
+   accesses reach it at that address. As this struct's second field, mwcc
    folds the +4 into the pool literal and names data_020a8138 with a RELA
-   addend of 4, which resolves to the same 0x020a813c the config records.
-   Both field names are coined. */
+   addend of 4, which resolves to the same 0x020a813c relocs.txt records. The
+   row stays: dsd needs a symbol at every relocs.txt target. Both field names
+   are coined. */
 typedef struct {
     unsigned short flag;
     unsigned short pad;

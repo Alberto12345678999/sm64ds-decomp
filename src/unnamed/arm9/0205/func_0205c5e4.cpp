@@ -5,7 +5,7 @@
  * (4); offer the command to the archive's proc when proc_flag has its bit,
  * keeping SUCCESS / FAILURE / UNSUPPORTED (0, 1, 4) as the file's error and
  * dropping the bit on PROC_UNKNOWN (8); fall back to the default command
- * table (data_02086758) on PROC_DEFAULT (7). An ASYNC (6) result from a
+ * table (fsi_default_command) on PROC_DEFAULT (7). An ASYNC (6) result from a
  * synchronous caller sleeps on sync_q until IS_SYNC clears; anything else
  * clears the busy bit and either releases the file (func_0205c788 =
  * FSi_ReleaseCommand) or stores the result for the waiter. Field names follow
@@ -39,7 +39,7 @@ struct FSArchive {
 
 extern void OS_SleepThread(unsigned short*);
 extern void func_0205c788(char*, int);
-extern unsigned int (*data_02086758[])(char*);
+extern unsigned int (*fsi_default_command[])(char *);
 
 int func_0205c5e4(char *self, int idx) {
     FSFile *p_file = (FSFile *)self;
@@ -85,7 +85,7 @@ int func_0205c5e4(char *self, int idx) {
     }
 
     if (ret == 7)
-        ret = data_02086758[idx](self);
+        ret = fsi_default_command[idx](self);
 
     if (ret == 6) {
         int t = (p_file->stat & 4) ? 1 : 0;

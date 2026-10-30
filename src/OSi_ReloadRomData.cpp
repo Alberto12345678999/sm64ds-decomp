@@ -14,10 +14,10 @@ extern "C" {
 #define ROM_SECURE_AREA_END 0x8000
 
 extern void Crash(void);
-extern void func_02059dd4(s32 param);
+extern void OSi_SendToPxi(u16 data);
 extern void OSi_ReloadRomData(void);
 extern void OSi_DoBoot(void);
-extern vu16 data_020a645c;
+extern vu16 OSi_IsResetOccurred;
 extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
 
 /* OS_ResetSystem at 0x01ffdd98 (ITCM) -- NitroSDK soft reset, with OSi_DoResetSystem
@@ -26,10 +26,10 @@ extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
  *   - a multiboot child cannot reset: MB_IsMultiBootChild() is the halfword at 0x027ffc40
  *     (HW_BOOT_CHECK_INFO_BUF) == 2, and the SDK calls OS_Terminate there (Crash here);
  *   - the parameter goes to HW_RESET_PARAMETER_BUF (0x027ffc20) for the rebooted image;
- *   - OSi_SendToPxi(OS_PXI_COMMAND_RESET): func_02059dd4 sends 0x10 << 8 on PXI tag 0xc
+ *   - OSi_SendToPxi(OS_PXI_COMMAND_RESET) sends 0x10 << 8 on PXI tag 0xc
  *     (PXI_FIFO_TAG_OS), retrying until the FIFO takes it;
- *   - spin until the ARM7 answers: data_020a645c is OSi_IsResetOccurred, set by the PXI
- *     callback in src/unnamed/arm9/0205/func_02059e04.c;
+ *   - spin until the ARM7 answers: OSi_IsResetOccurred is set by the PXI
+ *     callback OSi_CommonCallback;
  *   - IME off, OSi_ReloadRomData(), OSi_DoBoot().
  * The later SDK's CARD_LockRom and MI_StopDma calls are not here; this build takes the
  * card lock inside OSi_ReloadRomData instead. It lives in ITCM because OSi_ReloadRomData
@@ -42,9 +42,9 @@ void OS_ResetSystem(u32 resetArg) {
         Crash();
 
     *(vu32 *)0x27ffc20 = resetArg;
-    func_02059dd4(0x10);
+    OSi_SendToPxi(0x10);
 
-    while (data_020a645c == 0)
+    while (OSi_IsResetOccurred == 0)
         ;
 
     *(vu16 *)0x4000208 = 0;
