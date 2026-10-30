@@ -25,18 +25,7 @@
  * it (492-cell pragma sweep and ~6,000 permuter iterations, both flat at 7).
  */
 #include "nitro/fx/fx.h"
-
-/* The overlay's camera (func_ov007_020c023c); names as in
- * func_ov007_020b2160, only the slots this file reads. */
-struct Ov007Camera {
-    char pad_00[0x44];
-    int viewMatrix[12]; /* 0x44: Matrix4x3 */
-    char pad_74[0x60];
-    /* 0xd4: a u16 angle; this file indexes the sine table with it >> 4 */
-    unsigned short fovy;
-};
-
-typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
+#include "Ov007Camera.h"
 
 namespace cstd {
 int fdiv(int, int);
@@ -49,7 +38,7 @@ extern short data_02082214[];
 void func_ov007_020bfd70(char *actor, void *pos, int *outX, int *outY) {
     Ov007Camera *cam = (Ov007Camera *)actor;
     int out[3];
-    MulVec3Mat4x3(pos, cam->viewMatrix, out);
+    MulVec3Mat4x3(pos, &cam->viewMatrix, out);
     int z = out[2];
     if (z < 0)
         z = -z;

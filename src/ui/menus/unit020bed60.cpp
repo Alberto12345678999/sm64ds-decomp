@@ -40,15 +40,9 @@
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
 #include "Ov007Swing.h"
+#include "Ov007Camera.h"
 
 extern "C" {
-
-/* The overlay's camera (func_ov007_020c023c); names as in
- * func_ov007_020c0128, only the slot read here. */
-typedef struct Ov007Camera {
-    char pad_00[0x2c];
-    int distance; /* 0x2c */
-} Ov007Camera;
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; only the slots this
  * file touches. */

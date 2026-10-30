@@ -1,19 +1,7 @@
-#include "Ov007Tween.h"
+#include "Ov007Camera.h"
 
 extern int func_ov007_020c8de0(Ov007VecTween *o);
 extern int func_ov007_020c8f98(Ov007Tween *tw);
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
- * func_ov007_020c0128 and func_ov007_020c023c, only the slots this file
- * touches. */
-typedef struct Ov007Camera {
-    char pad_00[4];
-    unsigned int tweening; /* 0x04: bit 0 eye, bit 1 target, bit 2 distance */
-    char pad_08[0x30];
-    Ov007VecTween *eyeTween;    /* 0x38 */
-    Ov007VecTween *targetTween; /* 0x3c */
-    Ov007Tween *distanceTween;  /* 0x40 */
-} Ov007Camera;
 
 /* Steps each of the camera's tweens whose `tweening` bit is set, and clears
  * the bit once the tween reports it has arrived. Each clear re-reads the

@@ -1,16 +1,11 @@
 #include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
 extern void func_ov007_020bfe4c(void *camera, int x, int y, int z, void *out);
 /* The index of the first point at each axis minimum and maximum. */
 extern void func_ov007_020c2f14(void *points, int pointCount, int *outMinX, int *outMaxX,
                                 int *outMinY, int *outMaxY, int *outMinZ, int *outMaxZ);
 extern int func_01ffaa34(s64 v, s64 w);
-
-/* The overlay's camera (func_ov007_020c023c); only the slot this file reads. */
-struct Ov007Camera {
-    char pad_00[0x2c];
-    int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
-};
 
 /* Writes the centre of all groups' points' x/y bounding box to out, at the
  * camera's depth. */

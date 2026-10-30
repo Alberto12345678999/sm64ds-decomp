@@ -2,6 +2,7 @@
 #include "common.h"
 #include "nitro/fx/fx.h"
 #include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
 /* Builds group `idx`'s spring chain: a point list over the stroke's points
  * (func_ov007_020c798c), each point's position (the stroke point
@@ -25,12 +26,6 @@ extern void func_ov007_020bfe4c(char *thiz, int a, int b, int c, Vector3 *out);
 
 extern Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, int flags);
 extern void func_ov007_020c7804(Ov007PointList *list);
-
-/* The overlay's camera (func_ov007_020c023c); only the slot this file reads. */
-typedef struct Ov007Camera {
-    char pad_00[0x2c];
-    int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
-} Ov007Camera;
 
 /* The parameter keeps func_ov007_020c6d20's char * spelling (the
  * declaration-agreement gate); the typed view is a local. */

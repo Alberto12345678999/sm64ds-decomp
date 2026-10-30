@@ -879,10 +879,6 @@
         "param:#2 Matrix4x3 *",
         "return:void"
       ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#2 Mtx43 *",
-        "return:void"
-      ],
       "src/unnamed/ov007/func_ov007_020bfe4c.cpp": [
         "return:void"
       ],
@@ -1594,10 +1590,6 @@
         "param:#1 Vec3 *",
         "param:#2 int *",
         "param:#3 Vec3 *"
-      ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#1 Vec3 *",
-        "param:#2 Mtx43 *"
       ]
     },
     "MultiCopyHalf": {
@@ -13354,12 +13346,6 @@
         "return:char *"
       ]
     },
-    "data_ov007_02104bd8": {
-      "src/ui/menus/unit020bf690.cpp": [
-        "return:int *",
-        "return:void *"
-      ]
-    },
     "data_ov007_02104bdc": {
       "src/ui/menus/unit020c1404.cpp": [
         "return:int []",
@@ -23344,11 +23330,6 @@
         "arity:1"
       ]
     },
-    "func_ov007_020b3f20": {
-      "src/ui/menus/unit020bf690.cpp": [
-        "return:int"
-      ]
-    },
     "func_ov007_020b42d8": {
       "src/ui/menus/unit020bed60.cpp": [
         "return:int"
@@ -23453,11 +23434,6 @@
       ],
       "src/ui/menus/unit020be0dc.cpp": [
         "param:#2 int"
-      ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
       ]
     },
     "func_ov007_020bc9c8": {
@@ -23483,9 +23459,6 @@
       ],
       "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
-      ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "arity:1"
       ]
     },
     "func_ov007_020bdebc": {

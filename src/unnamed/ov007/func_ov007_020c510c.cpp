@@ -1,22 +1,9 @@
 //cpp
 #include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
 extern "C" {
 extern void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
-   func_ov007_020c0128, only the slots this function reads. */
-struct Ov007Camera {
-    char pad_00[0x2c];
-    int distance; /* 0x2c */
-    char pad_30[0x88];
-    /* 0xb8..0xbb: the screen rectangle in pixels; func_ov007_020c0128 sets
-     x 0..0xff, y 0..0xbf (the whole 256x192 screen) */
-    unsigned char viewportMinX;
-    unsigned char viewportMaxX;
-    unsigned char viewportMinY;
-    unsigned char viewportMaxY;
-};
 
 typedef struct {
     int x, y, z;

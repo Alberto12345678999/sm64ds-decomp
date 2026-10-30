@@ -38,6 +38,7 @@
 #include "cstd.h"
 #include "nitro/fx/fx.h"
 #include "G2x.h"
+#include "Ov007Camera.h"
 
 extern "C" {
 
@@ -69,19 +70,6 @@ typedef struct Ov007Transition {
         } blend;
     } arg30;
 } Ov007Transition;
-
-/* The camera func_ov007_020c023c allocates; names as in
- * func_ov007_020c0128, only the slots this file reads. */
-typedef struct Ov007Camera {
-    char pad_00[0x44];
-    Matrix4x3 viewMatrix; /* 0x44 */
-    char pad_74[0x60];
-    /* 0xd4: a u16 angle; this file, like func_ov007_020b2160, indexes the
-     * sine table with it >> 4 */
-    u16 fovy;
-} Ov007Camera;
-
-typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
 
 /* A BMD_Material's two colour words. */
 typedef struct Ov007MaterialColors {

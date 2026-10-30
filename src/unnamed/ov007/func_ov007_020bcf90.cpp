@@ -3,15 +3,9 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
+#include "Ov007Camera.h"
 
 extern "C" {
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
- * func_ov007_020b2370, only the slot this file reads. */
-struct Ov007Camera {
-    char pad_00[0x44];
-    int viewMatrix[12]; /* 0x44: Matrix4x3 */
-};
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
@@ -118,7 +112,7 @@ void func_ov007_020bcf90(void) {
         break;
     }
 
-    func_ov007_020b7658(WORK->cameras[0]->viewMatrix, 1);
+    func_ov007_020b7658(&WORK->cameras[0]->viewMatrix, 1);
     if (drawModel != 0) {
         func_ov007_020b2370();
     }

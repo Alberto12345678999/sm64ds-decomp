@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "Ov007Work.h"
+#include "Ov007Camera.h"
 extern "C" {
 void func_ov007_020bc02c(void* a, void* b);
 void func_ov007_020be9ac(void* a, void* b, void* c);
@@ -10,13 +11,6 @@ extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
- * func_ov007_020c0128, only the slot this file reads. */
-struct Ov007Camera {
-    char pad_00[0x44];
-    int viewMatrix[12]; /* 0x44: Matrix4x3 */
-};
 
 /* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
  * func_ov007_020bc434, only the slot this file writes. */
@@ -40,9 +34,9 @@ extern "C" void func_ov007_020b2370(void) {
     Ov007Work *g = WORK;
     Ov007Model *model = g->model;
     Ov007Figure **figures = &g->figure; /* figure, altFigure */
-    func_ov007_020bc02c(model, g->cameras[0]->viewMatrix);
-    func_ov007_020be9ac(figures[0], WORK->model, WORK->cameras[0]->viewMatrix);
-    func_ov007_020be9ac(figures[1], WORK->model, WORK->cameras[0]->viewMatrix);
+    func_ov007_020bc02c(model, &g->cameras[0]->viewMatrix);
+    func_ov007_020be9ac(figures[0], WORK->model, &WORK->cameras[0]->viewMatrix);
+    func_ov007_020be9ac(figures[1], WORK->model, &WORK->cameras[0]->viewMatrix);
     {
         int t = WORK->modelGrowth;
         long long v = ((long long)(0x1000 - t) << 8) + ((long long)t << 12);

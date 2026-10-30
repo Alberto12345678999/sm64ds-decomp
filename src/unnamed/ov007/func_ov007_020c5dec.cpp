@@ -1,5 +1,6 @@
 //cpp
 #include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
 extern "C" void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
 
@@ -8,12 +9,6 @@ extern "C" void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
    C++ keeps for a struct with an array member, so the copies go through it. */
 struct Vec3Words {
     int w[3];
-};
-
-/* The overlay's camera (func_ov007_020c023c), as func_ov007_020c6e68 spells it. */
-struct Ov007Camera {
-    char pad[0x2c];
-    int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
 };
 
 /* Re-unprojects every committed stroke point through the camera, resets the

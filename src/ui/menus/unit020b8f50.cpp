@@ -48,6 +48,7 @@
 #include "Ov007StrokePath.h"
 #include "Ov007Touch.h"
 #include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
 extern "C" {
 
@@ -107,11 +108,6 @@ typedef struct Ov007Pad {
      * it is up (func_ov007_020c20b8) */
     u32 heldFrames[12];
 } Ov007Pad;
-
-typedef struct Ov007Camera {
-    char pad_00[0x2c];
-    int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
-} Ov007Camera;
 
 typedef struct Ov007Item {
     u16 id; /* 0x00 */

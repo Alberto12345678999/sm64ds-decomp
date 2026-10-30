@@ -1,19 +1,6 @@
 #include "types.h"
+#include "Ov007Camera.h"
 extern s16 data_02082214[];
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
- * func_ov007_020c0128, only the slots this file touches. */
-typedef struct Ov007Camera {
-    char pad_00[8];
-    Vector3 eye;              /* 0x08 */
-    Vector3 target;           /* 0x14 */
-    Vector3 up;               /* 0x20 */
-    int distance;             /* 0x2c */
-    unsigned short elevation; /* 0x30 */
-    unsigned short azimuth;   /* 0x32 */
-} Ov007Camera;
-
-typedef char Ov007Camera_size_must_be_0x34[sizeof(Ov007Camera) == 0x34 ? 1 : -1];
 
 /* Places the eye on the orbit around the target: distance away, at the
  * camera's elevation and azimuth. c keeps the char * spelling of the
