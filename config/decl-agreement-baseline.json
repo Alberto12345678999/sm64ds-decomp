@@ -9879,8 +9879,8 @@
       "src/ui/hud/d_map.cpp": [
         "return:unsigned int []"
       ],
-      "src/unnamed/arm9/0201/func_020135d0.c": [
-        "return:unsigned char []"
+      "src/engine/save/SaveData.cpp": [
+        "return:SaveBlock"
       ],
       "src/unnamed/arm9/0201/func_020139b8.c": [
         "return:SaveData"

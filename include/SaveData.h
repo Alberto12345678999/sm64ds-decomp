@@ -37,7 +37,14 @@ struct SaveData {
        loads it as an int. The u8 was the marker the generator emitted, not
        the width. */
     s32 flags2;
-    u8  pad_00c[0x35];
+    /* 0x00c -- minigame unlock bits, (a << 2) | b for 28 minigames; set by
+       func_02013868, ANDed with the minigame block's unlock word on load. */
+    u32 minigameUnlocks;
+    /* 0x010 -- one bit per course whose cannon is open (OpenCannon). */
+    u32 cannonFlags;
+    /* 0x014 -- star bits per course (data_0209cab4 in the live block), then
+       the coin records from 0x032 (data_0209cad2). */
+    u8 pad_014[0x2d];
     u8  mCharacter;            /* 0x041 -- current character */
     u8  unk_042;            /* 0x042 */
 #ifdef __cplusplus
