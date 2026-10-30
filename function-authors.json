@@ -1879,7 +1879,7 @@
     },
     "arm9:0x0201473c": {
       "author": "tangosdev",
-      "name": "func_0201473c"
+      "name": "nds_vprintf"
     },
     "arm9:0x02014770": {
       "author": "andrewboudreau",
