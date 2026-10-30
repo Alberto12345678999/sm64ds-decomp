@@ -2,7 +2,7 @@
 #include "types.h"
 #include "nitro/card/card_common.h"
 extern "C" {
-extern char data_020a8180[];
+extern char cardi_common[];
 extern int data_020a6134[];
 void OS_SleepThread(void* p);
 int func_0206071c(void* g);
@@ -25,7 +25,7 @@ struct Sched {
 
 extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
 {
-    Sched* g = (Sched*)data_020a8180;
+    Sched* g = (Sched*)cardi_common;
     unsigned int irq = IRQ::Disable();
     if (g->flags & 4) {
         do {
@@ -44,7 +44,7 @@ extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
         CARDi_SetTask((CARDiTask)func_0206071c);
         return 1;
     }
-    *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];
+    *(int*)(cardi_common + 0xd0) = data_020a6134[2];
     func_0206071c(g);
     return (*(int**)g)[0] == 0;
 }

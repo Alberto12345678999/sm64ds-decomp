@@ -7,7 +7,7 @@ extern void OS_WakeupThread(char* p);
 extern void OS_WakeupThreadDirect(char *p);
 typedef void (*CB)(void*);
 
-/* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
+/* The card access state block cardi_common (NitroSDK CARDiCommon), the
  * fields this function touches; names as func_02060484.cpp spells them, plus
  * mThread. */
 typedef struct CardCommon {
@@ -16,7 +16,7 @@ typedef struct CardCommon {
     void *mCallbackArg; /* 0x2c */
     unsigned char pad_30[4];
     /* 0x34 -- CARD_STAT_* bits: 4 busy, 8 a task for the card thread (set by
-     * CARDi_SetTask, waited for by func_020602bc); with 0x10 set, ending a
+     * CARDi_SetTask, waited for by CARDi_TaskThread); with 0x10 set, ending a
      * task also wakes mThread */
     unsigned int mFlags;
     unsigned char pad_38[4];
@@ -37,7 +37,7 @@ typedef char
  * wake every caller waiting on mBusyQueue and, if the card thread is waiting
  * for work, the card thread itself; then, interrupts restored, run the
  * callback. */
-void func_0206081c(char* obj) {
+void CARDi_EndTask(char* obj) {
     CardCommon *p = (CardCommon *)obj;
     CB cb = p->mCallback;
     void *arg = p->mCallbackArg;

@@ -1853,7 +1853,7 @@ routinely falls to a *different* model's register rotation — always Fable-esca
    `func_ov006_02124088`. Also: `bad=1;` before `reject=0;` (declaration/assignment order)
    reproduced the ROM's `mov r3,#1` / `mov r1,#0` emission order — pair with `opt_propagation
    off` (6r) to stop that order from jump-threading a `==0` test into a `blo`. Cracked
-   `func_02060b64`.
+   `CARDi_TryReadCardDma`.
 
 ### Band economics (measured, 2026-07-21)
 `crackloop.py refine --max-div 25` structural drafts ≈ **70% Opus @71–75K/landed**. Widening to
@@ -2039,7 +2039,7 @@ New levers:
   movs; naming the invariant at only ONE of its three uses (inline at the other two) flipped
   the group order to the ROM's constants-first. Pairs with `opt_loop_invariants off`.
 - **`opt_loop_invariants off` fixes preheader EMISSION ORDER, not just hoisting**
-  (`func_02060f60`, div 2->0) -- it stopped LICM lifting a laundered base above the constant movs.
+  (`CARDi_Request`, div 2->0) -- it stopped LICM lifting a laundered base above the constant movs.
 - **`volatile` on a ring-buffer array pins an indexed store ahead of a wrap-check**
   (`func_0205b070`, div 11->0), after fixing tail store order with inline RMW instead of
   hoisted temps.

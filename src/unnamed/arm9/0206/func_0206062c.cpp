@@ -7,8 +7,8 @@ void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
 extern "C" {
 extern void CpuCopy8(int src, int dst, unsigned int n);
 
-extern int func_02060f60(void *o, int a, int b);
-extern void func_0206081c(void *o);
+extern int CARDi_Request(void *o, int a, int b);
+extern void CARDi_EndTask(void *o);
 
 /* The request block each chunk is handed over in (NitroSDK CARDiCommandArg). */
 struct ChunkRequest {
@@ -41,12 +41,12 @@ void func_0206062c(ChunkWriter *self) {
         self->mRequest->mSrc = (int)buf;
         self->mRequest->mDst = self->mDst;
         self->mRequest->mLen = n;
-        if (func_02060f60(self, 8, 0xa) == 0) break;
-        if (func_02060f60(self, 9, 1) == 0) break;
+        if (CARDi_Request(self, 8, 0xa) == 0) break;
+        if (CARDi_Request(self, 9, 1) == 0) break;
         self->mSrc += n;
         self->mDst += n;
         self->mRemaining -= n;
     } while (self->mRemaining != 0);
-    func_0206081c(self);
+    CARDi_EndTask(self);
 }
 }

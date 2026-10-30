@@ -1,19 +1,19 @@
 #include "nitro/card/card_common.h"
 
 extern void func_02061138(void);
-extern void func_02060a64(void);
-extern CARDiCommon data_020a8180; /* cardi_common */
-extern void *data_020a8780;
+extern void CARDi_ReadCard(void);
+extern CARDiCommon cardi_common; /* cardi_common */
+extern void *rom_stat;
 
 #define MI_DMA_NOT_USE ((u32)~0)
 
 /* NitroSDK CARD_Init: once, mark the block initialized and clear the
  * request, set up the card thread and PXI callback (CARDi_InitCommon), then
- * install func_02060a64 (the ROM read routine) in data_020a8780 and call
+ * install CARDi_ReadCard (the ROM read routine) in rom_stat and call
  * func_02061138. */
 void func_02060890(void)
 {
-    CARDiCommon *g = &data_020a8180;
+    CARDiCommon *g = &cardi_common;
     if (g->flag != 0)
         return;
     g->flag = 1;
@@ -24,6 +24,6 @@ void func_02060890(void)
     g->callback = 0;
     g->callback_arg = 0;
     CARDi_InitCommon();
-    data_020a8780 = (void *)func_02060a64;
+    rom_stat = (void *)CARDi_ReadCard;
     func_02061138();
 }

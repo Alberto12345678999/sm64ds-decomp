@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern char data_020a8180[];
+extern char cardi_common[];
 extern int data_020a6134[];
 void OS_SleepThread(void* p);
 int func_0206062c(void* g);
@@ -16,7 +16,7 @@ typedef struct ChunkRequest {
     int mResult; /* 0x00 -- 0 (CARD_RESULT_SUCCESS) when the request went through */
 } ChunkRequest;
 
-/* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
+/* The card access state block cardi_common (NitroSDK CARDiCommon), the
  * fields this function touches. mSrc / mDst / mRemaining and mRequest follow
  * func_0206062c.cpp, the write task started here. */
 typedef struct CardCommon {
@@ -26,7 +26,7 @@ typedef struct CardCommon {
     int mDst;                /* 0x1c -- backup address */
     unsigned int mRemaining; /* 0x20 -- bytes left */
     unsigned char pad_24[4];
-    /* 0x28 / 0x2c -- the completion callback and its argument (func_0206081c
+    /* 0x28 / 0x2c -- the completion callback and its argument (CARDi_EndTask
      * calls it when a request ends; func_02060890 = CARD_Init zeroes both) */
     int mCallback;
     int mCallbackArg;
@@ -47,7 +47,7 @@ typedef struct CardCommon {
  * (func_0206062c) here or, when is_async, on the card thread. Synchronous
  * calls return whether the request succeeded. */
 int func_02060484(int dst, int src, int len, int callback, int arg, int is_async) {
-    CardCommon *g = (CardCommon *)data_020a8180;
+    CardCommon *g = (CardCommon *)cardi_common;
     unsigned int irq = IRQ::Disable();
     if (g->mFlags & 4) {
         do {
@@ -66,7 +66,7 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
         return 1;
     }
     /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */
-    ((CardCommon *)data_020a8180)->mCurThread = data_020a6134[2];
+    ((CardCommon *)cardi_common)->mCurThread = data_020a6134[2];
     func_0206062c(g);
     return g->mRequest->mResult == 0;
 }

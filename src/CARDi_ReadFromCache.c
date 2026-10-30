@@ -6,16 +6,16 @@ typedef struct {
     int f1c;
     int f20;
 } G;
-extern G data_020a8180;
+extern G cardi_common;
 
 typedef struct {
     char pad0[8];
     int f8;
 } Arg;
 
-int func_02060ebc(Arg* a)
+int CARDi_ReadFromCache(Arg* a)
 {
-    G* g = &data_020a8180;
+    G* g = &cardi_common;
     int base = g->f18 & ~0x1ff;
     if (base == a->f8) {
         int off = g->f18 - base;

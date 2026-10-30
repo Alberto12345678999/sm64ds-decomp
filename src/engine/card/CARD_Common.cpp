@@ -27,7 +27,7 @@ extern "C" {
 
 /* local extern: no header declares these yet. Their SDK names: Crash is
  * OS_Terminate, PXI_SetFifoRecvCallback, MultiStore32Bytes
- * MIi_CpuClearFast, func_020602bc CARDi_TaskThread and func_02060310
+ * MIi_CpuClearFast, CARDi_TaskThread CARDi_TaskThread and CARDi_OnFifoRecv
  * CARDi_OnFifoRecv. */
 extern void Crash(void);
 extern void OS_SleepThread(void *queue);
@@ -39,8 +39,8 @@ extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack, u3
                             u32 priority);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
-extern void func_020602bc(void);
-extern void func_02060310(int tag, int data, int err);
+extern void CARDi_TaskThread(void);
+extern void CARDi_OnFifoRecv(int tag, int data, int err);
 
 /* OSi_ThreadInfo; word 2 is the current thread. */
 extern int data_020a6134[];
@@ -56,15 +56,15 @@ extern int data_020a6134[];
 #define CARD_THREAD_PRIORITY_HIGHER 0x20
 #define CARD_THREAD_PRIORITY_LOWER 0x21
 
-extern CARDiCommon data_020a8180; /* cardi_common */
-extern int data_020a8160[];       /* cardi_arg, 0x20 bytes */
+extern CARDiCommon cardi_common; /* cardi_common */
+extern int cardi_arg[];       /* cardi_arg, 0x20 bytes */
 /* The word just past cardi_thread_stack (0x400 bytes): its address is the
  * stack's top. */
 extern int *data_020a8760;
 
 // @symbol CARDi_SetTask
 void CARDi_SetTask(void (*task)(CARDiCommon *)) {
-    CARDiCommon *const p = &data_020a8180;
+    CARDiCommon *const p = &cardi_common;
     u32 priority = p->priority;
     switch (priority) {
     case CARD_THREAD_PRIORITY_HIGHER:
@@ -87,7 +87,7 @@ void CARDi_SetTask(void (*task)(CARDiCommon *)) {
 
 // @symbol CARDi_LockResource
 void CARDi_LockResource(int owner, int target) {
-    CARDiCommon *const p = &data_020a8180;
+    CARDiCommon *const p = &cardi_common;
     unsigned int saved = IRQ::Disable();
     if (p->lock_owner == owner) {
         if (p->lock_target != target)
@@ -105,7 +105,7 @@ void CARDi_LockResource(int owner, int target) {
 
 // @symbol CARDi_UnlockResource
 void CARDi_UnlockResource(int owner, int target) {
-    CARDiCommon *p = &data_020a8180;
+    CARDiCommon *p = &cardi_common;
     unsigned int saved = IRQ::Disable();
     if (p->lock_owner != owner || !p->lock_ref) {
         Crash();
@@ -124,28 +124,28 @@ void CARDi_UnlockResource(int owner, int target) {
 
 // @symbol CARDi_InitCommon
 void CARDi_InitCommon(void) {
-    CARDiCommon *p = &data_020a8180;
+    CARDiCommon *p = &cardi_common;
     p->lock_owner = OS_LOCK_ID_ERROR;
     p->lock_ref = 0;
     p->lock_target = CARD_TARGET_NONE;
-    p->cmd = data_020a8160;
+    p->cmd = cardi_arg;
     {
         /* MI_CpuFillFast's value: the ROM passes it through a stack slot. */
         volatile u32 fill = 0;
-        MultiStore32Bytes(fill, data_020a8160, 0x20);
+        MultiStore32Bytes(fill, cardi_arg, 0x20);
     }
-    CP15::FlushAndInvalidateDataCache((unsigned int)data_020a8160, 0x20);
+    CP15::FlushAndInvalidateDataCache((unsigned int)cardi_arg, 0x20);
     p->lock_queue = 0;
     p->busy_q = 0;
     p->priority = CARD_THREAD_PRIORITY_DEFAULT;
-    OS_CreateThread(p->thread, (void *)func_020602bc, 0, &data_020a8760, 0x400, p->priority);
+    OS_CreateThread(p->thread, (void *)CARDi_TaskThread, 0, &data_020a8760, 0x400, p->priority);
     OS_WakeupThreadDirect(p->thread);
-    PXI_SetFifoRecvCallback(0xb, (void *)func_02060310);
+    PXI_SetFifoRecvCallback(0xb, (void *)CARDi_OnFifoRecv);
 }
 
 // @symbol CARDi_WaitAsync
 int CARDi_WaitAsync(void) {
-    CARDiCommon *const p = &data_020a8180;
+    CARDiCommon *const p = &cardi_common;
     unsigned int saved = IRQ::Disable();
     while (p->flag & CARD_STAT_BUSY)
         OS_SleepThread(&p->busy_q);

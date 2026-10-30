@@ -11,13 +11,13 @@ struct OSThreadInfo {
     void *current;
 };
 
-extern struct CARDiCommon data_020a8180; /* cardi_common */
-extern char data_020a8780;               /* rom_stat */
+extern struct CARDiCommon cardi_common; /* cardi_common */
+extern char rom_stat;               /* rom_stat */
 extern struct OSThreadInfo data_020a6134;
 
 void OS_SleepThread(void *p);
 void func_02059f58(int a);  /* MI_StopDma */
-int func_02060b64(char *p); /* CARDi_TryReadCardDma */
+int CARDi_TryReadCardDma(char *p); /* CARDi_TryReadCardDma */
 void CARD_WaitRomAsync(void);
 void CARDi_ReadRomSyncCore(CARDiCommon *c);
 
@@ -25,8 +25,8 @@ void CARDi_ReadRomSyncCore(CARDiCommon *c);
  * claim the card, record the transfer, then read by DMA if that can start
  * now, else run the read task (on the card thread if asynchronous). */
 void CARDi_ReadRom(u32 dma, u32 src, u32 dst, u32 len, u32 callback, u32 arg, int is_async) {
-    struct CARDiCommon *const c = &data_020a8180;
-    char *const p = &data_020a8780;
+    struct CARDiCommon *const c = &cardi_common;
+    char *const p = &rom_stat;
 
     {
         u32 mask = IRQ::Disable();
@@ -46,7 +46,7 @@ void CARDi_ReadRom(u32 dma, u32 src, u32 dst, u32 len, u32 callback, u32 arg, in
     if (dma <= 3)
         func_02059f58(dma);
 
-    if (func_02060b64(p)) {
+    if (CARDi_TryReadCardDma(p)) {
         if (!is_async)
             CARD_WaitRomAsync();
     } else if (is_async) {

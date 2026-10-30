@@ -5,13 +5,13 @@ typedef struct {
     unsigned int size;
 } CardXferState;
 
-extern CardXferState data_020a8180;
+extern CardXferState cardi_common;
 
-extern void func_02060d98(unsigned int a, unsigned int b);
-extern int func_02060ebc(char *self);
+extern void CARDi_SetRomOp(unsigned int a, unsigned int b);
+extern int CARDi_ReadFromCache(char *self);
 
-int func_02060a64(char *self) {
-    CardXferState *g = &data_020a8180;
+int CARDi_ReadCard(char *self) {
+    CardXferState *g = &cardi_common;
     unsigned int *buf;
     unsigned int *altBuf = (unsigned int *)(self + 0x20);
     volatile unsigned int *romctrl = (volatile unsigned int *)0x40001A4;
@@ -32,7 +32,7 @@ int func_02060a64(char *self) {
             *(unsigned int *)(self + 8) = aligned;
         }
 
-        func_02060d98((aligned >> 8) | 0xb7000000, aligned << 0x18);
+        CARDi_SetRomOp((aligned >> 8) | 0xb7000000, aligned << 0x18);
 
         cmd = *(unsigned int *)(self + 4);
         i = 0;
@@ -48,13 +48,13 @@ int func_02060a64(char *self) {
             }
         } while (status & 0x80000000);
 
-        if (buf == (unsigned int *)*(volatile unsigned int *)&data_020a8180.dst) {
-            data_020a8180.src += 0x200;
-            data_020a8180.dst += 0x200;
-            data_020a8180.size -= 0x200;
-            if (data_020a8180.size == 0) return data_020a8180.size;
+        if (buf == (unsigned int *)*(volatile unsigned int *)&cardi_common.dst) {
+            cardi_common.src += 0x200;
+            cardi_common.dst += 0x200;
+            cardi_common.size -= 0x200;
+            if (cardi_common.size == 0) return cardi_common.size;
         } else {
-            int rc = func_02060ebc(self);
+            int rc = CARDi_ReadFromCache(self);
             if (rc == 0) return rc;
         }
     }

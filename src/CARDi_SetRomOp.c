@@ -1,4 +1,4 @@
-void func_02060d98(unsigned int a, unsigned int b)
+void CARDi_SetRomOp(unsigned int a, unsigned int b)
 {
     while (*(volatile unsigned int*)0x40001a4 & 0x80000000)
         ;

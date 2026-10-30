@@ -4,8 +4,8 @@
 extern "C" {
 
 extern void func_02059f58(int x);
-extern void func_02060e38(void);
-extern void func_02060d1c(void);
+extern void CARDi_ReadEnd(void);
+extern void CARDi_SetCardDma(void);
 
 typedef struct {
     char pad[0x18];
@@ -15,10 +15,10 @@ typedef struct {
     int f24;
 } G;
 
-extern G data_020a8180;
+extern G cardi_common;
 
-#define g (&data_020a8180)
-void func_02060cac(void)
+#define g (&cardi_common)
+void CARDi_OnReadCard(void)
 {
     g->f18 += 0x200;
     g->f1c += 0x200;
@@ -27,9 +27,9 @@ void func_02060cac(void)
         func_02059f58(g->f24);
         IRQ::DisableIRQs(0x80000);
         IRQ::ClearInterrupts(0x80000);
-        func_02060e38();
+        CARDi_ReadEnd();
     } else {
-        func_02060d1c();
+        CARDi_SetCardDma();
     }
 }
 }

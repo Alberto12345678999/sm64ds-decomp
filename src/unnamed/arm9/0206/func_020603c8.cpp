@@ -1,7 +1,7 @@
 //cpp
 #include "types.h"
 extern "C" {
-extern char data_020a8180[];
+extern char cardi_common[];
 extern int data_020a6134[];
 void OS_SleepThread(void* p);
 void func_02060364(int arg);
@@ -21,7 +21,7 @@ struct Sched {
 
 extern "C" void func_020603c8(int arg)
 {
-    Sched* g = (Sched*)data_020a8180;
+    Sched* g = (Sched*)cardi_common;
     unsigned int irq = IRQ::Disable();
     if (g->flags & 4) {
         do {
@@ -34,6 +34,6 @@ extern "C" void func_020603c8(int arg)
     func_02060364(arg);
     g->d = 0;
     g->e = 0;
-    *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];
+    *(int*)(cardi_common + 0xd0) = data_020a6134[2];
     func_020607e8(g);
 }

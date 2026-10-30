@@ -3103,11 +3103,11 @@ src/engine/card/CARD_Common.cpp:
     complete
     .text start:0x0205ff70 end:0x020602bc
 
-src/unnamed/arm9/0206/func_020602bc.cpp:
+src/CARDi_TaskThread.cpp:
     complete
     .text start:0x020602bc end:0x02060310
 
-src/unnamed/arm9/0206/func_02060310.c:
+src/CARDi_OnFifoRecv.c:
     complete
     .text start:0x02060310 end:0x02060364
 
@@ -3151,7 +3151,7 @@ src/unnamed/arm9/0206/func_020607e8.c:
     complete
     .text start:0x020607e8 end:0x0206081c
 
-src/unnamed/arm9/0206/func_0206081c.cpp:
+src/CARDi_EndTask.cpp:
     complete
     .text start:0x0206081c end:0x02060890
 
@@ -3171,35 +3171,35 @@ src/CARDi_ReadRomSyncCore.c:
     complete
     .text start:0x02060a30 end:0x02060a64
 
-src/unnamed/arm9/0206/func_02060a64.c:
+src/CARDi_ReadCard.c:
     complete
     .text start:0x02060a64 end:0x02060b64
 
-src/unnamed/arm9/0206/func_02060b64.cpp:
+src/CARDi_TryReadCardDma.cpp:
     complete
     .text start:0x02060b64 end:0x02060cac
 
-src/unnamed/arm9/0206/func_02060cac.cpp:
+src/CARDi_OnReadCard.cpp:
     complete
     .text start:0x02060cac end:0x02060d1c
 
-src/unnamed/arm9/0206/func_02060d1c.c:
+src/CARDi_SetCardDma.c:
     complete
     .text start:0x02060d1c end:0x02060d98
 
-src/unnamed/arm9/0206/func_02060d98.c:
+src/CARDi_SetRomOp.c:
     complete
     .text start:0x02060d98 end:0x02060e38
 
-src/unnamed/arm9/0206/func_02060e38.cpp:
+src/CARDi_ReadEnd.cpp:
     complete
     .text start:0x02060e38 end:0x02060ebc
 
-src/unnamed/arm9/0206/func_02060ebc.c:
+src/CARDi_ReadFromCache.c:
     complete
     .text start:0x02060ebc end:0x02060f60
 
-src/unnamed/arm9/0206/func_02060f60.cpp:
+src/CARDi_Request.cpp:
     complete
     .text start:0x02060f60 end:0x020610ac
 

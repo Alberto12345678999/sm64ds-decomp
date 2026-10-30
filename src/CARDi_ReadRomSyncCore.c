@@ -5,8 +5,8 @@
 #include "types.h"
 #include "nitro/card/card_common.h"
 
-extern int func_02060ebc(void *stat); /* CARDi_ReadFromCache */
-extern void func_02060e38(void);      /* end the read */
+extern int CARDi_ReadFromCache(void *stat); /* CARDi_ReadFromCache */
+extern void CARDi_ReadEnd(void);      /* end the read */
 
 /* NitroSDK CARDRomStat (rom_stat), the field read here: the routine that
  * reads what the cache does not hold (CARD_Init installs it). */
@@ -14,12 +14,12 @@ typedef struct CARDRomStat {
     void (*read_func)(struct CARDRomStat *);
 } CARDRomStat;
 
-extern CARDRomStat data_020a8780; /* rom_stat */
+extern CARDRomStat rom_stat; /* rom_stat */
 
 void CARDi_ReadRomSyncCore(CARDiCommon *c) {
-    CARDRomStat *const p = &data_020a8780;
-    if (func_02060ebc(p)) {
+    CARDRomStat *const p = &rom_stat;
+    if (CARDi_ReadFromCache(p)) {
         p->read_func(p);
     }
-    func_02060e38();
+    CARDi_ReadEnd();
 }

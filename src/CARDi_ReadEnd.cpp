@@ -22,13 +22,13 @@ typedef struct {
     u16 fd4;            /* 0xd4 */
 } G;
 
-extern G data_020a8180;
+extern G cardi_common;
 
 void OS_WakeupThread(u16 *self);
 void OS_WakeupThreadDirect(struct Obj *self);
 
-void func_02060e38(void) {
-    int gi = (int)&data_020a8180;
+void CARDi_ReadEnd(void) {
+    int gi = (int)&cardi_common;
     G *g = (G *)gi;
     void (*cb)(void *) = g->cb;
     void *arg = g->cb_arg;

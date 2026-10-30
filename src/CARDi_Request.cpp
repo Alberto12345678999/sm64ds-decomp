@@ -20,7 +20,7 @@ struct ChunkRequest {
     int mResult; /* 0x00 -- 0 (CARD_RESULT_SUCCESS), 4 (TIMEOUT) retried */
 };
 
-/* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
+/* The card access state block cardi_common (NitroSDK CARDiCommon), the
  * fields this function touches; names as func_02060484.cpp spells them. */
 struct CardCommon {
     ChunkRequest *mRequest; /* 0x00 */
@@ -40,7 +40,7 @@ struct CardCommon {
  * clears the 0x20 flag. INIT also sends the request block's address.
  * Returns whether the request succeeded. */
 #pragma opt_loop_invariants off
-extern "C" int func_02060f60(CardCommon *thiz, int v, int count) {
+extern "C" int CARDi_Request(CardCommon *thiz, int v, int count) {
     unsigned int saved;
     int r;
 
@@ -51,7 +51,7 @@ extern "C" int func_02060f60(CardCommon *thiz, int v, int count) {
                 OS_SpinWait(0x64);
             } while (PXI_IsCallbackReady(0xb, 1) == 0);
         }
-        func_02060f60(thiz, 0, 1);
+        CARDi_Request(thiz, 0, 1);
     }
 
     CP15::FlushAndInvalidateDataCache((unsigned int)thiz->mRequest, 0x20);

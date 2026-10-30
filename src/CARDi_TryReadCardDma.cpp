@@ -13,13 +13,13 @@ struct G {
     u32 f24;
 };
 
-extern struct G data_020a8180;
+extern struct G cardi_common;
 extern char func_01ff8000;
-extern void func_02060cac(void);
-extern void func_02060d1c(void);
+extern void CARDi_OnReadCard(void);
+extern void CARDi_SetCardDma(void);
 
 #pragma opt_propagation off
-int func_02060b64(int *self)
+int CARDi_TryReadCardDma(int *self)
 {
     int *p;
     struct G *g;
@@ -35,7 +35,7 @@ int func_02060b64(int *self)
     int saved;
 
     p = self;
-    g = &data_020a8180;
+    g = &cardi_common;
     r7 = 0;
     r6 = 0;
     r5 = 0;
@@ -83,12 +83,12 @@ int func_02060b64(int *self)
         saved = IRQ::Disable();
         CP15::FlushAndInvalidateDataCache(g->f1c, g->f20);
         CP15::InvalidateInstructionCache(g->f1c, g->f20);
-        IRQ::SetIRQHandler(0x80000, func_02060cac);
+        IRQ::SetIRQHandler(0x80000, CARDi_OnReadCard);
         IRQ::ClearInterrupts(0x80000);
         IRQ::EnableIRQs(0x80000);
         CP15::DrainWriteBuffer();
         IRQ::Restore(saved);
-        func_02060d1c();
+        CARDi_SetCardDma();
     }
 
     return r7;
