@@ -9,12 +9,12 @@ extern char *data_020a9db8;
 extern u8 data_020a9d28;
 
 /* Typed through a cast: the other declarations of data_020a9db8 spell it as
- * a byte pointer (func_02066a94.c's MB_WORK). */
+ * a byte pointer (MB_Parent.cpp's MB_WORK). */
 #define MB_WORK ((MbParentWork *)data_020a9db8)
 
 /* The work pointer stepped a whole MbParentFile per index, so that
  * ->mFiles[0] is file record i: the search loop builds its address this way
- * (func_02066a94.c's MB_FILE). &MB_WORK->mFiles[i] builds the loop 4 bytes
+ * (MB_Parent.cpp's MB_FILE). &MB_WORK->mFiles[i] builds the loop 4 bytes
  * longer. */
 #define MB_STEP(i) ((MbParentWork *)(data_020a9db8 + (i) * (int)sizeof(MbParentFile)))
 
@@ -36,7 +36,7 @@ typedef struct RomHeaderView {
 /* The NitroSDK MBGameInfo tail written here (func_02068680.c's view names
  * the fields before it): seqNoFixed takes the next value of the counter at
  * data_020a9d28, fileNo the file's mFiles index. The record sits at
- * mHeader + 0xe4, as func_02066a94.c reaches it. */
+ * mHeader + 0xe4, as MB_Parent.cpp reaches it. */
 typedef struct MBGameInfo {
     u8 pad_000[0x4ab];
     u8 seqNoFixed; /* 0x4ab */

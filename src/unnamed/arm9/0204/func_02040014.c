@@ -12,7 +12,7 @@ extern int func_02042748(u16 *a, u16 *b);
 extern int func_02061d30(int self, unsigned int idx);
 
 /* Leading fields of NitroSDK WMStartParentCallback, with the names
- * func_02066a94.c gives them. */
+ * MB_Parent.cpp gives them. */
 typedef struct WmStartParentCallback {
     u16 apiid;        /* 0x00 */
     u16 errcode;      /* 0x02 */
