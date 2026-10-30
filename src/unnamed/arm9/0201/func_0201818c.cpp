@@ -4,11 +4,13 @@
 
 extern "C" {
 
-/* func_0201818c at 0x0201818c
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
- */
-struct Obj { char pad[0x20]; unsigned int cur; unsigned int end; char pad2[0x1c]; };
+/* FSFile, the two words this reads: the read position and the file's end. */
+struct Obj {
+    char pad[0x20];
+    unsigned int cur;
+    unsigned int end;
+    char pad2[0x1c];
+};
 
 extern int func_020186c0(unsigned int val);
 extern int func_02018568(int a);
@@ -21,8 +23,11 @@ extern void func_02018770(void);
 extern unsigned int func_02018a24(unsigned int i);
 extern int func_0201834c(void *buf, int x);
 
-int func_0201818c(unsigned int arg0, int arg1)
-{
+/* Load file arg0 (an asset handle, or an archived file id) into a new heap
+   block, as SharedFilePtr::Load does: a file resident in a mounted archive
+   is decompressed or copied out of it, anything else read through
+   func_0201834c. arg1 nonzero flushes the result from the data cache. */
+int func_0201818c(unsigned int arg0, int arg1) {
     struct Obj obj;
     char buf[0x44];
     int p = func_020186c0(arg0);

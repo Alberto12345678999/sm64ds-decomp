@@ -27,9 +27,10 @@
  *   (func_0200b0fc) compares it to 0xff and shifts it << 12 as a cap, but
  *   what the PathDef byte means is unrecovered; renaming the method would
  *   rename the mangled symbol tree-wide.
- * - func_0203ad84 formats data_020994d4 into data_020a0d90 (0x1f chars plus
- *   forced NUL) via func_02018434; both globals are unrelated to paths and
- *   their contents are unrecovered, so they keep linker names. */
+ * - func_0203ad84 is unrelated to paths: it reads the ROM file
+ *   data_020994d4 names ("/BUILDTIME", here "2005-01-13 08:50:39
+ *   Administrator") into data_020a0d90, at most 0x1f chars plus a forced
+ *   NUL, via func_02018434. Both globals keep their linker names. */
 #include "PathPtr.h"
 
 extern PathDef *PATH_DEFS;  /* the level's PathDef table */
