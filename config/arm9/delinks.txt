@@ -523,12 +523,9 @@ src/unnamed/arm9/0201/func_0201a490.c:
     complete
     .text start:0x0201a490 end:0x0201a4bc
 
-src/unnamed/arm9/0201/func_0201a4bc.c:
-    complete
-    .text start:0x0201a4bc end:0x0201a4e4
 src/IRQ2.cpp:
     complete
-    .text start:0x0201a4e4 end:0x0201a5cc
+    .text start:0x0201a4bc end:0x0201a5cc
 
 src/unnamed/arm9/0201/func_0201a5cc.c:
     complete

@@ -4,33 +4,48 @@
   "source": "src/IRQ2.cpp",
   "promoted_source": "src/IRQ2.cpp",
   "status": "promoted",
-  "boundary_confidence": "medium",
+  "boundary_confidence": "high",
   "boundary_evidence": [
-    "Contiguous linker run arm9:0x0201a4e4..0x0201a5cc, 2 functions, gapless in config/arm9/delinks.txt.",
-    "TOP EDGE: func_0201a4d0 (0x0201a4d0..0x0201a4e4) ends exactly where the run begins. BOTTOM EDGE: func_0201a5cc (0x0201a5cc..0x0201a5f8) begins exactly where the run ends.",
+    "Contiguous linker run arm9:0x0201a4bc..0x0201a5cc, 4 functions, gapless in config/arm9/delinks.txt.",
+    "Shared private data: the two OSThreadQueue halfwords data_0209d4fc and data_0209d500 are referenced (relocs.txt) by these four functions and nothing else in arm9 or any overlay. func_0201a4e4 clears them, VBlankHandler wakes them, and func_0201a4d0 / func_0201a4bc sleep on them.",
+    "TOP EDGE: func_0201a490 (0x0201a490..0x0201a4bc) calls the data_0209a03c hook on data_0208ee60 and touches neither queue. BOTTOM EDGE: func_0201a5cc (0x0201a5cc..0x0201a5f8) installs the scene's actor create hooks data_020a4b58 / data_020a4b5c.",
     "The file name is the tree class IRQ plus the numeric suffix already used for a second translation unit."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x0201a4e4",
+      "start": "0x0201a4bc",
       "end": "0x0201a5cc"
     }
   ],
   "functions": [
     {
+      "symbol": "func_0201a4bc",
+      "address": "0x0201a4bc",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0201/func_0201a4bc.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_0201a4d0",
+      "address": "0x0201a4d0",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0201/func_0201a4bc.c",
+      "ordinal": 1
+    },
+    {
       "symbol": "func_0201a4e4",
       "address": "0x0201a4e4",
       "size": "0x00000050",
       "legacy_source": "src/unnamed/arm9/0201/func_0201a4e4.c",
-      "ordinal": 0
+      "ordinal": 2
     },
     {
       "symbol": "_ZN3IRQ13VBlankHandlerEv",
       "address": "0x0201a534",
       "size": "0x00000098",
       "legacy_source": "src/_ZN3IRQ13VBlankHandlerEv.cpp",
-      "ordinal": 1
+      "ordinal": 3
     }
   ],
   "data": [],
@@ -40,7 +55,9 @@
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the main module is unsegmentable, so there is no create candidate id.",
     "The name IRQ2 is the tree class IRQ plus the numeric suffix, per Juan 2026-10-11. It is a second IRQ translation unit, not a new class.",
     "Default deferred codegen emits .text in reverse source order. The file is written highest address first so the object comes out ROM-ascending.",
-    "func_0201a4e4 stays extern \"C\" under its address name. data_0209d4fc and data_0209d500 stay u16 so its stores stay halfwords; VBlankHandler casts their addresses to int * for OS_WakeupThread."
+    "func_0201a4e4, func_0201a4d0 and func_0201a4bc stay extern \"C\" under their address names. data_0209d4fc and data_0209d500 stay u16, the OSThreadQueue type nitro/os/thread.h gives OS_SleepThread / OS_WakeupThread, so the setup stores stay halfwords.",
+    "func_0201a4bc and func_0201a4d0 were folded in from their two-function source once the queue references tied them to the unit; the edges were re-screened then (2026-10-30).",
+    "verification.linkcheck is the pre-fold run over 0x0201a4e4..0x0201a5cc; the folded range was proved by tubuild verify and the full rombuild."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -48,8 +65,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-IRQ2/IRQ2.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 2,
-    "functions_declared": 2,
+    "functions_matched": 4,
+    "functions_declared": 4,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

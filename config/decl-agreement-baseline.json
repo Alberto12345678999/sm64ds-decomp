@@ -1761,9 +1761,6 @@
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
       ],
-      "src/IRQ2.cpp": [
-        "param:#1 int *"
-      ],
       "src/CARDi_EndTask.cpp": [
         "param:#1 char *"
       ]
@@ -5400,9 +5397,6 @@
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/IRQ2.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/CARDi_TryReadCardDma.cpp": [
@@ -9485,17 +9479,11 @@
       ]
     },
     "data_0209d4fc": {
-      "src/unnamed/arm9/0201/func_0201a4bc.c": [
-        "return:char []"
-      ],
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "return:unsigned short"
       ]
     },
     "data_0209d500": {
-      "src/unnamed/arm9/0201/func_0201a4bc.c": [
-        "return:char []"
-      ],
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "return:unsigned short"
       ]
