@@ -6,8 +6,12 @@ extern void func_0203f6a4(int v);
 extern s16 data_020a0f18;
 extern int data_020a0f90;
 
-void func_0203f920(u16 *o)
-{
+/* The WM callback for the channel measurement. o is the SDK callback
+   record: o[0] the apiid, o[1] the errcode. Initialize (0) fails with -2
+   or starts measuring, measure-channel (0x1e) goes to func_0203f714, and
+   WM_End (2) returns to idle, reports data_020a0f18 and drops the caller's
+   callback. Anything else just reports. */
+void func_0203f920(u16 *o) {
     switch (o[0]) {
     case 0:
         if (o[1] != 0)
