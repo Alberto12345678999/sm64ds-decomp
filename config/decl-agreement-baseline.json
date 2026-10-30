@@ -5358,12 +5358,6 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:int"
-      ],
       "src/WM_SetPortCallback.cpp": [
         "return:int"
       ],
@@ -5423,33 +5417,6 @@
         "return:void"
       ],
       "src/engine/fs/FS_Command.cpp": [
-        "return:void"
-      ],
-      "src/FS_ResumeArchive.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ],
-      "src/FS_ReleaseArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:void"
-      ],
-      "src/FSi_SendCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_ExecuteAsyncCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_NextCommand.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
@@ -19228,11 +19195,6 @@
     "func_0205b4d0": {
       "src/unnamed/arm9/0205/func_0205ab28.c": [
         "param:#2 int"
-      ]
-    },
-    "FSi_ReleaseCommand": {
-      "src/FSi_NextCommand.cpp": [
-        "param:#1 Node *"
       ]
     },
     "FS_SetArchiveProc": {

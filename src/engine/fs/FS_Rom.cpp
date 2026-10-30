@@ -12,7 +12,7 @@
  * FSi_RomArchiveProc locks the card ROM while the archive runs a command
  * and unlocks it when the archive goes idle.
  *
- * pret's pokediamond FS_rom.c has these six functions. mwccarm emits them
+ * These are six of the nine functions in pret's pokediamond FS_rom.c. mwccarm emits them
  * in reverse, so FS_TryLoadTable sits lowest in the ROM and
  * FSi_OnRomReadDone highest. This SDK is older than pret's. FSi_InitRom has
  * no multiboot-child branch, so FSi_ReadDummyCallback and
@@ -106,6 +106,9 @@ int FSi_ReadRomCallback(FSArchive *p_arc, void *dst, u32 src, u32 len) {
     return FS_RESULT_PROC_ASYNC;
 }
 
+/* Writes fail. pret's returns FS_RESULT_UNSUPPORTED; this SDK's returns
+   FS_RESULT_FAILURE. The name rests on FSi_InitRom passing it to
+   FS_LoadArchive as the write callback. */
 // @symbol FSi_WriteDummyCallback
 int FSi_WriteDummyCallback(FSArchive *p_arc, const void *src, u32 dst, u32 len) {
     return FS_RESULT_FAILURE;

@@ -339,7 +339,8 @@ FSFile *FSi_NextCommand(FSArchive *p_arc) {
 /* Run the archive's queued commands one after another. A synchronous file
  * is woken to run itself; otherwise the file is marked asynchronous and its
  * command translated, stopping when the archive answers
- * FS_RESULT_PROC_ASYNC, and FSi_NextCommand gives the next file. */
+ * FS_RESULT_PROC_ASYNC, and FSi_NextCommand gives the next file. Unlike
+ * pret's, the synchronous path breaks out without restoring interrupts. */
 void FSi_ExecuteAsyncCommand(FSFile *p_file) {
     FSArchive *const p_arc = p_file->arc;
     while (p_file) {
