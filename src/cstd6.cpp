@@ -23,9 +23,8 @@ extern void exit(int status);
 extern int data_020aa0ac;
 extern struct G { char p[0x1c]; int v; } data_020a9fd8;
 extern struct G data_020a9ffc;
-extern int data_020aa3d4[];
-
-typedef void (*PFN)(int);
+typedef void (*sig_func)(int);
+extern sig_func signal_funcs[];
 }
 
 // @symbol _ZN4cstd6strlenEPKc
@@ -208,7 +207,7 @@ char *strchr(const char *s, char ch_in) {
 }
 
 /* MSL raise (signal.c), statement for statement with Spirit Tracks' copy:
-   signals 1..7 (__signal_max), the handler table data_020aa3d4 read and
+   signals 1..7 (__signal_max), the handler table signal_funcs read and
    reset to SIG_DFL (0) unless it is SIG_IGN (1) inside the inlined
    signal_funcs_access critical region; SIG_IGN, or SIG_DFL for SIGABRT
    (1), returns 0, any other SIG_DFL calls exit(0). abort raises 1 and the
@@ -216,7 +215,7 @@ char *strchr(const char *s, char ch_in) {
 // @symbol raise
 extern "C" {
 int raise(int sig) {
-    int signal_func;
+    sig_func signal_func;
     if (sig < 1 || sig > 7)
         return -1;
     if (OS_TryLockMutex(&data_020aa0ac) == 0) {
@@ -229,17 +228,17 @@ int raise(int sig) {
         data_020a9fd8.v = data_020a6134.current->id;
         data_020a9ffc.v = 1;
     }
-    signal_func = data_020aa3d4[sig - 1];
-    if (signal_func != 1)
-        data_020aa3d4[sig - 1] = 0;
+    signal_func = signal_funcs[sig - 1];
+    if ((unsigned int)signal_func != 1)
+        signal_funcs[sig - 1] = 0;
     data_020a9ffc.v -= 1;
     if (data_020a9ffc.v == 0)
         OS_UnlockMutex(&data_020aa0ac);
-    if (signal_func == 1 || (signal_func == 0 && sig == 1))
+    if ((unsigned int)signal_func == 1 || (signal_func == 0 && sig == 1))
         return 0;
     if (signal_func == 0)
         exit(0);
-    ((PFN)signal_func)(sig);
+    signal_func(sig);
     return 0;
 }
 }

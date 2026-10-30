@@ -52,16 +52,17 @@ extern void func_02071784(void);
 extern int data_020aa020;
 extern int data_020a9fd8;
 extern int data_020a9ffc;
-extern volatile int data_020a9ed0;
-extern void (*volatile data_020a9ed8[])(void);
-extern void (*data_020a9ec8)(void);
+extern volatile int __atexit_curr_func;
+extern void (*volatile __atexit_funcs[])(void);
+extern void (*__console_exit)(void);
 
 /* MSL __exit, statement for statement with Spirit Tracks' copy of
-   abort_exit_arm_eabi.c: run the atexit functions newest first inside the
-   inlined atexit_funcs_access critical region (data_020a9ed8 is
-   __atexit_funcs, data_020a9ed0 __atexit_curr_func), call __console_exit
-   (data_020a9ec8) once, fflush(NULL) (func_0206e06c), then leave through
-   func_02071784, the _ExitProcess veneer. */
+   abort_exit_arm_eabi.c: run __atexit_funcs newest first inside the
+   inlined atexit_funcs_access critical region, call __console_exit once,
+   fflush(NULL) (func_0206e06c), then leave through func_02071784, the
+   _ExitProcess veneer. That file's five globals sit in .bss at
+   0x020a9ec8..0x020a9fd8 in reverse declaration order: __console_exit,
+   __stdio_exit, __atexit_curr_func, __aborting, then __atexit_funcs[64]. */
 void __exit(int status)
 {
     if (OS_TryLockMutex(&data_020aa020) == 0) {
@@ -75,19 +76,19 @@ void __exit(int status)
         data_020a9ffc = 1;
     }
 
-    while (data_020a9ed0 > 0) {
-        int n = data_020a9ed0 - 1;
-        data_020a9ed0 = n;
-        data_020a9ed8[n]();
+    while (__atexit_curr_func > 0) {
+        int n = __atexit_curr_func - 1;
+        __atexit_curr_func = n;
+        __atexit_funcs[n]();
     }
 
     data_020a9ffc--;
     if (data_020a9ffc == 0) {
         OS_UnlockMutex(&data_020aa020);
     }
-    if (data_020a9ec8 != 0) {
-        data_020a9ec8();
-        data_020a9ec8 = 0;
+    if (__console_exit != 0) {
+        __console_exit();
+        __console_exit = 0;
     }
     func_0206e06c(0);
     func_02071784();
@@ -98,20 +99,20 @@ void __exit(int status)
 #pragma defer_codegen off
 typedef void (*exit_proc)(void);
 
-extern int data_020a9ed4;
-extern exit_proc data_020a9ecc;
+extern int __aborting;
+extern exit_proc __stdio_exit;
 void __destroy_global_chain(void);
 
-/* MSL exit: unless abort is under way (data_020a9ed4 is __aborting),
+/* MSL exit: unless abort is under way (__aborting),
    destroy the static objects (__destroy_global_chain) and call
-   __stdio_exit (data_020a9ecc) once; then __exit(status). */
+   __stdio_exit once; then __exit(status). */
 // @symbol exit
 void exit(int status) {
-    if (data_020a9ed4 == 0) {
+    if (__aborting == 0) {
         __destroy_global_chain();
-        if (data_020a9ecc != 0) {
-            data_020a9ecc();
-            data_020a9ecc = 0;
+        if (__stdio_exit != 0) {
+            __stdio_exit();
+            __stdio_exit = 0;
         }
     }
     __exit(status);
@@ -121,14 +122,14 @@ void exit(int status) {
 #pragma push
 #pragma defer_codegen off
 int raise(int sig);
-extern int data_020a9ed4;
+extern int __aborting;
 
 /* MSL abort: raise(SIGABRT), which is 1 here; set __aborting so exit skips
    the static destructors; then exit(EXIT_FAILURE). */
 // @symbol abort
 void abort(void) {
     raise(1);
-    data_020a9ed4 = 1;
+    __aborting = 1;
     exit(1);
 }
 #pragma pop
