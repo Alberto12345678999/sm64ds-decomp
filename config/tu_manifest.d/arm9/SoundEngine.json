@@ -242,35 +242,35 @@
       "ordinal": 31
     },
     {
-      "symbol": "func_0204f73c",
+      "symbol": "NNS_SndPlayerSetTempoRatio",
       "address": "0x0204f73c",
       "legacy_source": "src/func_0204f73c.c",
       "size": "0x00000030",
       "ordinal": 32
     },
     {
-      "symbol": "func_0204f76c",
+      "symbol": "NNS_SndPlayerSetTrackModSpeed",
       "address": "0x0204f76c",
       "legacy_source": "src/func_0204f76c.c",
       "size": "0x00000030",
       "ordinal": 33
     },
     {
-      "symbol": "func_0204f79c",
+      "symbol": "NNS_SndPlayerSetTrackModDepth",
       "address": "0x0204f79c",
       "legacy_source": "src/func_0204f79c.c",
       "size": "0x00000030",
       "ordinal": 34
     },
     {
-      "symbol": "func_0204f7cc",
+      "symbol": "NNS_SndPlayerSetTrackPan",
       "address": "0x0204f7cc",
       "legacy_source": "src/func_0204f7cc.c",
       "size": "0x00000030",
       "ordinal": 35
     },
     {
-      "symbol": "func_0204f7fc",
+      "symbol": "NNS_SndPlayerSetTrackPitch",
       "address": "0x0204f7fc",
       "legacy_source": "src/func_0204f7fc.c",
       "size": "0x00000030",
@@ -291,28 +291,28 @@
       "ordinal": 38
     },
     {
-      "symbol": "func_0204f89c",
+      "symbol": "NNS_SndPlayerSetChannelPriority",
       "address": "0x0204f89c",
       "legacy_source": "src/func_0204f89c.c",
       "size": "0x00000030",
       "ordinal": 39
     },
     {
-      "symbol": "func_0204f8cc",
+      "symbol": "NNS_SndPlayerMoveVolume",
       "address": "0x0204f8cc",
       "legacy_source": "src/func_0204f8cc.c",
       "size": "0x00000048",
       "ordinal": 40
     },
     {
-      "symbol": "func_0204f914",
+      "symbol": "NNS_SndPlayerSetInitialVolume",
       "address": "0x0204f914",
       "legacy_source": "src/func_0204f914.c",
       "size": "0x00000010",
       "ordinal": 41
     },
     {
-      "symbol": "func_0204f924",
+      "symbol": "NNS_SndPlayerSetVolume",
       "address": "0x0204f924",
       "legacy_source": "src/func_0204f924.c",
       "size": "0x00000010",

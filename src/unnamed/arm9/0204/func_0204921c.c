@@ -4,9 +4,6 @@ extern int data_020a4c5c[];
 extern int data_020a4c4c[];
 extern u16 data_020a4c48[];
 
-void NNS_SndPlayerSetTrackVolume(void *a, int b, int c);
-void NNS_SndPlayerSetTrackMute(void *a, int b, int c);
-
 /* For the three sequences that have them (0x3b, 0x3d, 0x3e), set the volume
    (data_020a4c5c, 0..0x7f000) of two track masks (data_020a4c48) for `mode`,
    and send each through NNS_SndPlayerSetTrackVolume; a track set to 0 also gets

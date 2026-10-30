@@ -46,16 +46,19 @@ extern int func_02048a18(int x, int y);
 extern void func_02048af4(void *p, int b, int c);
 extern void func_02048d80(void *obj, int *p);
 extern void func_02048c30(void *a, int b, int c);
-extern void func_0204f7fc(void *c, int a, int b);
-extern void NNS_SndPlayerSetTrackVolume(void *a, int b, int c);
-extern void func_0204f7cc(void *a, int b, int c);
+/* The NNS_SndPlayer setters are nnsys/snd/player.h's, which take an
+   NNSSndHandle *. This file holds its handles untyped, so it keeps local
+   copies rather than cast at every call. */
+extern void NNS_SndPlayerSetTrackPitch(void *c, int a, int b);  // local extern: untyped handle
+extern void NNS_SndPlayerSetTrackVolume(void *a, int b, int c); // local extern: untyped handle
+extern void NNS_SndPlayerSetTrackPan(void *a, int b, int c);    // local extern: untyped handle
 extern void func_020485f0(int a0, int a1);
 extern void func_02048528(int a0, int a1);
 extern void func_0204f9c4(int a, int b);
 extern void func_0204f958(int a, int b);
 extern void func_0204fa2c(int *g, int z);
 extern void func_0204f94c(void *p);
-extern void func_0204f8cc(int a, int b, int c);
+extern void NNS_SndPlayerMoveVolume(int a, int b, int c); // local extern: untyped handle
 extern void func_0204f070(void);
 extern void *func_0205130c(u32 addr, u32 size);
 extern void func_0201a9fc(char *c);
@@ -489,8 +492,10 @@ extern "C" void func_02012860(void *a, int flags, int c, int d, int e)
 {
     if (flags & 1)
         NNS_SndPlayerSetTrackVolume(a, 0xffff, c);
-    if (flags & 2) func_0204f7fc(a, 0xffff, d);
-    if (flags & 4) func_0204f7cc(a, 0xffff, e - 0x40);
+    if (flags & 2)
+        NNS_SndPlayerSetTrackPitch(a, 0xffff, d);
+    if (flags & 4)
+        NNS_SndPlayerSetTrackPan(a, 0xffff, e - 0x40);
 }
 
 namespace Sound {
@@ -512,7 +517,7 @@ extern "C" void func_020127ec(int a0, int a1, int a2, int a3, int a4, int a5)
 extern "C" void func_020127a4(int r0, int r1, int r2, int r3)
 {
     Player_PlaySoundEffect((int)data_0209b4a4, r0, r1);
-    func_0204f7cc(data_0209b4a4, r2, r3);
+    NNS_SndPlayerSetTrackPan(data_0209b4a4, r2, r3);
 }
 
 // @symbol func_02012790
@@ -716,13 +721,13 @@ extern "C" int func_02012194(char *c, int a1, int a2, int a3, int s0, int s1, sh
         char *slot = e + 8;
         e[6] = 1;
         func_02048d80(slot, (int *)s1);
-        func_0204f7fc(slot, a3, s0);
+        NNS_SndPlayerSetTrackPitch(slot, a3, s0);
         return *(int *)e;
     } else {
         char *n = (char *)func_0201179c((char *)&data_0209b53c, a1, a2, s1, s2);
         char *e2 = (char *)func_02011934((char *)&data_0209b53c, (int)n);
         if (e2 != 0)
-            func_0204f7fc(e2 + 8, a3, s0);
+            NNS_SndPlayerSetTrackPitch(e2 + 8, a3, s0);
         return (int)n;
     }
 }
@@ -1247,7 +1252,7 @@ extern "C" void func_02013524(int a, int b, int c)
     if (data_0209b474 != 0) {
         c = b = 0;
     }
-    func_0204f8cc(a, b, c);
+    NNS_SndPlayerMoveVolume(a, b, c);
 }
 
 // @symbol func_020134d8
