@@ -39,37 +39,9 @@
 #include "nitro/fx/fx.h"
 #include "G2x.h"
 #include "Ov007Camera.h"
+#include "Ov007Transition.h"
 
 extern "C" {
-
-/* func_ov007_020c8b10's screen transition; names as in
- * func_ov007_020c8498. From +0x28 on it holds the effect's arguments. */
-typedef struct Ov007Transition {
-    s32 effect;    /* 0x00: 1 mosaic, 2/3 blend alpha, 4 brightness */
-    u32 screens;   /* 0x04: bit 0 main engine, bit 1 sub */
-    s32 state;     /* 0x08: 0 idle, 1 running, 3 held at the end */
-    s32 endAction; /* 0x0c: on reaching t = 0x1000: 0 stop, 1 hold, 2/3 restart */
-    s32 curve;     /* 0x10: 0 linear, 1 out-and-back, 2 squared, 3 none */
-    s32 t;         /* 0x14: Q12 progress, clamped at 0x1000 */
-    s32 step;      /* 0x18: added to t each frame */
-    s32 reversed;  /* 0x1c: 1 runs the curve backwards */
-    s32 request;   /* 0x20 */
-    void *onEnd;   /* 0x24: called when t reaches the end */
-    /* 0x28: the BLDCNT plane mask the effect applies to */
-    s32 planes;
-    /* 0x2c: brightness: the start level; blend: the second-target planes */
-    s32 from;
-    /* 0x30: brightness: the end level; blend: EVA/EVB start and end */
-    union {
-        s32 to;
-        struct {
-            u8 evaFrom;
-            u8 evbFrom;
-            u8 evaTo;
-            u8 evbTo;
-        } blend;
-    } arg30;
-} Ov007Transition;
 
 /* A BMD_Material's two colour words. */
 typedef struct Ov007MaterialColors {
@@ -103,7 +75,7 @@ typedef struct Ov007Fade {
     Ov007Transition *transition; /* 0x00 */
     Ov007Model *model;           /* 0x04 */
     int flags;                   /* 0x08: RequestScreenFade's second argument */
-    void *onEnd;                 /* 0x0c: RequestScreenFade's third */
+    void (*onEnd)(void);         /* 0x0c: RequestScreenFade's third */
     /* 0x10: RequestScreenFade's first, the fade kind; func_ov007_020bf690
      * starts it and clears it */
     int request;
@@ -134,11 +106,11 @@ extern void *func_ov007_020bc6d4(char *r6, void *r7);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020c3d1c(void *self);
 extern int func_ov007_020c3df4(int a, void *b);
-extern void func_ov007_020c8498(char *r5);
-extern void func_ov007_020c8688(void *p, int a);
-extern void func_ov007_020c86a8(void *c, int v);
+extern void func_ov007_020c8498(Ov007Transition *tr);
+extern void func_ov007_020c8688(Ov007Transition *tr, int v);
+extern void func_ov007_020c86a8(Ov007Transition *tr, int v);
 extern void func_ov007_020c8b04(void *p);
-extern void *func_ov007_020c8b10(void);
+extern Ov007Transition *func_ov007_020c8b10(void);
 
 #define FADE data_ov007_02104bd8
 
@@ -147,7 +119,7 @@ void func_ov007_020bfcec(void) {
     int r;
 
     data_ov007_02104bd8 = (Ov007Fade *)func_ov007_020c3df4(0, (void *)sizeof(Ov007Fade));
-    FADE->transition = (Ov007Transition *)func_ov007_020c8b10();
+    FADE->transition = func_ov007_020c8b10();
     InitialiseVramGlobals();
     r = (int)func_ov007_020b3f20(0x24);
     r = (int)func_ov007_020bc6d4((char *)r, 0);
@@ -228,7 +200,7 @@ void func_ov007_020bfaf0(char *c) {
 void RequestScreenFade(int r0, int r1, int r2) {
     FADE->request = r0;
     FADE->flags = r1;
-    FADE->onEnd = (void *)r2;
+    FADE->onEnd = (void (*)(void))r2;
 }
 
 // @symbol func_ov007_020bf790
@@ -252,8 +224,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x3F;
         r6->step = 0x3C;
-        r6->from = 0x10;
-        r6->arg30.to = 0;
+        r6->fx.brightness.from = 0x10;
+        r6->fx.brightness.to = 0;
         break;
     case 2:
         r6->effect = 4;
@@ -261,8 +233,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x3F;
         r6->step = 0x3C;
-        r6->from = -0x10;
-        r6->arg30.to = 0;
+        r6->fx.brightness.from = -0x10;
+        r6->fx.brightness.to = 0;
         break;
     case 3:
         r6->effect = 4;
@@ -270,8 +242,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x2F;
         r6->step = 0x3C;
-        r6->from = -0x10;
-        r6->arg30.to = 0;
+        r6->fx.brightness.from = -0x10;
+        r6->fx.brightness.to = 0;
         break;
     case 4:
         r6->effect = 4;
@@ -279,8 +251,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x3F;
         r6->step = 0x100;
-        r6->from = -0x10;
-        r6->arg30.to = 0;
+        r6->fx.brightness.from = -0x10;
+        r6->fx.brightness.to = 0;
         break;
     case 5:
         r6->effect = 4;
@@ -288,8 +260,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x3F;
         r6->step = 0x3C;
-        r6->from = 0;
-        r6->arg30.to = 0;
+        r6->fx.brightness.from = 0;
+        r6->fx.brightness.to = 0;
         break;
     case 6:
         r6->effect = 4;
@@ -297,8 +269,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x3F;
         r6->step = 0x1000;
-        r6->from = -0x10;
-        r6->arg30.to = -0x10;
+        r6->fx.brightness.from = -0x10;
+        r6->fx.brightness.to = -0x10;
         break;
     case 7:
         r6->effect = 4;
@@ -306,8 +278,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x2F;
         r6->step = 0x1000;
-        r6->from = -0x10;
-        r6->arg30.to = -0x10;
+        r6->fx.brightness.from = -0x10;
+        r6->fx.brightness.to = -0x10;
         break;
     case 8:
         r6->effect = 4;
@@ -315,8 +287,8 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->planes = 0x3D;
         r6->step = 0x100;
-        r6->from = 0;
-        r6->arg30.to = -9;
+        r6->fx.brightness.from = 0;
+        r6->fx.brightness.to = -9;
         break;
     case 9:
         r6->effect = 3;
@@ -324,11 +296,11 @@ void func_ov007_020bf790(void) {
         r6->curve = 0;
         r6->step = 0x190;
         r6->planes = 1;
-        r6->from = 0x14;
-        r6->arg30.blend.evaFrom = 0x10;
-        r6->arg30.blend.evaTo = 0;
-        r6->arg30.blend.evbFrom = 0;
-        r6->arg30.blend.evbTo = 0;
+        r6->fx.alpha.planes2 = 0x14;
+        r6->fx.alpha.evaFrom = 0x10;
+        r6->fx.alpha.evaTo = 0;
+        r6->fx.alpha.evbFrom = 0;
+        r6->fx.alpha.evbTo = 0;
         break;
     }
 
@@ -386,7 +358,7 @@ void func_ov007_020bf690(void) {
         data_ov007_02104bd8->request = did;
         did = 1;
     }
-    func_ov007_020c8498((char *)obj6);
+    func_ov007_020c8498(obj6);
     if ((flags & 1) == 0)
         return;
     int v = obj6->t;
