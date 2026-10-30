@@ -33,8 +33,7 @@ void func_ov007_020b1fa4(int preset) {
     func_ov007_020c0128(cam);
     switch (preset) {
     case 1:
-        switch (*(int*)((char*)data_ov007_0210342c + 0xec))
-        {
+        switch (WORK->figureIndex) {
         case 0:
             cam->target.y = -0x3e8;
             cam->distance = 0x1e000;

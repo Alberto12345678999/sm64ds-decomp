@@ -1,4 +1,5 @@
-#pragma optimize_for_size on
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern void func_ov007_020b01f4(void);
 extern void func_ov007_020b01a4(void);
@@ -8,19 +9,17 @@ extern void func_ov007_020af59c(void);
 extern void func_ov007_020af4dc(void);
 extern void func_ov007_020beeb0(void);
 
-typedef struct {
-    char pad0[8];
-    short *stateField;
-    char pad1[8];
-    int flag14;
-} S;
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
-extern S *data_ov007_0210342c;
-
+/* Runs the handler for states[1]'s current state; state 12 just marks the
+ * choice ready. Then func_ov007_020beeb0. */
 void func_ov007_020af390(void)
 {
-    S *p = data_ov007_0210342c;
-    short state = *p->stateField;
+    Ov007Work *w = WORK;
+    short state = w->states[1]->currentState;
 
     switch (state) {
     case 0:
@@ -48,7 +47,7 @@ void func_ov007_020af390(void)
         func_ov007_020af4dc();
         break;
     case 12:
-        p->flag14 = 1;
+        w->choiceReady = 1;
         break;
     }
     func_ov007_020beeb0();

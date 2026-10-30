@@ -64,5 +64,5 @@ void func_ov007_020b6a84(void) {
         WORK->settings->language = 0;
         break;
     }
-    *(int *)(data_ov007_0210342c + 0xe8) = 0;
+    WORK->modelReady = 0;
 }
