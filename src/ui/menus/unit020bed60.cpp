@@ -272,7 +272,7 @@ void func_ov007_020bf304(void) {
 // @symbol func_ov007_020beeb0
 /* One frame of the backdrop: pokes the mesh under the stylus (harder for a
  * fast stroke) or, with no touch, under the cursor's settled item; ripples
- * and steps the mesh; lets each ready item's swing move its sprite; then
+ * and steps the mesh; lets each visible item's swing move its sprite; then
  * blends the second material towards the colours of the current main state
  * and the first light towards grey in the file-select states 0xa / 0xb. */
 void func_ov007_020beeb0(void) {
@@ -330,7 +330,7 @@ void func_ov007_020beeb0(void) {
         int t;
         if (r6p->item->state->stateWork == 2)
             func_ov007_020bf57c(WORK->cameras[0], i);
-        if (r6p->item->ready != 0) {
+        if (r6p->item->visible != 0) {
             func_ov007_020c9c24(swing, 2);
             w = r6p->sprite;
             func_ov007_020c9a84(swing, &w->posOffset, &w->rotX, &w->rotY);

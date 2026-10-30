@@ -30,7 +30,10 @@ typedef struct Ov007CellAnim {
     u16 *durations;     /* 0x04: ticks per frame */
     /* 0x08, medium confidence: func_ov007_020c0b78 adds the pair to the
      * node's screen x/y before drawing the frame's cells. Every animation
-     * func_ov007_020c9688 builds has 0 for both. */
+     * func_ov007_020c9688 builds has 0 for both. Unsigned: the reader's
+     * ldrh zero-extends them, and s16 fields cost func_ov007_020c0b78 two
+     * mismatches. The writer, func_ov007_020c13a4, stores them with strh
+     * whatever its parameters' type is, so they are u16 too. */
     u16 offsetX;
     u16 offsetY;    /* 0x0a */
     u32 frameCount; /* 0x0c */

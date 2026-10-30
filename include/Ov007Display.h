@@ -32,9 +32,15 @@ typedef struct Ov007CharRecord {
 
 /* The 0x48-byte display record func_ov007_020b7594 builds: the manager's
  * +0x74 (Ov007Work::display). Each table's count sits in the word before
- * it. func_ov007_020b7320, func_ov007_020b72d8 and func_ov007_020b72fc size
- * the tables, func_ov007_020b6d40 fills them, and func_ov007_020b73b4 frees
- * every table with its own record's free. */
+ * it, and func_ov007_020b73b4 frees every table with its own record's free.
+ * func_ov007_020b7320 (characters, palettes), func_ov007_020b72d8 (BG
+ * layers) and func_ov007_020b72fc (sprite banks) size four of the six
+ * tables, and func_ov007_020b6d40 fills them. Nothing in ov007 sizes or
+ * fills transitions or oamNodes; func_ov007_020b7594 zeroes them. Their
+ * record types are inferred from func_ov007_020b73b4's frees. It frees
+ * transitions with func_ov007_020c8b04, the free func_ov007_020bf690 uses
+ * on func_ov007_020c8b10's record. It frees oamNodes with
+ * func_ov007_020c1180, the OAM node free func_ov007_020ade14 also uses. */
 typedef struct Ov007Display {
     /* 0x00/0x04: the OAM node lists (func_ov007_020c1068) drawn into the
      * main and sub OAM buffers; func_ov007_020c0af4 appends a node */

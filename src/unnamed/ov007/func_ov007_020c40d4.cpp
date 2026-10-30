@@ -12,8 +12,8 @@ void func_ov007_020c4090(Ov007SpriteItem *item);
 Ov007SpriteItem *func_ov007_020c40d4(int animCount) {
     Ov007SpriteItem *item = (Ov007SpriteItem *)func_ov007_020c3df4(0, sizeof(Ov007SpriteItem));
     item->node = func_ov007_020c11ac(animCount);
-    item->word6 = 0;
-    item->word4 = item->word6;
+    item->half6 = 0;
+    item->half4 = item->half6;
     item->margin = 0;
     func_ov007_020c4090(item);
     return item;

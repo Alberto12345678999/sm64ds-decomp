@@ -29,8 +29,10 @@ typedef struct Ov007NodeSprites {
 typedef char Ov007NodeSprites_size_must_be_0x8[sizeof(Ov007NodeSprites) == 0x8 ? 1 : -1];
 
 /* Builds item node `index` (func_ov007_020b6d40 builds nine): the item, with
- * its layout row from data_ov007_020ccbc4 and no hit box, and its OAM node,
- * linked into the display's list for that item with its animations. */
+ * its layout row from data_ov007_020ccbc4 and no hit box, and its OAM node
+ * with its animations. By item id the node goes on the display's sub OAM
+ * list (0, 1, 3-5; item 0 also gets a child node) or its main list (7, 8);
+ * the nodes of items 2 and 6 go on neither list. */
 Ov007ItemNode *func_ov007_020ade58(int index) {
     Ov007ItemNode *s = (Ov007ItemNode *)func_ov007_020c3df4(0, 8);
     Ov007Display *r6 = WORK->display;

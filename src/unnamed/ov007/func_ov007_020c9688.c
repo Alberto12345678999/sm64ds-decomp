@@ -89,7 +89,7 @@ typedef struct Ov007OamAttrs {
 extern void func_ov007_020c9a2c(Ctx *ctx, int a);
 extern Ov007SpriteBank *func_ov007_020c12ac(int cellCount, int animCount);
 extern void *func_ov007_020c3df4(int a, u32 b);
-extern void func_ov007_020c13a4(Ov007CellAnim *anim, int frameCount, short offsetX, short offsetY);
+extern void func_ov007_020c13a4(Ov007CellAnim *anim, int frameCount, u16 offsetX, u16 offsetY);
 
 Ov007SpriteBank *func_ov007_020c9688(int arg) {
     Ov007SpriteBank *s;

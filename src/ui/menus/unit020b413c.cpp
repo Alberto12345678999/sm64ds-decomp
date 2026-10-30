@@ -766,8 +766,8 @@ void func_ov007_020b45b0(Ov007ItemView *view) {
 
 /* Runs one item view's frame unless its layout kind is 0xa or its state
  * work is 0xff: requests func_ov007_020b58e4's state, ticks the item, runs
- * the state-0 or state-2 handler, then func_ov007_020b5bf0 once the item is
- * ready. */
+ * the state-0 or state-2 handler, then func_ov007_020b5bf0 while the item
+ * is visible. */
 // @symbol func_ov007_020b44ec
 void func_ov007_020b44ec(Ov007ItemView *view) {
     Ov007Item *o = view->item;
@@ -797,19 +797,19 @@ void func_ov007_020b44ec(Ov007ItemView *view) {
     case 7:
         break;
     }
-    if (o->ready == 0)
+    if (o->visible == 0)
         return;
     func_ov007_020b5bf0(view);
 }
 
 /* Keeps the view's sprite on its item: when the item's position moved
  * since the last frame the sprite is re-placed for camera `arg`
- * (func_ov007_020c4388); while the item is ready the sprite is drawn
+ * (func_ov007_020c4388); while the item is visible the sprite is drawn
  * (func_ov007_020c421c). */
 // @symbol func_ov007_020b4464
 void func_ov007_020b4464(Ov007ItemView *view, int arg) {
     int changed;
-    if (view->item->ready == 0) {
+    if (view->item->visible == 0) {
         return;
     }
     changed = 0;
