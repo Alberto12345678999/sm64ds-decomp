@@ -34,7 +34,7 @@ extern const char data_0208698c;
 
 extern void func_0206d890(SavedIntState *state);
 extern void func_0206d868(const SavedIntState *state);
-extern u32 func_0206dab4(u32 val, void *nVMA);
+extern u32 func_0206dab4(u32 value, void *lock);
 extern void func_0206d940(struct Arr *s, u32 index);
 extern void func_0206d8c4(struct Arr *s, u32 index);
 extern void _ZN4cstd8__assertEPKcS1_S1_i(const char *, const char *, const char *, int);

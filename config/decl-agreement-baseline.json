@@ -20112,16 +20112,6 @@
         "param:#1 const SavedIntState *"
       ]
     },
-    "func_0206dab4": {
-      "src/unnamed/arm9/0206/func_0206cf98.c": [
-        "arity:2",
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0206/func_0206d32c.c": [
-        "arity:2",
-        "return:unsigned int"
-      ]
-    },
     "func_0206dc7c": {
       "src/unnamed/arm9/01ff/func_01ff97d8.c": [
         "arity:0",
@@ -20256,11 +20246,6 @@
       ],
       "src/unnamed/arm9/0207/func_02071f1c.c": [
         "arity:3"
-      ]
-    },
-    "func_02071844": {
-      "src/unnamed/arm9/0207/func_02072dac.c": [
-        "arity:2"
       ]
     },
     "func_02071864": {
