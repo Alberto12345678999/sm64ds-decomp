@@ -17,6 +17,11 @@ struct Local {
     struct Ctx cpart;
 };
 
+/* EH runtime, rethrow: walk a copy of the context's actions to action 13,
+   read its signed offset into the frame (ReadSignedVarInt) and return that
+   frame address. c receives the saved catch info found there: [0] the word
+   at +4, [1] the word at +0, [2] 0, [3] the address. Actions 1 and 14, and
+   any unknown action, call the terminate path (func_020731fc). */
 int func_02072014(int *c, int *arg)
 {
     struct Local l;
