@@ -1,0 +1,81 @@
+//cpp
+/* Message queues (the Nitro SDK's os_message.c), arm9 .text
+ * 0x020587e4..0x02058960.
+ *
+ * pret/pokediamond's NitroSDK OS_message.c has, in this order,
+ * OS_InitMessageQueue, OS_SendMessage, OS_ReceiveMessage, OS_JamMessage and
+ * OS_ReadMessage. mwccarm defers the bodies and emits them in reverse, so the
+ * ROM runs bottom-up: OS_ReceiveMessage at 0x020587e4, OS_InitMessageQueue at
+ * 0x02058940. Nothing calls OS_JamMessage or OS_ReadMessage, so the linker
+ * dropped them.
+ *
+ * This SDK's thread queue is a 16-bit mask of thread ids (nitro/os/thread.h).
+ */
+#include "IRQ.h"
+#include "nitro/os/thread.h"
+
+#define OS_MESSAGE_BLOCK 1
+
+typedef void *OSMessage;
+
+/* NitroSDK OSMessageQueue, this SDK's layout. */
+typedef struct OSMessageQueue {
+    u16 queueSend;       /* 0x00 -- OSThreadQueue: senders waiting for room */
+    u16 queueReceive;    /* 0x02 -- receivers waiting for a message */
+    OSMessage *msgArray; /* 0x04 */
+    s32 msgCount;        /* 0x08 */
+    s32 firstIndex;      /* 0x0c */
+    s32 usedCount;       /* 0x10 */
+} OSMessageQueue;
+
+extern "C" {
+
+// @symbol OS_InitMessageQueue
+void OS_InitMessageQueue(OSMessageQueue *mq, OSMessage *msgArray, s32 msgCount) {
+    mq->queueSend = 0;
+    mq->queueReceive = 0;
+    mq->msgArray = msgArray;
+    mq->msgCount = msgCount;
+    mq->firstIndex = 0;
+    mq->usedCount = 0;
+}
+
+// @symbol OS_SendMessage
+int OS_SendMessage(OSMessageQueue *mq, OSMessage msg, s32 flags) {
+    u32 enabled = IRQ::Disable();
+    while (mq->msgCount <= mq->usedCount) {
+        if (!(flags & OS_MESSAGE_BLOCK)) {
+            IRQ::Restore(enabled);
+            return 0;
+        }
+        OS_SleepThread(&mq->queueSend);
+    }
+    {
+        s32 lastIndex = (mq->firstIndex + mq->usedCount) % mq->msgCount;
+        mq->msgArray[lastIndex] = msg;
+        mq->usedCount++;
+        OS_WakeupThread(&mq->queueReceive);
+        IRQ::Restore(enabled);
+        return 1;
+    }
+}
+
+// @symbol OS_ReceiveMessage
+int OS_ReceiveMessage(OSMessageQueue *mq, OSMessage *msg, s32 flags) {
+    u32 enabled = IRQ::Disable();
+    while (mq->usedCount == 0) {
+        if (!(flags & OS_MESSAGE_BLOCK)) {
+            IRQ::Restore(enabled);
+            return 0;
+        }
+        OS_SleepThread(&mq->queueReceive);
+    }
+    if (msg != 0)
+        *msg = mq->msgArray[mq->firstIndex];
+    mq->firstIndex = (mq->firstIndex + 1) % mq->msgCount;
+    mq->usedCount--;
+    OS_WakeupThread(&mq->queueSend);
+    IRQ::Restore(enabled);
+    return 1;
+}
+}

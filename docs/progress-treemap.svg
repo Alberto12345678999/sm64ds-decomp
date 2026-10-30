@@ -8633,7 +8633,7 @@ matched: yes</title></rect><rect x="9.91" y="894.57" width="7.32" height="2.93" 
 module: arm9
 addr: 0x020524c4
 size: 32 bytes
-matched: yes</title></rect><rect x="9.91" y="897.51" width="7.32" height="1.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020524e4
+matched: yes</title></rect><rect x="9.91" y="897.51" width="7.32" height="1.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MTX_Rot22_
 module: arm9
 addr: 0x020524e4
 size: 12 bytes
@@ -8645,11 +8645,11 @@ matched: yes</title></rect><rect x="9.91" y="901.90" width="7.32" height="5.50" 
 module: arm9
 addr: 0x02052514
 size: 60 bytes
-matched: yes</title></rect><rect x="9.91" y="907.40" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02052550
+matched: yes</title></rect><rect x="9.91" y="907.40" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MTX_RotX33_
 module: arm9
 addr: 0x02052550
 size: 28 bytes
-matched: yes</title></rect><rect x="9.91" y="909.97" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205256c
+matched: yes</title></rect><rect x="9.91" y="909.97" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MTX_RotY33_
 module: arm9
 addr: 0x0205256c
 size: 28 bytes
@@ -9589,15 +9589,15 @@ matched: yes</title></rect><rect x="264.88" y="710.22" width="0.90" height="5.98
 module: arm9
 addr: 0x020587dc
 size: 8 bytes
-matched: yes</title></rect><rect x="265.77" y="710.22" width="19.74" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020587e4
+matched: yes</title></rect><rect x="265.77" y="710.22" width="19.74" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ReceiveMessage
 module: arm9
 addr: 0x020587e4
 size: 176 bytes
-matched: yes</title></rect><rect x="285.52" y="710.22" width="19.30" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058894
+matched: yes</title></rect><rect x="285.52" y="710.22" width="19.30" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SendMessage
 module: arm9
 addr: 0x02058894
 size: 172 bytes
-matched: yes</title></rect><rect x="304.82" y="710.22" width="3.59" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058940
+matched: yes</title></rect><rect x="304.82" y="710.22" width="3.59" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitMessageQueue
 module: arm9
 addr: 0x02058940
 size: 32 bytes
@@ -9605,31 +9605,31 @@ matched: yes</title></rect><rect x="308.41" y="710.22" width="4.49" height="5.98
 module: arm9
 addr: 0x02058960
 size: 40 bytes
-matched: yes</title></rect><rect x="312.89" y="710.22" width="4.04" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058988
+matched: yes</title></rect><rect x="312.89" y="710.22" width="4.04" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DequeueItem
 module: arm9
 addr: 0x02058988
 size: 36 bytes
-matched: yes</title></rect><rect x="316.93" y="710.22" width="4.49" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020589ac
+matched: yes</title></rect><rect x="316.93" y="710.22" width="4.49" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_EnqueueTail
 module: arm9
 addr: 0x020589ac
 size: 40 bytes
-matched: yes</title></rect><rect x="42.30" y="716.20" width="3.28" height="22.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020589d4
+matched: yes</title></rect><rect x="42.30" y="716.20" width="3.28" height="22.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockMutex
 module: arm9
 addr: 0x020589d4
 size: 112 bytes
-matched: yes</title></rect><rect x="42.30" y="739.09" width="3.28" height="16.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058a44
+matched: yes</title></rect><rect x="42.30" y="739.09" width="3.28" height="16.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_UnlockAllMutex
 module: arm9
 addr: 0x02058a44
 size: 80 bytes
-matched: yes</title></rect><rect x="42.30" y="755.45" width="3.28" height="23.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058a94
+matched: yes</title></rect><rect x="42.30" y="755.45" width="3.28" height="23.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockMutex
 module: arm9
 addr: 0x02058a94
 size: 116 bytes
-matched: yes</title></rect><rect x="42.30" y="779.16" width="3.28" height="30.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058b08
+matched: yes</title></rect><rect x="42.30" y="779.16" width="3.28" height="30.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_LockMutex
 module: arm9
 addr: 0x02058b08
 size: 148 bytes
-matched: yes</title></rect><rect x="42.30" y="809.41" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058b9c
+matched: yes</title></rect><rect x="42.30" y="809.41" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitMutex
 module: arm9
 addr: 0x02058b9c
 size: 20 bytes
@@ -9701,27 +9701,27 @@ matched: yes</title></rect><rect x="45.58" y="716.20" width="33.35" height="5.63
 module: arm9
 addr: 0x02058f28
 size: 280 bytes
-matched: yes</title></rect><rect x="78.93" y="716.20" width="22.39" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059040
+matched: yes</title></rect><rect x="78.93" y="716.20" width="22.39" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitAlloc
 module: arm9
 addr: 0x02059040
 size: 188 bytes
-matched: yes</title></rect><rect x="101.32" y="716.20" width="13.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020590fc
+matched: yes</title></rect><rect x="101.32" y="716.20" width="13.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_FreeToHeap
 module: arm9
 addr: 0x020590fc
 size: 116 bytes
-matched: yes</title></rect><rect x="115.14" y="716.20" width="35.73" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059170
+matched: yes</title></rect><rect x="115.14" y="716.20" width="35.73" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_AllocFromHeap
 module: arm9
 addr: 0x02059170
 size: 300 bytes
-matched: yes</title></rect><rect x="150.87" y="716.20" width="23.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205929c
+matched: yes</title></rect><rect x="150.87" y="716.20" width="23.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DLInsert
 module: arm9
 addr: 0x0205929c
 size: 200 bytes
-matched: yes</title></rect><rect x="174.69" y="716.20" width="4.76" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059364
+matched: yes</title></rect><rect x="174.69" y="716.20" width="4.76" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DLExtract
 module: arm9
 addr: 0x02059364
 size: 40 bytes
-matched: yes</title></rect><rect x="179.45" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205938c
+matched: yes</title></rect><rect x="179.45" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DLAddFront
 module: arm9
 addr: 0x0205938c
 size: 28 bytes
@@ -9777,7 +9777,7 @@ matched: yes</title></rect><rect x="261.87" y="716.20" width="1.91" height="5.63
 module: arm9
 addr: 0x02059640
 size: 16 bytes
-matched: yes</title></rect><rect x="263.77" y="716.20" width="20.96" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059650
+matched: yes</title></rect><rect x="263.77" y="716.20" width="20.96" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetTick
 module: arm9
 addr: 0x02059650
 size: 176 bytes
@@ -9865,11 +9865,11 @@ matched: yes</title></rect><rect x="45.58" y="863.98" width="6.51" height="6.18"
 module: arm9
 addr: 0x02059d98
 size: 60 bytes
-matched: yes</title></rect><rect x="45.58" y="870.16" width="6.51" height="4.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059dd4
+matched: yes</title></rect><rect x="45.58" y="870.16" width="6.51" height="4.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_SendToPxi
 module: arm9
 addr: 0x02059dd4
 size: 48 bytes
-matched: yes</title></rect><rect x="45.58" y="875.10" width="6.51" height="7.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059e04
+matched: yes</title></rect><rect x="45.58" y="875.10" width="6.51" height="7.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_CommonCallback
 module: arm9
 addr: 0x02059e04
 size: 68 bytes
@@ -9877,7 +9877,7 @@ matched: yes</title></rect><rect x="45.58" y="882.11" width="6.51" height="10.71
 module: arm9
 addr: 0x02059e48
 size: 104 bytes
-matched: yes</title></rect><rect x="45.58" y="892.82" width="6.51" height="12.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059eb0
+matched: yes</title></rect><rect x="45.58" y="892.82" width="6.51" height="12.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetOwnerInfo
 module: arm9
 addr: 0x02059eb0
 size: 124 bytes
@@ -10209,7 +10209,7 @@ matched: yes</title></rect><rect x="267.91" y="727.67" width="30.52" height="6.4
 module: arm9
 addr: 0x0205b864
 size: 292 bytes
-matched: yes</title></rect><rect x="298.43" y="727.67" width="18.81" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>IPCSend
+matched: yes</title></rect><rect x="298.43" y="727.67" width="18.81" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXI_SendWordByFifo
 module: arm9
 addr: 0x0205b988
 size: 180 bytes
@@ -10225,51 +10225,51 @@ matched: yes</title></rect><rect x="55.12" y="744.37" width="7.57" height="23.04
 module: arm9
 addr: 0x0205bad8
 size: 260 bytes
-matched: yes</title></rect><rect x="55.12" y="767.41" width="7.57" height="0.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bbdc
+matched: yes</title></rect><rect x="55.12" y="767.41" width="7.57" height="0.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_CloseFileCommand
 module: arm9
 addr: 0x0205bbdc
 size: 8 bytes
-matched: yes</title></rect><rect x="55.12" y="768.12" width="7.57" height="3.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bbe4
+matched: yes</title></rect><rect x="55.12" y="768.12" width="7.57" height="3.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_OpenFileDirectCommand
 module: arm9
 addr: 0x0205bbe4
 size: 40 bytes
-matched: yes</title></rect><rect x="55.12" y="771.67" width="7.57" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bc0c
+matched: yes</title></rect><rect x="55.12" y="771.67" width="7.57" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_OpenFileFastCommand
 module: arm9
 addr: 0x0205bc0c
 size: 124 bytes
-matched: yes</title></rect><rect x="55.12" y="782.66" width="7.57" height="85.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bc88
+matched: yes</title></rect><rect x="55.12" y="782.66" width="7.57" height="85.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_GetPathCommand
 module: arm9
 addr: 0x0205bc88
 size: 960 bytes
-matched: yes</title></rect><rect x="55.12" y="867.74" width="7.57" height="47.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c048
+matched: yes</title></rect><rect x="55.12" y="867.74" width="7.57" height="47.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_FindPathCommand
 module: arm9
 addr: 0x0205c048
 size: 540 bytes
-matched: yes</title></rect><rect x="55.12" y="915.59" width="7.57" height="24.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c264
+matched: yes</title></rect><rect x="55.12" y="915.59" width="7.57" height="24.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_ReadDirCommand
 module: arm9
 addr: 0x0205c264
 size: 276 bytes
-matched: yes</title></rect><rect x="55.12" y="940.05" width="7.57" height="13.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c378
+matched: yes</title></rect><rect x="55.12" y="940.05" width="7.57" height="13.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_SeekDirCommand
 module: arm9
 addr: 0x0205c378
 size: 152 bytes
-matched: yes</title></rect><rect x="55.12" y="953.52" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c410
+matched: yes</title></rect><rect x="55.12" y="953.52" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_WriteFileCommand
 module: arm9
 addr: 0x0205c410
 size: 56 bytes
-matched: yes</title></rect><rect x="55.12" y="958.49" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c448
+matched: yes</title></rect><rect x="55.12" y="958.49" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_ReadFileCommand
 module: arm9
 addr: 0x0205c448
 size: 56 bytes
-matched: yes</title></rect><rect x="55.12" y="963.45" width="7.57" height="8.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c480
+matched: yes</title></rect><rect x="55.12" y="963.45" width="7.57" height="8.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_StrNICmp
 module: arm9
 addr: 0x0205c480
 size: 100 bytes
-matched: yes</title></rect><rect x="55.12" y="972.31" width="7.57" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c4e4
+matched: yes</title></rect><rect x="55.12" y="972.31" width="7.57" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_SeekDirDirect
 module: arm9
 addr: 0x0205c4e4
 size: 68 bytes
-matched: yes</title></rect><rect x="55.12" y="978.34" width="7.57" height="16.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c528
+matched: yes</title></rect><rect x="55.12" y="978.34" width="7.57" height="16.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_ReadTable
 module: arm9
 addr: 0x0205c528
 size: 188 bytes
@@ -10413,7 +10413,7 @@ matched: yes</title></rect><rect x="64.91" y="782.19" width="6.08" height="4.42"
 module: arm9
 addr: 0x0205d874
 size: 40 bytes
-matched: yes</title></rect><rect x="64.91" y="786.61" width="6.08" height="6.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d89c
+matched: yes</title></rect><rect x="64.91" y="786.61" width="6.08" height="6.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_Init
 module: arm9
 addr: 0x0205d89c
 size: 60 bytes
@@ -10429,7 +10429,7 @@ matched: yes</title></rect><rect x="64.91" y="806.03" width="6.08" height="3.53"
 module: arm9
 addr: 0x0205d94c
 size: 32 bytes
-matched: yes</title></rect><rect x="64.91" y="809.57" width="6.08" height="32.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d96c
+matched: yes</title></rect><rect x="64.91" y="809.57" width="6.08" height="32.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_InitRom
 module: arm9
 addr: 0x0205d96c
 size: 296 bytes
@@ -10453,11 +10453,11 @@ matched: yes</title></rect><rect x="64.91" y="869.17" width="6.08" height="14.57
 module: arm9
 addr: 0x0205db88
 size: 132 bytes
-matched: yes</title></rect><rect x="64.91" y="883.74" width="6.08" height="9.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dc0c
+matched: yes</title></rect><rect x="64.91" y="883.74" width="6.08" height="9.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_UnloadOverlay
 module: arm9
 addr: 0x0205dc0c
 size: 84 bytes
-matched: yes</title></rect><rect x="64.91" y="893.01" width="6.08" height="3.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dc60
+matched: yes</title></rect><rect x="64.91" y="893.01" width="6.08" height="3.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_UnloadOverlayImage
 module: arm9
 addr: 0x0205dc60
 size: 28 bytes
@@ -10481,7 +10481,7 @@ matched: yes</title></rect><rect x="70.99" y="743.34" width="9.93" height="9.46"
 module: arm9
 addr: 0x0205dffc
 size: 140 bytes
-matched: yes</title></rect><rect x="80.91" y="743.34" width="2.84" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205e088
+matched: yes</title></rect><rect x="80.91" y="743.34" width="2.84" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_GetOverlayFileID
 module: arm9
 addr: 0x0205e088
 size: 40 bytes
@@ -10713,11 +10713,11 @@ matched: yes</title></rect><rect x="188.04" y="752.80" width="19.20" height="5.1
 module: arm9
 addr: 0x02060228
 size: 148 bytes
-matched: yes</title></rect><rect x="207.24" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020602bc
+matched: yes</title></rect><rect x="207.24" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_TaskThread
 module: arm9
 addr: 0x020602bc
 size: 84 bytes
-matched: yes</title></rect><rect x="218.14" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060310
+matched: yes</title></rect><rect x="218.14" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_OnFifoRecv
 module: arm9
 addr: 0x02060310
 size: 84 bytes
@@ -10729,15 +10729,15 @@ matched: yes</title></rect><rect x="235.78" y="752.80" width="6.23" height="5.17
 module: arm9
 addr: 0x02060398
 size: 48 bytes
-matched: yes</title></rect><rect x="242.01" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020603c8
+matched: yes</title></rect><rect x="242.01" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_IdentifyBackup
 module: arm9
 addr: 0x020603c8
 size: 148 bytes
-matched: yes</title></rect><rect x="261.21" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206045c
+matched: yes</title></rect><rect x="261.21" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_GetBackupTotalSize
 module: arm9
 addr: 0x0206045c
 size: 20 bytes
-matched: yes</title></rect><rect x="263.81" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060470
+matched: yes</title></rect><rect x="263.81" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_GetCurrentBackupType
 module: arm9
 addr: 0x02060470
 size: 20 bytes
@@ -10761,11 +10761,11 @@ matched: yes</title></rect><rect x="83.20" y="802.64" width="6.67" height="5.23"
 module: arm9
 addr: 0x020607e8
 size: 52 bytes
-matched: yes</title></rect><rect x="83.20" y="807.87" width="6.67" height="11.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206081c
+matched: yes</title></rect><rect x="83.20" y="807.87" width="6.67" height="11.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_EndTask
 module: arm9
 addr: 0x0206081c
 size: 116 bytes
-matched: yes</title></rect><rect x="83.20" y="819.54" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060890
+matched: yes</title></rect><rect x="83.20" y="819.54" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_Init
 module: arm9
 addr: 0x02060890
 size: 124 bytes
@@ -10781,35 +10781,35 @@ matched: yes</title></rect><rect x="83.20" y="861.39" width="6.67" height="5.23"
 module: arm9
 addr: 0x02060a30
 size: 52 bytes
-matched: yes</title></rect><rect x="83.20" y="866.63" width="6.67" height="25.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060a64
+matched: yes</title></rect><rect x="83.20" y="866.63" width="6.67" height="25.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadCard
 module: arm9
 addr: 0x02060a64
 size: 256 bytes
-matched: yes</title></rect><rect x="83.20" y="892.38" width="6.67" height="33.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060b64
+matched: yes</title></rect><rect x="83.20" y="892.38" width="6.67" height="33.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_TryReadCardDma
 module: arm9
 addr: 0x02060b64
 size: 328 bytes
-matched: yes</title></rect><rect x="83.20" y="925.38" width="6.67" height="11.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060cac
+matched: yes</title></rect><rect x="83.20" y="925.38" width="6.67" height="11.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_OnReadCard
 module: arm9
 addr: 0x02060cac
 size: 112 bytes
-matched: yes</title></rect><rect x="83.20" y="936.65" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060d1c
+matched: yes</title></rect><rect x="83.20" y="936.65" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_SetCardDma
 module: arm9
 addr: 0x02060d1c
 size: 124 bytes
-matched: yes</title></rect><rect x="83.20" y="949.12" width="6.67" height="16.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060d98
+matched: yes</title></rect><rect x="83.20" y="949.12" width="6.67" height="16.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_SetRomOp
 module: arm9
 addr: 0x02060d98
 size: 160 bytes
-matched: yes</title></rect><rect x="83.20" y="965.22" width="6.67" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060e38
+matched: yes</title></rect><rect x="83.20" y="965.22" width="6.67" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadEnd
 module: arm9
 addr: 0x02060e38
 size: 132 bytes
-matched: yes</title></rect><rect x="83.20" y="978.50" width="6.67" height="16.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060ebc
+matched: yes</title></rect><rect x="83.20" y="978.50" width="6.67" height="16.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadFromCache
 module: arm9
 addr: 0x02060ebc
 size: 164 bytes
-matched: yes</title></rect><rect x="89.86" y="757.97" width="26.55" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060f60
+matched: yes</title></rect><rect x="89.86" y="757.97" width="26.55" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_Request
 module: arm9
 addr: 0x02060f60
 size: 332 bytes

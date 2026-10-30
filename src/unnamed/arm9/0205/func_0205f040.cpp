@@ -3,7 +3,7 @@
 
 extern "C" {
 
-int IPCSend(int cmd, int a, int b);
+int PXI_SendWordByFifo(int cmd, int a, int b);
 
 typedef struct {
     void (*fp)(int,int,int);
@@ -16,7 +16,7 @@ extern G_t data_020a80cc;
 void func_0205f040(void)
 {
     unsigned int saved = IRQ::Disable();
-    int ok = (IPCSend(6, 0x3000000, 0) >= 0);
+    int ok = (PXI_SendWordByFifo(6, 0x3000000, 0) >= 0);
     if (!ok) {
         void (*fp)(int,int,int);
         IRQ::Restore(saved);

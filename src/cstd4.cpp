@@ -40,9 +40,9 @@ extern "C" {
 #pragma push
 #pragma defer_codegen off
 // @symbol func_0206dac4
-extern int func_020589d4(void *p);
-extern void func_02058b08(void *p);
-extern void func_02058a94(void *p);
+extern int OS_TryLockMutex(void *p);
+extern void OS_LockMutex(void *p);
+extern void OS_UnlockMutex(void *p);
 typedef struct S6e06c S6e06c;
 int func_0206e06c(S6e06c *p);
 extern void func_02071784(void);
@@ -56,13 +56,13 @@ extern void (*data_020a9ec8)(void);
 
 int func_0206dac4(int a)
 {
-    if (func_020589d4(&data_020aa020) == 0) {
+    if (OS_TryLockMutex(&data_020aa020) == 0) {
         data_020a9fd8 = data_020a6134.current->id;
         data_020a9ffc = 1;
     } else if (data_020a9fd8 == data_020a6134.current->id) {
         data_020a9ffc++;
     } else {
-        func_02058b08(&data_020aa020);
+        OS_LockMutex(&data_020aa020);
         data_020a9fd8 = data_020a6134.current->id;
         data_020a9ffc = 1;
     }
@@ -75,7 +75,7 @@ int func_0206dac4(int a)
 
     data_020a9ffc--;
     if (data_020a9ffc == 0) {
-        func_02058a94(&data_020aa020);
+        OS_UnlockMutex(&data_020aa020);
     }
     if (data_020a9ec8 != 0) {
         data_020a9ec8();

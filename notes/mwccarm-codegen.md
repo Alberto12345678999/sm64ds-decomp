@@ -1650,8 +1650,10 @@ Everything else follows from that. Corollaries, each verified with minimal toys:
 
 **The one matched precedent, and why it is not available here.** A corpus scan of all of arm9
 for the ROM shape `cmp rX,#0; beq #8; <single mov>` finds exactly TWO sites: `func_02068398`
-and `func_0205c048` -- and c048 is MATCHED. Its source (src/unnamed/arm9/0205/func_0205c048.c) buys the branch
-with a genuinely 2-condition guard, giving the assignment block two predecessors:
+and `func_0205c048` (FSi_FindPathCommand) -- and c048 is MATCHED. Its source buys the branch
+with a genuinely 2-condition guard, giving the assignment block two predecessors. The shard
+spelled it with gotos, as below; src/engine/fs/FS_CommandDefault.cpp now spells the same guard
+`if (want_dir != 0 || find_dir != 0) want_dir = 1;`:
 ```c
 if (r8 != 0)      goto Lsep1;   /* pred 1: the goto      */
 if (spflag == 0)  goto Lskip1;
@@ -1853,7 +1855,7 @@ routinely falls to a *different* model's register rotation — always Fable-esca
    `func_ov006_02124088`. Also: `bad=1;` before `reject=0;` (declaration/assignment order)
    reproduced the ROM's `mov r3,#1` / `mov r1,#0` emission order — pair with `opt_propagation
    off` (6r) to stop that order from jump-threading a `==0` test into a `blo`. Cracked
-   `func_02060b64`.
+   `CARDi_TryReadCardDma`.
 
 ### Band economics (measured, 2026-07-21)
 `crackloop.py refine --max-div 25` structural drafts ≈ **70% Opus @71–75K/landed**. Widening to
@@ -2039,7 +2041,7 @@ New levers:
   movs; naming the invariant at only ONE of its three uses (inline at the other two) flipped
   the group order to the ROM's constants-first. Pairs with `opt_loop_invariants off`.
 - **`opt_loop_invariants off` fixes preheader EMISSION ORDER, not just hoisting**
-  (`func_02060f60`, div 2->0) -- it stopped LICM lifting a laundered base above the constant movs.
+  (`CARDi_Request`, div 2->0) -- it stopped LICM lifting a laundered base above the constant movs.
 - **`volatile` on a ring-buffer array pins an indexed store ahead of a wrap-check**
   (`func_0205b070`, div 11->0), after fixing tail store order with inline RMW instead of
   hoisted temps.
@@ -5060,7 +5062,8 @@ the previous instruction. The ROM's compiler skips it and takes the next registe
 not been used yet.
 
 **Four sites, same delta -- the entire residue on `func_0205256c`, and three of the fourteen
-divergent words on `func_0205a588`.**
+divergent words on `func_0205a588`.** (`func_0205256c` is the SDK's MTX_RotY33_, src/MTX_RotY33_.c. pret/pokediamond's FX_mtx33.c has it as
+hand-written Thumb asm, so no compiler ever had to emit the ROM's register choice.)
 
 | site | dead register at that point | ROM picks | every build picks |
 |---|---|---|---|

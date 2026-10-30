@@ -14,8 +14,8 @@ extern "C" {
  * archive goes idle: proc gets FS_COMMAND_IDLE (0xa, proc_flag 0x400) on a
  * scratch FSFile, and a pending suspend (FS_ARCHIVE_FLAG_SUSPENDING 0x40)
  * becomes FS_ARCHIVE_FLAG_SUSPEND and wakes stat_q. Field names follow the
- * SDK's FSFile and FSArchive, as func_0205bc88.c and func_0205c9b8.c spell
- * them; only the fields this function touches are spelled out. */
+ * SDK's FSFile and FSArchive, as src/engine/fs/FS_CommandDefault.cpp and
+ * func_0205c9b8.c spell them; only the fields this function touches are spelled out. */
 typedef struct FSFile {
     struct FSFile *prev;   /* 0x00 -- link.prev */
     struct FSFile *next;   /* 0x04 -- link.next */

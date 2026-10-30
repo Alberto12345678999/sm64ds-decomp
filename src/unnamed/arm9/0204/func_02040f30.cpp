@@ -8,7 +8,8 @@ extern "C" {
 
 /* The FSFile a child read is for (FileShareWork.mReadRequest, set by
  * func_02041a00). This ROM's FSFile has its prop union at 0x1c and its arg
- * union at 0x2c (see func_0205c264.c); names follow the SDK's FSFile. */
+ * union at 0x2c (see src/engine/fs/FS_CommandDefault.cpp); names follow the
+ * SDK's FSFile. */
 typedef struct FSFile {
     char pad_00[8];
     void *arc; /* 0x08 -- FS_NotifyArchiveAsyncEnd (func_0205cd5c) takes it */

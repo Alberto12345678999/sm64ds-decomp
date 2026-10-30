@@ -939,7 +939,7 @@ extern s32 data_02086d50[];
 extern s32 data_ov034_021138d8[];
 extern s32 data_ov066_0211abe4;
 extern s32 func_02012310(s32, s32, s32);
-extern s64 func_02059650(void);
+extern s64 OS_GetTick(void);
 extern s8 data_ov003_020b1180[];
 extern s8 data_ov003_020b16c8[];
 extern s8 data_ov066_0211ae00;

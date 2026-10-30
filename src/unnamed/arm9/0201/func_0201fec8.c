@@ -8,7 +8,7 @@ extern char data_020752cc[];
 extern char data_020752e8[];
 extern char data_02075304[];
 extern int func_0201a9ec(char *c);
-extern void func_02059eb0(unsigned char *dst);
+extern void OS_GetOwnerInfo(unsigned char *dst);
 extern void func_0203db64(char *a, char *b);
 extern int func_0203daac(void);
 extern void func_0201a9fc(char *c);
@@ -20,7 +20,7 @@ void func_0201fec8(void)
     int saved;
     if (data_0209e64c != 0) return;
     saved = func_0201a9ec(data_0209d574);
-    func_02059eb0(buf);
+    OS_GetOwnerInfo(buf);
     switch (buf[0]) {
     case 2:
         func_0203db64(data_02075358, data_02075320);
