@@ -14053,7 +14053,7 @@
    "files": [
     "src/unnamed/arm9/0207/func_02072f94.c",
     "src/unnamed/arm9/0207/func_02072fcc.c",
-    "src/unnamed/arm9/0207/func_020731dc.c",
+    "src/__register_global_object.c",
     "src/unnamed/arm9/0207/func_020731fc.c",
     "src/unnamed/arm9/0207/func_02073220.c",
     "src/unnamed/arm9/0207/func_0207322c.c"

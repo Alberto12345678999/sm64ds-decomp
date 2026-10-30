@@ -16,7 +16,7 @@ typedef struct EntryMeshHandler {
 
 extern void *func_020178cc(void *file, unsigned int fileID);
 extern int func_020178b4(int file);
-extern void func_020731dc(void *object, void *dtor, void **link);
+extern void __register_global_object(void *object, void *dtor, void **link);
 
 extern struct SharedFilePtr EntryMeshTextureFile; /* include/SharedFilePtr.h */
 extern void *EntryMeshTextureFileLink[];
@@ -28,7 +28,7 @@ extern EntryMeshHandler data_ov075_0211d35c; /* &EntryMesh::DrawGrid */
 
 void __sinit_ov075_0211c51c(void) {
     func_020178cc(&EntryMeshTextureFile, 0x8418);
-    func_020731dc(&EntryMeshTextureFile, (void *)func_020178b4, EntryMeshTextureFileLink);
+    __register_global_object(&EntryMeshTextureFile, (void *)func_020178b4, EntryMeshTextureFileLink);
     EntryMeshHandlers[0] = data_ov075_0211d354;
     EntryMeshHandlers[1] = data_ov075_0211d34c;
     EntryMeshHandlers[2] = data_ov075_0211d35c;

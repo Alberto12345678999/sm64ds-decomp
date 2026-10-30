@@ -3,14 +3,14 @@ struct Node72 {
     void (*fn)(void *object, int v);
     void *object;
 };
-extern struct Node72 *data_020aa3f0;
+extern struct Node72 *__global_destructor_chain;
 
 void func_02072f3c(void) {
-    struct Node72 *head = data_020aa3f0;
+    struct Node72 *head = __global_destructor_chain;
     if (head == 0) return;
     do {
-        data_020aa3f0 = head->next;
+        __global_destructor_chain = head->next;
         head->fn(head->object, -1);
-        head = data_020aa3f0;
+        head = __global_destructor_chain;
     } while (head != 0);
 }

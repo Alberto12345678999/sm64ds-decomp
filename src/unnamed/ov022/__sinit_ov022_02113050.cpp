@@ -1,7 +1,6 @@
 //cpp
 /* Static initializer for the rolling log's model and collision handles
- * (fl_log.bmd, fl_log.kcl), each registered with __register_global_object
- * (func_020731dc) on a 12-byte node.
+ * (fl_log.bmd, fl_log.kcl), each registered with __register_global_object on a 12-byte node.
  *
  * Not folded: the owner is daObjFlMaruta_c. Its resource list
  * data_ov022_02112c9c points at both handles, and this .init sits between
@@ -22,7 +21,7 @@ void *func_02017acc(void *, unsigned int); /* model handle constructor */
 int func_02017ab4(int);                    /* model handle destructor */
 void *func_02017b4c(void *, unsigned int); /* collision handle constructor */
 int SharedFilePtr_Destruct_Clsn(int);
-void func_020731dc(void *, void *, void **); /* __register_global_object */
+void __register_global_object(void *, void *, void **);
 }
 
 extern SharedFilePtr gFlLogModelFile;
@@ -32,7 +31,7 @@ extern void *data_ov022_02114684[3];
 
 extern "C" void __sinit_ov022_02113050(void) {
     func_02017acc(&gFlLogModelFile, ASSET_FL_LOG_BMD);
-    func_020731dc(&gFlLogModelFile, (void *)func_02017ab4, data_ov022_02114678);
+    __register_global_object(&gFlLogModelFile, (void *)func_02017ab4, data_ov022_02114678);
     func_02017b4c(&gFlLogCollisionFile, ASSET_FL_LOG_KCL);
-    func_020731dc(&gFlLogCollisionFile, (void *)SharedFilePtr_Destruct_Clsn, data_ov022_02114684);
+    __register_global_object(&gFlLogCollisionFile, (void *)SharedFilePtr_Destruct_Clsn, data_ov022_02114684);
 }

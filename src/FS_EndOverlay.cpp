@@ -1,8 +1,7 @@
 //cpp
 /* NitroSDK FS_overlay.c FS_EndOverlay, an older revision than pret's: with
- * interrupts disabled, unlink every __global_destructor_chain entry
- * (data_020aa3f0) whose destructor lies in the overlay's image or whose
- * object lies in its bss, run the ones unlinked, and repeat until a pass finds
+ * interrupts disabled, unlink every __global_destructor_chain entry whose
+ * destructor lies in the overlay's image or whose object lies in its bss, run the ones unlinked, and repeat until a pass finds
  * none. Then hand the target, address and size to func_0206cf98. */
 #include "types.h"
 #include "IRQ.h"
@@ -16,7 +15,7 @@ struct MWiDestructorChain {
     u32 obj;
 };
 
-extern struct MWiDestructorChain *data_020aa3f0;
+extern struct MWiDestructorChain *__global_destructor_chain;
 
 enum Flag { F0, F1 };
 
@@ -31,7 +30,7 @@ void FS_EndOverlay(FSOverlayInfo *p_ovi) {
     struct MWiDestructorChain *base;
     struct MWiDestructorChain *p;
     struct MWiDestructorChain *next;
-    struct MWiDestructorChain **chain = &data_020aa3f0;
+    struct MWiDestructorChain **chain = &__global_destructor_chain;
 
     for (;;) {
         head = 0;

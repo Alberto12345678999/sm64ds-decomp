@@ -146,7 +146,7 @@ enum daObjMarioCap_c_AssetId {
 
 /* The static initializer's own types. __sinit_ov002_02101064 constructs the 13
  * file handles with SharedFilePtr's constructor and registers each for
- * destruction through func_020731dc, then copies 18 pointer-to-member records
+ * destruction through __register_global_object, then copies 18 pointer-to-member records
  * into the nine {enter, per-frame} state records. A handle is a SharedFilePtr
  * subclass whose constructor/destructor are the ROM's SharedFilePtr entry
  * points (the manifest aliases those symbols). */
@@ -1412,12 +1412,12 @@ void daObjMarioCap_c::CheckTouch()
 
 /* ---- the static initializer's objects. __sinit_d_a_obj_mario_cap.cpp, emitted
  * from these definitions at the bottom of the file, constructs the 13 file
- * handles and registers each with its destructor through func_020731dc, then
+ * handles and registers each with its destructor through __register_global_object, then
  * copies the 18 pointer-to-member records into the nine {enter, per-frame}
  * state records. The records and handles are in the initializer's own order.
  * The constructor and destructor of a handle are the ROM's SharedFilePtr entry
- * points (aliased in this unit's manifest), and func_020731dc is the register
- * call the compiler emits as __register_global_object. */
+ * points (aliased in this unit's manifest), and the register call is the
+ * runtime's own __register_global_object. */
 
 /* The 13 file handles, in construct order. */
 daObjMarioCapFileHandle data_ov002_0210de30(0x8012);

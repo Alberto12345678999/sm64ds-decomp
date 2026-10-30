@@ -172,7 +172,7 @@ void FreeGfxSlotsById(int a);
 void NullDestructor_0203d47c(void);
 void Camera_UpdateMatrices(char *cam);
 
-void func_020731dc(void *object, void *destructor, void **node);
+void __register_global_object(void *object, void *destructor, void **node);
 void func_0203d680(Vec2_Fix12 *out, const Vec2_Fix12 *in, int scale);
 void *Ov004_LoadFile(int id);
 void Mg_LoseCredits(int c);
@@ -847,7 +847,7 @@ void RouletteRacer_Init(void *racer) {
     if (b == 0) {
         sRouletteRacerGoal[0] = 0xc000;
         sRouletteRacerGoal[1] = 0xc000;
-        func_020731dc(sRouletteRacerGoal, (void *)NullDestructor_0203d47c,
+        __register_global_object(sRouletteRacerGoal, (void *)NullDestructor_0203d47c,
                       &sRouletteRacerGoalDtorRec);
         sRouletteRacerGoalGuard |= 1;
     }
