@@ -20,6 +20,7 @@ typedef struct Ov007LayerSlot {
     Ov007BgLayer *layer; /* 0x04 */
     char kind;           /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
 } Ov007LayerSlot;
+typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
 
 /* Builds layer slot `type` around `obj` and links obj into the main or sub
  * BG list: 6/7 take prebuilt screen pairs, 1 keeps the loaded screen as its

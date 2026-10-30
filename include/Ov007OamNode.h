@@ -25,7 +25,7 @@ typedef struct Ov007OamNode {
      * draws the current frame of anims[animIndex] */
     Ov007CellAnim **anims;
     u8 animCount; /* 0x1c: func_ov007_020c1180 frees anims only when nonzero */
-    u8 animIndex; /* 0x1d: Sprite_SetAnimation's first argument */
+    u8 animIndex; /* 0x1d: Sprite_SetAnimation's second argument */
     char pad_1e[2];
     int mode; /* 0x20: 0 = stopped, 1 = looping, else once (func_ov007_020c0d70) */
     int rev;  /* 0x24: 1 = step backwards */

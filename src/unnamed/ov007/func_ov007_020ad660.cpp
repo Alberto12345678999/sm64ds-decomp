@@ -26,6 +26,7 @@ typedef struct Ov007LayerSlot {
     Ov007BgLayer *layer;   /* 0x04 */
     u8 kind;               /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
 } Ov007LayerSlot;
+typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
 
 /* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
  * names as in func_ov007_020b0da0. */
