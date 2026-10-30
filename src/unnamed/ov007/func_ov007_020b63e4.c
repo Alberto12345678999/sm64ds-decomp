@@ -3,10 +3,6 @@
 #include "Ov007Item.h"
 
 extern void func_ov007_020c1d8c(int i);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020b63e4(Ov007ItemView *view);
 

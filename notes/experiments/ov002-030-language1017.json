@@ -277,8 +277,8 @@
     },
     {
       "module": "ov002",
-      "source_before": "src/unnamed/ov002/__sinit_ov002_02107370.c",
-      "source_after": "src/unnamed/ov002/__sinit_ov002_02107370.c",
+      "source_before": "src/game/actors/d_a_demo.cpp",
+      "source_after": "src/game/actors/d_a_demo.cpp",
       "status": "retained_c",
       "classification": "static_cpp_initialization_reconstruction_needed",
       "reason": "Demo/Peach resource handles plus table copies; explicit ABI transcription.",

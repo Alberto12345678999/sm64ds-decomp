@@ -130,11 +130,6 @@ extern void func_ov007_020c0308(unsigned short *dst, int b, int c);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020c1d8c(int i);
 extern int func_ov007_020c3598(int value, int count, s8 *digits, int base);
-extern void func_ov007_020c421c(char *sprite);
-extern void func_ov007_020c4388(char *sprite, char *camera);
-extern void func_ov007_020c43bc(char *sprite, char *camera);
-extern int func_ov007_020c44c4(char *sprite);
-extern int func_ov007_020c44e4(int n);
 extern int func_ov007_020c94a0(int unused, unsigned int messageIndex);
 extern void func_ov007_020c94e4(void);
 /* local extern: the definition (unit020c94a0.cpp) takes two parameters;
@@ -401,10 +396,10 @@ void func_ov007_020b88c0(void) {
     data_ov007_0210346c->width = (s16)(data_ov007_02103460->width - 2);
     data_ov007_0210346c->height = (s16)(data_ov007_02103460->height - 2);
 
-    func_ov007_020c43bc((char *)data_ov007_0210346c, (char *)data_ov007_02103470);
-    func_ov007_020c4388((char *)data_ov007_0210346c, (char *)data_ov007_02103470);
-    func_ov007_020c43bc((char *)data_ov007_02103460, (char *)data_ov007_02103470);
-    func_ov007_020c4388((char *)data_ov007_02103460, (char *)data_ov007_02103470);
+    func_ov007_020c43bc(data_ov007_0210346c, data_ov007_02103470);
+    func_ov007_020c4388(data_ov007_0210346c, data_ov007_02103470);
+    func_ov007_020c43bc(data_ov007_02103460, data_ov007_02103470);
+    func_ov007_020c4388(data_ov007_02103460, data_ov007_02103470);
 }
 
 /* Starts the window for message kind `kind` in state `state` and clears
@@ -432,13 +427,13 @@ void func_ov007_020b883c(void) {
  * the window to closed. */
 void func_ov007_020b8714(int camera, int texture, int language) {
     if (data_ov007_0210346c == 0 && data_ov007_02103460 == 0) {
-        data_ov007_0210346c = (Ov007Sprite *)func_ov007_020c44e4(1);
+        data_ov007_0210346c = func_ov007_020c44e4(1);
         data_ov007_0210346c->depth = 0xffffec04;
         data_ov007_0210346c->alpha = 0x18000;
         data_ov007_0210346c->drawFlags |= 1;
         data_ov007_0210346c->polygonId = 0x1d;
         data_ov007_0210346c->polygonAttr = 0x800;
-        data_ov007_02103460 = (Ov007Sprite *)func_ov007_020c44e4(1);
+        data_ov007_02103460 = func_ov007_020c44e4(1);
         data_ov007_02103460->depth = 0xffffec04;
         data_ov007_02103460->polygonId = 0x1e;
         data_ov007_02103460->texColor0 = 1;
@@ -468,11 +463,11 @@ void func_ov007_020b8690(void) {
     }
     func_ov007_020c94e4();
     if (data_ov007_0210346c != 0) {
-        func_ov007_020c44c4((char *)data_ov007_0210346c);
+        func_ov007_020c44c4(data_ov007_0210346c);
         data_ov007_0210346c = 0;
     }
     if (data_ov007_02103460 != 0) {
-        func_ov007_020c44c4((char *)data_ov007_02103460);
+        func_ov007_020c44c4(data_ov007_02103460);
         data_ov007_02103460 = 0;
     }
 }
@@ -867,8 +862,8 @@ int func_ov007_020b7a34(void) {
 
 /* Draws the window: the fill, then the frame. */
 void func_ov007_020b7a00(void) {
-    func_ov007_020c421c((char *)data_ov007_0210346c);
-    func_ov007_020c421c((char *)data_ov007_02103460);
+    func_ov007_020c421c(data_ov007_0210346c);
+    func_ov007_020c421c(data_ov007_02103460);
 }
 
 int func_ov007_020b79e4(void) {

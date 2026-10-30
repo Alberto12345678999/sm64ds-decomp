@@ -3,11 +3,6 @@
 #include "Ov007Settings.h"
 
 extern void func_ov007_020bd9e4(int);
-extern int *data_ov007_0210342c;
-
-/* The extern keeps its int * spelling; the typed view is reached through a
- * cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Records the menu choice and routes it: choice 9 after either read
  * failure, or 7 after the minigame one, first opens window 1 or 2 through

@@ -9,10 +9,6 @@ extern void func_ov007_020bd1c0(int i);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020aec00(void);
 extern void func_ov007_020c1d78(int i);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020af434(void) {
     Ov007BgLayer **layers;

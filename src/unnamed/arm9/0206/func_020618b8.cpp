@@ -5,7 +5,7 @@
 extern "C" {
 
 extern void *WM_GetSystemWork(void);
-extern int func_0206152c(void);
+extern int WMi_CheckInitialized(void);
 
 /* NitroSDK WMStatus and WMArm9Buf, the fields read here; the names follow
  * func_02061ab0's views (status at +0x04) and include/WmWork.h's WmStatus
@@ -32,7 +32,7 @@ int func_020618b8(void)
 {
     WMArm9Buf *sys = (WMArm9Buf *)WM_GetSystemWork();
     WMStatus *status;
-    if (func_0206152c())
+    if (WMi_CheckInitialized())
         return 0;
     CP15::InvalidateDataCache((unsigned int)&sys->status->state, 2);
     status = sys->status;

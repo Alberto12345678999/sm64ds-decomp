@@ -8,15 +8,10 @@ extern void func_ov007_020b283c(void);
 extern void func_ov007_020b76a0(void);
 extern void func_ov007_020bd1c0(int i);
 extern void *func_ov007_020b8f78(void);
-extern char *data_ov007_0210342c;
 
 typedef char Ov007Work_transitionMode_must_be_at_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20
                                                           ? 1
                                                           : -1];
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020b0358(void)
 {

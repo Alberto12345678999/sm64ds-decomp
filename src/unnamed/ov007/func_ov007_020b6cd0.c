@@ -3,10 +3,6 @@
 extern void func_ov007_020ade14(struct Ov007ItemNode *node);
 extern void func_ov007_020adbc8(void *slot);
 extern void func_ov007_020b73b4(struct Ov007Display *d);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Frees the nine item nodes, the eight layer slots and the display record. */
 void func_ov007_020b6cd0(void) {

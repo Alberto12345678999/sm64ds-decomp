@@ -6,7 +6,7 @@
 // grows past r0. A flag byte selects, bit by bit from the top, a literal byte or a
 // 12-bit-distance back-reference, and the output range is then cleaned from the data
 // cache and invalidated from the instruction cache. _start (src/Entry.c) runs it on the
-// static image and src/unnamed/arm9/0205/func_0205dd9c.c on compressed overlays.
+// static image and src/FS_StartOverlay.c on compressed overlays.
 //
 // The name and the instruction list are pret/pokediamond's crt0.c, where this is an
 // `asm` function too. r4-r7 are pushed by hand and the backward `ldmdb` header read has

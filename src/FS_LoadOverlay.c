@@ -1,7 +1,7 @@
 #include "nitro/fs/overlay.h"
 extern int func_02018b64(FSOverlayInfo *info);
 extern void Crash(void);
-extern void func_0205dd9c(char *self);
+extern void FS_StartOverlay(FSOverlayInfo *p_ovi);
 extern void func_ov001_020aa420(void);
 
 int FS_LoadOverlay(int proc, int id) {
@@ -19,6 +19,6 @@ int FS_LoadOverlay(int proc, int id) {
     }
     Crash();
 start:
-    func_0205dd9c((char *)&info);
+    FS_StartOverlay(&info);
     return 1;
 }

@@ -18,7 +18,7 @@ typedef struct WMBssDesc {
 
 /* MB_ReadMultiBootParentBssDesc */
 extern void func_020672d0(void *thiz, int a1, int a2, int a3, int a4);
-extern void func_020616e8(void *p, int a1);
+extern void WM_Init(void *p, int a1);
 
 extern unsigned short data_020a0f14;
 extern int data_020a0f94;
@@ -65,6 +65,6 @@ void func_020408b0(unsigned short arg) {
     data_020a0f64 = 0x480;
     data_020a0f68 = Memory::Allocate(0x480, 0x20);
     *(unsigned short *)(data_020a1064 + 0x30) = data_020a0f28;
-    func_020616e8(data_020a0f4c, 1);
+    WM_Init(data_020a0f4c, 1);
 }
 }

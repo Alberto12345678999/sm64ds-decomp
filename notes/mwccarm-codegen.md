@@ -2018,6 +2018,17 @@ into a pool literal. The wildcarded byte oracle accepts it; the link gate reject
 right, it is a CONFIG symbol-merge change, not a source spelling -- see the dsd symbol-split
 note in the session log.
 
+**RESOLVED (2026-10-30).** Both halves of that verdict have since been settled, and the
+WRONG-DEST half no longer reproduces. Destination resolution is addend-aware now
+(`reloc_audit.resolve_candidate`, `linkcheck.func_relocs_typed`): an `R_ARM_ABS32` against
+`data_020a8138` with a RELA addend of 4 resolves to 0x020a813c, which is exactly what
+`config/arm9/relocs.txt` records, so `match.py --strict-relocs` passes the merged spelling.
+The config half is NOT a fix: removing the `data_020a813c` row makes `dsd delink` fail
+(`No symbol found for relocation from 0x0205fbcc ... to 0x020a813c`), because dsd needs a
+symbol at every `relocs.txt` target and `relocs.txt` has no addend field. The row stays as an
+interior label; the source spells the access as `data_020a8138[i].reply` (#4521).
+Do not re-derive this as a wall; re-measure it.
+
 ## 7c. Third arm9 head cascade (2026-07-22, 7 matches) -- the head's deep tail still pays
 
 Opus 6/11 at 40.5K tok/landed on a div 2-17 pool (BETTER than the div 2-6 pools of 7a/7b),
@@ -8921,7 +8932,7 @@ What each one needed beyond §6df:
   so they are that TU's `.bss` and not KuppaScript's. Its manifest is still text-only, with
   RTTI externalized.
 - Three owners are unpromoted shard runs:
-  - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
+  - `__sinit_02074dc4` is folded into `src/Timer.cpp` (`__sinit_Timer.cpp`): RngSeed `data_0209d4b8` plus the Timer `data_0209d4c8`.
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
   - `__sinit_02074e44`: `data_0209e650`, next to `data_0209e64c` of the unpromoted
     0x0201fec8..0x02020820 run.

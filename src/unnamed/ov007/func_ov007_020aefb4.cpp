@@ -6,7 +6,6 @@
 
 extern "C" {
 
-extern char* data_ov007_0210342c;
 extern int func_ov007_020b8fb4(void);
 extern int func_ov007_020af260(int,int,int*,int*);
 extern int func_ov007_020b8f64(void);
@@ -15,10 +14,6 @@ extern int func_ov007_020b9640(void);
 
 typedef char
     Ov007Work_itemNodes_must_be_at_0xa4[(int)&((Ov007Work *)0)->itemNodes == 0xa4 ? 1 : -1];
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Every 0xf0 ticks of states[1], from tick 0x3c on, re-arms item node 1's
  * 0x3c-frame wiggle; func_ov007_020af260 picks the state requests below.

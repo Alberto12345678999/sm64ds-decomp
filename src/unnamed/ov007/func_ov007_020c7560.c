@@ -1,9 +1,9 @@
 #include "Ov007Spring.h"
 
-extern void func_ov007_020c7d60(void *link, int stiffness, int damping);
-extern void func_ov007_020c7c60(void *link, int stiffness, int damping);
-extern void func_ov007_020c7b2c(void *link, int stiffness, int damping);
-extern void func_ov007_020c7a84(void *link, int stiffness, int damping);
+extern void func_ov007_020c7d60(Ov007Link *link, int stiffness, int damping);
+extern void func_ov007_020c7c60(Ov007Link *link, int stiffness, int damping);
+extern void func_ov007_020c7b2c(Ov007Link *link, int stiffness, int damping);
+extern void func_ov007_020c7a84(Ov007Link *link, int stiffness, int damping);
 
 /* One spring step over every link of the list, with the step its
  * springMode picks: 0 holds the rest length, 1 the rest offset, 2 is the

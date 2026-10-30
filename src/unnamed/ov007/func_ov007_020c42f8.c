@@ -8,9 +8,7 @@ extern void func_0205532c(int *a, int *v);
 
 /* Loads the sprite's transform: translate to pos + posOffset, rotate by
  * rotX/rotY/rotZ, then scale by scaleX/scaleY (z stays 1.0). */
-void func_ov007_020c42f8(char *self);
-void func_ov007_020c42f8(char *self) {
-    Ov007Sprite *sprite = (Ov007Sprite *)self;
+void func_ov007_020c42f8(Ov007Sprite *sprite) {
     int vec[3];
     Mat3 mtx;
     int a, b;

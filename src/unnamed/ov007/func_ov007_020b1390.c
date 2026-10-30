@@ -5,12 +5,7 @@
 #include "Ov007Item.h"
 #include "Ov007LayerSlot.h"
 
-extern char *data_ov007_0210342c;
 extern u8 data_ov007_020ccc44[];
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern void func_ov007_020c0288(u16 *p, int count, int val);
 extern void func_ov007_020c0638(void *a, int b, int c, int d);

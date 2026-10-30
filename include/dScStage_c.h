@@ -14,6 +14,7 @@ struct dExtAnmTexSRT_c;
  * include/Particle__SysTracker.h; see notes/scene-provenance.md and
  * notes/system-provenance.md for the field evidence. */
 #include "Particle__SysTracker.h"
+#include "dGraph_c.h"
 
 /* One per level texture animation, eight slots' worth at dScStage_c+0x8bc.
  * dScStage_c::LoadTextureTransformers fills them: for each entry of the level's
@@ -56,6 +57,8 @@ void LoadMinimapChangeObject(int, Fix12i, s8);
  * tools/check_header_offsets.py walks them from dScene_c's asserted 0x50.
  */
 struct dScStage_c : dScene_c {
+    class graphCallback_c;
+
     Particle::SysTracker mSysTracker;  /* 0x050 */
     dExtSimpleModel_c mModel;          /* 0x86c */
     StageTexAnimSlot mTexAnimSlots[8]; /* 0x8bc - dExtSimpleModel_c ends here, and dBgW_Kc
@@ -126,12 +129,28 @@ struct dScStage_c : dScene_c {
        needed, and from then on returns -1 -- "call me again" -- until
        func_020308a8 reports the load finished. */
     s32 mWaitingForLoad; /* 0x9c4 */
+};
 
-    /* ROM class N10dScStage_c15graphCallback_c (RTTI 0x02092164, vtable
-       0x02092188). The body, with the two hooks virtual, lives in
-       d_s_stage_methods.cpp. A definition here would renumber mwcc @NNN in
-       every TU that includes this header. */
-    class graphCallback_c;
+/* The stage's one graph-callback object, data_0209f3c4.
+
+   RTTI names the class: _ZTIN10dScStage_c15graphCallback_cE at 0x02092164 and
+   _ZTSN10dScStage_c15graphCallback_cE at 0x02092198, with the vtable between
+   them. The static initializer in d_s_stage_methods.cpp writes the base vptr
+   and then this vtable. The matrix and the four affine words stay zero there;
+   UpdateMinimap fills them. */
+class dScStage_c::graphCallback_c : public dGraph_c::callback_c {
+public:
+    /* The 2x2 fixed-point matrix. Spelled as four words because Matrix2x2 is
+       still a file-local type, defined five different ways in five TUs; the
+       one SetBGyAffine call casts. */
+    int matrix[4];        /* 0x04 */
+    volatile u32 originX; /* 0x14 */
+    volatile u32 originY; /* 0x18 */
+    volatile u32 targetX; /* 0x1c */
+    volatile u32 targetY; /* 0x20 */
+
+    virtual int GraphCallback1(); /* slot 1 */
+    virtual int GraphCallback2(); /* slot 2 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

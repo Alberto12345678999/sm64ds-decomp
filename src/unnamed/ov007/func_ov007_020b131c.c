@@ -3,10 +3,6 @@
 #include "Ov007LayerSlot.h"
 
 extern int func_ov007_020c0638(void *p, int a, int b, int d);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Resets the scroll of layer slots 6 and 1 and rebuilds both screens from
  * their sources at a y offset of -0xc0 pixels (func_ov007_020c0638). */

@@ -17,10 +17,10 @@ extern int func_0205da94;
 extern int func_0205db2c;
 extern int func_0205db24;
 extern void CARD_Init(void);
-extern void func_0205cd34(void *o);
-extern int func_0205cc80(void *thiz, void *a, void *b);
-extern void func_0205c7c4(int *p, int a, int b);
-extern int func_0205cb68(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+extern void FS_InitArchive(void *o);
+extern int FS_RegisterArchiveName(void *thiz, void *a, void *b);
+extern void FS_SetArchiveProc(int *p, int a, int b);
+extern int FS_LoadArchive(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
 
 #pragma opt_propagation off
 void FSi_InitRom(u32 default_dma_no) {
@@ -37,8 +37,8 @@ void FSi_InitRom(u32 default_dma_no) {
 
     fnt = (int *)0x27ffe40;
     fat = (int *)0x27ffe48;
-    func_0205cd34(&data_020a8074);
-    func_0205cc80(&data_020a8074, &data_0209a048, (void *)3);
+    FS_InitArchive(&data_020a8074);
+    FS_RegisterArchiveName(&data_020a8074, &data_0209a048, (void *)3);
     if (fnt[0] == -1)
         return;
     if (fnt[0] == 0)
@@ -47,7 +47,7 @@ void FSi_InitRom(u32 default_dma_no) {
         return;
     if (fat[0] == 0)
         return;
-    func_0205c7c4(&data_020a8074, (int)&func_0205da94, 0x602);
-    func_0205cb68(&data_020a8074, 0, fat[0], fat[1], fnt[0], fnt[1], (int)&func_0205db2c,
-                  (int)&func_0205db24);
+    FS_SetArchiveProc(&data_020a8074, (int)&func_0205da94, 0x602);
+    FS_LoadArchive(&data_020a8074, 0, fat[0], fat[1], fnt[0], fnt[1], (int)&func_0205db2c,
+                   (int)&func_0205db24);
 }
