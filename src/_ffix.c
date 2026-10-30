@@ -1,7 +1,10 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ffa344 at 0x01ffa344 (ITCM) -- float to 32-bit integer conversion, part of the
-// soft-float runtime block that fills 0x01ff8000-0x01ffb078. Assembly in the original.
+// _ffix at 0x01ffa344 (ITCM), also known as func_01ffa344 -- float to signed 32-bit integer
+// conversion. Toolchain runtime, shipped as assembly; there is no C source for it in the
+// game. The name is the one mwccarm 2004/b56 itself emits a `bl` to for `(int)f` (checked
+// by compiling that expression). The signed reading is in the body: the 0x9e bias (127 +
+// 31) overflows at 2^31 and the result is negated on the sign bit.
 //
 // Unbiases the exponent against 0x9e (127 + 31), shifts the mantissa into place with the
 // hidden bit restored, and negates on the sign. The inexact tail is what makes it a
@@ -17,7 +20,7 @@
 extern int func_0207322c(void);
 extern void func_0206ddcc(void);
 
-asm int func_01ffa344(int bits)
+asm int _ffix(int bits)
 {
     bic r1, r0, #0x80000000
     mov r2, #0x9e

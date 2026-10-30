@@ -205,7 +205,7 @@
       "src/game/actors/d_a_yurei_mucho.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0200/func_02005000.c": [
+      "src/unnamed/arm9/0200/func_02005000.cpp": [
         "param:#3 short",
         "param:#4 short",
         "param:#5 short"
@@ -465,7 +465,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffde98.c": [
+      "src/MI_SendGXCommand.c": [
         "param:#2 void *",
         "param:#3 void *"
       ],
@@ -1801,13 +1801,13 @@
       ]
     },
     "OSReadROMArea": {
-      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
+      "src/OSi_ReloadRomData.cpp": [
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ]
     },
     "OS_SleepThread": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
@@ -9154,7 +9154,7 @@
       ]
     },
     "data_020874cc": {
-      "src/unnamed/arm9/0200/func_02005060.c": [
+      "src/unnamed/arm9/0200/func_02005060.cpp": [
         "return:int []"
       ]
     },
@@ -11293,7 +11293,7 @@
       ]
     },
     "data_020a645c": {
-      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
+      "src/OSi_ReloadRomData.cpp": [
         "return:volatile unsigned short"
       ],
       "src/unnamed/arm9/0205/func_02059e04.c": [
@@ -16661,12 +16661,12 @@
         "return:void"
       ]
     },
-    "func_01ffdd98": {
+    "OS_ResetSystem": {
       "src/func_02013f4c.cpp": [
         "param:#1 int"
       ]
     },
-    "func_01ffde98": {
+    "MI_SendGXCommand": {
       "include/decl_common.h": [
         "param:#1 int",
         "param:#2 int",
@@ -16678,7 +16678,7 @@
         "param:#3 int"
       ]
     },
-    "func_020048d8": {
+    "MIi_UncompressBackward": {
       "src/unnamed/arm9/0205/func_0205dd9c.c": [
         "arity:1"
       ]
@@ -16736,7 +16736,7 @@
       ]
     },
     "func_02009138": {
-      "src/unnamed/arm9/0200/func_02005098.c": [
+      "src/unnamed/arm9/0200/func_02005098.cpp": [
         "param:#1 int"
       ],
       "src/engine/view/d_camera.cpp": [
@@ -16787,7 +16787,7 @@
       ]
     },
     "func_02009e70": {
-      "src/unnamed/arm9/0200/func_02005000.c": [
+      "src/unnamed/arm9/0200/func_02005000.cpp": [
         "return:void"
       ],
       "src/engine/view/d_camera.cpp": [
@@ -16806,7 +16806,7 @@
       ]
     },
     "func_0200bec4": {
-      "src/unnamed/arm9/0200/func_02005098.c": [
+      "src/unnamed/arm9/0200/func_02005098.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#4 int"
@@ -18833,7 +18833,7 @@
         "return:void"
       ]
     },
-    "func_02018d48": {
+    "myFS_ReadFile": {
       "src/SharedFilePtr.cpp": [
         "param:#1 void *",
         "param:#2 void *",
@@ -18861,12 +18861,12 @@
         "param:#2 void *"
       ]
     },
-    "func_02018d98": {
+    "myFS_OpenFile": {
       "src/unnamed/arm9/0201/func_02018934.cpp": [
         "param:#2 int"
       ]
     },
-    "func_02018dc4": {
+    "myFS_OpenFileFast": {
       "src/unnamed/arm9/0201/func_020182bc.c": [
         "arity:2"
       ],
@@ -18880,12 +18880,12 @@
         "arity:2"
       ]
     },
-    "func_02018e00": {
+    "myFS_OpenFileDirect": {
       "src/unnamed/arm9/0201/func_02018c00.c": [
         "param:#1 void *"
       ]
     },
-    "func_02018e3c": {
+    "myFS_ConvertPathToFileID": {
       "src/unnamed/arm9/0201/func_02018434.c": [
         "param:#2 int",
         "return:void"
@@ -21143,7 +21143,7 @@
       ]
     },
     "func_0205d4a0": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int",
         "param:#2 void *"
       ]
@@ -21159,7 +21159,7 @@
       ]
     },
     "func_0205d5e8": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205c9b8.c": [
@@ -22189,13 +22189,13 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ff8e10.c": [
+      "src/_dsub.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0206dd30": {
-      "src/unnamed/arm9/01ff/func_01ff9378.c": [
+      "src/_fadd.c": [
         "arity:0",
         "return:void"
       ],
@@ -22203,7 +22203,7 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa594.c": [
+      "src/_fsub.c": [
         "arity:0",
         "return:void"
       ]
@@ -22217,29 +22217,29 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ff859c.c": [
+      "src/_ll_ufrom_d.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ff8e10.c": [
+      "src/_dsub.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0206ddcc": {
-      "src/unnamed/arm9/01ff/func_01ff9378.c": [
+      "src/_fadd.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa344.c": [
+      "src/_ffix.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa4bc.c": [
+      "src/_fflt.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa594.c": [
+      "src/_fsub.c": [
         "arity:0",
         "return:void"
       ]
@@ -22429,28 +22429,28 @@
       "src/_dmul.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff859c.c": [
+      "src/_ll_ufrom_d.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff8e10.c": [
+      "src/_dsub.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff9378.c": [
+      "src/_fadd.c": [
         "return:int"
       ],
       "src/unnamed/arm9/01ff/func_01ff97d8.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa344.c": [
+      "src/_ffix.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa440.c": [
+      "src/_ffltu.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa4bc.c": [
+      "src/_fflt.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa594.c": [
+      "src/_fsub.c": [
         "return:int"
       ],
       "src/unnamed/arm9/01ff/func_01ffafd4.c": [

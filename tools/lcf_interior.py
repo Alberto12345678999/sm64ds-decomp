@@ -428,11 +428,6 @@ def _elf_names(data):
 _ALIAS_OBJECTS = {
     "_dadd.o": "src/_dadd.c",
     "_dmul.o": "src/_dmul.c",
-    "func_01ff8e10.o": "src/unnamed/arm9/01ff/func_01ff8e10.c",
-    "func_01ff9378.o": "src/unnamed/arm9/01ff/func_01ff9378.c",
-    "func_01ffa594.o": "src/unnamed/arm9/01ff/func_01ffa594.c",
-    # The same blocks under their runtime names (#4500). Both spellings are
-    # listed until that rename lands, because only linked objects are looked up.
     "_ll_ufrom_d.o": "src/_ll_ufrom_d.c",
     "_dsub.o": "src/_dsub.c",
     "_fadd.o": "src/_fadd.c",

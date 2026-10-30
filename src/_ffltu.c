@@ -1,8 +1,9 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ffa440 at 0x01ffa440 (ITCM) -- unsigned 32-bit integer to float conversion, the
-// unsigned twin of func_01ffa4bc immediately below it and part of the same soft-float
-// runtime block. Assembly in the original.
+// _ffltu at 0x01ffa440 (ITCM), also known as func_01ffa440 -- unsigned 32-bit integer to
+// float conversion. Toolchain runtime, shipped as assembly; there is no C source for it in
+// the game. The name is the one mwccarm 2004/b56 itself emits a `bl` to for `(float)u` on
+// an unsigned (checked by compiling that expression).
 //
 // It skips the sign work func_01ffa4bc opens with. Zero returns straight away, and the
 // `bmi` skips the `clz` / `lsls` normalisation whenever bit 31 is already set, because a
@@ -21,11 +22,10 @@
 // the enabled-trap exit that leaves through func_0206ddcc with the packed exception code
 // 0x40000308. No C construct expresses a jump into another function's interior, so both
 // are named by their addresses and branched to as externs -- the same idea `_fadd_core`
-// and `_fsub_core` use to tie func_01ff9378 and func_01ffa594 together four rows down,
-// but without a config/arm9/itcm/symbols.txt row: those two labels sit in ranges no
-// src/ file is enrolled for, so a delinked gap object defines them, while 0x01ffa538 and
-// 0x01ffa558 sit inside src/unnamed/arm9/01ff/func_01ffa4bc.c's enrolled range, where nothing would. A row
-// there is reported by `dsd check symbols` as a symbol missing from the linked binary.
+// and `_fsub_core` use to tie _fadd and _fsub together, but without a
+// config/arm9/itcm/symbols.txt row: 0x01ffa538 and 0x01ffa558 sit inside src/_fflt.c's
+// enrolled range, and a row there is reported by `dsd check symbols` as a symbol missing
+// from the linked binary.
 //
 // The two branches are raw PC-relative words, not symbol relocations, so this
 // file is enrolled on its own. The landing sites stay inside func_01ffa4bc.
@@ -35,7 +35,7 @@
 
 extern int func_0207322c(void);
 
-asm float func_01ffa440(unsigned int value)
+asm float _ffltu(unsigned int value)
 {
     cmp r0, #0
     bxeq lr

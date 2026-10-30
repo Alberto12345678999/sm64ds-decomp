@@ -12,7 +12,7 @@ extern void *data_020a0eac;
 
 extern void InitCrashScreen(void);
 extern void ShowCrashScreen(void);
-extern void func_01ffdd98(int a);
+extern void OS_ResetSystem(int a);
 extern int func_0205f958(void);
 
 void func_02013f4c(void)
@@ -68,7 +68,7 @@ void func_02013f4c(void)
         if ((cur & 0x30c) == 0x30c) {
             int b = (*(volatile u16*)0x27ffc40 == 2);
             if (b == 0) {
-                func_01ffdd98(0);
+                OS_ResetSystem(0);
             } else {
                 func_0205f958();
             }

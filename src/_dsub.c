@@ -1,10 +1,11 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ff8e10 at 0x01ff8e10 (ITCM) -- double-precision subtract. The compiler emits a
-// call to this for every `-` on a double; it is the toolchain's own runtime, shipped as
-// assembly, and there is no C source for it in the game. No zero-size alias names this
-// address in config/arm9/itcm/symbols.txt (unlike its neighbours _dadd/_dmul), so it is
-// filed under its address, matching the arm9 twenty's convention (e.g. func_0205a588.c).
+// _dsub at 0x01ff8e10 (ITCM), also known as func_01ff8e10 -- double-precision subtract. The
+// compiler emits a call to this for every `-` on a double; it is the toolchain's own
+// runtime, shipped as assembly, and there is no C source for it in the game. The name is
+// the one mwccarm 2004/b56 itself emits for `double - double` (`bl _dsub`, checked by
+// compiling `double f(double a, double b) { return a - b; }`), and it agrees with the
+// `_dsub_core` label at this function's +0x10 that _dadd already branches to.
 //
 // Operands arrive in r0:r1 and r2:r3 and the difference comes back in r0:r1, already
 // outside the C ABI for doubles. This is _dadd's mirror image: the entry XORs the two
@@ -29,7 +30,7 @@ extern void func_0206dd7c(void);
 extern void func_0206dcd4(void);
 extern void _dadd_core(void);
 
-asm double func_01ff8e10(double a, double b)
+asm double _dsub(double a, double b)
 {
     stmdb sp!, {r0, r1, r2, r3, r4, lr}
     eors ip, r1, r3

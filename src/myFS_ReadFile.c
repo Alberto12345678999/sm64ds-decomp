@@ -1,3 +1,14 @@
+/* The game's checked wrappers around the NitroSDK FS calls. Each forwards its
+ * arguments to the SDK function and, on failure, hands its own name string to
+ * func_02018e68 and crashes. The names come from those strings, which sit in
+ * .rodata at the addresses the externs below give:
+ *   0x0208eb8c "myFS_OpenFile"          0x0208ec74 "myFS_OpenFileFast"
+ *   0x0208eb9c "myFS_ReadFile"          0x0208ecc4 "myFS_OpenFileDirect"
+ *   0x0208ecd8 "myFS_ConvertPathToFileID"
+ * func_02018e68 records the string in data_0209d3c0 and sleeps the thread
+ * when func_0203d7d4(0) is nonzero. myFS_ReadFile treats a short read as a
+ * failure. */
+
 struct BC {
     int x, y;
 };
@@ -29,7 +40,7 @@ void func_02018e68(void *c) {
  * function's own two arguments (push {r4, lr} / bl func_0205d644 / movs r4, r0),
  * so both parameters are real and are forwarded. Every caller in the image
  * already passes two: func_020182bc, func_02018434, func_020189f0. */
-int func_02018e3c(void *out_file_id, const char *path) {
+int myFS_ConvertPathToFileID(void *out_file_id, const char *path) {
     int r = func_0205d644(out_file_id, path);
     if (!r) {
         func_02018e68(data_0208ecd8);
@@ -38,7 +49,7 @@ int func_02018e3c(void *out_file_id, const char *path) {
     return r;
 }
 
-int func_02018e00(int a, int b, int c, int d, int e) {
+int myFS_OpenFileDirect(int a, int b, int c, int d, int e) {
     int r = func_0205d5e8(a, b, c, d, e);
     if (r == 0) {
         func_02018e68(&data_0208ecc4);
@@ -47,7 +58,7 @@ int func_02018e00(int a, int b, int c, int d, int e) {
     return r;
 }
 
-int func_02018dc4(int a, int b, int c, ...) {
+int myFS_OpenFileFast(int a, int b, int c, ...) {
     int r = func_0205d568(a, *(struct BC *)&b);
     if (r == 0) {
         func_02018e68(&data_0208ec74);
@@ -59,7 +70,7 @@ int func_02018dc4(int a, int b, int c, ...) {
 /* recovered: both arguments ride through. The body is push {r4, lr} / bl
  * func_0205d518 / movs r4, r0, so r0 (the FSFile) and r1 (the path) reach the
  * callee untouched. func_02018934 already calls this with two. */
-int func_02018d98(void *file, const char *path) {
+int myFS_OpenFile(void *file, const char *path) {
     int r = func_0205d518(file, path);
     if (!r) {
         func_02018e68(data_0208eb8c);
@@ -68,7 +79,7 @@ int func_02018d98(void *file, const char *path) {
     return r;
 }
 
-int func_02018d48(int a, int b, int c) {
+int myFS_ReadFile(int a, int b, int c) {
     char buf[0x100];
     int r = FS_ReadFile(a, b, c);
     if (r != c) {

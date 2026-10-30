@@ -4,8 +4,8 @@
 // stores the interrupt-check word, then jumps to the game entry via bx with a hand-loaded
 // lr -- no C compiler emits msr/bx-with-pooled-lr, so there is no C to decompile it to.
 extern void _ZN4CP1511SystemSetupEv(void);
-extern void func_020048d8(void);
-extern void func_0200497c(void);
+extern void MIi_UncompressBackward(void);
+extern void do_autoload(void);
 extern void MultiStore_Int(void);
 extern void func_01ffafd4(void);
 extern void func_02019780(void);
@@ -32,8 +32,8 @@ asm void Entry(void) {
     sub     sp, r1, #4
     ldr     r1, =0x2004ad8
     ldr     r0, [r1, #0x14]
-    bl      func_020048d8
-    bl      func_0200497c
+    bl      MIi_UncompressBackward
+    bl      do_autoload
     mov     r0, #0
     ldr     r1, =0x023c0000
     mov     r2, #0x4000

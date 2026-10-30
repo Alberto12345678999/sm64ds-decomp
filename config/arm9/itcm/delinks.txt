@@ -4,7 +4,7 @@ src/_dadd.c:
     complete
     .text start:0x01ff8000 end:0x01ff859c
 
-src/unnamed/arm9/01ff/func_01ff859c.c:
+src/_ll_ufrom_d.c:
     complete
     .text start:0x01ff859c end:0x01ff8708
 
@@ -12,11 +12,11 @@ src/_dmul.c:
     complete
     .text start:0x01ff8708 end:0x01ff8e10
 
-src/unnamed/arm9/01ff/func_01ff8e10.c:
+src/_dsub.c:
     complete
     .text start:0x01ff8e10 end:0x01ff9378
 
-src/unnamed/arm9/01ff/func_01ff9378.c:
+src/_fadd.c:
     complete
     .text start:0x01ff9378 end:0x01ff97d8
 
@@ -24,19 +24,19 @@ src/unnamed/arm9/01ff/func_01ff97d8.c:
     complete
     .text start:0x01ff97d8 end:0x01ffa344
 
-src/unnamed/arm9/01ff/func_01ffa344.c:
+src/_ffix.c:
     complete
     .text start:0x01ffa344 end:0x01ffa440
 
-src/unnamed/arm9/01ff/func_01ffa440.c:
+src/_ffltu.c:
     complete
     .text start:0x01ffa440 end:0x01ffa4bc
 
-src/unnamed/arm9/01ff/func_01ffa4bc.c:
+src/_fflt.c:
     complete
     .text start:0x01ffa4bc end:0x01ffa594
 
-src/unnamed/arm9/01ff/func_01ffa594.c:
+src/_fsub.c:
     complete
     .text start:0x01ffa594 end:0x01ffa9dc
 
@@ -80,7 +80,7 @@ src/IRQHandler.cpp:
     complete
     .text start:0x01ffd97c end:0x01ffdb28
 
-src/unnamed/arm9/01ff/func_01ffdb28.c:
+src/OSi_DoBoot.c:
     complete
     .text start:0x01ffdb28 end:0x01ffdbd8
 
@@ -88,7 +88,7 @@ src/OSReadROMArea.c:
     complete
     .text start:0x01ffdbd8 end:0x01ffdd08
 
-src/unnamed/arm9/01ff/func_01ffdd08.cpp:
+src/OSi_ReloadRomData.cpp:
     complete
     .text start:0x01ffdd08 end:0x01ffde00
 src/DMAStartTransferFB.cpp:
@@ -99,6 +99,6 @@ src/DMAStartTransfer.cpp:
     complete
     .text start:0x01ffde50 end:0x01ffde98
 
-src/unnamed/arm9/01ff/func_01ffde98.c:
+src/MI_SendGXCommand.c:
     complete
     .text start:0x01ffde98 end:0x01ffdf3c
