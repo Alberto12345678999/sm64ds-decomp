@@ -10,12 +10,7 @@ typedef int Fix12;
 extern void func_ov007_020bff38(Ov007Camera *cam);
 extern void func_ov007_020bffb8(Ov007Camera *cam);
 
-extern char *data_ov007_0210342c;
 extern short data_02082214[];
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020b2160(int mode) {
     int a;

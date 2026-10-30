@@ -13,10 +13,6 @@ extern void func_ov007_020b11bc(void);
 extern void func_ov007_020b10dc(void);
 extern void func_ov007_020b0a20(void);
 extern void func_ov007_020b0834(void);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Runs the handler for states[1]'s current state; state 7 just marks the
  * choice ready. */

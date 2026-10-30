@@ -8,9 +8,8 @@ extern void AddVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 /* Moves the picked point to src: its follower's velocity and force are
  * cleared and its x/y set. Then mode 0 moves pos to src, mode 1 moves it
  * to src plus hitOffset clamped to the bounds on x and y, and mode 2 moves
- * anchorPos to src. self keeps the char * spelling of the definition. */
-void func_ov007_020c5948(char *self, Vector3 *src) {
-    Ov007Picker *s = (Ov007Picker *)self;
+ * anchorPos to src. */
+void func_ov007_020c5948(Ov007Picker *s, Vector3 *src) {
     int i;
     int j;
     Ov007Follower *f;

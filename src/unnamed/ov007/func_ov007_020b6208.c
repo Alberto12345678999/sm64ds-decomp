@@ -6,12 +6,7 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 
-extern char *data_ov007_0210342c;
 extern int func_ov007_020bdeb0(int a);
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 int func_ov007_020b6208(int code)
 {

@@ -990,8 +990,8 @@ func_02029408 kind:function(arm,size=0x24) addr:0x02029408
 _ZN10dScStage_c7PS_InitEv kind:function(arm,size=0x1d4) addr:0x0202942c
 func_02029600 kind:function(arm,size=0x54) addr:0x02029600
 IsButtonInputValid kind:function(arm,size=0x1a0) addr:0x02029654
-_ZN10dScStage_c14GraphCallback2Ev kind:function(arm,size=0x44) addr:0x020297f4
-_ZN10dScStage_c14GraphCallback1Ev kind:function(arm,size=0x1c) addr:0x02029838
+_ZN10dScStage_c15graphCallback_c14GraphCallback2Ev kind:function(arm,size=0x44) addr:0x020297f4
+_ZN10dScStage_c15graphCallback_c14GraphCallback1Ev kind:function(arm,size=0x1c) addr:0x02029838
 UpdateMinimap kind:function(arm,size=0x4c) addr:0x02029854
 StartEntranceFaderWipe kind:function(arm,size=0x38) addr:0x020298a0
 StartExitCharacterWipe kind:function(arm,size=0x24) addr:0x020298d8
@@ -3082,7 +3082,7 @@ __sinit_d_actor.cpp kind:function(arm,size=0x18) addr:0x02074d90
 __sinit_Sound.cpp kind:function(arm,size=0x14) addr:0x02074da8
 __sinit_02074dbc kind:function(arm,size=0x4) addr:0x02074dbc
 __sinit_02074dc0 kind:function(arm,size=0x4) addr:0x02074dc0
-__sinit_02074dc4 kind:function(arm,size=0x48) addr:0x02074dc4
+__sinit_Timer.cpp kind:function(arm,size=0x48) addr:0x02074dc4
 __sinit_02074e0c kind:function(arm,size=0x38) addr:0x02074e0c
 __sinit_02074e44 kind:function(arm,size=0x3c) addr:0x02074e44
 __sinit_02074e80 kind:function(arm,size=0x4) addr:0x02074e80
@@ -3213,7 +3213,7 @@ __ptmf_null kind:data(any) addr:0x02086b58
 .p__sinit_Sound.cpp kind:data(word) addr:0x02086b6c
 .p__sinit_02074dbc kind:data(word) addr:0x02086b70
 .p__sinit_02074dc0 kind:data(word) addr:0x02086b74
-.p__sinit_02074dc4 kind:data(word) addr:0x02086b78
+.p__sinit_Timer.cpp kind:data(word) addr:0x02086b78
 .p__sinit_02074e0c kind:data(word) addr:0x02086b7c
 .p__sinit_02074e44 kind:data(word) addr:0x02086b80
 .p__sinit_02074e80 kind:data(word) addr:0x02086b84
@@ -4168,7 +4168,7 @@ data_0209214c kind:data(any) addr:0x0209214c
 _ZTI10dScStage_c kind:data(any) addr:0x02092158
 _ZTIN10dScStage_c15graphCallback_cE kind:data(any) addr:0x02092164
 _ZTS10dScStage_c kind:data(any) addr:0x02092170
-data_02092188 kind:data(any) addr:0x02092188
+_ZTVN10dScStage_c15graphCallback_cE kind:data(any) addr:0x02092188
 _ZTSN10dScStage_c15graphCallback_cE kind:data(any) addr:0x02092198
 _ZTV10dScStage_c kind:data(any) addr:0x020921c0
 data_02092208 kind:data(any) addr:0x02092208
@@ -5228,6 +5228,7 @@ data_020a813c kind:bss addr:0x020a813c
 cardi_arg kind:bss addr:0x020a8160
 cardi_common kind:bss addr:0x020a8180
 data_020a81bc kind:bss addr:0x020a81bc
+cardi_thread_stack kind:bss addr:0x020a8360
 data_020a8760 kind:bss addr:0x020a8760
 data_020a8764 kind:bss addr:0x020a8764
 rom_stat kind:bss addr:0x020a8780

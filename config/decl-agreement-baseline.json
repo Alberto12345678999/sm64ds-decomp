@@ -9058,321 +9058,6 @@
         "return:int"
       ]
     },
-    "data_ov002_02110b10": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b18": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b20": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b28": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b30": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b38": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b40": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b48": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b58": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b60": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b68": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b80": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b88": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b90": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110ba0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110ba8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bb0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bb8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bc0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bc8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bd0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bd8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110be0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110be8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bf0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bf8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c00": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c08": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c10": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c2c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c38": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c44": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c50": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c5c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c68": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c74": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c80": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c8c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c98": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110ca4": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cb0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cbc": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cc8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cd4": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110ce0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cec": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cf8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d04": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d10": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d1c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d28": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d40": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d4c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d58": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d64": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d70": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d7c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d88": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d94": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110da0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110dc4": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110dd0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
     "func_020383e4": {
       "include/dBgCh_Actr.h": [
         "param:#1 struct dBgCh_Actr *"
@@ -9753,6 +9438,45 @@
       ]
     },
     "data_0209d4b8": {
+      "include/decl_common.h": [
+        "return:int"
+      ],
+      "src/minigames/d_mg3d_esp_anim_set.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_coin.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_flower.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_memory.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_memory2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_pachinko.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_pachinko2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "return:int"
+      ],
       "src/unnamed/arm9/0201/func_020196cc.c": [
         "return:int []"
       ]
@@ -9784,11 +9508,26 @@
       ]
     },
     "data_0209d574": {
-      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
-        "return:int []"
+      "src/engine/sound/Sound.cpp": [
+        "return:char []"
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "return:int"
+      ],
+      "src/unnamed/arm9/0201/func_020199a4.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201a054.cpp": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201fec8.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201ffcc.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
+        "return:int []"
       ]
     },
     "data_0209d65c": {
@@ -12242,82 +11981,9 @@
         "return:int []"
       ]
     },
-    "data_ov002_02110b50": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b70": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov002_02110b78": {
       "include/decl_common.h": [
         "return:char"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b98": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c18": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110e24": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e4c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e64": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e7c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e9c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110ebc": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110eec": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110f34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110f9c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
       ]
     },
     "data_ov002_0211117c": {
@@ -12582,10 +12248,8 @@
     },
     "sTrmp3DFallSpeed": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:int"
+        "return:int",
+        "return:int []"
       ]
     },
     "sTrmpAnimRollJumpEnd": {
@@ -12665,6 +12329,9 @@
     "sTrmp2RiseSpeedMax": {
       "include/decl_common.h": [
         "return:int []"
+      ],
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int"
       ]
     },
     "sTrmp2FallSpeed": {
@@ -12672,6 +12339,7 @@
         "return:int []"
       ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int",
         "return:int []"
       ]
     },
@@ -12691,16 +12359,6 @@
         "return:int",
         "return:void *",
         "return:void * []"
-      ]
-    },
-    "sTrmpMarioModelFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:int []"
-      ]
-    },
-    "sTrmpGoalSlots": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:Vector3"
       ]
     },
     "sTrmpItems": {
@@ -12945,35 +12603,6 @@
         "return:void * []"
       ]
     },
-    "data_ov007_0210342c": {
-      "include/decl_common.h": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ad660.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020ae2d0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020aec94.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2454.c": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2728.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b58e4.c": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b5bf0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b5f64.c": [
-        "return:unsigned char []"
-      ]
-    },
     "data_ov007_02103448": {
       "src/ui/menus/unit020b7658.cpp": [
         "return:void *"
@@ -12997,28 +12626,6 @@
     "data_ov007_02104bbc": {
       "src/ui/menus/unit020bd9e4.cpp": [
         "return:char *"
-      ]
-    },
-    "data_ov007_02104bdc": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int []",
-        "return:int"
-      ]
-    },
-    "data_ov007_02104be0": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_02104be4": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_02104be8": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int []",
-        "return:int"
       ]
     },
     "data_ov007_02104c14": {
@@ -16532,10 +16139,6 @@
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "kind:data"
       ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
         "arity:0",
         "return:void"
@@ -16546,10 +16149,6 @@
     },
     "func_02017a24": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "param:#2 int",
         "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
@@ -18247,13 +17846,19 @@
         "param:#2 int",
         "return:void"
       ],
+      "src/unnamed/arm9/0201/func_0201a9ec.c": [
+        "param:#2 unsigned char",
+        "return:unsigned char"
+      ],
       "src/unnamed/arm9/0201/func_0201fec8.c": [
         "param:#1 char *",
         "param:#2 int",
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_0201ffcc.c": [
-        "param:#1 char *"
+        "param:#1 char *",
+        "param:#2 unsigned char",
+        "return:unsigned char"
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "param:#1 int *",
@@ -22781,11 +22386,6 @@
         "param:#5 int"
       ]
     },
-    "func_ov007_020c16dc": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "func_ov007_020c184c": {
       "src/unnamed/ov007/func_ov007_020c1814.c": [
         "return:int"
@@ -22907,10 +22507,6 @@
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c1180.cpp": [
-        "return:int"
-      ],
-      "src/ui/menus/unit020c1404.cpp": [
-        "arity:0",
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c2018.c": [
@@ -23120,47 +22716,6 @@
         "return:void *"
       ]
     },
-    "func_ov007_020c421c": {
-      "src/unnamed/ov007/func_ov007_020b2728.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c4388": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#2 char *"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#2 void *"
-      ]
-    },
-    "func_ov007_020c43bc": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#2 int"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#1 char *",
-        "param:#2 char *"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#2 int"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c41dc.c": [
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020c44c4": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c44e4": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:void *"
-      ]
-    },
     "func_ov007_020c4e98": {
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#6 int"
@@ -23178,34 +22733,6 @@
     },
     "func_ov007_020c55bc": {
       "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020c5854": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c5948": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#2 int *"
-      ]
-    },
-    "func_ov007_020c6174": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020c6684": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c6d90": {
-      "src/unnamed/ov007/func_ov007_020c6724.c": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c6d20.c": [
         "param:#1 char *"
       ]
     },
@@ -23308,15 +22835,6 @@
     "func_ov007_020c951c": {
       "src/ui/menus/unit020b797c.cpp": [
         "arity:3"
-      ]
-    },
-    "func_ov007_020c9a2c": {
-      "src/unnamed/ov007/func_ov007_020c95fc.c": [
-        "param:#1 Ctx *",
-        "param:#2 void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c9688.c": [
-        "param:#1 Ctx *"
       ]
     },
     "func_ov007_020ca86c": {
@@ -23770,6 +23288,11 @@
         "param:#3 int",
         "param:#4 int",
         "param:#5 int"
+      ]
+    },
+    "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev": {
+      "src/game/actors/d_a_demo.cpp": [
+        "arity:0"
       ]
     }
   },

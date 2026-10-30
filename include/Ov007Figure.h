@@ -15,8 +15,8 @@ struct Ov007Figure {
     u8 index;       /* 0x00: 0 for Ov007Work::figure, 1 for altFigure */
     u8 figureIndex; /* 0x01: a copy of Ov007Work's figureIndex */
     /* 0x02: func_ov007_020beaa0 seeds it (index != 0);
-     * func_ov007_020beb80 hands it to func_ov007_020b7690, the particle
-     * system lookup */
+     * func_ov007_020beb80 and func_ov007_020be0dc hand it to
+     * func_ov007_020b7690, the particle system lookup */
     u8 particleIndex;
     char pad_03;
     struct Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */

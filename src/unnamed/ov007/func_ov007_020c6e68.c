@@ -27,10 +27,7 @@ extern void func_ov007_020bfe4c(Ov007Camera *cam, int a, int b, int c, Vector3 *
 extern Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, int flags);
 extern void func_ov007_020c7804(Ov007PointList *list);
 
-/* The parameter keeps func_ov007_020c6d20's char * spelling (the
- * declaration-agreement gate); the typed view is a local. */
-void func_ov007_020c6e68(char *picker, int idx) {
-    Ov007Picker *self = (Ov007Picker *)picker;
+void func_ov007_020c6e68(Ov007Picker *self, int idx) {
     Ov007StrokePath *grp;
     Ov007PickerParams *fp;
     int flag;

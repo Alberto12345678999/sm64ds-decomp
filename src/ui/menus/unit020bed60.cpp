@@ -64,7 +64,6 @@ typedef struct Ov007Point {
 } Ov007Point;
 
 extern Ov007MeshScene *data_ov007_02104bd4;
-extern char *data_ov007_0210342c;
 extern struct Vector3 data_ov007_020d7d60;
 extern Ov007MeshParams data_ov007_020d7cb0;
 extern u8 data_ov007_020d7c98[];
@@ -82,9 +81,6 @@ extern int func_ov007_020c30ac(Vector3 *arr, int count, void *target, int arg4, 
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020c3d1c(void *self);
 extern int func_ov007_020c3df4(int a, int b);
-extern void func_ov007_020c4388(void *a, void *b);
-extern int func_ov007_020c43bc(void *a, void *b);
-extern int func_ov007_020c44c4(char *r4);
 extern void func_ov007_020c9a84(Ov007Swing *swing, Vector3 *offset, u16 *rotX, u16 *rotY);
 extern void func_ov007_020c9c24(Ov007Swing *swing, int shift);
 extern void func_ov007_020c9d90(Ov007Swing *swing, Ov007Mesh *mesh);
@@ -107,16 +103,14 @@ extern Ov007MeshMaterial *func_ov007_020cbf8c(Ov007MeshMaterial *src);
 void func_ov007_020bed60(int arg0, int arg1, int arg2);
 void func_ov007_020beeb0(void);
 
-/* The extern keeps the tree's char * spelling of the work block; the typed
- * view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SCENE data_ov007_02104bd4
 
 /* func_ov007_020bf57c's copy of an Ov007Sprite. Ov007Sprite holds two
  * Vector3s, so in C++ a local of it emits Vector3's out-of-line destructor
  * and `buf = *e` copies member by member; the ROM copies the 0x88 bytes as
  * one block. The copy goes through the word view; the fields read through
- * the layout view, a POD twin of the slots the function names. */
+ * the layout view, a POD twin of the slots the function names. The sprite
+ * calls take the copy's address as the Ov007Sprite it holds. */
 typedef struct Ov007SpriteBits {
     s32 words[0x88 / 4];
 } Ov007SpriteBits;
@@ -164,8 +158,8 @@ void func_ov007_020bf57c(Ov007Camera *camera, int idx) {
     Ov007SpriteCopy buf;
     buf.bits = *(Ov007SpriteBits *)e;
     buf.view.depth = -camera->distance;
-    func_ov007_020c43bc(&buf, camera);
-    func_ov007_020c4388(&buf, camera);
+    func_ov007_020c43bc((Ov007Sprite *)&buf, camera);
+    func_ov007_020c4388((Ov007Sprite *)&buf, camera);
     func_ov007_020c9f10(swing, &buf.view.pos, buf.view.worldWidth, buf.view.worldHeight);
     func_ov007_020c9d90(swing, SCENE->mesh);
 }
@@ -254,7 +248,7 @@ void func_ov007_020bf304(void) {
 
     for (i = 0; i <= 2; i++) {
         if (WORK->numberSprites[i] != 0) {
-            func_ov007_020c44c4((char *)WORK->numberSprites[i]);
+            func_ov007_020c44c4(WORK->numberSprites[i]);
             WORK->numberSprites[i] = 0;
         }
     }

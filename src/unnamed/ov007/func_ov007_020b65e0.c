@@ -1,7 +1,7 @@
 #include "Ov007Work.h"
 
 extern void func_ov007_020c937c(void *state);
-extern void func_ov007_020c020c(void *a);
+extern void func_ov007_020c020c(struct Ov007Camera *cam);
 extern void func_ov007_020c2410(int a);
 extern void func_ov007_020c2018(int a);
 extern void func_ov007_020c22f8(int a);
@@ -15,11 +15,6 @@ extern void func_ov007_020b6cd0(void);
 extern void func_ov007_020b283c(void);
 extern void func_ov007_020b9770(void);
 extern void func_ov007_020bf304(void);
-
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Teardown of the data_ov007_0210342c manager. */
 void func_ov007_020b65e0(void)
@@ -108,10 +103,10 @@ void func_ov007_020b65e0(void)
     func_ov007_020b9770();
     func_ov007_020bf304();
 
-    if (data_ov007_0210342c == 0) {
+    if (WORK == 0) {
         return;
     }
 
-    func_ov007_020c3d1c((void *)data_ov007_0210342c);
-    data_ov007_0210342c = 0;
+    func_ov007_020c3d1c(WORK);
+    WORK = 0;
 }

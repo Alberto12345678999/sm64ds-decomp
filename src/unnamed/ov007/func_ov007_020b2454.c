@@ -8,8 +8,6 @@
 struct Vec3;
 extern void AddVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 
-extern void *data_ov007_0210342c;
-
 void func_ov007_020b2454(Vector3 *out, Vector3 *r1) {
     int w;
     struct Ov007Work *m;
@@ -18,7 +16,7 @@ void func_ov007_020b2454(Vector3 *out, Vector3 *r1) {
     Vector3 b;
     Vector3 a;
 
-    m = (struct Ov007Work *)data_ov007_0210342c;
+    m = WORK;
     /* bone 0's transform */
     in = m->model->model->transforms;
     a.z = 0;

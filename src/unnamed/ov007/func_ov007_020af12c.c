@@ -6,10 +6,6 @@
 extern int func_ov007_020b8f8c(void);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b9640(void);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Steps the picker alongside states[1]: in state 0 it starts the picker
  * (state 1) and leaves once the picker reaches state 2; in state 1 it moves

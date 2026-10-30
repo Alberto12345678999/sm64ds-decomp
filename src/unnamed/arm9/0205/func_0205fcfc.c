@@ -2,12 +2,6 @@
 
 extern void func_0205feac(int a);
 
-typedef struct {
-    short *ptr;
-    int pad;
-} PtrEntry;
-extern PtrEntry data_020a813c[];
-
 extern int data_020a8108;
 extern int data_020a810c;
 
@@ -28,7 +22,7 @@ void func_0205fcfc(int a0, unsigned int msg, int flag)
     if (cmd >= 0x70 && cmd <= 0x73) {
         int idx = cmd - 0x70;
         unsigned short pv = val & 0xff;
-        short *p = data_020a813c[idx].ptr;
+        short *p = data_020a8138[idx].reply;
         if (p != 0) {
             *p = pv;
         }

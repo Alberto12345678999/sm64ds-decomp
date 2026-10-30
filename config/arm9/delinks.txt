@@ -448,6 +448,9 @@ src/GetSoundMode.c:
 src/Timer.cpp:
     complete
     .text start:0x02019584 end:0x02019664
+    .init start:0x02074dc4 end:0x02074e0c
+    .ctor start:0x02086b78 end:0x02086b7c
+    .bss start:0x0209d4b8 end:0x0209d4d4
 
 src/TurnBacklightOff.c:
     complete
@@ -4185,10 +4188,6 @@ src/unnamed/arm9/0207/__sinit_02074dbc.c:
 src/unnamed/arm9/0207/__sinit_02074dc0.c:
     complete
     .init start:0x02074dc0 end:0x02074dc4
-
-src/unnamed/arm9/0207/__sinit_02074dc4.c:
-    complete
-    .init start:0x02074dc4 end:0x02074e0c
 
 src/unnamed/arm9/0207/__sinit_02074e0c.c:
     complete

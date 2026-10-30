@@ -151,7 +151,6 @@ typedef char
     Ov007ParticleSprites_size_must_be_0x108[sizeof(Ov007ParticleSprites) == 0x108 ? 1 : -1];
 
 extern Ov007ParticleSprites *data_ov007_02104bc0;
-extern char *data_ov007_0210342c;
 extern int data_ov007_02103230;
 extern int data_ov007_02103234;
 extern int data_ov007_020d7c6c;
@@ -185,9 +184,6 @@ extern void func_ov007_020bc53c(Ov007Model *model);
 extern void func_ov007_020bc6b4(Ov007Model *model, void *files, int count);
 extern Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 
-/* The extern keeps the tree's char * spelling of the work block; the typed
- * view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SPRITES data_ov007_02104bc0
 
 // @symbol func_ov007_020beb80
@@ -420,10 +416,8 @@ void func_ov007_020be7a8(void *pos, unsigned short *outX, unsigned short *outY, 
 /* Moves each item's node onto the particle it tracks: func_0204dab4 updates
  * the tracking records (claiming new ones at the extra node's priority while
  * that node is visible), then every item shows while its record holds a
- * particle, at the record's screen point. ctx keeps the char * spelling of
- * the definition; `grp` is the typed view. */
-void func_ov007_020be684(void *a0, char *ctx) {
-    Ov007SpriteGroup *grp = (Ov007SpriteGroup *)ctx;
+ * particle, at the record's screen point. */
+void func_ov007_020be684(void *a0, Ov007SpriteGroup *grp) {
     int i;
     int r3;
     Ov007OamNode *q;
@@ -637,7 +631,7 @@ int func_ov007_020be0dc(void) {
         Ov007OamNode *q = SPRITES->group->root;
         if (q->visible == 0)
             q->visible = 1;
-        func_ov007_020be684(system, (char *)SPRITES->group);
+        func_ov007_020be684(system, SPRITES->group);
     } else {
         Ov007OamNode *q = SPRITES->group->root;
         if (q->visible != 0)

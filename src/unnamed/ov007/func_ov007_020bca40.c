@@ -1,11 +1,6 @@
 #include "Ov007Work.h"
 #include "Ov007Display.h"
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* Shows (1) or hides (0) a set of the eight BG layers, marking each for
  * upload: 0 sets the full layout, 1 hides layer 1, 2 shows layer 0, 3 hides
  * layers 1-3 and shows 4-7. */

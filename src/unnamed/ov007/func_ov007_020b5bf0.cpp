@@ -11,10 +11,6 @@
 extern "C" {
 
 extern short data_02082214[];
-extern u8 data_ov007_0210342c[];
-
-/* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
 
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020b5f64(Ov007ItemView *view);
