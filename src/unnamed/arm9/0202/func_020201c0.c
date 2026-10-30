@@ -1,6 +1,6 @@
-int func_0203da9c(void);
-int GetPlayerFlagByte(int handle, int i);
-void func_0203db3c(int i, unsigned char v);
+extern int func_0203da9c(void);
+extern unsigned char GetPlayerFlagByte(int player, int byte);
+extern void func_0203db3c(int byte, int value);
 
 /* Sets bit 4 of this console's link settings byte 2 (dScEntry_c::
    EnterRematchSync, unless a player has dropped). Player 0 polls every

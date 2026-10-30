@@ -13,7 +13,7 @@ void func_0203d738(void) {}
 /* Add two Vector2s into o (Vector2.h). dScMgHanachan_c chains its body
    segments with it. */
 void func_0203d704(int *o, int *a, int *b) {
-    int a0 = a[0], b0 = b[0], a1 = a[1], b1 = b[1];
-    o[0] = a0 + b0;
-    o[1] = a1 + b1;
+    int ax = a[0], bx = b[0], ay = a[1], by = b[1];
+    o[0] = ax + bx;
+    o[1] = ay + by;
 }

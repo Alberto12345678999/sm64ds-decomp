@@ -78,7 +78,7 @@ void func_02046bbc(struct ModelComponents *model, struct BTP_File *file, unsigne
         struct BtpSeqRecord *e;
         struct MaterialState *mat;
         int k;
-        int v0;
+        int texKey;
         u16 idx0;
         struct BMD_Texture *tex;
         int flags;
@@ -102,8 +102,8 @@ void func_02046bbc(struct ModelComponents *model, struct BTP_File *file, unsigne
 
         k = j + e->firstKey;
         idx0 = file->keyTexIndices[k];
-        v0 = idx0;
-        idx0 = file->texRecords[v0].resourceId;
+        texKey = idx0;
+        idx0 = file->texRecords[texKey].resourceId;
         tex = &model->modelFile->textures[idx0];
         mat->texImageParam = model->modelFile->materials[e->materialId].texImageParam;
         mat->texImageParam |= tex->flags;

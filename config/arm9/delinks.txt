@@ -374,7 +374,7 @@ src/engine/graph/d_graph_c_callback.cpp:
     complete
     .text start:0x02018ea0 end:0x02018ec0
 
-src/unnamed/arm9/0201/func_02018ec0.c:
+src/unnamed/arm9/0201/func_02018ec0.cpp:
     complete
     .text start:0x02018ec0 end:0x02018f38
 src/SetSubBg3Offset.c:
@@ -432,7 +432,7 @@ src/unnamed/arm9/0201/func_02019390.cpp:
     complete
     .text start:0x02019390 end:0x02019404
 
-src/unnamed/arm9/0201/func_02019404.c:
+src/unnamed/arm9/0201/func_02019404.cpp:
     complete
     .text start:0x02019404 end:0x02019440
 
@@ -3358,81 +3358,9 @@ src/unnamed/arm9/0206/func_02065de4.c:
     complete
     .text start:0x02065de4 end:0x02065eb8
 
-src/unnamed/arm9/0206/func_02065eb8.c:
+src/engine/mb/MB_Parent.cpp:
     complete
-    .text start:0x02065eb8 end:0x02065edc
-
-src/unnamed/arm9/0206/func_02065edc.c:
-    complete
-    .text start:0x02065edc end:0x02065ef8
-
-src/unnamed/arm9/0206/func_02065ef8.c:
-    complete
-    .text start:0x02065ef8 end:0x02065f08
-
-src/unnamed/arm9/0206/func_02065f08.c:
-    complete
-    .text start:0x02065f08 end:0x02065f78
-
-src/unnamed/arm9/0206/func_02065f78.c:
-    complete
-    .text start:0x02065f78 end:0x0206610c
-
-src/unnamed/arm9/0206/func_0206610c.c:
-    complete
-    .text start:0x0206610c end:0x020662c0
-
-src/unnamed/arm9/0206/func_020662c0.c:
-    complete
-    .text start:0x020662c0 end:0x02066470
-
-src/unnamed/arm9/0206/func_02066470.c:
-    complete
-    .text start:0x02066470 end:0x020664b4
-
-src/unnamed/arm9/0206/func_020664b4.c:
-    complete
-    .text start:0x020664b4 end:0x0206655c
-
-src/unnamed/arm9/0206/func_0206655c.c:
-    complete
-    .text start:0x0206655c end:0x02066a94
-
-src/unnamed/arm9/0206/func_02066a94.c:
-    complete
-    .text start:0x02066a94 end:0x02066fb0
-
-src/unnamed/arm9/0206/func_02066fb0.c:
-    complete
-    .text start:0x02066fb0 end:0x02066fec
-
-src/unnamed/arm9/0206/func_02066fec.c:
-    complete
-    .text start:0x02066fec end:0x0206703c
-
-src/unnamed/arm9/0206/func_0206703c.cpp:
-    complete
-    .text start:0x0206703c end:0x02067138
-
-src/MB_CommIsBootable.c:
-    complete
-    .text start:0x02067138 end:0x02067194
-
-src/unnamed/arm9/0206/func_02067194.c:
-    complete
-    .text start:0x02067194 end:0x020671b4
-
-src/unnamed/arm9/0206/func_020671b4.cpp:
-    complete
-    .text start:0x020671b4 end:0x02067250
-
-src/unnamed/arm9/0206/func_02067250.c:
-    complete
-    .text start:0x02067250 end:0x020672a4
-
-src/MB_CommSetParentStateCallback.cpp:
-    complete
-    .text start:0x020672a4 end:0x020672d0
+    .text start:0x02065eb8 end:0x020672d0
 
 src/unnamed/arm9/0206/func_020672d0.c:
     complete

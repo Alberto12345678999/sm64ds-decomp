@@ -1,5 +1,5 @@
 #include "types.h"
-/* A calibrated touch-panel sample (func_0203df40's Col4; NitroSDK TPData's
+/* A calibrated touch-panel sample (nitro/spi/tp.h's TPData, as func_0203df40 uses;
    x, y, touch, validity). */
 struct Col4 {
     u16 x, y, touch, validity;

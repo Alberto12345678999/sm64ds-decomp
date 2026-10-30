@@ -5,7 +5,7 @@ extern s64 OS_GetTick(void);
 
 typedef struct WatchdogAlarm {
     char alarm[0x2c]; /* 0x00 -- OSAlarm */
-    char pad_2c[4];
+    char unread_2c[4];
     s64 limit; /* 0x30 */
     s64 base;  /* 0x38 */
 } WatchdogAlarm;

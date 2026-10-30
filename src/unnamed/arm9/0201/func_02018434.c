@@ -5,10 +5,10 @@ struct FSFileID {
 extern void myFS_ConvertPathToFileID(struct FSFileID *buf, int x);
 extern void func_02018474(struct FSFileID p, int b, int c);
 
-/* Read up to a2 bytes of the ROM file at path a0 into a1 (func_02018474).
+/* Read up to size bytes of the ROM file at path into dst (func_02018474).
    func_0203ad84 reads "/BUILDTIME" this way. */
-void func_02018434(int a0, int a1, int a2) {
-    struct FSFileID buf;
-    myFS_ConvertPathToFileID(&buf, a0);
-    func_02018474(buf, a1, a2);
+void func_02018434(int path, int dst, int size) {
+    struct FSFileID fileId;
+    myFS_ConvertPathToFileID(&fileId, path);
+    func_02018474(fileId, dst, size);
 }

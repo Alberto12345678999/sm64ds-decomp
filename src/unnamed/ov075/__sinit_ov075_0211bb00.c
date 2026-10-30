@@ -1,8 +1,12 @@
 /* __sinit_ov075_0211bb00 -- the static initializer of dScEntry_c's unit. It
- * constructs the scene's graph callback, sets each of the unit's halfword-pair
- * globals and registers its empty destructor, and fills the step sets (enter, behavior,
- * render) that dScEntry_c::SetSteps installs. The steps are copied from the
- * compiler's pointer-to-member literals, so those keep their address names.
+ * constructs the scene's graph callback, sets each of the unit's 29 halfword
+ * pairs and registers its empty destructor through the pair's own 12-byte node
+ * (data_ov075_0211d5c0..), and fills the step sets (enter, behavior, render)
+ * that dScEntry_c::SetSteps installs. d_s_entry.cpp's func_ov075_02115e8c
+ * passes a pair's two halfwords to func_ov001_020ab5b0: data_ov075_0211d948
+ * indexed by icon type, and data_ov075_0211d72c, d740 and d754 by language.
+ * The steps are copied from the compiler's pointer-to-member literals, so
+ * those keep their address names.
  * Blocker: compiler-emitting it needs dScEntry_c's unit joined into one intact
  * object; it is split between intact d_s_entry.cpp and text-only
  * d_s_entry_methods.cpp, and neither owns the .bss step sets. */
@@ -27,66 +31,68 @@ extern void NoOpDestructor(void);
 
 extern char data_ov075_0211d71c[];
 
-extern int data_ov075_0211d5c0;
-extern int data_ov075_0211d5cc;
-extern int data_ov075_0211d5d8;
-extern int data_ov075_0211d5e4;
-extern int data_ov075_0211d5f0;
-extern int data_ov075_0211d5fc;
-extern int data_ov075_0211d608;
-extern int data_ov075_0211d614;
-extern int data_ov075_0211d620;
-extern int data_ov075_0211d62c;
-extern int data_ov075_0211d638;
-extern int data_ov075_0211d644;
-extern int data_ov075_0211d650;
-extern int data_ov075_0211d65c;
-extern int data_ov075_0211d668;
-extern int data_ov075_0211d674;
-extern int data_ov075_0211d680;
-extern int data_ov075_0211d68c;
-extern int data_ov075_0211d698;
-extern int data_ov075_0211d6a4;
-extern int data_ov075_0211d6b0;
-extern int data_ov075_0211d6bc;
-extern int data_ov075_0211d6c8;
-extern int data_ov075_0211d6d4;
-extern int data_ov075_0211d6e0;
-extern int data_ov075_0211d6ec;
-extern int data_ov075_0211d6f8;
-extern int data_ov075_0211d704;
-extern int data_ov075_0211d710;
+/* One registration node per pair. */
+extern void *data_ov075_0211d5c0[3];
+extern void *data_ov075_0211d5cc[3];
+extern void *data_ov075_0211d5d8[3];
+extern void *data_ov075_0211d5e4[3];
+extern void *data_ov075_0211d5f0[3];
+extern void *data_ov075_0211d5fc[3];
+extern void *data_ov075_0211d608[3];
+extern void *data_ov075_0211d614[3];
+extern void *data_ov075_0211d620[3];
+extern void *data_ov075_0211d62c[3];
+extern void *data_ov075_0211d638[3];
+extern void *data_ov075_0211d644[3];
+extern void *data_ov075_0211d650[3];
+extern void *data_ov075_0211d65c[3];
+extern void *data_ov075_0211d668[3];
+extern void *data_ov075_0211d674[3];
+extern void *data_ov075_0211d680[3];
+extern void *data_ov075_0211d68c[3];
+extern void *data_ov075_0211d698[3];
+extern void *data_ov075_0211d6a4[3];
+extern void *data_ov075_0211d6b0[3];
+extern void *data_ov075_0211d6bc[3];
+extern void *data_ov075_0211d6c8[3];
+extern void *data_ov075_0211d6d4[3];
+extern void *data_ov075_0211d6e0[3];
+extern void *data_ov075_0211d6ec[3];
+extern void *data_ov075_0211d6f8[3];
+extern void *data_ov075_0211d704[3];
+extern void *data_ov075_0211d710[3];
 
-extern int data_ov075_0211d72c;
-extern int data_ov075_0211d730;
-extern int data_ov075_0211d734;
-extern int data_ov075_0211d738;
-extern int data_ov075_0211d73c;
-extern int data_ov075_0211d740;
-extern int data_ov075_0211d744;
-extern int data_ov075_0211d748;
-extern int data_ov075_0211d74c;
-extern int data_ov075_0211d750;
-extern int data_ov075_0211d754;
-extern int data_ov075_0211d758;
-extern int data_ov075_0211d75c;
-extern int data_ov075_0211d760;
-extern int data_ov075_0211d764;
+/* The pairs, spelled as d_s_entry.cpp declares the ones it reads. */
+extern short data_ov075_0211d72c[];
+extern short data_ov075_0211d730[];
+extern short data_ov075_0211d734[];
+extern short data_ov075_0211d738[];
+extern short data_ov075_0211d73c[];
+extern short data_ov075_0211d740[];
+extern short data_ov075_0211d744[];
+extern short data_ov075_0211d748[];
+extern short data_ov075_0211d74c[];
+extern short data_ov075_0211d750[];
+extern short data_ov075_0211d754[];
+extern short data_ov075_0211d758[];
+extern short data_ov075_0211d75c[];
+extern short data_ov075_0211d760[];
+extern short data_ov075_0211d764[];
 
-extern int data_ov075_0211d948;
-extern int data_ov075_0211d94c;
-extern int data_ov075_0211d950;
-extern int data_ov075_0211d954;
-extern int data_ov075_0211d958;
-extern int data_ov075_0211d95c;
-extern int data_ov075_0211d960;
-extern int data_ov075_0211d964;
-extern int data_ov075_0211d968;
-extern int data_ov075_0211d96c;
-extern int data_ov075_0211d970;
-extern int data_ov075_0211d974;
-extern int data_ov075_0211d978;
-extern int data_ov075_0211d97c;
+extern short data_ov075_0211d948[];
+extern short data_ov075_0211d94c[];
+extern short data_ov075_0211d950[];
+extern short data_ov075_0211d954[];
+extern short data_ov075_0211d958[];
+extern short data_ov075_0211d95c[];
+extern short data_ov075_0211d960[];
+extern short data_ov075_0211d964[];
+extern short data_ov075_0211d968[];
+extern short data_ov075_0211d96c[];
+extern short data_ov075_0211d970[];
+extern short data_ov075_0211d974[];
+extern short data_ov075_0211d978[];
+extern short data_ov075_0211d97c[];
 
 extern struct EntryStep data_02086b58;
 extern struct EntryStep data_ov075_0211c6f8;
@@ -164,143 +170,141 @@ void __sinit_ov075_0211bb00(void) {
 
     _ZN10dScEntry_c15graphCallback_cC1Ev(data_ov075_0211d71c);
 
-    p = (short *)(&data_ov075_0211d948);
-    ((short *)(&data_ov075_0211d948))[0] = 0x80;
-    ((short *)(&data_ov075_0211d948))[1] = 0x10;
-    func_020731dc((short *)(&data_ov075_0211d948), (void *)NoOpDestructor,
-                  (void **)&data_ov075_0211d5fc);
+    /* The no-op (short *) on each `p = ...` pair below is load-bearing:
+       without it, or writing those pairs through the array directly,
+       mwccarm schedules the stores differently. */
+    data_ov075_0211d948[0] = 0x80;
+    data_ov075_0211d948[1] = 0x10;
+    func_020731dc(data_ov075_0211d948, (void *)NoOpDestructor, data_ov075_0211d5fc);
 
-    p = (short *)(&data_ov075_0211d94c);
+    p = (short *)data_ov075_0211d94c;
     p[0] = 0x3c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6bc);
-    p = (short *)(&data_ov075_0211d950);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6bc);
+    p = (short *)data_ov075_0211d950;
     p[0] = 0x1c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6c8);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6c8);
 
-    p = (short *)(&data_ov075_0211d954);
+    p = (short *)data_ov075_0211d954;
     p[0] = 8;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6e0);
-    p = (short *)(&data_ov075_0211d958);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6e0);
+    p = (short *)data_ov075_0211d958;
     p[0] = 8;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6a4);
-    p = (short *)(&data_ov075_0211d95c);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6a4);
+    p = (short *)data_ov075_0211d95c;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6ec);
-    p = (short *)(&data_ov075_0211d960);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6ec);
+    p = (short *)data_ov075_0211d960;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6f8);
-    p = (short *)(&data_ov075_0211d964);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6f8);
+    p = (short *)data_ov075_0211d964;
     p[0] = 0x20;
     p[1] = 0x20;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d710);
-    p = (short *)(&data_ov075_0211d968);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d710);
+    p = (short *)data_ov075_0211d968;
     p[0] = 0x28;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d698);
-    p = (short *)(&data_ov075_0211d96c);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d698);
+    p = (short *)data_ov075_0211d96c;
     p[0] = 0x58;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d5c0);
-    p = (short *)(&data_ov075_0211d970);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5c0);
+    p = (short *)data_ov075_0211d970;
     p[0] = 0x78;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d5cc);
-    p = (short *)(&data_ov075_0211d974);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5cc);
+    p = (short *)data_ov075_0211d974;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d5d8);
-    p = (short *)(&data_ov075_0211d978);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5d8);
+    p = (short *)data_ov075_0211d978;
     p[0] = 0xa;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6b0);
-    p = (short *)(&data_ov075_0211d97c);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6b0);
+    p = (short *)data_ov075_0211d97c;
     p[0] = 0;
     p[1] = 0;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d5e4);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5e4);
 
     {
         int sz = 0x20;
         int h = 0x10;
-        ((short *)(&data_ov075_0211d72c))[0] = (short)sz;
-        ((short *)(&data_ov075_0211d72c))[1] = (short)h;
-        func_020731dc((short *)(&data_ov075_0211d72c), (void *)NoOpDestructor,
-                      (void **)&data_ov075_0211d5f0);
+        data_ov075_0211d72c[0] = (short)sz;
+        data_ov075_0211d72c[1] = (short)h;
+        func_020731dc(data_ov075_0211d72c, (void *)NoOpDestructor, data_ov075_0211d5f0);
     }
 
-    p = (short *)(&data_ov075_0211d730);
+    p = (short *)data_ov075_0211d730;
     p[0] = 0x18;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d68c);
-    p = (short *)(&data_ov075_0211d734);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d68c);
+    p = (short *)data_ov075_0211d734;
     p[0] = 0x1c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d608);
-    p = (short *)(&data_ov075_0211d738);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d608);
+    p = (short *)data_ov075_0211d738;
     p[0] = 0x1c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d614);
-    p = (short *)(&data_ov075_0211d73c);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d614);
+    p = (short *)data_ov075_0211d73c;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d620);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d620);
 
     {
         int sz = 0x30;
         int h = 0x10;
-        ((short *)(&data_ov075_0211d740))[0] = (short)sz;
-        ((short *)(&data_ov075_0211d740))[1] = (short)h;
-        func_020731dc((short *)(&data_ov075_0211d740), (void *)NoOpDestructor,
-                      (void **)&data_ov075_0211d62c);
+        data_ov075_0211d740[0] = (short)sz;
+        data_ov075_0211d740[1] = (short)h;
+        func_020731dc(data_ov075_0211d740, (void *)NoOpDestructor, data_ov075_0211d62c);
     }
 
-    p = (short *)(&data_ov075_0211d744);
+    p = (short *)data_ov075_0211d744;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d638);
-    p = (short *)(&data_ov075_0211d748);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d638);
+    p = (short *)data_ov075_0211d748;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d644);
-    p = (short *)(&data_ov075_0211d74c);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d644);
+    p = (short *)data_ov075_0211d74c;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d704);
-    p = (short *)(&data_ov075_0211d750);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d704);
+    p = (short *)data_ov075_0211d750;
     p[0] = 0x18;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d650);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d650);
 
     {
         int sz = 0x20;
         int h = 0x10;
-        ((short *)(&data_ov075_0211d754))[0] = (short)sz;
-        ((short *)(&data_ov075_0211d754))[1] = (short)h;
-        func_020731dc((short *)(&data_ov075_0211d754), (void *)NoOpDestructor,
-                      (void **)&data_ov075_0211d65c);
+        data_ov075_0211d754[0] = (short)sz;
+        data_ov075_0211d754[1] = (short)h;
+        func_020731dc(data_ov075_0211d754, (void *)NoOpDestructor, data_ov075_0211d65c);
     }
 
-    p = (short *)(&data_ov075_0211d758);
+    p = (short *)data_ov075_0211d758;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d6d4);
-    p = (short *)(&data_ov075_0211d75c);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6d4);
+    p = (short *)data_ov075_0211d75c;
     p[0] = 0x28;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d668);
-    p = (short *)(&data_ov075_0211d760);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d668);
+    p = (short *)data_ov075_0211d760;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d674);
-    p = (short *)(&data_ov075_0211d764);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d674);
+    p = (short *)data_ov075_0211d764;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, (void **)&data_ov075_0211d680);
+    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d680);
 
     tmp = data_02086b58;
     ta = tmp.func;

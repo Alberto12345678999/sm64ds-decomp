@@ -31,7 +31,7 @@ extern u16 data_020a11c4[4];
 extern s32 data_020a1680;
 extern u8 data_020a1780[];
 
-extern int func_02067194(void);
+extern int MB_CommGetChildrenNumber(void);
 extern void func_0203f9d4(int a0, int a1);
 extern void func_0203e978(void);
 extern int OS_GetTickLo(void);
@@ -45,9 +45,9 @@ extern int func_02067bfc(int a, void *b, int c);
 extern int func_02067928(void *a, void *b);
 extern void func_0205a588(void *dst, int val, unsigned int size);
 extern int WM_ReadStatus(int *arg);
-extern void *func_020671b4(u16 idx);
-extern int func_02067250(u16 a);
-extern int func_0206703c(u16 arg0, int sel);
+extern void *MB_CommGetChildUser(u16 idx);
+extern int MB_CommGetParentState(u16 a);
+extern int MB_CommResponseRequest(u16 arg0, int sel);
 extern void CpuCopy8(const void *src, void *dst, unsigned int size);
 extern int MB_CommIsBootable(u16 idx);
 extern void func_02068a54(void);
@@ -76,7 +76,8 @@ void func_0203e20c(void)
         data_020a0f50 = 6;
     }
     if (data_020a0f50 > 3 && data_020a0f50 < 6 &&
-        (data_020a0f08 != (u8)(func_02067194() + 1) || (u32)func_02067194() < 1)) {
+        (data_020a0f08 != (u8)(MB_CommGetChildrenNumber() + 1) ||
+         (u32)MB_CommGetChildrenNumber() < 1)) {
         data_020a0f40 = 1;
         data_020a0f50 = 6;
         data_020a0f1c |= 4;
@@ -153,19 +154,19 @@ void func_0203e20c(void)
         sel1 = idx;
         oneVal = idx;
         do {
-            found = func_020671b4(idx);
+            found = MB_CommGetChildUser(idx);
             if (found != 0 && ((H(data_020a1780, 0x7e) >> idx) & 1)) {
                 if (idx < 4) {
-                    if (func_02067250(idx) == 0xA) {
-                        func_0206703c(idx, sel1);
-                    } else if (func_02067250(idx) == 0xE) {
+                    if (MB_CommGetParentState(idx) == 0xA) {
+                        MB_CommResponseRequest(idx, sel1);
+                    } else if (MB_CommGetParentState(idx) == 0xE) {
                         cnt2 += 1;
                     }
                     *pIdx = oneVal;
                     CpuCopy8(found, base1112, 0x16);
                     data_020a0f08 += 1;
-                } else if (func_02067250(idx) == 0xA) {
-                    func_0206703c(idx, 0);
+                } else if (MB_CommGetParentState(idx) == 0xA) {
+                    MB_CommResponseRequest(idx, 0);
                 }
             }
             idx += 1;
@@ -182,7 +183,7 @@ void func_0203e20c(void)
                 j = 1;
                 sel2 = 2;
                 do {
-                    if (func_0206703c(j, sel2) == 1) {
+                    if (MB_CommResponseRequest(j, sel2) == 1) {
                         deadcnt = (u8)(deadcnt + 1);
                     }
                     j = (u8)(j + 1);
@@ -221,7 +222,7 @@ void func_0203e20c(void)
                 cnt = 0;
                 m = 1;
                 do {
-                    if (func_0206703c(m, 3) == 1) {
+                    if (MB_CommResponseRequest(m, 3) == 1) {
                         cnt = (u8)(cnt + 1);
                     }
                     m = (u8)(m + 1);
