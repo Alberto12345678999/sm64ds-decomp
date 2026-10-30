@@ -6,11 +6,13 @@
  * (func_ov007_020c92d0) it retires requests: request 3 while idle or request
  * 4 while in state 1 becomes -1, request 7 in state 1 becomes 3. On the frame
  * a state is entered (stateTicks == 0) the wiggle timer is cleared and the
- * state drives the item: 0 shows it; 1 resets fade to 0x1000 and
+ * state drives the item: 0 shows it; 1 hides it, resets fade to 0x1000 and
  * slideOut to 0 and re-seeds the position through func_ov007_020ae810; 3/4/7
- * ease slideOut toward the end chosen by the state (3 opens) over 15 frames,
+ * show it and ease slideOut toward the end chosen by the state (3 opens)
+ * over 15 frames,
  * feed its square to func_ov007_020aeb34, and request 0 when fully closed, or
- * 1 (3 for state 7) when fully open; 5/6 ease fade over 20 frames the same
+ * 1 (3 for state 7) when fully open; 5/6 show it and ease fade over 20
+ * frames the same
  * way and request 0 at the far end. The wiggle timer counts down at the tail.
  *
  * Codegen notes: the request retirement is one OR-merged condition so both

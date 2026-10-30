@@ -1,48 +1,39 @@
 //cpp
+/* The backup read request (NitroSDK card_backup.c; this older SDK has one
+ * entry point per request where pret's has CARDi_RequestStreamCommand):
+ * wait for the card to be free and claim it, record the transfer, then run
+ * the read task func_0206071c, on the card thread if is_async. Synchronous
+ * calls return whether the request succeeded. */
 #include "types.h"
+#include "IRQ.h"
 #include "nitro/card/card_common.h"
+
 extern "C" {
-extern char data_020a8180[];
-int func_0206071c(void* g);
-}
-namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
 
-struct Sched {
-    char pad00[0x18];
-    int a;      // 0x18
-    int b;      // 0x1c
-    int c;      // 0x20
-    char pad24[0x28-0x24];
-    int d;      // 0x28
-    int e;      // 0x2c
-    char pad30[0x34-0x30];
-    u32 flags;  // 0x34
-    char pad38[0xd4-0x38];
-    u16 sub; // 0xd4
-};
+void func_0206071c(CARDiCommon *p);
 
-extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
-{
-    Sched* g = (Sched*)data_020a8180;
-    unsigned int irq = IRQ::Disable();
-    if (g->flags & 4) {
-        do {
-            OS_SleepThread(&g->sub);
-        } while (g->flags & 4);
+int func_02060558(u32 src, void *dst, u32 len, MIDmaCallback callback, void *arg, int is_async) {
+    CARDiCommon *const p = &cardi_common;
+
+    {
+        u32 mask = IRQ::Disable();
+        while (p->flag & CARD_STAT_BUSY)
+            OS_SleepThread(&p->busy_q);
+        p->flag |= CARD_STAT_BUSY;
+        IRQ::Restore(mask);
     }
-    u32* fp = (u32*)((unsigned long long)((int)g + 0x34));
-    *fp |= 4;
-    IRQ::Restore(irq);
-    g->a = a;
-    g->b = b;
-    g->c = c;
-    g->d = d;
-    g->e = e;
-    if (f != 0) {
-        CARDi_SetTask((CARDiTask)func_0206071c);
+
+    p->src = src;
+    p->dst = (u32)dst;
+    p->len = len;
+    p->callback = callback;
+    p->callback_arg = arg;
+    if (is_async) {
+        CARDi_SetTask(func_0206071c);
         return 1;
     }
-    *(OSThread **)(data_020a8180 + 0xd0) = data_020a6134.current;
-    func_0206071c(g);
-    return (*(int**)g)[0] == 0;
+    cardi_common.cur_th = data_020a6134.current;
+    func_0206071c(p);
+    return p->cmd->result == CARD_RESULT_SUCCESS;
+}
 }

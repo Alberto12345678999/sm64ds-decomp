@@ -54,13 +54,8 @@ typedef struct ARMMathState {
     int pad[7];
 } ARMMathState;
 
-extern char *data_ov007_0210342c;
 /* set while no entry point is running */
 extern int data_ov007_02103430;
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern void ARMMathSaveState(ARMMathState *s);
 extern void ARMMathLoadState(ARMMathState *s);

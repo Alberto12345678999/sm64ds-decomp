@@ -9,7 +9,7 @@
  * top of the run down: init, set callback, ready test, send, receive IRQ.
  *
  * leftovers: the callback table and the init flag (data_020a7fc4) are not
- * claimed here. PXI_SendWordByFifo keeps its coined name, IPCSend.
+ * claimed here.
  */
 #include "IRQ.h"
 
@@ -133,8 +133,8 @@ int PXI_IsCallbackReady(int tag, int proc) {
 }
 
 /* PXI_SendWordByFifo: 0 on success, -1 on a FIFO error, -2 if full. */
-// @symbol IPCSend
-int IPCSend(unsigned int tag, unsigned int data, unsigned int reply) {
+// @symbol PXI_SendWordByFifo
+int PXI_SendWordByFifo(unsigned int tag, unsigned int data, unsigned int reply) {
     PxiFifoWord word;
     u32 saved;
 

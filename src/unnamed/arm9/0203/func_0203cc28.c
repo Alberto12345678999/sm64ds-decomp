@@ -2,6 +2,9 @@
 
 extern short data_02082214[];
 
+/* Rotate a vector about the X axis by angle, with the {sin, cos} pair
+   data_02082214 holds at angle >> 4: y and z turn, x is kept. The
+   trampoline Mario (d_mg_trmpln2_mario.cpp) tilts its vectors with it. */
 void func_0203cd80(int *m, short angle) {
     unsigned int i = (unsigned short)angle >> 4;
     short s = data_02082214[i * 2];
@@ -14,6 +17,7 @@ void func_0203cd80(int *m, short angle) {
     m[2] = o2;
 }
 
+/* The same about the Y axis: x and z turn, y is kept. */
 void func_0203ccd4(int *m, short angle) {
     unsigned int i = (unsigned short)angle >> 4;
     short s = data_02082214[i * 2];
@@ -26,6 +30,9 @@ void func_0203ccd4(int *m, short angle) {
     m[2] = nz;
 }
 
+/* Rotate a Vector2 {x, y} by angle, with the same table. Vector2.h's
+   func_0203d388 has the same body. The trampoline minigame turns its
+   vectors with it. */
 void func_0203cc28(int *p, int angle) {
     int a = (unsigned short)angle >> 4;
     int c = data_02082214[a * 2];

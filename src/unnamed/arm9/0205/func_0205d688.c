@@ -5,7 +5,8 @@
  * marks the file FS_FILE_STATUS_SYNC (4) first, waits in func_0205d3f4
  * (FS_WaitAsync) and returns the bytes the position moved, or -1 on failure;
  * func_0205d3e4 (FS_ReadFileAsync) returns the clamped length at once. Field
- * names follow the SDK's FSFile, as func_0205bc88.c spells them; only the
+ * names follow the SDK's FSFile, as src/engine/fs/FS_CommandDefault.cpp spells
+ * them; only the
  * fields this function touches are spelled out. */
 typedef struct FSFileProp {
     unsigned int own_id; /* 0x00 */

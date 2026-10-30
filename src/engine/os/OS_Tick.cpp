@@ -10,9 +10,6 @@
  *
  * Timer 0 counts at the system clock / 64. Its overflow IRQ increments the
  * 48-bit high part, OSi_TickCounter, and a tick is (high << 16) | TM0CNT_L.
- *
- * leftovers: OS_GetTick keeps its address name, func_02059650, until #4500
- * (which edits two of its callers) lands.
  */
 #include "types.h"
 #include "IRQ.h"
@@ -62,8 +59,8 @@ void OSi_CountUpTick(void) {
     OSi_EnterTimerCallback(0, (u32)OSi_CountUpTick, 0);
 }
 
-// @symbol func_02059650
-long long func_02059650(void) {
+// @symbol OS_GetTick
+long long OS_GetTick(void) {
     u32 saved = IRQ::Disable();
     volatile u16 countL = REG_TM0CNT_L;
     volatile u64 countH = data_020a6438 & 0xffffffffffffULL;

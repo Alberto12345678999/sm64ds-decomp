@@ -44,7 +44,7 @@ extern int func_02067e70(void *obj);
 extern int func_02067bfc(int a, void *b, int c);
 extern int func_02067928(void *a, void *b);
 extern void func_0205a588(void *dst, int val, unsigned int size);
-extern int func_02061c20(int *arg);
+extern int WM_ReadStatus(int *arg);
 extern void *func_020671b4(u16 idx);
 extern int func_02067250(u16 a);
 extern int func_0206703c(u16 arg0, int sel);
@@ -56,6 +56,20 @@ extern void func_02068a54(void);
 
 #pragma opt_dead_assignments off
 
+/* Link mode 3's step (func_0203df40), a download-play parent by its
+   shape. Step 0 allocates 0xb000 bytes of work and picks a channel
+   (func_0203f9d4, with func_0203e978 keeping it). Step 2 starts the
+   parent with ids from data_020a1064 (the block func_0203db64 keeps),
+   this console's profile and func_0203e9a8 as the state callback. Step 3
+   seats up to three children: a child in state 0xa is answered with 1,
+   one past the third with 0, and once data_020a0f70 is up and all are
+   counted every child is answered with 2. Step 4 waits until each seated
+   child is ready (func_02067138), step 5 answers them with 3, and step 6
+   ends it. A stop request (data_020a0f40) in step 3, or a child lost in
+   steps 4 and 5, jumps to step 6; a lost child also sets link error bit
+   4. Every frame the local input record data_020a1040 is copied into all
+   four records of data_020a1154, and the channel goes into bits 8-11 of
+   data_020a0f1c. */
 void func_0203e20c(void)
 {
     if (data_020a0f40 != 0 && data_020a0f50 == 3) {
@@ -131,7 +145,7 @@ void func_0203e20c(void)
             p11 += 0x16;
         } while (i2 < 4);
 
-        func_02061c20(&data_020a1680);
+        WM_ReadStatus(&data_020a1680);
 
         pIdx = &data_020a0f9d;
         base1112 = data_020a1112;

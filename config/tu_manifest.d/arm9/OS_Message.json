@@ -1,0 +1,75 @@
+{
+  "id": "arm9/OS_Message",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Message.cpp",
+  "promoted_source": "src/engine/os/OS_Message.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_message.c, 0x020587e4..0x02058960: 3 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_message.c defines, in this order, OS_InitMessageQueue, OS_SendMessage, OS_ReceiveMessage, OS_JamMessage and OS_ReadMessage. Three are here, each identified by body: OS_ReceiveMessage 0xb0, OS_SendMessage 0xac, OS_InitMessageQueue 0x20.",
+    "Order: mwccarm emits deferred bodies in reverse. The ROM run is pret's source order reversed, OS_ReceiveMessage lowest and OS_InitMessageQueue highest. Nothing calls OS_JamMessage or OS_ReadMessage, so the linker dropped them.",
+    "BOTTOM EDGE: func_020587dc (0x020587dc..0x020587e4, 8 bytes) is not message-queue code.",
+    "TOP EDGE: func_02058960 (0x02058960) is the last function of os_mutex.c (arm9/OS_Mutex), whose run is likewise reversed."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020587e4",
+      "end": "0x02058960"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OS_ReceiveMessage",
+      "address": "0x020587e4",
+      "size": "0x000000b0",
+      "legacy_source": "src/unnamed/arm9/0205/func_020587e4.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OS_SendMessage",
+      "address": "0x02058894",
+      "size": "0x000000ac",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058894.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_InitMessageQueue",
+      "address": "0x02058940",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058940.c",
+      "ordinal": 2
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Tick and arm9/OS_Alarm: tu_map cannot segment arm9/main.",
+    "The SDK names were given in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only. OSMessageQueue is this SDK's layout (u16 thread queues) and stays local to the file: the callers (SoundEngine.cpp, WM_Init.cpp, WM_SendCommand.cpp) declare their own spellings."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Message/OS_Message.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 3,
+    "functions_declared": 3,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

@@ -162,10 +162,8 @@ void func_ov007_020bfbdc(void *self) {
 // @symbol func_ov007_020bfaf0
 /* While the model is visible, scales it in x and z to fill the camera's view
  * at its fovy, then updates it under the camera's view matrix and renders
- * it. c keeps the char * spelling of the definition; `cam` is the typed
- * view. */
-void func_ov007_020bfaf0(char *c) {
-    Ov007Camera *cam = (Ov007Camera *)c;
+ * it. */
+void func_ov007_020bfaf0(Ov007Camera *cam) {
     Ov007Model *r4 = FADE->model;
     if (r4->visible == 0)
         return;

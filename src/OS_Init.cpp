@@ -17,7 +17,7 @@ extern void MI_SetWramBank(int cnt);
 extern void OS_InitVAlarm(void);
 extern void OS_InitReset(void);
 extern void CTRDG_Init(void);
-extern void func_02060890(void); /* CARD_Init */
+extern void CARD_Init(void);
 extern void PM_Init(void);
 
 // @symbol OS_Init
@@ -33,7 +33,7 @@ void OS_Init(void) {
     OS_InitThread();
     OS_InitReset();
     CTRDG_Init();
-    func_02060890();
+    CARD_Init();
     PM_Init();
 }
 

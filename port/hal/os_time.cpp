@@ -1,4 +1,4 @@
-// Host implementation of the system tick, func_02059650.
+// Host implementation of the system tick, OS_GetTick.
 //
 // On the DS this reads the OS tick counter (timer hardware + IRQ-maintained
 // high bits). Timer::Start/Stop/GetTime take differences of it, so any
@@ -14,7 +14,7 @@ typedef long long s64;
 
 static s64 g_ticks;
 
-extern "C" s64 func_02059650()
+extern "C" s64 OS_GetTick()
 {
     return g_ticks;
 }

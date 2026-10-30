@@ -9,10 +9,6 @@ extern int func_ov007_020b84e8(void);
 extern void func_ov007_020c0384(Ov007BgList *list, Ov007BgLayer *layer);
 extern int func_ov007_020b84f4(void);
 extern void func_ov007_020c02d8(int r0, int r1, unsigned short r2);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Builds layer slot `type` around `layer` and links it into the main or sub
  * BG list: 6/7 take prebuilt screen pairs, 1 keeps the loaded screen as its

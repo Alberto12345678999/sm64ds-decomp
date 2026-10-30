@@ -1,6 +1,8 @@
 //cpp
 extern char data_0208ee14;
-extern char data_02092188;
+/* local extern: the stage graph callback's vtable. This initializer writes the
+   base vptr then the derived one; C++ cannot take a vtable's address. */
+extern char _ZTVN10dScStage_c15graphCallback_cE;
 extern char data_0209f388;
 extern void *volatile data_0209f3c4;
 extern char data_0209f43c;
@@ -14,7 +16,7 @@ extern "C" void func_020731dc(void *object, void *destructor, void *node);
 extern "C" void __sinit_02074e84(void);
 void __sinit_02074e84(void) {
     data_0209f3c4 = &data_0208ee14;
-    data_0209f3c4 = &data_02092188;
+    data_0209f3c4 = &_ZTVN10dScStage_c15graphCallback_cE;
     _ZN8dClipperC1Ev(&data_0209f43c);
     func_020731dc(&data_0209f43c, (void *)_ZN8dClipperD1Ev, &data_0209f388);
 }

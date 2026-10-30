@@ -9,10 +9,6 @@ void func_ov007_020bc02c(void* a, void* b);
 void func_ov007_020be9ac(void* a, void* b, void* c);
 void func_ov007_020bbff0(void* c);
 }
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Poses the manager model and both figures against camera 0's view matrix,
  * scales the model by modelGrowth, then renders all three. */
