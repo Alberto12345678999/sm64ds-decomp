@@ -237,7 +237,7 @@ int MBi_IsSendEnabled(void) {
  * MBi_EndCommon, starts the parent with WMi_StartParentEx and keeps the child
  * bitmap from each callback's aid; this one calls the WM functions itself,
  * refreshes the bitmap through WM_ReadStatus and decides on starting MP from
- * the status (+0x10) and mbc's +0x1324 word instead of mpStarted and
+ * the status (+0x10) instead of mpStarted; mStartMpBusy is the SDK's
  * start_mp_busy. */
 void func_02069994(char *arg0) {
     WmCallback *cb = (WmCallback *)arg0;
@@ -287,12 +287,10 @@ void func_02069994(char *arg0) {
                 /* WmStatus +0x10: a BOOL WM_ReadStatus fills in; which SDK
                    field it is isn't pinned down here, so it stays raw */
                 if (*(int *)(data_020a9db4 + 0x1428) == 0) {
-                    /* mbc +0x1324 (set before WM_StartMP, cleared in its
-                       callback) lies in arm9_a9db8_mb_parent.h's padding */
-                    char *g8 = data_020a9db8;
-                    if (*(int *)(g8 + 0x1324) == 0) {
+                    MbParentWork *mb = MB_WORK;
+                    if (mb->mStartMpBusy == 0) {
                         int v = 1;
-                        *(int *)(g8 + 0x1324) = 1;
+                        mb->mStartMpBusy = 1;
                         if (WM_WORK->mpContinuous != 0) {
                             v = 0;
                         }
@@ -326,7 +324,7 @@ void func_02069994(char *arg0) {
         }
 
     case 0xE:
-        *(int *)(data_020a9db8 + 0x1324) = 0;
+        MB_WORK->mStartMpBusy = 0;
         switch (((WmStartMPCallback *)arg0)->state) {
         case 0xA:
             WM_WORK->mpStarted = 1;
@@ -370,7 +368,7 @@ void func_02069994(char *arg0) {
     case 0x2:
         if (cb->errcode == 0) {
             WM_WORK->initialized = 0;
-            *(u16 *)(data_020a9db8 + 0x1316) = 0;
+            MB_WORK->mIsMbInitialized = 0;
             WM_WORK->userCallback(0x11, arg0);
             return;
         }
@@ -493,7 +491,7 @@ void func_020690b0(char *arg0) {
             return;
         if (*(u16 *)(arg0 + 2) == 0) {
             w->initialized = 0;
-            *(u16 *)(data_020a9db8 + 0x1300 + 0x16) = 0;
+            MB_WORK->mIsMbInitialized = 0;
             w->userCallback(0x11, arg0);
             return;
         }
@@ -661,8 +659,8 @@ int MBi_GetBeaconPeriodDispersion(void) {
 // @symbol func_02068e4c
 /* MB_Init: carve the WmWork and mbc out of the caller's buffer (each 32-byte
  * aligned), clear them, copy the user name and the parent name, store the
- * user info and set the parent parameters. Refused (2) while mbc's +0x1316
- * flag (the SDK's isMbInitialized) is set. Lead: the reconstruction's MB_Init
+ * user info and set the parent parameters. Refused (2) while
+ * mIsMbInitialized (the SDK's isMbInitialized) is set. Lead: the reconstruction's MB_Init
  * takes (work, user, ggid, tgid, dma), resolves MB_TGID_AUTO and sets the
  * lifetimes and the power-save flag; this one takes the GGID as two halves
  * (a2, a3) and does none of that. */
@@ -678,7 +676,7 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     char *base1;
     char *base2;
     int irq;
-    if ((data_020a9db8 != 0) && ((*((u16 *)(data_020a9db8 + 0x1316))) != 0)) {
+    if ((data_020a9db8 != 0) && (MB_WORK->mIsMbInitialized != 0)) {
         return 2;
     }
     base1 = (char *)((a0 + 0x1f) & (~0x1f));
@@ -742,9 +740,9 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     }
     ((WmWork *)base1)->mpSending = 0;
     ((WmWork *)base1)->initialized = 0;
-    *((int *)(base2 + 0x1324)) = 0;
+    ((MbParentWork *)base2)->mStartMpBusy = 0;
     IRQ::Restore(irq);
-    *((u16 *)(base2 + 0x1316)) = 1;
+    ((MbParentWork *)base2)->mIsMbInitialized = 1;
     return 0;
 }
 
