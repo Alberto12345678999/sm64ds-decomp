@@ -26,7 +26,7 @@ typedef struct Ov007Camera {
     unsigned short fovy;
 } Ov007Camera;
 
-extern void func_ov007_020bff38(char *c);
+extern void func_ov007_020bff38(Ov007Camera *cam);
 extern void func_ov007_020bffb8(char *c);
 
 extern char *data_ov007_0210342c;
@@ -54,7 +54,7 @@ void func_ov007_020b2160(int mode) {
         G3i::PerspectiveW_(data_02082214[a * 2], data_02082214[a * 2 + 1],
                            (int)(WORK->cameras[0]->aspect >> 0x14), WORK->cameras[0]->nearZ,
                            WORK->cameras[0]->farZ, 0x1000, 1, (Matrix4x3 *)0);
-        func_ov007_020bff38((char *)WORK->cameras[0]);
+        func_ov007_020bff38(WORK->cameras[0]);
         func_ov007_020bffb8((char *)WORK->cameras[0]);
         G3i::LookAt_(&WORK->cameras[0]->eye, &WORK->cameras[0]->up, &WORK->cameras[0]->target, true,
                      (Matrix4x3 *)WORK->cameras[0]->viewMatrix);

@@ -2,6 +2,7 @@
 #include "G3X.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 extern "C" {
 
@@ -10,15 +11,6 @@ extern "C" {
 struct Ov007Camera {
     char pad_00[0x44];
     int viewMatrix[12]; /* 0x44: Matrix4x3 */
-};
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; only the slot this
- * file reads. */
-struct Ov007Settings {
-    char pad_00[4];
-    /* 0x04: per save file, the star total func_ov007_020aec00 sums, -1 for
-     * an unused file */
-    s16 starCounts[3];
 };
 
 extern char *data_ov007_0210342c;

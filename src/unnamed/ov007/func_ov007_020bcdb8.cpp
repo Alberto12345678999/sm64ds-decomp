@@ -1,6 +1,7 @@
 //cpp
 #include "GX.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 extern "C" {
 
@@ -11,13 +12,6 @@ extern int func_ov007_020c99d8(int x);
 extern void func_ov007_020c3544(void *p);
 extern void func_ov007_020b3edc(int idx);
 extern char *data_ov007_0210342c;
-
-/* The 0x3c-byte record at the manager's +0x28; names as in
- * func_ov007_020b6a84, only the slot read here. */
-struct Ov007Settings {
-    char pad_00[0x3a];
-    unsigned char language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
-};
 
 /* The 0xc-byte character record func_ov007_020c3550 builds; only the slot
  * this file reads. */

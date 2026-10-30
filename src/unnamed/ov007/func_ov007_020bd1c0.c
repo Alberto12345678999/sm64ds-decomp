@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 typedef struct { int a, b, c; } S12;
 
 /* One of the overlay's two lights (func_ov007_020c241c, Work lights[0/1]);
@@ -12,12 +13,6 @@ typedef struct Ov007Light {
     char pad_1c[6];
     u16 color; /* 0x22: func_ov007_020c241c seeds 0x7fff */
 } Ov007Light;
-
-/* The 0x3c-byte record at the manager's +0x28; only +0x3a is known here. */
-typedef struct Ov007Settings {
-    char pad_00[0x3a];
-    u8 language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
-} Ov007Settings;
 
 extern char* data_ov007_0210342c;
 extern S12 data_ov007_020d7c34[];

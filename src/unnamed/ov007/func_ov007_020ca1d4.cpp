@@ -3,42 +3,12 @@
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "cstd.h"
-#include "Ov007Spring.h"
+#include "Ov007Mesh.h"
 
 extern "C" {
 
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
-
-/* data_ov007_02104bd4[0], the 0x38-byte grid mesh func_ov007_020cbbb0
- * builds; names as in func_ov007_020ca5f0, only the slot this file reads. */
-typedef struct Ov007Mesh {
-    char pad_00[4];
-    Ov007Grid *grid; /* 0x04: func_ov007_020c73f0 */
-} Ov007Mesh;
-
-/* data_ov007_020d7c9c, the wave template; chances are per mille. */
-typedef struct Ov007MeshWaveParams {
-    int speed;      /* 0x00: phase advance per tick of the wave's state */
-    int spread;     /* 0x04: phase across one whole row or column */
-    int amplitude;  /* 0x08: Q12, times the sine */
-    u16 minIdle;    /* 0x0c: ticks a wave stays idle (-1) before it may re-roll */
-    u16 keepChance; /* 0x0e: chance each tick a running wave keeps pushing */
-    u16 idleChance; /* 0x10: chance a re-roll goes idle instead of picking a line */
-} Ov007MeshWaveParams;
-
-/* The 0x1c-byte record func_ov007_020ca2a8 builds and func_ov007_020ca1d4
- * ticks: waves[0] runs down a mesh column and waves[1] along a row (2 and 3
- * are ticked but drive nothing). Each wave's currentState is its column or
- * row, -1 when idle, and its stateTicks the sine's time. */
-typedef struct Ov007MeshWave {
-    int frame;                   /* 0x00: func_ov007_020ca1d4 counts it up every call */
-    int delay;                   /* 0x04: no wave runs until it counts down to 0 */
-    Ov007MenuState *waves[4];    /* 0x08: func_ov007_020c9388(-2) */
-    Ov007MeshWaveParams *params; /* 0x18: func_ov007_020ca2a8's argument */
-} Ov007MeshWave;
-
-typedef char Ov007MeshWave_size_must_be_0x1c[sizeof(Ov007MeshWave) == 0x1c ? 1 : -1];
 
 extern short data_02082214[];
 extern int func_ov007_020c3ba8(int);
@@ -51,11 +21,8 @@ extern void func_ov007_020c92d0(void *state);
 /* Steps wave i over the mesh: while it holds a line and keepChance wins it
  * adds a travelling sine to the z force of every point on that line;
  * otherwise, once any idle time is served, it re-rolls to idle or to a
- * random line. The parameters keep their char * spelling; `wave` and `mesh`
- * are the typed views. */
-void func_ov007_020ca308(char *self, char *t, int i) {
-    Ov007MeshWave *wave = (Ov007MeshWave *)self;
-    Ov007Mesh *mesh = (Ov007Mesh *)t;
+ * random line. */
+void func_ov007_020ca308(Ov007MeshWave *wave, Ov007Mesh *mesh, int i) {
     Ov007MenuState *state;
     Ov007MeshWaveParams *params;
     int line;
@@ -132,34 +99,31 @@ void func_ov007_020ca308(char *self, char *t, int i) {
 
 /* Allocates a mesh wave over the template params: four idle waves
  * (func_ov007_020c9388(-2)), no delay. */
-void *func_ov007_020ca2a8(void *params) {
+Ov007MeshWave *func_ov007_020ca2a8(Ov007MeshWaveParams *params) {
     Ov007MeshWave *wave = (Ov007MeshWave *)func_ov007_020c3df4(0, sizeof(Ov007MeshWave));
     int i;
     for (i = 0; i < 4; i++) {
         wave->waves[i] = (Ov007MenuState *)func_ov007_020c9388(-2);
     }
-    wave->params = (Ov007MeshWaveParams *)params;
+    wave->params = params;
     wave->delay = 0;
     wave->frame = 0;
     return wave;
 }
 
-/* Frees a mesh wave and its four wave states. c keeps the callers' char *
- * spelling; `wave` is the typed view. */
-int func_ov007_020ca26c(char *c) {
-    Ov007MeshWave *wave = (Ov007MeshWave *)c;
+/* Frees a mesh wave and its four wave states. */
+int func_ov007_020ca26c(Ov007MeshWave *wave) {
     int i;
     for (i = 0; i < 4; i++) {
         func_ov007_020c937c(wave->waves[i]);
     }
-    return func_ov007_020c3d1c(c);
+    return func_ov007_020c3d1c(wave);
 }
 
 /* One tick of a mesh wave over mesh: once the delay has run out, ticks the
  * four wave states and steps waves 0 and 1 (func_ov007_020ca308); counts
  * frame up every call. */
-void func_ov007_020ca1d4(char *self, int mesh) {
-    Ov007MeshWave *wave = (Ov007MeshWave *)self;
+void func_ov007_020ca1d4(Ov007MeshWave *wave, Ov007Mesh *mesh) {
     int i;
     if (wave->delay <= 0) {
         for (i = 0; i < 4; i++) {
@@ -167,7 +131,7 @@ void func_ov007_020ca1d4(char *self, int mesh) {
             switch (i) {
             case 0:
             case 1:
-                func_ov007_020ca308(self, (char *)mesh, i);
+                func_ov007_020ca308(wave, mesh, i);
                 break;
             case 2:
             case 3:

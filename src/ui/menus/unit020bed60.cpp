@@ -39,7 +39,7 @@
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
-#include "Ov007Spring.h"
+#include "Ov007Swing.h"
 
 extern "C" {
 
@@ -75,35 +75,13 @@ typedef struct Ov007Light {
     u16 color; /* 0x22 */
 } Ov007Light;
 
-/* The 0x38-byte grid mesh func_ov007_020cbbb0 builds. */
-typedef struct Ov007Mesh {
-    char pad_00[4];
-    Ov007Grid *grid; /* 0x04: func_ov007_020c73f0 */
-} Ov007Mesh;
-
-/* The 0x1c-byte wave record func_ov007_020ca2a8 builds. */
-typedef struct Ov007MeshWave {
-    int frame; /* 0x00 */
-    int delay; /* 0x04: no wave runs until it counts down to 0 */
-} Ov007MeshWave;
-
-/* The 0x34-byte mesh material func_ov007_020cbf8c copies from its template
- * and func_ov007_020ca5f0 draws with; names as there, only the slots this
- * file touches. */
-typedef struct Ov007MeshMaterial {
-    void *texture; /* 0x00: one of Ov007Work's textures */
-    char pad_04[0x24];
-    u16 diffuse; /* 0x28: DIF_AMB low half */
-    u16 ambient; /* 0x2a: DIF_AMB high half */
-} Ov007MeshMaterial;
-
 /* data_ov007_02104bd4: the 0x30-byte record func_ov007_020bf428 allocates
  * and fills; medium-confidence name. The slot names follow their builders. */
 typedef struct Ov007MeshScene {
     Ov007Mesh *mesh;                 /* 0x00: func_ov007_020cbbb0 */
     Ov007MeshMaterial *materials[2]; /* 0x04: func_ov007_020bee14 draws the mesh with each */
     Ov007MeshWave *wave;             /* 0x0c: func_ov007_020ca2a8 */
-    void *swings[8];                 /* 0x10: func_ov007_020ca010's Ov007Swing, one per item */
+    Ov007Swing *swings[8];           /* 0x10: func_ov007_020ca010, one per item */
 } Ov007MeshScene;
 
 typedef char Ov007MeshScene_size_must_be_0x30[sizeof(Ov007MeshScene) == 0x30 ? 1 : -1];
@@ -117,41 +95,42 @@ typedef struct Ov007Point {
 extern Ov007MeshScene *data_ov007_02104bd4;
 extern char *data_ov007_0210342c;
 extern struct Vector3 data_ov007_020d7d60;
-extern int data_ov007_020d7cb0;
+extern Ov007MeshParams data_ov007_020d7cb0;
 extern u8 data_ov007_020d7c98[];
-extern u8 data_ov007_020d7c9c[];
-extern u8 data_ov007_020d7cc8[];
-extern u8 data_ov007_020d7cf8[];
+extern Ov007MeshWaveParams data_ov007_020d7c9c;
+extern Ov007SwingParams data_ov007_020d7cc8;
+extern Ov007MeshMaterial data_ov007_020d7cf8[2];
 
 extern int func_020531a4(int a);
 extern char *func_ov007_020b2cdc(void);
 extern int func_ov007_020b42d8(int index);
 extern void func_ov007_020bce70(int n, int m);
-extern void func_ov007_020bfe4c(int a, int b, int c, int d, void *out);
+extern void func_ov007_020bfe4c(void *camera, int x, int y, int z, void *out);
 extern int func_ov007_020c1da0(int i);
-extern int func_ov007_020c30ac(int a, int b, void *c, int d, int e);
+extern int func_ov007_020c30ac(Vector3 *arr, int count, void *target, int arg4, int *out);
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020c3d1c(void *self);
 extern int func_ov007_020c3df4(int a, int b);
 extern void func_ov007_020c4388(void *a, void *b);
 extern int func_ov007_020c43bc(void *a, void *b);
 extern int func_ov007_020c44c4(char *r4);
-extern void func_ov007_020c9a84(char *a, char *b, char *c, char *d);
-extern void func_ov007_020c9c24(char *a, int b);
-extern void func_ov007_020c9d90(void *a, void *b);
-extern void func_ov007_020c9f10(void *a, void *b, int c, int d);
-extern void func_ov007_020c9fa0(char *c);
-extern int func_ov007_020ca010(void *arg);
-extern void func_ov007_020ca1d4(char *self, int a);
-extern int func_ov007_020ca26c(char *c);
-extern int func_ov007_020ca2a8(void *arg);
-extern void func_ov007_020ca578(int *a, int b, int c, int d);
-extern void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5);
-extern void func_ov007_020cb3dc(char *self);
-extern void func_ov007_020cba78(char *c, int a);
-extern void func_ov007_020cbb04(void *c);
-extern int func_ov007_020cbbb0(int a, int b, int c, void *d);
-extern int func_ov007_020cbf8c(void *src);
+extern void func_ov007_020c9a84(Ov007Swing *swing, Vector3 *offset, u16 *rotX, u16 *rotY);
+extern void func_ov007_020c9c24(Ov007Swing *swing, int shift);
+extern void func_ov007_020c9d90(Ov007Swing *swing, Ov007Mesh *mesh);
+extern void func_ov007_020c9f10(Ov007Swing *swing, void *pos, int w, int h);
+extern void func_ov007_020c9fa0(Ov007Swing *swing);
+extern Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params);
+extern void func_ov007_020ca1d4(Ov007MeshWave *wave, Ov007Mesh *mesh);
+extern int func_ov007_020ca26c(Ov007MeshWave *wave);
+extern Ov007MeshWave *func_ov007_020ca2a8(Ov007MeshWaveParams *params);
+extern void func_ov007_020ca578(Ov007Mesh *mesh, int i, int j, int t);
+extern void func_ov007_020ca5f0(Ov007Mesh *mesh, Ov007MeshMaterial *mat, int *pos, int scaleZ,
+                                int smooth);
+extern void func_ov007_020cb3dc(Ov007Mesh *mesh);
+extern void func_ov007_020cba78(Ov007Mesh *mesh, int shift);
+extern void func_ov007_020cbb04(Ov007Mesh *mesh);
+extern Ov007Mesh *func_ov007_020cbbb0(int columns, int rows, int width, Ov007MeshParams *params);
+extern Ov007MeshMaterial *func_ov007_020cbf8c(Ov007MeshMaterial *src);
 
 /* Defined below, after their callers (ROM order). */
 void func_ov007_020bed60(int arg0, int arg1, int arg2);
@@ -193,12 +172,12 @@ typedef char
  * unprojected through the camera at the camera's depth, then
  * func_ov007_020c30ac finds the mesh vertex nearest it. Returns its index,
  * or -1. */
-int func_ov007_020bf630(int *self, int *p1, int p2, int p3, int arg5) {
-    int local[3];
-    func_ov007_020bfe4c((int)p1, p2 << 0xc, p3 << 0xc, -p1[0xb], local);
+int func_ov007_020bf630(Ov007Mesh *mesh, Ov007Camera *camera, int x, int y, int arg5) {
+    Ov007Point local;
+    func_ov007_020bfe4c(camera, x << 0xc, y << 0xc, -camera->distance, &local);
     {
-        int *q = (int *)self[1];
-        return func_ov007_020c30ac(self[0], q[0] * q[1], local, arg5, 0);
+        Ov007Grid *grid = mesh->grid;
+        return func_ov007_020c30ac(mesh->verts, grid->columns * grid->rows, &local, arg5, 0);
     }
 }
 
@@ -206,19 +185,18 @@ int func_ov007_020bf630(int *self, int *p1, int p2, int p3, int arg5) {
 /* Places swing idx on item view idx + 0xe's sprite: a copy of the sprite,
  * set the camera's distance in front of it (arg0 is cameras[0] for both
  * callers), is sized and moved into the world, and the swing takes its
- * position and world size and is bound to the mesh. arg0 keeps the tree's
- * char * spelling. */
-void func_ov007_020bf57c(char *arg0, int idx) {
+ * position and world size and is bound to the mesh. */
+void func_ov007_020bf57c(Ov007Camera *camera, int idx) {
     Ov007Sprite *e = WORK->itemViews[idx + 0xe]->sprite;
-    void *r4 = SCENE->swings[idx];
+    Ov007Swing *swing = SCENE->swings[idx];
 
     Ov007SpriteCopy buf;
     buf.bits = *(Ov007SpriteBits *)e;
-    buf.view.depth = -((Ov007Camera *)arg0)->distance;
-    func_ov007_020c43bc(&buf, arg0);
-    func_ov007_020c4388(&buf, arg0);
-    func_ov007_020c9f10(r4, &buf.view.pos, buf.view.worldWidth, buf.view.worldHeight);
-    func_ov007_020c9d90(r4, SCENE->mesh);
+    buf.view.depth = -camera->distance;
+    func_ov007_020c43bc(&buf, camera);
+    func_ov007_020c4388(&buf, camera);
+    func_ov007_020c9f10(swing, &buf.view.pos, buf.view.worldWidth, buf.view.worldHeight);
+    func_ov007_020c9d90(swing, SCENE->mesh);
 }
 
 // @symbol func_ov007_020bf428
@@ -228,31 +206,31 @@ void func_ov007_020bf57c(char *arg0, int idx) {
  * runs the frame 0x14 times to settle the mesh. */
 void func_ov007_020bf428(void) {
     int i;
-    u8 *w;
+    Ov007MeshMaterial *w;
     u8 *bp;
-    int ret;
+    Ov007MeshMaterial *ret;
 
     if (SCENE != 0)
         return;
 
     SCENE = (Ov007MeshScene *)func_ov007_020c3df4(0, sizeof(Ov007MeshScene));
-    SCENE->mesh = (Ov007Mesh *)func_ov007_020cbbb0(0xf, 0xe, 0x6000, &data_ov007_020d7cb0);
+    SCENE->mesh = func_ov007_020cbbb0(0xf, 0xe, 0x6000, &data_ov007_020d7cb0);
 
     w = data_ov007_020d7cf8;
     bp = data_ov007_020d7c98;
     for (i = 0; i < 2; i++) {
         ret = func_ov007_020cbf8c(w);
-        w += 0x34;
-        SCENE->materials[i] = (Ov007MeshMaterial *)ret;
-        SCENE->materials[i]->texture = WORK->textures[*bp];
+        w++;
+        SCENE->materials[i] = ret;
+        SCENE->materials[i]->texture = (struct Ov007Texture *)WORK->textures[*bp];
         bp++;
     }
 
-    SCENE->wave = (Ov007MeshWave *)func_ov007_020ca2a8(data_ov007_020d7c9c);
+    SCENE->wave = func_ov007_020ca2a8(&data_ov007_020d7c9c);
 
     for (i = 0; i < 8; i++) {
-        SCENE->swings[i] = (void *)func_ov007_020ca010(data_ov007_020d7cc8);
-        func_ov007_020bf57c((char *)WORK->cameras[0], i);
+        SCENE->swings[i] = func_ov007_020ca010(&data_ov007_020d7cc8);
+        func_ov007_020bf57c(WORK->cameras[0], i);
     }
 
     for (i = 0; i <= 2; i++) {
@@ -270,23 +248,26 @@ void func_ov007_020bf428(void) {
 void func_ov007_020bf304(void) {
     int i;
     Ov007MeshScene *g;
-    void *p;
 
     g = SCENE;
     if (g == 0) {
         return;
     }
 
-    p = g->mesh;
-    if (p != 0) {
-        func_ov007_020cbb04(p);
-        SCENE->mesh = 0;
+    {
+        Ov007Mesh *mesh = g->mesh;
+        if (mesh != 0) {
+            func_ov007_020cbb04(mesh);
+            SCENE->mesh = 0;
+        }
     }
 
-    p = SCENE->wave;
-    if (p != 0) {
-        func_ov007_020ca26c((char *)p);
-        SCENE->wave = 0;
+    {
+        Ov007MeshWave *wave = SCENE->wave;
+        if (wave != 0) {
+            func_ov007_020ca26c(wave);
+            SCENE->wave = 0;
+        }
     }
 
     for (i = 0; i < 2; i++) {
@@ -297,7 +278,7 @@ void func_ov007_020bf304(void) {
     }
 
     for (i = 0; i < 8; i++) {
-        func_ov007_020c9fa0((char *)SCENE->swings[i]);
+        func_ov007_020c9fa0(SCENE->swings[i]);
     }
 
     for (i = 0; i <= 2; i++) {
@@ -321,9 +302,9 @@ void func_ov007_020beeb0(void) {
     int sp0;
     int sp4;
     int sp8;
-    int r4;
+    Ov007Mesh *mesh;
 
-    r4 = (int)SCENE->mesh;
+    mesh = SCENE->mesh;
 
     if (WORK->touch->cur.touch != 0) {
         int r6;
@@ -362,20 +343,20 @@ void func_ov007_020beeb0(void) {
         }
     }
 
-    func_ov007_020ca1d4((char *)SCENE->wave, r4);
-    func_ov007_020cba78((char *)r4, 2);
+    func_ov007_020ca1d4(SCENE->wave, mesh);
+    func_ov007_020cba78(mesh, 2);
 
     for (int i = 0; i < 8; i++) {
-        char *r8p = (char *)SCENE->swings[i];
+        Ov007Swing *swing = SCENE->swings[i];
         Ov007ItemView *r6p = WORK->itemViews[i + 0xe];
         Ov007Sprite *w;
         int t;
         if (r6p->item->state->stateWork == 2)
-            func_ov007_020bf57c((char *)WORK->cameras[0], i);
+            func_ov007_020bf57c(WORK->cameras[0], i);
         if (r6p->item->ready != 0) {
-            func_ov007_020c9c24(r8p, 2);
+            func_ov007_020c9c24(swing, 2);
             w = r6p->sprite;
-            func_ov007_020c9a84(r8p, (char *)&w->posOffset, (char *)&w->rotX, (char *)&w->rotY);
+            func_ov007_020c9a84(swing, &w->posOffset, &w->rotX, &w->rotY);
             w = r6p->sprite;
             t = w->posOffset.x;
             w->posOffset.x = FX_MUL(t, 0x64);
@@ -472,10 +453,10 @@ void func_ov007_020beeb0(void) {
 void func_ov007_020bee14(void) {
     Ov007Point v = *(Ov007Point *)&data_ov007_020d7d60;
     v.z += 0x200;
-    func_ov007_020ca5f0((char *)SCENE->mesh, (char *)SCENE->materials[0], (int *)&v, 0x3e8, 1);
-    func_ov007_020cb3dc((char *)SCENE->mesh);
+    func_ov007_020ca5f0(SCENE->mesh, SCENE->materials[0], (int *)&v, 0x3e8, 1);
+    func_ov007_020cb3dc(SCENE->mesh);
     v.z += 0x200;
-    func_ov007_020ca5f0((char *)SCENE->mesh, (char *)SCENE->materials[1], (int *)&v, 0x3e8, 1);
+    func_ov007_020ca5f0(SCENE->mesh, SCENE->materials[1], (int *)&v, 0x3e8, 1);
 }
 
 // @symbol func_ov007_020bed60
@@ -483,15 +464,15 @@ void func_ov007_020bee14(void) {
  * grid point under it through the camera, func_ov007_020ca578 pushes that
  * point with strength arg2, and the waves hold off for 0x78 ticks. */
 void func_ov007_020bed60(int arg0, int arg1, int arg2) {
-    Ov007Mesh *self = SCENE->mesh;
-    int *p1 = (int *)WORK->cameras[0];
-    int res = func_ov007_020bf630((int *)self, p1, arg0, arg1, -1);
+    Ov007Mesh *mesh = SCENE->mesh;
+    Ov007Camera *camera = WORK->cameras[0];
+    int res = func_ov007_020bf630(mesh, camera, arg0, arg1, -1);
     if (res == -1)
         return;
     {
-        int m = cstd::mod(res, self->grid->columns);
-        int d = cstd::div(res, self->grid->columns);
-        func_ov007_020ca578((int *)self, m, d, arg2);
+        int m = cstd::mod(res, mesh->grid->columns);
+        int d = cstd::div(res, mesh->grid->columns);
+        func_ov007_020ca578(mesh, m, d, arg2);
     }
     SCENE->wave->delay = 0x78;
 }

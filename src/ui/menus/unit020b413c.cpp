@@ -56,6 +56,7 @@
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 #pragma opt_loop_invariants off
 
@@ -117,16 +118,6 @@ typedef struct Ov007ItemView {
 } Ov007ItemView;
 
 typedef char Ov007ItemView_size_must_be_0x1c[sizeof(Ov007ItemView) == 0x1c ? 1 : -1];
-
-/* The 0x3c-byte record at Ov007Work's settings; only the slots this unit
- * reads. */
-typedef struct Ov007Settings {
-    /* 0x00: func_ov007_020b7138's second argument; byte 9 picks which of
-     * items 0xc and 0xd is live */
-    u8 *bootArgs;
-    char pad_04[0x36];
-    u8 language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
-} Ov007Settings;
 
 /* The pad record at Ov007Work's pad; names as in unit020b8f50. */
 typedef struct Ov007Pad {
@@ -198,7 +189,7 @@ extern void func_ov007_020b64a8(int dir);
 extern int func_ov007_020b79e4(void);
 extern void func_ov007_020b7a44(void);
 extern void func_ov007_020b7d94(void *self);
-extern void func_ov007_020b7eec(u8 *bootArgs);
+extern void func_ov007_020b7eec(Ov007BootArgs *bootArgs);
 extern int func_ov007_020b8f78(void);
 extern int func_ov007_020b8fa0(void);
 extern void func_ov007_020c1d78(int i);
@@ -235,7 +226,7 @@ void func_ov007_020b50e8(char *arg) {
     int is34;
     int thresh;
     Ov007MenuState *pv;
-    u8 *bootArgs;
+    Ov007BootArgs *bootArgs;
     int v4;
     int posX;
     Ov007ItemLayout *r3p;
@@ -279,13 +270,13 @@ void func_ov007_020b50e8(char *arg) {
             case 10:
                 func_ov007_020b64a8(-1);
                 break;
-            case 12:
-                if (bootArgs[9] == 0) {
+            case 12: /* the owner's command 4 turns the backlight on */
+                if (bootArgs->backlightOn == 0) {
                     WORK->callback(4);
                 }
                 break;
-            case 13:
-                if (bootArgs[9] != 0) {
+            case 13: /* and command 5 off */
+                if (bootArgs->backlightOn != 0) {
                     WORK->callback(5);
                 }
                 break;
@@ -679,8 +670,8 @@ static inline int elem_selectable(Ov007ItemView *elem) {
  *      point against the item's hitBox, offset by the sprite's 20.12 screen
  *      position >> 12. A hit selects immediately. If that misses, three
  *      element types get a second chance against a hardcoded screen rect:
- *      x 8..0x66, y 0x50..0x60 for type 0xc (when bootArgs[9] is 0) or
- *      type 0xd (when it is not), and x 8..0x48, y 0x20..0x30 for type 9.
+ *      x 8..0x66, y 0x50..0x60 for type 0xc (when backlightOn is clear) or
+ *      type 0xd (when it is set), and x 8..0x48, y 0x20..0x30 for type 9.
  *
  *   2. HOLD. Only while states[0] is in state 3, and only for element types
  *      3 and 6. Requires the stylus merely to be down, not freshly pressed,
@@ -730,8 +721,8 @@ void func_ov007_020b46b0(void *arg0, void *arg1) {
                     func_ov007_020b63e4((char **)arg0);
                 } else {
                     u16 t = elem->item->id;
-                    if ((t == 0xc && WORK->settings->bootArgs[9] == 0) ||
-                        (t == 0xd && WORK->settings->bootArgs[9] != 0)) {
+                    if ((t == 0xc && WORK->settings->bootArgs->backlightOn == 0) ||
+                        (t == 0xd && WORK->settings->bootArgs->backlightOn != 0)) {
                         if (touching != 0) {
                             s32 x = tp->cur.x;
                             if (x >= 8 && x <= 0x66) {
