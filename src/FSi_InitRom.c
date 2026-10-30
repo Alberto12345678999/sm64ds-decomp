@@ -2,10 +2,12 @@
  * multiboot-child branch): store the default DMA channel (data_020a8060),
  * take a card lock id, clear the ARM9/ARM7 overlay-table regions, CARD_Init,
  * set up the ROM archive data_020a8074 and register it as "rom", then load
- * it from the ROM header's FNT/FAT regions (A, B) unless either is 0 or ~0. */
+ * it from the ROM header's FNT and FAT regions ({offset, length} at
+ * 0x027ffe40 and 0x027ffe48) unless either offset is 0 or ~0. */
+#include "types.h"
 #include "nitro/os/spinLock.h"
 
-extern void *data_020a8060;
+extern u32 data_020a8060;
 extern int data_020a805c;
 extern int data_020a8064[2];
 extern int data_020a806c[2];
@@ -20,13 +22,10 @@ extern int func_0205cc80(void *thiz, void *a, void *b);
 extern void func_0205c7c4(int *p, int a, int b);
 extern int func_0205cb68(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
 
-#define A ((int *)0x27ffe40)
-#define B ((int *)0x27ffe48)
-
 #pragma opt_propagation off
-void FSi_InitRom(void *default_dma_no) {
-    int *a;
-    int *b;
+void FSi_InitRom(u32 default_dma_no) {
+    int *fnt;
+    int *fat;
 
     data_020a8060 = default_dma_no;
     data_020a805c = OS_GetLockID();
@@ -36,15 +35,19 @@ void FSi_InitRom(void *default_dma_no) {
     data_020a806c[1] = 0;
     CARD_Init();
 
-    a = A;
-    b = B;
+    fnt = (int *)0x27ffe40;
+    fat = (int *)0x27ffe48;
     func_0205cd34(&data_020a8074);
     func_0205cc80(&data_020a8074, &data_0209a048, (void *)3);
-    if (a[0] == -1) return;
-    if (a[0] == 0) return;
-    if (b[0] == -1) return;
-    if (b[0] == 0) return;
+    if (fnt[0] == -1)
+        return;
+    if (fnt[0] == 0)
+        return;
+    if (fat[0] == -1)
+        return;
+    if (fat[0] == 0)
+        return;
     func_0205c7c4(&data_020a8074, (int)&func_0205da94, 0x602);
-    func_0205cb68(&data_020a8074, 0, b[0], b[1], a[0], a[1],
-                  (int)&func_0205db2c, (int)&func_0205db24);
+    func_0205cb68(&data_020a8074, 0, fat[0], fat[1], fnt[0], fnt[1], (int)&func_0205db2c,
+                  (int)&func_0205db24);
 }
