@@ -12016,7 +12016,7 @@
     "src/_Z17LoadLevelOverlaysi.cpp",
     "src/_Z26LoadOrUnloadObjectOverlaysPFviEi.cpp",
     "src/_ZN5StageC3Ev.c",
-    "src/unnamed/arm9/0202/func_0202e118.c",
+    "src/GetStageDebugName.c",
     "src/_ZN8dScene_cD1Ev.cpp",
     "src/_ZN8dScene_cD0Ev.cpp",
     "src/_ZN8dScene_c20SetAndStopColorFaderEv.cpp",

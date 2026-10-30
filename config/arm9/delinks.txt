@@ -764,7 +764,7 @@ src/game/stages/d_s_stage_methods.cpp:
     complete
     .text start:0x02023688 end:0x0202e118
 
-src/unnamed/arm9/0202/func_0202e118.c:
+src/GetStageDebugName.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 

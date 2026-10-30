@@ -7223,3 +7223,5 @@ arm9	0x02018dc4	func_02018dc4	myFS_OpenFileFast	ROM string myFS_OpenFileFast at 
 arm9	0x02018e00	func_02018e00	myFS_OpenFileDirect	ROM string myFS_OpenFileDirect at 0x0208ecc4 is the name this wrapper passes to the error reporter func_02018e68
 arm9	0x02018e3c	func_02018e3c	myFS_ConvertPathToFileID	ROM string myFS_ConvertPathToFileID at 0x0208ecd8 is the name this wrapper passes to the error reporter func_02018e68
 arm9	0x0201473c	func_0201473c	nds_vprintf	va_list core of nds_printf (its only caller passes the computed va_list): vsnprintf (func_0206e3dc) into a 0x100 buffer, then nds_print
+arm9	0x0202e118	func_0202e118	GetStageDebugName	crash screen prints it as "StageNo %2d:%s": STAGE_DEBUG_NAMES[current level id] for ids < 0x34, else "*NOT STAGE*"; stage twin of GetActorDebugName
+arm9	0x02092584	data_02092584	STAGE_DEBUG_NAMES	0x34 char* stage debug names ("Test Map", "Main Castle Map", ... "Vs Main") read by GetStageDebugName; twin of ACTOR_DEBUG_NAMES; storage unchanged

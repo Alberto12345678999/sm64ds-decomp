@@ -1773,7 +1773,7 @@ src/unnamed/arm9/0202/func_0202b090.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_0202b0c4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_0202b0e0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_0202deac.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0202/func_0202e118.c	PURE-C	arm9				1		None		-
+src/GetStageDebugName.c	PURE-C	arm9				1		None		-
 src/func_0202ed14.c	PURE-C	arm9				1		None		-
 src/func_0202ed48.c	PURE-C	arm9				1		None		-
 src/func_0202ee94.c	WEAK-refs-only	arm9				1		None		-
