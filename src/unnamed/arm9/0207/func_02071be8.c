@@ -11,6 +11,14 @@ extern void func_02072168(Src *s, Ctx *ctx, unsigned char *p);
 extern void func_02071ccc(Src *s, int off, int add);
 extern void func_02071790(Src *s, Ctx *ctx, int n);
 struct Src { int f0; char p4[8]; int fc; int f10; };
+/* EH runtime: the throw driver that __rethrow branches to. It finds the
+   action table for the throw PC (func_02072dac) and calls the terminate
+   path (func_020731fc) if there is none, reads the frame (func_02071864),
+   picks up the rethrown exception (func_02072014) unless s->f0 is set, and
+   finds the handler (func_02071d3c). It then reads the handler's landing
+   offset and catch-info offset, unwinds the frames above it
+   (func_02072168), fills the handler's catch info (func_02071ccc) and
+   jumps to the landing pad (func_02071790). */
 void func_02071be8(struct Src *s)
 {
     int local0;

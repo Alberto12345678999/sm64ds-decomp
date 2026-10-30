@@ -108,11 +108,7 @@ src/GetLanguageIndex.c:
 
 src/unnamed/arm9/0200/func_0200f13c.cpp:
     complete
-    .text start:0x0200f13c end:0x0200f220
-
-src/unnamed/arm9/0200/func_0200f220.cpp:
-    complete
-    .text start:0x0200f220 end:0x0200f2cc
+    .text start:0x0200f13c end:0x0200f2cc
 
 src/unnamed/arm9/0200/func_0200f2cc.cpp:
     complete
@@ -3489,15 +3485,15 @@ src/unnamed/arm9/0206/func_02067f68.c:
     complete
     .text start:0x02067f68 end:0x02068188
 
-src/unnamed/arm9/0206/func_02068188.c:
+src/MBi_InitSendVolatBeacon.c:
     complete
     .text start:0x02068188 end:0x020681b8
 
-src/unnamed/arm9/0206/func_020681b8.c:
+src/MBi_SendFixedBeacon.c:
     complete
     .text start:0x020681b8 end:0x0206834c
 
-src/unnamed/arm9/0206/func_0206834c.c:
+src/MBi_InitSendFixedBeacon.c:
     complete
     .text start:0x0206834c end:0x02068398
 
@@ -3505,11 +3501,11 @@ src/unnamed/arm9/0206/func_02068398.c:
     complete
     .text start:0x02068398 end:0x02068410
 
-src/unnamed/arm9/0206/func_02068410.c:
+src/MB_SendGameInfoBeacon.c:
     complete
     .text start:0x02068410 end:0x02068484
 
-src/unnamed/arm9/0206/func_02068484.c:
+src/MBi_ClearSendStatus.c:
     complete
     .text start:0x02068484 end:0x020684a8
 
@@ -3517,31 +3513,31 @@ src/unnamed/arm9/0206/func_020684a8.c:
     complete
     .text start:0x020684a8 end:0x020684d0
 
-src/unnamed/arm9/0206/func_020684d0.c:
+src/MB_AddGameInfo.c:
     complete
     .text start:0x020684d0 end:0x02068514
 
-src/unnamed/arm9/0206/func_02068514.c:
+src/mystrlen.c:
     complete
     .text start:0x02068514 end:0x0206853c
 
-src/unnamed/arm9/0206/func_0206853c.c:
+src/MB_UpdateGameInfoMember.c:
     complete
     .text start:0x0206853c end:0x020685cc
 
-src/unnamed/arm9/0206/func_020685cc.c:
+src/MBi_ReadIconInfo.c:
     complete
     .text start:0x020685cc end:0x02068680
 
-src/unnamed/arm9/0206/func_02068680.c:
+src/MBi_MakeGameInfo.c:
     complete
     .text start:0x02068680 end:0x0206879c
 
-src/unnamed/arm9/0206/func_0206879c.c:
+src/MBi_CheckWmErrcode.c:
     complete
     .text start:0x0206879c end:0x020687f8
 
-src/unnamed/arm9/0206/func_020687f8.c:
+src/MBi_IsStarted.c:
     complete
     .text start:0x020687f8 end:0x0206881c
 
@@ -3755,27 +3751,27 @@ src/cstd4.cpp:
     complete
     .text start:0x0206dab4 end:0x0206ece0
 
-src/unnamed/arm9/0206/func_0206ece0.c:
+src/float2str.c:
     complete
     .text start:0x0206ece0 end:0x0206f338
 
-src/unnamed/arm9/0206/func_0206f338.c:
+src/round_decimal.c:
     complete
     .text start:0x0206f338 end:0x0206f46c
 
-src/unnamed/arm9/0206/func_0206f46c.c:
+src/double2hex.c:
     complete
     .text start:0x0206f46c end:0x0206f820
 
-src/unnamed/arm9/0206/func_0206f820.c:
+src/longlong2str.c:
     complete
     .text start:0x0206f820 end:0x0206fb08
 
-src/unnamed/arm9/0206/func_0206fb08.c:
+src/long2str.c:
     complete
     .text start:0x0206fb08 end:0x0206fd6c
 
-src/unnamed/arm9/0206/func_0206fd6c.c:
+src/parse_format.c:
     complete
     .text start:0x0206fd6c end:0x02070348
 
@@ -3783,61 +3779,25 @@ src/cstd6.cpp:
     complete
     .text start:0x02070348 end:0x020707a4
 
-src/unnamed/arm9/0207/func_020707a4.c:
+src/copysign.c:
     complete
     .text start:0x020707a4 end:0x020707cc
 
-src/unnamed/arm9/0207/func_020707cc.c:
+src/fabs.c:
     complete
     .text start:0x020707cc end:0x020707f4
 
-src/unnamed/arm9/0207/func_020707f4.c:
+src/frexp.c:
     complete
     .text start:0x020707f4 end:0x020708b4
 
-src/unnamed/arm9/0207/func_020708b4.c:
+src/ldexp.c:
     complete
     .text start:0x020708b4 end:0x02070b98
 
-src/unnamed/arm9/0207/func_02070b98.c:
+src/ansi_fp.c:
     complete
-    .text start:0x02070b98 end:0x02070c68
-
-src/unnamed/arm9/0207/func_02070c68.c:
-    complete
-    .text start:0x02070c68 end:0x02070ec0
-
-src/unnamed/arm9/0207/func_02070ec0.c:
-    complete
-    .text start:0x02070ec0 end:0x020712a0
-
-src/unnamed/arm9/0207/func_020712a0.c:
-    complete
-    .text start:0x020712a0 end:0x02071364
-
-src/unnamed/arm9/0207/func_02071364.c:
-    complete
-    .text start:0x02071364 end:0x02071510
-
-src/unnamed/arm9/0207/func_02071510.c:
-    complete
-    .text start:0x02071510 end:0x020715e0
-
-src/unnamed/arm9/0207/func_020715e0.c:
-    complete
-    .text start:0x020715e0 end:0x02071644
-
-src/unnamed/arm9/0207/func_02071644.c:
-    complete
-    .text start:0x02071644 end:0x02071698
-
-src/unnamed/arm9/0207/func_02071698.c:
-    complete
-    .text start:0x02071698 end:0x02071708
-
-src/unnamed/arm9/0207/func_02071708.c:
-    complete
-    .text start:0x02071708 end:0x02071784
+    .text start:0x02070b98 end:0x02071784
 
 src/unnamed/arm9/0207/func_02071784.c:
     complete
@@ -3879,15 +3839,15 @@ src/unnamed/arm9/0207/func_0207199c.c:
     complete
     .text start:0x0207199c end:0x020719ac
 
-src/unnamed/arm9/0207/func_020719ac.c:
+src/__close_console.c:
     complete
     .text start:0x020719ac end:0x020719b4
 
-src/unnamed/arm9/0207/func_020719b4.c:
+src/__write_console.c:
     complete
     .text start:0x020719b4 end:0x020719ec
 
-src/unnamed/arm9/0207/func_020719ec.c:
+src/__read_console.c:
     complete
     .text start:0x020719ec end:0x02071a50
 
@@ -3947,15 +3907,15 @@ src/unnamed/arm9/0207/func_02072ed0.c:
     complete
     .text start:0x02072ed0 end:0x02072f3c
 
-src/unnamed/arm9/0207/func_02072f3c.c:
+src/__destroy_global_chain.c:
     complete
     .text start:0x02072f3c end:0x02072f94
 
-src/unnamed/arm9/0207/func_02072f94.c:
+src/__call_static_initializers.c:
     complete
     .text start:0x02072f94 end:0x02072fcc
 
-src/unnamed/arm9/0207/func_02072fcc.c:
+src/__throw_catch_compare.c:
     complete
     .text start:0x02072fcc end:0x020731dc
 
@@ -3979,7 +3939,7 @@ src/unnamed/arm9/0207/func_02073238.c:
     complete
     .text start:0x02073238 end:0x02073244
 
-src/unnamed/arm9/0207/func_02073244.c:
+src/__cxa_vec_delete.c:
     complete
     .text start:0x02073244 end:0x0207328c
 
@@ -3995,7 +3955,7 @@ src/__cxa_vec_ctor.cpp:
     complete
     .text start:0x020733a8 end:0x02073470
 
-src/unnamed/arm9/0207/func_02073470.cpp:
+src/__cxa_vec_new.cpp:
     complete
     .text start:0x02073470 end:0x02073534
 

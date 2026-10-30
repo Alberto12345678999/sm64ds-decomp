@@ -7,7 +7,7 @@ extern void MultiStore_Int(int val, void *dst, int size);
 
 /* Allocates a link and clears it (func_ov007_020c806c). */
 Ov007Link *func_ov007_020c80a4(void) {
-    Ov007Link *c = (Ov007Link *)func_ov007_020c3df4(0, sizeof(Ov007Link));
+    Ov007Link *c = func_ov007_020c3df4(0, sizeof(Ov007Link));
     func_ov007_020c806c(c);
     return c;
 }

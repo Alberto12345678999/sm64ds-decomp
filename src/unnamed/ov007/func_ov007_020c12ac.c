@@ -6,9 +6,9 @@ extern void MultiStore_Int(int val, int *dst, int len);
 /* Allocates a sprite bank for `cellCount` cells and `animCount`
  * animations, each table zeroed record by record. */
 Ov007SpriteBank *func_ov007_020c12ac(int cellCount, int animCount) {
-    Ov007SpriteBank *bank = (Ov007SpriteBank *)func_ov007_020c3df4(0, sizeof(Ov007SpriteBank));
-    bank->cells = (Ov007Cell *)func_ov007_020c3df4(0, cellCount * sizeof(Ov007Cell));
-    bank->anims = (Ov007CellAnim *)func_ov007_020c3df4(0, animCount * sizeof(Ov007CellAnim));
+    Ov007SpriteBank *bank = func_ov007_020c3df4(0, sizeof(Ov007SpriteBank));
+    bank->cells = func_ov007_020c3df4(0, cellCount * sizeof(Ov007Cell));
+    bank->anims = func_ov007_020c3df4(0, animCount * sizeof(Ov007CellAnim));
     bank->cellCount = cellCount;
     bank->animCount = animCount;
     {

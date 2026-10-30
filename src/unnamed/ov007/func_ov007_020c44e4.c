@@ -9,13 +9,13 @@
 #include "Ov007Sprite.h"
 
 Ov007Sprite *func_ov007_020c44e4(int count) {
-    Ov007Sprite *p = (Ov007Sprite *)func_ov007_020c3df4(0, 0x88);
+    Ov007Sprite *p = func_ov007_020c3df4(0, 0x88);
     int i;
     u16 zs[3];
 
     p->frame = 0;
     p->frameCount = (s16)count;
-    p->frames = (void **)func_ov007_020c3df4(0, count << 2);
+    p->frames = func_ov007_020c3df4(0, count << 2);
     for (i = 0; i < count; i++) {
         p->frames[i] = 0;
     }

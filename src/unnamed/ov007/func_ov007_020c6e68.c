@@ -19,7 +19,7 @@
 
 extern int func_ov007_020c249c(Ov007StrokePath *path);
 extern int func_020531a4(int a);
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern Ov007Link *func_ov007_020c80a4(void);
 extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
 extern void func_ov007_020bfe4c(Ov007Camera *cam, int a, int b, int c, Vector3 *out);
@@ -64,9 +64,9 @@ void func_ov007_020c6e68(Ov007Picker *self, int idx) {
     }
     sb = self->pointLists[idx];
 
-    self->groupPoints[idx] = (Vector3 *)func_ov007_020c3df4(0, (void *)flag);
-    self->groupPointCopies[idx] = (Vector3 *)func_ov007_020c3df4(0, (void *)flag);
-    self->groupLinks[idx] = (Ov007Link **)func_ov007_020c3df4(0, (void *)(count << 2));
+    self->groupPoints[idx] = func_ov007_020c3df4(0, flag);
+    self->groupPointCopies[idx] = func_ov007_020c3df4(0, flag);
+    self->groupLinks[idx] = func_ov007_020c3df4(0, count << 2);
 
     i = 0;
     if (count > 0) {

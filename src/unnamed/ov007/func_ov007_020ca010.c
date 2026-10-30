@@ -1,7 +1,7 @@
 #include "types.h"
 #include "Ov007Swing.h"
 
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, int flags);
 extern void func_ov007_020c7804(Ov007PointList *list);
 extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);
@@ -18,12 +18,12 @@ Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params) {
     int j;
     Ov007PointList *chain;
 
-    swing = (Ov007Swing *)func_ov007_020c3df4(0, (void *)sizeof(Ov007Swing));
+    swing = func_ov007_020c3df4(0, sizeof(Ov007Swing));
     swing->mesh = 0;
     swing->params = params;
     n = params->chainLength;
     swing->anchor = (Vector3){0, 0, 0};
-    swing->chainPositions = (Vector3 *)func_ov007_020c3df4(0, (void *)(n * 12));
+    swing->chainPositions = func_ov007_020c3df4(0, n * 12);
     swing->chain = func_ov007_020c798c(2, params->chainLength, params->chainPointMass, 1);
     chain = swing->chain;
     for (i = 0; i < params->chainLength; i++) {

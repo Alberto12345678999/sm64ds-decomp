@@ -6,6 +6,10 @@ typedef struct {
     u16 f4;
 } Obj;
 
+/* Step a WMScanParam's channel (+4) to the next channel in the allowed mask
+   (WM_GetAllowedChannel), counting 1..16 and wrapping. Returns 0 when no channel is
+   allowed. When the current channel is the only one allowed it is left as
+   it is. func_020690b0 calls it between scans when scanNextChannel is set. */
 int func_0206a29c(Obj *self) {
     u16 mask;
     u16 v;

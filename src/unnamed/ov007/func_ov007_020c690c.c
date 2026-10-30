@@ -13,7 +13,7 @@ extern int func_ov007_020c2c68(int a, int b, int c);
  * func_ov007_020c6724 then clears the groups. */
 Ov007Picker *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity,
                                  struct Ov007Camera *camera, void *params, void *springConstants) {
-    Ov007Picker *p = (Ov007Picker *)func_ov007_020c3df4(0, 0xd0);
+    Ov007Picker *p = func_ov007_020c3df4(0, 0xd0);
     int n4 = maxGroups << 2;
     int n2;
     int i;
@@ -24,21 +24,21 @@ Ov007Picker *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity,
     p->params = params;
     p->camera = camera;
 
-    p->groupPoints = (Vector3 **)func_ov007_020c3df4(0, n4);
-    p->groupPointCopies = (Vector3 **)func_ov007_020c3df4(0, n4);
+    p->groupPoints = func_ov007_020c3df4(0, n4);
+    p->groupPointCopies = func_ov007_020c3df4(0, n4);
     p->word30 = 0;
-    p->groups = (Ov007StrokePath **)func_ov007_020c3df4(0, n4);
-    p->pointLists = (Ov007PointList **)func_ov007_020c3df4(0, n4);
+    p->groups = func_ov007_020c3df4(0, n4);
+    p->pointLists = func_ov007_020c3df4(0, n4);
 
     n2 = maxGroups << 1;
-    p->headLinkGroups = (u16 *)func_ov007_020c3df4(0, n2);
-    p->tailLinkGroups = (u16 *)func_ov007_020c3df4(0, n2);
-    p->headLinkPoints = (u16 *)func_ov007_020c3df4(0, n2);
-    p->tailLinkPoints = (u16 *)func_ov007_020c3df4(0, n2);
+    p->headLinkGroups = func_ov007_020c3df4(0, n2);
+    p->tailLinkGroups = func_ov007_020c3df4(0, n2);
+    p->headLinkPoints = func_ov007_020c3df4(0, n2);
+    p->tailLinkPoints = func_ov007_020c3df4(0, n2);
 
-    p->groupLinks = (Ov007Link ***)func_ov007_020c3df4(0, n4);
-    p->headLinks = (Ov007Link **)func_ov007_020c3df4(0, n4);
-    p->tailLinks = (Ov007Link **)func_ov007_020c3df4(0, n4);
+    p->groupLinks = func_ov007_020c3df4(0, n4);
+    p->headLinks = func_ov007_020c3df4(0, n4);
+    p->tailLinks = func_ov007_020c3df4(0, n4);
 
     func_ov007_020c684c(p);
 
@@ -56,7 +56,7 @@ Ov007Picker *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity,
     func_ov007_020c8010(p->link, p->anchorPoint, p->posPoint);
 
     p->path = (Ov007StrokePath *)func_ov007_020c2c68(0, pathCapacity, 1);
-    p->pathPoints = (Vector3 *)func_ov007_020c3df4(0, pathCapacity * 0xc);
+    p->pathPoints = func_ov007_020c3df4(0, pathCapacity * 0xc);
 
     func_ov007_020c6724(p, 1);
     return p;
