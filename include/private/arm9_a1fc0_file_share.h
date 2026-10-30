@@ -60,9 +60,40 @@ typedef struct FileShareNode {
     unsigned char mPages[3][0x400]; /* 0xc0 -- the cached file pages */
 } FileShareNode;
 
+/* mFile's open extent: FSFile prop.file.top and prop.file.bottom (this ROM's
+ * FSFile has its prop union at 0x1c; see func_02040f30.cpp). func_02041ce0
+ * matches a request against it and func_02041d28 sizes the registration by
+ * it. */
+typedef struct FileShareFileExtent {
+    unsigned char pad_00[0x20];
+    int top;    /* 0x20 -- prop.file.top */
+    int bottom; /* 0x24 -- prop.file.bottom */
+} FileShareFileExtent;
+
+#define FILE_SHARE_EXTENT(node) ((FileShareFileExtent *)(node)->mFile)
+
+/* One file-share message: 9 bytes on the air (func_020656d4), 0xc as a slot
+ * of FileShareParentArea::mReplies. mKind is 0 for a child's open request,
+ * 1 for its reply, 2 for a child's release request and 3 for its reply. The
+ * parent packet size rides split across mPacketSizeHigh (bits 8-11) and
+ * mPacketSizeLow. In kinds 1-3 mFileId is the region's registered id
+ * (FileShareNode::mFileId, the child's mReadRegion), and mFlag is 1, except
+ * on the packet-size notice func_02041e14 sends as kind 1 with mFlag 0. The
+ * open request (kind 0) carries the region's length in those 24 bits and its
+ * offset in the second word instead; func_02041a00 builds it under those
+ * names. */
+typedef struct FileShareMsg {
+    unsigned int mKind : 4;
+    unsigned int mPacketSizeHigh : 4;
+    unsigned int mFlag : 24;
+    unsigned int mFileId;         /* 0x04 */
+    unsigned char mPacketSizeLow; /* 0x08 */
+} FileShareMsg;
+
 typedef struct FileShareParentArea {
-    /* 0x0000 -- one reply per AID: func_020412f0 fills it, func_02041d28 sets
-     * its file id, func_02041e14 sends it */
+    /* 0x0000 -- one reply per AID, each a FileShareMsg (above):
+     * func_020412f0 fills it, func_02041d28 sets its file id, func_02041e14
+     * sends it */
     unsigned char mReplies[0x10][0xc];
     unsigned char mNodes[3][FILE_SHARE_NODE_SIZE]; /* 0x00c0 */
     FileShareNode *mFreeList;                      /* 0x2700 */
@@ -155,6 +186,7 @@ typedef char
 typedef char
     FileShareParentArea_size_must_be_0x2730[sizeof(FileShareParentArea) == 0x2730 ? 1 : -1];
 typedef char FileShareChildArea_size_must_be_0xc7c[sizeof(FileShareChildArea) == 0xc7c ? 1 : -1];
+typedef char FileShareMsg_size_must_be_0xc[sizeof(FileShareMsg) == 0xc ? 1 : -1];
 typedef char FileShareWork_size_must_be_0x2b70[sizeof(FileShareWork) == 0x2b70 ? 1 : -1];
 
 /* The work block through its view; each consumer declares data_020a1fc0. */

@@ -7,8 +7,19 @@ extern u16 data_020a11c4[4];
 
 #define H(base, off) (*(u16 *)((char *)(base) + (off)))
 
-void func_0203e0ac(void)
-{
+/* The local-only link step (func_0203df40, mode 0): clear the record's 0x8000
+   flag and copy this frame's input record (data_020a1040, 0x24 bytes; see
+   func_0203df40) into all four player slots of data_020a1154 (4 x 0x24).
+   Per slot, the copy covers flags (+0xc), keys (+0xe), the touch sample
+   (+0x4), the input yaw (+0x10) and the 0x11 bytes at +0x12.
+   data_020a117c, data_020a11a0 and data_020a11c4 are not separate objects:
+   they are the touch samples of slots 1, 2 and 3 (+0x28, +0x4c, +0x70),
+   which the ROM addresses through their own pool constants. Each slot's
+   touch sample is copied from the next one, after slot 3 has been written,
+   so all four end up with the local value. The offset spelling stays
+   because a struct spelling reorders the copies (0x148 bytes against
+   0x160). */
+void func_0203e0ac(void) {
     int i;
     u16 te;
     u8 *p1040 = data_020a1040;
