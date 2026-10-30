@@ -473,10 +473,10 @@ extern void func_0205b6b0(void *c);
 extern void func_0205b6f4(void *c);
 extern void func_0205b78c(struct Node *base, int index, struct Node *arg);
 extern int func_0205caa8(void *thiz);
-extern int func_0205cb68(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
-extern void func_0205cbe4(void *thiz);
-extern int func_0205cc80(void *thiz, void *a, void *b);
-extern void func_0205cd34(void *o);
+extern int FS_LoadArchive(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+extern void FS_ReleaseArchiveName(void *thiz);
+extern int FS_RegisterArchiveName(void *thiz, void *a, void *b);
+extern void FS_InitArchive(void *o);
 extern int func_0205d368(void *o, int r1, int sel);
 extern int func_0205d568(Node *node, int b, ...);
 extern int func_0205d644(void *out_file_id, const char *path);
@@ -2586,21 +2586,22 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
         } while (i < n);
     }
 
-    func_0205cd34(self);
+    FS_InitArchive(self);
     self->narc = p;
     self->f54 = (unsigned char *)fatb;
     fimg_off = fimg + 8;
     self->f58 = (unsigned char *)fimg_off;
 
-    if (func_0205cc80(self, (void *)name, (void *)cstd::strlen(name)) == 0)
+    if (FS_RegisterArchiveName(self, (void *)name, (void *)cstd::strlen(name)) == 0)
         return 0;
 
-    if (((int(*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1, void *fn2))func_0205cb68)(self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off,
-                      *(int *)(fatb + 4) - 0xc, (int)(fntb + 8) - (int)fimg_off,
-                      *(int *)(fntb + 4) - 8, 0, 0))
+    if (((int (*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1,
+                  void *fn2))FS_LoadArchive)(
+            self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off, *(int *)(fatb + 4) - 0xc,
+            (int)(fntb + 8) - (int)fimg_off, *(int *)(fntb + 4) - 8, 0, 0))
         return 1;
 
-    func_0205cbe4(self);
+    FS_ReleaseArchiveName(self);
     return 0;
 }
 
@@ -2608,7 +2609,7 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
 extern "C" int func_0204ee10(void *thiz)
 {
     if (!func_0205caa8(thiz)) return 0;
-    func_0205cbe4(thiz);
+    FS_ReleaseArchiveName(thiz);
     return 1;
 }
 

@@ -5521,7 +5521,7 @@
       "src/unnamed/arm9/0205/func_0205c5e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c7e4.cpp": [
+      "src/FS_ResumeArchive.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205c864.cpp": [
@@ -5530,10 +5530,10 @@
       "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cbe4.cpp": [
+      "src/FS_ReleaseArchiveName.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
+      "src/FS_RegisterArchiveName.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
@@ -10985,16 +10985,6 @@
     "data_020a7fc0": {
       "src/unnamed/arm9/0205/func_0205b358.c": [
         "return:void *"
-      ]
-    },
-    "data_020a8048": {
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
-        "return:Node *"
-      ]
-    },
-    "data_020a804c": {
-      "src/unnamed/arm9/0205/func_0205cbe4.cpp": [
-        "return:Mgr"
       ]
     },
     "data_020a805c": {
@@ -20064,7 +20054,7 @@
       "src/unnamed/arm9/0204/func_02042f68.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205cd34.c": [
+      "src/FS_InitArchive.c": [
         "arity:3"
       ],
       "src/FS_StartOverlay.c": [
@@ -20150,12 +20140,12 @@
         "param:#1 Node *"
       ]
     },
-    "func_0205c7c4": {
+    "FS_SetArchiveProc": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#2 void *"
       ]
     },
-    "func_0205c7e4": {
+    "FS_ResumeArchive": {
       "src/unnamed/arm9/0205/func_0205c91c.c": [
         "return:void"
       ]
@@ -20177,7 +20167,7 @@
         "return:void"
       ]
     },
-    "func_0205cb68": {
+    "FS_LoadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#7 void *",
         "param:#8 void *",
@@ -20192,8 +20182,8 @@
       "src/unnamed/arm9/0205/func_0205d568.c": [
         "arity:4"
       ],
-      "src/unnamed/arm9/0205/func_0205d714.c": [
-        "param:#1 Out *"
+      "src/FSi_FindPath.c": [
+        "param:#1 FSFile *"
       ]
     },
     "func_0205cf5c": {
@@ -20234,12 +20224,12 @@
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
+      "src/FS_RegisterArchiveName.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0205/func_0205d714.c": [
+      "src/FSi_FindPath.c": [
         "param:#1 char *",
-        "return:Obj *"
+        "return:FSArchive *"
       ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
@@ -20255,19 +20245,19 @@
       ]
     },
     "func_0205d2b0": {
-      "src/unnamed/arm9/0205/func_0205cb68.c": [
+      "src/FS_LoadArchive.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0205d2dc": {
-      "src/unnamed/arm9/0205/func_0205cb68.c": [
+      "src/FS_LoadArchive.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0205d304": {
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
+      "src/FS_RegisterArchiveName.cpp": [
         "param:#2 void *",
         "return:void *"
       ]
@@ -20306,7 +20296,7 @@
         "return:void"
       ]
     },
-    "func_0205d714": {
+    "FSi_FindPath": {
       "src/unnamed/arm9/0205/func_0205d644.c": [
         "param:#2 const char *",
         "param:#3 void *"

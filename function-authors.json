@@ -10363,11 +10363,11 @@
     },
     "arm9:0x0205c7c4": {
       "author": "tangosdev",
-      "name": "func_0205c7c4"
+      "name": "FS_SetArchiveProc"
     },
     "arm9:0x0205c7e4": {
       "author": "tangosdev",
-      "name": "func_0205c7e4"
+      "name": "FS_ResumeArchive"
     },
     "arm9:0x0205c864": {
       "author": "tangosdev",
@@ -10387,19 +10387,19 @@
     },
     "arm9:0x0205cb68": {
       "author": "ruspecial",
-      "name": "func_0205cb68"
+      "name": "FS_LoadArchive"
     },
     "arm9:0x0205cbe4": {
       "author": "tangosdev",
-      "name": "func_0205cbe4"
+      "name": "FS_ReleaseArchiveName"
     },
     "arm9:0x0205cc80": {
       "author": "tangosdev",
-      "name": "func_0205cc80"
+      "name": "FS_RegisterArchiveName"
     },
     "arm9:0x0205cd34": {
       "author": "tangosdev",
-      "name": "func_0205cd34"
+      "name": "FS_InitArchive"
     },
     "arm9:0x0205cd5c": {
       "author": "tangosdev",
@@ -10487,7 +10487,7 @@
     },
     "arm9:0x0205d714": {
       "author": "tangosdev",
-      "name": "func_0205d714"
+      "name": "FSi_FindPath"
     },
     "arm9:0x0205d874": {
       "author": "tangosdev",

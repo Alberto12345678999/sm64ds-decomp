@@ -2593,11 +2593,11 @@ src/unnamed/arm9/0205/func_0205c788.c:
     complete
     .text start:0x0205c788 end:0x0205c7c4
 
-src/unnamed/arm9/0205/func_0205c7c4.c:
+src/FS_SetArchiveProc.c:
     complete
     .text start:0x0205c7c4 end:0x0205c7e4
 
-src/unnamed/arm9/0205/func_0205c7e4.cpp:
+src/FS_ResumeArchive.cpp:
     complete
     .text start:0x0205c7e4 end:0x0205c864
 
@@ -2617,19 +2617,19 @@ src/unnamed/arm9/0205/func_0205caa8.cpp:
     complete
     .text start:0x0205caa8 end:0x0205cb68
 
-src/unnamed/arm9/0205/func_0205cb68.c:
+src/FS_LoadArchive.c:
     complete
     .text start:0x0205cb68 end:0x0205cbe4
 
-src/unnamed/arm9/0205/func_0205cbe4.cpp:
+src/FS_ReleaseArchiveName.cpp:
     complete
     .text start:0x0205cbe4 end:0x0205cc80
 
-src/unnamed/arm9/0205/func_0205cc80.cpp:
+src/FS_RegisterArchiveName.cpp:
     complete
     .text start:0x0205cc80 end:0x0205cd34
 
-src/unnamed/arm9/0205/func_0205cd34.c:
+src/FS_InitArchive.c:
     complete
     .text start:0x0205cd34 end:0x0205cd5c
 
@@ -2708,7 +2708,7 @@ src/unnamed/arm9/0205/func_0205d688.c:
     complete
     .text start:0x0205d688 end:0x0205d714
 
-src/unnamed/arm9/0205/func_0205d714.c:
+src/FSi_FindPath.c:
     complete
     .text start:0x0205d714 end:0x0205d874
 
