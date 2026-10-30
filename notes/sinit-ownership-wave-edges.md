@@ -67,7 +67,7 @@ ordinal 22; [.p__sinit_ov002_02107370](../config/arm9/overlays/ov002/symbols.txt
 
 - ordinal 21: [__sinit_ov002_02107304](../src/unnamed/ov002/__sinit_ov002_02107304.c), high-confidence `daObjBC_Switch_c`
   ([ov002](../config/arm9/overlays/ov002/symbols.txt):`56`);
-- ordinal 23: [__sinit_ov002_02107f88](../src/unnamed/ov002/__sinit_ov002_02107f88.c), high-confidence `daSoundObj_c`
+- ordinal 23: [__sinit_d_a_sound_obj.cpp](../src/game/actors/d_a_sound_obj.cpp), high-confidence `daSoundObj_c`
   ([ov002](../config/arm9/overlays/ov002/symbols.txt):`63`).
 
 The `56 -> 60 -> 63` text-unit ordering agrees with `.ctor` order. It is useful
