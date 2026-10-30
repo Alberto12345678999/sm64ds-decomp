@@ -422,11 +422,6 @@
         "arity:3"
       ]
     },
-    "CpuSet": {
-      "src/unnamed/arm9/0206/func_0206a5c0.c": [
-        "arity:3"
-      ]
-    },
     "CrossVec3": {
       "src/engine/collision/d_clipper.cpp": [
         "param:#1 Vector3 *",
@@ -861,11 +856,6 @@
       "src/unnamed/arm9/0205/func_0205f8b0.c": [
         "param:#1 int",
         "param:#2 int",
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0206/func_0206a318.c": [
-        "param:#1 int",
-        "param:#2 void *",
         "param:#3 int"
       ],
       "src/unnamed/arm9/0206/func_0206a600.c": [
@@ -4018,17 +4008,6 @@
         "arity:8"
       ]
     },
-    "WaitByLoop": {
-      "src/unnamed/arm9/0206/func_0206a318.c": [
-        "arity:1"
-      ],
-      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/arm9/0206/func_0206a6d0.cpp": [
-        "arity:1"
-      ]
-    },
     "_Z11UpdateAngleRssis": {
       "src/game/actors/d_a_demo.cpp": [
         "param:#1 void *"
@@ -5673,9 +5652,6 @@
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
-        "return:int"
       ]
     },
     "_ZN3IRQ7RestoreEj": {
@@ -5885,12 +5861,6 @@
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206a37c.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
         "return:void"
       ]
     },
@@ -11629,9 +11599,6 @@
       ]
     },
     "data_020a9de0": {
-      "src/unnamed/arm9/0206/func_0206a5c0.c": [
-        "return:unsigned char []"
-      ],
       "src/unnamed/arm9/0206/func_0206a694.c": [
         "return:short"
       ],
@@ -22308,14 +22275,6 @@
     "func_02069918": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
         "arity:0"
-      ]
-    },
-    "func_0206a3a4": {
-      "src/unnamed/arm9/0206/func_0206a4a0.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0206/func_0206a6d0.cpp": [
-        "param:#1 int"
       ]
     },
     "func_0206a634": {

@@ -1,4 +1,5 @@
 //cpp
+#include "nitro/ctrdg/ctrdg_common.h"
 struct IRQ {
     static unsigned int Disable();
     static unsigned int DisableIRQs(unsigned int);
@@ -10,7 +11,6 @@ extern "C" void OS_SpinWait(unsigned int cycles);
 extern "C" int func_0205fc44(unsigned short a, unsigned short b);
 extern "C" int func_0205f68c(int mode, int arg1, int arg2, int arg3);
 extern "C" int func_0205f958(void);
-extern "C" int func_0206a4a0(void);
 
 extern "C" int func_0205f77c(int mode, int arg1, int arg2)
 {
@@ -33,7 +33,8 @@ extern "C" int func_0205f77c(int mode, int arg1, int arg2)
         if (*(volatile unsigned short *)0x27ffc40 == 2) mode &= ~8;
     }
     if (mode & 0x10) {
-        if (func_0206a4a0() == 0) mode &= ~0x10;
+        if (CTRDG_IsExisting() == 0)
+            mode &= ~0x10;
     }
     while (func_0205fc44(mode, arg1 | arg2) != 0)
         ;

@@ -51,6 +51,7 @@ check against, and they don't.
 | OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
 | OS_exception.c, OS_tick.c, OS_alarm.c | 0x020593f4..0x02059cb4 | 4, 4 and 8 exact, edges unresolved |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |
+| CTRDG_common.c | 0x0206a318..0x0206a600 | 7 of 24: 6 exact, CTRDG_IsExisting 0x11c to 0x120, in pret's source order reversed; the other 17 dropped by the linker: folded as arm9/CTRDG_Common |
 
 The single-function SDK files sit between these runs: GX_state.c's GX_InitGXState
 is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is src/MI_SwapWord.c (0x0205a74c).

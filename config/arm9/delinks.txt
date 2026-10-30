@@ -4101,33 +4101,9 @@ src/unnamed/arm9/0206/func_0206a29c.c:
     complete
     .text start:0x0206a29c end:0x0206a318
 
-src/unnamed/arm9/0206/func_0206a318.c:
+src/engine/ctrdg/CTRDG_Common.cpp:
     complete
-    .text start:0x0206a318 end:0x0206a37c
-
-src/unnamed/arm9/0206/func_0206a37c.cpp:
-    complete
-    .text start:0x0206a37c end:0x0206a3a4
-
-src/unnamed/arm9/0206/func_0206a3a4.cpp:
-    complete
-    .text start:0x0206a3a4 end:0x0206a424
-
-src/unnamed/arm9/0206/func_0206a424.c:
-    complete
-    .text start:0x0206a424 end:0x0206a458
-
-src/unnamed/arm9/0206/func_0206a458.c:
-    complete
-    .text start:0x0206a458 end:0x0206a4a0
-
-src/unnamed/arm9/0206/func_0206a4a0.c:
-    complete
-    .text start:0x0206a4a0 end:0x0206a5c0
-
-src/unnamed/arm9/0206/func_0206a5c0.c:
-    complete
-    .text start:0x0206a5c0 end:0x0206a600
+    .text start:0x0206a318 end:0x0206a600
 
 src/unnamed/arm9/0206/func_0206a600.c:
     complete
