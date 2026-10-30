@@ -11289,59 +11289,59 @@ matched: yes</title></rect><rect x="115.82" y="806.58" width="6.81" height="20.8
 module: arm9
 addr: 0x02065de4
 size: 212 bytes
-matched: yes</title></rect><rect x="115.82" y="827.47" width="6.81" height="3.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065eb8
+matched: yes</title></rect><rect x="115.82" y="827.47" width="6.81" height="3.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommCallParentError
 module: arm9
 addr: 0x02065eb8
 size: 36 bytes
-matched: yes</title></rect><rect x="115.82" y="831.02" width="6.81" height="2.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065edc
+matched: yes</title></rect><rect x="115.82" y="831.02" width="6.81" height="2.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>IsChildAidValid
 module: arm9
 addr: 0x02065edc
 size: 28 bytes
-matched: yes</title></rect><rect x="115.82" y="833.78" width="6.81" height="1.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065ef8
+matched: yes</title></rect><rect x="115.82" y="833.78" width="6.81" height="1.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_Calc_NextSendBlock
 module: arm9
 addr: 0x02065ef8
 size: 16 bytes
-matched: yes</title></rect><rect x="115.82" y="835.36" width="6.81" height="11.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065f08
+matched: yes</title></rect><rect x="115.82" y="835.36" width="6.81" height="11.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_Calc_SendBlock
 module: arm9
 addr: 0x02065f08
 size: 112 bytes
-matched: yes</title></rect><rect x="115.82" y="846.39" width="6.81" height="39.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065f78
+matched: yes</title></rect><rect x="115.82" y="846.39" width="6.81" height="39.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentSendData
 module: arm9
 addr: 0x02065f78
 size: 404 bytes
-matched: yes</title></rect><rect x="115.82" y="886.21" width="6.81" height="42.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206610c
+matched: yes</title></rect><rect x="115.82" y="886.21" width="6.81" height="42.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentSendBlock
 module: arm9
 addr: 0x0206610c
 size: 436 bytes
-matched: yes</title></rect><rect x="115.82" y="929.17" width="6.81" height="42.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020662c0
+matched: yes</title></rect><rect x="115.82" y="929.17" width="6.81" height="42.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentSendDlFileInfo
 module: arm9
 addr: 0x020662c0
 size: 432 bytes
-matched: yes</title></rect><rect x="115.82" y="971.74" width="6.81" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02066470
+matched: yes</title></rect><rect x="115.82" y="971.74" width="6.81" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentSendMsg
 module: arm9
 addr: 0x02066470
 size: 68 bytes
-matched: yes</title></rect><rect x="115.82" y="978.44" width="6.81" height="16.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020664b4
+matched: yes</title></rect><rect x="115.82" y="978.44" width="6.81" height="16.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentRecvData
 module: arm9
 addr: 0x020664b4
 size: 168 bytes
-matched: yes</title></rect><rect x="122.63" y="793.18" width="77.11" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206655c
+matched: yes</title></rect><rect x="122.63" y="793.18" width="77.11" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentRecvDataPerChild
 module: arm9
 addr: 0x0206655c
 size: 1336 bytes
-matched: yes</title></rect><rect x="199.74" y="793.18" width="75.50" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02066a94
+matched: yes</title></rect><rect x="199.74" y="793.18" width="75.50" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommParentCallback
 module: arm9
 addr: 0x02066a94
 size: 1308 bytes
-matched: yes</title></rect><rect x="275.24" y="793.18" width="3.46" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02066fb0
+matched: yes</title></rect><rect x="275.24" y="793.18" width="3.46" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommChangeParentStateCallbackOnly
 module: arm9
 addr: 0x02066fb0
 size: 60 bytes
-matched: yes</title></rect><rect x="278.71" y="793.18" width="4.62" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02066fec
+matched: yes</title></rect><rect x="278.71" y="793.18" width="4.62" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_CommChangeParentState
 module: arm9
 addr: 0x02066fec
 size: 80 bytes
-matched: yes</title></rect><rect x="283.32" y="793.18" width="14.55" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206703c
+matched: yes</title></rect><rect x="283.32" y="793.18" width="14.55" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MB_CommResponseRequest
 module: arm9
 addr: 0x0206703c
 size: 252 bytes
@@ -11349,15 +11349,15 @@ matched: yes</title></rect><rect x="297.87" y="793.18" width="5.31" height="11.6
 module: arm9
 addr: 0x02067138
 size: 92 bytes
-matched: yes</title></rect><rect x="303.18" y="793.18" width="1.85" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067194
+matched: yes</title></rect><rect x="303.18" y="793.18" width="1.85" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MB_CommGetChildrenNumber
 module: arm9
 addr: 0x02067194
 size: 32 bytes
-matched: yes</title></rect><rect x="305.03" y="793.18" width="9.00" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020671b4
+matched: yes</title></rect><rect x="305.03" y="793.18" width="9.00" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MB_CommGetChildUser
 module: arm9
 addr: 0x020671b4
 size: 156 bytes
-matched: yes</title></rect><rect x="314.03" y="793.18" width="4.85" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067250
+matched: yes</title></rect><rect x="314.03" y="793.18" width="4.85" height="11.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MB_CommGetParentState
 module: arm9
 addr: 0x02067250
 size: 84 bytes
