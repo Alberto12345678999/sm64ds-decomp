@@ -90,6 +90,9 @@ src/engine/view/d_camera_dtor.cpp:
 src/engine/view/d_camera.cpp:
     complete
     .text start:0x020072c4 end:0x0200e494
+    .init start:0x02073a24 end:0x02073e6c
+    .ctor start:0x02086b60 end:0x02086b64
+    .bss start:0x0209b008 end:0x0209b138
 
 src/KuppaScript.cpp:
     complete
@@ -763,6 +766,9 @@ src/game/stages/d_s_boot.cpp:
 src/game/stages/d_s_stage_methods.cpp:
     complete
     .text start:0x02023688 end:0x0202e118
+    .init start:0x02074e84 end:0x02074edc
+    .ctor start:0x02086b88 end:0x02086b8c
+    .bss start:0x0209f388 end:0x0209f498
 
 src/GetStageDebugName.c:
     complete
@@ -1729,6 +1735,9 @@ src/runtime/actor/ActorBase.cpp:
 src/fListNode.cpp:
     complete
     .text start:0x020440e8 end:0x020443c8
+    .init start:0x02075154 end:0x02075230
+    .ctor start:0x02086bb8 end:0x02086bbc
+    .bss start:0x020a4b6c end:0x020a4bb8
 
 src/engine/model/ModelComponents.cpp:
     complete
@@ -4166,10 +4175,6 @@ src/typeinfo.cpp:
     complete
     .text start:0x0207359c end:0x020736f4
 
-src/unnamed/arm9/0207/__sinit_02073a24.c:
-    complete
-    .init start:0x02073a24 end:0x02073e6c
-
 src/unnamed/arm9/0207/__sinit_02074dbc.c:
     complete
     .init start:0x02074dbc end:0x02074dc0
@@ -4189,10 +4194,6 @@ src/unnamed/arm9/0207/__sinit_02074e44.c:
 src/unnamed/arm9/0207/__sinit_02074e80.c:
     complete
     .init start:0x02074e80 end:0x02074e84
-
-src/unnamed/arm9/0207/__sinit_02074e84.cpp:
-    complete
-    .init start:0x02074e84 end:0x02074edc
 
 src/unnamed/arm9/0207/__sinit_02075054.c:
     complete
@@ -4217,7 +4218,3 @@ src/unnamed/arm9/0207/__sinit_0207511c.c:
 src/unnamed/arm9/0207/__sinit_02075150.c:
     complete
     .init start:0x02075150 end:0x02075154
-
-src/unnamed/arm9/0207/__sinit_02075154.c:
-    complete
-    .init start:0x02075154 end:0x02075230

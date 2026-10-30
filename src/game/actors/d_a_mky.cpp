@@ -1432,6 +1432,20 @@ void daMky_c::func_ov030_021141a8(int idx)
     this->mStateDesc = &data_ov030_02115e0c[idx];
     func_ov030_02114170();
 }
+/* The model handle constructs through func_02017acc and the animation
+ * handles through SharedFilePtr::Construct. Declared here, ahead of the
+ * virtuals that call them; defined at the bottom in retail __sinit order. */
+struct MkyModelFilePtr : SharedFilePtr {
+    MkyModelFilePtr(unsigned int fileID);
+    ~MkyModelFilePtr();
+};
+struct MkyAnimFilePtr : SharedFilePtr {
+    MkyAnimFilePtr(unsigned int fileID);
+    ~MkyAnimFilePtr();
+};
+extern MkyModelFilePtr data_ov030_02115d00;
+extern MkyAnimFilePtr data_ov030_02115cf0;
+
 /* File-scope extern "C" for the six virtuals below. A block-scope extern
  * inside a daMky_c method gets C++ linkage and the reference mangles a
  * second time, so these callees are declared here. The func_ov030_*
@@ -1441,9 +1455,7 @@ extern "C" {
 extern SharedFilePtr  data_ov002_0210da40;
 extern SharedFilePtr  data_ov002_0210d9a0;
 extern SharedFilePtr  data_ov002_0210d9c0;
-extern SharedFilePtr  data_ov030_02115d00;
 extern SharedFilePtr *data_ov030_02114824[10];
-extern void          *data_ov030_02115cf0[];
 
 }
 
@@ -1520,7 +1532,7 @@ s32 daMky_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*data_ov030_02114824[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    mAnmModel.SetAnim((BCA_File *)data_ov030_02115cf0[1], 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov030_02115cf0.filePtr, 0, 0x1000, 0);
     mAnmModel.speed = 0x1000;
     mdCcAc_c.Init(this, 0x28000, 0x64000, 0x800004, 0x49000);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
@@ -1592,3 +1604,83 @@ extern "C" daMky_c *daMky_c_classInit_MONKEY_THIEF()
     return new daMky_c();
 }
 
+/* File handles, the eleven state pairs, and the four carry offsets.
+ * Definition order is the retail __sinit order: model, ten animations,
+ * the state table, then the four Vector3s. mwcc emits
+ * __sinit_d_a_mky.cpp from these, including one ~Vector3 registration
+ * per offset against the destructor this TU already emits.
+ *
+ * The model handle's ctor/dtor are func_02017acc / func_02017ab4.
+ * Each animation handle's are SharedFilePtr::Construct /
+ * SharedFilePtr_Destruct_Anim. Those four are not defined here. */
+typedef char MkyModelFilePtr_size_must_be_8[sizeof(MkyModelFilePtr) == 8 ? 1 : -1];
+typedef char MkyAnimFilePtr_size_must_be_8[sizeof(MkyAnimFilePtr) == 8 ? 1 : -1];
+
+enum {
+    ASSET_MONKEY_BMD = 0x03aa,
+    ASSET_MONKEY_HOLD_BCA = 0x03ab,
+    ASSET_MONKEY_JUMP_ED_BCA = 0x03ac,
+    ASSET_MONKEY_JUMP_ST_BCA = 0x03ad,
+    ASSET_MONKEY_RUN_BCA = 0x03ae,
+    ASSET_MONKEY_RUN_ED_BCA = 0x03af,
+    ASSET_MONKEY_RUN_ST_BCA = 0x03b0,
+    ASSET_MONKEY_WAIT1_BCA = 0x03b1,
+    ASSET_MONKEY_WAIT2_BCA = 0x03b2,
+    ASSET_MONKEY_WAIT3_BCA = 0x03b3,
+    ASSET_MONKEY_WAIT4_BCA = 0x03b4
+};
+
+MkyModelFilePtr data_ov030_02115d00(ASSET_MONKEY_BMD);
+MkyAnimFilePtr gMonkeyHoldAnimationFile(ASSET_MONKEY_HOLD_BCA);
+MkyAnimFilePtr gMonkeyJumpStAnimationFile(ASSET_MONKEY_JUMP_ST_BCA);
+MkyAnimFilePtr gMonkeyJumpEdAnimationFile(ASSET_MONKEY_JUMP_ED_BCA);
+MkyAnimFilePtr gMonkeyRunStAnimationFile(ASSET_MONKEY_RUN_ST_BCA);
+MkyAnimFilePtr gMonkeyRunAnimationFile(ASSET_MONKEY_RUN_BCA);
+MkyAnimFilePtr gMonkeyRunEdAnimationFile(ASSET_MONKEY_RUN_ED_BCA);
+MkyAnimFilePtr data_ov030_02115cf0(ASSET_MONKEY_WAIT1_BCA);
+MkyAnimFilePtr gMonkeyWait2AnimationFile(ASSET_MONKEY_WAIT2_BCA);
+MkyAnimFilePtr gMonkeyWait3AnimationFile(ASSET_MONKEY_WAIT3_BCA);
+MkyAnimFilePtr gMonkeyWait4AnimationFile(ASSET_MONKEY_WAIT4_BCA);
+
+/* Eleven {enter, update} pairs. Brace-init is what makes __sinit copy the
+ * 22 pointer-to-member constants; a constructor body here scalarizes. */
+extern "C" daMky_c::StateFunctions data_ov030_02115e0c[11] = {
+    {&daMky_c::EnterState0, &daMky_c::func_ov030_02113ff0},
+    {&daMky_c::EnterState1, &daMky_c::func_ov030_02113d20},
+    {&daMky_c::EnterState2, &daMky_c::func_ov030_02113b38},
+    {&daMky_c::EnterState3, &daMky_c::func_ov030_021136b0},
+    {&daMky_c::EnterState4, &daMky_c::func_ov030_02113324},
+    {&daMky_c::EnterState5, &daMky_c::func_ov030_02113094},
+    {&daMky_c::EnterState6, &daMky_c::func_ov030_02112da0},
+    {&daMky_c::EnterState7, &daMky_c::func_ov030_02112a84},
+    {&daMky_c::EnterState8, &daMky_c::func_ov030_02112578},
+    {&daMky_c::EnterState9, &daMky_c::func_ov030_02112400},
+    {&daMky_c::EnterState10, &daMky_c::func_ov030_021122b0},
+};
+
+/* Vector3(x, y, z) matches only the first offset. The other three store
+ * y before z, which is what an unsigned-int view does, and the first is
+ * three field stores. ~MkyOff is not defined here: after this TU's vague
+ * ~Vector3 is stripped it is aliased onto _ZN7Vector3D1Ev, the one
+ * destructor the cartridge registers for all four. */
+struct MkyOff {
+    int x, y, z;
+    MkyOff(int px, int py, int pz, int) {
+        x = px;
+        y = py;
+        z = pz;
+    }
+    MkyOff(int px, int py, int pz) {
+        unsigned int *p = (unsigned int *)this;
+        p[0] = (unsigned int)px;
+        p[1] = (unsigned int)py;
+        p[2] = (unsigned int)pz;
+    }
+    ~MkyOff();
+};
+typedef char MkyOff_size_must_be_0xc[sizeof(MkyOff) == 0xc ? 1 : -1];
+
+MkyOff data_ov030_02115ddc(0x1c000, -0x42000, 0x18000, 0);
+MkyOff data_ov030_02115de8(0x1c000, -0x28000, 0x28000);
+MkyOff data_ov030_02115df4(0x2b000, -0x42000, 0x18000);
+MkyOff data_ov030_02115e00(0x30000, -0x1e000, 0x1e000);

@@ -8928,9 +8928,6 @@
       ]
     },
     "data_0208ee14": {
-      "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
-        "return:char"
-      ],
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:int"
       ],
@@ -9880,12 +9877,8 @@
         "return:void * []"
       ],
       "src/ui/hud/d_map.cpp": [
+        "return:int []",
         "return:Obj * []"
-      ]
-    },
-    "data_0209f3c4": {
-      "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
-        "return:void volatile *"
       ]
     },
     "data_0209f3e8": {
@@ -9909,9 +9902,6 @@
         "return:char []"
       ],
       "src/runtime/actor/d_actor.cpp": [
-        "return:char"
-      ],
-      "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:char"
       ]
     },
@@ -10608,6 +10598,9 @@
     "data_020a4b6c": {
       "include/decl_common.h": [
         "return:int"
+      ],
+      "src/runtime/actor/ActorBase.cpp": [
+        "return:int []"
       ]
     },
     "data_020a4bb8": {
@@ -13183,18 +13176,16 @@
       ]
     },
     "data_ov030_02115cf0": {
-      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
-        "return:SharedFilePtr"
+      "src/game/actors/d_a_mky.cpp": [
+        "return:MkyAnimFilePtr"
       ]
     },
     "data_ov030_02115d00": {
       "include/decl_common.h": [
         "return:char"
-      ]
-    },
-    "data_ov030_02115ddc": {
-      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
-        "return:Vector3"
+      ],
+      "src/game/actors/d_a_mky.cpp": [
+        "return:MkyModelFilePtr"
       ]
     },
     "data_ov032_02112f98": {
