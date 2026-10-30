@@ -6,6 +6,7 @@
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
 #include "Ov007Item.h"
+#include "Ov007LayerSlot.h"
 
 extern "C" {
 
@@ -49,12 +50,6 @@ typedef struct Ov007Pad {
     u16 keys;     /* 0x00: held this frame */
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
-
-/* The 0xc-byte record func_ov007_020adc08 builds. */
-typedef struct Ov007LayerSlot {
-    Ov007MenuState *state; /* 0x00 */
-    void *layer;           /* 0x04: the Ov007BgLayer func_ov007_020c0638 scrolls */
-} Ov007LayerSlot;
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

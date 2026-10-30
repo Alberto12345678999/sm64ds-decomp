@@ -7,6 +7,7 @@
 #include "Ov007BgLayer.h"
 #include "Ov007Item.h"
 #include "Ov007Model.h"
+#include "Ov007LayerSlot.h"
 
 extern "C" {
 
@@ -20,14 +21,6 @@ extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020c1d8c(int a);
 extern void func_ov007_020ada70(void);
 
-/* The 0xc-byte record func_ov007_020adc08 returns; names as there. */
-typedef struct Ov007LayerSlot {
-    Ov007MenuState *state; /* 0x00: func_ov007_020c9388(0) */
-    Ov007BgLayer *layer;   /* 0x04 */
-    u8 kind;               /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
-} Ov007LayerSlot;
-typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
-
 /* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
  * names as in func_ov007_020b0da0. */
 typedef struct Ov007Figure {
@@ -38,10 +31,8 @@ typedef struct Ov007Figure {
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
-/* Per-frame update of one BG layer slot (func_ov007_020aed98 runs all eight).
- * The parameter keeps the tree's char * spelling; `slot` is the typed local. */
-void func_ov007_020ad660(char *arg0) {
-    Ov007LayerSlot *slot = (Ov007LayerSlot *)arg0;
+/* Per-frame update of one BG layer slot (func_ov007_020aed98 runs all eight). */
+void func_ov007_020ad660(Ov007LayerSlot *slot) {
     Ov007Work *mgr;
     Ov007MenuState *temp_r5;
     Ov007MenuState *temp_r4;

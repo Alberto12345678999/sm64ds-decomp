@@ -17,7 +17,7 @@ extern Ov007SpriteBank *func_ov007_020c9688(int arg);
 extern struct Ov007ItemNode *func_ov007_020ade58(int index);
 extern void func_ov007_020b72d8(Ov007Display *d, int n);
 extern Ov007BgLayer *func_ov007_020c95fc(void *a, int b, int c);
-extern int func_ov007_020adc08(int type, Ov007BgLayer *layer);
+extern struct Ov007LayerSlot *func_ov007_020adc08(int type, Ov007BgLayer *layer);
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */
@@ -61,6 +61,6 @@ void func_ov007_020b6d40(void) {
         c->bgLayers[i] =
             func_ov007_020c95fc((void *)data_ov007_020d7ec8[i], (&data_ov007_020d7a24[i * 2])[0],
                                 (&data_ov007_020d7a24[i * 2])[1]);
-        WORK->layerSlots[i] = (struct Ov007LayerSlot *)func_ov007_020adc08(i, c->bgLayers[i]);
+        WORK->layerSlots[i] = func_ov007_020adc08(i, c->bgLayers[i]);
     }
 }

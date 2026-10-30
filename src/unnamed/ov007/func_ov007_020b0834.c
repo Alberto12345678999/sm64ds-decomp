@@ -3,12 +3,7 @@
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
-
-/* func_ov007_020adc08's 0xc-byte layer slot; func_ov007_020c0638 rebuilds its layer. */
-typedef struct Ov007LayerSlot {
-    int state;   /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
-    void *layer; /* 0x04 */
-} Ov007LayerSlot;
+#include "Ov007LayerSlot.h"
 
 /* The 0x70-byte key record func_ov007_020c2304 allocates; names as in
  * func_ov007_020c20b8. */
@@ -17,7 +12,7 @@ typedef struct Ov007Pad {
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
 
-extern void func_ov007_020c0638(int a, int b, int c, int d);
+extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
 extern void func_ov007_020b7d94(int kind);
 extern void func_ov007_020b2614(int a, int b, int c);
 extern void func_ov007_020c1d8c(int i);
@@ -42,7 +37,7 @@ extern char *data_ov007_0210342c;
  * replays the pending choice (func_ov007_020aec94). */
 void func_ov007_020b0834(void) {
     if (WORK->states[1]->stateTicks == 0) {
-        func_ov007_020c0638((int)WORK->layerSlots[6]->layer, 0, 0, 0);
+        func_ov007_020c0638(WORK->layerSlots[6]->layer, 0, 0, 0);
         func_ov007_020b7d94(WORK->settings->dialogKind);
         func_ov007_020b2614(2, 0, 8);
         func_ov007_020c1d8c(0);

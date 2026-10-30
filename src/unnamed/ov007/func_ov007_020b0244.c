@@ -2,15 +2,9 @@
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
 #include "Ov007Item.h"
-extern void func_ov007_020c0638(int a, int b, int c, int d);
+#include "Ov007LayerSlot.h"
+extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
 extern char *data_ov007_0210342c;
-
-/* The 0xc-byte record func_ov007_020adc08 returns; names as there, only the
- * layer read here. */
-typedef struct Ov007LayerSlot {
-    int state; /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
-    int layer; /* 0x04: the Ov007BgLayer func_ov007_020c0638 scrolls */
-} Ov007LayerSlot;
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */
