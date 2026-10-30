@@ -990,8 +990,8 @@ func_02029408 kind:function(arm,size=0x24) addr:0x02029408
 _ZN10dScStage_c7PS_InitEv kind:function(arm,size=0x1d4) addr:0x0202942c
 func_02029600 kind:function(arm,size=0x54) addr:0x02029600
 IsButtonInputValid kind:function(arm,size=0x1a0) addr:0x02029654
-_ZN10dScStage_c14GraphCallback2Ev kind:function(arm,size=0x44) addr:0x020297f4
-_ZN10dScStage_c14GraphCallback1Ev kind:function(arm,size=0x1c) addr:0x02029838
+_ZN10dScStage_c15graphCallback_c14GraphCallback2Ev kind:function(arm,size=0x44) addr:0x020297f4
+_ZN10dScStage_c15graphCallback_c14GraphCallback1Ev kind:function(arm,size=0x1c) addr:0x02029838
 UpdateMinimap kind:function(arm,size=0x4c) addr:0x02029854
 StartEntranceFaderWipe kind:function(arm,size=0x38) addr:0x020298a0
 StartExitCharacterWipe kind:function(arm,size=0x24) addr:0x020298d8
@@ -4168,7 +4168,7 @@ data_0209214c kind:data(any) addr:0x0209214c
 _ZTI10dScStage_c kind:data(any) addr:0x02092158
 _ZTIN10dScStage_c15graphCallback_cE kind:data(any) addr:0x02092164
 _ZTS10dScStage_c kind:data(any) addr:0x02092170
-data_02092188 kind:data(any) addr:0x02092188
+_ZTVN10dScStage_c15graphCallback_cE kind:data(any) addr:0x02092188
 _ZTSN10dScStage_c15graphCallback_cE kind:data(any) addr:0x02092198
 _ZTV10dScStage_c kind:data(any) addr:0x020921c0
 data_02092208 kind:data(any) addr:0x02092208
@@ -4826,7 +4826,6 @@ data_0209f388 kind:bss addr:0x0209f388
 data_0209f394 kind:bss addr:0x0209f394
 data_0209f3a4 kind:bss addr:0x0209f3a4
 data_0209f3c4 kind:bss addr:0x0209f3c4
-data_0209f3c8 kind:bss addr:0x0209f3c8
 data_0209f3e8 kind:bss addr:0x0209f3e8
 data_0209f40c kind:bss addr:0x0209f40c
 STAR_MARKERS kind:bss addr:0x0209f40c
