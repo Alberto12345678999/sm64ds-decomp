@@ -2164,29 +2164,9 @@ src/engine/os/OS_SpinLock.cpp:
     complete
     .text start:0x02057014 end:0x02057410
 
-src/unnamed/arm9/0205/func_02057410.c:
+src/engine/os/OS_Printf.c:
     complete
-    .text start:0x02057410 end:0x02057ce8
-
-src/unnamed/arm9/0205/func_02057ce8.c:
-    complete
-    .text start:0x02057ce8 end:0x02057d00
-
-src/unnamed/arm9/0205/func_02057d00.c:
-    complete
-    .text start:0x02057d00 end:0x02057d30
-
-src/unnamed/arm9/0205/func_02057d30.c:
-    complete
-    .text start:0x02057d30 end:0x02057d94
-
-src/unnamed/arm9/0205/func_02057d94.c:
-    complete
-    .text start:0x02057d94 end:0x02057e00
-
-src/unnamed/arm9/0205/func_02057e00.c:
-    complete
-    .text start:0x02057e00 end:0x02057e30
+    .text start:0x02057410 end:0x02057e30
 
 src/unnamed/arm9/0205/func_02057e30.c:
     complete

@@ -1,18 +1,105 @@
+/* String formatting (the Nitro SDK's os_printf.c), arm9 .text
+ * 0x02057410..0x02057e30.
+ *
+ * OS_VSNPrintf is a small vsnprintf: flags, width and precision (each may be
+ * '*'), the h/hh/l/ll size modifiers and the d i o u x X p c s n % specs. A
+ * Shift-JIS lead byte is copied with the byte after it, so a two-byte
+ * character is never split. The three string_ helpers write into a printfStr,
+ * which counts every character but stores only those that still fit.
+ *
+ * pret's pokediamond OS_printf.c defines string_put_char, string_fill_char,
+ * string_put_string, OS_SPrintf, OS_VSPrintf, OS_SNPrintf and OS_VSNPrintf
+ * in this order. mwccarm emits the bodies in reverse, so the ROM runs from
+ * OS_VSNPrintf at 0x02057410 up to string_put_char at 0x02057e00.
+ * OS_SNPrintf is not in this ROM: nothing calls it, so the linker dropped it.
+ */
 #include "types.h"
-typedef struct Ctx {
-    int n;
-    char *cur;
-    char *start;
-} Ctx;
 
-extern void func_02057e00(Ctx *ctx, int c);
-extern void func_02057d94(Ctx *ctx, int c, int count);
-extern void func_02057d30(Ctx *ctx, const char *s, int len);
+typedef struct printfStr {
+    s32 spaceLeft;
+    char *stringEnd;
+    char *stringStart;
+} printfStr;
 
+int OS_VSPrintf(char *buffer, const char *format, void *args);
+int OS_VSNPrintf(char *buffer, int bufsz, const char *format, int *args);
+
+void string_put_char(printfStr *dest, int value);
+void string_fill_char(printfStr *dest, s8 value, int count);
+void string_put_string(printfStr *dest, const char *src, int count);
+
+/* value is an int, not pret's s8: OS_VSNPrintf passes it both a u8 and an
+ * s8, and with a char parameter those calls would narrow them first. */
+// @symbol string_put_char
+void string_put_char(printfStr *dest, int value) {
+    if (dest->spaceLeft != 0) {
+        dest->stringEnd[0] = value;
+        dest->spaceLeft--;
+    }
+
+    dest->stringEnd++;
+}
+
+/* Both fill and put advance stringEnd by the whole count, even past the
+ * space left, so OS_VSNPrintf returns the length the output would have. */
+// @symbol string_fill_char
+void string_fill_char(printfStr *dest, s8 value, int count) {
+    u32 written;
+    u32 toWrite;
+
+    if (count <= 0)
+        return;
+
+    toWrite = dest->spaceLeft;
+    if (toWrite > (u32)count)
+        toWrite = count;
+
+    for (written = 0; written < toWrite; written++)
+        dest->stringEnd[written] = value;
+
+    dest->spaceLeft -= toWrite;
+    dest->stringEnd += count;
+}
+
+// @symbol string_put_string
+void string_put_string(printfStr *dest, const char *src, int count) {
+    u32 written;
+    u32 toWrite;
+
+    if (count <= 0)
+        return;
+
+    toWrite = dest->spaceLeft;
+    if (toWrite > (u32)count)
+        toWrite = count;
+
+    for (written = 0; written < toWrite; written++)
+        dest->stringEnd[written] = src[written];
+
+    dest->spaceLeft -= toWrite;
+    dest->stringEnd += count;
+}
+
+/* The variable arguments start on the stack word after format, which is
+ * how pret's file spells va_start. */
+// @symbol OS_SPrintf
+int OS_SPrintf(char *buffer, const char *format, ...) {
+    void *args = (void *)((u32 *)((u32)&format & ~3) + 1);
+    return OS_VSPrintf(buffer, format, args);
+}
+
+// @symbol OS_VSPrintf
+int OS_VSPrintf(char *buffer, const char *format, void *args) {
+    return OS_VSNPrintf(buffer, 0x7fffffff, format, args);
+}
+
+/* The pragmas reach to the end of the file, so they cover OS_VSNPrintf alone.
+ * The named constant locals (zero, neg1, ten, ...) are a matching device,
+ * not SDK source: the shard reached the ROM's register use with them. */
 #pragma opt_strength_reduction off
 #pragma opt_lifetimes off
-int func_02057410(char *dst, int n, const char *fmt, int *args)
-{
+// @symbol OS_VSNPrintf
+int OS_VSNPrintf(char *buffer, int bufsz, const char *fmt, int *args) {
     int nsave;
     int pf[3];
     int zero;
@@ -30,7 +117,7 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
     int plus;
     char prefixbuf[2];
     char numbuf[26];
-    Ctx ctx;
+    printfStr str;
     register int cnt;
     int nprefix;
     int flags;
@@ -40,10 +127,10 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
     int lj;
     const char *pct;
 
-    ctx.n = n;
-    ctx.start = dst;
-    ctx.cur = dst;
-    nsave = n;
+    str.spaceLeft = bufsz;
+    str.stringStart = buffer;
+    str.stringEnd = buffer;
+    nsave = bufsz;
     if (*fmt != 0) {
         spc = 0x20;
         zch = 0x30;
@@ -62,15 +149,15 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
             u8 c = *(u8 *)fmt;
             if ((u32)((c ^ 0x20) - 0xa1) < 0x3c) {
                 s8 c2;
-                func_02057e00(&ctx, c);
+                string_put_char(&str, c);
                 c2 = *++fmt;
                 if (c2 != 0) {
                     fmt++;
-                    func_02057e00(&ctx, c2);
+                    string_put_char(&str, c2);
                 }
             } else if (c != 0x25) {
                 fmt++;
-                func_02057e00(&ctx, c);
+                string_put_char(&str, c);
             } else {
                 flags = zero;
                 prec = neg1;
@@ -120,7 +207,8 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                         fmt++;
                         args++;
                         prec = args[-1];
-                        if (prec < 0) prec = neg1;
+                        if (prec < 0)
+                            prec = neg1;
                     } else {
                         while (*fmt >= 0x30 && *fmt <= 0x39) {
                             prec = prec * 10 + *fmt++ - 0x30;
@@ -169,16 +257,17 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                         goto xhex;
                     case 0x63: {
                         int ch;
-                        if (prec >= 0) goto dflt;
+                        if (prec >= 0)
+                            goto dflt;
                         args++;
                         ch = args[-1];
                         if (flags & 8) {
-                            func_02057e00(&ctx, (char)ch);
-                            func_02057d94(&ctx, spc, pf[0] - 1);
+                            string_put_char(&str, (char)ch);
+                            string_fill_char(&str, spc, pf[0] - 1);
                         } else {
                             char padc = (flags & 0x10) ? zch : spc;
-                            func_02057d94(&ctx, padc, pf[0] - 1);
-                            func_02057e00(&ctx, (char)ch);
+                            string_fill_char(&str, padc, pf[0] - 1);
+                            string_put_char(&str, (char)ch);
                         }
                         fmt++;
                         break;
@@ -189,24 +278,26 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                         args++;
                         s = (char *)args[-1];
                         if (prec < 0) {
-                            while (s[nprefix] != 0) nprefix++;
+                            while (s[nprefix] != 0)
+                                nprefix++;
                         } else {
-                            while (nprefix < prec && s[nprefix] != 0) nprefix++;
+                            while (nprefix < prec && s[nprefix] != 0)
+                                nprefix++;
                         }
                         pf[0] -= nprefix;
                         if (flags & 8) {
-                            func_02057d30(&ctx, s, nprefix);
-                            func_02057d94(&ctx, spc, pf[0]);
+                            string_put_string(&str, s, nprefix);
+                            string_fill_char(&str, spc, pf[0]);
                         } else {
                             char padc = (flags & 0x10) ? zch : spc;
-                            func_02057d94(&ctx, padc, pf[0]);
-                            func_02057d30(&ctx, s, nprefix);
+                            string_fill_char(&str, padc, pf[0]);
+                            string_put_string(&str, s, nprefix);
                         }
                         fmt++;
                         break;
                     }
                     case 0x6e: {
-                        int count = ctx.cur - ctx.start;
+                        int count = str.stringEnd - str.stringStart;
                         if (!(flags & 0x100)) {
                             if (flags & 0x40) {
                                 args++;
@@ -223,13 +314,14 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                         break;
                     }
                     case 0x25:
-                        if (pct + 1 != fmt) goto dflt;
+                        if (pct + 1 != fmt)
+                            goto dflt;
                         fmt++;
-                        func_02057e00(&ctx, cc);
+                        string_put_char(&str, cc);
                         break;
                     default:
                     dflt:
-                        func_02057d30(&ctx, pct, fmt - pct);
+                        string_put_string(&str, pct, fmt - pct);
                         break;
                     case 0x78:
                     xhex:
@@ -238,10 +330,13 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                     case 0x64:
                     case 0x69:
                     num:
-                        if (flags & 8) flags &= ~0x10;
+                        if (flags & 8)
+                            flags &= ~0x10;
                         nprefix = zero;
-                        if (prec >= 0) flags &= ~0x10;
-                        else prec = one;
+                        if (prec >= 0)
+                            flags &= ~0x10;
+                        else
+                            prec = one;
                         if (flags & 0x1000) {
                             if (flags & 0x100) {
                                 args++;
@@ -303,8 +398,10 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                                 int digit = (int)((u64)v % (u64)pf[1]);
                                 int dch;
                                 v = (u64)v / (u64)pf[1];
-                                if (digit < 0xa) dch = digit + 0x30;
-                                else dch = digit + pf[2];
+                                if (digit < 0xa)
+                                    dch = digit + 0x30;
+                                else
+                                    dch = digit + pf[2];
                                 numbuf[cnt] = dch;
                                 cnt++;
                             } while (v != 0);
@@ -319,30 +416,34 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
                         zeros = prec - cnt;
                         if (flags & 0x10) {
                             int t = pf[0] - cnt - nprefix;
-                            if (zeros < t) zeros = t;
+                            if (zeros < t)
+                                zeros = t;
                         }
-                        if (zeros > 0) pf[0] -= zeros;
+                        if (zeros > 0)
+                            pf[0] -= zeros;
                         pf[0] -= nprefix + cnt;
                         lj = flags & 8;
-                        if (!lj) func_02057d94(&ctx, spc, pf[0]);
+                        if (!lj)
+                            string_fill_char(&str, spc, pf[0]);
                         if (nprefix > 0) {
                             char *p = prefixbuf + nprefix;
                             do {
                                 s8 pch = *--p;
                                 nprefix--;
-                                func_02057e00(&ctx, pch);
+                                string_put_char(&str, pch);
                             } while (nprefix > 0);
                         }
-                        func_02057d94(&ctx, zch, zeros);
+                        string_fill_char(&str, zch, zeros);
                         if (cnt > 0) {
                             char *p2 = numbuf + cnt;
                             do {
                                 s8 dch2 = *--p2;
                                 cnt--;
-                                func_02057e00(&ctx, dch2);
+                                string_put_char(&str, dch2);
                             } while (cnt > 0);
                         }
-                        if (lj) func_02057d94(&ctx, spc, pf[0]);
+                        if (lj)
+                            string_fill_char(&str, spc, pf[0]);
                         fmt++;
                         break;
                     }
@@ -350,10 +451,10 @@ int func_02057410(char *dst, int n, const char *fmt, int *args)
             }
         } while (*fmt != 0);
     }
-    if (ctx.n != 0) {
-        *ctx.cur = 0;
+    if (str.spaceLeft != 0) {
+        *str.stringEnd = 0;
     } else if (nsave != 0) {
-        *((ctx.start + nsave) - 1) = 0;
+        *((str.stringStart + nsave) - 1) = 0;
     }
-    return ctx.cur - ctx.start;
+    return str.stringEnd - str.stringStart;
 }

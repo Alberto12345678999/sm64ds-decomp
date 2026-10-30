@@ -2490,12 +2490,6 @@ src/unnamed/arm9/0205/func_02056e98.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057000.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057198.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057228.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057410.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057ce8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057d00.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057d30.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057d94.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057e00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e30.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e34.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e48.c	WEAK-refs-only	arm9				1		None		-

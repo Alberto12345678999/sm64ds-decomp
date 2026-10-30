@@ -219,7 +219,7 @@ extern "C" int Mg_GetSubmittedScore(void);
 extern "C" void Mg_SubmitScore(int self);
 extern s16 atan2_hold_d_s_mg_smartball_1(int y, int x);
 extern void Mg_SetTopScreenYOffset(int a);
-extern void func_02057d00(void *dst, void *src, int flag);
+extern int OS_SPrintf(char *buffer, const char *format, ...);
 extern void *Ov004_LoadFileByPath(void *p);
 extern void DecompressLZ16(void *src, void *dst);
 extern void Ov004_Deallocate(void *p);
@@ -227,15 +227,15 @@ extern void Ov004_Deallocate(void *p);
 extern void __cxa_vec_ctor(void *p, int a, int b, void *cb1, void *cb2);
 extern void SetSubBg0Offset(int x, int y);
 extern void func_0203d738(void);
-extern int sSmartballPathBuf[];
-extern int sSmartballLayoutNcgFmtSpanish[];
-extern int sSmartballLayoutNcgFmtItalian[];
-extern int sSmartballLayoutNcgFmtGerman[];
-extern int sSmartballLayoutNcgFmtFrench[];
-extern int sSmartballLayoutNcgFmtE[];
-extern int sSmartballLayoutNcgFmt[];
-extern int sSmartballBg1NscFmt[];
-extern int sSmartballBg2NscFmt[];
+extern char sSmartballPathBuf[];
+extern const char sSmartballLayoutNcgFmtSpanish[];
+extern const char sSmartballLayoutNcgFmtItalian[];
+extern const char sSmartballLayoutNcgFmtGerman[];
+extern const char sSmartballLayoutNcgFmtFrench[];
+extern const char sSmartballLayoutNcgFmtE[];
+extern const char sSmartballLayoutNcgFmt[];
+extern const char sSmartballBg1NscFmt[];
+extern const char sSmartballBg2NscFmt[];
 extern int sSmartballLay0Bg1FrameNscPath[];
 extern int sSmartballLay0Bg2FrameNscPath[];
 extern int sSmartballLay0Bg1NscPath[];
@@ -4644,7 +4644,7 @@ void dScMgSmartball_c::CollideBalls() {
 /* SpawnObjects: minigame-board teardown+rebuild. 7 inlined-destructor loops
  * over object slot arrays (double vtable store + Memory::operator_delete2 +
  * slot=0), 3 single-slot deletes, language-selected asset loads
- * (func_02057d00 + DecompressLZ16 to VRAM/tilemaps), per-tile-type scan
+ * (OS_SPrintf + DecompressLZ16 to VRAM/tilemaps), per-tile-type scan
  * loops over the two 0x300-entry tilemaps mBg1Map/mBg2Map collecting
  * spawn positions ((i%32)<<15, mapA: ((i/32)*8-0xf0)<<12 /
  * mapB: (i/32)<<15), spawn loops (operator new + per-type init, V2 passed via
@@ -4816,17 +4816,17 @@ void dScMgSmartball_c::SpawnObjects() {
     Mg_SetTopScreenYOffset(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtSpanish, (int)self->mLevel & 1);
+        OS_SPrintf(sSmartballPathBuf, sSmartballLayoutNcgFmtSpanish, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtItalian, (int)self->mLevel & 1);
+        OS_SPrintf(sSmartballPathBuf, sSmartballLayoutNcgFmtItalian, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtGerman, (int)self->mLevel & 1);
+        OS_SPrintf(sSmartballPathBuf, sSmartballLayoutNcgFmtGerman, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtFrench, (int)self->mLevel & 1);
+        OS_SPrintf(sSmartballPathBuf, sSmartballLayoutNcgFmtFrench, (int)self->mLevel & 1);
     } else if (((int)self->param1 & 0xff) == 0) {
-        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtE, (int)self->mLevel & 1);
+        OS_SPrintf(sSmartballPathBuf, sSmartballLayoutNcgFmtE, (int)self->mLevel & 1);
     } else {
-        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmt, (int)self->mLevel & 1);
+        OS_SPrintf(sSmartballPathBuf, sSmartballLayoutNcgFmt, (int)self->mLevel & 1);
     }
     {
         void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
@@ -4834,13 +4834,13 @@ void dScMgSmartball_c::SpawnObjects() {
         DecompressLZ16(d, (void *)0x6600000);
         Ov004_Deallocate(d);
     }
-    func_02057d00(sSmartballPathBuf, sSmartballBg1NscFmt, (int)self->mLevel & 1);
+    OS_SPrintf(sSmartballPathBuf, sSmartballBg1NscFmt, (int)self->mLevel & 1);
     {
         void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, mBg1Map);
         Ov004_Deallocate(d);
     }
-    func_02057d00(sSmartballPathBuf, sSmartballBg2NscFmt, (int)self->mLevel & 1);
+    OS_SPrintf(sSmartballPathBuf, sSmartballBg2NscFmt, (int)self->mLevel & 1);
     {
         void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, mBg2Map);
