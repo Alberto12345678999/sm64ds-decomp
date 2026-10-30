@@ -2620,53 +2620,9 @@ src/engine/pxi/PXI_Fifo.cpp:
     complete
     .text start:0x0205b864 end:0x0205bbdc
 
-src/unnamed/arm9/0205/func_0205bbdc.c:
+src/engine/fs/FS_CommandDefault.cpp:
     complete
-    .text start:0x0205bbdc end:0x0205bbe4
-
-src/unnamed/arm9/0205/func_0205bbe4.c:
-    complete
-    .text start:0x0205bbe4 end:0x0205bc0c
-
-src/unnamed/arm9/0205/func_0205bc0c.c:
-    complete
-    .text start:0x0205bc0c end:0x0205bc88
-
-src/unnamed/arm9/0205/func_0205bc88.c:
-    complete
-    .text start:0x0205bc88 end:0x0205c048
-
-src/unnamed/arm9/0205/func_0205c048.c:
-    complete
-    .text start:0x0205c048 end:0x0205c264
-
-src/unnamed/arm9/0205/func_0205c264.c:
-    complete
-    .text start:0x0205c264 end:0x0205c378
-
-src/unnamed/arm9/0205/func_0205c378.c:
-    complete
-    .text start:0x0205c378 end:0x0205c410
-
-src/unnamed/arm9/0205/func_0205c410.c:
-    complete
-    .text start:0x0205c410 end:0x0205c448
-
-src/unnamed/arm9/0205/func_0205c448.c:
-    complete
-    .text start:0x0205c448 end:0x0205c480
-
-src/unnamed/arm9/0205/func_0205c480.c:
-    complete
-    .text start:0x0205c480 end:0x0205c4e4
-
-src/unnamed/arm9/0205/func_0205c4e4.c:
-    complete
-    .text start:0x0205c4e4 end:0x0205c528
-
-src/unnamed/arm9/0205/func_0205c528.cpp:
-    complete
-    .text start:0x0205c528 end:0x0205c5e4
+    .text start:0x0205bbdc end:0x0205c5e4
 
 src/unnamed/arm9/0205/func_0205c5e4.cpp:
     complete

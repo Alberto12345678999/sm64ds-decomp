@@ -1650,8 +1650,10 @@ Everything else follows from that. Corollaries, each verified with minimal toys:
 
 **The one matched precedent, and why it is not available here.** A corpus scan of all of arm9
 for the ROM shape `cmp rX,#0; beq #8; <single mov>` finds exactly TWO sites: `func_02068398`
-and `func_0205c048` -- and c048 is MATCHED. Its source (src/unnamed/arm9/0205/func_0205c048.c) buys the branch
-with a genuinely 2-condition guard, giving the assignment block two predecessors:
+and `func_0205c048` (FSi_FindPathCommand) -- and c048 is MATCHED. Its source buys the branch
+with a genuinely 2-condition guard, giving the assignment block two predecessors. The shard
+spelled it with gotos, as below; src/engine/fs/FS_CommandDefault.cpp now spells the same guard
+`if (want_dir != 0 || find_dir != 0) want_dir = 1;`:
 ```c
 if (r8 != 0)      goto Lsep1;   /* pred 1: the goto      */
 if (spflag == 0)  goto Lskip1;

@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "One contiguous run of the Nitro SDK's pxi_fifo.c, 0x0205b864..0x0205bbdc: 5 functions, gapless in config/arm9/delinks.txt. Read from the highest address down (mwccarm emits .text in reverse source order) it is the file in order: PXI_InitFifo (registers the receive handler on IRQ 0x40000 and handshakes through SUBPINTF), PXI_SetFifoRecvCallback, PXI_IsCallbackReady, PXI_SendWordByFifo and PXIi_HandlerRecvFifoNotEmpty.",
     "Every member touches the FIFO state: the SUBP_FIFO_CNT/SEND/RECV registers, the callback table data_020a7fc8, or the shared pxiHandleChecker word at 0x027fff88.",
-    "TOP EDGE: func_0205bbdc (0x0205bbdc..0x0205bbe4, `return 0`) and the stream helpers after it touch none of that state.",
+    "TOP EDGE: FSi_CloseFileCommand (0x0205bbdc..0x0205bbe4, `return 0`) begins fs_command_default.c (arm9/FS_CommandDefault), none of which touches that state.",
     "BOTTOM EDGE: PXI_Init (0x0205b858..0x0205b864, src/PXI_Init.c) is pxi_init.c's tail call to PXI_InitFifo, a separate SDK file; below it are cache-flushing list helpers."
   ],
   "sections": [

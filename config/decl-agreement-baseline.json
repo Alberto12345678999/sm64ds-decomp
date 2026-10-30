@@ -306,9 +306,6 @@
       "src/unnamed/arm9/0205/func_02059f2c.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205bc88.c": [
-        "arity:3"
-      ],
       "src/unnamed/arm9/0205/func_0205d28c.c": [
         "arity:3"
       ],
@@ -422,6 +419,9 @@
         "arity:3"
       ],
       "src/CARDi_ReadFromCache.c": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_CommandDefault.cpp": [
         "arity:3"
       ]
     },
@@ -5576,9 +5576,6 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205c528.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0205/func_0205c864.cpp": [
         "return:int"
       ],
@@ -5671,9 +5668,6 @@
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205c528.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205c5e4.cpp": [
@@ -20690,26 +20684,6 @@
     "func_0205b4d0": {
       "src/unnamed/arm9/0205/func_0205ab28.c": [
         "param:#2 int"
-      ]
-    },
-    "func_0205c4e4": {
-      "src/unnamed/arm9/0205/func_0205bc88.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205c048.c": [
-        "param:#2 unsigned int"
-      ]
-    },
-    "func_0205c528": {
-      "src/unnamed/arm9/0205/func_0205bc0c.c": [
-        "param:#1 Pair *",
-        "param:#2 Pair *"
-      ],
-      "src/unnamed/arm9/0205/func_0205c264.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205c378.c": [
-        "param:#2 void *"
       ]
     },
     "func_0205c5e4": {

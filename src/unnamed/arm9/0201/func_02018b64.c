@@ -6,7 +6,7 @@
  * FSOverlayInfo is the SDK layout: the 0x20-byte header func_02018c00
  * copies from the overlay table, then the target processor it stores at
  * +0x20. Only the fields read here are spelled out. FSFile follows
- * func_0205bc88.c's view (prop.file at 0x1c), padded to the SDK's 0x48. */
+ * src/engine/fs/FS_CommandDefault.cpp's (prop.file at 0x1c), padded to 0x48. */
 typedef struct FSOverlayInfo {
     char pad_00[4];
     void *ram_address; /* 0x04 */

@@ -10307,51 +10307,51 @@
     },
     "arm9:0x0205bbdc": {
       "author": "tangosdev",
-      "name": "func_0205bbdc"
+      "name": "FSi_CloseFileCommand"
     },
     "arm9:0x0205bbe4": {
       "author": "tangosdev",
-      "name": "func_0205bbe4"
+      "name": "FSi_OpenFileDirectCommand"
     },
     "arm9:0x0205bc0c": {
       "author": "tangosdev",
-      "name": "func_0205bc0c"
+      "name": "FSi_OpenFileFastCommand"
     },
     "arm9:0x0205bc88": {
       "author": "ruspecial",
-      "name": "func_0205bc88"
+      "name": "FSi_GetPathCommand"
     },
     "arm9:0x0205c048": {
       "author": "tangosdev",
-      "name": "func_0205c048"
+      "name": "FSi_FindPathCommand"
     },
     "arm9:0x0205c264": {
       "author": "tangosdev",
-      "name": "func_0205c264"
+      "name": "FSi_ReadDirCommand"
     },
     "arm9:0x0205c378": {
       "author": "tangosdev",
-      "name": "func_0205c378"
+      "name": "FSi_SeekDirCommand"
     },
     "arm9:0x0205c410": {
       "author": "ruspecial",
-      "name": "func_0205c410"
+      "name": "FSi_WriteFileCommand"
     },
     "arm9:0x0205c448": {
       "author": "ruspecial",
-      "name": "func_0205c448"
+      "name": "FSi_ReadFileCommand"
     },
     "arm9:0x0205c480": {
       "author": "tangosdev",
-      "name": "func_0205c480"
+      "name": "FSi_StrNICmp"
     },
     "arm9:0x0205c4e4": {
       "author": "lplaat",
-      "name": "func_0205c4e4"
+      "name": "FSi_SeekDirDirect"
     },
     "arm9:0x0205c528": {
       "author": "tangosdev",
-      "name": "func_0205c528"
+      "name": "FSi_ReadTable"
     },
     "arm9:0x0205c5e4": {
       "author": "tangosdev",
