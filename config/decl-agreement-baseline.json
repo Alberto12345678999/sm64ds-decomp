@@ -4663,11 +4663,6 @@
         "return:void"
       ]
     },
-    "_ZN11fLiNdBaPr_cD1Ev": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "return:void"
-      ]
-    },
     "_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr": {
       "src/game/actors/d_a_star.cpp": [
         "param:#2 char *"
@@ -23232,18 +23227,6 @@
     "func_ov075_02116128": {
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 char *"
-      ]
-    },
-    "func_0203b358": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "param:#1 fBase_c::SceneNode *",
-        "return:fBase_c::SceneNode *"
-      ]
-    },
-    "func_0203b394": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "param:#1 fBase_c::SceneNode *",
-        "return:fBase_c::SceneNode *"
       ]
     },
     "func_02042fe4": {
