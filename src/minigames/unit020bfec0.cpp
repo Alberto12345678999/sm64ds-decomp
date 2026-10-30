@@ -95,7 +95,7 @@ void func_02016a14(void *, int);
 void func_02016b24(void *, unsigned int);
 void func_02017ab4(void *);
 void *func_02017acc(void *, unsigned int);
-void func_0202ffec(void *, void *, void *);
+void Quaternion_Multiply(void *, void *, void *);
 void func_0203ccd4(void *, short);
 void func_0203cd80(void *, short);
 void Camera_ProjectToScreen16(char *r4, void *r1, short *r5);
@@ -677,7 +677,7 @@ void FallingPetal_Update(char *self) {
     Quaternion_FromVector3(&q0, &PETAL(self)->mAxis, &v3);
     Quaternion_SLerp(&q1, &q0, 0x200, &q1);
     Quaternion_Normalize(&q1);
-    func_0202ffec(PETAL(self)->mRot, &q1, PETAL(self)->mRot);
+    Quaternion_Multiply(PETAL(self)->mRot, &q1, PETAL(self)->mRot);
 }
 }
 }

@@ -1644,7 +1644,7 @@ int dScMgBase_c::SaveScreenForMenu() {
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     if (GetDisplayMode() != 0)
-        func_02019028();
+        Disable3dEngines();
 
     mSavedScreenSwap = (*(volatile u16 *)0x4000304 & 0x8000) >> 15;
 
@@ -2487,7 +2487,7 @@ bool dScMgBase_c::BeforeInitResources()
 {
     if (dScene_c::BeforeInitResources() == 0) return 0;
     if (GetDisplayMode() == 0)
-        func_02019028();
+        Disable3dEngines();
     else
         Enable3dEngines();
     mMusicTrack = gMgMenuRow.musicTrack;

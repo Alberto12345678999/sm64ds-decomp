@@ -26,11 +26,17 @@
 
 /* BG control: engine A's BG0CNT..BG3CNT are 0x04000008..0x0400000e, engine B's
    0x04001008..0x0400100e. Bits 0-1 are the priority and bit 6 the mosaic enable. */
+#define REG_BG1CNT    (*(volatile u16 *)0x0400000a)
 #define REG_BG2CNT    (*(volatile u16 *)0x0400000c)
 #define REG_BG3CNT    (*(volatile u16 *)0x0400000e)
 #define REG_DB_BG0CNT (*(volatile u16 *)0x04001008)
+#define REG_DB_BG1CNT (*(volatile u16 *)0x0400100a)
 #define REG_DB_BG2CNT (*(volatile u16 *)0x0400100c)
 #define REG_DB_BG3CNT (*(volatile u16 *)0x0400100e)
+
+/* Colour special effects (alpha blending and brightness), one per engine. */
+#define REG_BLDCNT    (*(volatile u16 *)0x04000050)
+#define REG_DB_BLDCNT (*(volatile u16 *)0x04001050)
 
 #define REG_VCOUNT (*(volatile u16 *)0x04000006)
 

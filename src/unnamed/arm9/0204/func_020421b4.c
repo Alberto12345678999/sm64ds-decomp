@@ -1,8 +1,7 @@
-/* Stop the file-share loader thread (see func_02042200): until
- * func_02058158 reports the thread at data_020a11e4 + 0x400 terminated (state
- * 2), wake it (func_02058048) so that it sees mState cleared and returns, then
- * wait on it (func_0205816c sleeps on its join queue). func_02040aa4 calls this
- * at shutdown. */
+/* Stop the file-share loader thread (see func_02042200): until the thread at
+ * data_020a11e4 + 0x400 is terminated (state 2), wake it so that it sees
+ * mState cleared and returns, then join it (OS_JoinThread sleeps on its join
+ * queue). func_02040aa4 calls this at shutdown. */
 extern char data_020a11e4[];
 /* local extern: the thread is untyped storage here (void *) */
 extern int OS_IsThreadTerminated(void *p);

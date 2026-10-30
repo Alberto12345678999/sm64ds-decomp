@@ -1,22 +1,31 @@
 #include "nitro/fx/fx.h"
-void func_0204c0e8(int arg0, int arg1, int *m)
-{
-    int r3 = FX_MUL((0x1000 - arg1), 0x555);
-    int r5 = FX_MUL(arg0, 0x93d);
-    int r1;
-    int sum = r3 + r5;
-    int dif = r3 - r5;
-    r1 = r3 + arg1;
-    m[0] = r1;
-    m[3] = sum;
-    m[6] = dif;
-    m[9] = 0;
-    m[1] = dif;
-    m[4] = r1;
-    m[7] = sum;
-    m[10] = 0;
-    m[2] = sum;
-    m[5] = dif;
-    m[8] = r1;
-    m[11] = 0;
+
+/* NitroSDK's MtxFx43: a 4x3 fixed-point matrix, row by row. Not
+ * include/private/mtx43.h's Mtx43, which is the same 12 words unrowed. */
+typedef struct MtxFx43 {
+    int m[4][3];
+} MtxFx43;
+
+/* Build a rotation about the (1, 1, 1) diagonal from its sine and cosine:
+ * 0x555 is 1/3 and 0x93d is sqrt(1/3) in 20.12. The particle draws pick it or
+ * func_0204c0a8 out of data_02099fbc; pret's SPL names it SPLUtil_RotateXYZ. */
+void func_0204c0e8(int sin, int cos, MtxFx43 *mat) {
+    int c = FX_MUL((0x1000 - cos), 0x555);
+    int s = FX_MUL(sin, 0x93d);
+    int diag;
+    int plus = c + s;
+    int minus = c - s;
+    diag = c + cos;
+    mat->m[0][0] = diag;
+    mat->m[1][0] = plus;
+    mat->m[2][0] = minus;
+    mat->m[3][0] = 0;
+    mat->m[0][1] = minus;
+    mat->m[1][1] = diag;
+    mat->m[2][1] = plus;
+    mat->m[3][1] = 0;
+    mat->m[0][2] = plus;
+    mat->m[1][2] = minus;
+    mat->m[2][2] = diag;
+    mat->m[3][2] = 0;
 }

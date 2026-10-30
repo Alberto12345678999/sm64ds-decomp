@@ -9463,6 +9463,11 @@
         "param:#1 struct dBgCh_Actr *"
       ]
     },
+    "func_0204921c": {
+      "src/engine/sound/Sound.cpp": [
+        "param:#1 int *"
+      ]
+    },
     "func_0205b470": {
       "src/unnamed/arm9/0205/func_0205aed0.cpp": [
         "param:#1 void *"
@@ -10010,6 +10015,11 @@
       ],
       "src/unnamed/arm9/0201/func_020197b8.cpp": [
         "return:unsigned char []"
+      ]
+    },
+    "data_0209f1e4": {
+      "src/unnamed/arm9/0202/func_0202345c.cpp": [
+        "return:dFader_c *"
       ]
     },
     "data_0209f208": {
@@ -10852,6 +10862,9 @@
       ],
       "src/unnamed/arm9/0203/func_0203dafc.c": [
         "return:short []"
+      ],
+      "src/unnamed/arm9/0203/func_0203db64.c": [
+        "return:Rec"
       ],
       "src/unnamed/arm9/0203/func_0203df40.c": [
         "return:Rec"
@@ -18561,23 +18574,9 @@
         "param:#1 LVL_Overlay::StandardEntry *"
       ]
     },
-    "func_020308a8": {
-      "include/decl_common.h": [
-        "return:int"
-      ],
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "return:int"
-      ],
-      "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp": [
-        "return:int"
-      ]
-    },
     "func_020308b4": {
       "src/game/stages/d_s_entry_methods.cpp": [
-        "param:#1 void *"
-      ],
-      "src/game/stages/d_s_mb.cpp": [
-        "arity:0"
+        "arity:1"
       ],
       "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp": [
         "param:#1 int"
@@ -19151,22 +19150,6 @@
         "arity:1"
       ],
       "src/minigames/d_s_mg_snowball.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_0203d81c": {
-      "src/unnamed/arm9/0203/func_020308a8.c": [
-        "return:void"
-      ]
-    },
-    "func_0203d854": {
-      "src/unnamed/arm9/0203/func_020308b4.c": [
-        "arity:1",
-        "return:signed char"
-      ]
-    },
-    "func_0203d868": {
-      "src/unnamed/arm9/0203/func_020308b4.c": [
         "arity:1"
       ]
     },

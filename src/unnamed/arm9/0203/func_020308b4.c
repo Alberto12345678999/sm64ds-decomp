@@ -1,13 +1,11 @@
-/* func_020308b4 at 0x020137fc
- * Converts a sublevel ID to a course ID, then opens the cannon for that course.
- */
-typedef signed char s8;
+/* Arm the link handshake: clear the passed latch data_020a0f30
+   (func_0203d854), then raise flag 0x1000 in this console's input record
+   (func_0203d868), which every console sees in its copy of the four
+   records. func_020308a8 polls it. */
+extern void func_0203d854(void);
+extern void func_0203d868(void);
 
-extern s8 func_0203d854(s8 levelID);
-extern void func_0203d868(s8 courseID);
-
-void func_020308b4(s8 levelID)
-{
-    s8 courseID = func_0203d854(levelID);
-    func_0203d868(courseID);
+void func_020308b4(void) {
+    func_0203d854();
+    func_0203d868();
 }
