@@ -451,11 +451,6 @@
       ]
     },
     "DMAStartTransfer": {
-      "src/func_02059fd0.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/MI_SendGXCommand.c": [
         "param:#2 void *",
         "param:#3 void *"
@@ -465,41 +460,6 @@
         "param:#2 int",
         "param:#3 int",
         "param:#4 int"
-      ]
-    },
-    "DMAStartTransferFB": {
-      "src/DMASyncFillTransfer.c": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/DMASyncHalfTransfer.c": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/DMASyncWordTransfer.c": [
-        "param:#1 unsigned char"
-      ]
-    },
-    "DMASyncFillTransfer": {
-      "src/WM_Init.cpp": [
-        "param:#1 int",
-        "param:#3 int",
-        "param:#4 int"
-      ]
-    },
-    "DMASyncWordTransfer": {
-      "src/WM_SendCommand.cpp": [
-        "param:#1 int"
-      ],
-      "src/engine/gx/GX.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
       ]
     },
     "DeathTable_GetBit": {
@@ -5278,9 +5238,6 @@
       "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "return:void"
-      ],
       "src/CARDi_TryReadCardDma.cpp": [
         "return:void"
       ]
@@ -5288,21 +5245,10 @@
     "_ZN3IRQ11DisableIRQsEj": {
       "src/unnamed/arm9/0205/func_02059cb4.c": [
         "return:void"
-      ],
-      "src/CARDi_OnReadCard.cpp": [
-        "return:void"
-      ]
-    },
-    "_ZN3IRQ13GetIRQHandlerEj": {
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "return:void *"
       ]
     },
     "_ZN3IRQ13SetIRQHandlerEjPFvvE": {
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/CARDi_TryReadCardDma.cpp": [
@@ -5310,9 +5256,6 @@
       ]
     },
     "_ZN3IRQ15ClearInterruptsEj": {
-      "src/CARDi_OnReadCard.cpp": [
-        "return:void"
-      ],
       "src/CARDi_TryReadCardDma.cpp": [
         "return:void"
       ]
@@ -5320,9 +5263,6 @@
     "_ZN3IRQ7DisableEv": {
       "src/Crash.cpp": [
         "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205c864.cpp": [
         "return:int"
@@ -5363,9 +5303,6 @@
       "src/DMAStartTransfer.cpp": [
         "return:void"
       ],
-      "src/DMAStartTransferFB.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040a5c.cpp": [
         "return:void"
       ],
@@ -5379,13 +5316,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059f58.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "param:#1 int",
         "return:void"
       ],
       "src/engine/fs/FS_Command.cpp": [
@@ -8908,11 +8838,6 @@
       ],
       "src/unnamed/arm9/0204/func_020433b8.c": [
         "return:int []"
-      ]
-    },
-    "data_02099fd0": {
-      "src/engine/gx/G3X.cpp": [
-        "return:int"
       ]
     },
     "data_0209b2e8": {
@@ -18930,11 +18855,6 @@
       ]
     },
     "OSi_EnterDmaCallback": {
-      "src/func_02059fd0.c": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#3 int"
-      ],
       "src/func_0205a290.cpp": [
         "param:#1 int",
         "param:#2 void *",

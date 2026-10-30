@@ -9971,19 +9971,19 @@
     },
     "arm9:0x02059f58": {
       "author": "lplaat",
-      "name": "func_02059f58"
+      "name": "MI_StopDma"
     },
     "arm9:0x02059fa8": {
       "author": "tangosdev",
-      "name": "func_02059fa8"
+      "name": "MI_WaitDma"
     },
     "arm9:0x02059fd0": {
       "author": "tangosdev",
-      "name": "func_02059fd0"
+      "name": "MI_DmaCopy32Async"
     },
     "arm9:0x0205a064": {
       "author": "ruspecial",
-      "name": "func_0205a064"
+      "name": "MI_DmaFill32Async"
     },
     "arm9:0x0205a10c": {
       "author": "tangosdev",

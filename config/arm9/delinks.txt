@@ -2272,33 +2272,9 @@ src/MI_SetWramBank.c:
     complete
     .text start:0x02059f48 end:0x02059f58
 
-src/unnamed/arm9/0205/func_02059f58.cpp:
+src/engine/mi/MI_Dma.cpp:
     complete
-    .text start:0x02059f58 end:0x02059fa8
-
-src/func_02059fa8.c:
-    complete
-    .text start:0x02059fa8 end:0x02059fd0
-
-src/func_02059fd0.c:
-    complete
-    .text start:0x02059fd0 end:0x0205a064
-
-src/unnamed/arm9/0205/func_0205a064.c:
-    complete
-    .text start:0x0205a064 end:0x0205a10c
-
-src/DMASyncHalfTransfer.c:
-    complete
-    .text start:0x0205a10c end:0x0205a160
-
-src/DMASyncWordTransfer.c:
-    complete
-    .text start:0x0205a160 end:0x0205a1b4
-
-src/DMASyncFillTransfer.c:
-    complete
-    .text start:0x0205a1b4 end:0x0205a21c
+    .text start:0x02059f58 end:0x0205a21c
 
 src/unnamed/arm9/0205/func_0205a21c.cpp:
     complete

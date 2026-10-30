@@ -18,7 +18,7 @@ typedef struct {
     IRQ::Handler oldhandler;
 } Data0205;
 extern Data0205 data_020a6460;
-extern void func_02059fa8(int ch);
+extern void MI_WaitDma(u32 dmaNo);
 
 extern void func_0205a290(void);
 
@@ -36,7 +36,7 @@ void func_0205a358(int a0, int a1, int a2, void (*a3)(int), int a4) {
     data_020a6460.p2 = a2;
     data_020a6460.cb = a3;
     data_020a6460.arg = a4;
-    func_02059fa8(a0);
+    MI_WaitDma(a0);
     saved = IRQ::Disable();
     data_020a6460.oldmode = (*(volatile unsigned int *)0x4000600 & 0xc0000000) >> 0x1e;
     data_020a6460.oldhandler = IRQ::GetIRQHandler(0x200000);

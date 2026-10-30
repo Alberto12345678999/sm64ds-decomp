@@ -91,9 +91,6 @@ src/CrossVec3.c	PURE-C	arm9				1		None		-
 src/d_a_demo.c	WEAK-refs-only	ov002				1		None		-
 src/DMAStartTransfer.c	WEAK-refs-only					0		None		not-in-delinks
 src/DMAStartTransferFB.c	WEAK-refs-only					0		None		not-in-delinks
-src/DMASyncFillTransfer.c	PURE-C	arm9				1		None		-
-src/DMASyncHalfTransfer.c	PURE-C	arm9				1		None		-
-src/DMASyncWordTransfer.c	PURE-C	arm9				1		None		-
 src/Deallocate.c	WEAK-refs-only	arm9				1		None		-
 src/DeathTable_ClearBit.c	PURE-C	arm9				1		None		-
 src/DeathTable_GetBit.c	PURE-C	arm9				1		None		-
@@ -2531,10 +2528,6 @@ src/unnamed/arm9/0205/func_02059c18.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059cb4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059f58.c	WEAK-refs-only	arm9				1		None		-
-src/func_02059fa8.c	PURE-C	arm9				1		None		-
-src/func_02059fd0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a064.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a21c.c	WEAK-refs-only	arm9				1		None		-
 src/func_0205a290.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a588.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks

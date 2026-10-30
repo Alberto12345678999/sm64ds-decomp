@@ -11,7 +11,7 @@
  * DMASyncWordTransfer 0x0205a198, DMASyncFillTransfer 0x0205a1fc): each polls
  * DMAxCNT's enable bit on the very next instruction, so the channel has to
  * have taken the bus before the poll. The callback/asynchronous paths
- * (func_02059fd0, func_0205a064, func_0205a290) call the plain twin instead.
+ * (MI_DmaCopy32Async, MI_DmaFill32Async, func_0205a290) call the plain twin instead.
  *
  * The barrier reads DMA0SAD, not the armed channel's own register -- any read
  * of the DMA register block costs the two cycles.

@@ -171,7 +171,7 @@ endfunction()
 # copies under the build tree -- src/ itself is never edited.
 set(GATE4A_SYMS
     func_0205532c func_02055388 func_020553a4 func_02055780
-    func_0205a358 func_0205a290 func_0205a21c OSi_EnterDmaCallback func_02059fa8)
+    func_0205a358 func_0205a290 func_0205a21c OSi_EnterDmaCallback MI_WaitDma)
 sm64ds_hostgen_symbols(GATE4A_GEN ${GATE4A_SYMS})
 
 add_executable(smoke_gx tests/smoke_gx.cpp ${GATE4A_GEN})

@@ -109,8 +109,8 @@ straight to it:
 So the 3D seam for us is the **command stream**, not per-call immediate inlines.
 
 **Failure mode correction:** dead registers do not produce a blank screen, they produce a
-**hang**. The game spin-waits on hardware — `while (*(volatile unsigned *)(0x40000b0 + (ch*3+2)*4) & 0x80000000);`
-(`src/func_02059fa8.c:2`), `while (PXI_SendWordByFifo(7,0,0) < 0);` (`RequestCommandProc` in `src/engine/sound/SND_Command.cpp`). Any
+**hang**. The game spin-waits on hardware — `while (*dmaCntp & MI_CNT_ENABLE);`
+(`MI_WaitDma` in `src/engine/mi/MI_Dma.cpp`), `while (PXI_SendWordByFifo(7,0,0) < 0);` (`RequestCommandProc` in `src/engine/sound/SND_Command.cpp`). Any
 register the host layer leaves inert is a deadlock in the boot path.
 
 ### 2b. Our tree is *not* pre-wrapped in SDK-shaped inlines

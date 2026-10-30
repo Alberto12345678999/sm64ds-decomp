@@ -152,7 +152,7 @@ void NormalizeVec3(Vec3 *a, Vec3 *b);
 void func_020458a8(void *src, void *dst);
 void Geometry_MatrixMultiply3x3(void *m);
 void func_0205a358(int a0, int a1, int a2, int a3, int a4);
-void func_02059fa8(int ch);
+void MI_WaitDma(u32 dmaNo);
 extern Vec3 data_02099f88;
 extern u32 data_020a4bd4;
 extern int data_02082190;
@@ -707,7 +707,7 @@ void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
         }
         { int a5 = z30; int a4 = z30;
         func_0205a358(three, part->fc, part->f8, a4, a5); }
-        func_02059fa8(three);
+        MI_WaitDma(three);
         i = i + 1;
         cnt = e->count;
     } while (i < cnt);
