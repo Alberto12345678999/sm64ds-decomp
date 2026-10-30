@@ -13,7 +13,7 @@ typedef struct {
     u16 flags;         /* 0x0c */
     u16 keys;          /* 0x0e */
     s16 inputYaw;      /* 0x10 */
-    u8 unk12[0x10];
+    u8 settings[0x10]; /* 0x12 -- the link settings bytes (GetPlayerFlagByte, func_0203db3c) */
     u8 unk22;
     u8 unk23;
 } Rec;
@@ -70,7 +70,7 @@ extern u16 data_020a104e; /* data_020a1040.keys */
 extern u16 data_020a1050; /* data_020a1040.inputYaw */
 extern u8 data_020a0f08;
 extern u8 data_020a0f00;
-extern u8 data_020a1052[0x11]; /* data_020a1040.unk12 */
+extern u8 data_020a1052[0x11]; /* data_020a1040.settings */
 extern u8 data_020a10a4[0x16];
 extern u8 data_020a10ba[0x16];
 extern u8 data_020a10d0[0x16];
@@ -297,7 +297,7 @@ void func_0203ea5c(void) {
                                     CpuCopy8(temp_r5 + 9, &var_r6->touch.y, 1);
                                     CpuCopy8(temp_r5 + 0xA, &var_r6->touch.touch, 1);
                                     CpuCopy8(temp_r5 + 0xB, &var_r6->inputYaw, sp14);
-                                    CpuCopy8(temp_r5 + 0xF, var_r6->unk12, sp1c);
+                                    CpuCopy8(temp_r5 + 0xF, var_r6->settings, sp1c);
                                     if ((data_020a0f10 != 0) && (var_r7 == 0)) {
                                         CpuCopy8(temp_r5 + 0xD, &data_020a0f08, 1);
                                         CpuCopy8(temp_r5 + 0xE, &data_020a0f00, 1);

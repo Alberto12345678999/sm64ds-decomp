@@ -1,5 +1,14 @@
 #include "types.h"
-/* func_020494cc at 0x020494cc, size=0x298 (sibling of func_0204921c) */
+/* NitroSystem's NNSSndHandle and NNSSndSeqPlayer, cut to the sequence number
+   (the layout as the Sonic Rush Adventure decomp spells it; SoundEngine.cpp's
+   struct E1 is the same object, its fader at 0x1c, player number at 0x3c). */
+typedef struct NNSSndSeqPlayer {
+    u8 pad[0x38];
+    u16 seqNo; /* 0x38 */
+} NNSSndSeqPlayer;
+typedef struct NNSSndHandle {
+    NNSSndSeqPlayer *player;
+} NNSSndHandle;
 extern u16 data_020a4c48[];
 extern int data_020a4c4c[];
 extern int data_020a4c54[];
@@ -9,18 +18,22 @@ extern int data_02082208;
 extern int data_0208220c;
 extern int data_02082210;
 
-void func_020494cc(void *a, int mode)
-{
-    char *p;
+/* func_0204921c's twin, for the same sequences and modes: the target volume
+   (data_020a4c54) and per-step delta (data_020a4c4c, from the constants
+   data_02082200..data_02082210) of each track mask. The per-frame sound
+   update func_020132d8 (Sound.cpp) calls it on the handle at data_0209b4a0
+   with func_02013078's mode. */
+void func_020494cc(NNSSndHandle *a, int mode) {
+    NNSSndSeqPlayer *p;
     int id;
 
     if (a == 0)
         return;
-    p = *(char **)a;
+    p = a->player;
     if (p == 0)
         return;
 
-    id = *(u16 *)(p + 0x38);
+    id = p->seqNo;
 
     if (mode == 0) {
         if (id != 0x3b)

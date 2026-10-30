@@ -10,10 +10,18 @@ extern int data_020a806c[2];
 extern int data_020a8074;
 extern void CpuCopy8(void *dst, void *src, int n);
 
+/* NitroSDK FSOverlayInfo as these two fill it: the overlay table entry, then
+   the target processor. */
+typedef struct FSOverlayInfo {
+    unsigned int header[8]; /* 0x00 -- the 0x20-byte table entry */
+    int target;             /* 0x20 -- 0 ARM9, 1 ARM7 */
+} FSOverlayInfo;
+
 /* The card half of func_02018c00: read overlay table entry `shift` (0x20
    bytes) straight out of the ROM, the table offset and length coming from
    the header (a5/a6 for ARM9, a7/a8 for ARM7). 0 past the end. */
-int func_02018cbc(char *self, int flag, int shift, int a3, int a5, int a6, int a7, int a8) {
+int func_02018cbc(FSOverlayInfo *info, int flag, int shift, int a3, int a5, int a6, int a7,
+                  int a8) {
     char local[0x48];
     int off;
     int base;
@@ -30,9 +38,9 @@ int func_02018cbc(char *self, int flag, int shift, int a3, int a5, int a6, int a
         return 0;
     FS_InitFile(local);
     myFS_OpenFileDirect(local, a3, base + off, base + hi, -1);
-    myFS_ReadFile(local, self, 0x20);
+    myFS_ReadFile(local, info->header, 0x20);
     FS_CloseFile(local);
-    *(int *)(self + 0x20) = flag;
+    info->target = flag;
     return 1;
 }
 
@@ -43,21 +51,20 @@ int func_02018cbc(char *self, int flag, int shift, int a3, int a5, int a6, int a
    in-memory table if there is one, else from the card, with the table's ROM
    offset and length from the cartridge header copy at 0x27ffe00 (+0x50 ARM9,
    +0x58 ARM7). 0 if index is past the table. */
-int func_02018c00(int *thiz, int flag, int index) {
+int func_02018c00(FSOverlayInfo *info, int flag, int index) {
     int *base = (flag == 0) ? data_020a8064 : data_020a806c;
     int ptr = base[0];
     if (ptr != 0) {
         int off = index << 5;
         if ((unsigned int)off >= (unsigned int)base[1])
             return 0;
-        CpuCopy8((void *)(ptr + off), thiz, 0x20);
-        thiz[8] = flag;
+        CpuCopy8((void *)(ptr + off), info->header, 0x20);
+        info->target = flag;
         return 1;
     }
     {
         int *m = (int *)0x27ffe50;
         int *n = (int *)0x27ffe58;
-        return func_02018cbc((char *)thiz, flag, index, (int)&data_020a8074, m[0], m[1], n[0],
-                             n[1]);
+        return func_02018cbc(info, flag, index, (int)&data_020a8074, m[0], m[1], n[0], n[1]);
     }
 }

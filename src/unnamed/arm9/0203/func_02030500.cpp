@@ -6,7 +6,7 @@
 
 extern "C" {
 
-extern void func_02019028(void);
+extern void Disable3dEngines(void);
 extern s32 GetLanguageIndexVS(void);
 extern void *func_02054ea8(void);
 extern void DecompressLZ16(const void *src, void *dst);
@@ -37,7 +37,7 @@ void func_02030500(void) {
     REG_DISPCNT &= ~0x1f00;
     REG_DISPCNT_SUB &= ~0x1f00;
 
-    func_02019028();
+    Disable3dEngines();
     GX::DisableAllBanks();
     GX::SetBankForBG(1);
     GX::SetBankForOBJ(2);

@@ -14,7 +14,7 @@ typedef struct {
     u16 flags;         /* 0x0c -- 0x8000 set every frame here */
     u16 keys;          /* 0x0e -- pressed buttons (PAD_Read inlined) */
     s16 inputYaw;      /* 0x10 -- the camera's input yaw (GetAngleToCamera reads it ldrsh) */
-    u8 unk12[0x10];
+    u8 settings[0x10]; /* 0x12 -- the link settings bytes (GetPlayerFlagByte, func_0203db3c) */
     u8 unk22;
     u8 unk23;
 } Rec;

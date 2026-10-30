@@ -7311,3 +7311,5 @@ arm9	0x020396d0	func_020396d0	_ZN7dBgW_Kc17SetDepthDirMinDotEi	inferred from Kc 
 arm9	0x020396c0	func_020396c0	_ZN7dBgW_Kc21SetEdgeToleranceShiftEi	inferred from Kc sphere scan: sets face-direction minimum dot or clamped edge-tolerance shift; actor and moving-collider setup call sites agree
 arm9	0x0202e118	func_0202e118	GetStageDebugName	crash screen prints it as "StageNo %2d:%s": STAGE_DEBUG_NAMES[current level id] for ids < 0x34, else "*NOT STAGE*"; stage twin of GetActorDebugName
 arm9	0x02092584	data_02092584	STAGE_DEBUG_NAMES	0x34 char* stage debug names ("Test Map", "Main Castle Map", ... "Vs Main") read by GetStageDebugName; twin of ACTOR_DEBUG_NAMES; storage unchanged
+arm9	0x0202ffec	func_0202ffec	Quaternion_Multiply	Hamilton product out = q1*q2 of Fix12 (x,y,z,w) quaternions; named after its siblings Quaternion_FromVector3/SLerp/Normalize
+arm9	0x02019028	func_02019028	Disable3dEngines	the exact inverse of Enable3dEngines: it calls func_020190b8 first, clears POWCNT1 bits 3 and 2 (the |= 8 / |= 4 pair Enable3dEngines sets), and clears the same data_0208ee00 flag that Enable3dEngines sets

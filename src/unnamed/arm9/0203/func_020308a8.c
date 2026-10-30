@@ -1,8 +1,7 @@
-/* func_020308a8 @ 0x20308a8 (arm9) -- tail-call veneer to func_0203d81c (0x203d81c).
- * ldr ip, [pc]; bx ip; .word 0x203d81c
- */
-extern void func_0203d81c(void);
+/* Poll the link handshake func_020308b4 armed (func_0203d81c): 1 once
+   func_0203ea5c has seen flag 0x1000 in every present player's record. */
+extern int func_0203d81c(void);
 
-void func_020308a8(void) {
-    func_0203d81c();
+int func_020308a8(void) {
+    return func_0203d81c();
 }
