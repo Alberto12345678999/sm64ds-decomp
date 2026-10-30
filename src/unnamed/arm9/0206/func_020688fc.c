@@ -5,6 +5,11 @@ extern int data_0209a088;
 extern void func_020690b0(void);
 extern int func_02068a28(int a, int b, int c, int d, int e);
 
+/* Queue one MP send. Fails (1) until MP has started or while a reset is
+   under way. A parent (mode 1) pads the size up to data_0209a088 (6) and
+   sends through stateCallback; a child (mode 2) sends through func_020690b0.
+   On WM's OPERATING (2) it sets mpSending and returns 0; any other code is
+   returned as it is. The fourth argument to func_02068a28 is ignored. */
 int func_020688fc(int arg0, int arg1, int arg2) {
     WmWork *hdr = WM_WORK;
     int a = (u16)arg1;

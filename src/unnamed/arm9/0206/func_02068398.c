@@ -5,6 +5,11 @@
  * +0x4b4 when there is one, otherwise the default at +0, then latches its
  * +0x4ac byte and moves the controller to state 2. Returns 0 with no default.
  *
+ * It sits where mb_gameinfo.c has MBi_ReadyBeaconSendStatus and does its
+ * job, but it keeps its address name: the reference body also sets an
+ * empty beacon (WM_SetGameInfo) when the list is empty, and this one only
+ * returns 0, so the bodies do not match statement for statement.
+ *
  * Matched 2004/b56. The fallback is written as the `||` arm of an if/else:
  * both failed tests then reach `res = sel`, a two-predecessor block that
  * mwccarm will not predicate, and once `res` and `sel` share r1 that copy
@@ -20,7 +25,7 @@ struct G9d2c {
 };
 extern struct G9d2c data_020a9d2c;
 
-extern void func_02068484(void);
+extern void MBi_ClearSendStatus(void);
 
 int func_02068398(void)
 {
@@ -38,7 +43,7 @@ int func_02068398(void)
         res = p;
     data_020a9d2c.current = res;
 
-    func_02068484();
+    MBi_ClearSendStatus();
     data_020a9d2c.mode = data_020a9d2c.current[0x4ac];
     data_020a9d2c.state = 2;
     return 1;

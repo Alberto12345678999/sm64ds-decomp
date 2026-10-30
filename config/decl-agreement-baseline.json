@@ -682,7 +682,7 @@
         "param:#1 int *",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
       ],
@@ -715,7 +715,7 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
       ]
@@ -1551,7 +1551,7 @@
       "src/WM_StepDataSharing.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02068680.c": [
+      "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0206/func_020690b0.c": [
@@ -10644,7 +10644,7 @@
       ]
     },
     "data_020a9d2c": {
-      "src/unnamed/arm9/0206/func_0206834c.c": [
+      "src/MBi_InitSendFixedBeacon.c": [
         "return:unsigned char"
       ],
       "src/unnamed/arm9/0206/func_02068398.c": [
@@ -10657,7 +10657,7 @@
       ]
     },
     "data_020a9db4": {
-      "src/unnamed/arm9/0206/func_020687f8.c": [
+      "src/MBi_IsStarted.c": [
         "return:unsigned char"
       ],
       "src/unnamed/arm9/0206/func_0206881c.c": [
@@ -15271,16 +15271,11 @@
       ]
     },
     "func_01ff8000": {
-      "src/unnamed/arm9/0207/func_020708b4.c": [
+      "src/ldexp.c": [
         "kind:function"
       ],
       "src/CARDi_TryReadCardDma.cpp": [
         "kind:data"
-      ]
-    },
-    "func_01ff859c": {
-      "src/unnamed/arm9/0207/func_02070c68.c": [
-        "return:unsigned long long"
       ]
     },
     "func_01ff9378": {
@@ -19289,7 +19284,7 @@
       ]
     },
     "func_0205d518": {
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#2 int"
       ]
     },
@@ -19643,7 +19638,7 @@
         "param:#5 int",
         "param:#6 int"
       ],
-      "src/unnamed/arm9/0206/func_020681b8.c": [
+      "src/MBi_SendFixedBeacon.c": [
         "param:#5 int",
         "param:#6 int"
       ]
@@ -19895,21 +19890,21 @@
       ]
     },
     "func_02068398": {
-      "src/unnamed/arm9/0206/func_02068410.c": [
+      "src/MB_SendGameInfoBeacon.c": [
         "return:int"
       ]
     },
-    "func_02068514": {
-      "src/unnamed/arm9/0206/func_02068680.c": [
+    "mystrlen": {
+      "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ]
     },
-    "func_020685cc": {
-      "src/unnamed/arm9/0206/func_02068680.c": [
+    "MBi_ReadIconInfo": {
+      "src/MBi_MakeGameInfo.c": [
         "param:#2 void *"
       ]
     },
-    "func_02068680": {
+    "MBi_MakeGameInfo": {
       "src/unnamed/arm9/0206/func_02067928.cpp": [
         "param:#3 void *"
       ]
@@ -20128,7 +20123,7 @@
         "return:void"
       ]
     },
-    "func_0206e4a4": {
+    "__pformatter": {
       "src/unnamed/arm9/0206/func_0206e3dc.c": [
         "param:#1 void (*)(void)",
         "param:#3 unsigned int",
@@ -20136,22 +20131,17 @@
         "return:unsigned int"
       ]
     },
-    "func_0206ece0": {
+    "float2str": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"
       ]
     },
-    "func_0206f338": {
-      "src/unnamed/arm9/0206/func_0206ece0.c": [
-        "param:#1 decimal *"
-      ]
-    },
-    "func_0206f46c": {
+    "double2hex": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"
       ]
     },
-    "func_0206fd6c": {
+    "parse_format": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 const unsigned char *"
       ]
@@ -20167,22 +20157,12 @@
         "return:void"
       ]
     },
-    "func_02071708": {
-      "src/unnamed/arm9/0207/func_02070c68.c": [
-        "arity:1"
-      ]
-    },
     "func_02071790": {
       "src/unnamed/arm9/0207/func_02071be8.c": [
         "arity:3"
       ],
       "src/unnamed/arm9/0207/func_02071f1c.c": [
         "arity:3"
-      ]
-    },
-    "func_0207180c": {
-      "src/unnamed/arm9/0207/func_02072dac.c": [
-        "return:unsigned char *"
       ]
     },
     "func_02071844": {
@@ -20210,7 +20190,7 @@
       ]
     },
     "func_02071988": {
-      "src/unnamed/arm9/0207/func_020719ec.c": [
+      "src/__read_console.c": [
         "return:unsigned char"
       ]
     },
@@ -20267,7 +20247,7 @@
         "param:#1 void *"
       ]
     },
-    "func_02072fcc": {
+    "__throw_catch_compare": {
       "src/unnamed/arm9/0207/func_02071d3c.c": [
         "param:#1 int",
         "param:#2 int",
@@ -20311,21 +20291,21 @@
         "return:int"
       ]
     },
-    "func_02073244": {
+    "__cxa_vec_delete": {
       "include/decl_common.h": [
         "param:#1 void *",
         "param:#4 void (*)(void *)"
       ]
     },
     "func_02073300": {
-      "src/unnamed/arm9/0207/func_02073244.c": [
+      "src/__cxa_vec_delete.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
         "param:#4 int"
       ]
     },
-    "func_02073470": {
+    "__cxa_vec_new": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int",
         "param:#2 int",

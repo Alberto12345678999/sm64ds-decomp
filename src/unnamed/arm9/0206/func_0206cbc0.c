@@ -21,6 +21,14 @@ void func_0206ca7c(void *c, int b);
 
 #pragma optimize_for_size on
 
+/* The output callback func_0206ccd8 gives func_0206a928: send count bytes
+   to the debug console. It does nothing unless the debugger flags
+   (func_0206cf7c) have 0x20000 and one sink: the cartridge ring
+   (func_0206cb0c, flag 1) or the main-memory ring (func_0206ca7c, flag 4).
+   It takes the cartridge lock (func_0206cec0) and sets the card bus
+   (func_0206ce20) for the writes, then restores both. Bytes go out while
+   the written count (+0xc) is below the limit (+4) minus one; the total
+   (+8) counts them all. */
 void func_0206cbc0(struct Csl *sl, u8 *sb, int count)
 {
     struct Shared *sh = (struct Shared *)0x027fff60;

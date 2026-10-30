@@ -29,6 +29,6 @@ void func_0203d388(int *p, int angle) {
 }
 
 /* Vector3's empty constructor. daDpLift_c passes it to __cxa_vec_ctor
-   and Player.cpp to func_02073470 (__cxa_vec_new's argument shape: count,
-   size, padding, ctor, dtor); see Vector2.h. */
+   and Player.cpp to __cxa_vec_new (argument shape: count, size, padding,
+   ctor, dtor); see Vector2.h. */
 void func_0203d384(void) {}

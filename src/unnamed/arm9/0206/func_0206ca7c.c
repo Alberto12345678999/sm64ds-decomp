@@ -14,6 +14,11 @@ struct Shared
 
 #pragma optimize_for_size on
 
+/* Debug console byte sink, main-memory form: store val at the head of a
+   0x4000-byte ring 0x8000 bytes into the buffer that the debugger block at
+   0x027fff60 points to (+0x1c), then advance the head. The byte is dropped
+   when the ring is full (next head == tail). The store is a u16
+   read-modify-write. func_0206cbc0 picks it when flag 4 is set. */
 void func_0206ca7c(struct Ring *r, int val)
 {
     struct Shared *sh = (struct Shared *)0x027fff60;

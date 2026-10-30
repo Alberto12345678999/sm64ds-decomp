@@ -3,7 +3,7 @@
 #pragma exceptions on
 
 // Both of the family's construct helpers call this one from their landing pads:
-// func_02073470 at its +0x9c and __cxa_vec_ctor at 0x020733a8 + 0x7c.
+// __cxa_vec_new at its +0x9c and __cxa_vec_ctor at 0x020733a8 + 0x7c.
 //
 // MSL C++ runtime partial array destroy, the third of the family that starts
 // at __cxa_vec_cleanup. Walks `current` back down to `base` in `size` steps,
@@ -14,7 +14,7 @@
 // entry at 0x020739b8 declares the length as 0x68, so the whole range plus
 // both unwind entries come from this one function.
 //
-// This is the cleanup func_02073470 calls when an element constructor throws
+// This is the cleanup __cxa_vec_new calls when an element constructor throws
 // partway through building an array.
 
 extern "C" void func_020731fc(void);

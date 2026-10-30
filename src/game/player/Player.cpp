@@ -22695,7 +22695,7 @@ int Player::ChangeState(Player::State &state) {
 // @symbol _ZN6Player16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-/* _020bdef0, _020bdd9c, _020e032c and func_02073244 come from decl_common.h
+/* _020bdef0, _020bdd9c, _020e032c and __cxa_vec_delete come from decl_common.h
    above; redeclaring one here with `char *` where that header says `void *`
    is not a redeclaration but an attempt to overload a C-linkage name, which
    mwccarm rejects outright. func_ov002_020bdd2c is a Player member now and
@@ -22816,7 +22816,7 @@ int Player::CleanupResources()
     extern char data_ov002_0210ec98[];
     extern char data_ov002_0210eca8[];
     extern char data_ov002_0210ecb8[];
-    extern void func_02073244(void*, int, int, void (*)(void*));
+    extern void __cxa_vec_delete(void *, int, int, void (*)(void *));
     extern void func_ov002_020e032c(void*);
     int i;
     u32 b;
@@ -22871,7 +22871,7 @@ int Player::CleanupResources()
         int q = (int)mTrailPos;
         if (q != 0)
             /* Array destruction discards the receiver result. */
-            func_02073244((void *)q, 0xc, 8, (void (*)(void *))_ZN7Vector3D1Ev);
+            __cxa_vec_delete((void *)q, 0xc, 8, (void (*)(void *))_ZN7Vector3D1Ev);
         q = (int)mTrailFlags;
         if (q != 0)
             func_0203cbc0((void *)q);
@@ -23958,7 +23958,7 @@ s32 Player::InitResources()
     void func_ov002_020e6330(void* p);
     void func_ov002_020e6350(void* p);
     void func_ov002_020e5948(void* p);
-    void* func_02073470(int a, int b, int c, void* d, void* e);
+    void *__cxa_vec_new(int a, int b, int c, void *d, void *e);
     void func_ov002_020e63a4(void* p);
     void func_02035644(void* p, int a);
     void func_ov002_020d6368(void* p);
@@ -24038,7 +24038,7 @@ Ld0:
     func_ov002_020e5948(c);
     if (changed != 0) ((Player *)(c))->func_ov002_020beabc();
     mTrailPos =
-        (Vector3 *)func_02073470(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
+        (Vector3 *)__cxa_vec_new(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
     mTrailFlags = (u8 *)Memory::operator_new2(0x32);
     *(void **)(&mHeldObjQueue) = Memory::operator_new2(0x14);
     __builtin__clear((void*)mHeldObjQueue, 0x14);

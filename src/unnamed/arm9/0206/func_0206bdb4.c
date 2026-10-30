@@ -18,6 +18,12 @@ inline char *pad(char *a, int b)
     return a + b;
 }
 
+/* Soft-double divide by 10 for the debug printf formatter func_0206a928, on
+   a double passed as raw bits. x/10 is computed as (x - x/5) / 8: the loop
+   does a bitwise long division of the 53-bit significand by 5 into acc, the
+   significand loses acc, and the exponent drops by 3. With mode 0 the
+   fraction bits are cleared too, so a result below 1 comes back as +0. The
+   formatter uses mode 0 to test whether x >= 10 and mode 1 to scale down. */
 u64 func_0206bdb4(u64 d, int mode)
 {
     int sign;
