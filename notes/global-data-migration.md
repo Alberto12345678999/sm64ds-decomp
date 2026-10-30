@@ -404,3 +404,50 @@ dsd version: `ds-decomp-cli 0.11.0` (`tools/bin/dsd.exe`).
 Compiler probes: `tools/mwccarm/2004/b56/mwccarm.exe` with `tools/rombuild.py:CFLAGS`.
 No `rombuild.py` link was run; §4.3 says which claims are therefore reasoned rather
 than observed.
+
+## Interior `bss` labels, and why you cannot sweep for them
+
+`bss` rows in `config/**/symbols.txt` carry no `size=`, so each row's extent runs
+to the next row. A row whose successor sits inside the object it names therefore
+**understates that object**, and the ROM build sizes the delinked block from the
+row, not from the source's type.
+
+Two of these were fixed in one week: `data_020a8138` (the PM command slots) was
+four bytes because `data_020a813c` labelled the `+4` field of its own entries,
+while `PM_Init` loops over four 8-byte slots; `data_0209f3c4` (the stage graph
+callback) was four bytes -- just the vptr -- because `data_0209f3c8` labelled its
+matrix member. In both cases the config contradicted an already-matched function.
+
+**A sweep does not find more of them, and it is worth knowing why.** Measured on
+arm9 (787 `bss` rows, 588 with extent <= 8):
+
+- Filtering on a hard contradiction -- a source declaration whose explicit array
+  bound exceeds the row's extent -- yields exactly **six** symbols across every
+  module. In all six, every interior row is **referenced**, so each is a
+  deliberate alternate view rather than a stray label. `data_020a1023` is the
+  clearest: `func_0203ea5c.c`'s own comment documents the packet at
+  `data_020a1020` as carrying either a chunk index plus a 0x16-byte chunk, or
+  nine separate fields, and the interior rows are those fields.
+- A second detector -- source reaching past a row's extent by an explicit byte
+  offset -- yields 32, dominated by things that are not offsets at all: a
+  `0xfe000000` bitmask, `0x3000`/`0x4b000` VRAM addresses, a legal one-past-the-end
+  (`+0x7e8` against extent `0x7e8`), and the ordinary "one block, several labelled
+  fields" state of unreconstructed `bss`.
+- The one candidate whose type was already recovered, `data_0209f324`, is a
+  **pointer**: `dScStage_c::CleanupResources` assigns `data_0209f324 = 0`, and the
+  seven `dFdWipe_c` of 0x60 live on the heap. Its four-byte extent is correct.
+
+The reason is structural. An interior label is only provably wrong once the outer
+object has a **recovered type whose size spans it** -- and recovering that type is
+what creates the evidence. Both fixes appeared at the moment `PmEntry` and
+`dScStage_c::graphCallback_c` were reconstructed, not before. So this is not a
+backlog to grind through; it is a check to run **as part of** typing a `bss`
+object:
+
+> after giving a `bss` symbol a real type, compare `sizeof` that type against the
+> distance to the next row in its module's `symbols.txt`, and if the type spans a
+> following row, that row is an interior label of the same object.
+
+The detectors above remain useful as a worklist in the other direction: the `bss`
+objects whose source reaches furthest past their first row are where recovering a
+type will next expose this.
