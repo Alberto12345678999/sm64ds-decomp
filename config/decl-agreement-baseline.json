@@ -9386,7 +9386,7 @@
       "src/minigames/d_s_mg_d3d_base.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0201/func_02019404.c": [
+      "src/unnamed/arm9/0201/func_02019404.cpp": [
         "return:void *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
@@ -9406,7 +9406,7 @@
       ]
     },
     "data_0209d4ac": {
-      "src/unnamed/arm9/0201/func_02018ec0.c": [
+      "src/unnamed/arm9/0201/func_02018ec0.cpp": [
         "return:void *"
       ],
       "src/unnamed/arm9/0201/func_02019440.cpp": [
@@ -9414,7 +9414,7 @@
       ]
     },
     "data_0209d4b0": {
-      "src/unnamed/arm9/0201/func_02018ec0.c": [
+      "src/unnamed/arm9/0201/func_02018ec0.cpp": [
         "return:void *"
       ],
       "src/KuppaScript.cpp": [
