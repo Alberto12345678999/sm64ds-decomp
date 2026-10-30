@@ -1,71 +1,41 @@
 //cpp
+/* The backup write request (NitroSDK card_backup.c; this older SDK has one
+ * entry point per request where pret's has CARDi_RequestStreamCommand):
+ * write len bytes from RAM src to backup address dst. Wait for the card to
+ * be free and claim it, record the transfer, then run the write task
+ * func_0206062c, on the card thread if is_async. Synchronous calls return
+ * whether the request succeeded. */
 #include "types.h"
 #include "IRQ.h"
 #include "nitro/card/card_common.h"
 
 extern "C" {
 
-extern char data_020a8180[];
-int func_0206062c(void* g);
+void func_0206062c(CARDiCommon *p);
 
-/* The request block a chunk is handed over in (NitroSDK CARDiCommandArg);
- * names as func_0206062c.cpp spells them. */
-typedef struct ChunkRequest {
-    int mResult; /* 0x00 -- 0 (CARD_RESULT_SUCCESS) when the request went through */
-} ChunkRequest;
+int func_02060484(u32 dst, const void *src, u32 len, MIDmaCallback callback, void *arg,
+                  int is_async) {
+    CARDiCommon *const p = &cardi_common;
 
-/* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
- * fields this function touches. mSrc / mDst / mRemaining and mRequest follow
- * func_0206062c.cpp, the write task started here. */
-typedef struct CardCommon {
-    ChunkRequest *mRequest; /* 0x00 */
-    unsigned char pad_04[0x14];
-    int mSrc;                /* 0x18 -- RAM source of the write */
-    int mDst;                /* 0x1c -- backup address */
-    unsigned int mRemaining; /* 0x20 -- bytes left */
-    unsigned char pad_24[4];
-    /* 0x28 / 0x2c -- the completion callback and its argument (func_0206081c
-     * calls it when a request ends; func_02060890 = CARD_Init zeroes both) */
-    int mCallback;
-    int mCallbackArg;
-    unsigned char pad_30[4];
-    /* 0x34 -- CARD_STAT_* bits: 4 (busy) is held for one request at a time
-     * (func_020603c8, func_02060558 take it the same way) */
-    u32 mFlags;
-    unsigned char pad_38[0x98];
-    /* 0xd0 -- the thread the request runs on: the caller's for a synchronous
-     * request, the card task thread (CARDi_SetTask) otherwise */
-    OSThread *mCurThread;
-    /* 0xd4 -- callers wait here while another request holds the busy bit */
-    u16 mBusyQueue;
-} CardCommon;
-
-/* Write len bytes from RAM src to backup address dst: wait for the
- * card to be free, take it, store the request, and run the write task
- * (func_0206062c) here or, when is_async, on the card thread. Synchronous
- * calls return whether the request succeeded. */
-int func_02060484(int dst, int src, int len, int callback, int arg, int is_async) {
-    CardCommon *g = (CardCommon *)data_020a8180;
-    unsigned int irq = IRQ::Disable();
-    if (g->mFlags & 4) {
-        do {
-            OS_SleepThread(&g->mBusyQueue);
-        } while (g->mFlags & 4);
+    {
+        u32 mask = IRQ::Disable();
+        while (p->flag & CARD_STAT_BUSY)
+            OS_SleepThread(&p->busy_q);
+        p->flag |= CARD_STAT_BUSY;
+        IRQ::Restore(mask);
     }
-    g->mFlags |= 4;
-    IRQ::Restore(irq);
-    g->mSrc = src;
-    g->mDst = dst;
-    g->mRemaining = len;
-    g->mCallback = callback;
-    g->mCallbackArg = arg;
-    if (is_async != 0) {
-        CARDi_SetTask((CARDiTask)func_0206062c);
+
+    p->src = (u32)src;
+    p->dst = dst;
+    p->len = len;
+    p->callback = callback;
+    p->callback_arg = arg;
+    if (is_async) {
+        CARDi_SetTask(func_0206062c);
         return 1;
     }
-    /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */
-    ((CardCommon *)data_020a8180)->mCurThread = data_020a6134.current;
-    func_0206062c(g);
-    return g->mRequest->mResult == 0;
+    cardi_common.cur_th = data_020a6134.current;
+    func_0206062c(p);
+    return p->cmd->result == CARD_RESULT_SUCCESS;
 }
 }

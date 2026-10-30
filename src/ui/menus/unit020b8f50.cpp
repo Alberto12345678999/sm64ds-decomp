@@ -121,7 +121,7 @@ extern u16 data_ov007_020d7b54[];
 extern int data_ov007_020d7b60;
 extern char data_ov007_020d7b80[];
 
-extern void func_020524e4(int *p, int a, int b);
+extern void MTX_Rot22_(int *p, int a, int b);
 extern void func_ov007_020bbe60(int idx);
 extern void func_ov007_020bda38(int v);
 extern void func_ov007_020bda8c(int a, int b);
@@ -452,7 +452,7 @@ void func_ov007_020bb4b0(void) {
                 uu = uu << 4;
                 uu = uu >> 0x10;
                 idx = (int)uu >> 4;
-                func_020524e4(mat, data_02082214[idx * 2], data_02082214[idx * 2 + 1]);
+                MTX_Rot22_(mat, data_02082214[idx * 2], data_02082214[idx * 2 + 1]);
                 func_ov007_020c5490((char *)s, mat);
             } else {
                 int n = cstd::div(((Ov007Picker *)s)->groupCount, 4) + 1;

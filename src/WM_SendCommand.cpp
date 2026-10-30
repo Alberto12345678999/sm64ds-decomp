@@ -4,10 +4,10 @@
 
 extern "C" {
 
-extern void func_020587e4(void *a, void **out, int c);
+extern void OS_ReceiveMessage(void *a, void **out, int c);
 extern void DMASyncWordTransfer(int channel, u32 src, u32 dest, u32 len);
-extern int IPCSend(u32 a, u32 c, u32 b);
-extern void func_02058894(void *a, void *b, int c);
+extern int PXI_SendWordByFifo(u32 a, u32 c, u32 b);
+extern void OS_SendMessage(void *a, void *b, int c);
 
 extern void *data_020a89b0;
 
@@ -27,7 +27,7 @@ int WM_SendCommand(short a0, unsigned short count, ...)
     int i;
     int r;
 
-    func_020587e4(&data_020a89b0, (void **)&buf, 1);
+    OS_ReceiveMessage(&data_020a89b0, (void **)&buf, 1);
 
     if (count == 0) {
         CP15::FlushDataCache(data_020a89ac->field_c, 0x100);
@@ -43,8 +43,8 @@ int WM_SendCommand(short a0, unsigned short count, ...)
     }
 
     CP15::FlushDataCache((u32)buf, 0x100);
-    r = IPCSend(0xa, (u32)buf, 0);
-    func_02058894(&data_020a89b0, buf, 1);
+    r = PXI_SendWordByFifo(0xa, (u32)buf, 0);
+    OS_SendMessage(&data_020a89b0, buf, 1);
     if (r < 0) return 8;
     return 2;
 }

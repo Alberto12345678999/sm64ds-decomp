@@ -27,7 +27,7 @@
       "ordinal": 0
     },
     {
-      "symbol": "func_02059650",
+      "symbol": "OS_GetTick",
       "address": "0x02059650",
       "size": "0x000000b0",
       "legacy_source": "src/unnamed/arm9/0205/func_02059650.cpp",
@@ -54,7 +54,7 @@
   "compiler_only_output": [],
   "notes": [
     "Hand-assembled, following arm9/OS_Thread and arm9/OS_Arena: tu_map cannot segment arm9/main.",
-    "OS_GetTickLo, OSi_CountUpTick and OS_InitTick were renamed from their func_ names in this change (symbols/actor_renames.tsv). OS_GetTick keeps its address name, func_02059650, until #4500 lands: that PR edits two of its callers.",
+    "OS_GetTickLo, OSi_CountUpTick and OS_InitTick were renamed from their func_ names in this change (symbols/actor_renames.tsv). OS_GetTick (func_02059650) was renamed later, once #4500 had landed.",
     "Text-only: OSi_UseTick (data_020a6430), OSi_NeedResetTimer (data_020a6434) and OSi_TickCounter (data_020a6438) stay externs. The file claims no data."
   ],
   "verification": {

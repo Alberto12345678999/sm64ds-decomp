@@ -1,0 +1,110 @@
+{
+  "id": "arm9/OS_Mutex",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Mutex.cpp",
+  "promoted_source": "src/engine/os/OS_Mutex.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_mutex.c, 0x02058960..0x02058bb0: 8 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_mutex.c defines, in this order, OS_InitMutex, OS_LockMutex, OS_UnlockMutex, OSi_UnlockAllMutex, OS_TryLockMutex, OSi_EnqueueTail and OSi_DequeueItem. All seven are here, each identified by body.",
+    "Order: mwccarm emits deferred bodies in reverse. The ROM run is pret's source order reversed, OSi_DequeueItem at 0x02058988 and OS_InitMutex highest. Below OSi_DequeueItem, func_02058960 unlinks the first mutex a thread holds (pret's OSi_RemoveMutexLinkFromQueue does this from OS_thread.c, taking the queue); here it takes the thread and is the file's last function.",
+    "BOTTOM EDGE: OS_InitMessageQueue (0x02058940) closes os_message.c (arm9/OS_Message).",
+    "TOP EDGE: CP15::FlushDataCache (0x02058bb0) opens the cache primitives (arm9/CP15)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02058960",
+      "end": "0x02058bb0"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "func_02058960",
+      "address": "0x02058960",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058960.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OSi_DequeueItem",
+      "address": "0x02058988",
+      "size": "0x00000024",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058988.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OSi_EnqueueTail",
+      "address": "0x020589ac",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_020589ac.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OS_TryLockMutex",
+      "address": "0x020589d4",
+      "size": "0x00000070",
+      "legacy_source": "src/unnamed/arm9/0205/func_020589d4.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "OSi_UnlockAllMutex",
+      "address": "0x02058a44",
+      "size": "0x00000050",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058a44.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "OS_UnlockMutex",
+      "address": "0x02058a94",
+      "size": "0x00000074",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058a94.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "OS_LockMutex",
+      "address": "0x02058b08",
+      "size": "0x00000094",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058b08.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "OS_InitMutex",
+      "address": "0x02058b9c",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058b9c.c",
+      "ordinal": 7
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Tick and arm9/OS_Alarm: tu_map cannot segment arm9/main.",
+    "The SDK names were given in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only. OSMutex is this SDK's layout (a u16 thread queue) and stays local to the file: the callers (cstd4.cpp, cstd6.cpp, PM_Init.c, OS_Thread.cpp) pass it as an opaque pointer."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Mutex/OS_Mutex.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 8,
+    "functions_declared": 8,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
