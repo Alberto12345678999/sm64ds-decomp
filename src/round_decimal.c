@@ -4,8 +4,8 @@
    even (a 5 followed only by zeros rounds toward an even last digit), and
    trim the trailing zeros the rounding leaves. A carry out of the top digit
    leaves "1" and bumps the exponent. A negative length, or rounding down to
-   no digits, leaves "0". The digits are ASCII here. float2str
-   (float2str) calls it. */
+   no digits, leaves "0". The digits are ASCII here. float2str calls
+   it. */
 void round_decimal(Decimal *dec, int new_length) {
     unsigned char *digits;
     unsigned char *q;
