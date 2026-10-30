@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "contiguous run 0x020be0dc..0x020bed60, 14 functions, all byte-matched from the one unit source. A sub-range of build/tu_map.json's unattributed ov007 unit 0x020b72a0..0x020cc028 (397 functions), which the map cannot cut: no ROM RTTI, vtable or static initializer falls in it.",
     "data window: the bss word 0x02104bc0 (the 0x108-byte particle-sprite record) is referenced by 0x020be0dc..0x020be964 and nothing else in the overlay; func_ov007_020be7a8 and func_ov007_020be850 touch it not but are reached only from inside the run (func_ov007_020be684 passes func_ov007_020be7a8 to func_0204dab4 as its callback; func_ov007_020be0dc is func_ov007_020be850's one caller).",
-    ".rodata interleave: data_ov007_020d7c5c (read by the figure functions func_ov007_020bea44 and func_ov007_020beaa0) lies between data_ov007_020d7c58 (func_ov007_020be0dc, func_ov007_020be7a8) and data_ov007_020d7c6c (func_ov007_020be50c); one unit's .rodata is contiguous, so 0x020be964..0x020bed60 belong to the same unit. func_ov007_020beaa0 alone uses the bss words 0x02104bc4/0x02104bc8 right after 0x02104bc0; func_ov007_020beb80 references no ov007 data and its one caller is func_ov007_020be9ac.",
+    ".rodata interleave: data_ov007_020d7c5c (read by the figure functions func_ov007_020bea44 and func_ov007_020beaa0) lies between data_ov007_020d7c58 (func_ov007_020be0dc, func_ov007_020be7a8) and data_ov007_020d7c6c (func_ov007_020be50c); one unit's .rodata is contiguous, so 0x020be964..0x020bed60 belong to the same unit. func_ov007_020beaa0 alone uses the bss array 0x02104bc4..0x02104bd4 right after 0x02104bc0; func_ov007_020beb80 references no ov007 data and its one caller is func_ov007_020be9ac.",
     "module shape: init func_ov007_020be50c is a direct callee of the menu's init dispatcher func_ov007_020b7138 and teardown func_ov007_020be47c of the teardown dispatcher func_ov007_020b6f4c, as for the other menu modules.",
     "start edge: func_ov007_020be098 is the last user of the sound module's bss block 0x02104ba4..0x02104bc0. End edge: the next function, func_ov007_020bed60, starts unit020bed60 (bss 0x02104bd4)."
   ],
@@ -131,7 +131,7 @@
     }
   ],
   "notes": [
-    "Text only: the bss word 0x02104bc0, the .data words 0x02103230 / 0x02103234 and the tables 0x020d7c58 / 0x020d7c6c stay ROM-owned and are reached by extern, as the one-function sources did.",
+    "Text only: the bss word 0x02104bc0 and array 0x02104bc4..0x02104bd4, the .data words 0x02103230 / 0x02103234 and the tables 0x020d7c58 / 0x020d7c5c / 0x020d7c6c stay ROM-owned and are reached by extern, as the one-function sources did.",
     "Folded from 8 one-function sources. They spelled data_ov007_02104bc0 as char *, int * and char ** and each had a partial view of the OAM node, sprite group and model; the unit declares it Ov007ParticleSprites * (no file outside the unit names it) with one full set of views.",
     "func_ov007_020be3bc was matched by its one-function source only under a file-scope #pragma opt_strength_reduction off, which would be unit-wide here and breaks func_ov007_020be8b8 and func_ov007_020be684. The unit writes it as a plain loop over GXOamAttr entries (oam + i * 4), which matches with strength reduction on and needs no pragma.",
     "func_ov007_020be850 returns Ov007Figure * and func_ov007_020be7a8 takes the particle position as void *, its func_0204dab4 callback shape; neither has a caller outside the unit.",
