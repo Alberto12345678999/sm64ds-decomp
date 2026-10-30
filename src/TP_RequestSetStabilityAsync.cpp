@@ -5,16 +5,15 @@
  * (3, 4, 0) to the user callback. */
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/spi/tp.h"
 extern "C" {
 int PXI_SendWordByFifo(int a, int b, int c);
 }
-struct S {
-    void (*fn)(int, int, int);
-    char pad[0x30];
-    volatile u16 f34;
-    volatile u16 f36;
-};
-extern S data_020a80cc;
+/* C linkage: data_020a80cc is a ROM data symbol named by its exact final name,
+   so a C++ translation unit must not mangle it. mwccarm leaves a data extern
+   unmangled either way, but the PC port links this file with MSVC, which does
+   not -- that is the failure #4493 hit on the split IRQ files. */
+extern "C" TPWork data_020a80cc;
 extern "C" void TP_RequestSetStabilityAsync(int a, int b) {
     unsigned int irq = IRQ::Disable();
     int ok;
@@ -26,12 +25,12 @@ extern "C" void TP_RequestSetStabilityAsync(int a, int b) {
         ok = 1;
     if (ok == 0) {
         IRQ::Restore(irq);
-        data_020a80cc.f34 |= 8;
-        if (data_020a80cc.fn != 0)
-            data_020a80cc.fn(3, 4, 0);
+        data_020a80cc.mErrFlags |= 8;
+        if (data_020a80cc.mCallback != 0)
+            data_020a80cc.mCallback(3, 4, 0);
         return;
     }
-    data_020a80cc.f36 |= 8;
-    data_020a80cc.f34 &= ~8;
+    data_020a80cc.mCommandFlags |= 8;
+    data_020a80cc.mErrFlags &= ~8;
     IRQ::Restore(irq);
 }
