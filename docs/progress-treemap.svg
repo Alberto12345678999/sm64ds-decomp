@@ -12341,11 +12341,11 @@ matched: yes</title></rect><rect x="331.42" y="468.19" width="3.93" height="5.23
 module: itcm
 addr: 0x01ffafd4
 size: 52 bytes
-matched: yes</title></rect><rect x="335.35" y="468.19" width="3.02" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffb008
+matched: yes</title></rect><rect x="335.35" y="468.19" width="3.02" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__ieee_status
 module: itcm
 addr: 0x01ffb008
 size: 40 bytes
-matched: yes</title></rect><rect x="338.37" y="468.19" width="5.75" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffb030
+matched: yes</title></rect><rect x="338.37" y="468.19" width="5.75" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__fp_status
 module: itcm
 addr: 0x01ffb030
 size: 76 bytes
