@@ -10,7 +10,7 @@ extern int data_020a0f94;
 
 struct S { unsigned short f0; unsigned short f2; };
 
-/* The callback Wireless_Reset hands WM_Reset (func_02062200, command 1).
+/* The callback Wireless_Reset hands WM_Reset (command 1).
    On success clear the AID data_020a0f24 and go on by target mode
    data_020a0f5c: 0 powers off (func_0203fc74); 3 sets the parent up
    again (func_02040638, then func_0203fbc4); 4 connects to the parent

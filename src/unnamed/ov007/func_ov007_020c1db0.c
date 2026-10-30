@@ -1,8 +1,8 @@
 #include "types.h"
 #include "Ov007Touch.h"
 
-extern void func_0205f040(void);
-extern void func_0205efc0(void *c);
+extern void TP_RequestSamplingAsync(void);
+extern int TP_WaitCalibratedResult(void *result);
 
 /* Updates the touch record once a frame from a stylus reading (b, or a
  * fresh calibrated sample when b is null): patches invalid axes from the
@@ -13,8 +13,8 @@ void func_ov007_020c1db0(Ov007Touch *a, Ov007TouchSample *b) {
     a->cur = a->raw;
     if (b == 0) {
         u16 tmp[4];
-        func_0205f040();
-        func_0205efc0(tmp);
+        TP_RequestSamplingAsync();
+        TP_WaitCalibratedResult(tmp);
         a->raw.x = tmp[0];
         a->raw.y = tmp[1];
         a->raw.touch = tmp[2];

@@ -4,7 +4,7 @@
  * length and block index, load the initial hash H0..H4, clear Computed and
  * Corrupted and return 0 (shaSuccess). The context is RFC 3174's
  * SHA1Context, as func_0205e3d4.c spells it, with the 32-bit block index this
- * build stores; func_0205e0f4 (the HMAC) holds it in 0x68 bytes. */
+ * build stores; DGT_Hash2CalcHmac (the HMAC) holds it in 0x68 bytes. */
 typedef struct {
     u32 Intermediate_Hash[5]; /* 0x00 */
     u32 Length_Low;           /* 0x14 */
