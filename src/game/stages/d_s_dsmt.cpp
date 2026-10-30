@@ -44,22 +44,6 @@
 #include "GX.h"
 #include "math/CalcLib.h"
 
-/* One save file, the 0x44-byte unit SaveData::ReadFileData and
- * SaveData::EraseSaveFile move; include/SaveData.h only forward-declares
- * it. Layout as the save block's callers spell it. */
-struct FileSaveData {
-    u32 magic8000;
-    u32 flags1;
-    u32 flags2;
-    u32 minigameRabbits;
-    u32 cannonUnlocked;
-    u8 stars[30];
-    u8 coinRecords[15];
-    u8 currentCharacter;
-    u8 controllerMode;
-    u8 unk43;
-};
-
 extern "C" {
 extern FileSaveData *data_0209b33c;
 extern u8 data_0209b34b[];

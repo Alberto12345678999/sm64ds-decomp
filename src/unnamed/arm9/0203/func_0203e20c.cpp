@@ -34,7 +34,7 @@ extern u8 data_020a1780[];
 extern int func_02067194(void);
 extern void func_0203f9d4(int a0, int a1);
 extern void func_0203e978(void);
-extern int func_02059640(void);
+extern int OS_GetTickLo(void);
 extern void func_02068e4c(void *a, void *b, u16 c, u16 d, u16 e, int f);
 extern void func_02068dc8(int a, int b, int c);
 extern void func_020672a4(u32 val);
@@ -88,7 +88,7 @@ void func_0203e20c(void)
     case 2: {
         void *p;
         int size;
-        data_020a0f20 = (u16)func_02059640();
+        data_020a0f20 = (u16)OS_GetTickLo();
         func_02068e4c(data_020a0f3c, data_020a10fc, H(data_020a1064, 6), H(data_020a1064, 8), data_020a0f20, 1);
         func_02068dc8(0x1fe, 8, 3);
         func_020672a4((u32)func_0203e9a8);

@@ -627,7 +627,8 @@
     "InitResources is now the real daDoor_c::InitResources method rather than a C free function taking the object explicitly; the redundant (u32) cast on the param1 shift is still what keeps the offset folded into both accesses.",
     "Fourteen helpers (func_ov100_02144468..func_ov100_02144cf8) are the enter/execute members of the door's nine states: pointer-to-member constants at ov100 0x021480d4..0x02148144, copied by the module's static initializer into the 16-byte tables data_ov100_021488a4..data_ov100_02148924. func_ov100_021453d8 stores a state at +0x140 and calls its enter half; Behavior calls the execute half.",
     "Folded __sinit_ov100_02147698: the eleven model-flavor and one animation SharedFilePtr-flavored resource handles, their twelve compiler-generated registration nodes and the nine {enter, execute} state records now emit from this TU. The six function-local Vector3 statics are declared in the functions that construct them; their guards extend this TU's .bss claim down to 0x0214870c.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way.",
+    "Collision property member calls replace local helper declarations. Reconciled 18 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (96 sections, 326 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -2153,94 +2154,154 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@580",
+      "from": "@579",
       "to": "@570",
       "evidence": "resource-handle registration node. The sinit's relocations map the previous @579 onto @575 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @570"
     },
     {
-      "from": "@581",
+      "from": "@580",
       "to": "@571",
       "evidence": "mwcc numbers this resource-handle registration node @561 per TU; daObjHeart_c's emitted object already carries @561 globally, so the scratch link would multiply-define it"
     },
     {
-      "from": "@586",
+      "from": "@585",
       "to": "@566",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @580 now; licensed under the existing pin @566"
     },
     {
-      "from": "@589",
+      "from": "@588",
       "to": "@569",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @583 now; licensed under the existing pin @569"
     },
     {
-      "from": "@578",
+      "from": "@577",
       "to": "@558",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @572 now; licensed under the existing pin @558"
     },
     {
-      "from": "@588",
+      "from": "@587",
       "to": "@568",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @582 now; licensed under the existing pin @568"
     },
     {
-      "from": "@579",
+      "from": "@578",
       "to": "@559",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @573 now; licensed under the existing pin @559"
     },
     {
-      "from": "@587",
+      "from": "@586",
       "to": "@567",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @581 now; licensed under the existing pin @567"
     },
     {
-      "from": "@582",
+      "from": "@581",
       "to": "@562",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @576 now; licensed under the existing pin @562"
     },
     {
-      "from": "@583",
+      "from": "@582",
       "to": "@563",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @577 now; licensed under the existing pin @563"
     },
     {
-      "from": "@584",
+      "from": "@583",
       "to": "@564",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @578 now; licensed under the existing pin @564"
     },
     {
-      "from": "@585",
+      "from": "@584",
       "to": "@565",
       "evidence": "resource-handle registration node. The sinit's relocations map the previous @584 onto @580 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @565"
     },
     {
-      "from": "@781",
+      "from": "@780",
       "to": "@764",
       "evidence": "sFrontOff's registration node. ov091 already defines @776, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @764"
     },
     {
-      "from": "@785",
+      "from": "@784",
       "to": "@821",
       "evidence": "sBackOff's registration node. ov095 defines the compiled @780 and ov006 unit020cd744 defines @817, so this maps it to the unused same-length @821"
     },
     {
-      "from": "@789",
+      "from": "@788",
       "to": "@819",
       "evidence": "sKeyOff's registration node. ov091 already defines @784, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @819"
     },
     {
-      "from": "@1011",
+      "from": "@1010",
       "to": "@1082",
       "evidence": "sEnterPos's registration node. ov065 already defines @1006, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1082"
     },
     {
-      "from": "@1015",
+      "from": "@1014",
       "to": "@1084",
       "evidence": "sEnterNeg's registration node. ov080 already defines @1010, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1084"
     },
     {
-      "from": "@1183",
+      "from": "@1182",
       "to": "@1088",
       "evidence": "sDoorOff's registration node. ov089 already defines @1178, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1088"
+    },
+    {
+      "from": "_ZGVsFrontOff$777",
+      "to": "_ZGVsFrontOff$778",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sFrontOff$777",
+      "to": "sFrontOff$778",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsBackOff$781",
+      "to": "_ZGVsBackOff$782",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sBackOff$781",
+      "to": "sBackOff$782",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsKeyOff$785",
+      "to": "_ZGVsKeyOff$786",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sKeyOff$785",
+      "to": "sKeyOff$786",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsEnterPos$1007",
+      "to": "_ZGVsEnterPos$1008",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sEnterPos$1007",
+      "to": "sEnterPos$1008",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsEnterNeg$1011",
+      "to": "_ZGVsEnterNeg$1012",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sEnterNeg$1011",
+      "to": "sEnterNeg$1012",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsDoorOff$1179",
+      "to": "_ZGVsDoorOff$1180",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sDoorOff$1179",
+      "to": "sDoorOff$1180",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     }
   ],
   "externalized_output": [],

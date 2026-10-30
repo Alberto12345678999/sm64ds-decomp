@@ -2355,18 +2355,78 @@
     }
   ],
   "symbol_binding_rewrites": [
-    {"symbol": "_ZGVsLookTarget$3570", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b0c"},
-    {"symbol": "@3573", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sLookTarget; DSD requires a configured global symbol at 0x02110db8"},
-    {"symbol": "sLookTarget$3570", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110c20"},
-    {"symbol": "_ZGVsViewStart$3746", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b04"},
-    {"symbol": "@3749", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sViewStart; DSD requires a configured global symbol at 0x02110de8"},
-    {"symbol": "sViewStart$3746", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110df4"},
-    {"symbol": "_ZGVsViewEnd$3750", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110afc"},
-    {"symbol": "@3753", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sViewEnd; DSD requires a configured global symbol at 0x02110e00"},
-    {"symbol": "sViewEnd$3750", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110e0c"},
-    {"symbol": "_ZGVsViewIdle$3754", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b08"},
-    {"symbol": "@3757", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sViewIdle; DSD requires a configured global symbol at 0x02110dac"},
-    {"symbol": "sViewIdle$3754", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110e18"}
+    {
+      "symbol": "_ZGVsLookTarget$3570",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b0c"
+    },
+    {
+      "symbol": "@3573",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node for sLookTarget; DSD requires a configured global symbol at 0x02110db8"
+    },
+    {
+      "symbol": "sLookTarget$3570",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110c20"
+    },
+    {
+      "symbol": "_ZGVsViewStart$3746",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b04"
+    },
+    {
+      "symbol": "@3749",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node for sViewStart; DSD requires a configured global symbol at 0x02110de8"
+    },
+    {
+      "symbol": "sViewStart$3746",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110df4"
+    },
+    {
+      "symbol": "_ZGVsViewEnd$3750",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110afc"
+    },
+    {
+      "symbol": "@3753",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node for sViewEnd; DSD requires a configured global symbol at 0x02110e00"
+    },
+    {
+      "symbol": "sViewEnd$3750",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110e0c"
+    },
+    {
+      "symbol": "_ZGVsViewIdle$3754",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b08"
+    },
+    {
+      "symbol": "@3757",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node for sViewIdle; DSD requires a configured global symbol at 0x02110dac"
+    },
+    {
+      "symbol": "sViewIdle$3754",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110e18"
+    }
   ],
   "production_mode": "intact-object",
   "relocations": [
@@ -2399,6 +2459,68 @@
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x0208e390"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "_ZGVsLookTarget$3569",
+      "to": "_ZGVsLookTarget$3570",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "@3572",
+      "to": "@3573",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sLookTarget$3569",
+      "to": "sLookTarget$3570",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsViewStart$3745",
+      "to": "_ZGVsViewStart$3746",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "@3748",
+      "to": "@3749",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sViewStart$3745",
+      "to": "sViewStart$3746",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsViewEnd$3749",
+      "to": "_ZGVsViewEnd$3750",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "@3752",
+      "to": "@3753",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sViewEnd$3749",
+      "to": "sViewEnd$3750",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "_ZGVsViewIdle$3753",
+      "to": "_ZGVsViewIdle$3754",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "@3756",
+      "to": "@3757",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
+    },
+    {
+      "from": "sViewIdle$3753",
+      "to": "sViewIdle$3754",
+      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     }
   ]
 }

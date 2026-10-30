@@ -388,7 +388,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 'Vector3') differs between the legacy file that used to hold func_ov002_020b1008 and the one that held func_ov002_020b16c4; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 'Vector3') differs between the legacy file that used to hold func_ov002_020b1008 and the one that held func_ov002_020b1ad4; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('enum', '<anonymous enum in this file>') differs between the legacy file that used to hold func_ov002_020b14d8 and the one that held func_ov002_020b1cc0; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
-    "classInit tail fold (0930c): folded the three per-profile registry factories daCoin_c_classInit_BLUE_COIN (0x020b2a98), _RED_COIN (0x020b2af0) and _COIN (0x020b2b48), each 0x58 bytes, into this promoted TU and widened the complete delinks.txt claim to 0x020b0f54..0x020b2ba0. Each loose source hand-called fBase_c::operator new(948), dActor_c's base constructor, stored _ZTV8daCoin_c, then constructed the two dExtCommonModel_c members, the dExtShadowModel_c, the dCcAc_c and the dBgCh_Actr. daCoin_c declares no constructor, so the implicit one emits exactly that sequence and each factory is `return new daCoin_c();`. Under `#pragma defer_codegen off` the factories are written at the end of the file in ROM order."
+    "classInit tail fold (0930c): folded the three per-profile registry factories daCoin_c_classInit_BLUE_COIN (0x020b2a98), _RED_COIN (0x020b2af0) and _COIN (0x020b2b48), each 0x58 bytes, into this promoted TU and widened the complete delinks.txt claim to 0x020b0f54..0x020b2ba0. Each loose source hand-called fBase_c::operator new(948), dActor_c's base constructor, stored _ZTV8daCoin_c, then constructed the two dExtCommonModel_c members, the dExtShadowModel_c, the dCcAc_c and the dBgCh_Actr. daCoin_c declares no constructor, so the implicit one emits exactly that sequence and each factory is `return new daCoin_c();`. Under `#pragma defer_codegen off` the factories are written at the end of the file in ROM order.",
+    "Collision property member calls replace local helper declarations. Reconciled 9 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (57 sections, 292 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -1379,47 +1380,47 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1545",
+      "from": "@1544",
       "to": "@1543",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1565 to @1562. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1543. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1561",
+      "from": "@1560",
       "to": "@1559",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1581 to @1578. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1559. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1553",
+      "from": "@1552",
       "to": "@1551",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1573 to @1570. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1551. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1549",
+      "from": "@1548",
       "to": "@1547",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1569 to @1566. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1547. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1557",
+      "from": "@1556",
       "to": "@1555",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1577 to @1574. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1555. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1555",
+      "from": "@1554",
       "to": "@1553",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1575 to @1572. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1553. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1551",
+      "from": "@1550",
       "to": "@1549",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1571 to @1568. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1549. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1559",
+      "from": "@1558",
       "to": "@1557",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1579 to @1576. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1557. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1547",
+      "from": "@1546",
       "to": "@1545",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @1567 to @1564. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @1545. 2026-10-22: #include \"Sound.h\" shifted file-local numbering; from-names re-pointed by symbol-index order (indices identical pre/post); re-verify linkcheck. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

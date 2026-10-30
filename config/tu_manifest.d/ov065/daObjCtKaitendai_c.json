@@ -259,7 +259,8 @@
     "compiler_only_output is 13 rows: 2 x (4 ancestors + self) typeinfo/type-string rows + 1 vtable + 1 Vector3 D1 + 1 homeless dBgActor_c D2 from return new. Every canonical_module/canonical_address was read out of the ROM's own symbols.txt, not copied from a sibling without checking this class's homes.",
     "Cleanup folded the adjacent CT_MECHA06/CT_MECHA07 factories as return new daObjCtKaitendai_c(). Inherited fBase_c::operator new(unsigned long) forwards _ZN7fBase_cnwEj((unsigned)size).",
     "Static initializer folded: the two KaitendaiModelFile handles (files 0x5c4/0x5c6), the two KaitendaiCollisionFilePtr handles (files 0x5c5/0x5c7) and their destructor-registration nodes move out of the handwritten src/unnamed shard into src/game/actors/d_a_obj_ct_kaitendai.cpp. The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov065_0211c8fc with the same instruction sequence, literal pool order and relocation sites; the handwritten shard is retired. @455 clashed with the fleet and @456/@457/@458 with the in-flight ov060 kpa3bg fork range, so all four are renamed (@455->@878, @456->@867, @457->@863, @458->@818). The .bss claim 0x0211d92c..0x0211d97c ends exactly at the next symbol; no bound row is needed. The retired shard's converted-baseline row is dropped per the c62c3266 precedent.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (32 sections, 124 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -547,22 +548,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@448",
+      "from": "@447",
       "to": "@878",
       "evidence": "mwcc numbers this registration node @455 per TU and the fleet already defines a global @455, so the scratch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@449",
+      "from": "@448",
       "to": "@867",
       "evidence": "mwcc numbers this registration node @456 per TU and the in-flight ov060 kpa3bg fork branch already claims @456, so the batch merge would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@450",
+      "from": "@449",
       "to": "@863",
       "evidence": "mwcc numbers this registration node @457 per TU and the in-flight ov060 kpa3bg fork branch already claims @457, so the batch merge would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@451",
+      "from": "@450",
       "to": "@818",
       "evidence": "mwcc numbers this registration node @458 per TU and the in-flight ov060 kpa3bg fork branch already claims @458, so the batch merge would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

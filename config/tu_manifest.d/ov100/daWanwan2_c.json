@@ -232,7 +232,8 @@
     "HISTORY before the classInit tail fold: an older default-new probe emitted 0xa4 without the three array construction calls. The factory is now folded and its pre-lifecycle probe emitted 0xec with two Vector3 array calls and one omitted Vector3s array call; see the lifecycle continuation below. The old no-Vector3-constructor explanation is superseded.",
     "Static initializer folded: the two Wanwan2ModelFilePtr handles (files 0x9c02/0x9c01), the two Wanwan2AnimFileHandle handles (files 0x9c04/0x9c03), their destructor-registration nodes, and the ChompState walking record move out of the handwritten src/unnamed shard into src/game/actors/d_a_wanwan2.cpp. The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov100_021475a4 with the same instruction sequence, literal pool order and relocation sites; the handwritten shard is retired. Unlike the stale fold/ov100-wanwan2-sinit attempt, the two state functions stay free functions and the record plain-copies the ROM PMF constants (curling precedent). @962/@963/@964/@965 all clashed with the fleet and are renamed (@962->@169, @963->@170, @964->@171, @965->@172). The .bss claim 0x021486a4..0x02148704 ends exactly at the next symbol; no bound row is needed. The retired shard converted-baseline row is dropped per the c62c3266 precedent.",
     "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
-    "Native factory continuation after the Vector3s lifecycle dependency: return new daWanwan2_c() retains the retail 0x118-byte factory and all five array-construction calls. The actual Vector3[6] arrays at +0x6d8/+0x720 use func_0203d384 with Vector3 D1; Vector3s[6] at+0x768 uses func_0203d73c with Vector3s D1. Existing canonical duplicate policy forms verify both complete emitted constructor bodies. Four raw destructor-registration node inputs are measured at @1007..@1010 instead of @1006..@1009; initializer offsets and canonical @169..@172 remain unchanged. Earlier factory measurements in this manifest are historical."
+    "Native factory continuation after the Vector3s lifecycle dependency: return new daWanwan2_c() retains the retail 0x118-byte factory and all five array-construction calls. The actual Vector3[6] arrays at +0x6d8/+0x720 use func_0203d384 with Vector3 D1; Vector3s[6] at+0x768 uses func_0203d73c with Vector3s D1. Existing canonical duplicate policy forms verify both complete emitted constructor bodies. Four raw destructor-registration node inputs are measured at @1007..@1010 instead of @1006..@1009; initializer offsets and canonical @169..@172 remain unchanged. Earlier factory measurements in this manifest are historical.",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (44 sections, 243 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -643,22 +644,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@964",
+      "from": "@963",
       "to": "@169",
       "evidence": "Native factory constructor declarations change raw @1006 to @1007; identical complete initializer bytes and typed ABS32 edge at 0xbc identify this same 12B destructor-registration node. Canonical target @169 unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@965",
+      "from": "@964",
       "to": "@170",
       "evidence": "Native factory constructor declarations change raw @1007 to @1008; identical complete initializer bytes and typed ABS32 edge at 0xc8 identify this same 12B destructor-registration node. Canonical target @170 unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@966",
+      "from": "@965",
       "to": "@171",
       "evidence": "Native factory constructor declarations change raw @1008 to @1009; identical complete initializer bytes and typed ABS32 edge at 0xd8 identify this same 12B destructor-registration node. Canonical target @171 unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@967",
+      "from": "@966",
       "to": "@172",
       "evidence": "Native factory constructor declarations change raw @1009 to @1010; identical complete initializer bytes and typed ABS32 edge at 0xe4 identify this same 12B destructor-registration node. Canonical target @172 unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

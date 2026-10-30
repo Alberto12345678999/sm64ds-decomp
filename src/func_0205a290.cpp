@@ -19,7 +19,7 @@ struct G6460 {
 extern struct G6460 data_020a6460;
 
 extern void func_0205a21c(void);
-extern void func_02056e98(int a, void *cb, int c);
+extern void OSi_EnterDmaCallback(int a, void *cb, int c);
 extern void DMAStartTransfer(int src, int dst, int ctrl0, int ctrl1);
 
 void func_0205a290(void)
@@ -35,7 +35,7 @@ void func_0205a290(void)
     data_020a6460.fc = rem;
     data_020a6460.f8 = base + len;
     if (rem == 0) {
-        func_02056e98(data_020a6460.f4, func_0205a21c, 0);
+        OSi_EnterDmaCallback(data_020a6460.f4, func_0205a21c, 0);
         DMAStartTransfer(data_020a6460.f4, base, 0x4000400, -0x3bc00000 | (len >> 2));
         IRQ::ClearInterrupts(0x200000);
     } else {

@@ -9,7 +9,7 @@
  * top of the run down: init, set callback, ready test, send, receive IRQ.
  *
  * leftovers: the callback table and the init flag (data_020a7fc4) are not
- * claimed here; the four C-linkage members keep their address names.
+ * claimed here. PXI_SendWordByFifo keeps its coined name, IPCSend.
  */
 #include "IRQ.h"
 
@@ -17,7 +17,6 @@ namespace IRQ {
 
 u32 Disable(void);
 u32 Restore(u32 saved);
-void IPCRxFifoNotEmptyHandler(void);
 
 }
 
@@ -58,10 +57,12 @@ typedef union {
 
 extern "C" {
 
+void PXIi_HandlerRecvFifoNotEmpty(void);
+
 /* PXI_InitFifo: clear the callback table, hook the receive IRQ, enable the
  * FIFO, then handshake with the ARM7 through the SUBPINTF nibble. */
-// @symbol func_0205bad8
-void func_0205bad8(void) {
+// @symbol PXI_InitFifo
+void PXI_InitFifo(void) {
     u32 state;
     int i;
     int r5;
@@ -79,7 +80,7 @@ void func_0205bad8(void) {
         for (i = 0; i < 0x20; i++) {
             data_020a7fc8[i] = 0;
         }
-        IRQ::SetIRQHandler(IRQ_RECV_FIFO_NOT_EMPTY, IRQ::IPCRxFifoNotEmptyHandler);
+        IRQ::SetIRQHandler(IRQ_RECV_FIFO_NOT_EMPTY, PXIi_HandlerRecvFifoNotEmpty);
         IRQ::EnableIRQs(IRQ_RECV_FIFO_NOT_EMPTY);
         REG_SUBP_FIFO_CNT = 0xc408;
 
@@ -111,8 +112,8 @@ void func_0205bad8(void) {
 }
 
 /* PXI_SetFifoRecvCallback. Every caller passes the callback as a void *. */
-// @symbol func_0205ba64
-void func_0205ba64(int tag, void *callback) {
+// @symbol PXI_SetFifoRecvCallback
+void PXI_SetFifoRecvCallback(int tag, void *callback) {
     u32 saved = IRQ::Disable();
     SystemWork *work = SYSTEM_WORK;
     data_020a7fc8[tag] = (PxiCallback)callback;
@@ -125,8 +126,8 @@ void func_0205ba64(int tag, void *callback) {
 }
 
 /* PXI_IsCallbackReady: is `tag` registered on processor `proc`? */
-// @symbol func_0205ba3c
-int func_0205ba3c(int tag, int proc) {
+// @symbol PXI_IsCallbackReady
+int PXI_IsCallbackReady(int tag, int proc) {
     SystemWork *work = SYSTEM_WORK;
     return (((1 << tag) & work->pxiHandleChecker[proc]) != 0);
 }
@@ -157,15 +158,12 @@ int IPCSend(unsigned int tag, unsigned int data, unsigned int reply) {
     IRQ::Restore(saved);
     return 0;
 }
-}
-
-namespace IRQ {
 
 /* PXIi_HandlerRecvFifoNotEmpty: drain the receive FIFO, dispatching each
  * word to its channel callback. An unhandled command (not a reply) is
  * echoed back to the ARM7 with bit 5 set. */
-// @symbol _ZN3IRQ24IPCRxFifoNotEmptyHandlerEv
-void IPCRxFifoNotEmptyHandler(void) {
+// @symbol PXIi_HandlerRecvFifoNotEmpty
+void PXIi_HandlerRecvFifoNotEmpty(void) {
     PxiFifoWord word;
     int code;
     u32 saved;
@@ -174,13 +172,13 @@ void IPCRxFifoNotEmptyHandler(void) {
             REG_SUBP_FIFO_CNT = REG_SUBP_FIFO_CNT | FIFO_CNT_ERROR_CLEAR;
             code = -3;
         } else {
-            saved = Disable();
+            saved = IRQ::Disable();
             if (REG_SUBP_FIFO_CNT & FIFO_CNT_RECV_EMPTY) {
-                Restore(saved);
+                IRQ::Restore(saved);
                 code = -4;
             } else {
                 word.raw = REG_RECV_FIFO;
-                Restore(saved);
+                IRQ::Restore(saved);
                 code = 0;
             }
         }
@@ -204,13 +202,13 @@ void IPCRxFifoNotEmptyHandler(void) {
                 REG_SUBP_FIFO_CNT = REG_SUBP_FIFO_CNT | FIFO_CNT_ERROR_CLEAR;
                 continue;
             }
-            saved = Disable();
+            saved = IRQ::Disable();
             if (REG_SUBP_FIFO_CNT & FIFO_CNT_SEND_FULL) {
-                Restore(saved);
+                IRQ::Restore(saved);
                 continue;
             }
             REG_SEND_FIFO = word.raw;
-            Restore(saved);
+            IRQ::Restore(saved);
         }
     }
 }

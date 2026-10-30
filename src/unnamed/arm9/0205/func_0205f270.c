@@ -1,7 +1,7 @@
 #include "types.h"
-extern void func_0205b858(void);
-extern int func_0205ba3c(int bit, int word);
-extern void func_0205ba64(int a, void *fn);
+extern void PXI_Init(void);
+extern int PXI_IsCallbackReady(int tag, int proc);
+extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void func_0205f300(void);
 
 extern char data_020a80c8[];
@@ -35,7 +35,7 @@ void func_0205f270(void)
 {
     if (*(u16 *)data_020a80c8 != 0) return;
     *(u16 *)data_020a80c8 = 1;
-    func_0205b858();
+    PXI_Init();
     TP_WORK.mState = 0;
     TP_WORK.mCommandFlags = 0;
     TP_WORK.mIndex = 0;
@@ -43,7 +43,7 @@ void func_0205f270(void)
     TP_WORK.mSamplingBufs = 0;
     TP_WORK.mCalibrated = 0;
     TP_WORK.mErrFlags = 0;
-    while (func_0205ba3c(6, 1) == 0)
+    while (PXI_IsCallbackReady(6, 1) == 0)
         ;
-    func_0205ba64(6, (void *)func_0205f300);
+    PXI_SetFifoRecvCallback(6, (void *)func_0205f300);
 }

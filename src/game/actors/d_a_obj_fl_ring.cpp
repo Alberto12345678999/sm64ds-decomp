@@ -27,8 +27,8 @@
  *
  * Notes:
  * - func_020393d4 / func_020393c4 are 4-byte stores into dBgW's callback
- *   slots, and func_020393a4 / func_02039394 write its collision extents.
- *   d_bg_w.cpp defines them and no header declares them.
+ *   slots, and dBgW::SetClipRadius / dBgW::SetClipOffsetY write its collision extents.
+ *   d_bg_w.cpp defines them; the callback setters remain local.
  * - The three pointers this class's file table holds -- the ov022 .bss
  *   SharedFilePtrs at 0x02114500 and 0x02114508, and the ov064 CLPS block at
  *   0x0211bbac -- are unnamed rows in their modules' data. The two handles
@@ -80,8 +80,6 @@ extern RingCollisionFilePtr gFlRingCollisionFile;
 
 extern "C" {
 /* local extern: d_bg_w.cpp defines these and no header declares them. */
-void func_020393a4(void *p, int v);
-void func_02039394(void *p, int v);
 void func_020393d4(void *p, void *fn);
 void func_020393c4(void *p, void *fn);
 }
@@ -202,8 +200,8 @@ s32 daObjFl_Ring_c::Behavior() {
     }
     mAngleY = mPrevAngleY;
 
-    func_020393a4(&mMeshCollider, 0x780000);
-    func_02039394(&mMeshCollider, 0x1000);
+    mMeshCollider.SetClipRadius(0x780000);
+    mMeshCollider.SetClipOffsetY(0x1000);
     UpdateModelPosAndRotY();
     if (IsClsnInRange(0x780000, 0x1000) != 0)
         UpdateClsnPosAndRot();

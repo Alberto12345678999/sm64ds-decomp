@@ -6,8 +6,6 @@
 extern "C" {
 
 extern char data_020a8180[];
-extern int data_020a6134[];
-void OS_SleepThread(void* p);
 int func_0206062c(void* g);
 
 /* The request block a chunk is handed over in (NitroSDK CARDiCommandArg);
@@ -37,9 +35,9 @@ typedef struct CardCommon {
     unsigned char pad_38[0x98];
     /* 0xd0 -- the thread the request runs on: the caller's for a synchronous
      * request, the card task thread (CARDi_SetTask) otherwise */
-    int mCurThread;
+    OSThread *mCurThread;
     /* 0xd4 -- callers wait here while another request holds the busy bit */
-    char mBusyQueue[4];
+    u16 mBusyQueue;
 } CardCommon;
 
 /* Write len bytes from RAM src to backup address dst: wait for the
@@ -51,7 +49,7 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
     unsigned int irq = IRQ::Disable();
     if (g->mFlags & 4) {
         do {
-            OS_SleepThread(g->mBusyQueue);
+            OS_SleepThread(&g->mBusyQueue);
         } while (g->mFlags & 4);
     }
     g->mFlags |= 4;
@@ -62,11 +60,11 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
     g->mCallback = callback;
     g->mCallbackArg = arg;
     if (is_async != 0) {
-        CARDi_SetTask((void *)func_0206062c);
+        CARDi_SetTask((CARDiTask)func_0206062c);
         return 1;
     }
     /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */
-    ((CardCommon *)data_020a8180)->mCurThread = data_020a6134[2];
+    ((CardCommon *)data_020a8180)->mCurThread = data_020a6134.current;
     func_0206062c(g);
     return g->mRequest->mResult == 0;
 }

@@ -19,6 +19,43 @@
 extern "C" {
 #endif
 
+/* NitroSDK CTRDGHeader: the GBA cartridge header at HW_CTRDG_ROM (0x08000000). */
+typedef struct CTRDGHeader {
+    u32 startAddress;      /* 0x00 */
+    u8 nintendoLogo[0x9c]; /* 0x04 */
+    char titleName[12];    /* 0xa0 */
+    u32 gameCode;          /* 0xac */
+    u16 makerCode;         /* 0xb0 */
+    u8 isRomCode;          /* 0xb2 */
+    u8 machineCode;        /* 0xb3 */
+    u8 deviceType;         /* 0xb4 */
+    u8 exLsiID[3];         /* 0xb5 */
+    u8 reserved_A[4];      /* 0xb8 */
+    u8 softVersion;        /* 0xbc */
+    u8 complement;         /* 0xbd */
+    u16 moduleID;          /* 0xbe */
+} CTRDGHeader;
+
+/* NitroSDK CTRDGModuleInfo, at HW_CTRDG_MODULE_INFO_BUF (0x027ffc30): the
+ * header fields CTRDG_Init's probe copies out. */
+typedef struct CTRDGModuleInfo {
+    u16 moduleID;          /* 0x0 */
+    u8 exLsiID[3];         /* 0x2 */
+    u8 isAgbCartridge : 1; /* 0x5 */
+    u8 detectPullOut : 1;
+    u8 : 6;
+    u16 makerCode; /* 0x6 */
+    u32 gameCode;  /* 0x8 */
+} CTRDGModuleInfo;
+
+/* NitroSDK CTRDGWork (CTRDGi_Work, data_020a9de0): CTRDGi_InitCommon clears
+ * it and stores the lock ID; the PXI callback sets subpState to 1 when the
+ * ARM7 answers. */
+typedef struct CTRDGWork {
+    volatile u16 subpState; /* 0x0 */
+    u16 lockID;             /* 0x2 */
+} CTRDGWork;
+
 void CTRDGi_InitCommon(void);
 int CTRDG_IsExisting(void);
 void CTRDGi_ChangeLatestAccessCycle(int *);

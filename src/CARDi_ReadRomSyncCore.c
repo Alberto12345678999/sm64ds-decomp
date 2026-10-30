@@ -3,6 +3,8 @@
  * for a synchronous one. The argument is the CARDiCommon block, unused.
  */
 #include "types.h"
+#include "nitro/card/card_common.h"
+
 extern int func_02060ebc(void *stat); /* CARDi_ReadFromCache */
 extern void func_02060e38(void);      /* end the read */
 
@@ -14,7 +16,7 @@ typedef struct CARDRomStat {
 
 extern CARDRomStat data_020a8780; /* rom_stat */
 
-void CARDi_ReadRomSyncCore(void *c) {
+void CARDi_ReadRomSyncCore(CARDiCommon *c) {
     CARDRomStat *const p = &data_020a8780;
     if (func_02060ebc(p)) {
         p->read_func(p);

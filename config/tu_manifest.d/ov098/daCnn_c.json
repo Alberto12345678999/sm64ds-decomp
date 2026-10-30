@@ -153,7 +153,8 @@
     "Hand-assembled: tubuild create generated the twelve class members and helpers; the zero-gap daCnn_c_classInit factory was folded in by hand, and every body was rewritten by hand over the class header (the generator's RAW/CONFLICT warnings for func_ov098_0213b0a4 and the three Sound::PlayBank3 declarations no longer apply: the TU uses Sound.h's single declaration).",
     "Class identity: ROM RTTI names the class daCnn_c (_ZTS7daCnn_c at ov098:0x0213c664, _ZTI7daCnn_c at 0x0213c670 naming dActor_c as direct base, vtable address point 0x0213c6a0). The tree's Cannon was coined; its _ZTV6Cannon row aliased _ZTV7daCnn_c at the same address and was deleted for the rename.",
     "The four state bodies (func_ov098_0213b0a4 aim, 0213ade8 fire, 0213ad08 wait, 0213aa28 load) and the two helpers (0213a984 barrel pose, 0213b15c pick aim) keep their C-linkage func_ov098_* names over a daCnn_c pointer. The static initializer's .data words reach the state bodies only by address; include/decl_common.h declares func_ov098_0213b15c by that name. No coined mangled names are introduced.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way.",
+    "Collision property member calls replace local helper declarations. Reconciled 1 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (28 sections, 124 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -570,7 +571,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@610",
+      "from": "@609",
       "to": "@445",
       "evidence": "mwcc numbers this destructor-registration node @483 per TU; another module's emitted object already carries @483 globally, so the scratch link would multiply-define it"
     }

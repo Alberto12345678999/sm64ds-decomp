@@ -21,65 +21,73 @@ typedef struct List {
     int count;
 } List;
 
+/* The particle definition's header (func_0204a730's PtclData; SPL's
+ * SPLResourceHeader); the flag bits follow SPL's SPLResourceFlags, and
+ * func_0204a730 registers the color/texture animation callbacks off bits 9
+ * and 11. The three random bytes at 0x2c scale the base scale, lifetime and
+ * initial velocities down by up to byte / 256. */
 typedef struct Def {
-    u32 mode : 4;      /* bits 0-3 */
-    u32 f4 : 2;        /* 4-5 */
-    u32 sel : 2;       /* 6-7 */
-    u32 f8 : 1;        /* 8 */
-    u32 texanim : 1;   /* 9 */
-    u32 f10 : 1;       /* 10 */
-    u32 colorrand : 1; /* 11 */
-    u32 sizerand : 1;  /* 12 */
-    u32 anglerand : 1; /* 13 */
+    u32 emissionType : 4;    /* bits 0-3 -- the emitter shape */
+    u32 drawType : 2;        /* 4-5 */
+    u32 circleAxis : 2;      /* 6-7 -- 3: the system's own basis */
+    u32 hasScaleAnim : 1;    /* 8 */
+    u32 hasColorAnim : 1;    /* 9 */
+    u32 hasAlphaAnim : 1;    /* 10 */
+    u32 hasTexAnim : 1;      /* 11 */
+    u32 hasRotation : 1;     /* 12 -- random angular speed in [min, max] */
+    u32 randomInitAngle : 1; /* 13 */
     u32 rest : 18;
-    int rate;       /* 0x4 */
-    u8 pad8[0xa];   /* 0x8 */
-    u16 tex;        /* 0x12 */
-    u8 pad14[0x10]; /* 0x14 */
-    s16 lo;         /* 0x24 */
-    s16 hi;         /* 0x26 */
-    u8 pad28[4];    /* 0x28 */
-    u8 b2c;         /* 0x2c */
-    u8 b2d;         /* 0x2d */
-    u8 b2e;         /* 0x2e */
-    u8 pad2f[4];    /* 0x2f */
-    u8 b33;         /* 0x33 */
-    u8 b34;         /* 0x34 */
+    int rate;          /* 0x4 */
+    u8 pad8[0xa];      /* 0x8 */
+    u16 color;         /* 0x12 */
+    u8 pad14[0x10];    /* 0x14 */
+    s16 minRotation;   /* 0x24 */
+    s16 maxRotation;   /* 0x26 */
+    u8 pad28[4];       /* 0x28 */
+    u8 scaleRandom;    /* 0x2c */
+    u8 lifetimeRandom; /* 0x2d */
+    u8 velocityRandom; /* 0x2e */
+    u8 pad2f[4];       /* 0x2f */
+    u8 textureIndex;   /* 0x33 */
+    u8 loopFrames;     /* 0x34 */
 } Def;
 
-typedef struct TexAnim {
-    u16 a;        /* 0x0 */
-    u16 b;        /* 0x2 */
-    u8 pad[4];    /* 0x4 */
-    u16 flag : 1; /* 0x8 bit 0 */
+/* The color animation (func_0204d294's ColorRamp; SPL's SPLColorAnim). */
+typedef struct ColorAnim {
+    u16 startColor;           /* 0x0 */
+    u16 endColor;             /* 0x2 */
+    u8 pad[4];                /* 0x4 */
+    u16 randomStartColor : 1; /* 0x8 bit 0 */
     u16 frest : 15;
+} ColorAnim;
+
+/* The texture animation (func_0204d150's TexAnim; SPL's SPLTexAnim). */
+typedef struct TexAnim {
+    u8 textures[8];        /* 0x0 */
+    u32 frameCount : 8;    /* 0x8 bits 0-7 */
+    u32 step : 8;          /* bits 8-15 */
+    u32 randomizeInit : 1; /* bit 16 */
+    u32 prest : 15;
 } TexAnim;
 
-typedef struct Pal {
-    u8 colors[8]; /* 0x0 */
-    u32 cnt : 8;  /* 0x8 bits 0-7 */
-    u32 px : 8;   /* bits 8-15 */
-    u32 loop : 1; /* bit 16 */
-    u32 prest : 15;
-} Pal;
-
-/* Particle::SystemDefinition (include/Particle__Manager.h): `data` there.
- * texAnim and palette are read only when data's texanim / colorrand bits are
- * set, and supply the spawned particle's texture and colour. */
+/* Particle::SystemDefinition (include/Particle__Manager.h): `data` there;
+ * func_0204a730's PtclDef. colorAnim and texAnim are read only when data's
+ * hasColorAnim / hasTexAnim bits are set, and supply the spawned particle's
+ * colour and texture. */
 typedef struct SystemDefinition {
     Def *data; /* 0x00 */
     u8 pad_04[4];
-    TexAnim *texAnim; /* 0x08 */
+    ColorAnim *colorAnim; /* 0x08 */
     u8 pad_0c[4];
-    Pal *palette; /* 0x10 */
+    TexAnim *texAnim; /* 0x10 */
 } SystemDefinition;
 
 /* Particle::System (include/Particle__System.h), whose names this reuses.
  * Here callbackValue is the spawn-rate accumulator (data->rate is added each
  * call, whole units spawn, the 12-bit fraction stays). emitRadius scales the
  * spawn offset of every emitter shape. particleLifetime seeds each particle's
- * lifetime. The byte at 0x59 (into the low five bits of the particle's 0x40
- * halfword) has no established role and stays raw. */
+ * lifetime. baseAlpha follows emitInterval, as the two do in SPL's header,
+ * and goes into the low five bits of each particle's visibility. */
 typedef struct ParticleSystem {
     u8 pad_00[8];
     List particles; /* 0x08 */
@@ -96,14 +104,18 @@ typedef struct ParticleSystem {
     int callbackVelocity; /* 0x4c */
     int callbackScale;    /* 0x50 */
     u16 particleLifetime; /* 0x54 */
+    u8 pad_56[2];
+    u8 emitInterval; /* 0x58 */
+    u8 baseAlpha;    /* 0x59 */
 } ParticleSystem;
 
 /* Particle::Element (include/Particle__Element.h) and the fields past its
  * 0x30 bytes that this spawn fills in. scale is seeded from the system's
- * callbackScale, angle from the anglerand bit, texture and color as the
- * SystemDefinition note says, and invLifetime is 0xffff / lifetime.
- * The halfwords at 0x34, 0x38, 0x3c and 0x40 stay raw: this file only
- * seeds them, so their roles are not established here. */
+ * callbackScale, angle from the randomInitAngle bit, color and texture as the
+ * SystemDefinition note says. The names past 0x30 are the animation
+ * callbacks' (func_0204d440 animScale, func_0204d294 color, func_0204d1b4
+ * visibility, func_0204d150 texture) and func_0204a730's (angularSpeed and
+ * the two 0xffff / frames factors). */
 typedef struct ParticleElement {
     Node link;            /* 0x00 */
     Vector3 basePosition; /* 0x08 */
@@ -112,14 +124,14 @@ typedef struct ParticleElement {
     u16 lifetime;         /* 0x2c */
     u16 age;              /* 0x2e */
     int scale;            /* 0x30 */
-    u8 pad_34[2];
-    u16 angle; /* 0x36 */
-    u8 pad_38[2];
-    u16 texture; /* 0x3a */
-    u8 pad_3c[2];
-    u16 invLifetime; /* 0x3e */
-    u8 pad_40[2];
-    u8 color; /* 0x42 */
+    s16 animScale;        /* 0x34 */
+    u16 angle;            /* 0x36 */
+    s16 angularSpeed;     /* 0x38 */
+    u16 color;            /* 0x3a */
+    u16 loopTimeFactor;   /* 0x3c */
+    u16 lifeRateFactor;   /* 0x3e */
+    u16 visibility;       /* 0x40 -- base alpha bits 0-4, animated alpha 5-9 */
+    u8 texture;           /* 0x42 */
 } ParticleElement;
 
 extern Vector3s data_02099fc4;
@@ -169,7 +181,7 @@ void func_0204cebc(void *c) {
     sys->basisV.z = (s16)(FX_MUL(vecB.x, sys->basisU.y) - FX_MUL(vecB.y, sys->basisU.x));
 }
 
-void func_0204cd5c(int *out, int *in, int sel, s16 *m) {
+void func_0204cd5c(int *out, int *in, int sel, ParticleSystemView *sys) {
     switch (sel) {
     case 2:
         out[0] = 0;
@@ -187,9 +199,9 @@ void func_0204cd5c(int *out, int *in, int sel, s16 *m) {
         out[2] = 0;
         break;
     case 3:
-        out[0] = FX_MUL(in[0], m[0x2e]) + FX_MUL(in[1], m[0x31]);
-        out[1] = FX_MUL(in[0], m[0x2f]) + FX_MUL(in[1], m[0x32]);
-        out[2] = FX_MUL(in[0], m[0x30]) + FX_MUL(in[1], m[0x33]);
+        out[0] = FX_MUL(in[0], sys->basisU.x) + FX_MUL(in[1], sys->basisV.x);
+        out[1] = FX_MUL(in[0], sys->basisU.y) + FX_MUL(in[1], sys->basisV.y);
+        out[2] = FX_MUL(in[0], sys->basisU.z) + FX_MUL(in[1], sys->basisV.z);
         break;
     }
 }
@@ -223,8 +235,8 @@ void func_0204c584(u8 *self, List *list) {
     sys->callbackValue = acc & 0xfff;
     count = acc >> 0xc;
     {
-        u32 t = def->mode;
-        if ((t == 2 || t == 3 || t == 5) && def->sel == 3)
+        u32 t = def->emissionType;
+        if ((t == 2 || t == 3 || t == 5) && def->circleAxis == 3)
             func_0204cebc(self);
     }
     i = 0;
@@ -242,7 +254,7 @@ void func_0204c584(u8 *self, List *list) {
         if (p == 0)
             return;
         func_0204d9a0(&sys->particles, (Node *)p);
-        switch (def->mode) {
+        switch (def->emissionType) {
         case 0:
             p->offset.z = d14;
             p->offset.y = p->offset.z;
@@ -258,7 +270,8 @@ void func_0204c584(u8 *self, List *list) {
             func_0204d9f0(&vecB);
             vecB.x = FX_MUL(vecB.x, sys->emitRadius);
             vecB.y = FX_MUL(vecB.y, sys->emitRadius);
-            func_0204cd5c((int *)&p->offset, (int *)&vecB, def->sel, (s16 *)self);
+            func_0204cd5c((int *)&p->offset, (int *)&vecB, def->circleAxis,
+                          (ParticleSystemView *)self);
             break;
         case 3: {
             int q = d10 / count;
@@ -271,7 +284,8 @@ void func_0204c584(u8 *self, List *list) {
             vecC.x = FMul(c, sys->emitRadius);
             vecC.y = FMul(sn, sys->emitRadius);
             vecC.z = d18;
-            func_0204cd5c((int *)&p->offset, (int *)&vecC, def->sel, (s16 *)self);
+            func_0204cd5c((int *)&p->offset, (int *)&vecC, def->circleAxis,
+                          (ParticleSystemView *)self);
             break;
         }
         case 4:
@@ -284,7 +298,8 @@ void func_0204c584(u8 *self, List *list) {
             func_0204d9f0(&vecE);
             vecE.x = FMul(FMul(vecE.x, sys->emitRadius), RandScale());
             vecE.y = FMul(FMul(vecE.y, sys->emitRadius), RandScale());
-            func_0204cd5c((int *)&p->offset, (int *)&vecE, def->sel, (s16 *)self);
+            func_0204cd5c((int *)&p->offset, (int *)&vecE, def->circleAxis,
+                          (ParticleSystemView *)self);
             break;
         }
         {
@@ -292,11 +307,11 @@ void func_0204c584(u8 *self, List *list) {
             int b;
             s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
             data_020a4d30 = s;
-            b = def->b2e;
+            b = def->velocityRandom;
             mag1 = (sys->callbackParam * ((b + 0xff) - ((b * (int)(s >> 0x18)) >> 7))) >> 8;
             s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
             data_020a4d30 = s;
-            b = def->b2e;
+            b = def->velocityRandom;
             mag2 = (sys->callbackVelocity * ((b + 0xff) - ((b * (int)(s >> 0x18)) >> 7))) >> 8;
         }
         if (p->offset.x == 0 && p->offset.y == 0 && p->offset.z == 0)
@@ -312,68 +327,69 @@ void func_0204c584(u8 *self, List *list) {
             int b;
             s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
             data_020a4d30 = s;
-            b = def->b2c;
+            b = def->scaleRandom;
             p->scale = (sys->callbackScale * ((b + 0xff) - ((b * (int)(s >> 0x18)) >> 7))) >> 8;
         }
-        *(u16 *)((u8 *)p + 0x34) = (u16)d1c;
-        if (def->texanim && emitter->texAnim->flag) {
+        p->animScale = (s16)d1c;
+        if (def->hasColorAnim && emitter->colorAnim->randomStartColor) {
             u32 s;
-            TexAnim *tex;
+            ColorAnim *anim;
             s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
             data_020a4d30 = s;
-            tex = emitter->texAnim;
-            arr[0] = tex->a;
-            arr[1] = def->tex;
-            arr[2] = tex->b;
-            p->texture = arr[(s >> 0x14) % 3u];
+            anim = emitter->colorAnim;
+            arr[0] = anim->startColor;
+            arr[1] = def->color;
+            arr[2] = anim->endColor;
+            p->color = arr[(s >> 0x14) % 3u];
         } else {
-            p->texture = def->tex;
+            p->color = def->color;
         }
         {
-            u16 *q = (u16 *)((u8 *)p + 0x40);
-            *q = (u16)((*q & ~0x1f) | (*(u8 *)(self + 0x59) & 0x1f));
+            u16 *q = &p->visibility;
+            *q = (u16)((*q & ~0x1f) | (sys->baseAlpha & 0x1f));
             *q = (u16)((*q & ~0x3e0) | 0x3e0);
         }
-        if (def->anglerand) {
+        if (def->randomInitAngle) {
             u32 s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
             data_020a4d30 = s;
             p->angle = (u16)s;
         } else {
             p->angle = (u16)d20;
         }
-        if (def->sizerand) {
-            *(u16 *)((u8 *)p + 0x38) =
-                (u16)((u32)((def->hi - def->lo) * (int)(RandVal() >> 0x14) + (def->lo << 0xc)) >>
+        if (def->hasRotation) {
+            p->angularSpeed =
+                (s16)((u32)((def->maxRotation - def->minRotation) * (int)(RandVal() >> 0x14) +
+                            (def->minRotation << 0xc)) >>
                       0xc);
         } else {
-            *(u16 *)((u8 *)p + 0x38) = (u16)d24;
+            p->angularSpeed = (s16)d24;
         }
         {
             u32 s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
             data_020a4d30 = s;
-            p->lifetime =
-                (u16)(((sys->particleLifetime * (0xff - ((def->b2d * (int)(s >> 0x18)) >> 8))) >>
-                       8) +
-                      1);
+            p->lifetime = (u16)(((sys->particleLifetime *
+                                  (0xff - ((def->lifetimeRandom * (int)(s >> 0x18)) >> 8))) >>
+                                 8) +
+                                1);
         }
         p->age = (u16)d28;
         {
-            u32 b11 = def->colorrand;
-            if (b11 != 0 && emitter->palette->loop) {
+            u32 hasTexAnim = def->hasTexAnim;
+            if (hasTexAnim != 0 && emitter->texAnim->randomizeInit) {
                 u32 s;
-                u8 *pal;
+                TexAnim *anim;
                 s = data_020a4d30 * 0x5eedf715u + 0x1b0cb173u;
                 data_020a4d30 = s;
-                pal = (u8 *)emitter->palette;
-                p->color = pal[(s >> 0x14) % pal[8]];
-            } else if (b11 != 0 && !emitter->palette->loop) {
-                p->color = emitter->palette->colors[0];
+                anim = emitter->texAnim;
+                p->texture = anim->textures[(s >> 0x14) % anim->frameCount];
+            } else if (hasTexAnim != 0 && !emitter->texAnim->randomizeInit) {
+                p->texture = emitter->texAnim->textures[0];
             } else {
-                p->color = def->b33;
+                p->texture = def->textureIndex;
             }
         }
-        *(u16 *)((u8 *)p + 0x3c) = (u16)(0xffff / emitter->data->b34);
-        p->invLifetime = (u16)(0xffff / p->lifetime);
+        p->loopTimeFactor = (u16)(0xffff / emitter->data->loopFrames);
+        p->lifeRateFactor = (u16)(0xffff / p->lifetime);
         i += 1;
     } while (i < count);
 }

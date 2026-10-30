@@ -540,7 +540,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Matrix4x3_FromRotationY' differs between the legacy file that used to hold func_ov026_02111b24 and the one that held func_ov026_02111d4c; kept the first. The two declarations were the same void*/int signature; one extern \"C\" declaration remains.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'MulVec3Mat4x3' differs between the legacy file that used to hold func_ov026_02111b24 and the one that held func_ov026_02111d4c; kept the first. The merged file uses the const Vector3* declaration and casts the Vec3 arguments at the first call.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_020a0e68' differs between the legacy file that used to hold func_ov026_02111b24 and the one that held func_ov026_02111f30; kept the first. The merged file declares a flat 12-int matrix so func_ov026_02111f30 copies it as a POD. Callers only take its address.",
-    "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 'int') differs between the legacy file that used to hold _ZN18daWater_Tatumaki_c8BehaviorEv and the one that held _ZN18daWater_Tatumaki_c8BehaviorEv; kept the first. The two aliases are different names. Behavior keeps its pointer-to-member type; the state helper uses its own class so the member stays at 0x110."
+    "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 'int') differs between the legacy file that used to hold _ZN18daWater_Tatumaki_c8BehaviorEv and the one that held _ZN18daWater_Tatumaki_c8BehaviorEv; kept the first. The two aliases are different names. Behavior keeps its pointer-to-member type; the state helper uses its own class so the member stays at 0x110.",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (39 sections, 136 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -897,32 +898,32 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@845",
+      "from": "@844",
       "to": "@742",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@846",
+      "from": "@845",
       "to": "@743",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@848",
+      "from": "@847",
       "to": "@745",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@850",
+      "from": "@849",
       "to": "@747",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@852",
+      "from": "@851",
       "to": "@749",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@854",
+      "from": "@853",
       "to": "@751",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     }

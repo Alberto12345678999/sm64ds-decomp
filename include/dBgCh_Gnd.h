@@ -77,6 +77,8 @@ struct dBgCh_Gnd : dBgCh, dBgPi {
     void SetObjAndPos(const Vector3 &pos, dActor_c *actor);
     void GetClsnPos(Vector3 &res);
     void SetClsnPos(const Vector3 &pos);
+    /* Inferred: clear the previous hit before scanning the registry. */
+    void ResetResult();
     int DetectClsn();
     /* Inferred name: query only collider-table slot zero. */
     int DetectClsnSlot0();

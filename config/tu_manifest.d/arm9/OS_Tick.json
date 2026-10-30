@@ -1,0 +1,82 @@
+{
+  "id": "arm9/OS_Tick",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Tick.cpp",
+  "promoted_source": "src/engine/os/OS_Tick.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_tick.c, 0x02059640..0x02059824: 4 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_tick.c defines, in this order, OS_InitTick, OS_IsTickAvailable, OSi_CountUpTick, OS_GetTick and OS_GetTickLo. Four are here at pret's sizes, each identified by body: OS_GetTickLo 0x10, OS_GetTick 0xb0, OSi_CountUpTick 0x88, OS_InitTick 0x9c.",
+    "Order: all four are C, and mwccarm emits deferred C bodies in reverse. The ROM run is pret's source order reversed, OS_GetTickLo lowest and OS_InitTick highest. Nothing calls OS_IsTickAvailable, so the linker dropped it.",
+    "BOTTOM EDGE: OSi_SetTimerReserved (0x02059624..0x02059640) is os_timer.c.",
+    "TOP EDGE: OSi_AlarmHandler (0x02059824) opens os_alarm.c (arm9/OS_Alarm)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02059640",
+      "end": "0x02059824"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OS_GetTickLo",
+      "address": "0x02059640",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059640.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_02059650",
+      "address": "0x02059650",
+      "size": "0x000000b0",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059650.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OSi_CountUpTick",
+      "address": "0x02059700",
+      "size": "0x00000088",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059700.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OS_InitTick",
+      "address": "0x02059788",
+      "size": "0x0000009c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059788.cpp",
+      "ordinal": 3
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Thread and arm9/OS_Arena: tu_map cannot segment arm9/main.",
+    "OS_GetTickLo, OSi_CountUpTick and OS_InitTick were renamed from their func_ names in this change (symbols/actor_renames.tsv). OS_GetTick keeps its address name, func_02059650, until #4500 lands: that PR edits two of its callers.",
+    "Text-only: OSi_UseTick (data_020a6430), OSi_NeedResetTimer (data_020a6434) and OSi_TickCounter (data_020a6438) stay externs. The file claims no data."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Tick/OS_Tick.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 4,
+    "functions_declared": 4,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

@@ -1,14 +1,6 @@
 //cpp
-/* leftovers:
- * The func_0203938c..020393d4 accessors and func_020396c0 / func_020396d0
- * retain their existing free-function interfaces for the query TUs and
- * derived colliders. Their original member/free-function form is not
- * established by the address names. Definitions retain their source order.
- * ShouldPassThroughImpl keeps the int* view of CLPS and the unsigned char*
- * view of the query for the flag tests that are still free functions.
- * data_020a0c80 (declared in dBgW.h) is the 0x18-entry enabled-collider
- * table Enable fills and dScStage_c::ResetMeshColliders clears.
- */
+/* The callback setters and CLPS water/toxic tests still use free-function
+ * interfaces. The enabled-collider table is shared with the query scans. */
 /* dBgW: root of the KCL collider family. Type name 0x02099370, typeinfo
  * 0x02099378, vtable 0x02099388, 13 slots. This TU also defines
  * dScStage_c::ResetMeshColliders and dBgCh::ShouldPassThroughImpl.
@@ -28,30 +20,25 @@ extern "C" {
 extern int SurfaceInfo_TestFlag0x20(int *clpsWords);
 }
 
-/* Preserve the address-based helper ABI while using the declared callback
-   type; BeforeClsnCallback is dBgW.h's. */
-typedef void (*StoodOnCallback)(dBgW *, dActor_c *, dActor_c *);
-
-// @symbol func_020396d0
+// @symbol _ZN7dBgW_Kc17SetDepthDirMinDotEi
 
 /* Stores dBgW_Kc::depthDirMinDot (+0x44), the sphere query's face-dot threshold. */
-extern "C" void func_020396d0(int *collider, int faceDotThreshold) {
-    reinterpret_cast<dBgW_Kc *>(collider)->depthDirMinDot = faceDotThreshold;
+void dBgW_Kc::SetDepthDirMinDot(Fix12i value) {
+    depthDirMinDot = value;
 }
 
-// @symbol func_020396c0
+// @symbol _ZN7dBgW_Kc21SetEdgeToleranceShiftEi
 
 /* Stores dBgW_Kc::edgeToleranceShift (+0x48), clamped at 0. */
-extern "C" void func_020396c0(void *collider, int edgeToleranceShift) {
-    dBgW_Kc *mesh = static_cast<dBgW_Kc *>(collider);
-    if (edgeToleranceShift < 0)
-        edgeToleranceShift = 0;
-    mesh->edgeToleranceShift = edgeToleranceShift;
+void dBgW_Kc::SetEdgeToleranceShift(int value) {
+    if (value < 0)
+        value = 0;
+    edgeToleranceShift = value;
 }
 
 // @symbol _ZN4dBgWC2Ev
 dBgW::dBgW() {
-    func_02039624((char *)this);
+    Reset();
 }
 
 // @symbol _ZN4dBgWD2Ev
@@ -59,31 +46,30 @@ dBgW::dBgW() {
 // @symbol _ZN4dBgWD1Ev
 dBgW::~dBgW() {}
 
-// @symbol func_02039624
-extern "C" void func_02039624(char *object) {
-    dBgW *collider = (dBgW *)object;
-    collider->owner = 0;
-    collider->ownerUniqueID = -1;
-    collider->slotIdx = 0x18;
-    collider->beforeClsnCallback = 0;
-    collider->stoodOnCallback = 0;
-    collider->clipRadius = -0x1000;
-    collider->clipOffsetY = 0;
+// @symbol _ZN4dBgW5ResetEv
+void dBgW::Reset() {
+    owner = 0;
+    ownerUniqueID = -1;
+    slotIdx = 0x18;
+    beforeClsnCallback = 0;
+    stoodOnCallback = 0;
+    clipRadius = -0x1000;
+    clipOffsetY = 0;
 }
 
 // @symbol _ZN4dBgW9Virtual08Ev
 void dBgW::Virtual08() {}
 
-// @symbol func_020395fc
+// @symbol _ZN4dBgW8SetActorEP8dActor_c
 
 /* Binds the collider to its owning actor, or clears the binding. */
-extern "C" void func_020395fc(dBgW *collider, dActor_c *actor) {
+void dBgW::SetActor(dActor_c *actor) {
     if (actor == 0) {
-        collider->owner = 0;
-        collider->ownerUniqueID = -1;
+        owner = 0;
+        ownerUniqueID = -1;
     } else {
-        collider->owner = actor;
-        collider->ownerUniqueID = actor->uniqueID;
+        owner = actor;
+        ownerUniqueID = actor->uniqueID;
     }
 }
 
@@ -95,30 +81,29 @@ bool dBgCh::ShouldPassThroughImpl(void *unused, const CLPS &surfaceProperties, c
        (2), CLPS bit 0x02000000 needs the toxic bit (8). Surface types 0x11
        and 0x14 run the other way: the query passes through them when it is
        ignoring them. A surface no rule covers stops only queries that detect
-       ordinary ground (bit 1). The CLPS predicates and the remaining flag
-       tests are C helpers taking raw word and byte views. */
+       ordinary ground (bit 1). Camera mode skips camera-pass-through
+       surfaces and enables camera-only surfaces. */
     int *clpsWords = (int *)&surfaceProperties;
-    unsigned char *queryBytes = (unsigned char *)&query;
     bool ruleApplies = false;
 
     if (SurfaceInfo_TestFlag0x20(clpsWords)) {
         ruleApplies = true;
-        if (func_0203547c(queryBytes) == 0)
+        if (query.IsDetectingWater() == 0)
             return true;
     }
     if (func_02037e20(clpsWords)) {
         ruleApplies = true;
-        if (func_0203543c(queryBytes) == 0)
+        if (query.IsDetectingToxic() == 0)
             return true;
     }
-    if (func_02037e2c(clpsWords)) {
+    if (surfaceProperties.IsCameraPassThrough()) {
         ruleApplies = true;
-        if (func_0203545c(queryBytes) != 0)
+        if (query.IsCameraMode() != 0)
             return true;
     }
-    if (func_02037e14(clpsWords)) {
+    if (surfaceProperties.IsCameraOnly()) {
         ruleApplies = true;
-        if (func_0203545c(queryBytes) == 0)
+        if (query.IsCameraMode() == 0)
             return true;
     }
     if (surfaceProperties.GetSurfaceType() == 0x11) {
@@ -131,7 +116,7 @@ bool dBgCh::ShouldPassThroughImpl(void *unused, const CLPS &surfaceProperties, c
         if (query.IsIgnoringType14Walls())
             return true;
     }
-    if (!ruleApplies && func_020354b0(queryBytes) == 0)
+    if (!ruleApplies && query.IsDetectingOrdinary() == 0)
         return true;
     return false;
 }
@@ -174,19 +159,19 @@ void dBgW::GetVelocity(Vector3 &res) {
     res.x = res.y;
 }
 
-// @symbol func_02039404
-extern "C" int func_02039404(dBgW *collider) {
-    return collider->slotIdx;
+// @symbol _ZNK4dBgW12GetSlotIndexEv
+int dBgW::GetSlotIndex() const {
+    return slotIdx;
 }
 
-// @symbol func_020393fc
-extern "C" void func_020393fc(dBgW *collider, int slot) {
-    collider->slotIdx = slot;
+// @symbol _ZN4dBgW12SetSlotIndexEi
+void dBgW::SetSlotIndex(int slot) {
+    slotIdx = slot;
 }
 
-// @symbol func_020393f0
-extern "C" void func_020393f0(dBgW *collider) {
-    collider->slotIdx = 0x18;
+// @symbol _ZN4dBgW14ClearSlotIndexEv
+void dBgW::ClearSlotIndex() {
+    slotIdx = 0x18;
 }
 
 // @symbol _ZN4dBgW9IsEnabledEv
@@ -202,11 +187,11 @@ extern "C" void func_020393d4(int *collider, int callbackAddress) {
         reinterpret_cast<BeforeClsnCallback>(callbackAddress);
 }
 
-// @symbol func_020393cc
+// @symbol _ZNK4dBgW21GetBeforeClsnCallbackEv
 
 /* Reads beforeClsnCallback (+0x18). */
-extern "C" int func_020393cc(int *collider) {
-    return reinterpret_cast<int>(reinterpret_cast<dBgW *>(collider)->beforeClsnCallback);
+BeforeClsnCallback dBgW::GetBeforeClsnCallback() const {
+    return beforeClsnCallback;
 }
 
 // @symbol func_020393c4
@@ -217,49 +202,49 @@ extern "C" void func_020393c4(int *collider, int callbackAddress) {
         reinterpret_cast<StoodOnCallback>(callbackAddress);
 }
 
-// @symbol func_020393bc
+// @symbol _ZNK4dBgW18GetStoodOnCallbackEv
 
 /* Reads stoodOnCallback (+0x1c). */
-extern "C" int func_020393bc(int *collider) {
-    return reinterpret_cast<int>(reinterpret_cast<dBgW *>(collider)->stoodOnCallback);
+StoodOnCallback dBgW::GetStoodOnCallback() const {
+    return stoodOnCallback;
 }
 
-// @symbol func_020393b4
-extern "C" int func_020393b4(int *collider) {
-    return reinterpret_cast<int>(reinterpret_cast<dBgW *>(collider)->owner);
+// @symbol _ZNK4dBgW8GetActorEv
+dActor_c *dBgW::GetActor() const {
+    return owner;
 }
 
-// @symbol func_020393ac
-extern "C" int func_020393ac(int *collider) {
-    return reinterpret_cast<dBgW *>(collider)->ownerUniqueID;
+// @symbol _ZNK4dBgW16GetActorUniqueIDEv
+s32 dBgW::GetActorUniqueID() const {
+    return ownerUniqueID;
 }
 
-// @symbol func_020393a4
+// @symbol _ZN4dBgW13SetClipRadiusEi
 
 /* Sets clipRadius (+0x0c). */
-extern "C" void func_020393a4(int *collider, int clipDistance) {
-    reinterpret_cast<dBgW *>(collider)->clipRadius = clipDistance;
+void dBgW::SetClipRadius(Fix12i radius) {
+    clipRadius = radius;
 }
 
-// @symbol func_0203939c
+// @symbol _ZNK4dBgW13GetClipRadiusEv
 
 /* Reads clipRadius (+0x0c). */
-extern "C" int func_0203939c(int *collider) {
-    return reinterpret_cast<dBgW *>(collider)->clipRadius;
+Fix12i dBgW::GetClipRadius() const {
+    return clipRadius;
 }
 
-// @symbol func_02039394
+// @symbol _ZN4dBgW14SetClipOffsetYEi
 
 /* Sets clipOffsetY (+0x10). */
-extern "C" void func_02039394(int *collider, int clipOffsetY) {
-    reinterpret_cast<dBgW *>(collider)->clipOffsetY = clipOffsetY;
+void dBgW::SetClipOffsetY(Fix12i offsetY) {
+    clipOffsetY = offsetY;
 }
 
-// @symbol func_0203938c
+// @symbol _ZNK4dBgW14GetClipOffsetYEv
 
 /* Reads clipOffsetY (+0x10). */
-extern "C" int func_0203938c(int *collider) {
-    return reinterpret_cast<dBgW *>(collider)->clipOffsetY;
+Fix12i dBgW::GetClipOffsetY() const {
+    return clipOffsetY;
 }
 
 // @symbol _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_
@@ -322,8 +307,8 @@ extern "C" void func_020391f0(void) {}
 int dBgW::Enable(dActor_c *actor) {
     for (s32 slot = 0; slot < 0x18; slot++) {
         if (data_020a0c80[slot] == 0) {
-            func_020395fc(this, actor);
-            func_020393fc(this, slot);
+            SetActor(actor);
+            SetSlotIndex(slot);
             data_020a0c80[slot] = this;
             return 1;
         }
@@ -333,9 +318,9 @@ int dBgW::Enable(dActor_c *actor) {
 
 // @symbol _ZN4dBgW7DisableEv
 int dBgW::Disable() {
-    int slot = func_02039404(this);
+    int slot = GetSlotIndex();
     if (slot != 0x18) {
-        func_020393f0(this);
+        ClearSlotIndex();
         data_020a0c80[slot] = 0;
     }
     return 1;
