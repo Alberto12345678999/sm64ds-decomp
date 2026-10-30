@@ -3076,7 +3076,7 @@ data_02073768 kind:data(any) addr:0x02073768
 data_0207377c kind:data(any) addr:0x0207377c
 data_02073794 kind:data(any) addr:0x02073794
 data_020737a8 kind:data(any) addr:0x020737a8
-__sinit_02073a24 kind:function(arm,size=0x448) addr:0x02073a24
+__sinit_d_camera.cpp kind:function(arm,size=0x448) addr:0x02073a24
 __sinit_KuppaScript.cpp kind:function(arm,size=0xf24) addr:0x02073e6c
 __sinit_d_actor.cpp kind:function(arm,size=0x18) addr:0x02074d90
 __sinit_Sound.cpp kind:function(arm,size=0x14) addr:0x02074da8
@@ -3207,7 +3207,7 @@ data_02086a30 kind:data(any) addr:0x02086a30
 data_02086a58 kind:data(any) addr:0x02086a58
 data_02086b58 kind:data(any) addr:0x02086b58
 __ptmf_null kind:data(any) addr:0x02086b58
-.p__sinit_02073a24 kind:data(word) addr:0x02086b60
+.p__sinit_d_camera.cpp kind:data(word) addr:0x02086b60
 .p__sinit_KuppaScript.cpp kind:data(word) addr:0x02086b64
 .p__sinit_d_actor.cpp kind:data(word) addr:0x02086b68
 .p__sinit_Sound.cpp kind:data(word) addr:0x02086b6c
