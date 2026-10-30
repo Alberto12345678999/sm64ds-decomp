@@ -12,11 +12,12 @@
  * current sub-sound. While the music ducks below this sound's volume
  * the counter is held at its limit (every param but 6).
  *
- * Starter per param, from __sinit_ov002_02107f88's seven {ptr,0} pairs:
- * 0 PlaySecretSound, 1 PlaySmallSecretSound, 2 func_0200f7f0,
- * 3/5/6 func_ov002_020f9468, 4 func_ov002_020f93a8. Slot 7 is unfilled,
- * and row 7 of the sound table is the _ZTV12daSoundObj_c header, so 7
- * is not a real param even though InitResources only rejects above 7.
+ * Starter per param, from the seven {ptr,0} pairs this file copies into
+ * data_ov002_0211110c: 0 PlaySecretSound, 1 PlaySmallSecretSound,
+ * 2 func_0200f7f0, 3/5/6 func_ov002_020f9468, 4 func_ov002_020f93a8.
+ * Slot 7 is unfilled, and row 7 of the sound table is the
+ * _ZTV12daSoundObj_c header, so 7 is not a real param even though
+ * InitResources only rejects above 7.
  *
  * daSoundObj_c_classInit is reconstructed (RTTI daSoundObj_c, SOUND_OBJ
  * registry). Retail does not store that spelling.
@@ -34,7 +35,7 @@
  *   FindWithActorID loop (file-global; dropping it un-matches
  *   InitResources).
  * Leftover: g_profile_SOUND_OBJ is ov002 gap data outside this TU
- *   (S14), as are the sound table and the callback table.
+ *   (S14), as is the sound table. The callback table is this file's.
  * Leftover: the data_* externs keep their linker spellings.
  *   data_0208e430 is the current sub-sound ID, owned by
  *   Sound::PlaySub (no verified name); MUSIC_VOLUME_LSL_12 and
@@ -68,12 +69,44 @@ bool PlaySub(u32, u32, u32, int, bool);
 }
 
 extern "C" {
-extern SoundObjectCallback data_ov002_0211110c[];
 extern SoundObjRow data_ov002_0210c080[]; /* 7 rows; row 7 is the _ZTV12daSoundObj_c header */
 extern int data_0208e430;                 /* current sub-sound ID, owned by Sound::PlaySub */
 extern int data_0209b490;                 /* MUSIC_VOLUME_LSL_12 */
 extern int data_0209b49c;                 /* MESSAGE_SOUND_VOLUME_LSL_12 */
+extern int func_0200f7f0(dActor_c *actor, u16 *counter);
+int func_ov002_020f9468(daSoundObj_c *self, u16 *counter);
+int func_ov002_020f93a8(daSoundObj_c *self, u16 *counter);
 }
+
+namespace Sound {
+int PlaySecretSound(dActor_c *actor, u16 *counter);
+int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
+}
+
+/* {function, this-adjust} records. Retail stores the adjust as 0. The
+   bss table is filled from these by the compiler's __sinit, in param order. */
+struct SoundObjStarter {
+    int func;
+    int thisAdjust;
+};
+
+SoundObjStarter data_ov002_0210c010 = {(int)&Sound::PlaySmallSecretSound, 0};
+SoundObjStarter data_ov002_0210c018 = {(int)&func_ov002_020f9468, 0};
+SoundObjStarter data_ov002_0210c020 = {(int)&func_0200f7f0, 0};
+SoundObjStarter data_ov002_0210c028 = {(int)&func_ov002_020f9468, 0};
+SoundObjStarter data_ov002_0210c030 = {(int)&func_ov002_020f93a8, 0};
+SoundObjStarter data_ov002_0210c038 = {(int)&func_ov002_020f9468, 0};
+SoundObjStarter data_ov002_0210c040 = {(int)&Sound::PlaySecretSound, 0};
+
+SoundObjectCallback data_ov002_0211110c[7] = {
+    *(SoundObjectCallback *)&data_ov002_0210c040,
+    *(SoundObjectCallback *)&data_ov002_0210c010,
+    *(SoundObjectCallback *)&data_ov002_0210c020,
+    *(SoundObjectCallback *)&data_ov002_0210c038,
+    *(SoundObjectCallback *)&data_ov002_0210c030,
+    *(SoundObjectCallback *)&data_ov002_0210c018,
+    *(SoundObjectCallback *)&data_ov002_0210c028,
+};
 
 // @symbol daSoundObj_c_classInit
 extern "C" daSoundObj_c *daSoundObj_c_classInit()

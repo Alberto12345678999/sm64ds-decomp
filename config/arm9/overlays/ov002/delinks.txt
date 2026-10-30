@@ -305,6 +305,10 @@ src/game/actors/d_a_f_pkn_ball.cpp:
 src/game/actors/d_a_sound_obj.cpp:
     complete
     .text start:0x020f934c end:0x020f975c
+    .init start:0x02107f88 end:0x0210804c
+    .ctor start:0x0210812c end:0x02108130
+    .data start:0x0210c010 end:0x0210c048
+    .bss start:0x0211110c end:0x02111144
 
 src/ui/hud/d_map.cpp:
     complete
@@ -337,6 +341,4 @@ src/unnamed/ov002/__sinit_ov002_02100560.cpp:
     .init start:0x02100560 end:0x02100938
 
 
-src/unnamed/ov002/__sinit_ov002_02107f88.c:
-    complete
-    .init start:0x02107f88 end:0x0210804c
+
