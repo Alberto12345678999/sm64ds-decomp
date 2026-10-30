@@ -7,7 +7,7 @@ extern "C" {
 
 extern int data_0209d4a8; /* the scene graph callback (d_s_dsmt.cpp) */
 extern int data_0209d4ac; /* the brightness fader (d_scene.cpp) */
-extern int data_0209d4b0; /* the active transition fader (d_s_stage_methods.cpp wipes, KuppaScript.cpp colour fades) */
+extern int data_0209d4b0; /* the active transition fader (func_02018ec0) */
 
 extern void func_0203bd24(void);
 extern int func_02053be0(int enable);
