@@ -24,7 +24,7 @@
 
 // Notes: dBgW::SetClipRadius / dBgW::SetClipOffsetY / func_020393d4 / dBgW_Kc::SetEdgeToleranceShift are
 // the out-of-line stores into the collider's range fields and callback slot;
-// d_bg_w.cpp defines them and no header declares them.
+// d_bg_w.cpp defines them; the callback setters remain local.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjCtMecha11_c_AssetId {

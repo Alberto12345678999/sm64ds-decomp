@@ -4,7 +4,7 @@ Local worktree: `C:/tmp/sm64ds-collision-readability1027`, branch
 `cpp/collision-readability1027`, starting at
 `69a9d665276e996f91f209b9032024a2c4bb9ef1`.
 
-This is an ongoing folder-wide cleanup. The method names below are inferred
+This PR is a checkpoint in the folder-wide cleanup. The method names below are inferred
 from implementation and callers, not recovered Nintendo function spellings.
 The class identities already have ROM RTTI evidence in their headers.
 
@@ -32,29 +32,32 @@ would be a separate ABI/code-generation change. Both endpoint getters return
 `lineEnd = GetEnd()` followed by `Vector3 startPoint = GetStart()` reproduces
 the original local/temporary stack slots and call destinations exactly.
 
-The camera setup caller now uses `dCamera_c`, `Player`, and `dBgCh` headers.
-Two C camera callers explicitly pass the line query's zero-offset `dBgCh` base.
-The retired hand-mangled caller exceptions are removed. Math calls use
-`math/CalcLib.h`, and the root query's deallocator uses `Memory.h`.
+The camera setup caller uses `dCamera_c`, `Player`, and `dBgCh` headers.
+On the publication base it already lives in the promoted `d_camera.cpp`;
+this change replaces its remaining raw camera-mode helper call in that TU.
+Math calls use `math/CalcLib.h`, and the query/collider deallocators use
+`Memory.h` instead of copying its declarations.
 
-## Shared-header effects
+## Shared-header effects and publication base
 
-The two older Memory allocation declarations now omit parameter names, like
-that header's remaining declarations. Named prototype parameters advance this
-compiler's local-symbol counter even when they do not alter machine code.
+The branch was rebased onto `3f77042948a870780ed0cad960f87ce8f0982d4e`
+on 2026-10-29. Upstream camera promotion, actor cleanup and renamed callbacks
+are preserved. `Memory.h` retains the base's declaration spelling.
 
-Complete before/after objects were compared for 153 affected manifest-backed
-consumers with compiler-local policies. The comparison checks allocated
-section bytes, kind, flags, size, alignment, defined-symbol attributes/order,
-and typed relocation destinations. Only `ov004/dScMgBase_c` requires current
-compiler-local source mappings to move: five anonymous records shift by -2,
-and `__arraydtor$323` becomes `__arraydtor$321`. Their configured retail
-identities stay unchanged. Its 158 allocated sections and 658 relocations
-compare equal after resolving local identities by section and offset.
+Complete before/after objects for 325 affected manifest-backed translation
+units compare equal in allocated section payloads, kind, flags, size and
+alignment, defined-symbol attributes/order and typed relocation destinations.
+Semantic helper renames resolve to the same addresses. Named prototype
+parameters advance this compiler's local-symbol counter even when they do not
+alter machine code; including the shared allocation declarations and removing
+local helpers therefore requires source-identity updates in 156 manifests.
+The mappings include 44 static-local identities in four TUs that previously
+used their raw compiler names directly. Only compiler-local source mappings
+change; retail destinations are unchanged.
+The comparison report is `build/collision-publish-control/comparison.json`.
 
-Machine-readable comparison: `build/collision-memory-control/consumers.json`.
-The temporary control headers retain the previous Memory declaration spellings;
-no control source or header is enrolled in the production build.
+The earlier checkpoint evidence below describes the original base and is
+retained as history. Publication-base verification is recorded separately.
 
 ## Validation
 
@@ -82,7 +85,7 @@ The next pass names 15 more helpers, for 28 named interfaces across both passes:
 | 020396d0 | `dBgW_Kc::SetDepthDirMinDot` | Moving mesh and actor setup select the minimum face-direction dot product used by the sphere scan. |
 | 020396c0 | `dBgW_Kc::SetEdgeToleranceShift` | Three actor setup callers set the edge tolerance; the helper clamps negative shifts to zero. |
 
-The 34 directly changed source/header files now use declared property members;
+The changed source/header files use declared property members;
 the hit callback dispatch uses the shared `StoodOnCallback` type and actor
 pointers rather than integer-address views. The callback setters remain pending.
 
@@ -94,7 +97,7 @@ renumbers compiler-local symbols in 23 manifests; only their source identities
 were updated, leaving every retail destination unchanged. The report is
 `build/collision-properties-control/comparison.json`.
 
-Validation on the final sources:
+Second checkpoint validation before rebasing:
 
 - Full `rombuild.py -j16 --no-rom`: 106/106 exact modules, 11,380/11,380
   reproduced functions, 395/395 source-owned data claims; intact-TU symbol
@@ -108,6 +111,26 @@ Validation on the final sources:
 - Declaration agreement: no new disagreements or local header redeclarations.
 - Source style (including pinned formatter), port references, dead references,
   language-mode ratchet and `git diff --check`: pass.
+
+## Publication-base validation, 2026-10-29
+
+Against base `3f77042948a870780ed0cad960f87ce8f0982d4e`:
+
+- `python tools/rombuild.py -j16 --no-rom`: PASS. 106/106 exact modules,
+  11,380/11,380 reproduced functions, 438/438 source-owned data claims;
+  intact-TU module gates pass, zero new symbol errors, storage aliases exact.
+  Log: `build/collision-publish-rombuild.log`.
+- Complete-object comparison: all 325 affected manifest-backed TUs preserve
+  allocated bytes, section properties, defined-symbol attributes/order and
+  typed relocation destinations; compiler-local mappings are reconciled as
+  described above.
+- Declaration agreement: no new disagreements or local header redeclarations.
+- Source style: 49 files, zero findings and zero formatting deferrals.
+- Port references: 227 checked, all resolve. Dead references, language-mode
+  ratchet and `git diff --check` pass.
+
+The PR's independent `validate` check still determines CI byte acceptance for
+its candidate/base. These results do not claim folder-wide source acceptance.
 
 ## Remaining folder work
 

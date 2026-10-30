@@ -48,7 +48,7 @@
  * 0x08/0x0c are the querying actor: SetActor (every SetObjAnd* entry
  * point) stores the actor and its fBase_c uniqueID there, or (0, -1) for no
  * actor -- the same pair, written the same way, that dBgW names
- * owner/ownerUniqueID (func_020395fc). IsOwnedBy matches both words
+ * owner/ownerUniqueID (dBgW::SetActor). IsOwnedBy matches both words
  * against a collider's owner so a query skips its own actor's colliders.
  * The m prefix keeps them apart from dBgPi::owner, which every derived query
  * also inherits and which names the HIT collider's owner.

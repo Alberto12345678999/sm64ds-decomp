@@ -329,7 +329,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN14daRedBombhei_c19func_ov084_0212ca60Ev' differs between the legacy file that used to hold _ZN14daRedBombhei_c19func_ov084_0212c508Ev and the one that held _ZN14daRedBombhei_c13InitResourcesEv; kept the first during generation. Resolution: The TU forward declaration and definition both use int(daRedBombhei_c *).",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c13ClosestPlayerEv' differs between the legacy file that used to hold _ZN14daRedBombhei_c8BehaviorEv and the one that held _ZN14daRedBombhei_c13InitResourcesEv; kept the first during generation. Resolution: Calls now use dActor_c::ClosestPlayer from dActor_c.h.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov084_02130d9c' differs between the legacy file that used to hold _ZN14daRedBombhei_c19func_ov084_0212c92cEv and the one that held _ZN14daRedBombhei_c13InitResourcesEv; kept the first during generation. Resolution: The TU consistently declares this handle as SharedFilePtr.",
-    "Static initializer folded: the model and wait-animation handles (ids 0x2b9/0x2ba) and the three {enter, update} state records are real definitions in d_a_red_bombhei.cpp, replacing the handwritten src/unnamed/ov084/__sinit_ov084_02130558.cpp. mwcc emits __sinit_d_a_red_bombhei.cpp (0xfc), its .ctor word, the six PMF literals and the registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov084 .init, .ctor and .bss run in .text TU order; d_a_red_bombhei follows d_a_krb in .text, this initializer and its .ctor word 0x02130864 follow krb's, its .bss 0x02130d9c..0x02130df4 starts where krb's ends, and the literals name only this TU's state handlers. The same change licenses the TU's whole .data run 0x021309c4..0x02130ab4 (PMF literals, _ZTI/_ZTS, the new typed g_profile_RED_BOMBHEI and the vtable, whose 0x84-byte storage starts at 0x02130a30, two words ahead of the configured address point) and makes the TU intact-object."
+    "Static initializer folded: the model and wait-animation handles (ids 0x2b9/0x2ba) and the three {enter, update} state records are real definitions in d_a_red_bombhei.cpp, replacing the handwritten src/unnamed/ov084/__sinit_ov084_02130558.cpp. mwcc emits __sinit_d_a_red_bombhei.cpp (0xfc), its .ctor word, the six PMF literals and the registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov084 .init, .ctor and .bss run in .text TU order; d_a_red_bombhei follows d_a_krb in .text, this initializer and its .ctor word 0x02130864 follow krb's, its .bss 0x02130d9c..0x02130df4 starts where krb's ends, and the literals name only this TU's state handlers. The same change licenses the TU's whole .data run 0x021309c4..0x02130ab4 (PMF literals, _ZTI/_ZTS, the new typed g_profile_RED_BOMBHEI and the vtable, whose 0x84-byte storage starts at 0x02130a30, two words ahead of the configured address point) and makes the TU intact-object.",
+    "Collision property member calls replace local helper declarations. Reconciled 8 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (48 sections, 209 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -620,42 +621,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@632",
+      "from": "@631",
       "to": "data_ov084_02130dac",
       "evidence": "compiler temp mapped to 0x02130dac by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@633",
+      "from": "@632",
       "to": "data_ov084_02130db8",
       "evidence": "compiler temp mapped to 0x02130db8 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@635",
+      "from": "@634",
       "to": "data_ov084_021309dc",
       "evidence": "compiler temp mapped to 0x021309dc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@637",
+      "from": "@636",
       "to": "data_ov084_021309ec",
       "evidence": "compiler temp mapped to 0x021309ec by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@639",
+      "from": "@638",
       "to": "data_ov084_021309cc",
       "evidence": "compiler temp mapped to 0x021309cc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@641",
+      "from": "@640",
       "to": "data_ov084_021309e4",
       "evidence": "compiler temp mapped to 0x021309e4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@643",
+      "from": "@642",
       "to": "data_ov084_021309c4",
       "evidence": "compiler temp mapped to 0x021309c4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@645",
+      "from": "@644",
       "to": "data_ov084_021309d4",
       "evidence": "compiler temp mapped to 0x021309d4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

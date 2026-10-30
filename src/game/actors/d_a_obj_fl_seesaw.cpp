@@ -12,7 +12,7 @@
  *
  * Notes:
  * - dBgW::SetClipRadius and func_020393d4 store into dBgW internals. d_bg_w.cpp
- *   defines them and no header declares them.
+ *   defines them; the callback setters remain local.
  * - data_ov022_021145a8 (the seesaw BMD), data_ov022_021145a0 (the KCL)
  *   and data_ov064_0211bacc (the CLPS row SetFile is handed) are unnamed
  *   data rows in their own modules.

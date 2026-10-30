@@ -13,7 +13,7 @@
  *
  * Notes:
  * - dBgW::SetClipOffsetY / dBgW::SetClipRadius / func_020393c4 / func_020393d4 are
- *   small stores into dBgW (d_bg_w.cpp, no header).
+ *   small stores into dBgW (d_bg_w.cpp; property members are in dBgW.h).
  * - StoodOnCallback keeps #pragma long_calls -- the ROM veneer is the
  *   pooled ldr ip,[pc,#8]; bx ip absolute tail-call (size 0x14); a near b
  *   to OnStoodOn in this same TU is 0xc.

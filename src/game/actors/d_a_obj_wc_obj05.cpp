@@ -15,7 +15,7 @@
  * What stays:
  * - func_020393d4 / func_020393c4 / dBgW::SetClipRadius: InitResources stores
  *   dBgW::UpdatePosWithTransform and &StoodOnCallback on mMeshCollider;
- *   Behavior clips at 0x250000; dBgW.h has no setter.
+ *   Behavior clips at 0x250000 through the dBgW property member.
  * - gWcObj05ModelFile / 02114284 are this TU's BMD/KCL file handles;
  *   data_ov029_0211306c the CLPS block stays unowned overlay data.
  * - S14: g_profile_WC_OBJ05 stays outside the licensed .text.

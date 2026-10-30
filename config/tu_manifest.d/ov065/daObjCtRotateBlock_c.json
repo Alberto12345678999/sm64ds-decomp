@@ -303,7 +303,8 @@
     "fold branch tu/fold-highov-0921: 9/9 MATCH. The out-of-line destructor is the key function: D2 is homeless deadstrip, Vector3D1 is the arm9 duplicate, and the _ZTV/_ZTI/_ZTS chain is deadstrip-data. Matrix4x3_FromRotationY keeps the short angle from UpdateShadow.",
     "classInit fold (0930c): both factories are folded in last, in ROM order (CT_MECHA02 then CT_MECHA01), under the file's `#pragma defer_codegen off`, each as `return new daObjCtRotateBlock_c();` (no user-declared constructor, so the synthesized one reproduces the hand-called sequence). The new-expression makes mwccarm emit _ZN10dBgActor_cD2Ev, licensed as a compiler_only_output deadstrip row. tubuild verify: 11/11 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_obj_ct_rotate_block_ct_mecha02.c and src/d_a_obj_ct_rotate_block_ct_mecha01.c; their credit carries in attribution.json as path#symbol overrides.",
     "Static initializer folded: the four RotateBlockModelFile handles (files 0x5b6/0x5b9/0x5b8/0x5bb), the two RotateBlockCollisionFilePtr handles (files 0x5b7/0x5ba) and their destructor-registration nodes move out of the handwritten src/unnamed shard into src/game/actors/d_a_obj_ct_rotate_block.cpp. The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov065_0211c660 with the same instruction sequence, literal pool order and relocation sites; the handwritten shard is retired. @627/@629/@631 clashed with the fleet and are renamed (@627->@951, @629->@895, @631->@891); @628/@630/@632 were free and are kept.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (39 sections, 169 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -615,32 +616,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@691",
+      "from": "@690",
       "to": "@951",
       "evidence": "mwcc numbers this registration node @627 per TU and the fleet already defines a global @627, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@693",
+      "from": "@692",
       "to": "@895",
       "evidence": "mwcc numbers this registration node @629 per TU and the fleet already defines a global @629, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@695",
+      "from": "@694",
       "to": "@891",
       "evidence": "mwcc numbers this registration node @631 per TU and the fleet already defines a global @631, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@692",
+      "from": "@691",
       "to": "@628",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @644 now; licensed under the existing pin @628 | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@694",
+      "from": "@693",
       "to": "@630",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @646 now; licensed under the existing pin @630 | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@696",
+      "from": "@695",
       "to": "@632",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @648 now; licensed under the existing pin @632 | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     }

@@ -452,7 +452,8 @@
     "This entry licenses .text, .init, .ctor, and the resource .bss. ov035's .data is not claimed here, so the class vtable and the whole __si_class_type_info chain the compiler drags in with it are compiler-only output, each row naming the cartridge copy it duplicates.",
     "FOLD. The handwritten src/__sinit_ov035_02111f04.c is retired. Four file-scope resource handles in d_a_obj_ct_mecha10.cpp make mwcc emit __sinit_d_a_obj_ct_mecha10.cpp (0xbc) and .p__sinit_d_a_obj_ct_mecha10.cpp. Class RTTI and the vtable stay externalized.",
     "FOLD 2026-09-28. daObjCtMecha10_c_classInit_CT_MECHA12S/_CT_MECHA12L/_CT_MECHA10 at 0x0211165c/0x0211168c/0x021116bc were folded in from src/d_a_obj_ct_mecha10_ct_mecha12s.c, _ct_mecha12l.c and _ct_mecha10.c. They are the CT_MECHA12S/CT_MECHA12L/CT_MECHA10 registry profiles' factories and sit immediately after InitResources in the ROM's .text order with daObjCtMecha11_c (a different class) starting immediately after them, so they were always part of this TU. Each loose factory called _ZN10dBgActor_cC2Ev(p) then stored p[0] = (int)_ZTV16daObjCtMecha10_c by hand; daObjCtMecha10_c declares no constructor of its own, so the compiler-synthesized default constructor emits exactly that base-call-then-vtable-store sequence, and each factory is written as the real `return new daObjCtMecha10_c();`.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records).",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (31 sections, 137 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -766,22 +767,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@417",
+      "from": "@415",
       "to": "@419",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@418",
+      "from": "@416",
       "to": "@420",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@419",
+      "from": "@417",
       "to": "@421",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@420",
+      "from": "@418",
       "to": "@422",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     }

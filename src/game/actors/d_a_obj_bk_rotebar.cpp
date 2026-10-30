@@ -14,7 +14,7 @@
  *
  * Notes:
  * - dBgW::SetClipRadius / func_020393d4 are 4-byte stores into dBgW+0x0c and
- *   dBgW+0x18 (beforeClsnCallback), defined in d_bg_w.cpp with no header.
+ *   dBgW+0x18 (beforeClsnCallback), defined in d_bg_w.cpp; the callback setter remains local.
  * - data_ov015_02114a84 / 02114a8c are this overlay's KCL/BMD handles.
  * - data_ov015_02113654 is the CLPS block in overlay .data this TU does
  *   not own.

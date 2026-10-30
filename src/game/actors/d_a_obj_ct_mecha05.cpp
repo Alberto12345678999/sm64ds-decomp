@@ -6,7 +6,7 @@
  *   are header member calls whose headers spell Fix12 as Fix12i, a plain
  *   s32 (6az)
  * - func_020393d4 stores dBgW+0x18 (beforeClsnCallback); dBgW::SetClipRadius
- *   stores +0x0c; dBgW::SetClipOffsetY stores +0x10 (no setter)
+ *   stores +0x0c; dBgW::SetClipOffsetY stores +0x10
  * - data_ov065_0211c0c8 / data_ov065_0211d26c; TTC_MovingBar_ModelFile /
  *   TTC_MovingBar_ClsnFile are symbols.txt BSS labels shared with the
  *   neighbouring class

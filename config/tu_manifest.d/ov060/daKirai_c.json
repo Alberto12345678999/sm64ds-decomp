@@ -211,7 +211,8 @@
     "One out-of-line destructor under #pragma defer_codegen off. D2 is homeless deadstrip. Vector3 D1 is the vague duplicate of arm9:0x020072c0. Vtable and the ancestor RTTI chain are deadstrip-data at their existing addresses.",
     "The nine func_ov060_* helpers take the bomb in r0 and are daKirai_c methods; the address is the method name. Four of them are stored as pointer-to-member code words in .data at 0x0211aa30/38/40/48 (the state table the sinit copies to 0x0211b1d8).",
     "Static initializer folded: the KiraiModelFilePtr global, its destructor-registration node, and the KiraiState[4] table make mwcc emit __sinit_ov060_0211a388 itself; the handwritten src/__sinit_ov060_0211a388.c is retired.",
-    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the five owned ranges matched."
+    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the five owned ranges matched.",
+    "Collision property member calls replace local helper declarations. Reconciled 5 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (36 sections, 123 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -770,27 +771,27 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@843",
+      "from": "@842",
       "to": "@707",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @727 now; licensed under the existing pin @707 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@849",
+      "from": "@848",
       "to": "@713",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @733 now; licensed under the existing pin @713 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@847",
+      "from": "@846",
       "to": "@711",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @731 now; licensed under the existing pin @711 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@845",
+      "from": "@844",
       "to": "@709",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @729 now; licensed under the existing pin @709 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@841",
+      "from": "@840",
       "to": "@705",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @725 now; licensed under the existing pin @705 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }

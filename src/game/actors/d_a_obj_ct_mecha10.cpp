@@ -38,8 +38,8 @@
 // Notes (each measured): the widened int idMatch / isMecha12L stay (folding
 // the actorID tests into the ifs reorders the body). dBgW_Kc::SetEdgeToleranceShift and
 // func_020393d4 are the out-of-line stores into the collider's
-// edgeToleranceShift and beforeClsnCallback; d_bg_w.cpp defines them and no
-// header declares them. Both data_ov035_02111ef0 stores stay (one local
+// edgeToleranceShift and beforeClsnCallback; d_bg_w.cpp defines them. The callback setter has no
+// shared declaration. Both data_ov035_02111ef0 stores stay (one local
 // shrinks InitResources). unk_326 is written with no reader in this TU.
 // DecIfAbove0_Short, RandomIntInternal, the data_ov035_* files/tables/CLPS
 // block, data_0209f2c0, data_0209e650 keep linker names. The three

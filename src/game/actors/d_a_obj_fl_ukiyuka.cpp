@@ -12,7 +12,7 @@
  * - The file table is still data_ov022_021140d4 (two Resources rows,
  *   indexed by mVariant). The four handles it points at are defined at the
  *   bottom of this file; __sinit_d_a_obj_fl_ukiyuka.cpp constructs them.
- * - dBgW::SetClipRadius is still the linker name of the dBgW range setter both
+ * - dBgW::SetClipRadius is the out-of-line range setter both
  *   Init arms call on mMeshCollider.
  * - InitResources returns nothing, faithfully: the header declares `int`,
  *   the body sets no return value and neither does the ROM. A `return`

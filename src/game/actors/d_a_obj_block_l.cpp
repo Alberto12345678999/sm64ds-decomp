@@ -348,7 +348,7 @@ int daObjBlockL_c::Render() {
 }
 
 // @symbol _ZN13daObjBlockL_c8BehaviorEv
-/* dBgW::SetClipRadius and dBgW::SetClipOffsetY are the ROM's unnamed collision setters.
+/* Clip bounds use the out-of-line dBgW property setters.
    IsClsnInRangeOnScreen takes its Fix12 arguments as Fix12i. */
 int daObjBlockL_c::Behavior() {
     if (IsActorID(this, 0x13)) {

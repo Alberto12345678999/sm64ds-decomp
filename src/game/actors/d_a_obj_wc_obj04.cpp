@@ -16,7 +16,7 @@
  * What stays:
  * - func_020393d4: InitResources stores dBgW::UpdatePosWithTransform on
  *   mMeshCollider; dBgW.h has no setter.
- * - dBgW::SetClipRadius: Behavior pokes mMeshCollider with 0x100000 (no setter).
+ * - dBgW::SetClipRadius: Behavior sets the collider range to 0x100000.
  * - data_ov029_0211432c / 02114324 are this TU's BMD/KCL file handles;
  *   data_ov029_0211304c the CLPS block stays unowned overlay data.
  * - Behavior case 1 keeps the unsigned short* increment pointer

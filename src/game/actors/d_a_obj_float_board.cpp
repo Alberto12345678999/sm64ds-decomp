@@ -13,13 +13,7 @@
  * OnStoodOn, StoodOnCallback) are coined from the bodies; nothing in the ROM
  * names them.
  *
- * What stays: dBgW::SetClipRadius is an 8-byte store into dBgW+0x0c (d_a_obj_emm_log
- *   finding); naming belongs with dBgW in arm9. Its parameter is spelled
- *   dBgW_KcMbg * because that is what dBgActor_c::mMeshCollider is declared as
- *   in include/dBgActor_c.h, so the call needs no upcast; d_a_obj_path_lift.cpp
- *   already spells it the same way. The three dBgW * spellings elsewhere name
- *   a base of that type, and the definition in src/engine/collision/d_bg_w.cpp still says
- *   int *.
+ * Clip bounds use the out-of-line dBgW::SetClipRadius member.
  * What stays: sine table data_02082214 (arm9).
  * What stays: Behavior bumps mBobPhase through ctr, then reads it back as
  *   *(unsigned short *)&mBobPhase -- the reload the ROM does after the

@@ -85,8 +85,6 @@ struct BkKabeCollisionFilePtr : SharedFilePtr {
 
 extern KabeFiles data_ov079_02128058[];
 
-/* local extern: writes the mesh active range at dBgW+0x0c. The definition
- * is C and takes int *, so this spelling matches it and the call casts. */
 
 /* Scalar ABI. Particle__System.h's NewSimple takes Fix12<int> by value, and
  * that spelling does not compile against the ints Kill passes (see above). */

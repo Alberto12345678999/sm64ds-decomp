@@ -28,7 +28,7 @@
  * Notes:
  * - func_020393d4 / func_020393c4 are 4-byte stores into dBgW's callback
  *   slots, and dBgW::SetClipRadius / dBgW::SetClipOffsetY write its collision extents.
- *   d_bg_w.cpp defines them and no header declares them.
+ *   d_bg_w.cpp defines them; the callback setters remain local.
  * - The three pointers this class's file table holds -- the ov022 .bss
  *   SharedFilePtrs at 0x02114500 and 0x02114508, and the ov064 CLPS block at
  *   0x0211bbac -- are unnamed rows in their modules' data. The two handles
