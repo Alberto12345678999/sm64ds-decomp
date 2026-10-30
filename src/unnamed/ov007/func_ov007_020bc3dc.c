@@ -1,7 +1,8 @@
 #include "Ov007Model.h"
 
-/* The BCA header fields this file reads; dExtFrameCtrl_c::UpdateFileOffsets
- * spells the rest. The byte at +4 selects func_ov007_020c9214's loop mode
+/* A partial C view of the BCA header: the tree only forward-declares the
+ * tag, and its C++ reader, dExtFrameCtrl_c::UpdateFileOffsets, spells the
+ * rest. The byte at +4 selects func_ov007_020c9214's loop mode
  * below: zero plays once, nonzero wraps. */
 struct BCA_File {
     char pad_00[2];
