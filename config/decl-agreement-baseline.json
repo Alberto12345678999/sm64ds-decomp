@@ -18918,14 +18918,6 @@
         "param:#1 LVL_Overlay::StandardEntry *"
       ]
     },
-    "func_020308b4": {
-      "src/game/stages/d_s_entry_methods.cpp": [
-        "arity:1"
-      ],
-      "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp": [
-        "param:#1 int"
-      ]
-    },
     "func_02033464": {
       "src/unnamed/ov075/func_ov075_02119b34.c": [
         "param:#1 unsigned char",
@@ -20166,12 +20158,12 @@
         "param:#1 int *"
       ]
     },
-    "func_0204f82c": {
+    "NNS_SndPlayerSetTrackVolume": {
       "src/unnamed/arm9/0204/func_020490b0.cpp": [
         "param:#2 unsigned short"
       ]
     },
-    "func_0204f86c": {
+    "NNS_SndPlayerSetTrackMute": {
       "src/unnamed/arm9/0204/func_020490b0.cpp": [
         "param:#2 unsigned short"
       ]
