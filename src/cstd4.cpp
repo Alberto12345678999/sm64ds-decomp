@@ -212,16 +212,24 @@ float func_0206ddcc(float a, int op) {
  * is the same pre-2005 codegen difference recorded in notes/mwccarm-codegen.md
  * 6ai for the fBase_c::Process wrappers.
  */
-extern int func_02073238(void);
 extern int func_01ffb008(int a, int b);
 extern int raise(int sig);
 
 typedef void (*DispatchFn)(int a0, Pair p1, Pair p2, unsigned int flags);
 
+/* data_020aa3f8: a head word, then one handler per exception bit 26..30
+   of flags. */
+typedef struct FpHandlerTable {
+    unsigned int head;
+    DispatchFn handler[5];
+} FpHandlerTable;
+extern void *func_02073238(void);
+
 // @symbol func_0206de14
 void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 {
-  DispatchFn fn = (DispatchFn) func_02073238();
+  FpHandlerTable *table = (FpHandlerTable *) func_02073238();
+  DispatchFn fn;
   if ((flags & 0xc00000) == 0)
   {
     flags |= func_01ffb008(0, 0) & 0xc00000;
@@ -229,23 +237,23 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
   switch (flags & 0x7c000000)
   {
     case 0x40000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0x14));
+      fn = table->handler[4];
       break;
 
     case 0x04000000:
-      fn = *((DispatchFn *) (((char *) fn) + 4));
+      fn = table->handler[0];
       break;
 
     case 0x10000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0xc));
+      fn = table->handler[2];
       break;
 
     case 0x20000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0x10));
+      fn = table->handler[3];
       break;
 
     case 0x08000000:
-      fn = *((DispatchFn *) (((char *) fn) + 8));
+      fn = table->handler[1];
       break;
 
     default:

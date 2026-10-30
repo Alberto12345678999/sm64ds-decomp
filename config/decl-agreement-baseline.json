@@ -20394,9 +20394,6 @@
     "func_02073238": {
       "src/unnamed/arm9/01ff/func_01ffafd4.c": [
         "return:int"
-      ],
-      "src/cstd4.cpp": [
-        "return:int"
       ]
     },
     "__cxa_vec_delete": {
