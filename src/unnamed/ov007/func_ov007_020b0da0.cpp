@@ -5,6 +5,7 @@
 #include "Ov007Touch.h"
 #include "cstd.h"
 #include "Ov007Item.h"
+#include "Ov007Model.h"
 
 extern "C" {
 
@@ -25,17 +26,6 @@ extern short data_02082214[];
 
 extern void Matrix4x3_LoadIdentity(void *mat);
 
-/* Reconstructed layouts and names, not recovered class identity; only the
- * slots this file touches.
- *
- * Ov007Model is the 0xa0-byte model record func_ov007_020bc6d4 allocates
- * (names as in func_ov007_020bc47c). */
-typedef struct Ov007Model {
-    struct ModelComponents *model; /* 0x00 */
-    char pad_04[0x90];
-    int visible; /* 0x94: func_ov007_020bbff0 renders only while it is nonzero */
-} Ov007Model;
-
 /* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
  * medium-confidence name. */
 typedef struct Ov007Figure {
@@ -47,7 +37,6 @@ typedef struct Ov007Figure {
     void *update;
 } Ov007Figure;
 
-typedef char Ov007Model_size_must_be_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
 typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
 
 /* The extern keeps decl_common.h's void * spelling; the typed view is

@@ -56,6 +56,7 @@
 #include "dExtModel_c.h"
 #include "nitro/fx/fx.h"
 #include "types.h"
+#include "Ov007Model.h"
 
 extern "C" {
 
@@ -70,32 +71,6 @@ typedef struct Vec3Words {
 typedef struct Vec3sWords {
     s16 w[3];
 } Vec3sWords;
-
-/* func_ov007_020c9110's animation player; names as in func_ov007_020bc02c,
- * only the slots this file reads. */
-typedef struct Ov007AnimPlayer {
-    /* 0x00: 0 playing; 1 held; func_ov007_020c9110 sets 2 when a one-shot ends */
-    s32 state;
-    char pad_04[8];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame; /* 0x10: the whole frame func_ov007_020c9110 last reached */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc02c, only the slots this file reads. */
-typedef struct Ov007Model {
-    struct ModelComponents *model; /* 0x00 */
-    char pad_04[0x14];
-    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
-    char pad_1c[0x78];
-    int visible; /* 0x94: func_ov007_020bbff0 renders only while it is nonzero */
-    /* 0x98: 1 on the frames that step the animations (func_ov007_020bc02c) */
-    int animTick;
-} Ov007Model;
-
-typedef char
-    Ov007Model_animTick_must_be_at_0x98[(int)&((Ov007Model *)0)->animTick == 0x98 ? 1 : -1];
 
 /* The 0x1c-byte figure func_ov007_020beaa0 builds around an Ov007Model:
  * Ov007Work's figure (index 0) and altFigure (index 1);
@@ -225,11 +200,11 @@ extern void func_02053380(s16 *in, s16 *out);
 extern void func_ov007_020b3edc(int idx);
 extern void *func_ov007_020b3f20(int idx);
 extern int func_ov007_020aebac(void);
-extern void func_ov007_020bc02c(char *model, void *viewMatrix);
+extern void func_ov007_020bc02c(Ov007Model *model, void *viewMatrix);
 extern void func_ov007_020bc3dc(void *model, int anim, int a2);
-extern void func_ov007_020bc53c(int model);
-extern void func_ov007_020bc6b4(int *model, int files, int count);
-extern void *func_ov007_020bc6d4(void *file, int flags);
+extern void func_ov007_020bc53c(Ov007Model *model);
+extern void func_ov007_020bc6b4(Ov007Model *model, void *files, int count);
+extern Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 
 /* The extern keeps the tree's char * spelling of the work block; the typed
  * view is reached through a cast macro. */
@@ -322,8 +297,8 @@ Ov007Figure *func_ov007_020beaa0(int index, int figureIndex) {
     flags = 2;
     if (index == 1)
         flags |= 8;
-    fig->model = (Ov007Model *)func_ov007_020bc6d4(file, flags);
-    func_ov007_020bc6b4((int *)fig->model, (int)data_ov007_02104bc4[index], 2);
+    fig->model = func_ov007_020bc6d4(file, flags);
+    func_ov007_020bc6b4(fig->model, data_ov007_02104bc4[index], 2);
 
     fig->yaw = 0;
     fig->prevPos.z = 0;
@@ -342,7 +317,7 @@ void func_ov007_020bea44(Ov007Figure *fig) {
     func_ov007_020b3edc(data_ov007_020d7c5c[fig->figureIndex][fig->index]);
     func_ov007_020b3edc(0xe);
     if (fig->model != 0) {
-        func_ov007_020bc53c((int)fig->model);
+        func_ov007_020bc53c(fig->model);
         fig->model = 0;
     }
     func_ov007_020c3d1c(fig);
@@ -372,7 +347,7 @@ void func_ov007_020be9ac(Ov007Figure *fig, Ov007Model *owner, void *viewMatrix) 
             m->visible = 0;
     }
 
-    func_ov007_020bc02c((char *)fig->model, viewMatrix);
+    func_ov007_020bc02c(fig->model, viewMatrix);
     if (fig->update != 0)
         fig->update(fig);
     func_ov007_020beb80(fig);

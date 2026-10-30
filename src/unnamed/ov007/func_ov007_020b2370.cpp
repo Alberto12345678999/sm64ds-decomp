@@ -2,6 +2,7 @@
 #include "types.h"
 #include "Ov007Work.h"
 #include "Ov007Camera.h"
+#include "Ov007Model.h"
 extern "C" {
 void func_ov007_020bc02c(void* a, void* b);
 void func_ov007_020be9ac(void* a, void* b, void* c);
@@ -12,21 +13,12 @@ extern char *data_ov007_0210342c;
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc434, only the slot this file writes. */
-struct Ov007Model {
-    char pad_00[0x40];
-    Vector3 scale; /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
-};
-
 /* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
  * names as in func_ov007_020b0da0, medium-confidence. */
 struct Ov007Figure {
     char pad_00[4];
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 };
-
-typedef char Ov007Model_size_must_be_0x4c[sizeof(Ov007Model) == 0x4c ? 1 : -1];
 
 /* Poses the manager model and both figures against camera 0's view matrix,
  * scales the model by modelGrowth, then renders all three. */

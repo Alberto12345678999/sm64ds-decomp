@@ -5,6 +5,7 @@
 #include "Ov007Work.h"
 #include "cstd.h"
 #include "Ov007Item.h"
+#include "Ov007Model.h"
 
 extern "C" {
 
@@ -23,23 +24,6 @@ typedef struct Ov007Pad {
     u16 keys;     /* 0x00: held this frame */
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
-
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as
- * in func_ov007_020bc02c, only the slots read here. */
-typedef struct Ov007AnimPlayer {
-    char pad_00[0xc];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
-    u16 frameCount; /* 0x12 */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc02c, only the slot read here. */
-typedef struct Ov007Model {
-    char pad_00[0x18];
-    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
-} Ov007Model;
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
