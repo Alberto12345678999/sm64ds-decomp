@@ -1,8 +1,9 @@
 //cpp
 /* NitroSDK FS_overlay.c FS_EndOverlay, an older revision than pret's: with
  * interrupts disabled, unlink every __global_destructor_chain entry whose
- * destructor lies in the overlay's image or whose object lies in its bss, run the ones unlinked, and repeat until a pass finds
- * none. Then hand the target, address and size to func_0206cf98. */
+ * destructor lies in the overlay's image or whose object lies in its bss,
+ * run the ones unlinked, and repeat until a pass finds none. Then hand the
+ * target, address and size to func_0206cf98. */
 #include "types.h"
 #include "IRQ.h"
 #include "nitro/fs/overlay.h"

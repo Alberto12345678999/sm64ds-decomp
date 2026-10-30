@@ -1,6 +1,7 @@
 //cpp
 /* Static initializer for the rolling log's model and collision handles
- * (fl_log.bmd, fl_log.kcl), each registered with __register_global_object on a 12-byte node.
+ * (fl_log.bmd, fl_log.kcl), each registered with __register_global_object
+ * on a 12-byte node.
  *
  * Not folded: the owner is daObjFlMaruta_c. Its resource list
  * data_ov022_02112c9c points at both handles, and this .init sits between
