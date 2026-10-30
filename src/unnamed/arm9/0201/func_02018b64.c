@@ -33,7 +33,7 @@ typedef char FSFile_size_must_be_0x48[sizeof(FSFile) == 0x48 ? 1 : -1];
 typedef struct Pair { int a; int b; } Pair;
 
 extern void FS_InitFile(void *s);
-extern void func_0205e088(Pair *dst, void *src);
+extern void FS_GetOverlayFileID(Pair *dst, void *src);
 extern int myFS_OpenFileFast(void *a, Pair bc);
 extern void func_0205e0b0(void *info);
 extern int myFS_ReadFile(void *a, int b, int c);
@@ -47,7 +47,7 @@ int func_02018b64(char *self)
     FSOverlayInfo *ovi = (FSOverlayInfo *)self;
 
     FS_InitFile(&file);
-    func_0205e088(&v, self);
+    FS_GetOverlayFileID(&v, self);
     if (myFS_OpenFileFast(&file, v) == 0)
         return 0;
 

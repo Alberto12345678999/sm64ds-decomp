@@ -1617,7 +1617,7 @@
       "src/game/actors/d_a_demo.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0205/func_02059eb0.c": [
+      "src/OS_GetOwnerInfo.c": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0206/func_0206116c.cpp": [
@@ -20791,7 +20791,7 @@
         "param:#3 void *"
       ]
     },
-    "func_0205d89c": {
+    "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
         "return:int"
       ]
@@ -20802,23 +20802,23 @@
         "param:#2 void *"
       ]
     },
-    "func_0205d96c": {
-      "src/unnamed/arm9/0205/func_0205d89c.c": [
+    "FSi_InitRom": {
+      "src/FS_Init.c": [
         "param:#1 int"
       ]
     },
     "func_0205da94": {
-      "src/unnamed/arm9/0205/func_0205d96c.c": [
+      "src/FSi_InitRom.c": [
         "kind:data"
       ]
     },
     "func_0205db24": {
-      "src/unnamed/arm9/0205/func_0205d96c.c": [
+      "src/FSi_InitRom.c": [
         "kind:data"
       ]
     },
     "func_0205db2c": {
-      "src/unnamed/arm9/0205/func_0205d96c.c": [
+      "src/FSi_InitRom.c": [
         "kind:data"
       ]
     },
@@ -20835,7 +20835,7 @@
         "param:#3 int"
       ]
     },
-    "func_0205dc0c": {
+    "FS_UnloadOverlay": {
       "src/UnloadOverlay.c": [
         "return:void"
       ],
@@ -21012,7 +21012,7 @@
         "return:int"
       ]
     },
-    "func_0206045c": {
+    "CARD_GetBackupTotalSize": {
       "src/engine/save/SaveData2.cpp": [
         "return:unsigned int"
       ]

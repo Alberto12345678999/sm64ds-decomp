@@ -31,7 +31,7 @@
 //
 // 0x04000208 is REG_IME; storing 0x04000000 there clears bit 0, i.e. interrupts off.
 // The I/O base doubles as both the value and the store's base register.
-// data_023c0000 is the DTCM block src/engine/os/OS_Interrupt.cpp (func_02057000) also
+// data_023c0000 is the DTCM block src/engine/os/OS_Interrupt.cpp (OS_InitIrqTable) also
 // writes; +0x3ffc is its last word, and the same pool entry is reloaded as the
 // register-image pointer at the end.
 

@@ -1,3 +1,8 @@
+/* NitroSDK FS_rom.c FSi_InitRom, an older revision than pret's (no
+ * multiboot-child branch): store the default DMA channel (data_020a8060),
+ * take a card lock id, clear the ARM9/ARM7 overlay-table regions, CARD_Init,
+ * set up the ROM archive data_020a8074 and register it as "rom", then load
+ * it from the ROM header's FNT/FAT regions (A, B) unless either is 0 or ~0. */
 #include "nitro/os/spinLock.h"
 
 extern void *data_020a8060;
@@ -19,12 +24,11 @@ extern int func_0205cb68(int *self, int a1, int a2, int a3, int a4, int a5, int 
 #define B ((int *)0x27ffe48)
 
 #pragma opt_propagation off
-void func_0205d96c(void *arg)
-{
+void FSi_InitRom(void *default_dma_no) {
     int *a;
     int *b;
 
-    data_020a8060 = arg;
+    data_020a8060 = default_dma_no;
     data_020a805c = OS_GetLockID();
     data_020a8064[0] = 0;
     data_020a8064[1] = 0;

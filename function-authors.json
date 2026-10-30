@@ -9959,7 +9959,7 @@
     },
     "arm9:0x02059eb0": {
       "author": "tangosdev",
-      "name": "func_02059eb0"
+      "name": "OS_GetOwnerInfo"
     },
     "arm9:0x02059f2c": {
       "author": "ruspecial",
@@ -10495,7 +10495,7 @@
     },
     "arm9:0x0205d89c": {
       "author": "andrewboudreau",
-      "name": "func_0205d89c"
+      "name": "FS_Init"
     },
     "arm9:0x0205d8d8": {
       "author": "tangosdev",
@@ -10511,7 +10511,7 @@
     },
     "arm9:0x0205d96c": {
       "author": "andrewboudreau",
-      "name": "func_0205d96c"
+      "name": "FSi_InitRom"
     },
     "arm9:0x0205da94": {
       "author": "tangosdev",
@@ -10535,11 +10535,11 @@
     },
     "arm9:0x0205dc0c": {
       "author": "andrewboudreau",
-      "name": "func_0205dc0c"
+      "name": "FS_UnloadOverlay"
     },
     "arm9:0x0205dc60": {
       "author": "tangosdev",
-      "name": "func_0205dc60"
+      "name": "FS_UnloadOverlayImage"
     },
     "arm9:0x0205dc7c": {
       "author": "ruspecial",
@@ -10563,7 +10563,7 @@
     },
     "arm9:0x0205e088": {
       "author": "tangosdev",
-      "name": "func_0205e088"
+      "name": "FS_GetOverlayFileID"
     },
     "arm9:0x0205e0b0": {
       "author": "tangosdev",
@@ -10811,15 +10811,15 @@
     },
     "arm9:0x020603c8": {
       "author": "tangosdev",
-      "name": "func_020603c8"
+      "name": "CARD_IdentifyBackup"
     },
     "arm9:0x0206045c": {
       "author": "tangosdev",
-      "name": "func_0206045c"
+      "name": "CARD_GetBackupTotalSize"
     },
     "arm9:0x02060470": {
       "author": "tangosdev",
-      "name": "func_02060470"
+      "name": "CARD_GetCurrentBackupType"
     },
     "arm9:0x02060484": {
       "author": "ruspecial",
