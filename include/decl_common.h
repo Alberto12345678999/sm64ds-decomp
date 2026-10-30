@@ -889,6 +889,10 @@ extern int RouletteResults_Tick(void);
 extern int RouletteBoard_LoadModels(char*);
 extern int func_ov007_020b6f4c(void);
 extern int func_ov007_020c3ba8(int);
+/* ov007's allocator: (name, size). The parameters stay unnamed here on
+   purpose: named, they renumbered compiler @NNN labels in this header's C++
+   consumers, and the intact-TU stage refused ten or more actor TUs
+   ("rename source @555 has 0 symbols"). */
 extern void *func_ov007_020c3df4(const char *, int);
 extern int func_ov010_02111984[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
