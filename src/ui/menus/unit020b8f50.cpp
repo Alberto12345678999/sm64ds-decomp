@@ -1725,22 +1725,22 @@ int func_ov007_020b8fa0(void) {
 }
 
 // @symbol func_ov007_020b8f8c
-int func_ov007_020b8f8c(void) {
-    return (int)SCENE->states[0];
+Ov007MenuState *func_ov007_020b8f8c(void) {
+    return SCENE->states[0];
 }
 
 // @symbol func_ov007_020b8f78
-int func_ov007_020b8f78(void) {
-    return (int)SCENE->states[1];
+Ov007MenuState *func_ov007_020b8f78(void) {
+    return SCENE->states[1];
 }
 
 // @symbol func_ov007_020b8f64
-int func_ov007_020b8f64(void) {
-    return (int)SCENE->states[2];
+Ov007MenuState *func_ov007_020b8f64(void) {
+    return SCENE->states[2];
 }
 
 // @symbol func_ov007_020b8f50
-int func_ov007_020b8f50(void) {
-    return (int)SCENE->states[3];
+Ov007MenuState *func_ov007_020b8f50(void) {
+    return SCENE->states[3];
 }
 }

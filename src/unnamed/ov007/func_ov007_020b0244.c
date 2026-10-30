@@ -3,7 +3,7 @@
 #include "Ov007Work.h"
 #include "Ov007Item.h"
 #include "Ov007LayerSlot.h"
-extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
+extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int x, int y, u16 tile);
 
 /* Resets the slot choice: requests state 5 on slot items 14..16, clears
  * selectedSlot/targetSlot, parks both tweens with their outputs at

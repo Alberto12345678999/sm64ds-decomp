@@ -122,7 +122,7 @@ extern int func_ov007_020b79e4(void);
 extern void func_ov007_020b7a44(void);
 extern void func_ov007_020b7d94(void *self);
 extern void func_ov007_020b7eec(Ov007BootArgs *bootArgs);
-extern int func_ov007_020b8f78(void);
+extern Ov007MenuState *func_ov007_020b8f78(void);
 extern int func_ov007_020b8fa0(void);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020c1d8c(int i);
@@ -671,7 +671,7 @@ void func_ov007_020b46b0(void *arg0, void *arg1) {
         u16 t0 = ((Ov007ItemView *)arg0)->item->id;
         if (t0 == 3 || t0 == 6) {
             if (elem_selectable(elem) && func_ov007_020c1da0(0) == 0 && tp->cur.touch != 0 &&
-                *(s16 *)func_ov007_020b8f78() == 5 && func_ov007_020b8fa0() == 0) {
+                func_ov007_020b8f78()->currentState == 5 && func_ov007_020b8fa0() == 0) {
                 int pos_y = elem->sprite->screenY >> 12;
                 int pos_x = elem->sprite->screenX >> 12;
                 int max_y = elem->item->hitBox->maxY + pos_y;

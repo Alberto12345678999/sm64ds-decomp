@@ -13,7 +13,7 @@ extern void func_ov007_020af1f4(void);
 extern void func_ov007_020aef84(void);
 extern void func_ov007_020af434(void);
 extern void func_ov007_020b0340(void);
-extern void func_ov007_020c2090(int c);
+extern void func_ov007_020c2090(struct Ov007Pad *pad);
 extern void func_ov007_020b0548(void);
 extern void func_ov007_020b0358(void);
 extern void func_ov007_020aefb4(void);
@@ -54,7 +54,7 @@ void func_ov007_020aed98(void)
     func_ov007_020c92d0((int)r5);
 
     if (r6->stateTicks == 0 || r5->stateTicks == 0) {
-        func_ov007_020c2090((int)WORK->pad);
+        func_ov007_020c2090(WORK->pad);
     }
 
     switch (r6->currentState) {

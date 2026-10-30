@@ -5,8 +5,8 @@ extern void func_ov007_020bc374(Ov007Model *m, int i, int startFrame, int fadeFr
 extern void func_ov007_020bc3dc(Ov007Model *m, int i, int startFrame, int d);
 extern void func_ov007_020bc2e4(Ov007Model *m, int i, int startFrame);
 extern void func_ov007_020bc32c(Ov007Model *m, int i, int startFrame);
-extern void func_ov007_020be980(void* p, int i, int a2);
-extern void func_ov007_020be964(void* p);
+extern void func_ov007_020be980(struct Ov007Figure *fig, int anim, int a2);
+extern int func_ov007_020be964(struct Ov007Figure *fig);
 
 void func_ov007_020b2614(int self, int b, int c) {
     if (c > 0) {
