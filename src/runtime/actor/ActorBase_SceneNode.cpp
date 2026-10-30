@@ -128,8 +128,7 @@ extern "C" int func_0203b3c0(int* list, struct Node* n)
 /* The pre-order successor of `node`: its first child, else the first node
  * after its subtree (func_0203b358). */
 // @symbol func_0203b394
-extern "C" fBase_c::SceneNode *func_0203b394(fBase_c::SceneNode *node)
-{
+extern "C" fBase_c::SceneNode *func_0203b394(fBase_c::SceneNode *node) {
     fBase_c::SceneNode *p = node->child;
     if (p == 0)
         p = func_0203b358(node);
@@ -139,8 +138,7 @@ extern "C" fBase_c::SceneNode *func_0203b394(fBase_c::SceneNode *node)
 /* The first node after `node`'s subtree: its next sibling, else the next
  * sibling of the nearest ancestor that has one; 0 past the root. */
 // @symbol func_0203b358
-extern "C" fBase_c::SceneNode *func_0203b358(fBase_c::SceneNode *node)
-{
+extern "C" fBase_c::SceneNode *func_0203b358(fBase_c::SceneNode *node) {
     fBase_c::SceneNode *n;
     if (node->next)
         return node->next;

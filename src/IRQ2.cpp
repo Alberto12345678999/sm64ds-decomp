@@ -39,22 +39,19 @@ extern u8 data_0209d4dc;
 // @symbol _ZN3IRQ13VBlankHandlerEv
 namespace IRQ {
 
-void VBlankHandler(void)
-{
-  u16 *waiter;
-  data_0209d514 = data_0209d514 + 1;
-  if ((data_0209d514 >= data_0208ee44) && (data_0209d4f0 != 0))
-  {
-    OS_WakeupThread(&data_0209d500);
-    data_0209d514 = 0;
-    func_02019144();
-  }
-  waiter = &data_0209d4fc;
-  OS_WakeupThread(waiter);
-  *(int *)(((int)data_023c0000 + 0x3ff8)) |= 1;
-  func_02019100();
+void VBlankHandler(void) {
+    u16 *waiter;
+    data_0209d514 = data_0209d514 + 1;
+    if ((data_0209d514 >= data_0208ee44) && (data_0209d4f0 != 0)) {
+        OS_WakeupThread(&data_0209d500);
+        data_0209d514 = 0;
+        func_02019144();
+    }
+    waiter = &data_0209d4fc;
+    OS_WakeupThread(waiter);
+    *(int *)(((int)data_023c0000 + 0x3ff8)) |= 1;
+    func_02019100();
 }
-
 }
 
 // 0x0201a4e4 (0x50)
@@ -70,8 +67,7 @@ extern "C" void func_0201a4e4(void)
 // 0x0201a4d0 (0x14)
 // @symbol func_0201a4d0
 /* Sleep until the next VBlank. */
-extern "C" void func_0201a4d0(void)
-{
+extern "C" void func_0201a4d0(void) {
     OS_SleepThread(&data_0209d4fc);
 }
 
@@ -79,7 +75,6 @@ extern "C" void func_0201a4d0(void)
 // @symbol func_0201a4bc
 /* The main loop's frame wait (func_020197b8 raises data_0209d4f0 around
  * it). */
-extern "C" void func_0201a4bc(void)
-{
+extern "C" void func_0201a4bc(void) {
     OS_SleepThread(&data_0209d500);
 }
