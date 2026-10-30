@@ -148,28 +148,9 @@ src/SublevelToLevel.c:
     complete
     .text start:0x02013558 end:0x02013568
 
-src/unnamed/arm9/0201/func_02013568.c:
-    complete
-    .text start:0x02013568 end:0x02013598
-src/unnamed/arm9/0201/func_02013598.c:
-    complete
-    .text start:0x02013598 end:0x020135d0
-
-src/unnamed/arm9/0201/func_020135d0.c:
-    complete
-    .text start:0x020135d0 end:0x0201361c
-
-src/unnamed/arm9/0201/func_0201361c.c:
-    complete
-    .text start:0x0201361c end:0x02013638
-
-src/unnamed/arm9/0201/func_02013638.c:
-    complete
-    .text start:0x02013638 end:0x02013650
-
 src/engine/save/SaveData.cpp:
     complete
-    .text start:0x02013650 end:0x02013e80
+    .text start:0x02013568 end:0x02013e80
 
 src/runtime/actor/ActorDerived.cpp:
     complete
@@ -200,7 +181,7 @@ src/nds_printf.c:
     complete
     .text start:0x0201470c end:0x0201473c
 
-src/unnamed/arm9/0201/func_0201473c.c:
+src/nds_vprintf.c:
     complete
     .text start:0x0201473c end:0x02014770
 
@@ -452,7 +433,7 @@ src/unnamed/arm9/0201/func_02019404.c:
     complete
     .text start:0x02019404 end:0x02019440
 
-src/unnamed/arm9/0201/func_02019440.c:
+src/unnamed/arm9/0201/func_02019440.cpp:
     complete
     .text start:0x02019440 end:0x02019510
 
@@ -783,7 +764,7 @@ src/game/stages/d_s_stage_methods.cpp:
     complete
     .text start:0x02023688 end:0x0202e118
 
-src/unnamed/arm9/0202/func_0202e118.c:
+src/GetStageDebugName.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 

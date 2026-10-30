@@ -19,8 +19,6 @@
  *   address-of-first-component form is the MATCH shape.
  * - data_ov002_0210d7b4 CLPS: this TU consumes it, overlay .data owns it.
  *   S14: g_profile_PUSHBLOCK stays outside the licensed .text.
- * - func_020393a4 / func_02039394 store clip ranges on mMeshCollider
- *   (no setter).
  * - daSCoin_c::Collect linked-actor helper (Behavior).
  * - OnPushed fall-off-the-end return: adding `return 0;` emits mov r0,#0
  *   and DIFFs (measured 2026-08-22).
@@ -65,8 +63,6 @@ extern PushblockClsnFilePtr data_ov002_0210df94;
 extern "C" {
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern void func_020393a4(int *p, int v);
-extern void func_02039394(int *p, int v);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -174,8 +170,8 @@ int daObjPushblock_c::Behavior() {
         UpdateClsnPosAndRot();
     }
 
-    func_020393a4((int *)&mMeshCollider, 0x12c000);
-    func_02039394((int *)&mMeshCollider, 0x96000);
+    mMeshCollider.SetClipRadius(0x12c000);
+    mMeshCollider.SetClipOffsetY(0x96000);
     IsClsnInRangeOnScreen(0x3e8000, 0x96000);
 
     if (mHorzSpeed != 0 && Vec3_Dist(&mPos, &mPrevPos) != 0) {

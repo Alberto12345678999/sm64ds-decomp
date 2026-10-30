@@ -6,7 +6,7 @@
 extern "C" {
 
 extern u64 func_020427c4(void);
-extern void *func_0202e118(void);
+extern char *GetStageDebugName(void);
 extern int func_020441bc(int i);
 extern int GetActorDebugName(unsigned int i);
 
@@ -52,7 +52,7 @@ void ShowCrashScreen(void)
     nds_print(scr, data_0208e548);
     nds_print(scr + 6, data_020a0d90);
     cc = data_0209f2f8;
-    nds_printf(scr + 0x40, data_0208e54c, cc, func_0202e118());
+    nds_printf(scr + 0x40, data_0208e54c, cc, GetStageDebugName());
     nds_printf(scr + 0x80, data_0208e55c, data_0209f264);
     nds_printf(scr + 0xc0, data_0208e56c, data_0209f220);
     nds_printf(scr + 0x100, data_0208e57c, data_02092120);

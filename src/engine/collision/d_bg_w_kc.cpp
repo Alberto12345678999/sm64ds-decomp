@@ -16,10 +16,6 @@
 #include "dBgW.h"
 #include "dBgPc.h"
 
-extern "C" {
-/* Shared base init, defined in its own TU (src/engine/collision/d_bg_w.cpp). */
-void func_02039624(dBgW *self);
-}
 
 /* The surface record the ITCM DetectClsn overrides (d_bg_w_kc_itcm.cpp)
    fill per triangle. A namespace-scope dBgPc, so mwcc emits
@@ -74,7 +70,7 @@ void dBgW_Kc::UpdateFileOffsets(KCL_File &file) {
 
 // @symbol _ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block
 void dBgW_Kc::SetFile(KCL_File *file, CLPS_Block &clpsBlock) {
-    func_02039624(this);
+    Reset();
     kclFile = file;
     clps = clpsBlock;
     upAxis.x = 0;

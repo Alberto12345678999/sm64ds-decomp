@@ -1,75 +1,86 @@
+#include "Ov007BgLayer.h"
+
 typedef volatile unsigned short vu16;
 
-typedef struct Node {
-    int f0;
-    int f4;
-    int f8;
-    char pad_c[0x30 - 0xc];
-    struct Node *next;
-} Node;
-
-typedef struct Arg {
-    int flags;
-    int mask;
-    Node *head;
-} Arg;
-
+/* Per BG, its bit in Ov007BgList.mask. */
 extern int data_ov007_020d7d6c[];
-extern void func_ov007_020c076c(Node *node, int flags);
+extern void func_ov007_020c076c(Ov007BgLayer *layer, int engines);
 
-void func_ov007_020c03b0(Arg *arg) {
-    Node *volatile arr_a[4];
-    int arr_b[4];
-    Node *volatile *pa;
+/* Shows the list's layers on its engines: for each BG, the first listed
+ * layer with a valid BG and priority that is visible and in the mask is
+ * uploaded (func_ov007_020c076c) and its priority written into BGnCNT. */
+void func_ov007_020c03b0(Ov007BgList *list) {
+    Ov007BgLayer *volatile layers[4];
+    int shown[4];
+    Ov007BgLayer *volatile *pa;
     int *pb;
-    Node *node;
+    Ov007BgLayer *node;
     int mask;
-    int idx, pri;
-    int bit1, bit2;
-    int f;
+    int bg, pri;
+    int toMain, toSub;
+    int engines;
 
-    pa = (Node *volatile *)(arr_a);
+    /* layers is stored but never read. Both arrays are cleared through
+     * pointers; direct stores do not match. */
+    pa = (Ov007BgLayer *volatile *)(layers);
     pa[0] = 0;
     pa[1] = 0;
     pa[2] = 0;
     pa[3] = 0;
-    pb = (int *)(arr_b);
+    pb = (int *)(shown);
     pb[0] = 0;
     pb[1] = 0;
     pb[2] = 0;
     pb[3] = 0;
 
-    f = arg->flags;
-    node = arg->head;
-    mask = arg->mask;
-    bit1 = f & 1;
-    bit2 = f & 2;
-    if (node == 0) return;
+    engines = list->engines;
+    node = list->head;
+    mask = list->mask;
+    toMain = engines & 1;
+    toSub = engines & 2;
+    if (node == 0)
+        return;
 
     do {
-        idx = node->f0;
-        pri = node->f4;
-        if (idx >= 0 && idx <= 3 && pri >= 0 && pri <= 3 && arr_b[idx] == 0) {
-            arr_a[idx] = node;
-            if (node->f8 == 1 && (mask & data_ov007_020d7d6c[idx]) != 0) {
-                func_ov007_020c076c(node, arg->flags);
-                if (bit1) {
-                    switch (idx) {
-                        case 0: *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | pri; break;
-                        case 1: *(vu16 *)0x400000a = (*(vu16 *)0x400000a & ~3) | pri; break;
-                        case 2: *(vu16 *)0x400000c = (*(vu16 *)0x400000c & ~3) | pri; break;
-                        case 3: *(vu16 *)0x400000e = (*(vu16 *)0x400000e & ~3) | pri; break;
+        bg = node->bg;
+        pri = node->priority;
+        if (bg >= 0 && bg <= 3 && pri >= 0 && pri <= 3 && shown[bg] == 0) {
+            layers[bg] = node;
+            if (node->visible == 1 && (mask & data_ov007_020d7d6c[bg]) != 0) {
+                func_ov007_020c076c(node, list->engines);
+                if (toMain) {
+                    switch (bg) {
+                    case 0:
+                        *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | pri;
+                        break;
+                    case 1:
+                        *(vu16 *)0x400000a = (*(vu16 *)0x400000a & ~3) | pri;
+                        break;
+                    case 2:
+                        *(vu16 *)0x400000c = (*(vu16 *)0x400000c & ~3) | pri;
+                        break;
+                    case 3:
+                        *(vu16 *)0x400000e = (*(vu16 *)0x400000e & ~3) | pri;
+                        break;
                     }
                 }
-                if (bit2) {
-                    switch (idx) {
-                        case 0: *(vu16 *)0x4001008 = (*(vu16 *)0x4001008 & ~3) | pri; break;
-                        case 1: *(vu16 *)0x400100a = (*(vu16 *)0x400100a & ~3) | pri; break;
-                        case 2: *(vu16 *)0x400100c = (*(vu16 *)0x400100c & ~3) | pri; break;
-                        case 3: *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | pri; break;
+                if (toSub) {
+                    switch (bg) {
+                    case 0:
+                        *(vu16 *)0x4001008 = (*(vu16 *)0x4001008 & ~3) | pri;
+                        break;
+                    case 1:
+                        *(vu16 *)0x400100a = (*(vu16 *)0x400100a & ~3) | pri;
+                        break;
+                    case 2:
+                        *(vu16 *)0x400100c = (*(vu16 *)0x400100c & ~3) | pri;
+                        break;
+                    case 3:
+                        *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | pri;
+                        break;
                     }
                 }
-                arr_b[idx] = 1;
+                shown[bg] = 1;
             }
         }
         node = node->next;

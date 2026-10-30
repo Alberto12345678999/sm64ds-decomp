@@ -25,18 +25,9 @@
 #include "dBgW.h"
 #include "dActor_c.h"
 #include "SurfaceInfo.h"
-#include "common.h"
+#include "math/CalcLib.h"
 
 extern "C" {
-Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
-int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-int func_020393b4(void *p);
-int func_020393ac(void *p);
-int func_0203939c(void *p);
-int func_0203938c(void *p);
-int func_020393cc(void *p);
-int func_020393bc(void *p);
-void func_02037464(void *c);
 void func_02037e9c(CLPS *clps);
 void func_02037de8(SurfaceInfo *dst, const SurfaceInfo *src);
 int func_02038298(void *arg);
@@ -52,16 +43,15 @@ extern CLPS data_020a0c78;
    instruction from each of three scans. */
 struct Vec3 { int x, y, z; };
 
-typedef void (*PFN)(int self, int arg, int b);
 
 // @symbol _ZN9dBgCh_Gnd10DetectClsnEv
 int dBgCh_Gnd::DetectClsn()
 {
     int ret = 0;
-    func_02037464(this);
+    ResetResult();
     dBgW *o = data_020a0c80[0];
-    if (o != 0 && !IsOwnedBy((dActor_c *)func_020393b4(o)) && o->DetectClsn(*this) != 0) {
-        dBgPi::SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+    if (o != 0 && !IsOwnedBy(o->GetActor()) && o->DetectClsn(*this) != 0) {
+        dBgPi::SetCollider(0, o->GetActorUniqueID(), o->GetActor(), o);
         ret = 1;
     }
     int flag = 1;
@@ -70,7 +60,7 @@ int dBgCh_Gnd::DetectClsn()
     for (int i = 1; i < 24; i++) {
         dBgW *obj = data_020a0c80[i];
         if (obj == 0) continue;
-        dActor_c* p = (dActor_c *)func_020393b4(obj);
+        dActor_c *p = obj->GetActor();
         if (IsOwnedBy(p))
             continue;
         if (p != 0 && ((p->mFlags & 2) ? flag : 0) != 0) {
@@ -78,20 +68,20 @@ int dBgCh_Gnd::DetectClsn()
             pos.x = *(const s32 *)(position + 0);
             pos.y = *(const s32 *)(position + 4);
             pos.z = *(const s32 *)(position + 8);
-            int thr = func_0203939c(obj);
+            int thr = obj->GetClipRadius();
             if (thr == -0x1000) {
                 int h8 = p->mClipRadius;
                 pos.y = pos.y + p->mClipOffsetY;
                 thr = h8 << 3;
             } else {
-                pos.y = pos.y + func_0203938c(obj);
+                pos.y = pos.y + obj->GetClipOffsetY();
             }
             Vector3* selfpos = (Vector3*)((long long)(int)&this->pos);
             if (selfpos->y < pos.y - thr) continue;
             if (Vec3_HorzDist(selfpos, (const Vector3 *)&pos) > thr) continue;
         }
         if (obj->DetectClsn(*this) != 0) {
-            dBgPi::SetCollider(i, func_020393ac(obj), (dActor_c *)func_020393b4(obj), obj);
+            dBgPi::SetCollider(i, obj->GetActorUniqueID(), obj->GetActor(), obj);
             ret = one;
         }
     }
@@ -103,14 +93,14 @@ int dBgCh_Gnd::DetectClsn()
 int dBgCh_Gnd::DetectClsnSlot0() {
     int r = 0;
     dBgW *o;
-    func_02037464(this);
+    ResetResult();
     o = data_020a0c80[0];
     if (o != 0) {
-        if (!IsOwnedBy((dActor_c *)func_020393b4(o))) {
+        if (!IsOwnedBy(o->GetActor())) {
             if (o->DetectClsn(*this) != 0) {
-                int a = func_020393ac(o);
-                int b = func_020393b4(o);
-                dBgPi::SetCollider(0, a, (dActor_c *)b, o);
+                int a = o->GetActorUniqueID();
+                dActor_c *owner = o->GetActor();
+                dBgPi::SetCollider(0, a, owner, o);
                 r = 1;
             }
         }
@@ -128,16 +118,20 @@ int dBgCh_SphCrr::DetectClsn()
        centre below -- the one local keeps the compiler's register shape */
     char *e = (char *)data_020a0c80[0];
     if (e != 0) {
-        if (!IsOwnedBy((dActor_c *)func_020393b4(e))) {
+        if (!IsOwnedBy(((dBgW *)e)->GetActor())) {
             hits = ((dBgW *)e)->DetectClsn(*this);
             if (hits != 0) {
-                dBgPi::SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                dBgPi::SetCollider(0, ((dBgW *)e)->GetActorUniqueID(), ((dBgW *)e)->GetActor(),
+                                   (dBgW *)e);
                 if (hits & 1)
-                    SetFloorCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                    SetFloorCollider(0, ((dBgW *)e)->GetActorUniqueID(), ((dBgW *)e)->GetActor(),
+                                     (dBgW *)e);
                 if (hits & 2)
-                    SetWallCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                    SetWallCollider(0, ((dBgW *)e)->GetActorUniqueID(), ((dBgW *)e)->GetActor(),
+                                    (dBgW *)e);
                 if (hits & 4)
-                    SetUnderCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                    SetUnderCollider(0, ((dBgW *)e)->GetActorUniqueID(), ((dBgW *)e)->GetActor(),
+                                     (dBgW *)e);
                 result = 1;
             }
         }
@@ -148,7 +142,7 @@ int dBgCh_SphCrr::DetectClsn()
     for (int i = 1; i < 0x18; i++) {
         dBgW *o = data_020a0c80[i];
         if (o == 0) continue;
-        dActor_c *owner = (dActor_c *)func_020393b4(o);
+        dActor_c *owner = o->GetActor();
         if (IsOwnedBy(owner))
             continue;
         if (owner != 0) {
@@ -159,14 +153,14 @@ int dBgCh_SphCrr::DetectClsn()
                 ownerPos.x = src->x;
                 ownerPos.y = src->y;
                 ownerPos.z = src->z;
-                hits = func_0203939c(o);
+                hits = o->GetClipRadius();
                 if (hits == -0x1000) {
                     int clipOffsetY = owner->mClipOffsetY;
                     int clipRadius = owner->mClipRadius;
                     ownerPos.y += clipOffsetY;
                     hits = clipRadius << 3;
                 } else {
-                    ownerPos.y += func_0203938c(o);
+                    ownerPos.y += o->GetClipOffsetY();
                 }
                 if (Vec3_Dist((const Vector3 *)e, &ownerPos) > hits + reach)
                     continue;
@@ -178,13 +172,13 @@ int dBgCh_SphCrr::DetectClsn()
             hits = t;
         }
         if (hits != 0) {
-            dBgPi::SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            dBgPi::SetCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
             if (hits & 1)
-                SetFloorCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                SetFloorCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
             if (hits & 2)
-                SetWallCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                SetWallCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
             if (hits & 4)
-                SetUnderCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                SetUnderCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
             result = 1;
         }
     }
@@ -199,14 +193,14 @@ int dBgCh_SphCrr::func_02038a38()
     dBgW *o = data_020a0c80[0];
     int result = 0;
     int hits;
-    if (o != 0 && !IsOwnedBy((dActor_c *)func_020393b4(o)) && (hits = o->DetectClsn(*this)) != 0) {
-        dBgPi::SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+    if (o != 0 && !IsOwnedBy(o->GetActor()) && (hits = o->DetectClsn(*this)) != 0) {
+        dBgPi::SetCollider(0, o->GetActorUniqueID(), o->GetActor(), o);
         if (hits & 1)
-            SetFloorCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetFloorCollider(0, o->GetActorUniqueID(), o->GetActor(), o);
         if (hits & 2)
-            SetWallCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetWallCollider(0, o->GetActorUniqueID(), o->GetActor(), o);
         if (hits & 4)
-            SetUnderCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetUnderCollider(0, o->GetActorUniqueID(), o->GetActor(), o);
         result = 1;
     }
     this->UpdateDisplacement();
@@ -225,7 +219,7 @@ int dBgCh_SphCrr::func_02038824()
     for (i = 1; i < 0x18; i++) {
         dBgW *o = data_020a0c80[i];
         if (o == 0) continue;
-        dActor_c *owner = (dActor_c *)func_020393b4(o);
+        dActor_c *owner = o->GetActor();
         if (IsOwnedBy(owner))
             continue;
         if (owner != 0 && ((owner->mFlags & 2) ? one : zero)) {
@@ -238,25 +232,25 @@ int dBgCh_SphCrr::func_02038824()
             ownerPos.x = src->x;
             ownerPos.y = src->y;
             ownerPos.z = src->z;
-            clipDist = func_0203939c(o);
+            clipDist = o->GetClipRadius();
             if (clipDist == -0x1000) {
                 int clipRadius = owner->mClipRadius;
                 ownerPos.y = ownerPos.y + owner->mClipOffsetY;
                 clipDist = clipRadius << 3;
             } else {
-                ownerPos.y = ownerPos.y + func_0203938c(o);
+                ownerPos.y = ownerPos.y + o->GetClipOffsetY();
             }
             if (Vec3_Dist((const Vector3 *)pos, &ownerPos) > clipDist + reach) continue;
         }
         int hits = o->DetectClsn(*this);
         if (hits == 0) continue;
-        dBgPi::SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+        dBgPi::SetCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
         if (hits & 1)
-            SetFloorCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetFloorCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
         if (hits & 2)
-            SetWallCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetWallCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
         if (hits & 4)
-            SetUnderCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetUnderCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
         result = one;
     }
     this->UpdateDisplacement();
@@ -276,10 +270,11 @@ bool dBgCh_Lin::DetectClsn()
     int threshold;
     e = (char *)data_020a0c80[0];
     if (e != 0) {
-        if (!IsOwnedBy((dActor_c *)func_020393b4(e))) {
+        if (!IsOwnedBy(((dBgW *)e)->GetActor())) {
             int mask = ((dBgW *)e)->DetectClsn(*this);
             if (mask != 0) {
-                dBgPi::SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                dBgPi::SetCollider(0, ((dBgW *)e)->GetActorUniqueID(), ((dBgW *)e)->GetActor(),
+                                   (dBgW *)e);
                 result = true;
             }
         }
@@ -291,7 +286,7 @@ bool dBgCh_Lin::DetectClsn()
     for (i = 1; i < 0x18; i++) {
         o = data_020a0c80[i];
         if (o == 0) continue;
-        info = (dActor_c *)func_020393b4(o);
+        info = o->GetActor();
         if (IsOwnedBy(info))
             continue;
         if (info != 0) {
@@ -302,14 +297,14 @@ bool dBgCh_Lin::DetectClsn()
                 v.x = *(const s32 *)(position + 0);
                 v.y = *(const s32 *)(position + 4);
                 v.z = *(const s32 *)(position + 8);
-                m = func_0203939c(o);
+                m = o->GetClipRadius();
                 if (m == -0x1000) {
                     int b4 = info->mClipOffsetY;
                     int b8 = info->mClipRadius;
                     v.y += b4;
                     m = b8 << 3;
                 } else {
-                    v.y += func_0203938c(o);
+                    v.y += o->GetClipOffsetY();
                 }
                 if (Vec3_Dist(base, (const Vector3 *)&v) > m + threshold)
                     continue;
@@ -318,7 +313,7 @@ bool dBgCh_Lin::DetectClsn()
         {
             int mask = o->DetectClsn(*this);
             if (mask != 0) {
-                dBgPi::SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                dBgPi::SetCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
                 result = true;
             }
         }
@@ -334,11 +329,11 @@ extern "C" int func_0203859c(void *obj)
     dBgW *e = data_020a0c80[0];
     int result = 0;
     if (e != 0) {
-        if (!((dBgCh_Lin *)obj)->IsOwnedBy((dActor_c *)func_020393b4(e))) {
+        if (!((dBgCh_Lin *)obj)->IsOwnedBy(((dBgW *)e)->GetActor())) {
             if (e->DetectClsn(*(dBgCh_Lin *)obj) != 0) {
-                int a = func_020393ac(e);
-                int b = func_020393b4(e);
-                ((dBgPi &)*(dBgCh_Lin *)obj).SetCollider(0, a, (dActor_c *)b, e);
+                int a = ((dBgW *)e)->GetActorUniqueID();
+                dActor_c *owner = ((dBgW *)e)->GetActor();
+                ((dBgPi &)*(dBgCh_Lin *)obj).SetCollider(0, a, owner, e);
                 result = 1;
             }
         }
@@ -365,7 +360,7 @@ extern "C" int func_0203842c(char *self)
     for (i = 1; i < 0x18; i++) {
         o = data_020a0c80[i];
         if (o == 0) continue;
-        info = (dActor_c *)func_020393b4(o);
+        info = o->GetActor();
         if (((dBgCh_Lin *)self)->IsOwnedBy(info))
             continue;
         if (info != 0) {
@@ -376,14 +371,14 @@ extern "C" int func_0203842c(char *self)
                 v.x = *(const s32 *)(position + 0);
                 v.y = *(const s32 *)(position + 4);
                 v.z = *(const s32 *)(position + 8);
-                m = func_0203939c(o);
+                m = o->GetClipRadius();
                 if (m == -0x1000) {
                     int b4 = info->mClipOffsetY;
                     int b8 = info->mClipRadius;
                     v.y += b4;
                     m = b8 << 3;
                 } else {
-                    v.y += func_0203938c(o);
+                    v.y += o->GetClipOffsetY();
                 }
                 if (Vec3_Dist(base, &v) > m + threshold)
                     continue;
@@ -393,7 +388,7 @@ extern "C" int func_0203842c(char *self)
             int mask = o->DetectClsn(*(dBgCh_Lin *)self);
             if (mask != 0) {
                 ((dBgPi &)*(dBgCh_Lin *)self)
-                    .SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                    .SetCollider(i, o->GetActorUniqueID(), o->GetActor(), o);
                 result = 1;
             }
         }
@@ -456,12 +451,12 @@ extern "C" void func_02038324(void *arg, int b, int c, int d)
     obj = data_020a0c80[idx];
     if (obj == 0)
         return;
-    if (func_020393cc(obj) == 0)
+    if (obj->GetBeforeClsnCallback() == 0)
         return;
     if (func_02038298(hit) == 0)
         return;
-    obj->BeforeClsn(*hit, (dActor_c *)func_020393b4(data_020a0c80[idx]), *(Vector3 *)b,
-                    (Vector3_16 *)c, (Vector3_16 *)d);
+    obj->BeforeClsn(*hit, data_020a0c80[idx]->GetActor(), *(Vector3 *)b, (Vector3_16 *)c,
+                    (Vector3_16 *)d);
 }
 
 // @symbol func_02038298
@@ -473,7 +468,8 @@ extern "C" int func_02038298(void *arg)
     dBgPi *hit = (dBgPi *)arg;
     int idx;
     dBgW *collider;
-    int clsnID, owner;
+    int clsnID;
+    dActor_c *owner;
     if (hit->IsValid() == 0)
         return 0;
     idx = hit->GetColliderIndex();
@@ -482,9 +478,9 @@ extern "C" int func_02038298(void *arg)
     collider = data_020a0c80[idx];
     if (collider == 0)
         return 0;
-    clsnID = func_020393ac(collider);
-    owner = func_020393b4(collider);
-    return hit->IsHitBy(clsnID, (dActor_c *)owner, collider);
+    clsnID = collider->GetActorUniqueID();
+    owner = collider->GetActor();
+    return hit->IsHitBy(clsnID, owner, collider);
 }
 
 // @symbol func_02038234
@@ -497,13 +493,13 @@ extern "C" void func_02038234(int a, int b)
 {
     int idx;
     dBgW *entry;
-    PFN fn;
+    StoodOnCallback fn;
     if (((int (*)(int, int))func_02038298)(a, b) == 0) return;
     idx = ((dBgPi *)a)->GetColliderIndex();
     entry = data_020a0c80[idx];
-    fn = (PFN)func_020393bc((int *)entry);
+    fn = entry->GetStoodOnCallback();
     if (fn == 0) return;
-    fn((int)entry, func_020393b4((int *)entry), b);
+    fn(entry, entry->GetActor(), (dActor_c *)b);
 }
 
 // @symbol _ZN13CLPS_BlockRefC1Ev
@@ -721,9 +717,9 @@ int CLPS::GetSurfaceType() const {
     return (w0 >> 19) & 0x1f;
 }
 
-// @symbol func_02037e2c
-extern "C" int func_02037e2c(int *p) {
-    return p[0] & 0x1000000;
+// @symbol _ZNK4CLPS19IsCameraPassThroughEv
+int CLPS::IsCameraPassThrough() const {
+    return w0 & 0x1000000;
 }
 
 // @symbol func_02037e20
@@ -731,9 +727,9 @@ extern "C" int func_02037e20(int *p) {
     return p[0] & 0x2000000;
 }
 
-// @symbol func_02037e14
-extern "C" int func_02037e14(int *p) {
-    return p[0] & 0x4000000;
+// @symbol _ZNK4CLPS12IsCameraOnlyEv
+int CLPS::IsCameraOnly() const {
+    return w0 & 0x4000000;
 }
 
 // @symbol func_02037de8

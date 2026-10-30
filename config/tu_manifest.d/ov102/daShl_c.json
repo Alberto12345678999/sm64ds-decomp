@@ -298,7 +298,8 @@
   "notes": [
     "Hand-assembled: tubuild create generated the 23 tu_map members (class members, D1/D0 and the fifteen state/helper routines); the zero-gap classInit factory was folded in by hand. The four state records are defined in this TU. mwcc emits __sinit_d_a_shl.cpp, the ctor word, and eight anonymous pointer-to-member descriptors. Class RTTI and the vtable stay externalized. The .rodata model-handle pair data_ov102_0214d70c stays unclaimed. The handwritten src/unnamed/ov102/__sinit_ov102_0214dfac.c is retired.",
     "Folded __sinit_ov102_0214dfac into this TU. @707, @709, @711 and @713 already belong to ov060, @715, @719 and @721 already belong to ov063, and @717 already belongs to ov002. defined_symbol_renames maps them to the unused same-length @746, @750, @752, @754, @765, @768, @770 and @774.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 8 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (50 sections, 189 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -928,42 +929,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@800",
+      "from": "@799",
       "to": "@774",
       "evidence": "mwcc numbers this PMF descriptor @721. ov063 already defines @721, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @774. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@796",
+      "from": "@795",
       "to": "@768",
       "evidence": "mwcc numbers this PMF descriptor @717. ov002 already defines @717, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @768. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@786",
+      "from": "@785",
       "to": "@746",
       "evidence": "mwcc numbers this PMF descriptor @707. ov060 already defines @707, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @746. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@798",
+      "from": "@797",
       "to": "@770",
       "evidence": "mwcc numbers this PMF descriptor @719. ov063 already defines @719, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @770. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@788",
+      "from": "@787",
       "to": "@750",
       "evidence": "mwcc numbers this PMF descriptor @709. ov060 already defines @709, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @750. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@794",
+      "from": "@793",
       "to": "@765",
       "evidence": "mwcc numbers this PMF descriptor @715. ov063 already defines @715, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @765. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@790",
+      "from": "@789",
       "to": "@752",
       "evidence": "mwcc numbers this PMF descriptor @711. ov060 already defines @711, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @752. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@792",
+      "from": "@791",
       "to": "@754",
       "evidence": "mwcc numbers this PMF descriptor @713. ov060 already defines @713, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @754. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

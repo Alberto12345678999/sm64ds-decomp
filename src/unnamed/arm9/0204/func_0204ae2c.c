@@ -2,7 +2,9 @@
 // @symbol func_0204ae2c
 /* recovered: shared common types */
 #include "common.h"
-struct H2 { u16 a, b; };
+struct H2 {
+    u16 a, b;
+};
 
 /* Initialise a Particle::System that Particle::Manager::AddSystem
  * (Particle_Manager.cpp) has just taken from the free list: clear its links
@@ -13,9 +15,9 @@ struct H2 { u16 a, b; };
  * File-local views; Particle__System.h and Particle__Manager.h are C++.
  * The System view reuses that header's names plus func_0204a730.c's
  * (velocity, age, emitInterval, callback) and func_0204c584.c's (emitRadius,
- * particleLifetime). Header +0x12 is func_0204d294.c's color; the other
- * header fields are named for the System field this function seeds from
- * them. */
+ * particleLifetime, baseAlpha). Header +0x12 is func_0204d294.c's color;
+ * the other header fields are named for the System field this function seeds
+ * from them. */
 typedef struct PtclData {
     u8 pad_00[0x8];
     int emitRadius;       /* 0x08 -- System::emitRadius */
@@ -28,6 +30,7 @@ typedef struct PtclData {
     u16 particleLifetime; /* 0x2a -- System::particleLifetime */
     u8 pad_2c[0x4];
     u8 emitInterval; /* 0x30 -- System::emitInterval */
+    u8 baseAlpha;    /* 0x31 -- System::baseAlpha */
 } PtclData;
 
 typedef struct SystemDefinition {
@@ -41,8 +44,8 @@ typedef struct PtclList {
 
 /* Particle::System, named as func_0204c584.c's view. */
 struct ParticleSystem {
-    void *previous;                /* 0x00 */
-    void *next;                    /* 0x04 */
+    void *next;                    /* 0x00 */
+    void *previous;                /* 0x04 */
     PtclList particles;            /* 0x08 */
     PtclList particles2;           /* 0x10 */
     SystemDefinition *mDefinition; /* 0x18 */
@@ -60,7 +63,7 @@ struct ParticleSystem {
     u16 particleLifetime; /* 0x54 */
     char pad56[2];
     u8 emitInterval; /* 0x58 */
-    u8 m59;          /* 0x59 -- header +0x31; no established role */
+    u8 baseAlpha;    /* 0x59 */
     char pad5a[0xe];
     void *callback; /* 0x68 */
     int m6c;        /* 0x6c */
@@ -86,10 +89,10 @@ void func_0204ae2c(struct ParticleSystem *o, void *p18, struct Vector3 *src3) {
         o->callbackScale = o->mDefinition->data->callbackScale;
         o->particleLifetime = o->mDefinition->data->particleLifetime;
         o->emitInterval = o->mDefinition->data->emitInterval;
-        o->m59 = *(u8 *)((char *)(*(void **)(o->mDefinition)) + 0x31);
+        o->baseAlpha = o->mDefinition->data->baseAlpha;
     }
-    o->next = 0;
-    o->previous = o->next;
+    o->previous = 0;
+    o->next = o->previous;
     o->particles2.head = 0;
     o->particles.head = o->particles2.head;
     o->particles2.count = 0;

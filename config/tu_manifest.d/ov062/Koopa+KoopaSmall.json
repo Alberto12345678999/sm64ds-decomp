@@ -525,7 +525,8 @@
     "The historical conflict records resolved here are individually tied to corrected void animation/transition helpers, unsigned sound ID/Vector3 argument, dExtFrameCtrl_c return contracts, genuine FindWithID, and signed Particle::System::New result. Remaining open markers stay visible and issue2871 tracks reconstruction debt.",
     "2026-10-04 S33 pass: the 27 func_ov062_* helpers are daNknk_c methods (first argument is the Koopa). No vtable, sinit, or state-table word names any of them, so the rename touches only this TU spellings: manifest function symbols, ov062 symbols.txt and attribution.json re-keyed, ten dead decl_common.h externs dropped, the duplicate _ZTV5Koopa alias row removed (same 0x0211dab4 address as _ZTV8daNknk_c). 39/39 TEXT-VERIFIED; all four Koopa.h consumer TUs re-verified.",
     "2026-10-04 gates: `tubuild.py linkcheck ov062/Koopa+KoopaSmall` refuses 'intact production requires one .text claim and at least one non-text claim' -- the pre-existing tu_production gap for text-only intact TUs documented in ov091/daObjSimpleLift_c (15 landed manifests carry the identical refusal; the same run refuses the untouched ov036/daObjRcCarpet_c and ov070/daPropeller_Heyho_c controls). Full-ROM proof instead: `rombuild.py -j16` PASS -- baseline control rebuilt clean (matchesStockRom true, ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to main's pre-change baseline output; the build/sm64ds.nds reference had gone missing from the tree and was restored from main's verified baseline output), intact TU gates dsd modules PASS / zero new symbol errors / storage aliases exact, dsd check symbols reports the same 9 pre-existing ITCM/ARM9-main errors as always (0 new), module fidelity 106/106 exact, 0 mismatching functions, ROM-build analysis PASS.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 11 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (75 sections, 341 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1517,57 +1518,57 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1277",
+      "from": "@1276",
       "to": "@1292",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1306 now; licensed under the existing pin @1292 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1270",
+      "from": "@1269",
       "to": "@1285",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1299 now; licensed under the existing pin @1285 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1272",
+      "from": "@1271",
       "to": "@1287",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1301 now; licensed under the existing pin @1287 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1273",
+      "from": "@1272",
       "to": "@1288",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1302 now; licensed under the existing pin @1288 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1271",
+      "from": "@1270",
       "to": "@1286",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1300 now; licensed under the existing pin @1286 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1274",
+      "from": "@1273",
       "to": "@1289",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1303 now; licensed under the existing pin @1289 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1275",
+      "from": "@1274",
       "to": "@1290",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1304 now; licensed under the existing pin @1290 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1269",
+      "from": "@1268",
       "to": "@1284",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1298 now; licensed under the existing pin @1284 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1267",
+      "from": "@1266",
       "to": "@1282",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1296 now; licensed under the existing pin @1282 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1268",
+      "from": "@1267",
       "to": "@1283",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1297 now; licensed under the existing pin @1283 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1276",
+      "from": "@1275",
       "to": "@1291",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1305 now; licensed under the existing pin @1291 | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

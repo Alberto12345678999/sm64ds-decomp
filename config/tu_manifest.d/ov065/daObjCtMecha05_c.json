@@ -234,7 +234,8 @@
     "The unisolated object naturally emits daObjCtMecha05_c RTTI, type-name, typed SpawnInfo, and full vtable storage in retail order. romdata_check reports zero differing or unnamed objects; inherited vague-linkage RTTI is explicitly externalized to its canonical homes.",
     "Production enrollment verifies all nine class functions including the folded typed factory. InitResources retains the measured Fix12-by-value ABI seam and an explicit model-file local required for retail code shape. daObjCtMecha05_c_classInit and g_profile_CT_MECHA05 are lineage-supported reconstructions from the ROM RTTI class, literal registry ID, measured factory shape, and descriptor relationship; exact original SM64DS spellings are not preserved. Historical aliases were TTC_MovingBar_Spawn and TTC_MovingBar_SpawnInfo.",
     "Static initializer folded: the Mecha05ModelFile handle (file 0x5c2), the Mecha05CollisionFilePtr handle (file 0x5c3) and their destructor-registration nodes move out of the handwritten src/unnamed shard into src/game/actors/d_a_obj_ct_mecha05.cpp, carrying the TU already-used TTC_MovingBar_ModelFile/TTC_MovingBar_ClsnFile names (wcmizu precedent). The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov065_0211c890 with the same instruction sequence, literal pool order and relocation sites; the handwritten shard is retired. @517/@518 both clashed with the fleet and are renamed (@517->@637, @518->@634). The .bss claim 0x0211d904..0x0211d92c ends exactly at the next symbol; no bound row is needed. The retired shard data_ov065_0211d904/90c alias rows and their stale decl_common.h lines are dropped per S42. The retired shard converted-baseline row is dropped per the c62c3266 precedent.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (29 sections, 135 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -506,12 +507,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@576",
+      "from": "@571",
       "to": "@637",
       "evidence": "mwcc numbers this registration node @517 per TU and the fleet already defines a global @517, so the scratch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@577",
+      "from": "@572",
       "to": "@634",
       "evidence": "mwcc numbers this registration node @518 per TU and the fleet already defines a global @518, so the scratch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

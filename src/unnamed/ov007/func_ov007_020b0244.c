@@ -38,7 +38,7 @@ void func_ov007_020b0244(void) {
     WORK->itemViews[16]->item->state->requestedState = 5;
     WORK->targetSlot = -1;
     WORK->selectedSlot = WORK->targetSlot;
-    WORK->pad_060 = 0;
+    WORK->recordBoardAlt = 0;
     WORK->tweenOut[0] = 0x20000;
     WORK->tweenOut[1] = 0x30000;
     WORK->tweens[0]->state = 0;

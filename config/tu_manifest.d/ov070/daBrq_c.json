@@ -1156,7 +1156,8 @@
     "The inline destructor and InitResources key function naturally emit retail D1 then D0, type name, RTTI, vtable, and SpawnInfo without a retained D2 or forcing helper.",
     "daBrq_c_classInit is folded as return new daBrq_c(). Leaf operator new(unsigned long) forwards _ZN7fBase_cnwEj((unsigned)size).",
     "The deferred initializer at 0x02122d80, its .ctor word, PMF input table, resource globals, and state-table BSS remain separately enrolled for the next reconstruction phase.",
-    "Native initializer follow-up: five resource handles, three two-PMF state rows and one Vector3 replace the handwritten __sinit_ov070_02122d80.cpp. Local BrqModelResource/BrqAnimationFileResource/BrqTextureSequenceResource type names are inferred eight-byte ABI views, not recovered original class names; exact C1/D1 aliases target original helper destinations. Existing .data metadata ownership and vtable address-point proof are unchanged. Six typed ROM PMF descriptor imports stay ROM-owned. Existing Fix12/interface/layout bridges remain partial reconstruction."
+    "Native initializer follow-up: five resource handles, three two-PMF state rows and one Vector3 replace the handwritten __sinit_ov070_02122d80.cpp. Local BrqModelResource/BrqAnimationFileResource/BrqTextureSequenceResource type names are inferred eight-byte ABI views, not recovered original class names; exact C1/D1 aliases target original helper destinations. Existing .data metadata ownership and vtable address-point proof are unchanged. Six typed ROM PMF descriptor imports stay ROM-owned. Existing Fix12/interface/layout bridges remain partial reconstruction.",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (45 sections, 194 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -1441,32 +1442,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@557",
+      "from": "@556",
       "to": "@228",
       "evidence": "Compiler-local registration node at ov070:0x02123614; unique short configured label changes no bytes or relocations. | compiler temp; including Sound.h, Particle__System.h, dBgCh_Gnd.h and Player.h at the top of the TU (replacing its local stubs) raises the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@558",
+      "from": "@557",
       "to": "@229",
       "evidence": "Compiler-local registration node at ov070:0x02123620; unique short configured label changes no bytes or relocations. | compiler temp; including Sound.h, Particle__System.h, dBgCh_Gnd.h and Player.h at the top of the TU (replacing its local stubs) raises the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@559",
+      "from": "@558",
       "to": "@230",
       "evidence": "Compiler-local registration node at ov070:0x0212362c; unique short configured label changes no bytes or relocations. | compiler temp; including Sound.h, Particle__System.h, dBgCh_Gnd.h and Player.h at the top of the TU (replacing its local stubs) raises the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@560",
+      "from": "@559",
       "to": "@232",
       "evidence": "Compiler-local registration node at ov070:0x02123638; unique short configured label changes no bytes or relocations. | compiler temp; including Sound.h, Particle__System.h, dBgCh_Gnd.h and Player.h at the top of the TU (replacing its local stubs) raises the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@562",
+      "from": "@561",
       "to": "@233",
       "evidence": "Compiler-local registration node at ov070:0x02123644; unique short configured label changes no bytes or relocations. | compiler temp; including Sound.h, Particle__System.h, dBgCh_Gnd.h and Player.h at the top of the TU (replacing its local stubs) raises the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@561",
+      "from": "@560",
       "to": "@234",
       "evidence": "Compiler-local registration node at ov070:0x02123650; unique short configured label changes no bytes or relocations. | compiler temp; including Sound.h, Particle__System.h, dBgCh_Gnd.h and Player.h at the top of the TU (replacing its local stubs) raises the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }

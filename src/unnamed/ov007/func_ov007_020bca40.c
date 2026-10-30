@@ -1,15 +1,5 @@
 #include "Ov007Work.h"
-
-/* The BG layer record; names as in func_ov007_020ad660, only the slots this
- * file sets. */
-typedef struct Ov007BgLayer {
-    char pad_00[8];
-    /* 0x08: func_ov007_020c03b0 uploads and shows the layer only while it is
-     * 1 */
-    int visible;
-    /* 0x0c: func_ov007_020c076c re-uploads the screen while it is set */
-    int dirty;
-} Ov007BgLayer;
+#include "Ov007BgLayer.h"
 
 /* The manager's +0x74 display record; only its BG layer table, as in
  * func_ov007_020af434. */

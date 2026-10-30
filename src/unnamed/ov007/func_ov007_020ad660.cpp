@@ -4,6 +4,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
 #include "cstd.h"
+#include "Ov007BgLayer.h"
 
 extern "C" {
 
@@ -16,24 +17,6 @@ extern void func_ov007_020c02d8(void *a, int b, u16 c);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020c1d8c(int a);
 extern void func_ov007_020ada70(void);
-
-/* The 0x38-byte BG layer record func_ov007_020c0aa8 allocates; screen as in
- * func_ov007_020adc08, scrollY as in func_ov007_020b131c, only the slots this
- * file touches. */
-typedef struct Ov007BgLayer {
-    char pad_00[4];
-    /* 0x04: the BG priority func_ov007_020c03b0 writes into BGnCNT bits 0-1 */
-    int priority;
-    /* 0x08: func_ov007_020c03b0 uploads and shows the layer only while it is
-     * 1 (func_ov007_020c0a44 resets it to 1) */
-    int visible;
-    /* 0x0c: func_ov007_020c0638 sets it after rebuilding screen;
-     * func_ov007_020c076c re-uploads screen while it is set, then clears it */
-    int dirty;
-    void *screen; /* 0x10: func_ov007_020c076c uploads it to BG screen VRAM */
-    char pad_14[0x18];
-    int scrollY; /* 0x2c: Q12 */
-} Ov007BgLayer;
 
 /* The 0xc-byte record func_ov007_020adc08 returns; names as there. */
 typedef struct Ov007LayerSlot {
@@ -89,7 +72,6 @@ typedef struct Ov007Figure {
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 } Ov007Figure;
 
-typedef char Ov007BgLayer_size_must_be_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -1];
 typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
 typedef char Ov007Item_size_must_be_0x28[sizeof(Ov007Item) == 0x28 ? 1 : -1];
 
@@ -98,8 +80,7 @@ typedef char Ov007Item_size_must_be_0x28[sizeof(Ov007Item) == 0x28 ? 1 : -1];
 
 /* Per-frame update of one BG layer slot (func_ov007_020aed98 runs all eight).
  * The parameter keeps the tree's char * spelling; `slot` is the typed local. */
-void func_ov007_020ad660(char *arg0)
-{
+void func_ov007_020ad660(char *arg0) {
     Ov007LayerSlot *slot = (Ov007LayerSlot *)arg0;
     Ov007Work *mgr;
     Ov007MenuState *temp_r5;
@@ -124,8 +105,7 @@ void func_ov007_020ad660(char *arg0)
 
     switch (state) {
     case 1:
-    case 6:
-    {
+    case 6: {
         Ov007ItemView *m134 = WORK->itemViews[8];
         Ov007Item *obj = m134->item;
         s16 v = obj->state->currentState;
@@ -156,8 +136,7 @@ void func_ov007_020ad660(char *arg0)
         return;
     case 2:
         switch (temp_r2->currentState) {
-        case 0:
-        {
+        case 0: {
             s16 v5;
             s16 t4;
             v5 = temp_r5->currentState;
@@ -186,14 +165,14 @@ void func_ov007_020ad660(char *arg0)
                 Ov007Model *b2 = b1->model;
                 Ov007AnimPlayer *b3 = b2->boneAnim;
                 u16 v = b3->frame;
-                if (v == 0x11d || v == 0x12c || v == 0x13d || v == 0x163 || v == 0x178 || v == 0x18f) {
+                if (v == 0x11d || v == 0x12c || v == 0x13d || v == 0x163 || v == 0x178 ||
+                    v == 0x18f) {
                     slot->state->requestedState = 2;
                 }
             }
             return;
         }
-        case 1:
-        {
+        case 1: {
             int var_r4;
             if (temp_r1 <= 0) {
                 var_r4 = 0;
@@ -222,8 +201,7 @@ void func_ov007_020ad660(char *arg0)
             }
             return;
         }
-        case 2:
-        {
+        case 2: {
             int var_r0;
             if (temp_r1 <= 0) {
                 var_r0 = 0;

@@ -32,24 +32,27 @@
  * shared cursor moves it. */
 #include "types.h"
 
-typedef struct RecA {
-    s16 f0;
-    s16 f2;
-    u8 f4;
-    u8 f5;
-    u8 f6;
-    u8 f7;
-    u8 f8;
-    u8 f9;
-    u8 fA;
-    u8 fB;
-    u8 fC;
-    u8 fD;
-    u8 fE;
-    u8 fF;
-    u16 f10;
-    u16 f12;
-} RecA;
+/* List A: a cell's 4-byte header (its record count), then one 0x14-byte
+ * record per OAM entry. The names are the OAM attribute fields each byte
+ * lands in. */
+typedef struct Ov007OamRecord {
+    s16 x;          /* 0x00: attr1 bits 0-8 */
+    s16 y;          /* 0x02: attr0 bits 0-7 */
+    u8 pad_04;      /* 0x04 */
+    u8 affineIndex; /* 0x05: attr1 bits 9-13, affine entries only */
+    u8 hFlip;       /* 0x06: attr1 bit 12 */
+    u8 vFlip;       /* 0x07: attr1 bit 13 */
+    u8 affineMode;  /* 0x08: attr0 bits 8-9 (1 affine, 3 double-size affine) */
+    u8 objMode;     /* 0x09: attr0 bits 10-11 (3 bitmap) */
+    u8 mosaic;      /* 0x0a: attr0 bit 12 */
+    u8 colorMode;   /* 0x0b: attr0 bit 13, not for bitmap entries */
+    u8 shape;       /* 0x0c: attr0 bits 14-15 */
+    u8 size;        /* 0x0d: attr1 bits 14-15 */
+    u8 priority;    /* 0x0e: attr2 bits 10-11 */
+    u8 palette;     /* 0x0f: attr2 bits 12-15 */
+    u16 tile;       /* 0x10: attr2 bits 0-9 */
+    u16 pad_12;     /* 0x12 */
+} Ov007OamRecord;
 
 /* One 8-byte cell: `count` OAM entries, each packed into three attribute
  * halfwords (attr0..attr2). */
@@ -63,7 +66,10 @@ typedef struct Ov007Cell {
 typedef struct Ov007CellAnim {
     Ov007Cell **frames;
     u16 *durations;
-    u32 f8;
+    /* 0x08: func_ov007_020c13a4 stores its last two arguments here (0 and 0
+     * from this file); no reader. */
+    short word8;
+    short wordA;
     u32 frameCount;
 } Ov007CellAnim;
 
@@ -83,28 +89,29 @@ typedef struct Ctx {
     u8 pad3[0x30];
 } Ctx;
 
-/* List B: a 0xc-byte group header, then `count` 0x18-byte members. Only
- * the slots this function reads are named. */
-typedef struct GroupHdr {
+/* List B: a 0xc-byte cell-animation header, then `frameCount` 0x18-byte
+ * frames. Only the slots this function reads are named. */
+typedef struct Ov007CellAnimHeader {
     u8 pad_00[8];
-    u8 count; /* 0x08: members that follow; func_ov007_020c13a4 sizes the group */
+    u8 frameCount; /* 0x08: frames that follow; func_ov007_020c13a4 sizes the animation */
     u8 pad_09[3];
-} GroupHdr;
+} Ov007CellAnimHeader;
 
-typedef struct GroupMember {
-    u16 entry; /* 0x00: index into the bank's cells */
-    u16 value; /* 0x02: the frame's duration */
+typedef struct Ov007CellAnimFrame {
+    u16 cell;     /* 0x00: index into the bank's cells */
+    u16 duration; /* 0x02: ticks */
     u8 pad_04[0x14];
-} GroupMember;
+} Ov007CellAnimFrame;
 
-typedef char GroupHdr_size_must_be_0xc[sizeof(GroupHdr) == 0xc ? 1 : -1];
-typedef char GroupMember_size_must_be_0x18[sizeof(GroupMember) == 0x18 ? 1 : -1];
-typedef char RecA_size_must_be_0x14[sizeof(RecA) == 0x14 ? 1 : -1];
+typedef char Ov007CellAnimHeader_size_must_be_0xc[sizeof(Ov007CellAnimHeader) == 0xc ? 1 : -1];
+typedef char Ov007CellAnimFrame_size_must_be_0x18[sizeof(Ov007CellAnimFrame) == 0x18 ? 1 : -1];
+typedef char Ov007OamRecord_size_must_be_0x14[sizeof(Ov007OamRecord) == 0x14 ? 1 : -1];
 
-typedef struct Packed {
-    u32 val;
-    u16 ext;
-} Packed;
+/* One packed OAM entry: attr0 and attr1 in one word, then attr2. */
+typedef struct Ov007OamAttrs {
+    u32 attr01;
+    u16 attr2;
+} Ov007OamAttrs;
 
 extern void func_ov007_020c9a2c(Ctx *ctx, int a);
 extern Ov007SpriteBank *func_ov007_020c12ac(u32 a, u32 b);
@@ -119,7 +126,7 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
     u32 cnt;
     // Every other caller of func_ov007_020c3df4 passes a literal 0; this named local is deliberate (one of the near-miss row's nine zero-plumbing shapes).
     u32 heap = 0;
-    Packed tmp;
+    Ov007OamAttrs attrs;
     Ctx ctx;
     u32 j;
     u8 *p;
@@ -131,81 +138,86 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
 
     p = (u8 *)ctx.listA + 4;
     for (i = 0; i < nA; i++) {
-        Ov007Cell *e;
+        Ov007Cell *cell;
         u8 *base;
         cnt = *p;
         p = p + 4;
         base = s->cells;
-        e = (Ov007Cell *)(base + i * 8);
-        e->oam = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
-        e->count = cnt;
+        cell = (Ov007Cell *)(base + i * 8);
+        cell->oam = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
+        cell->count = cnt;
         for (j = 0; j < cnt; j++) {
-            s16 h0;
-            u32 key;
-            u32 hi;
-            u8 bE;
-            u32 h10;
-            u8 b9;
-            u8 bA;
-            u8 bB;
-            u32 bF;
-            RecA *r;
-            s16 h2;
-            u8 b5;
-            r = (RecA *)p;
-            key = ((u32)r->f8 << 8) | ((u32)r->f6 << 28) | ((u32)r->f7 << 29);
-            hi = ((u32)r->fC << 14) | ((u32)r->fD << 30);
-            p = p + sizeof(RecA);
-            bF = r->fF;
-            h10 = r->f10;
-            b5 = r->f5;
-            bB = r->fB;
-            bA = r->fA;
-            b9 = r->f9;
-            bE = r->fE;
-            h2 = r->f2;
-            h0 = r->f0;
-            if (key == 0x100 || key == 0x300) {
-                if (b9 == 3) {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | (b5 << 25) | (b9 << 10) | (bA << 12))) |
-                                     ((h0 & 0x1ff) << 16));
+            s16 x;
+            u32 modeFlip;
+            u32 shapeSize;
+            u8 priority;
+            u32 tile;
+            u8 objMode;
+            u8 mosaic;
+            u8 colorMode;
+            u32 palette;
+            Ov007OamRecord *r;
+            s16 y;
+            u8 affineIndex;
+            r = (Ov007OamRecord *)p;
+            modeFlip = ((u32)r->affineMode << 8) | ((u32)r->hFlip << 28) | ((u32)r->vFlip << 29);
+            shapeSize = ((u32)r->shape << 14) | ((u32)r->size << 30);
+            p = p + sizeof(Ov007OamRecord);
+            palette = r->palette;
+            tile = r->tile;
+            affineIndex = r->affineIndex;
+            colorMode = r->colorMode;
+            mosaic = r->mosaic;
+            objMode = r->objMode;
+            priority = r->priority;
+            y = r->y;
+            x = r->x;
+            if (modeFlip == 0x100 || modeFlip == 0x300) {
+                if (objMode == 3) {
+                    attrs.attr01 = modeFlip | ((shapeSize | ((y & 0xff) | (affineIndex << 25) |
+                                                             (objMode << 10) | (mosaic << 12))) |
+                                               ((x & 0x1ff) << 16));
                 } else {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | ((b5 << 25) | (bB << 13)) | (b9 << 10) |
-                                            (bA << 12))) |
-                                     ((h0 & 0x1ff) << 16));
+                    attrs.attr01 =
+                        modeFlip |
+                        ((shapeSize | ((y & 0xff) | ((affineIndex << 25) | (colorMode << 13)) |
+                                       (objMode << 10) | (mosaic << 12))) |
+                         ((x & 0x1ff) << 16));
                 }
             } else {
-                if (b9 == 3) {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | (b9 << 10) | (bA << 12))) |
-                                     ((h0 & 0x1ff) << 16));
+                if (objMode == 3) {
+                    attrs.attr01 =
+                        modeFlip | ((shapeSize | ((y & 0xff) | (objMode << 10) | (mosaic << 12))) |
+                                    ((x & 0x1ff) << 16));
                 } else {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | (bB << 13) | (b9 << 10) | (bA << 12))) |
-                                     ((h0 & 0x1ff) << 16));
+                    attrs.attr01 = modeFlip | ((shapeSize | ((y & 0xff) | (colorMode << 13) |
+                                                             (objMode << 10) | (mosaic << 12))) |
+                                               ((x & 0x1ff) << 16));
                 }
             }
-            tmp.ext = h10 | (bE << 10) | (bF << 12);
-            *(u16 *)((u8 *)e->oam + j * 6) = ((u16 *)&tmp)[0];
-            *(u16 *)((u8 *)e->oam + j * 6 + 2) = ((u16 *)&tmp)[1];
-            *(u16 *)((u8 *)e->oam + j * 6 + 4) = ((u16 *)&tmp)[2];
+            attrs.attr2 = tile | (priority << 10) | (palette << 12);
+            *(u16 *)((u8 *)cell->oam + j * 6) = ((u16 *)&attrs)[0];
+            *(u16 *)((u8 *)cell->oam + j * 6 + 2) = ((u16 *)&attrs)[1];
+            *(u16 *)((u8 *)cell->oam + j * 6 + 4) = ((u16 *)&attrs)[2];
         }
     }
 
     {
         u32 k;
-        Ov007CellAnim *g;
-        u32 m;
-        u32 c2;
+        Ov007CellAnim *anim;
+        u32 f;
+        u32 frameCount;
         p = (u8 *)ctx.listB + 4;
         for (k = 0; k < nB; k++) {
-            c2 = ((GroupHdr *)p)->count;
-            g = (Ov007CellAnim *)(s->anims + k * sizeof(Ov007CellAnim));
-            p = p + sizeof(GroupHdr);
-            func_ov007_020c13a4(g, c2, 0, 0);
-            for (m = 0; m < c2; m++) {
-                GroupMember *q0 = (GroupMember *)p;
-                p = p + sizeof(GroupMember);
-                g->frames[m] = (Ov007Cell *)((Ov007Cell *)s->cells + q0->entry);
-                g->durations[m] = q0->value;
+            frameCount = ((Ov007CellAnimHeader *)p)->frameCount;
+            anim = (Ov007CellAnim *)(s->anims + k * sizeof(Ov007CellAnim));
+            p = p + sizeof(Ov007CellAnimHeader);
+            func_ov007_020c13a4(anim, frameCount, 0, 0);
+            for (f = 0; f < frameCount; f++) {
+                Ov007CellAnimFrame *frame = (Ov007CellAnimFrame *)p;
+                p = p + sizeof(Ov007CellAnimFrame);
+                anim->frames[f] = (Ov007Cell *)s->cells + frame->cell;
+                anim->durations[f] = frame->duration;
             }
         }
     }

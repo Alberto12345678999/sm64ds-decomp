@@ -29,9 +29,9 @@
  *   (w0 >> 15) & 0xf     CLPS::func_02037e48
  *   (w0 >> 19) & 0x1f    CLPS::GetSurfaceType    dBgCh::ShouldPassThrough
  *                                                Impl special-cases 0x11 and 0x14
- *   w0 & 0x01000000      func_02037e2c
+ *   w0 & 0x01000000      CLPS::IsCameraPassThrough
  *   w0 & 0x02000000      func_02037e20
- *   w0 & 0x04000000      func_02037e14
+ *   w0 & 0x04000000      CLPS::IsCameraOnly
  *   w1 & 0xff            CLPS::func_02037e90
  *
  * The fields are left as the two raw words on purpose: naming them would mean
@@ -44,7 +44,8 @@
  * GetSurfaceType's value as the surface type, and include/Player.h traces
  * GetFloorClass's value through five slope and slide tables. The other four
  * keep their addresses as names, because nothing yet says what they mean. The
- * four flag tests still take a raw word pointer and are not members yet.
+ * water and toxic tests still take a raw word pointer; the camera tests
+ * are const members returning the original masks.
  */
 
 struct CLPS {
@@ -58,6 +59,9 @@ struct CLPS {
     int GetFloorClass() const;
     int func_02037e48() const;
     int GetSurfaceType() const;
+    /* Inferred from camera mode in dBgCh::ShouldPassThroughImpl. */
+    int IsCameraPassThrough() const;
+    int IsCameraOnly() const;
 #endif
 };
 

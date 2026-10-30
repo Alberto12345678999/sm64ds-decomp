@@ -7334,3 +7334,34 @@ arm9	0x020a637c	data_020a637c	OSiHeapInfo	NitroSDK OS_alloc.c OSiHeapInfo: one O
 arm9	0x020524e4	func_020524e4	MTX_Rot22_	NitroSDK FX_mtx22.c MTX_Rot22_ (Thumb asm: {cos, sin, -sin, cos}), the same five instructions as pret/pokediamond's body; the 2x2 rotation unit020b8f50 builds from the sine table
 arm9	0x02052550	func_02052550	MTX_RotX33_	NitroSDK FX_mtx33.c MTX_RotX33_ (Thumb asm: {1, 0, 0, 0, cos, sin, 0, -sin, cos}), instruction for instruction pret/pokediamond's body; next to MTX_RotY33_ and Matrix3x3_SetRotationZ (MTX_RotZ33_) in the file's order
 arm9	0x0205256c	func_0205256c	MTX_RotY33_	NitroSDK FX_mtx33.c MTX_RotY33_ (Thumb asm: {cos, 0, -sin, 0, 1, 0, sin, 0, cos}), instruction for instruction pret/pokediamond's body; between MTX_RotX33_ and Matrix3x3_SetRotationZ (MTX_RotZ33_) in the file's order
+arm9	0x0201473c	func_0201473c	nds_vprintf	va_list core of nds_printf (its only caller passes the computed va_list): vsnprintf (func_0206e3dc) into a 0x100 buffer, then nds_print
+arm9	0x020354b0	func_020354b0	_ZNK5dBgCh19IsDetectingOrdinaryEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x0203547c	func_0203547c	_ZNK5dBgCh16IsDetectingWaterEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x0203545c	func_0203545c	_ZNK5dBgCh12IsCameraModeEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x0203543c	func_0203543c	_ZNK5dBgCh16IsDetectingToxicEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x02035468	func_02035468	_ZN5dBgCh16EnableCameraModeEv	inferred from camera query setup at 0x0200897c and paired CLPS bits 24/26 in ShouldPassThroughImpl
+arm9	0x02037464	func_02037464	_ZN9dBgCh_Gnd11ResetResultEv	inferred result reset; both ground registry scans call it before visiting colliders; clears hit record, height and hit byte
+arm9	0x02037608	_ZN9dBgCh_Lin13func_02037608Ev	_ZN9dBgCh_Lin11ResetResultEv	inferred from query initialization and body: line restores endpoint/distance and clears hit; sphere clears flags, hits, displacement and floor normal
+arm9	0x02037b5c	_ZN12dBgCh_SphCrr13func_02037b5cEv	_ZN12dBgCh_SphCrr10ResetQueryEv	inferred from query initialization and body: line restores endpoint/distance and clears hit; sphere clears flags, hits, displacement and floor normal
+arm9	0x02037e2c	func_02037e2c	_ZNK4CLPS19IsCameraPassThroughEv	inferred from ShouldPassThroughImpl and camera mode set by the camera query initializer
+arm9	0x02037e14	func_02037e14	_ZNK4CLPS12IsCameraOnlyEv	inferred from ShouldPassThroughImpl and camera mode set by the camera query initializer
+ov002	0x020fea4c	func_ov002_020fea4c	_ZNK8dM3dGLin6GetEndEv	inferred endpoint getter; Vector3 return uses hidden result buffer in r0 and this in r1; called by dBgCh_Lin::ResetResult
+ov002	0x020fea68	func_ov002_020fea68	_ZNK8dM3dGLin8GetStartEv	inferred endpoint getter; Vector3 return uses hidden result buffer in r0 and this in r1; called by dBgCh_Lin::ResetResult
+arm9	0x02037940	_ZN12dBgCh_SphCrr13func_02037940Eh	_ZN12dBgCh_SphCrr13SetQueryFlagsEh	inferred from KcMbg and KcMbgSclY local sphere setup: copy query flags while clearing floor/wall/under contact bits (0x1c)
+arm9	0x02039624	func_02039624	_ZN4dBgW5ResetEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020395fc	func_020395fc	_ZN4dBgW8SetActorEP8dActor_c	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x02039404	func_02039404	_ZNK4dBgW12GetSlotIndexEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393fc	func_020393fc	_ZN4dBgW12SetSlotIndexEi	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393f0	func_020393f0	_ZN4dBgW14ClearSlotIndexEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393cc	func_020393cc	_ZNK4dBgW21GetBeforeClsnCallbackEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393bc	func_020393bc	_ZNK4dBgW18GetStoodOnCallbackEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393b4	func_020393b4	_ZNK4dBgW8GetActorEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393ac	func_020393ac	_ZNK4dBgW16GetActorUniqueIDEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393a4	func_020393a4	_ZN4dBgW13SetClipRadiusEi	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x0203939c	func_0203939c	_ZNK4dBgW13GetClipRadiusEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x02039394	func_02039394	_ZN4dBgW14SetClipOffsetYEi	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x0203938c	func_0203938c	_ZNK4dBgW14GetClipOffsetYEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020396d0	func_020396d0	_ZN7dBgW_Kc17SetDepthDirMinDotEi	inferred from Kc sphere scan: sets face-direction minimum dot or clamped edge-tolerance shift; actor and moving-collider setup call sites agree
+arm9	0x020396c0	func_020396c0	_ZN7dBgW_Kc21SetEdgeToleranceShiftEi	inferred from Kc sphere scan: sets face-direction minimum dot or clamped edge-tolerance shift; actor and moving-collider setup call sites agree
+arm9	0x0202e118	func_0202e118	GetStageDebugName	crash screen prints it as "StageNo %2d:%s": STAGE_DEBUG_NAMES[current level id] for ids < 0x34, else "*NOT STAGE*"; stage twin of GetActorDebugName
+arm9	0x02092584	data_02092584	STAGE_DEBUG_NAMES	0x34 char* stage debug names ("Test Map", "Main Castle Map", ... "Vs Main") read by GetStageDebugName; twin of ACTOR_DEBUG_NAMES; storage unchanged
