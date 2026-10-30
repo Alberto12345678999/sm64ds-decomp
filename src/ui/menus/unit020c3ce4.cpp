@@ -39,7 +39,7 @@ extern "C" {
 
 typedef int (*Ov007QueryHook)(void);
 typedef void (*Ov007FreeHook)(void *);
-typedef int (*Ov007AllocHook)(void *);
+typedef void *(*Ov007AllocHook)(unsigned int size);
 
 extern Ov007QueryHook data_ov007_02104c14;
 extern Ov007FreeHook data_ov007_02103254;
@@ -82,8 +82,12 @@ void func_ov007_020c3e1c(int v) {
 }
 
 // @symbol func_ov007_020c3df4
+/* The hook is typed as its default, func_ov007_020c3e64 (size in, block
+ * out). This function keeps the (int, void *) -> int spelling its callers
+ * were matched against, so the size and the block are converted here; the
+ * bytes are the same either way. */
 int func_ov007_020c3df4(int a, void *b) {
-    return data_ov007_02103258(b);
+    return (int)data_ov007_02103258((unsigned int)b);
 }
 
 // @symbol func_ov007_020c3d40
