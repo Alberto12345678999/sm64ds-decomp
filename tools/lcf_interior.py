@@ -431,6 +431,15 @@ _ALIAS_OBJECTS = {
     "func_01ff8e10.o": "src/unnamed/arm9/01ff/func_01ff8e10.c",
     "func_01ff9378.o": "src/unnamed/arm9/01ff/func_01ff9378.c",
     "func_01ffa594.o": "src/unnamed/arm9/01ff/func_01ffa594.c",
+    # The same blocks under their runtime names (#4500). Both spellings are
+    # listed until that rename lands, because only linked objects are looked up.
+    "_ll_ufrom_d.o": "src/_ll_ufrom_d.c",
+    "_dsub.o": "src/_dsub.c",
+    "_fadd.o": "src/_fadd.c",
+    "_ffix.o": "src/_ffix.c",
+    "_ffltu.o": "src/_ffltu.c",
+    "_fflt.o": "src/_fflt.c",
+    "_fsub.o": "src/_fsub.c",
     "_ll_udiv.o": "src/_ll_udiv.c",
     "_ull_mod.o": "src/_ull_mod.c",
     "_ll_sdiv.o": "src/_ll_sdiv.c",

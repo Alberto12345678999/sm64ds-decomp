@@ -205,7 +205,7 @@ class CoinedLedgerRows(Fixture):
         self.assertEqual(self.run_tool()[0], 0)
 
     def test_itcm_symbols_live_under_config_arm9(self):
-        """The autoload blocks sit beside the overlays, not at config/itcm/."""
+        """The autoload blocks' tables sit under config/arm9/, beside the overlays."""
         self.symbols("itcm", [("OS_ResetSystem", "0x01ffdd98", "function(arm,size=0x68)")])
         self.ledger([("itcm", "0x01ffdd98", "func_01ffdd98", "OS_ResetSystem", "x")])
         self.assertEqual(self.run_tool()[0], 0)
