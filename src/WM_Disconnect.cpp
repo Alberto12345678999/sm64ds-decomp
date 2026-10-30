@@ -9,8 +9,11 @@ extern int WM_CheckStateEx(int count, int a, int b, int c, int d, int e);
 extern void WM_SetCallbackTable(int i, int val);
 extern int WM_SendCommand(int a, int b, int c);
 
-int func_02061d30(int self, unsigned int idx)
-{
+/* NitroSDK wm_standard.c WM_Disconnect(callback, aid), by body against pret's
+ * pokediamond WM_standard.s: in a connected state, a parent (7, 9) cuts child
+ * aid (1..15 and connected, else 6 or 7) and a child (aid 0) its parent. It
+ * sends API 0xd (DISCONNECT) with 1 << aid. */
+int WM_Disconnect(int self, unsigned int idx) {
     int h;
     int* o;
     int r;

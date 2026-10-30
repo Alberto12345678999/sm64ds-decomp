@@ -2777,7 +2777,7 @@ src/WM_Init.cpp:
     complete
     .text start:0x020616e8 end:0x020618b8
 
-src/unnamed/arm9/0206/func_020618b8.cpp:
+src/WM_GetLinkLevel.cpp:
     complete
     .text start:0x020618b8 end:0x02061960
 
@@ -2785,15 +2785,15 @@ src/WM_GetAllowedChannel.cpp:
     complete
     .text start:0x02061960 end:0x020619ac
 
-src/unnamed/arm9/0206/func_020619ac.cpp:
+src/WM_ReadMPData.cpp:
     complete
     .text start:0x020619ac end:0x02061ab0
 
-src/unnamed/arm9/0206/func_02061ab0.cpp:
+src/WM_GetMPReceiveBufferSize.cpp:
     complete
     .text start:0x02061ab0 end:0x02061b9c
 
-src/unnamed/arm9/0206/func_02061b9c.cpp:
+src/WM_GetMPSendBufferSize.cpp:
     complete
     .text start:0x02061b9c end:0x02061c20
 
@@ -2809,15 +2809,15 @@ src/WM_SetIndCallback.cpp:
     complete
     .text start:0x02061ce4 end:0x02061d30
 
-src/unnamed/arm9/0206/func_02061d30.cpp:
+src/WM_Disconnect.cpp:
     complete
     .text start:0x02061d30 end:0x02061e38
 
-src/unnamed/arm9/0206/func_02061e38.cpp:
+src/WM_StartConnect.cpp:
     complete
     .text start:0x02061e38 end:0x02061ee4
 
-src/unnamed/arm9/0206/func_02061ee4.cpp:
+src/WM_StartScan.cpp:
     complete
     .text start:0x02061ee4 end:0x02061fdc
 
@@ -2825,11 +2825,11 @@ src/WM_StartParent.c:
     complete
     .text start:0x02061fdc end:0x02062024
 
-src/unnamed/arm9/0206/func_02062024.c:
+src/WmCheckParentParameter.c:
     complete
     .text start:0x02062024 end:0x020620b0
 
-src/unnamed/arm9/0206/func_020620b0.cpp:
+src/WM_SetParentParameter.cpp:
     complete
     .text start:0x020620b0 end:0x020621b8
 
@@ -2861,11 +2861,11 @@ src/WM_Enable.c:
     complete
     .text start:0x02062380 end:0x020623ec
 
-src/unnamed/arm9/0206/func_020623ec.c:
+src/WM_SetMPDataToPort.c:
     complete
     .text start:0x020623ec end:0x02062428
 
-src/unnamed/arm9/0206/func_02062428.cpp:
+src/WM_SetMPDataToPortEx.cpp:
     complete
     .text start:0x02062428 end:0x0206259c
 
@@ -2873,7 +2873,7 @@ src/unnamed/arm9/0206/func_0206259c.c:
     complete
     .text start:0x0206259c end:0x020625fc
 
-src/unnamed/arm9/0206/func_020625fc.cpp:
+src/WM_StartMPEx.cpp:
     complete
     .text start:0x020625fc end:0x02062734
 

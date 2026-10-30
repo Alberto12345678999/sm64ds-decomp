@@ -7,7 +7,7 @@ extern "C" {
 #pragma opt_common_subs off
 extern int WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int count, ...);
-extern int func_020623ec(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
+extern int WM_SetMPDataToPort(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
 extern void MultiCopyHalf(const void *src, void *dst, u32 count);
 extern void func_020627e8(void *self, int x);
 extern void func_02062990(void *self, u32 a, u32 b);
@@ -112,8 +112,8 @@ int WM_StepDataSharing(u8 *self, u8 *sendData, u8 *receiveData) {
             int cr;
             dsInfo->state = 1;
             n = (u16)((dsInfo->writeIndex + 3) % 4);
-            cr = func_020623ec((int)func_02062d10, (int)&dsInfo->ds[n], dsInfo->dataSetLength,
-                               (u16)(dsInfo->aidBitmap & childMask), dsInfo->port, 1);
+            cr = WM_SetMPDataToPort((int)func_02062d10, (int)&dsInfo->ds[n], dsInfo->dataSetLength,
+                                    (u16)(dsInfo->aidBitmap & childMask), dsInfo->port, 1);
             if (cr == 7) {
                 dsInfo->seqNum[n] = 0xffff;
                 dsInfo->sendIndex = (u16)((dsInfo->sendIndex + 1) % 4);
@@ -170,8 +170,8 @@ int WM_StepDataSharing(u8 *self, u8 *sendData, u8 *receiveData) {
             u8 *addr = (u8 *)&dsInfo->ds[dsInfo->sendIndex] + 0x20;
             int cr;
             MultiCopyHalf(sendData, addr, dsInfo->dataLength);
-            cr = func_020623ec((int)func_02062d10, (int)addr, dsInfo->dataLength, dsInfo->aidBitmap,
-                               dsInfo->port, 1);
+            cr = WM_SetMPDataToPort((int)func_02062d10, (int)addr, dsInfo->dataLength,
+                                    dsInfo->aidBitmap, dsInfo->port, 1);
             dsInfo->sendIndex = (u16)((dsInfo->sendIndex + 1) % 4);
             if (cr != 2 && cr != 0) {
                 dsInfo->state = 3;

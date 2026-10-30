@@ -8,7 +8,7 @@ extern "C" {
 #pragma opt_common_subs off
 extern int WM_GetSystemWork(void);
 extern void MultiStore16(u16 val, void *dst, int nbytes);
-extern int func_020623ec(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
+extern int WM_SetMPDataToPort(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
 extern void func_02062d10(void *self);
 
 /* NitroSDK WMDataSet / WMDataSharingInfo, as func_02062aa4 spells them. */
@@ -73,8 +73,8 @@ void func_020627e8(u8 *self, int flag)
 
         IRQ::Restore(saved);
 
-        ret = func_020623ec((int)func_02062d10, (int)&info->ds[prevSlot], info->dataSetLength,
-                            (u16)(info->aidBitmap & mask), info->port, 1);
+        ret = WM_SetMPDataToPort((int)func_02062d10, (int)&info->ds[prevSlot], info->dataSetLength,
+                                 (u16)(info->aidBitmap & mask), info->port, 1);
 
         if (ret == 7) {
             info->seqNum[prevSlot] = 0xffff;

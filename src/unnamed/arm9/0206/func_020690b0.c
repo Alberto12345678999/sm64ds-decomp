@@ -10,18 +10,18 @@
  *
  * WmWork field evidence (WM API ids from each wrapper's WM_SetCallbackTable):
  *   wmSysBuf        buffer arg of WM_Initialize (id 0, WM_Initialize)
- *   parentParam     func_020620b0 (id 7, WM_SetParentParameter); KS_Flag at
+ *   parentParam     WM_SetParentParameter (id 7, WM_SetParentParameter); KS_Flag at
  *                   +0x12 and the max sizes at +0x32/+0x34 are its size check;
  *                   func_02068844 packs entry/MB/KS/CS into WM_ATTR_FLAG_*
  *   scanBuf         WMScanParam.scanBuf; DMA'd into parents[i].bssDesc
  *   parent/childMaxSize   set by func_02068dc8, copied into parentParam
- *   sendBuf/recvBuf, sendBufSize/recvBufSize   WM_StartMP (func_020625fc)
+ *   sendBuf/recvBuf, sendBufSize/recvBufSize   WM_StartMPEx
  *   stateCallback   WM_Initialize / WM_SetIndCallback / WM_Reset callback
  *   mpSending       set while WM_SetMPDataToPort is pending, cleared in its
  *                   callback (id 0xf)
  *   initialized     set after WM_Initialize, cleared in the WM_End callback
  *   userCallback    every DISPATCH; func_02068ae8 installs MBi_CommParentCallback
- *   connectBssDesc  WM_StartConnect's pInfo (func_02061e38, id 0xc)
+ *   connectBssDesc  WM_StartConnect's pInfo (id 0xc)
  *   mode            func_02068ae8 sets 1 (parent); func_020688fc's case 2
  *                   sends through this (child) callback
  *   resetting       set by func_02068a74 before WM_Reset; while set the
@@ -45,11 +45,11 @@ extern int WM_End(void *fn);
 extern void func_0206879c(int a, int b);
 extern int WM_ReadStatus(void *p);
 extern int func_02063574(void *fn, int a, int b, int c);
-extern int func_02061ee4(void *fn, void *p);
-extern int func_02061e38(void *fn, int a, int b);
+extern int WM_StartScan(void *fn, void *p);
+extern int WM_StartConnect(void *fn, int a, int b);
 extern int WM_SetPortCallback(int a, void *fn, int c);
-extern int func_020625fc(void *fn, int a, u16 b, int c, u16 d, u16 e, int f,
-                         int g, int h, int i, int j);
+extern int WM_StartMPEx(void *fn, int a, u16 b, int c, u16 d, u16 e, int f, int g, int h, int i,
+                        int j);
 extern int func_0206a230(void);
 extern int func_0206a29c(void *p);
 extern int func_02068a74(void);
@@ -162,7 +162,7 @@ void func_020690b0(char *arg0)
             SCAN_PARAM->bssid[2] = 0xffff;
             w->scanContinue = 1;
             w->scanNextChannel = 1;
-            func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+            func_0206879c(0xa, WM_StartScan((void *)func_020690b0, data_020a9dc0));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -180,7 +180,7 @@ void func_020690b0(char *arg0)
                     return;
                 if (w->scanNextChannel != 0 && func_0206a29c(data_020a9dc0) == 0)
                     func_0206879c(2, func_02068a74());
-                func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+                func_0206879c(0xa, WM_StartScan((void *)func_020690b0, data_020a9dc0));
                 return;
             case 4:
                 DISPATCH(5, arg0);
@@ -188,7 +188,7 @@ void func_020690b0(char *arg0)
                     return;
                 if (w->scanNextChannel != 0 && func_0206a29c(data_020a9dc0) == 0)
                     func_0206879c(2, func_02068a74());
-                func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+                func_0206879c(0xa, WM_StartScan((void *)func_020690b0, data_020a9dc0));
                 return;
             default:
                 DISPATCH(0x100, arg0);
@@ -201,7 +201,7 @@ void func_020690b0(char *arg0)
 
     case 0xb:
         if (*(u16 *)(arg0 + 2) == 0) {
-            func_0206879c(0xc, func_02061e38((void *)func_020690b0, w->connectBssDesc, 0));
+            func_0206879c(0xc, WM_StartConnect((void *)func_020690b0, w->connectBssDesc, 0));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -218,9 +218,9 @@ void func_020690b0(char *arg0)
                 w->childBitmap = 1;
                 if (WM_SetPortCallback(1, (void *)func_02069918, 0) != 0)
                     return;
-                func_0206879c(0xe, func_020625fc((void *)func_020690b0, (int)w->recvBuf,
-                                                 w->recvBufSize, (int)w->sendBuf, w->sendBufSize,
-                                                 (u16)(w->mpContinuous == 0), 0, 0, 0, 1, 1));
+                func_0206879c(0xe, WM_StartMPEx((void *)func_020690b0, (int)w->recvBuf,
+                                                w->recvBufSize, (int)w->sendBuf, w->sendBufSize,
+                                                (u16)(w->mpContinuous == 0), 0, 0, 0, 1, 1));
                 return;
             case 9:
                 DISPATCH(0xa, arg0);

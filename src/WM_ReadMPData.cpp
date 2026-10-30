@@ -7,8 +7,11 @@ extern "C" {
 extern int WM_GetSystemWork(void);
 extern int WMi_CheckInitialized(void);
 
-char* func_020619ac(char* a, unsigned int idx)
-{
+/* NitroSDK wm_sync.c WM_ReadMPData(header, aid), by body against pret's
+ * pokediamond WM_sync.s: the received MP data block from child aid (1..15, and
+ * connected), found by walking the header's count blocks of length bytes from
+ * +0xa; 0 when there is none. */
+char *WM_ReadMPData(char *a, unsigned int idx) {
     int h;
     int n;
     char* local[16];

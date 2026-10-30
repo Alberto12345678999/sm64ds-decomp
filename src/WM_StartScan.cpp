@@ -30,7 +30,7 @@ struct WMStartScanReq {
 
 /* WM_GetSystemWork's WMArm9Buf. 0x0c is NitroSDK's fifo9to7, the ARM9 to
  * ARM7 request buffer (medium: the SDK's layout puts it here, between status
- * at 0x04 and the port callback tables at 0xac; func_02061e38 writes its
+ * at 0x04 and the port callback tables at 0xac; WM_StartConnect writes its
  * request there the same way). Typed as the one request written here. */
 struct WMArm9Buf {
     char pad_00[0xc];
@@ -41,7 +41,7 @@ struct WMArm9Buf {
  * (2, 3, 5), check the scan parameter (a buffer and channel 1..14), flush
  * it, register the callback and send the START_SCAN request. Returns 2
  * (WM_ERRCODE_OPERATING) once the request is queued. */
-int func_02061ee4(int a, char *b) {
+int WM_StartScan(int a, char *b) {
     WmScanParam *param = (WmScanParam *)b;
     int rc;
     WMStartScanReq *req;

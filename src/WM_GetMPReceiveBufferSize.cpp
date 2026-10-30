@@ -35,7 +35,7 @@ typedef struct WMArm9Buf {
     WMStatus *status; /* 0x04 */
 } WMArm9Buf;
 
-int func_02061ab0(void) {
+int WM_GetMPReceiveBufferSize(void) {
     WMArm9Buf *h = (WMArm9Buf *)WM_GetSystemWork();
     WMStatus *p;
     int flag;

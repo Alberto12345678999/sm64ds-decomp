@@ -12,7 +12,7 @@ extern int WM_SendCommand(int a, int b);
 
 /* NitroSDK WM_StartConnect(callback, pInfo, ssid): func_020690b0 passes it
  * its connectBssDesc (a 0xc0-byte WMBssDesc, flushed here) and no ssid. The
- * request goes to WM_GetSystemWork's fifo9to7 (word 3), as in func_02061ee4.
+ * request goes to WM_GetSystemWork's fifo9to7 (word 3), as in WM_StartScan.
  * Only the request fields written here are spelled out. */
 typedef struct WMStartConnectReq {
     unsigned short apiid;     /* 0x00 -- WM_APIID_START_CONNECT, 0xc */
@@ -23,8 +23,7 @@ typedef struct WMStartConnectReq {
 
 typedef char WMStartConnectReq_size_must_be_0x20[sizeof(WMStartConnectReq) == 0x20 ? 1 : -1];
 
-int func_02061e38(int a, int b, void *c)
-{
+int WM_StartConnect(int a, int b, void *c) {
     int r;
     int *p;
     WMStartConnectReq *q;

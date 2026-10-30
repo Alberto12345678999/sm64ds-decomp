@@ -321,7 +321,7 @@
       "src/unnamed/arm9/0206/func_0206071c.cpp": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
+      "src/WM_StartConnect.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02063ea8.c": [
@@ -3640,33 +3640,33 @@
       "src/WM_Finish.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_02061b9c.cpp": [
+      "src/WM_GetMPSendBufferSize.cpp": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02061d30.cpp": [
+      "src/WM_Disconnect.cpp": [
         "arity:6"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
+      "src/WM_StartConnect.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_020620b0.cpp": [
+      "src/WM_SetParentParameter.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
+      "src/WM_StartMPEx.cpp": [
         "arity:3"
       ]
     },
     "WM_GetSystemWork": {
-      "src/unnamed/arm9/0206/func_020618b8.cpp": [
+      "src/WM_GetLinkLevel.cpp": [
         "return:void *"
       ],
       "src/WM_GetAllowedChannel.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061b9c.cpp": [
+      "src/WM_GetMPSendBufferSize.cpp": [
         "return:int *"
       ],
       "src/WM_SetPortCallback.cpp": [
@@ -3675,10 +3675,10 @@
       "src/WM_SetIndCallback.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
+      "src/WM_StartConnect.cpp": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02061ee4.cpp": [
+      "src/WM_StartScan.cpp": [
         "return:char *"
       ],
       "src/WM_Initialize.c": [
@@ -3687,10 +3687,10 @@
       "src/WM_Enable.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02062428.cpp": [
+      "src/WM_SetMPDataToPortEx.cpp": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
+      "src/WM_StartMPEx.cpp": [
         "return:int *"
       ],
       "src/unnamed/arm9/0206/func_02062d10.cpp": [
@@ -3701,23 +3701,23 @@
       ]
     },
     "WM_SendCommand": {
-      "src/unnamed/arm9/0206/func_02061d30.cpp": [
+      "src/WM_Disconnect.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
+      "src/WM_StartConnect.cpp": [
         "arity:2"
       ],
-      "src/unnamed/arm9/0206/func_02061ee4.cpp": [
+      "src/WM_StartScan.cpp": [
         "arity:2"
       ],
-      "src/unnamed/arm9/0206/func_020620b0.cpp": [
+      "src/WM_SetParentParameter.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 void *"
       ],
-      "src/unnamed/arm9/0206/func_02062428.cpp": [
+      "src/WM_SetMPDataToPortEx.cpp": [
         "arity:9"
       ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
@@ -3725,7 +3725,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
+      "src/WM_StartMPEx.cpp": [
         "arity:12"
       ],
       "src/unnamed/arm9/0206/func_02063574.c": [
@@ -5360,9 +5360,6 @@
       ],
       "src/WM_SetIndCallback.cpp": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_020627e8.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02062990.cpp": [
@@ -10227,9 +10224,6 @@
       ]
     },
     "data_020a0f9d": {
-      "src/unnamed/arm9/0204/func_02040014.c": [
-        "return:unsigned char []"
-      ],
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "return:unsigned char"
       ]
@@ -18960,7 +18954,7 @@
       "src/FS_ClearOverlayImage.cpp": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
+      "src/WM_StartConnect.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_020647fc.c": [
@@ -19269,8 +19263,8 @@
         "param:#1 int"
       ]
     },
-    "func_02061b9c": {
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
+    "WM_GetMPSendBufferSize": {
+      "src/WM_StartMPEx.cpp": [
         "return:int"
       ]
     },
@@ -19287,7 +19281,7 @@
         "param:#1 void *"
       ]
     },
-    "func_02061e38": {
+    "WM_StartConnect": {
       "src/unnamed/arm9/0203/func_0203fb5c.c": [
         "param:#1 void *",
         "param:#3 int"
@@ -19297,7 +19291,7 @@
         "param:#3 int"
       ]
     },
-    "func_02061ee4": {
+    "WM_StartScan": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
         "param:#1 void *"
       ]
@@ -19310,12 +19304,12 @@
         "param:#1 void *"
       ]
     },
-    "func_02062024": {
-      "src/unnamed/arm9/0206/func_020620b0.cpp": [
+    "WmCheckParentParameter": {
+      "src/WM_SetParentParameter.cpp": [
         "return:void"
       ]
     },
-    "func_020620b0": {
+    "WM_SetParentParameter": {
       "src/unnamed/arm9/0203/func_0203fbc4.c": [
         "param:#1 void *",
         "param:#2 int"
@@ -19360,7 +19354,7 @@
         "param:#1 void *"
       ]
     },
-    "func_020623ec": {
+    "WM_SetMPDataToPort": {
       "src/unnamed/arm9/0204/func_02041930.c": [
         "return:int"
       ],
@@ -19379,8 +19373,8 @@
         "param:#6 int"
       ]
     },
-    "func_02062428": {
-      "src/unnamed/arm9/0206/func_020623ec.c": [
+    "WM_SetMPDataToPortEx": {
+      "src/WM_SetMPDataToPort.c": [
         "param:#5 int",
         "return:void"
       ]
@@ -19390,7 +19384,7 @@
         "param:#1 void *"
       ]
     },
-    "func_020625fc": {
+    "WM_StartMPEx": {
       "src/unnamed/arm9/0203/func_0203faa8.c": [
         "param:#1 void *",
         "param:#2 unsigned int",

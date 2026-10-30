@@ -58,7 +58,7 @@ struct WMDataSharingInfo {
     u16 reserved[1];   /* 0x41e */
 };
 
-/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as func_02061ab0 views them. */
+/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as WM_GetMPReceiveBufferSize views them. */
 struct WMStatus {
     u8 pad_000[0x184];
     u16 aid; /* 0x184 -- 0 for the parent */

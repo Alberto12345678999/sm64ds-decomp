@@ -1,8 +1,11 @@
 //cpp
-/* func_02062428 at 0x02062428
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
- */
+/* NitroSDK wm_mp.c WM_SetMPDataToPortEx(callback, arg, sendData,
+ * sendDataSize, destBitmap, port, prio), by body against pret's pokediamond
+ * WM_mp.s: in MP_PARENT or MP_CHILD, queue sendData for the AIDs in
+ * destBitmap on a port. It refuses a missing buffer (6), a parent with no
+ * children (7), and a size of 0 or one past mp_maxSendSize less the header
+ * (6), then flushes the data and sends API 0xf (SET_MP_DATA) with pret's
+ * argument order. */
 #include "CP15.h"
 
 extern "C" {
@@ -12,9 +15,9 @@ extern int WM_CheckStateEx(int count, ...);
 extern int WM_SendCommand(int a, int b, int c, int d, int e, int f, int g, int h, int i);
 
 /* WM_GetSystemWork's WMArm9Buf and its WMStatus, the fields read here.
- * child_bitmap follows func_020618b8 and include/WmWork.h; mp_maxSendSize
- * is the SDK field just before func_02061ab0's mp_maxRecvSize (0x190), and
- * func_02061b9c rounds it up for the send-buffer size. 0x86 has no name in
+ * child_bitmap follows WM_GetLinkLevel and include/WmWork.h; mp_maxSendSize
+ * is the SDK field just before WM_GetMPReceiveBufferSize's mp_maxRecvSize (0x190), and
+ * WM_GetMPSendBufferSize rounds it up for the send-buffer size. 0x86 has no name in
  * any view yet, so it is only invalidated by offset below. */
 typedef struct WMStatus {
     char pad_000[0x17e];
@@ -30,8 +33,8 @@ typedef struct WMArm9Buf {
     WMStatus *status; /* 0x04 */
 } WMArm9Buf;
 
-int func_02062428(int p0, int p1, int p2, int p3, unsigned short p4, unsigned short p5,
-                  unsigned short p6) {
+int WM_SetMPDataToPortEx(int p0, int p1, int p2, int p3, unsigned short p4, unsigned short p5,
+                         unsigned short p6) {
     int maxSendSize;
     int x;
     WMArm9Buf *handle;

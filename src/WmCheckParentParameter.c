@@ -1,14 +1,13 @@
 #include "WmWork.h"
 
-/* NitroSDK WmCheckParentParameter, which WM_SetParentParameter (func_020620b0)
+/* NitroSDK WmCheckParentParameter, which WM_SetParentParameter
  * calls on its WMParentParam and then ignores: userGameInfoLength at most 0x70
  * (WM_SIZE_USER_GAMEINFO), beaconPeriod 10..1000, channel 1..14, and an MP
  * exchange (the parent's parentMaxSize send plus maxEntry children's
  * childMaxSize replies, with their per-packet overheads) that fits 0x15e0
  * (5600) microseconds. The parameter block is include/WmWork.h's
  * WmParentParam. */
-int func_02062024(unsigned char *o)
-{
+int WmCheckParentParameter(unsigned char *o) {
     WmParentParam *pparam = (WmParentParam *)o;
     unsigned short a = pparam->userGameInfoLength;
     if (a > 0x70) return 0;

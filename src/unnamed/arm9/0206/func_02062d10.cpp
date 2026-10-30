@@ -6,7 +6,7 @@ struct CP15 { static void InvalidateDataCache(u32 addr, u32 len); };
 
 /* NitroSDK data sharing, the port send callback: WM_StartDataSharing
  * and the send step (func_020627e8, WM_StepDataSharing) pass it to
- * the port send (func_020623ec). The sharing it belongs to is the port's
+ * the port send (WM_SetMPDataToPort). The sharing it belongs to is the port's
  * WM_SetPortCallback argument. On success the parent records the sent set's
  * sequence number and steps sendIndex; a full send queue (errcode 0xa) backs
  * the parent's sendIndex up and asks for a retry (state 2); any other failure
@@ -46,7 +46,7 @@ struct WMDataSharingInfo {
     u16 reserved[1];   /* 0x41e */
 };
 
-/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as func_02061ab0 views them;
+/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as WM_GetMPReceiveBufferSize views them;
  * WM_SetPortCallback fills the per-port tables. */
 struct WMStatus {
     u8 pad_000[0x184];

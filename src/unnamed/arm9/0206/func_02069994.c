@@ -7,10 +7,11 @@ extern int WM_ReadStatus(int *arg);
 extern void func_0206879c(int x, int kind);
 extern int WM_SetIndCallback(void *x);
 extern int func_02063574(void *a, int b, int c, int d);
-extern int func_020620b0(void *self, char *o);
+extern int WM_SetParentParameter(void *self, char *o);
 extern int func_020635d8(void *a, int b);
 extern int WM_StartParent(void *x);
-extern int func_020625fc(void *arg0, int arg1, int arg2, int arg3, u16 arg4, u16 arg5, u16 arg6, int arg7, int arg8, int arg9, int arg10);
+extern int WM_StartMPEx(void *arg0, int arg1, int arg2, int arg3, u16 arg4, u16 arg5, u16 arg6,
+                        int arg7, int arg8, int arg9, int arg10);
 extern int func_0206a230(void);
 extern int WM_End(void *x);
 
@@ -66,7 +67,8 @@ void func_02069994(char *arg0)
 
     case 0x1D:
         if (cb->errcode == 0) {
-            func_0206879c(7, func_020620b0((void *)func_02069994, (char *)&WM_WORK->parentParam));
+            func_0206879c(
+                7, WM_SetParentParameter((void *)func_02069994, (char *)&WM_WORK->parentParam));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -97,7 +99,7 @@ void func_02069994(char *arg0)
                 /* WmStatus +0x10: a BOOL WM_ReadStatus fills in; which SDK
                    field it is isn't pinned down here, so it stays raw */
                 if (*(int *)(data_020a9db4 + 0x1428) == 0) {
-                    /* data_020a9db8 +0x1324 (set before func_020625fc, cleared in its callback) and
+                    /* data_020a9db8 +0x1324 (set before WM_StartMPEx, cleared in its callback) and
                        +0x1316 lie in arm9_a9db8_mb_parent.h's padding, with
                        no evidenced name yet, so they stay raw */
                     char *g8 = data_020a9db8;
@@ -108,9 +110,9 @@ void func_02069994(char *arg0)
                             v = 0;
                         }
                         func_0206879c(0xE,
-                                      func_020625fc((void *)func_02069994, (int)WM_WORK->recvBuf,
-                                                    WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
-                                                    WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
+                                      WM_StartMPEx((void *)func_02069994, (int)WM_WORK->recvBuf,
+                                                   WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
+                                                   WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
                         return;
                     }
                 }

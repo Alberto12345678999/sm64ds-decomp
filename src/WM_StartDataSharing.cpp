@@ -11,7 +11,7 @@ extern int WM_CheckStateEx(int count, ...);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern int WM_SetPortCallback(int idx, int b, int c);
 typedef void (*Fn)(void *);
-extern int func_020623ec(Fn a0, int a1, int a2, int a3, u16 a4, u16 a5);
+extern int WM_SetMPDataToPort(Fn a0, int a1, int a2, int a3, u16 a4, u16 a5);
 extern void func_02062bdc(void);
 extern void func_02062d10(void *self);
 extern void func_02062aa4(void);
@@ -40,7 +40,7 @@ typedef struct WMDataSharingInfo {
     u16 reserved[1];   /* 0x41e */
 } WMDataSharingInfo;
 
-/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as func_02061ab0 views
+/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as WM_GetMPReceiveBufferSize views
  * them. 0x86 is a bitmap of the children the parent's data sets wait for
  * (func_020627e8 masks aidBitmap with it the same way); it has no name in
  * any view yet, so it stays padding here and is read by offset below. */
@@ -146,8 +146,8 @@ int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int 
             int cr;
 
             dsInfo->writeIndex = (dsInfo->writeIndex + 1) % 4;
-            cr = func_020623ec(func_02062d10, (int)cur, dsInfo->dataSetLength,
-                               (u16)(dsInfo->aidBitmap & childMask), dsInfo->port, 1);
+            cr = WM_SetMPDataToPort(func_02062d10, (int)cur, dsInfo->dataSetLength,
+                                    (u16)(dsInfo->aidBitmap & childMask), dsInfo->port, 1);
 
             if (cr == 7) {
                 dsInfo->seqNum[n] = 0xffff;

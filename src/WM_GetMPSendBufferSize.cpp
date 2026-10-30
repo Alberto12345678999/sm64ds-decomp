@@ -10,7 +10,7 @@ extern int WM_CheckStateEx(int a, int b, int c);
 /* NitroSDK WM_GetMPSendBufferSize(): 0 unless the system is a parent or a
  * child (states 7, 8) that has not started MP yet; otherwise mp_maxSendSize
  * rounded up to 32 bytes. The WMArm9Buf / WMStatus view follows
- * func_02061ab0, the receive-size sibling that reads mp_flag the same way and
+ * WM_GetMPReceiveBufferSize, the receive-size sibling that reads mp_flag the same way and
  * mp_maxRecvSize at 0x190. */
 typedef struct WMStatus {
     char pad_000[0x10];
@@ -27,8 +27,7 @@ typedef struct WMArm9Buf {
     WMStatus *status; /* 0x04 */
 } WMArm9Buf;
 
-u32 func_02061b9c(void)
-{
+u32 WM_GetMPSendBufferSize(void) {
     WMArm9Buf *r4;
     WMStatus *p;
 
