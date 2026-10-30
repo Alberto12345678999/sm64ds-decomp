@@ -11,10 +11,10 @@ Ov007Grid *func_ov007_020c73f0(int springMode, int columns, int rows, int pointM
     int i;
     int j;
     Ov007Grid *grid;
-    grid = (Ov007Grid *)func_ov007_020c3df4(0, sizeof(Ov007Grid));
+    grid = func_ov007_020c3df4(0, sizeof(Ov007Grid));
     func_ov007_020c7348(grid);
-    grid->rowLists = (Ov007PointList **)func_ov007_020c3df4(0, rows * 4);
-    grid->columnLists = (Ov007PointList **)func_ov007_020c3df4(0, columns * 4);
+    grid->rowLists = func_ov007_020c3df4(0, rows * 4);
+    grid->columnLists = func_ov007_020c3df4(0, columns * 4);
     grid->columns = columns;
     grid->rows = rows;
     for (j = 0; j < rows; j++) {

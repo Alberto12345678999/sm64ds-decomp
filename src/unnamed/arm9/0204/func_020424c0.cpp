@@ -36,7 +36,7 @@ extern int data_02099e6c;
 
 extern void *FS_FindArchive(void *a, int b);
 extern void FS_InitFile(int *s);
-extern int func_0205d5e8(char *self, int a1, int a2, int a3, int a4);
+extern int FS_OpenFileDirect(char *self, int a1, int a2, int a3, int a4);
 extern int FS_ReadFile(int a, int b, int c);
 extern int FS_CloseFile(char *self);
 
@@ -96,7 +96,7 @@ void func_020424c0(void) {
             buf += 4;
             data0 = p->offset;
             end = roundedSize + data0;
-            func_0205d5e8((char *)local, (int)sb, data0, end, -1);
+            FS_OpenFileDirect((char *)local, (int)sb, data0, end, -1);
             FS_ReadFile((int)local, (int)buf, roundedSize);
             FS_CloseFile((char *)local);
             buf += roundedSize;

@@ -303,15 +303,6 @@
       "src/unnamed/arm9/0205/func_02059f2c.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205d28c.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2b0.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2dc.c": [
-        "arity:3"
-      ],
       "src/FS_LoadOverlayInfo.c": [
         "arity:3"
       ],
@@ -410,6 +401,9 @@
         "arity:3"
       ],
       "src/engine/mb/MB_Parent.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ]
     },
@@ -678,10 +672,6 @@
       "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
@@ -703,10 +693,6 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/FSi_LoadOverlayInfoCore.c": [
         "param:#1 void *",
         "param:#2 void *"
@@ -718,6 +704,9 @@
       "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#1 int *"
       ]
     },
     "GetLevelPart": {
@@ -1012,9 +1001,6 @@
         "param:#1 int"
       ],
       "src/unnamed/arm9/0200/func_0200f13c.cpp": [
-        "param:#1 unsigned int"
-      ],
-      "src/unnamed/arm9/0200/func_0200f220.cpp": [
         "param:#1 unsigned int"
       ],
       "src/game/stages/d_s_entry_methods.cpp": [
@@ -2887,6 +2873,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "Vec3_ApproachHorz": {
@@ -3115,10 +3106,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
-      ],
       "src/unnamed/arm9/0203/func_0203842c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -3243,10 +3230,6 @@
       "src/game/actors/d_a_obj_c1_trap.cpp": [
         "param:#1 const TrapVector3 *",
         "param:#2 const TrapVector3 *"
-      ],
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
       ],
       "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
@@ -3669,6 +3652,11 @@
         "param:#1 EntryMeshVec *",
         "param:#2 const EntryMeshVec *",
         "param:#3 const Vector3 *"
+      ],
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "Vec3_VertAngle": {
@@ -3717,10 +3705,6 @@
       "src/game/actors/d_a_wanwan.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
-      ],
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
       ],
       "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
@@ -5369,12 +5353,6 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:int"
-      ],
       "src/WM_SetPortCallback.cpp": [
         "return:int"
       ],
@@ -5388,9 +5366,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02065af0.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
@@ -5439,33 +5414,6 @@
       "src/engine/fs/FS_Command.cpp": [
         "return:void"
       ],
-      "src/FS_ResumeArchive.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ],
-      "src/FS_ReleaseArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:void"
-      ],
-      "src/FSi_SendCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_ExecuteAsyncCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_NextCommand.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "return:void"
       ],
@@ -5508,16 +5456,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02065af0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206703c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_020671b4.cpp": [
-        "return:void"
-      ],
-      "src/MB_CommSetParentStateCallback.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02067928.cpp": [
@@ -10494,9 +10432,6 @@
       ]
     },
     "data_020a4b6c": {
-      "include/decl_common.h": [
-        "return:int"
-      ],
       "src/runtime/actor/ActorBase.cpp": [
         "return:int []"
       ]
@@ -10588,16 +10523,6 @@
         "return:void *"
       ]
     },
-    "data_020a805c": {
-      "src/unnamed/arm9/0205/func_0205da94.c": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a8060": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "return:unsigned int"
-      ]
-    },
     "data_020a8114": {
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
@@ -10685,9 +10610,6 @@
       ]
     },
     "data_020a9db8": {
-      "src/MB_CommSetParentStateCallback.cpp": [
-        "return:SomeObj *"
-      ],
       "src/unnamed/arm9/0206/func_02067604.c": [
         "return:void *"
       ],
@@ -11803,11 +11725,6 @@
         "return:int []"
       ]
     },
-    "data_ov002_02110b78": {
-      "include/decl_common.h": [
-        "return:char"
-      ]
-    },
     "data_ov002_0211117c": {
       "src/_ZN6Player16St_BurnLava_MainEv.cpp": [
         "return:unsigned char"
@@ -12149,17 +12066,11 @@
       ]
     },
     "sTrmp2RiseSpeedMax": {
-      "include/decl_common.h": [
-        "return:int []"
-      ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "sTrmp2FallSpeed": {
-      "include/decl_common.h": [
-        "return:int []"
-      ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:int []"
@@ -12397,47 +12308,6 @@
     "sTrmp2StarModelFile": {
       "src/unnamed/ov006/__sinit_ov006_0213322c.c": [
         "return:int []"
-      ]
-    },
-    "data_ov007_02103368": {
-      "src/ui/menus/unit020b3edc.cpp": [
-        "return:void * (*)(unsigned short)"
-      ]
-    },
-    "data_ov007_0210336c": {
-      "src/ui/menus/unit020b3edc.cpp": [
-        "return:int []",
-        "return:void * (*)(void *)"
-      ]
-    },
-    "data_ov007_02103370": {
-      "src/ui/menus/unit020b3edc.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov007_02103448": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "return:void *"
-      ]
-    },
-    "data_ov007_0210344c": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_02103450": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov007_02104bb8": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "return:char *"
-      ]
-    },
-    "data_ov007_02104bbc": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "return:char *"
       ]
     },
     "data_ov007_02104c18": {
@@ -13047,9 +12917,6 @@
       ]
     },
     "data_ov030_02115d00": {
-      "include/decl_common.h": [
-        "return:char"
-      ],
       "src/game/actors/d_a_mky.cpp": [
         "return:MkyModelFilePtr"
       ]
@@ -15371,13 +15238,6 @@
         "return:int"
       ]
     },
-    "func_01ffb008": {
-      "src/cstd4.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
-      ]
-    },
     "OS_ResetSystem": {
       "src/func_02013f4c.cpp": [
         "param:#1 int"
@@ -15454,9 +15314,6 @@
       ]
     },
     "func_020091f8": {
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#2 void *"
-      ],
       "src/engine/view/d_camera.cpp": [
         "param:#2 void *",
         "param:#2 dCamera_c *"
@@ -17459,12 +17316,6 @@
         "return:int"
       ]
     },
-    "func_02018474": {
-      "src/unnamed/arm9/0201/func_02018434.c": [
-        "arity:3",
-        "return:void"
-      ]
-    },
     "func_020184e0": {
       "src/unnamed/arm9/0201/func_02018270.c": [
         "param:#2 int",
@@ -17557,10 +17408,6 @@
       ]
     },
     "myFS_ConvertPathToFileID": {
-      "src/unnamed/arm9/0201/func_02018434.c": [
-        "param:#2 int",
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_020189f0.c": [
         "param:#2 int",
         "return:void"
@@ -18736,7 +18583,6 @@
         "param:#2 void *"
       ],
       "src/ui/menus/unit020b7658.cpp": [
-        "param:#2 void *",
         "return:int"
       ]
     },
@@ -18750,14 +18596,12 @@
     },
     "func_0204a028": {
       "src/ui/menus/unit020b7658.cpp": [
-        "param:#1 int",
         "param:#2 void *",
         "return:void"
       ]
     },
     "func_0204a0dc": {
       "src/ui/menus/unit020b7658.cpp": [
-        "param:#1 int",
         "param:#2 void *",
         "return:void"
       ]
@@ -18866,18 +18710,9 @@
         "param:#1 int"
       ]
     },
-    "func_0204f934": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "param:#1 char *"
-      ]
-    },
     "func_0204fa2c": {
       "src/engine/sound/Sound.cpp": [
         "return:void"
-      ],
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "return:void",
-        "param:#1 char *"
       ]
     },
     "func_020507e0": {
@@ -19083,9 +18918,6 @@
       ]
     },
     "OS_CreateThread": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0204/func_02042200.c": [
         "param:#2 void *"
       ],
@@ -19195,9 +19027,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/FS_InitArchive.c": [
-        "arity:3"
-      ],
       "src/FS_StartOverlay.c": [
         "arity:3"
       ],
@@ -19223,6 +19052,9 @@
         "arity:3"
       ],
       "src/engine/mb/MB_Parent.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ]
     },
@@ -19262,46 +19094,32 @@
         "param:#2 int"
       ]
     },
-    "FSi_ReleaseCommand": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "param:#1 int *"
-      ],
-      "src/FSi_NextCommand.cpp": [
-        "param:#1 Node *"
-      ]
-    },
     "FS_SetArchiveProc": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#2 void *"
-      ]
-    },
-    "FS_ResumeArchive": {
-      "src/unnamed/arm9/0205/func_0205c91c.c": [
-        "return:void"
-      ]
-    },
-    "func_0205c864": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205c91c": {
-      "src/func_0201a2f8.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205caa8": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "arity:0",
-        "return:void"
+        "param:#2 void *",
+        "param:#3 int"
       ]
     },
     "FS_LoadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#7 void *",
         "param:#8 void *",
-        "return:void"
+        "return:void",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#1 int *",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int",
+        "param:#7 int",
+        "param:#8 int"
       ]
     },
     "FSi_SendCommand": {
@@ -19321,16 +19139,6 @@
         "param:#1 struct Obj *"
       ]
     },
-    "FSi_ExecuteAsyncCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "FSi_NextCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:int"
-      ]
-    },
     "FS_FindArchive": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
@@ -19341,37 +19149,11 @@
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
         "return:void *"
       ],
       "src/func_0201a2f8.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_0205d28c": {
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205d2b0": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205d2dc": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "FSi_GetPackedName": {
-      "src/FS_RegisterArchiveName.cpp": [
-        "param:#2 void *",
         "return:void *"
       ]
     },
@@ -19391,16 +19173,6 @@
         "arity:2"
       ]
     },
-    "func_0205d5e8": {
-      "src/myFS_ReadFile.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "param:#2 void *",
-        "return:void"
-      ]
-    },
     "func_0205d688": {
       "src/FS_ReadFile.c": [
         "param:#1 int"
@@ -19417,27 +19189,6 @@
     },
     "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
-        "return:int"
-      ]
-    },
-    "func_0205da94": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db24": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db2c": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db78": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "arity:0",
         "return:int"
       ]
     },
@@ -19520,17 +19271,6 @@
     },
     "func_0206071c": {
       "src/unnamed/arm9/0206/func_02060558.cpp": [
-        "return:int"
-      ]
-    },
-    "CARDi_ReadRom": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 void *",
-        "param:#6 int",
         "return:int"
       ]
     },
@@ -20332,9 +20072,6 @@
       "src/_fadd.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff97d8.c": [
-        "return:int"
-      ],
       "src/_ffix.c": [
         "return:int"
       ],
@@ -20345,20 +20082,6 @@
         "return:int"
       ],
       "src/_fsub.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/01ff/func_01ffb008.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/01ff/func_01ffb030.c": [
-        "return:int"
-      ]
-    },
-    "func_02073238": {
-      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
         "return:int"
       ]
     },
@@ -21545,28 +21268,6 @@
         "arity:1"
       ]
     },
-    "func_ov007_020b76c4": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020b78d0": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "return:char *"
-      ]
-    },
-    "func_ov007_020b7914": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_ov007_020b7948": {
-      "src/ui/menus/unit020b7658.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
     "func_ov007_020b7d94": {
       "src/ui/menus/unit020b413c.cpp": [
         "param:#1 void *"
@@ -21626,11 +21327,6 @@
     "func_ov007_020bdebc": {
       "src/ui/menus/unit020b6eb4.cpp": [
         "return:void *"
-      ]
-    },
-    "func_ov007_020be098": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "arity:0"
       ]
     },
     "func_ov007_020be0dc": {
@@ -21905,133 +21601,7 @@
       ]
     },
     "func_ov007_020c3df4": {
-      "include/decl_common.h": [
-        "param:#2 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020adc08.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020ade58.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020aea6c.c": [
-        "param:#2 int",
-        "return:char *"
-      ],
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b7594.c": [
-        "param:#2 int"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc6d4.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c023c.c": [
-        "param:#2 int",
-        "return:char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c0604.c": [
-        "param:#2 int",
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c0a44.c": [
-        "param:#2 int",
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c1048.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c11ac.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c12ac.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c13a4.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/ui/menus/unit020c1404.cpp": [
-        "param:#2 int",
-        "return:char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c2024.c": [
-        "param:#2 int",
-        "return:char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c22a0.c": [
-        "param:#2 int",
-        "return:char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c241c.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c2c68.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c40d4.cpp": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c690c.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c73f0.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c798c.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c806c.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c844c.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c8b10.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c9268.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
       "src/unnamed/ov007/func_ov007_020c9388.c": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c9688.c": [
-        "param:#2 unsigned int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020cbf8c.c": [
-        "param:#2 int",
         "return:void *"
       ]
     },
@@ -22610,6 +22180,42 @@
     "func_02067f2c": {
       "src/engine/mb/MB_Parent.cpp": [
         "return:int"
+      ]
+    },
+    "FS_UnloadArchive": {
+      "src/unnamed/arm9/0204/func_020423dc.c": [
+        "param:#1 int *"
+      ]
+    },
+    "FS_OpenFileDirect": {
+      "src/myFS_ReadFile.c": [
+        "param:#1 int"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#2 FSArchive *",
+        "param:#3 unsigned int",
+        "param:#4 unsigned int",
+        "param:#5 unsigned int"
+      ]
+    },
+    "FS_RegisterArchiveName": {
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#3 void *"
+      ]
+    },
+    "data_020a8064": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a806c": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a8074": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:FSArchive"
       ]
     }
   },

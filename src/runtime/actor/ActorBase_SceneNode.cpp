@@ -11,10 +11,15 @@
  * +0x10 alone; fBase_c's own constructor writes that one (see the Manager
  * ctor in include/fBase_c.h).
  *
- * deslop leftovers: the two members are real, fully typed, and named by the
- * ROM's own symbols, but the tree's add/remove (func_0203b438,
- * func_0203b3c0) still work through shadow structs and all four helpers
- * keep their address names.
+ * Names: fBase_c::SceneNode is a coined name. The ROM has RTTI for fBase_c
+ * but none for the node, and the two members' mangled names came in with
+ * the project's first import, not from a ROM string. The lead for its real
+ * name is cLib's cTreeNd_c: if this unit is c_tree.cpp, the add, remove
+ * and walk steps below are cTreeMg_c's and cTreeNd_c's.
+ *
+ * deslop leftovers: the two members are real and fully typed, but the
+ * tree's add/remove (func_0203b438, func_0203b3c0) still work through
+ * shadow structs and all four helpers keep their address names.
  */
 #include "fBase_c.h"
 
