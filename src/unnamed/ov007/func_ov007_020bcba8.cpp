@@ -1,6 +1,7 @@
 //cpp
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
+#include "Ov007Display.h"
 #include "G2.h"
 #include "GX.h"
 
@@ -11,39 +12,16 @@ extern void *func_02054ea8(void);
 extern int func_02054d88(void);
 extern void func_ov007_020b8548(void *unused, int sheet, int baseTile, void *plane0, void *plane1,
                                 int plane2, void *bank);
-extern void func_ov007_020c32e8(char *c, int sel, unsigned int n, int off);
+extern void func_ov007_020c32e8(Ov007Palette *pal, int target, unsigned int row, int skip);
 extern void func_ov007_020b3edc(int r0);
 extern void func_02056014(const void *src, unsigned int offset, unsigned int count);
 extern void func_ov007_020bcdb8(int idx);
-extern void func_ov007_020c33d0(char *c, int sel, unsigned int off);
+extern void func_ov007_020c33d0(Ov007CharRecord *rec, int target, unsigned int offset);
 extern void func_ov007_020b850c(void);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-
-/* The 0xc-byte character record func_ov007_020c3550 allocates for
- * func_ov007_020c99d8; only the slot this file reads. */
-typedef struct Ov007CharRecord {
-    void *tiles; /* 0x00: the tile data after block 0's 0xc-byte header */
-} Ov007CharRecord;
-
-/* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
- * allocates; palettes as in func_ov007_020ada70, only the slots this file
- * reads. */
-typedef struct Ov007Display {
-    char pad_00[0x24];
-    /* 0x24: func_ov007_020b7320 allocates the table (count at +0x20),
-     * func_ov007_020b6d40 fills it with four func_ov007_020c99d8 character
-     * records; func_ov007_020c33d0 loads one into VRAM */
-    Ov007CharRecord **characters;
-    char pad_28[4];
-    /* 0x2c: func_ov007_020b7320 allocates the table, func_ov007_020b6d40
-     * fills it with func_ov007_020c9988 palettes */
-    char **palettes;
-} Ov007Display;
-
-typedef char Ov007Display_size_must_be_0x30[sizeof(Ov007Display) == 0x30 ? 1 : -1];
 
 /* Loads screen set `idx`'s graphics: the message planes over the main and
  * sub BG1 (set 3 adds main BG3), its characters and palettes, and for set
@@ -79,7 +57,7 @@ void func_ov007_020bcba8(int idx) {
         func_ov007_020b3edc(0x2b);
 
         func_ov007_020bcdb8(1);
-        func_ov007_020c33d0((char *)s->characters[0], 8, 0);
+        func_ov007_020c33d0(s->characters[0], 8, 0);
         func_ov007_020c32e8(s->palettes[0], 3, 0, 0);
         func_ov007_020b850c();
     } break;
@@ -92,7 +70,7 @@ void func_ov007_020bcba8(int idx) {
         func_ov007_020b8548(0, (int)sheet, 0, mainBg1, subBg1, mainBg3, messages);
 
         func_ov007_020bcdb8(2);
-        func_ov007_020c33d0((char *)s->characters[3], 9, 0);
+        func_ov007_020c33d0(s->characters[3], 9, 0);
         func_ov007_020c32e8(s->palettes[2], 3, 0, 0);
         func_ov007_020b850c();
     } break;

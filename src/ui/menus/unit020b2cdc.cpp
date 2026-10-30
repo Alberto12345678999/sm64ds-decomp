@@ -41,6 +41,7 @@
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -86,15 +87,6 @@ typedef struct Ov007Pad {
 } Ov007Pad;
 
 typedef char Ov007Pad_size_must_be_0x70[sizeof(Ov007Pad) == 0x70 ? 1 : -1];
-
-/* The 0x2c-byte item func_ov007_020aea6c allocates and the 0x1c-byte view
- * func_ov007_020b4c04 returns (names as in func_ov007_020beeb0). */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    int posX;              /* 0x08: Q12; func_ov007_020b3e84 reports it */
-    int posY;              /* 0x0c */
-} Ov007Item;
 
 typedef struct Ov007ItemView {
     Ov007Item *item;     /* 0x00 */

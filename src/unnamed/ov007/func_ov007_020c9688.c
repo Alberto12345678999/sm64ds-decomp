@@ -30,7 +30,7 @@
  * climb in the near-miss note, both loop forms, the named-zero and
  * named-init spellings, and every integer width for the counters; only the
  * shared cursor moves it. */
-#include "types.h"
+#include "Ov007SpriteBank.h"
 
 /* List A: a cell's 4-byte header (its record count), then one 0x14-byte
  * record per OAM entry. The names are the OAM attribute fields each byte
@@ -53,33 +53,6 @@ typedef struct Ov007OamRecord {
     u16 tile;       /* 0x10: attr2 bits 0-9 */
     u16 pad_12;     /* 0x12 */
 } Ov007OamRecord;
-
-/* One 8-byte cell: `count` OAM entries, each packed into three attribute
- * halfwords (attr0..attr2). */
-typedef struct Ov007Cell {
-    u16 *oam;
-    u32 count;
-} Ov007Cell;
-
-/* One 0x10-byte cell animation (func_ov007_020c13a4 sizes it): a cell and
- * a duration per frame, as func_ov007_020c0d70 steps through them. */
-typedef struct Ov007CellAnim {
-    Ov007Cell **frames;
-    u16 *durations;
-    /* 0x08: func_ov007_020c13a4 stores its last two arguments here (0 and 0
-     * from this file); no reader. */
-    short word8;
-    short wordA;
-    u32 frameCount;
-} Ov007CellAnim;
-
-/* The 0x10-byte sprite bank func_ov007_020c12ac allocates. */
-typedef struct Ov007SpriteBank {
-    u32 cellCount;
-    u8 *cells;
-    u32 animCount;
-    u8 *anims;
-} Ov007SpriteBank;
 
 typedef struct Ctx {
     u8 pad[0x44];
@@ -114,9 +87,9 @@ typedef struct Ov007OamAttrs {
 } Ov007OamAttrs;
 
 extern void func_ov007_020c9a2c(Ctx *ctx, int a);
-extern Ov007SpriteBank *func_ov007_020c12ac(u32 a, u32 b);
+extern Ov007SpriteBank *func_ov007_020c12ac(int cellCount, int animCount);
 extern void *func_ov007_020c3df4(int a, u32 b);
-extern void func_ov007_020c13a4(void *c, int r1, short r2, short r3);
+extern void func_ov007_020c13a4(Ov007CellAnim *anim, int frameCount, short offsetX, short offsetY);
 
 Ov007SpriteBank *func_ov007_020c9688(int arg) {
     Ov007SpriteBank *s;
@@ -139,12 +112,10 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
     p = (u8 *)ctx.listA + 4;
     for (i = 0; i < nA; i++) {
         Ov007Cell *cell;
-        u8 *base;
         cnt = *p;
         p = p + 4;
-        base = s->cells;
-        cell = (Ov007Cell *)(base + i * 8);
-        cell->oam = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
+        cell = &s->cells[i];
+        cell->oam = (Ov007CellEntry *)func_ov007_020c3df4(heap, cnt * 6);
         cell->count = cnt;
         for (j = 0; j < cnt; j++) {
             s16 x;
@@ -196,9 +167,9 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
                 }
             }
             attrs.attr2 = tile | (priority << 10) | (palette << 12);
-            *(u16 *)((u8 *)cell->oam + j * 6) = ((u16 *)&attrs)[0];
-            *(u16 *)((u8 *)cell->oam + j * 6 + 2) = ((u16 *)&attrs)[1];
-            *(u16 *)((u8 *)cell->oam + j * 6 + 4) = ((u16 *)&attrs)[2];
+            cell->oam[j].attr0 = ((u16 *)&attrs)[0];
+            cell->oam[j].attr1 = ((u16 *)&attrs)[1];
+            cell->oam[j].attr2 = ((u16 *)&attrs)[2];
         }
     }
 
@@ -210,13 +181,13 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
         p = (u8 *)ctx.listB + 4;
         for (k = 0; k < nB; k++) {
             frameCount = ((Ov007CellAnimHeader *)p)->frameCount;
-            anim = (Ov007CellAnim *)(s->anims + k * sizeof(Ov007CellAnim));
+            anim = &s->anims[k];
             p = p + sizeof(Ov007CellAnimHeader);
             func_ov007_020c13a4(anim, frameCount, 0, 0);
             for (f = 0; f < frameCount; f++) {
                 Ov007CellAnimFrame *frame = (Ov007CellAnimFrame *)p;
                 p = p + sizeof(Ov007CellAnimFrame);
-                anim->frames[f] = (Ov007Cell *)s->cells + frame->cell;
+                anim->frames[f] = &s->cells[frame->cell];
                 anim->durations[f] = frame->duration;
             }
         }

@@ -5,6 +5,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -48,18 +49,6 @@ typedef struct Ov007Pad {
     u16 keys;     /* 0x00: held this frame */
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; only the slot this
- * file touches. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-} Ov007Item;
-
-/* The 8-byte record func_ov007_020ade58 returns. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemNode;
 
 /* The 0xc-byte record func_ov007_020adc08 builds. */
 typedef struct Ov007LayerSlot {

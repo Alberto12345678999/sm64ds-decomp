@@ -49,6 +49,8 @@
  */
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007Display.h"
+#include "Ov007SpriteGroup.h"
 #include "cstd.h"
 #include "Vector3s.h"
 #include "dExtModel_c.h"
@@ -134,47 +136,6 @@ typedef struct Ov007ParticleSystem {
     u8 spawnFrames; /* 0x58: 1..5, fewer the faster the figure moves */
 } Ov007ParticleSystem;
 
-/* The 0x44-byte OAM sprite node func_ov007_020c11ac allocates; names as in
- * func_ov007_020c10ec and func_ov007_020ade58, only the slots this file
- * touches. */
-typedef struct Ov007OamNode {
-    int x;       /* 0x00: Q12 screen x */
-    int y;       /* 0x04: Q12 screen y */
-    int visible; /* 0x08: func_ov007_020c0b78 draws this node and its children
-                  only when set */
-    char pad_0c[8];
-    u8 priority;    /* 0x14: OAM priority, used when the caller passes none (> 3) */
-    s8 affineIndex; /* 0x15: OAM affine matrix, -1 = none */
-    char pad_16[2];
-    void **anims; /* 0x18: the node's animations (func_ov007_020c11ac) */
-    char pad_1c;
-    u8 animIndex; /* 0x1d: Sprite_SetAnimation's first argument */
-} Ov007OamNode;
-
-typedef char
-    Ov007OamNode_animIndex_must_be_at_0x1d[(int)&((Ov007OamNode *)0)->animIndex == 0x1d ? 1 : -1];
-
-/* A func_ov007_020c40d4 record: its first word is its node (as
- * func_ov007_020c3f00 and func_ov007_020c3fe4 read it); margin as in
- * func_ov007_020c3fe4, which shows the node only while it lies within
- * margin pixels of the screen. */
-typedef struct Ov007SpriteItem {
-    Ov007OamNode *node; /* 0x00 */
-    char pad_04[6];
-    u8 margin; /* 0x0a */
-} Ov007SpriteItem;
-
-typedef char
-    Ov007SpriteItem_margin_must_be_at_0xa[(int)&((Ov007SpriteItem *)0)->margin == 0xa ? 1 : -1];
-
-/* The 0x18-byte sprite group func_ov007_020c3f00 builds; names as there. */
-typedef struct Ov007SpriteGroup {
-    int *layout;             /* 0x00: [0] is the item count */
-    Ov007OamNode *root;      /* 0x04: the items' parent */
-    Ov007SpriteItem **items; /* 0x08: layout[0] records */
-    Ov007SpriteItem *extra;  /* 0x0c: the extra record func_ov007_020c40d4 builds */
-} Ov007SpriteGroup;
-
 /* One 0xc-byte particle tracking record of the kind func_0204dab4 fills (as
  * dPa_c's edStarKiraCallback_c::trackingRecords). func_0204dab4 claims a free
  * record for each particle of the system, tagging it with its mask argument
@@ -197,26 +158,6 @@ struct TrackingRecord {
 };
 
 typedef char TrackingRecord_size_must_be_0xc[sizeof(TrackingRecord) == 0xc ? 1 : -1];
-
-/* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
- * allocates; names as in func_ov007_020ade58 and func_ov007_020adc08, only
- * the slots this file reads. A bank's +0xc (its array of 0x10-byte
- * animations) stays raw. */
-typedef struct Ov007Display {
-    void *oamListMain; /* 0x00 */
-    void *oamListSub;  /* 0x04 */
-    char pad_08[0xc];
-    /* 0x14: the sub screen's 0x400-byte OAM buffer; func_ov007_020b7384
-   * copies it to 0x07000400 (func_02056674), and +0x10 to the main
-   * screen's OAM */
-    char *oamSub;
-    char pad_18[0x24];
-    char **spriteBanks; /* 0x3c: the six func_ov007_020c9688 sprite banks */
-} Ov007Display;
-
-typedef char Ov007Display_spriteBanks_must_be_at_0x3c[(int)&((Ov007Display *)0)->spriteBanks == 0x3c
-                                                          ? 1
-                                                          : -1];
 
 /* NitroSDK's GXOamAttr: one 8-byte OAM entry, its fourth halfword an
  * affine parameter. */
@@ -266,15 +207,15 @@ extern int func_02053200(int x);
 extern int func_020538b8(int x, int y);
 extern void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask, void *cb);
 extern void func_0204dc84(char *self);
-extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
+extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
 extern void *func_ov007_020b7690(int i);
 extern void func_ov007_020bfd70(struct Ov007Camera *cam, void *pos, int *outX, int *outY);
 extern void func_ov007_020c3d1c(void *p);
 extern int func_ov007_020c3df4(int a, void *b);
-extern void func_ov007_020c3e7c(char *c);
-extern void func_ov007_020c3ee8(int *c, int x);
-extern void *func_ov007_020c3f00(int *layout, int extraAnims);
-extern void func_ov007_020c3fe4(void *self);
+extern void func_ov007_020c3e7c(Ov007SpriteGroup *grp);
+extern void func_ov007_020c3ee8(Ov007SpriteGroup *grp, Ov007OamList *list);
+extern Ov007SpriteGroup *func_ov007_020c3f00(int *layout, int extraAnims);
+extern void func_ov007_020c3fe4(Ov007SpriteItem *item);
 
 /* the figure and its files */
 extern int data_ov007_020d7c5c[2][2]; /* [figureIndex][index]: animation file */
@@ -562,24 +503,24 @@ void func_ov007_020be684(void *a0, char *ctx) {
  * animation 1 with an 8-pixel margin, the extra record animations 2 and 0
  * with a 0x20-pixel one. */
 void func_ov007_020be50c(void) {
-    int *t;
+    Ov007SpriteBank **t;
     Ov007SpriteGroup *n;
     Ov007SpriteItem *e;
     Ov007OamNode *ef0;
-    int *t2;
+    Ov007SpriteBank *t2;
     int count;
     int i;
     int off;
 
-    t = (int *)WORK->display->spriteBanks;
+    t = WORK->display->spriteBanks;
 
     SPRITES = (Ov007ParticleSprites *)func_ov007_020c3df4(0, (void *)sizeof(Ov007ParticleSprites));
-    SPRITES->group = (Ov007SpriteGroup *)func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
+    SPRITES->group = func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
 
     SPRITES->tracking = (TrackingRecord *)func_ov007_020c3df4(
         (int)&data_ov007_02103234, (void *)(data_ov007_020d7c6c * sizeof(TrackingRecord)));
 
-    func_ov007_020c3ee8((int *)SPRITES->group, (int)WORK->display->oamListSub);
+    func_ov007_020c3ee8(SPRITES->group, WORK->display->oamListSub);
 
     n = SPRITES->group;
     count = n->layout[0];
@@ -588,11 +529,11 @@ void func_ov007_020be50c(void) {
         off = i;
         do {
             e = n->items[i];
-            t2 = (int *)t[2];
+            t2 = t[2];
             ef0 = e->node;
-            ef0->anims[0] = (void *)(t2[3] + 0x10);
+            ef0->anims[0] = &t2->anims[1];
             e->margin = 8;
-            Sprite_SetAnimation((char *)e->node, 0, 1, 0, 0);
+            Sprite_SetAnimation(e->node, 0, 1, 0, 0);
             func_0204dc84((char *)SPRITES->tracking + off);
             n = SPRITES->group;
             i++;
@@ -602,9 +543,9 @@ void func_ov007_020be50c(void) {
     }
 
     e = n->extra;
-    e->node->anims[0] = (void *)(((int *)t[2])[3] + 0x20);
+    e->node->anims[0] = &t[2]->anims[2];
     ef0 = e->node;
-    ef0->anims[1] = (void *)((int *)t[2])[3];
+    ef0->anims[1] = &t[2]->anims[0];
     e->margin = 0x20;
 
     func_ov007_020be8b8();
@@ -619,7 +560,7 @@ void func_ov007_020be47c(void) {
         SPRITES->tracking = 0;
     }
     if (SPRITES->group != 0) {
-        func_ov007_020c3e7c((char *)SPRITES->group);
+        func_ov007_020c3e7c(SPRITES->group);
         SPRITES->group = 0;
     }
     func_ov007_020c3d1c(SPRITES);
@@ -675,17 +616,17 @@ int func_ov007_020be0dc(void) {
         switch (kind) {
         case 0:
             if (node->animIndex != 0)
-                Sprite_SetAnimation((char *)node, 0, 1, 0, 0);
+                Sprite_SetAnimation(node, 0, 1, 0, 0);
             break;
         case 1: {
             Ov007AnimPlayer *y = fig->model->boneAnim;
             int idv = y->frame;
             if (idv >= 0x226) {
                 if (node->animIndex != 1)
-                    Sprite_SetAnimation((char *)node, 1, 1, 0, 0);
+                    Sprite_SetAnimation(node, 1, 1, 0, 0);
             } else {
                 if (node->animIndex != 0)
-                    Sprite_SetAnimation((char *)node, 0, 1, 0, 0);
+                    Sprite_SetAnimation(node, 0, 1, 0, 0);
             }
         } break;
         }
@@ -717,7 +658,7 @@ int func_ov007_020be0dc(void) {
             if (scale >= 0x12)
                 scale = 0x11;
             if (node->animIndex == 0)
-                Sprite_SetAnimation((char *)node, 0, 0, 0, (int)scale);
+                Sprite_SetAnimation(node, 0, 0, 0, (int)scale);
         }
 
         if (node->animIndex == 0)

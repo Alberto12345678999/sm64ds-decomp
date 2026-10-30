@@ -2,28 +2,8 @@
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "Ov007Item.h"
 extern u8 data_ov007_0210342c[];
-
-/* The 10-byte layout row func_ov007_020aea6c's item points at; names as in
- * func_ov007_020b5bf0, only the slot this file reads. */
-typedef struct Ov007ItemLayout {
-    u16 kind; /* 0x0 */
-} Ov007ItemLayout;
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020b46b0 and func_ov007_020ae834, only the slots this file
- * touches. */
-typedef struct Ov007Item {
-    u16 id; /* 0x00 */
-    char pad_02[2];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388 */
-    char pad_08[8];
-    s32 fade; /* 0x10: Q12; selectable once fully faded in (>= 0x1000) */
-    char pad_14[0x10];
-    Ov007ItemLayout *layout; /* 0x24 */
-} Ov007Item;
-
-typedef char Ov007Item_layout_must_be_at_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 
 /* One of the manager's itemViews (func_ov007_020b4c04); names as there. */
 typedef struct Ov007ItemView {

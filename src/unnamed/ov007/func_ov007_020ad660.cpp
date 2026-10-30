@@ -5,6 +5,7 @@
 #include "Ov007Work.h"
 #include "cstd.h"
 #include "Ov007BgLayer.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -24,26 +25,7 @@ typedef struct Ov007LayerSlot {
     Ov007BgLayer *layer;   /* 0x04 */
     u8 kind;               /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
 } Ov007LayerSlot;
-
-/* The 10-byte layout row an item points at (names as in
- * func_ov007_020ae834); only the home row is read here. */
-typedef struct Ov007ItemLayout {
-    u16 kind;  /* 0x0 */
-    s16 homeX; /* 0x2 */
-    s16 homeY; /* 0x4 */
-} Ov007ItemLayout;
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020b5bf0 and func_ov007_020ae2d0, only the slots this file
- * reads. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    char pad_08[4];
-    s32 posY; /* 0x0c: Q12 */
-    char pad_10[0x14];
-    Ov007ItemLayout *layout; /* 0x24 */
-} Ov007Item;
+typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
 
 /* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
 typedef struct Ov007ItemView {
@@ -71,9 +53,6 @@ typedef struct Ov007Figure {
     char pad_00[4];
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 } Ov007Figure;
-
-typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
-typedef char Ov007Item_size_must_be_0x28[sizeof(Ov007Item) == 0x28 ? 1 : -1];
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)

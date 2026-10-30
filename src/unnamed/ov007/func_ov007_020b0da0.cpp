@@ -4,6 +4,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "cstd.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -45,18 +46,6 @@ typedef struct Ov007Figure {
      * there and waits for it to read 0 again */
     void *update;
 } Ov007Figure;
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; only the slot this
- * file touches. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-} Ov007Item;
-
-/* The 8-byte record func_ov007_020ade58 returns. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemNode;
 
 typedef char Ov007Model_size_must_be_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
 typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];

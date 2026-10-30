@@ -2,6 +2,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
 #include "cstd.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -11,20 +12,6 @@ extern int func_ov007_020af260(int,int,int*,int*);
 extern int func_ov007_020b8f64(void);
 extern int func_ov007_020b8f50(void);
 extern int func_ov007_020b9640(void);
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020ae2d0, only the slots this file writes. */
-typedef struct Ov007Item {
-    char pad_00[0x18];
-    s32 wiggleTimer;  /* 0x18: func_ov007_020ae834 counts it down */
-    s32 wiggleFrames; /* 0x1c: the wiggle's length */
-} Ov007Item;
-
-/* The 8-byte record func_ov007_020ade58 returns; names as in
- * func_ov007_020ade58, only its item here. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item; /* 0x00: func_ov007_020aea6c */
-} Ov007ItemNode;
 
 typedef char
     Ov007Work_itemNodes_must_be_at_0xa4[(int)&((Ov007Work *)0)->itemNodes == 0xa4 ? 1 : -1];

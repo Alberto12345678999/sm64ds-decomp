@@ -41,20 +41,9 @@
 #include "Ov007Work.h"
 #include "Ov007Swing.h"
 #include "Ov007Camera.h"
+#include "Ov007Item.h"
 
 extern "C" {
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; only the slots this
- * file touches. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    s32 posX;              /* 0x08: Q12; func_ov007_020ae810 seeds it from the layout */
-    s32 posY;              /* 0x0c */
-    char pad_10[0x10];
-    s32 ready; /* 0x20: func_ov007_020ae834 sets it once the state settles and
-                * clears it on reset; medium confidence */
-} Ov007Item;
 
 /* The 0x1c record func_ov007_020b4c04 returns (names as in that file). */
 typedef struct Ov007ItemView {

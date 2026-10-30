@@ -4,6 +4,7 @@
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
 #include "cstd.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -11,28 +12,10 @@ extern void func_ov007_020b2614(int a, int b, int c);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
 
-/* The 0x2c-byte record func_ov007_020aea6c allocates; only the fields this
- * file touches are spelled. */
-typedef struct Ov007Item {
-    char pad_00[0x10];
-    /* 0x10: Q12; func_ov007_020ae834 eases it in states 5/6,
-     * func_ov007_020b5bf0 turns it into the sprite alpha */
-    s32 fade;
-    char pad_14[4];
-    s32 wiggleTimer;  /* 0x18: func_ov007_020ae834 counts it down; func_ov007_020b5bf0
-                       * swings the sprite's rotZ while it runs */
-    s32 wiggleFrames; /* 0x1c: the wiggle's length; func_ov007_020ae2d0 also arms 0x3c */
-} Ov007Item;
-
 /* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
 typedef struct Ov007ItemView {
     Ov007Item *item; /* 0x00 */
 } Ov007ItemView;
-
-/* The 8-byte record func_ov007_020ade58 returns; only its item here. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemNode;
 
 /* The 0x70-byte key record func_ov007_020c2304 allocates;
  * func_ov007_020c20b8 copies keys into prevKeys, then reads KEYINPUT. */
