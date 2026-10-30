@@ -9589,6 +9589,9 @@
       ],
       "src/unnamed/arm9/0201/func_0201ffcc.c": [
         "return:char []"
+      ],
+      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
+        "return:int []"
       ]
     },
     "data_0209d65c": {
@@ -18021,6 +18024,11 @@
         "return:int"
       ]
     },
+    "func_0201aa18": {
+      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
+        "return:void"
+      ]
+    },
     "func_0201aa50": {
       "src/unnamed/arm9/0201/func_0201a8b4.c": [
         "param:#2 unsigned int",
@@ -18045,6 +18053,11 @@
     "func_0201aad4": {
       "src/unnamed/arm9/0201/func_0201aa18.c": [
         "param:#1 void *"
+      ]
+    },
+    "func_0201aaec": {
+      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
+        "kind:data"
       ]
     },
     "func_0201cebc": {
@@ -23624,6 +23637,11 @@
         "param:#3 int",
         "param:#4 int",
         "param:#5 int"
+      ]
+    },
+    "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev": {
+      "src/game/actors/d_a_demo.cpp": [
+        "arity:0"
       ]
     }
   },

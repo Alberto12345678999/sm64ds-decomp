@@ -4795,7 +4795,9 @@ _ZN8daDemo_c19func_ov002_020f6e48EPh(daDemo_c *,
                                      unsigned char *);      /* local extern: descriptor address */
 extern int _ZN8daDemo_c19func_ov002_020f7020Ev(daDemo_c *); /* local extern: descriptor address */
 /* StaffRoll::func_ov002_020f5b24 is a method on current main. The descriptor
-   word still wants that function's address. */
+   word still wants that function's address. Declaring its `this` parameter
+   breaks the TU's intact-object proof, so the declaration stays (void). */
+/* local extern: descriptor address */
 extern void _ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev(void);
 
 int data_ov002_0210b658[2] = {(int)0x81f020f0, (int)0xffff0100};

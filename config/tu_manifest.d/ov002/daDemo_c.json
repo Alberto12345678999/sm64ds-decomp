@@ -1936,224 +1936,224 @@
       "evidence": "func_ov002_020f6c60's function-local static Vector3(0xffdd6000, 0xbe4000, 0x2ae000); retail stores the three words under the guard and registers ~Vector3() for it"
     },
     {
-      "symbol": "@4357",
+      "symbol": "@4356",
       "address": "0x02110c2c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4358",
+      "symbol": "@4357",
       "address": "0x02110c38",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4359",
+      "symbol": "@4358",
       "address": "0x02110c44",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4360",
+      "symbol": "@4359",
       "address": "0x02110c50",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4361",
+      "symbol": "@4360",
       "address": "0x02110c5c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4362",
+      "symbol": "@4361",
       "address": "0x02110c68",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4363",
+      "symbol": "@4362",
       "address": "0x02110c74",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4364",
+      "symbol": "@4363",
       "address": "0x02110c80",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4365",
+      "symbol": "@4364",
       "address": "0x02110c8c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4366",
+      "symbol": "@4365",
       "address": "0x02110c98",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4367",
+      "symbol": "@4366",
       "address": "0x02110ca4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4368",
+      "symbol": "@4367",
       "address": "0x02110cb0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4369",
+      "symbol": "@4368",
       "address": "0x02110cbc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4370",
+      "symbol": "@4369",
       "address": "0x02110cc8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4371",
+      "symbol": "@4370",
       "address": "0x02110cd4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4372",
+      "symbol": "@4371",
       "address": "0x02110ce0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4373",
+      "symbol": "@4372",
       "address": "0x02110cec",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4374",
+      "symbol": "@4373",
       "address": "0x02110cf8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4375",
+      "symbol": "@4374",
       "address": "0x02110d04",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4376",
+      "symbol": "@4375",
       "address": "0x02110d10",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4377",
+      "symbol": "@4376",
       "address": "0x02110d1c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4379",
+      "symbol": "@4378",
       "address": "0x02110d28",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4380",
+      "symbol": "@4379",
       "address": "0x02110d34",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4381",
+      "symbol": "@4380",
       "address": "0x02110d40",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4382",
+      "symbol": "@4381",
       "address": "0x02110d4c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4383",
+      "symbol": "@4382",
       "address": "0x02110d58",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4384",
+      "symbol": "@4383",
       "address": "0x02110d64",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4385",
+      "symbol": "@4384",
       "address": "0x02110d70",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4386",
+      "symbol": "@4385",
       "address": "0x02110d7c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4387",
+      "symbol": "@4386",
       "address": "0x02110d88",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4388",
+      "symbol": "@4387",
       "address": "0x02110d94",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4389",
+      "symbol": "@4388",
       "address": "0x02110da0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -2174,14 +2174,14 @@
       "evidence": "compiler-generated destructor-registration node for sLookTarget; func_ov002_020f6c60 passes it as the third __register_global_object argument exactly as retail"
     },
     {
-      "symbol": "@4356",
+      "symbol": "@4355",
       "address": "0x02110dc4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for one file handle constructed by this initializer"
     },
     {
-      "symbol": "@4378",
+      "symbol": "@4377",
       "address": "0x02110dd0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -4133,6 +4133,12 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally"
     },
     {
+      "symbol": "@4355",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol"
+    },
+    {
       "symbol": "@4356",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
@@ -4326,12 +4332,6 @@
     },
     {
       "symbol": "@4388",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol"
-    },
-    {
-      "symbol": "@4389",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol"
@@ -5044,7 +5044,7 @@
       "source": "0x02107cd4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4356",
+      "symbol": "@4355",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110dc4"
@@ -5064,7 +5064,7 @@
       "source": "0x02107ce0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4357",
+      "symbol": "@4356",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c2c"
@@ -5084,7 +5084,7 @@
       "source": "0x02107cec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4358",
+      "symbol": "@4357",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c38"
@@ -5114,7 +5114,7 @@
       "source": "0x02107cf8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4359",
+      "symbol": "@4358",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c44"
@@ -5134,7 +5134,7 @@
       "source": "0x02107d04",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4360",
+      "symbol": "@4359",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c50"
@@ -5154,7 +5154,7 @@
       "source": "0x02107d10",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4361",
+      "symbol": "@4360",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c5c"
@@ -5174,7 +5174,7 @@
       "source": "0x02107d1c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4362",
+      "symbol": "@4361",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c68"
@@ -5194,7 +5194,7 @@
       "source": "0x02107d24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4363",
+      "symbol": "@4362",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c74"
@@ -5214,7 +5214,7 @@
       "source": "0x02107d30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4364",
+      "symbol": "@4363",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c80"
@@ -5234,7 +5234,7 @@
       "source": "0x02107d38",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4365",
+      "symbol": "@4364",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c8c"
@@ -5254,7 +5254,7 @@
       "source": "0x02107d40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4366",
+      "symbol": "@4365",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110c98"
@@ -5274,7 +5274,7 @@
       "source": "0x02107d4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4367",
+      "symbol": "@4366",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110ca4"
@@ -5294,7 +5294,7 @@
       "source": "0x02107d58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4368",
+      "symbol": "@4367",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110cb0"
@@ -5314,7 +5314,7 @@
       "source": "0x02107d60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4369",
+      "symbol": "@4368",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110cbc"
@@ -5334,7 +5334,7 @@
       "source": "0x02107d68",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4370",
+      "symbol": "@4369",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110cc8"
@@ -5354,7 +5354,7 @@
       "source": "0x02107d70",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4371",
+      "symbol": "@4370",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110cd4"
@@ -5374,7 +5374,7 @@
       "source": "0x02107d7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4372",
+      "symbol": "@4371",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110ce0"
@@ -5404,7 +5404,7 @@
       "source": "0x02107d8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4373",
+      "symbol": "@4372",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110cec"
@@ -5424,7 +5424,7 @@
       "source": "0x02107d98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4374",
+      "symbol": "@4373",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110cf8"
@@ -5444,7 +5444,7 @@
       "source": "0x02107da4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4375",
+      "symbol": "@4374",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d04"
@@ -5464,7 +5464,7 @@
       "source": "0x02107db0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4376",
+      "symbol": "@4375",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d10"
@@ -5484,7 +5484,7 @@
       "source": "0x02107dbc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4377",
+      "symbol": "@4376",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d1c"
@@ -5504,7 +5504,7 @@
       "source": "0x02107dc8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4378",
+      "symbol": "@4377",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110dd0"
@@ -5524,7 +5524,7 @@
       "source": "0x02107dd4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4379",
+      "symbol": "@4378",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d28"
@@ -5544,7 +5544,7 @@
       "source": "0x02107de0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4380",
+      "symbol": "@4379",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d34"
@@ -5564,7 +5564,7 @@
       "source": "0x02107dec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4381",
+      "symbol": "@4380",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d40"
@@ -5584,7 +5584,7 @@
       "source": "0x02107df8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4382",
+      "symbol": "@4381",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d4c"
@@ -5604,7 +5604,7 @@
       "source": "0x02107e04",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4383",
+      "symbol": "@4382",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d58"
@@ -5624,7 +5624,7 @@
       "source": "0x02107e10",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4384",
+      "symbol": "@4383",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d64"
@@ -5644,7 +5644,7 @@
       "source": "0x02107e1c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4385",
+      "symbol": "@4384",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d70"
@@ -5664,7 +5664,7 @@
       "source": "0x02107e24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4386",
+      "symbol": "@4385",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d7c"
@@ -5684,7 +5684,7 @@
       "source": "0x02107e30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4387",
+      "symbol": "@4386",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d88"
@@ -5704,7 +5704,7 @@
       "source": "0x02107e3c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4388",
+      "symbol": "@4387",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110d94"
@@ -5724,7 +5724,7 @@
       "source": "0x02107e48",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@4389",
+      "symbol": "@4388",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02110da0"
@@ -6964,7 +6964,7 @@
       "source": "0x0210b7b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "func_ov002_020f5b24",
+      "symbol": "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x020f5b24"
