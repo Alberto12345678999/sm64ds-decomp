@@ -9817,8 +9817,8 @@
       "src/ui/hud/d_map.cpp": [
         "return:unsigned int []"
       ],
-      "src/unnamed/arm9/0201/func_020135d0.c": [
-        "return:unsigned char []"
+      "src/engine/save/SaveData.cpp": [
+        "return:SaveBlock"
       ],
       "src/unnamed/arm9/0201/func_020139b8.c": [
         "return:SaveData"
@@ -19915,9 +19915,6 @@
     "func_02041a00": {
       "src/unnamed/arm9/0204/func_02040f30.cpp": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0204/func_02042668.c": [
-        "param:#1 S *"
       ]
     },
     "func_02041c2c": {
@@ -22262,7 +22259,7 @@
       ]
     },
     "func_0206e3dc": {
-      "src/unnamed/arm9/0201/func_0201473c.c": [
+      "src/nds_vprintf.c": [
         "param:#2 int",
         "return:int"
       ]
@@ -25202,7 +25199,7 @@
       ]
     },
     "nds_print": {
-      "src/unnamed/arm9/0201/func_0201473c.c": [
+      "src/nds_vprintf.c": [
         "param:#2 char *"
       ],
       "src/ShowCrashScreen.cpp": [

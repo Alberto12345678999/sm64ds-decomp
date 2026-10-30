@@ -3291,7 +3291,7 @@ extern "C" void func_0202a850(int a, int b) {
 // @symbol InitControllerMode
 /* The per-controller records at data_0209f498 are 0x18 apart; the mode byte
    is their +0x16, data_0209f4ae. The save file keeps the active player's
-   copy at data_0209caa0+0x42. */
+   copy at data_0209caa0+0x42 (FileSaveData::controllerMode, include/SaveData.h). */
 extern "C" void InitControllerMode(int idx, u8 val) {
     data_0209f4ae[idx * 0x18] = val;
     if (idx == gActivePlayerSlot)
@@ -4189,7 +4189,7 @@ int dScStage_c::Behavior() {
             MaskOff(data_0209b454, 0) == 0) {
             u8 st = data_0209f2d8;
             int b1 = (st == 1);
-            if ((b1 && data_0209fc68 == 0) || (((SaveData *)data_0209caa0)->flags2 & 0x80)) {
+            if ((b1 && data_0209fc68 == 0) || (((FileSaveData *)data_0209caa0)->flags2 & 0x80)) {
                 int b2 = (st == 2);
                 if (b2 == 0) {
                     int b3 = (gRunningKuppaScript != 0);
@@ -4241,7 +4241,7 @@ void dScStage_c::CheckInput() {
     int isVsMode = (mode == 1);
     if (isVsMode == false) {
         int modeIsTwo = (mode == 2);
-        if (modeIsTwo != false || !(((SaveData *)data_0209caa0)->flags2 & 0x80) ||
+        if (modeIsTwo != false || !(((FileSaveData *)data_0209caa0)->flags2 & 0x80) ||
             (data_0209d660 == 0 && (int)(gRunningKuppaScript != 0) != false)) {
             {
                 CamInput *control = (CamInput *)data_0209f498;
@@ -4850,7 +4850,8 @@ int dScStage_c::InitResources() {
                 if (!IsLevelInsideCastle(data_0209f2f8) || !IsLevelInsideCastle(previousSublevel)) {
                     if (!IsLevelTinyHugeIslandOutside(data_0209f2f8) ||
                         !IsLevelTinyHugeIslandOutside(previousSublevel)) {
-                        if (data_0209f2f8 != 2 || (((SaveData *)data_0209caa0)->flags2 & 0x200)) {
+                        if (data_0209f2f8 != 2 ||
+                            (((FileSaveData *)data_0209caa0)->flags2 & 0x200)) {
                             Sound::LoadAndSetMusic_Layer1(data_0207576a[data_0209f2f8 * 3]);
                             u8 localPlayer = data_0209f250;
                             if (((u8 *)data_0209f394[localPlayer])[0x6ff] != 0) {
@@ -4981,7 +4982,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         LoadFont3D();
     }
 
-    if ((int)(data_0209f2d8 == 0) != 0 && (((SaveData *)data_0209caa0)->flags2 & 0x80) == 0 &&
+    if ((int)(data_0209f2d8 == 0) != 0 && (((FileSaveData *)data_0209caa0)->flags2 & 0x80) == 0 &&
         (int)(gRunningKuppaScript != 0) == 0) {
         BG0CNT_SUB &= ~3;
         BG0CNT_SUB &= ~0x40;
