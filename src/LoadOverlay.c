@@ -2,7 +2,7 @@
 #include "nitro/fs/overlay.h"
 int func_0203d7b8(void);
 struct Pair;
-void func_0205e088(struct Pair *dst, char *src);
+void FS_GetOverlayFileID(struct Pair *dst, char *src);
 void Crash(void);
 void FS_LoadOverlay(int a, int id);
 /* A loaded-overlay slot (see func_02017e60.c): the overlay id, 0xffffffff
@@ -17,7 +17,7 @@ struct Pair {
     int a;
     int b;
 };
-/* func_0205e088 reads the FSOverlayInfo's header.file_id (+0x18). */
+/* FS_GetOverlayFileID reads the FSOverlayInfo's header.file_id (+0x18). */
 void LoadOverlay(int id) {
     u32 start;
     struct OverlaySlot *slot;
@@ -31,7 +31,7 @@ void LoadOverlay(int id) {
     if (func_0203d7b8() != 0) {
         return;
     }
-    func_0205e088(&pair, (char *)(&info));
+    FS_GetOverlayFileID(&pair, (char *)(&info));
     slot = 0;
     total = info.header.ram_size + info.header.bss_size;
     start = (u32)info.header.ram_address;

@@ -1,52 +1,40 @@
 //cpp
+/* The backup write task func_02060484 runs (the send-and-verify mode of
+ * pret's CARDi_RequestStreamCommandCore): copy up to a page of the source
+ * into backup_cache_page_buf, flush it, program it (CARD_REQ_PROGRAM_BACKUP,
+ * 10 retries) and verify it, and advance until len is 0 or a request fails;
+ * then end the task. */
+#include "types.h"
+#include "CP15.h"
+#include "nitro/card/card_common.h"
 
-namespace CP15 {
-void DrainWriteBuffer(void);
-void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
-}
 extern "C" {
-extern void CpuCopy8(int src, int dst, unsigned int n);
 
-extern int func_02060f60(void *o, int a, int b);
-extern void func_0206081c(void *o);
+/* MI_CpuCopy8. Addresses as ints: the void * spelling the other callers use
+ * swaps buf and len between r8 and r9 here. */
+extern void CpuCopy8(int src, int dst, unsigned int len);
 
-/* The request block each chunk is handed over in (NitroSDK CARDiCommandArg). */
-struct ChunkRequest {
-    unsigned char pad_00[0xc];
-    int mSrc;          /* 0x0c */
-    int mDst;          /* 0x10 */
-    unsigned int mLen; /* 0x14 */
-};
-
-/* The chunked backup writer's state (NitroSDK CARDiCommon). */
-struct ChunkWriter {
-    ChunkRequest *mRequest; /* 0x00 */
-    unsigned char pad_04[0x14];
-    int mSrc;                /* 0x18 */
-    int mDst;                /* 0x1c */
-    unsigned int mRemaining; /* 0x20 */
-    unsigned char pad_24[0xbc];
-    char mBuffer[0x100]; /* 0xe0 */
-};
-
-void func_0206062c(ChunkWriter *self) {
-    char *buf = self->mBuffer;
+void func_0206062c(CARDiCommon *p) {
+    u8 *buf = p->backup_cache_page_buf;
     do {
-        unsigned int n = self->mRemaining;
-        int src = self->mSrc;
-        if (n > 0x100) n = 0x100;
-        CpuCopy8(src, (int)buf, n);
-        CP15::FlushAndInvalidateDataCache((unsigned int)buf, n);
+        u32 len = p->len;
+        u32 src = p->src;
+        if (len > sizeof(p->backup_cache_page_buf))
+            len = sizeof(p->backup_cache_page_buf);
+        CpuCopy8(src, (int)buf, len);
+        CP15::FlushAndInvalidateDataCache((u32)buf, len);
         CP15::DrainWriteBuffer();
-        self->mRequest->mSrc = (int)buf;
-        self->mRequest->mDst = self->mDst;
-        self->mRequest->mLen = n;
-        if (func_02060f60(self, 8, 0xa) == 0) break;
-        if (func_02060f60(self, 9, 1) == 0) break;
-        self->mSrc += n;
-        self->mDst += n;
-        self->mRemaining -= n;
-    } while (self->mRemaining != 0);
-    func_0206081c(self);
+        p->cmd->src = (u32)buf;
+        p->cmd->dest = p->dst;
+        p->cmd->len = len;
+        if (!CARDi_Request(p, CARD_REQ_PROGRAM_BACKUP, 10))
+            break;
+        if (!CARDi_Request(p, CARD_REQ_VERIFY_BACKUP, 1))
+            break;
+        p->src += len;
+        p->dst += len;
+        p->len -= len;
+    } while (p->len != 0);
+    CARDi_EndTask(p);
 }
 }

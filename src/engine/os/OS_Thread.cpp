@@ -64,14 +64,14 @@ extern void SDK_IRQ_STACKSIZE(void);
 
 /* local extern: no header declares these yet. Their SDK names:
  * ARMProcessorMode is OS_GetProcMode, ARMSaveContext OS_SaveContext,
- * ARMRestoreContext OS_LoadContext, func_02058568 OS_InitContext,
- * MultiStore_Int MIi_CpuClear32 and func_02058a44 OSi_UnlockAllMutex. */
+ * ARMRestoreContext OS_LoadContext, func_02058568 OS_InitContext
+ * and MultiStore_Int MIi_CpuClear32; OSi_UnlockAllMutex is src/engine/os/OS_Mutex.cpp. */
 extern int ARMProcessorMode(void);
 extern int ARMSaveContext(void *ctx);
 extern void ARMRestoreContext(void *ctx);
 extern void func_02058568(void *ctx, unsigned int pc, unsigned int sp);
 extern void MultiStore_Int(int val, int *dst, int len);
-extern void func_02058a44(OSThread *thread);
+extern void OSi_UnlockAllMutex(OSThread *thread);
 
 extern OSSwitchThreadCallback data_020a6128; /* OSi_SystemCallbackInSwitchThread */
 extern OSThread **data_020a612c;             /* OSi_CurrentThreadPtr */
@@ -234,7 +234,7 @@ void OS_ExitThread(void) {
 
     IRQ::Disable();
     currentThread = *data_020a612c;
-    func_02058a44(currentThread);
+    OSi_UnlockAllMutex(currentThread);
     OSi_RemoveThreadFromList(currentThread);
     data_020a6134.entry[currentThread->id] = 0;
     currentThread->state = OS_THREAD_STATE_TERMINATED;

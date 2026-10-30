@@ -1,7 +1,7 @@
 //cpp
 #include "types.h"
 extern "C" {
-int IPCSend(int a, int b, int c);
+int PXI_SendWordByFifo(int a, int b, int c);
 }
 namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
 struct S { void (*fn)(int,int,int); char pad[0x30]; volatile u16 f34; volatile u16 f36; };
@@ -10,9 +10,9 @@ extern "C" void func_0205edd8(int a, int b)
 {
     unsigned int irq = IRQ::Disable();
     int ok;
-    if (IPCSend(6, a | 0x2000300, 0) < 0)
+    if (PXI_SendWordByFifo(6, a | 0x2000300, 0) < 0)
         ok = 0;
-    else if (IPCSend(6, b | 0x1010000, 0) < 0)
+    else if (PXI_SendWordByFifo(6, b | 0x1010000, 0) < 0)
         ok = 0;
     else
         ok = 1;
