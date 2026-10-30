@@ -2636,12 +2636,6 @@ src/FSi_FindPath.c	PURE-C	arm9				1		None		-
 src/FS_Init.c	PURE-C	arm9				1		None		-
 src/FSi_AppendToList.c	PURE-C	arm9				1		None		-
 src/FSi_CutFromList.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d94c.c	PURE-C	arm9				1		None		-
-src/FSi_InitRom.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205da94.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205db24.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205db2c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205db78.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205db88.c	WEAK-refs-only	arm9				1		None		-
 src/FS_UnloadOverlay.c	PURE-C	arm9				1		None		-
 src/FS_UnloadOverlayImage.c	PURE-C	arm9				1		None		-

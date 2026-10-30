@@ -10507,7 +10507,7 @@
     },
     "arm9:0x0205d94c": {
       "author": "ruspecial",
-      "name": "func_0205d94c"
+      "name": "FS_TryLoadTable"
     },
     "arm9:0x0205d96c": {
       "author": "andrewboudreau",
@@ -10515,19 +10515,19 @@
     },
     "arm9:0x0205da94": {
       "author": "tangosdev",
-      "name": "func_0205da94"
+      "name": "FSi_RomArchiveProc"
     },
     "arm9:0x0205db24": {
       "author": "tangosdev",
-      "name": "func_0205db24"
+      "name": "FSi_WriteDummyCallback"
     },
     "arm9:0x0205db2c": {
       "author": "andrewboudreau",
-      "name": "func_0205db2c"
+      "name": "FSi_ReadRomCallback"
     },
     "arm9:0x0205db78": {
       "author": "ruspecial",
-      "name": "func_0205db78"
+      "name": "FSi_OnRomReadDone"
     },
     "arm9:0x0205db88": {
       "author": "tangosdev",

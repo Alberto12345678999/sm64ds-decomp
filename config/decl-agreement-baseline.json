@@ -10564,16 +10564,6 @@
         "return:void *"
       ]
     },
-    "data_020a805c": {
-      "src/unnamed/arm9/0205/func_0205da94.c": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a8060": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "return:unsigned int"
-      ]
-    },
     "data_020a8114": {
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
@@ -19249,11 +19239,6 @@
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#2 void *",
         "param:#3 int"
-      ],
-      "src/FSi_InitRom.c": [
-        "param:#1 int *",
-        "param:#2 int",
-        "param:#3 int"
       ]
     },
     "FS_LoadArchive": {
@@ -19268,16 +19253,6 @@
         "param:#6 int"
       ],
       "src/engine/sound/SoundEngine.cpp": [
-        "param:#1 int *",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int",
-        "param:#6 int",
-        "param:#7 int",
-        "param:#8 int"
-      ],
-      "src/FSi_InitRom.c": [
         "param:#1 int *",
         "param:#2 int",
         "param:#3 int",
@@ -19355,27 +19330,6 @@
     },
     "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
-        "return:int"
-      ]
-    },
-    "func_0205da94": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db24": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db2c": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db78": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "arity:0",
         "return:int"
       ]
     },
@@ -19458,17 +19412,6 @@
     },
     "func_0206071c": {
       "src/unnamed/arm9/0206/func_02060558.cpp": [
-        "return:int"
-      ]
-    },
-    "CARDi_ReadRom": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 void *",
-        "param:#6 int",
         "return:int"
       ]
     },
@@ -22631,18 +22574,24 @@
         "param:#5 unsigned int"
       ]
     },
-    "FS_LoadArchiveTables": {
-      "src/unnamed/arm9/0205/func_0205d94c.c": [
-        "param:#1 char *",
-        "param:#2 int"
-      ]
-    },
     "FS_RegisterArchiveName": {
       "src/engine/sound/SoundEngine.cpp": [
         "param:#3 void *"
-      ],
-      "src/FSi_InitRom.c": [
-        "param:#3 void *"
+      ]
+    },
+    "data_020a8064": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a806c": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a8074": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:FSArchive"
       ]
     }
   },

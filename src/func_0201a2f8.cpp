@@ -14,7 +14,7 @@ extern void func_02018aa4(void);
 extern void func_020134c8(void);
 extern int GetSoundMode(void);
 extern void SetSoundMode(int mode);
-extern int func_0205d94c(int a, int b);
+extern u32 FS_TryLoadTable(void *p_mem, u32 size);
 extern void LoadOverlay(int id);
 extern void InitializeAssetHandleTable(void);
 extern void UnloadOverlay(int id);
@@ -37,9 +37,9 @@ void func_0201a2f8(int unused) {
     }
     ptr = 0;
     if (!cond) {
-        int size = func_0205d94c(0, 0);
+        int size = FS_TryLoadTable(0, 0);
         ptr = Memory::Allocate(size);
-        func_0205d94c((int)ptr, size);
+        FS_TryLoadTable(ptr, size);
     }
     LoadOverlay((int)&OVERLAY_0_ID);
     InitializeAssetHandleTable();

@@ -2645,29 +2645,9 @@ src/FSi_CutFromList.c:
     complete
     .text start:0x0205d920 end:0x0205d94c
 
-src/unnamed/arm9/0205/func_0205d94c.c:
+src/engine/fs/FS_Rom.cpp:
     complete
-    .text start:0x0205d94c end:0x0205d96c
-
-src/FSi_InitRom.c:
-    complete
-    .text start:0x0205d96c end:0x0205da94
-
-src/unnamed/arm9/0205/func_0205da94.c:
-    complete
-    .text start:0x0205da94 end:0x0205db24
-
-src/unnamed/arm9/0205/func_0205db24.c:
-    complete
-    .text start:0x0205db24 end:0x0205db2c
-
-src/unnamed/arm9/0205/func_0205db2c.c:
-    complete
-    .text start:0x0205db2c end:0x0205db78
-
-src/unnamed/arm9/0205/func_0205db78.c:
-    complete
-    .text start:0x0205db78 end:0x0205db88
+    .text start:0x0205d94c end:0x0205db88
 
 src/unnamed/arm9/0205/func_0205db88.cpp:
     complete
