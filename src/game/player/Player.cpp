@@ -25,8 +25,8 @@
  *   Fix12<int> the symbol names is still the wall (notes/mwccarm-codegen.md
  *   6az). Keep them identical: 16 spellings of one symbol is how a wrong
  *   return type or argument order hides.
- * - func_020731dc is __register_global_object. The relocation rows name the
- *   retail symbol. Five function-local Vector3 offsets are real statics;
+ * - __register_global_object (arm9 0x020731dc) is the C++ runtime's
+ *   destructor registration. Five function-local Vector3 offsets are real statics;
  *   mwcc emits their guards, stores and ~Vector3() registration.
  * - The static initializer is still written out by hand. Its objects keep
  *   their ROM-owned .bss homes, so it constructs each handle in place and
@@ -25704,9 +25704,7 @@ enum sinit_ov002_021019d0_AssetId {
 // @symbol __sinit_ov002_021019d0
 extern "C" {
 void func_0203b9b4(int *p, int v);
-/* __register_global_object */
-#define func_020731dc __register_global_object
-void func_020731dc(void *object, void *destructor, void **node);
+void __register_global_object(void *object, void *destructor, void **node);
 void *func_02017acc(void *self, unsigned int fileID);
 int func_02017ab4(int self);
 int SharedFilePtr_Destruct_Anim(int self);
@@ -26177,773 +26175,1137 @@ extern unsigned short data_ov002_02110804[];
 
 void __sinit_ov002_021019d0(void) {
     func_0203b9b4(&data_ov002_0210e160, 0x4d2);
-    func_020731dc(&data_ov002_0210e160, (void *)func_0201973c, data_ov002_0210f9b0);
+    __register_global_object(&data_ov002_0210e160, (void *)func_0201973c, data_ov002_0210f9b0);
     func_02017acc(&data_ov002_0210e6f8, ASSET_B_MARIO_ALL_BMD);
-    func_020731dc(&data_ov002_0210e6f8, (void *)func_02017ab4, data_ov002_0210f9c8);
+    __register_global_object(&data_ov002_0210e6f8, (void *)func_02017ab4, data_ov002_0210f9c8);
     func_02017acc(&data_ov002_0210e648, ASSET_B_MARIO_BODY_BMD);
-    func_020731dc(&data_ov002_0210e648, (void *)func_02017ab4, data_ov002_0210f9d4);
+    __register_global_object(&data_ov002_0210e648, (void *)func_02017ab4, data_ov002_0210f9d4);
     func_02017acc(&data_ov002_0210eae8, ASSET_B_MARIO_HEAD_CAP_BMD);
-    func_020731dc(&data_ov002_0210eae8, (void *)func_02017ab4, data_ov002_0210f9e0);
+    __register_global_object(&data_ov002_0210eae8, (void *)func_02017ab4, data_ov002_0210f9e0);
     func_02017acc(&data_ov002_0210eb20, 0x807e);
-    func_020731dc(&data_ov002_0210eb20, (void *)func_02017ab4, data_ov002_0210f9f8);
+    __register_global_object(&data_ov002_0210eb20, (void *)func_02017ab4, data_ov002_0210f9f8);
     func_02017acc(&data_ov002_0210eb00, 0x807f);
-    func_020731dc(&data_ov002_0210eb00, (void *)func_02017ab4, data_ov002_0210fa04);
+    __register_global_object(&data_ov002_0210eb00, (void *)func_02017ab4, data_ov002_0210fa04);
     func_02017acc(&data_ov002_0210ebb8, 0x8080);
-    func_020731dc(&data_ov002_0210ebb8, (void *)func_02017ab4, data_ov002_0210fa1c);
+    __register_global_object(&data_ov002_0210ebb8, (void *)func_02017ab4, data_ov002_0210fa1c);
     func_02017acc(&data_ov002_0210e690, 0x8081);
-    func_020731dc(&data_ov002_0210e690, (void *)func_02017ab4, data_ov002_0210fa28);
+    __register_global_object(&data_ov002_0210e690, (void *)func_02017ab4, data_ov002_0210fa28);
     func_02017acc(&data_ov002_0210ec38, 0x8082);
-    func_020731dc(&data_ov002_0210ec38, (void *)func_02017ab4, data_ov002_0210fa40);
+    __register_global_object(&data_ov002_0210ec38, (void *)func_02017ab4, data_ov002_0210fa40);
     func_02017acc(&data_ov002_0210ec50, 0x8083);
-    func_020731dc(&data_ov002_0210ec50, (void *)func_02017ab4, data_ov002_0210fa4c);
+    __register_global_object(&data_ov002_0210ec50, (void *)func_02017ab4, data_ov002_0210fa4c);
     func_02017acc(&data_ov002_0210e758, 0x80b8);
-    func_020731dc(&data_ov002_0210e758, (void *)func_02017ab4, data_ov002_0210fa64);
+    __register_global_object(&data_ov002_0210e758, (void *)func_02017ab4, data_ov002_0210fa64);
     func_02017acc(&data_ov002_0210e790, 0x80b9);
-    func_020731dc(&data_ov002_0210e790, (void *)func_02017ab4, data_ov002_0210fa70);
+    __register_global_object(&data_ov002_0210e790, (void *)func_02017ab4, data_ov002_0210fa70);
     func_02017acc(&data_ov002_0210e780, ASSET_WARIO_METAL_MODEL_BMD);
-    func_020731dc(&data_ov002_0210e780, (void *)func_02017ab4, data_ov002_0210fa94);
+    __register_global_object(&data_ov002_0210e780, (void *)func_02017ab4, data_ov002_0210fa94);
     func_02017acc(&data_ov002_0210ec60, 0x80ba);
-    func_020731dc(&data_ov002_0210ec60, (void *)func_02017ab4, data_ov002_0210faa0);
+    __register_global_object(&data_ov002_0210ec60, (void *)func_02017ab4, data_ov002_0210faa0);
     func_02017acc(&data_ov002_0210e7b0, 0x80bd);
-    func_020731dc(&data_ov002_0210e7b0, (void *)func_02017ab4, data_ov002_0210fab8);
+    __register_global_object(&data_ov002_0210e7b0, (void *)func_02017ab4, data_ov002_0210fab8);
     func_02017acc(&data_ov002_0210e3a0, 0x80c0);
-    func_020731dc(&data_ov002_0210e3a0, (void *)func_02017ab4, data_ov002_0210fac4);
+    __register_global_object(&data_ov002_0210e3a0, (void *)func_02017ab4, data_ov002_0210fac4);
     func_02017acc(&data_ov002_0210e7d8, 0x80c1);
-    func_020731dc(&data_ov002_0210e7d8, (void *)func_02017ab4, data_ov002_0210fadc);
+    __register_global_object(&data_ov002_0210e7d8, (void *)func_02017ab4, data_ov002_0210fadc);
     func_02017acc(&data_ov002_0210e7a8, 0x80c2);
-    func_020731dc(&data_ov002_0210e7a8, (void *)func_02017ab4, data_ov002_0210fae8);
+    __register_global_object(&data_ov002_0210e7a8, (void *)func_02017ab4, data_ov002_0210fae8);
     func_02017acc(&data_ov002_0210e7f0, 0x80c3);
-    func_020731dc(&data_ov002_0210e7f0, (void *)func_02017ab4, data_ov002_0210fb00);
+    __register_global_object(&data_ov002_0210e7f0, (void *)func_02017ab4, data_ov002_0210fb00);
     func_02017acc(&data_ov002_0210e818, 0x80c4);
-    func_020731dc(&data_ov002_0210e818, (void *)func_02017ab4, data_ov002_0210fb0c);
+    __register_global_object(&data_ov002_0210e818, (void *)func_02017ab4, data_ov002_0210fb0c);
     data_ov002_0210e490.Construct(0x801d);
-    func_020731dc(&data_ov002_0210e490, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb24);
+    __register_global_object(&data_ov002_0210e490, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb24);
     data_ov002_0210e838.Construct(0x801e);
-    func_020731dc(&data_ov002_0210e838, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb30);
+    __register_global_object(&data_ov002_0210e838, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb30);
     data_ov002_0210e848.Construct(0x801f);
-    func_020731dc(&data_ov002_0210e848, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb48);
+    __register_global_object(&data_ov002_0210e848, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb48);
     data_ov002_0210e2c0.Construct(ASSET_L_ED_AMAZED_BCA);
-    func_020731dc(&data_ov002_0210e2c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb54);
+    __register_global_object(&data_ov002_0210e2c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb54);
     data_ov002_0210e860.Construct(ASSET_L_ED_CAP_OFF_BCA);
-    func_020731dc(&data_ov002_0210e860, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb6c);
+    __register_global_object(&data_ov002_0210e860, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb6c);
     data_ov002_0210e4f8.Construct(ASSET_L_ED_CAP_OFF_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e4f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb78);
+    __register_global_object(&data_ov002_0210e4f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb78);
     data_ov002_0210e888.Construct(ASSET_L_ED_LOOK_M_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e888, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb90);
+    __register_global_object(&data_ov002_0210e888, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb90);
     data_ov002_0210e868.Construct(ASSET_L_ED_LOOK_MARIO_BCA);
-    func_020731dc(&data_ov002_0210e868, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb9c);
+    __register_global_object(&data_ov002_0210e868, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb9c);
     data_ov002_0210e7c0.Construct(ASSET_L_ED_LOOKUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e7c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbb4);
+    __register_global_object(&data_ov002_0210e7c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fbb4);
     data_ov002_0210e8b0.Construct(ASSET_L_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbc0);
+    __register_global_object(&data_ov002_0210e8b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fbc0);
     data_ov002_0210e8b8.Construct(ASSET_L_ENTRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbe4);
+    __register_global_object(&data_ov002_0210e8b8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fbe4);
     data_ov002_0210e518.Construct(ASSET_L_ENTRY_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e518, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbf0);
+    __register_global_object(&data_ov002_0210e518, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fbf0);
     data_ov002_0210e8d8.Construct(ASSET_L_FIRST_CHANGE_BCA);
-    func_020731dc(&data_ov002_0210e8d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc08);
+    __register_global_object(&data_ov002_0210e8d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc08);
     data_ov002_0210e8f0.Construct(ASSET_L_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210e8f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc14);
+    __register_global_object(&data_ov002_0210e8f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc14);
     data_ov002_0210e900.Construct(ASSET_L_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e900, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc2c);
+    __register_global_object(&data_ov002_0210e900, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc2c);
     data_ov002_0210e548.Construct(ASSET_L_OP_LOOK_WARIO_BCA);
-    func_020731dc(&data_ov002_0210e548, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc38);
+    __register_global_object(&data_ov002_0210e548, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc38);
     data_ov002_0210e530.Construct(ASSET_L_OP_NOD_BCA);
-    func_020731dc(&data_ov002_0210e530, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc50);
+    __register_global_object(&data_ov002_0210e530, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc50);
     data_ov002_0210e528.Construct(ASSET_L_OP_TURN_BCA);
-    func_020731dc(&data_ov002_0210e528, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f380);
+    __register_global_object(&data_ov002_0210e528, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f380);
     data_ov002_0210e4b0.Construct(0x8020);
-    func_020731dc(&data_ov002_0210e4b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc68);
+    __register_global_object(&data_ov002_0210e4b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc68);
     data_ov002_0210e550.Construct(ASSET_L_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210e550, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc74);
+    __register_global_object(&data_ov002_0210e550, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc74);
     data_ov002_0210e748.Construct(ASSET_L_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210e748, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc8c);
+    __register_global_object(&data_ov002_0210e748, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc8c);
     data_ov002_0210e5c0.Construct(ASSET_L_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210e5c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc98);
+    __register_global_object(&data_ov002_0210e5c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fc98);
     data_ov002_0210e998.Construct(ASSET_L_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e998, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcb0);
+    __register_global_object(&data_ov002_0210e998, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fcb0);
     data_ov002_0210eaa0.Construct(0x8029);
-    func_020731dc(&data_ov002_0210eaa0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcbc);
+    __register_global_object(&data_ov002_0210eaa0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fcbc);
     data_ov002_0210ea50.Construct(0x802a);
-    func_020731dc(&data_ov002_0210ea50, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcd4);
+    __register_global_object(&data_ov002_0210ea50, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fcd4);
     data_ov002_0210e8c8.Construct(ASSET_M_ENTRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fce0);
+    __register_global_object(&data_ov002_0210e8c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fce0);
     data_ov002_0210e778.Construct(ASSET_M_ENTRY_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e778, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcf8);
+    __register_global_object(&data_ov002_0210e778, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fcf8);
     data_ov002_0210ebe0.Construct(0x802b);
-    func_020731dc(&data_ov002_0210ebe0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd04);
+    __register_global_object(&data_ov002_0210ebe0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd04);
     data_ov002_0210e4f0.Construct(0x802c);
-    func_020731dc(&data_ov002_0210e4f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd1c);
+    __register_global_object(&data_ov002_0210e4f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd1c);
     data_ov002_0210e4c8.Construct(0x802d);
-    func_020731dc(&data_ov002_0210e4c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd28);
+    __register_global_object(&data_ov002_0210e4c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd28);
     data_ov002_0210eb30.Construct(0x802e);
-    func_020731dc(&data_ov002_0210eb30, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd40);
+    __register_global_object(&data_ov002_0210eb30, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd40);
     data_ov002_0210e510.Construct(0x802f);
-    func_020731dc(&data_ov002_0210e510, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd4c);
+    __register_global_object(&data_ov002_0210e510, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd4c);
     data_ov002_0210e970.Construct(ASSET_W_ED_AMAZED_WAIR_BCA);
-    func_020731dc(&data_ov002_0210e970, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd64);
+    __register_global_object(&data_ov002_0210e970, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd64);
     data_ov002_0210e558.Construct(ASSET_W_ED_CAP_OFF_BCA);
-    func_020731dc(&data_ov002_0210e558, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd70);
+    __register_global_object(&data_ov002_0210e558, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd70);
     data_ov002_0210e9c0.Construct(ASSET_W_ED_CAP_OFF_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e9c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd88);
+    __register_global_object(&data_ov002_0210e9c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd88);
     data_ov002_0210ea20.Construct(ASSET_W_ED_LOOKUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea20, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd94);
+    __register_global_object(&data_ov002_0210ea20, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fd94);
     data_ov002_0210e5b0.Construct(ASSET_W_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e5b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdac);
+    __register_global_object(&data_ov002_0210e5b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fdac);
     data_ov002_0210e5d0.Construct(ASSET_W_ED_WAVE_BCA);
-    func_020731dc(&data_ov002_0210e5d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdb8);
+    __register_global_object(&data_ov002_0210e5d0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fdb8);
     data_ov002_0210e5f0.Construct(ASSET_W_ENTRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e5f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdd0);
+    __register_global_object(&data_ov002_0210e5f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fdd0);
     data_ov002_0210e9a0.Construct(ASSET_W_ENTRY_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e9a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fddc);
+    __register_global_object(&data_ov002_0210e9a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fddc);
     data_ov002_0210e520.Construct(ASSET_W_FIRST_CHANGE_BCA);
-    func_020731dc(&data_ov002_0210e520, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdf4);
+    __register_global_object(&data_ov002_0210e520, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fdf4);
     data_ov002_0210eab8.Construct(0x8030);
-    func_020731dc(&data_ov002_0210eab8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe00);
+    __register_global_object(&data_ov002_0210eab8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe00);
     data_ov002_0210ead0.Construct(0x8031);
-    func_020731dc(&data_ov002_0210ead0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe18);
+    __register_global_object(&data_ov002_0210ead0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe18);
     data_ov002_0210eac0.Construct(0x8032);
-    func_020731dc(&data_ov002_0210eac0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe24);
+    __register_global_object(&data_ov002_0210eac0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe24);
     data_ov002_0210e9f0.Construct(0x8033);
-    func_020731dc(&data_ov002_0210e9f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe3c);
+    __register_global_object(&data_ov002_0210e9f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe3c);
     data_ov002_0210eae0.Construct(ASSET_W_KEY_GET_BCA);
-    func_020731dc(&data_ov002_0210eae0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe48);
+    __register_global_object(&data_ov002_0210eae0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe48);
     data_ov002_0210ea08.Construct(ASSET_W_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210ea08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe60);
+    __register_global_object(&data_ov002_0210ea08, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe60);
     data_ov002_0210e990.Construct(ASSET_W_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e990, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe6c);
+    __register_global_object(&data_ov002_0210e990, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe6c);
     data_ov002_0210eaf8.Construct(ASSET_W_OP_LOOK_LUIGI_BCA);
-    func_020731dc(&data_ov002_0210eaf8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe84);
+    __register_global_object(&data_ov002_0210eaf8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe84);
     data_ov002_0210e9b8.Construct(ASSET_W_OP_NOD_BCA);
-    func_020731dc(&data_ov002_0210e9b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe90);
+    __register_global_object(&data_ov002_0210e9b8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fe90);
     data_ov002_0210ecb0.Construct(ASSET_W_OP_POINT_BCA);
-    func_020731dc(&data_ov002_0210ecb0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fea8);
+    __register_global_object(&data_ov002_0210ecb0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fea8);
     data_ov002_0210eb08.Construct(ASSET_W_OP_TURN_BCA);
-    func_020731dc(&data_ov002_0210eb08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210feb4);
+    __register_global_object(&data_ov002_0210eb08, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210feb4);
     data_ov002_0210e668.Construct(0x8034);
-    func_020731dc(&data_ov002_0210e668, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fecc);
+    __register_global_object(&data_ov002_0210e668, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fecc);
     data_ov002_0210e650.Construct(ASSET_W_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210e650, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fed8);
+    __register_global_object(&data_ov002_0210e650, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fed8);
     data_ov002_0210eb18.Construct(ASSET_W_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210eb18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fef0);
+    __register_global_object(&data_ov002_0210eb18, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fef0);
     data_ov002_0210e658.Construct(ASSET_W_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210e658, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fefc);
+    __register_global_object(&data_ov002_0210e658, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fefc);
     data_ov002_0210e678.Construct(ASSET_W_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e678, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff14);
+    __register_global_object(&data_ov002_0210e678, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff14);
     data_ov002_0210eb28.Construct(0x803b);
-    func_020731dc(&data_ov002_0210eb28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff20);
+    __register_global_object(&data_ov002_0210eb28, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff20);
     data_ov002_0210e638.Construct(0x803c);
-    func_020731dc(&data_ov002_0210e638, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff38);
+    __register_global_object(&data_ov002_0210e638, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff38);
     data_ov002_0210e688.Construct(0x803d);
-    func_020731dc(&data_ov002_0210e688, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff44);
+    __register_global_object(&data_ov002_0210e688, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff44);
     data_ov002_0210eb40.Construct(0x803e);
-    func_020731dc(&data_ov002_0210eb40, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff5c);
+    __register_global_object(&data_ov002_0210eb40, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff5c);
     data_ov002_0210e630.Construct(0x803f);
-    func_020731dc(&data_ov002_0210e630, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff68);
+    __register_global_object(&data_ov002_0210e630, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff68);
     data_ov002_0210e930.Construct(0x8040);
-    func_020731dc(&data_ov002_0210e930, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff80);
+    __register_global_object(&data_ov002_0210e930, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff80);
     data_ov002_0210eb50.Construct(ASSET_Y_ED_LOOK_CAM_BCA);
-    func_020731dc(&data_ov002_0210eb50, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff8c);
+    __register_global_object(&data_ov002_0210eb50, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ff8c);
     data_ov002_0210e698.Construct(ASSET_Y_ED_LOOKUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e698, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffa4);
+    __register_global_object(&data_ov002_0210e698, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ffa4);
     data_ov002_0210eb60.Construct(ASSET_Y_ED_SHY_TO_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eb60, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffb0);
+    __register_global_object(&data_ov002_0210eb60, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ffb0);
     data_ov002_0210eb68.Construct(ASSET_Y_ED_SHY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eb68, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffc8);
+    __register_global_object(&data_ov002_0210eb68, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ffc8);
     data_ov002_0210e6a8.Construct(ASSET_Y_ED_TURN_BCA);
-    func_020731dc(&data_ov002_0210e6a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffd4);
+    __register_global_object(&data_ov002_0210e6a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ffd4);
     data_ov002_0210e618.Construct(ASSET_Y_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e618, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed68);
+    __register_global_object(&data_ov002_0210e618, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ed68);
     data_ov002_0210e6b0.Construct(ASSET_Y_EGG_RUN_BCA);
-    func_020731dc(&data_ov002_0210e6b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed74);
+    __register_global_object(&data_ov002_0210e6b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ed74);
     data_ov002_0210eb78.Construct(ASSET_Y_EGG_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eb78, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed8c);
+    __register_global_object(&data_ov002_0210eb78, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ed8c);
     data_ov002_0210e3d0.Construct(0x8041);
-    func_020731dc(&data_ov002_0210e3d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed98);
+    __register_global_object(&data_ov002_0210e3d0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ed98);
     data_ov002_0210eb80.Construct(0x8042);
-    func_020731dc(&data_ov002_0210eb80, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edb0);
+    __register_global_object(&data_ov002_0210eb80, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210edb0);
     data_ov002_0210eb88.Construct(0x8043);
-    func_020731dc(&data_ov002_0210eb88, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edbc);
+    __register_global_object(&data_ov002_0210eb88, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210edbc);
     data_ov002_0210e6c0.Construct(0x8044);
-    func_020731dc(&data_ov002_0210e6c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edd4);
+    __register_global_object(&data_ov002_0210e6c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210edd4);
     data_ov002_0210e3d8.Construct(0x8045);
-    func_020731dc(&data_ov002_0210e3d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ede0);
+    __register_global_object(&data_ov002_0210e3d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ede0);
     data_ov002_0210eb98.Construct(0x8046);
-    func_020731dc(&data_ov002_0210eb98, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edf8);
+    __register_global_object(&data_ov002_0210eb98, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210edf8);
     data_ov002_0210e6c8.Construct(0x8047);
-    func_020731dc(&data_ov002_0210e6c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee04);
+    __register_global_object(&data_ov002_0210e6c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee04);
     data_ov002_0210eba0.Construct(ASSET_Y_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210eba0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee1c);
+    __register_global_object(&data_ov002_0210eba0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee1c);
     data_ov002_0210e6d0.Construct(ASSET_Y_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e6d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee28);
+    __register_global_object(&data_ov002_0210e6d0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee28);
     data_ov002_0210ebb0.Construct(ASSET_Y_OP_LIE_TO_SIT_BCA);
-    func_020731dc(&data_ov002_0210ebb0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee40);
+    __register_global_object(&data_ov002_0210ebb0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee40);
     data_ov002_0210e3f0.Construct(ASSET_Y_OP_SIT_TO_STAND_BCA);
-    func_020731dc(&data_ov002_0210e3f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee4c);
+    __register_global_object(&data_ov002_0210e3f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee4c);
     data_ov002_0210e6d8.Construct(ASSET_Y_OP_SIT_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e6d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee64);
+    __register_global_object(&data_ov002_0210e6d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee64);
     data_ov002_0210ebc0.Construct(ASSET_Y_OP_STAND_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ebc0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee70);
+    __register_global_object(&data_ov002_0210ebc0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee70);
     data_ov002_0210e3f8.Construct(0x8048);
-    func_020731dc(&data_ov002_0210e3f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee88);
+    __register_global_object(&data_ov002_0210e3f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee88);
     data_ov002_0210e6e8.Construct(ASSET_Y_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210e6e8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee94);
+    __register_global_object(&data_ov002_0210e6e8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ee94);
     data_ov002_0210ebd0.Construct(ASSET_Y_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210ebd0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eeac);
+    __register_global_object(&data_ov002_0210ebd0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210eeac);
     data_ov002_0210e6f0.Construct(ASSET_Y_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210e6f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbcc);
+    __register_global_object(&data_ov002_0210e6f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fbcc);
     data_ov002_0210e3c0.Construct(ASSET_Y_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e3c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eec4);
+    __register_global_object(&data_ov002_0210e3c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210eec4);
     data_ov002_0210e628.Construct(0x8419);
-    func_020731dc(&data_ov002_0210e628, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eed0);
+    __register_global_object(&data_ov002_0210e628, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210eed0);
     data_ov002_0210e700.Construct(0x841a);
-    func_020731dc(&data_ov002_0210e700, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eee8);
+    __register_global_object(&data_ov002_0210e700, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210eee8);
     data_ov002_0210ebe8.Construct(0x841b);
-    func_020731dc(&data_ov002_0210ebe8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eef4);
+    __register_global_object(&data_ov002_0210ebe8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210eef4);
     data_ov002_0210ebf0.Construct(0x841c);
-    func_020731dc(&data_ov002_0210ebf0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef0c);
+    __register_global_object(&data_ov002_0210ebf0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef0c);
     data_ov002_0210e710.Construct(0x841d);
-    func_020731dc(&data_ov002_0210e710, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef18);
+    __register_global_object(&data_ov002_0210e710, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef18);
     data_ov002_0210e3a8.Construct(0x841e);
-    func_020731dc(&data_ov002_0210e3a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef30);
+    __register_global_object(&data_ov002_0210e3a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef30);
     data_ov002_0210ebf8.Construct(0x841f);
-    func_020731dc(&data_ov002_0210ebf8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef3c);
+    __register_global_object(&data_ov002_0210ebf8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef3c);
     data_ov002_0210e718.Construct(0x8420);
-    func_020731dc(&data_ov002_0210e718, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef54);
+    __register_global_object(&data_ov002_0210e718, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef54);
     data_ov002_0210ec08.Construct(0x8421);
-    func_020731dc(&data_ov002_0210ec08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef60);
+    __register_global_object(&data_ov002_0210ec08, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef60);
     data_ov002_0210e720.Construct(0x8422);
-    func_020731dc(&data_ov002_0210e720, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef78);
+    __register_global_object(&data_ov002_0210e720, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef78);
     data_ov002_0210ec20.Construct(0x8423);
-    func_020731dc(&data_ov002_0210ec20, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef84);
+    __register_global_object(&data_ov002_0210ec20, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef84);
     data_ov002_0210e410.Construct(0x8424);
-    func_020731dc(&data_ov002_0210e410, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef9c);
+    __register_global_object(&data_ov002_0210e410, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210ef9c);
     data_ov002_0210e260.Construct(0x8425);
-    func_020731dc(&data_ov002_0210e260, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa88);
+    __register_global_object(&data_ov002_0210e260, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fa88);
     data_ov002_0210e730.Construct(0x8426);
-    func_020731dc(&data_ov002_0210e730, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efb4);
+    __register_global_object(&data_ov002_0210e730, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210efb4);
     data_ov002_0210ec30.Construct(0x8050);
-    func_020731dc(&data_ov002_0210ec30, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efc0);
+    __register_global_object(&data_ov002_0210ec30, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210efc0);
     data_ov002_0210e418.Construct(0x8051);
-    func_020731dc(&data_ov002_0210e418, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efd8);
+    __register_global_object(&data_ov002_0210e418, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210efd8);
     data_ov002_0210e740.Construct(0x8052);
-    func_020731dc(&data_ov002_0210e740, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efe4);
+    __register_global_object(&data_ov002_0210e740, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210efe4);
     data_ov002_0210ec48.Construct(0x8053);
-    func_020731dc(&data_ov002_0210ec48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210effc);
+    __register_global_object(&data_ov002_0210ec48, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210effc);
     data_ov002_0210e420.Construct(0x8054);
-    func_020731dc(&data_ov002_0210e420, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f008);
+    __register_global_object(&data_ov002_0210e420, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f008);
     data_ov002_0210e750.Construct(ASSET_B_MARIO_START_BCA);
-    func_020731dc(&data_ov002_0210e750, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f020);
+    __register_global_object(&data_ov002_0210e750, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f020);
     data_ov002_0210e760.Construct(0x8055);
-    func_020731dc(&data_ov002_0210e760, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f02c);
+    __register_global_object(&data_ov002_0210e760, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f02c);
     data_ov002_0210e428.Construct(0x8056);
-    func_020731dc(&data_ov002_0210e428, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f044);
+    __register_global_object(&data_ov002_0210e428, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f044);
     data_ov002_0210e258.Construct(0x8057);
-    func_020731dc(&data_ov002_0210e258, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f050);
+    __register_global_object(&data_ov002_0210e258, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f050);
     data_ov002_0210e268.Construct(0x8058);
-    func_020731dc(&data_ov002_0210e268, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f068);
+    __register_global_object(&data_ov002_0210e268, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f068);
     data_ov002_0210e440.Construct(0x8059);
-    func_020731dc(&data_ov002_0210e440, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f074);
+    __register_global_object(&data_ov002_0210e440, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f074);
     data_ov002_0210e9e0.Construct(0x805a);
-    func_020731dc(&data_ov002_0210e9e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f08c);
+    __register_global_object(&data_ov002_0210e9e0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f08c);
     data_ov002_0210e240.Construct(0x805b);
-    func_020731dc(&data_ov002_0210e240, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f098);
+    __register_global_object(&data_ov002_0210e240, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f098);
     data_ov002_0210e448.Construct(0x805c);
-    func_020731dc(&data_ov002_0210e448, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0b0);
+    __register_global_object(&data_ov002_0210e448, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f0b0);
     data_ov002_0210e798.Construct(0x805d);
-    func_020731dc(&data_ov002_0210e798, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0bc);
+    __register_global_object(&data_ov002_0210e798, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f0bc);
     data_ov002_0210e7a0.Construct(0x805e);
-    func_020731dc(&data_ov002_0210e7a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0d4);
+    __register_global_object(&data_ov002_0210e7a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f0d4);
     data_ov002_0210e278.Construct(0x805f);
-    func_020731dc(&data_ov002_0210e278, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0e0);
+    __register_global_object(&data_ov002_0210e278, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f0e0);
     data_ov002_0210e238.Construct(0x8060);
-    func_020731dc(&data_ov002_0210e238, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0f8);
+    __register_global_object(&data_ov002_0210e238, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f0f8);
     data_ov002_0210e248.Construct(0x8061);
-    func_020731dc(&data_ov002_0210e248, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f104);
+    __register_global_object(&data_ov002_0210e248, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f104);
     data_ov002_0210e468.Construct(ASSET_COLD_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e468, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f11c);
+    __register_global_object(&data_ov002_0210e468, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f11c);
     data_ov002_0210e470.Construct(ASSET_COLD_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e470, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f128);
+    __register_global_object(&data_ov002_0210e470, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f128);
     data_ov002_0210e280.Construct(ASSET_COLD_WAIT_START_BCA);
-    func_020731dc(&data_ov002_0210e280, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f140);
+    __register_global_object(&data_ov002_0210e280, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f140);
     data_ov002_0210e7d0.Construct(0x8062);
-    func_020731dc(&data_ov002_0210e7d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f14c);
+    __register_global_object(&data_ov002_0210e7d0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f14c);
     data_ov002_0210e290.Construct(0x8063);
-    func_020731dc(&data_ov002_0210e290, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f164);
+    __register_global_object(&data_ov002_0210e290, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f164);
     data_ov002_0210e480.Construct(0x8064);
-    func_020731dc(&data_ov002_0210e480, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f170);
+    __register_global_object(&data_ov002_0210e480, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f170);
     data_ov002_0210e488.Construct(ASSET_DAMAGE_START_BCA);
-    func_020731dc(&data_ov002_0210e488, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f188);
+    __register_global_object(&data_ov002_0210e488, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f188);
     data_ov002_0210e228.Construct(ASSET_DAMAGE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e228, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f194);
+    __register_global_object(&data_ov002_0210e228, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f194);
     data_ov002_0210e498.Construct(ASSET_DOOR_PULL_BCA);
-    func_020731dc(&data_ov002_0210e498, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1b8);
+    __register_global_object(&data_ov002_0210e498, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f1b8);
     data_ov002_0210e4a0.Construct(ASSET_DOOR_PUSH_BCA);
-    func_020731dc(&data_ov002_0210e4a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1c4);
+    __register_global_object(&data_ov002_0210e4a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f1c4);
     data_ov002_0210e808.Construct(ASSET_DROWN_DIE_BCA);
-    func_020731dc(&data_ov002_0210e808, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1dc);
+    __register_global_object(&data_ov002_0210e808, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f1dc);
     data_ov002_0210e298.Construct(ASSET_E_DOWN_BCA);
-    func_020731dc(&data_ov002_0210e298, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1e8);
+    __register_global_object(&data_ov002_0210e298, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f1e8);
     data_ov002_0210e810.Construct(0x8065);
-    func_020731dc(&data_ov002_0210e810, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f200);
+    __register_global_object(&data_ov002_0210e810, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f200);
     data_ov002_0210e2a0.Construct(ASSET_ED_CAP_OFF_BCA);
-    func_020731dc(&data_ov002_0210e2a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f20c);
+    __register_global_object(&data_ov002_0210e2a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f20c);
     data_ov002_0210e820.Construct(ASSET_ED_CAP_OFF_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e820, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f230);
+    __register_global_object(&data_ov002_0210e820, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f230);
     data_ov002_0210e2a8.Construct(ASSET_ED_FLY_BCA);
-    func_020731dc(&data_ov002_0210e2a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f23c);
+    __register_global_object(&data_ov002_0210e2a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f23c);
     data_ov002_0210e1d8.Construct(ASSET_ED_FLY_START_BCA);
-    func_020731dc(&data_ov002_0210e1d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f254);
+    __register_global_object(&data_ov002_0210e1d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f254);
     data_ov002_0210e2b0.Construct(ASSET_ED_KISS_TO_POSE_BCA);
-    func_020731dc(&data_ov002_0210e2b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f260);
+    __register_global_object(&data_ov002_0210e2b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f260);
     data_ov002_0210e840.Construct(ASSET_ED_KISS_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e840, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f278);
+    __register_global_object(&data_ov002_0210e840, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f278);
     data_ov002_0210e2b8.Construct(ASSET_ED_LOOK_LEFT_BCA);
-    func_020731dc(&data_ov002_0210e2b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f284);
+    __register_global_object(&data_ov002_0210e2b8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f284);
     data_ov002_0210e850.Construct(ASSET_ED_LOOK_LEFT_END_BCA);
-    func_020731dc(&data_ov002_0210e850, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f29c);
+    __register_global_object(&data_ov002_0210e850, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f29c);
     data_ov002_0210e4e0.Construct(ASSET_ED_LOOK_LEFT_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e4e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2a8);
+    __register_global_object(&data_ov002_0210e4e0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f2a8);
     data_ov002_0210e858.Construct(ASSET_ED_NOD_BCA);
-    func_020731dc(&data_ov002_0210e858, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2c0);
+    __register_global_object(&data_ov002_0210e858, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f2c0);
     data_ov002_0210e2c8.Construct(ASSET_ED_PUTUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e2c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2cc);
+    __register_global_object(&data_ov002_0210e2c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f2cc);
     data_ov002_0210e948.Construct(ASSET_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e948, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2e4);
+    __register_global_object(&data_ov002_0210e948, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f2e4);
     data_ov002_0210e2d0.Construct(ASSET_ED_WAVE_BCA);
-    func_020731dc(&data_ov002_0210e2d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2f0);
+    __register_global_object(&data_ov002_0210e2d0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f2f0);
     data_ov002_0210e870.Construct(0x8066);
-    func_020731dc(&data_ov002_0210e870, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f314);
+    __register_global_object(&data_ov002_0210e870, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f314);
     data_ov002_0210e2d8.Construct(0x8067);
-    func_020731dc(&data_ov002_0210e2d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f320);
+    __register_global_object(&data_ov002_0210e2d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f320);
     data_ov002_0210e880.Construct(ASSET_FALL_DIE_BCA);
-    func_020731dc(&data_ov002_0210e880, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f32c);
+    __register_global_object(&data_ov002_0210e880, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f32c);
     data_ov002_0210e508.Construct(ASSET_FALL_SAND_BCA);
-    func_020731dc(&data_ov002_0210e508, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f338);
+    __register_global_object(&data_ov002_0210e508, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f338);
     data_ov002_0210e2e0.Construct(0x8068);
-    func_020731dc(&data_ov002_0210e2e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5e4);
+    __register_global_object(&data_ov002_0210e2e0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5e4);
     data_ov002_0210e890.Construct(ASSET_FIRST_CHANGE_BCA);
-    func_020731dc(&data_ov002_0210e890, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f35c);
+    __register_global_object(&data_ov002_0210e890, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f35c);
     data_ov002_0210e2e8.Construct(0x8069);
-    func_020731dc(&data_ov002_0210e2e8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f368);
+    __register_global_object(&data_ov002_0210e2e8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f368);
     data_ov002_0210e1f0.Construct(0x806a);
-    func_020731dc(&data_ov002_0210e1f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f374);
+    __register_global_object(&data_ov002_0210e1f0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f374);
     data_ov002_0210e1b8.Construct(ASSET_GAS_DIE_BCA);
-    func_020731dc(&data_ov002_0210e1b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f38c);
+    __register_global_object(&data_ov002_0210e1b8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f38c);
     data_ov002_0210e8a0.Construct(ASSET_GAS_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f398);
+    __register_global_object(&data_ov002_0210e8a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f398);
     data_ov002_0210e2f8.Construct(ASSET_H_CARRY_START_BCA);
-    func_020731dc(&data_ov002_0210e2f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3a4);
+    __register_global_object(&data_ov002_0210e2f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3a4);
     data_ov002_0210e8a8.Construct(ASSET_H_CARRY_THROW_BCA);
-    func_020731dc(&data_ov002_0210e8a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3bc);
+    __register_global_object(&data_ov002_0210e8a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3bc);
     data_ov002_0210e300.Construct(ASSET_H_CARRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e300, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3c8);
+    __register_global_object(&data_ov002_0210e300, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3c8);
     data_ov002_0210e8c0.Construct(ASSET_H_CARRY_WALK_BCA);
-    func_020731dc(&data_ov002_0210e8c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3d4);
+    __register_global_object(&data_ov002_0210e8c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3d4);
     data_ov002_0210e308.Construct(0x806b);
-    func_020731dc(&data_ov002_0210e308, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3e0);
+    __register_global_object(&data_ov002_0210e308, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3e0);
     data_ov002_0210e1a8.Construct(0x806c);
-    func_020731dc(&data_ov002_0210e1a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3ec);
+    __register_global_object(&data_ov002_0210e1a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3ec);
     data_ov002_0210e310.Construct(0x806d);
-    func_020731dc(&data_ov002_0210e310, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3f8);
+    __register_global_object(&data_ov002_0210e310, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f3f8);
     data_ov002_0210e8e0.Construct(0x806e);
-    func_020731dc(&data_ov002_0210e8e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f404);
+    __register_global_object(&data_ov002_0210e8e0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f404);
     data_ov002_0210e318.Construct(0x806f);
-    func_020731dc(&data_ov002_0210e318, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f410);
+    __register_global_object(&data_ov002_0210e318, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f410);
     data_ov002_0210e8f8.Construct(0x8070);
-    func_020731dc(&data_ov002_0210e8f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f41c);
+    __register_global_object(&data_ov002_0210e8f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f41c);
     data_ov002_0210e320.Construct(0x8071);
-    func_020731dc(&data_ov002_0210e320, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f428);
+    __register_global_object(&data_ov002_0210e320, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f428);
     data_ov002_0210e908.Construct(0x8072);
-    func_020731dc(&data_ov002_0210e908, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f434);
+    __register_global_object(&data_ov002_0210e908, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f434);
     data_ov002_0210e328.Construct(0x8073);
-    func_020731dc(&data_ov002_0210e328, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f440);
+    __register_global_object(&data_ov002_0210e328, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f440);
     data_ov002_0210e1a0.Construct(0x8074);
-    func_020731dc(&data_ov002_0210e1a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f44c);
+    __register_global_object(&data_ov002_0210e1a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f44c);
     data_ov002_0210e330.Construct(0x8075);
-    func_020731dc(&data_ov002_0210e330, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f458);
+    __register_global_object(&data_ov002_0210e330, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f458);
     data_ov002_0210e918.Construct(0x8076);
-    func_020731dc(&data_ov002_0210e918, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f464);
+    __register_global_object(&data_ov002_0210e918, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f464);
     data_ov002_0210e560.Construct(0x8077);
-    func_020731dc(&data_ov002_0210e560, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f470);
+    __register_global_object(&data_ov002_0210e560, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f470);
     data_ov002_0210e338.Construct(0x8078);
-    func_020731dc(&data_ov002_0210e338, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f47c);
+    __register_global_object(&data_ov002_0210e338, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f47c);
     data_ov002_0210e928.Construct(0x8079);
-    func_020731dc(&data_ov002_0210e928, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f488);
+    __register_global_object(&data_ov002_0210e928, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f488);
     data_ov002_0210e568.Construct(ASSET_KEY_GET_BCA);
-    func_020731dc(&data_ov002_0210e568, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f494);
+    __register_global_object(&data_ov002_0210e568, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f494);
     data_ov002_0210e938.Construct(ASSET_KEY_OPEN_BCA);
-    func_020731dc(&data_ov002_0210e938, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4a0);
+    __register_global_object(&data_ov002_0210e938, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4a0);
     data_ov002_0210e940.Construct(0x807a);
-    func_020731dc(&data_ov002_0210e940, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4ac);
+    __register_global_object(&data_ov002_0210e940, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4ac);
     data_ov002_0210e340.Construct(0x807b);
-    func_020731dc(&data_ov002_0210e340, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4b8);
+    __register_global_object(&data_ov002_0210e340, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4b8);
     data_ov002_0210e1f8.Construct(ASSET_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210e1f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4c4);
+    __register_global_object(&data_ov002_0210e1f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4c4);
     data_ov002_0210e950.Construct(ASSET_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e950, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4d0);
+    __register_global_object(&data_ov002_0210e950, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4d0);
     data_ov002_0210e570.Construct(0x807c);
-    func_020731dc(&data_ov002_0210e570, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4dc);
+    __register_global_object(&data_ov002_0210e570, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4dc);
     data_ov002_0210e960.Construct(0x807d);
-    func_020731dc(&data_ov002_0210e960, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4e8);
+    __register_global_object(&data_ov002_0210e960, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4e8);
     data_ov002_0210e968.Construct(0x8084);
-    func_020731dc(&data_ov002_0210e968, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4f4);
+    __register_global_object(&data_ov002_0210e968, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f4f4);
     data_ov002_0210e578.Construct(0x8085);
-    func_020731dc(&data_ov002_0210e578, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f500);
+    __register_global_object(&data_ov002_0210e578, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f500);
     data_ov002_0210e208.Construct(0x8086);
-    func_020731dc(&data_ov002_0210e208, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f50c);
+    __register_global_object(&data_ov002_0210e208, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f50c);
     data_ov002_0210e978.Construct(0x8087);
-    func_020731dc(&data_ov002_0210e978, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f518);
+    __register_global_object(&data_ov002_0210e978, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f518);
     data_ov002_0210e580.Construct(0x8088);
-    func_020731dc(&data_ov002_0210e580, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f524);
+    __register_global_object(&data_ov002_0210e580, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f524);
     data_ov002_0210e980.Construct(ASSET_N_CARRY_LOST_BCA);
-    func_020731dc(&data_ov002_0210e980, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f530);
+    __register_global_object(&data_ov002_0210e980, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f530);
     data_ov002_0210e588.Construct(ASSET_N_CARRY_POSE_BCA);
-    func_020731dc(&data_ov002_0210e588, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f53c);
+    __register_global_object(&data_ov002_0210e588, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f53c);
     data_ov002_0210e988.Construct(ASSET_N_CARRY_PUT_BCA);
-    func_020731dc(&data_ov002_0210e988, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f548);
+    __register_global_object(&data_ov002_0210e988, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f548);
     data_ov002_0210e348.Construct(ASSET_N_CARRY_START_BCA);
-    func_020731dc(&data_ov002_0210e348, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f554);
+    __register_global_object(&data_ov002_0210e348, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f554);
     data_ov002_0210e178.Construct(ASSET_N_CARRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e178, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f560);
+    __register_global_object(&data_ov002_0210e178, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f560);
     data_ov002_0210e200.Construct(ASSET_N_CARRY_WALK_BCA);
-    func_020731dc(&data_ov002_0210e200, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f56c);
+    __register_global_object(&data_ov002_0210e200, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f56c);
     data_ov002_0210e590.Construct(ASSET_OP_GO_BCA);
-    func_020731dc(&data_ov002_0210e590, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f578);
+    __register_global_object(&data_ov002_0210e590, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f578);
     data_ov002_0210e9a8.Construct(ASSET_OP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e9a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f584);
+    __register_global_object(&data_ov002_0210e9a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f584);
     data_ov002_0210e9b0.Construct(ASSET_P_KOOPA_H_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e9b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f590);
+    __register_global_object(&data_ov002_0210e9b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f590);
     data_ov002_0210e598.Construct(ASSET_P_KOOPA_HOLD_BCA);
-    func_020731dc(&data_ov002_0210e598, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f59c);
+    __register_global_object(&data_ov002_0210e598, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f59c);
     data_ov002_0210e188.Construct(ASSET_P_KOOPA_THROW_BCA);
-    func_020731dc(&data_ov002_0210e188, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5a8);
+    __register_global_object(&data_ov002_0210e188, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5a8);
     data_ov002_0210e5a0.Construct(ASSET_PADDLE_1_BCA);
-    func_020731dc(&data_ov002_0210e5a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5b4);
+    __register_global_object(&data_ov002_0210e5a0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5b4);
     data_ov002_0210e9c8.Construct(ASSET_PADDLE_2_BCA);
-    func_020731dc(&data_ov002_0210e9c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5c0);
+    __register_global_object(&data_ov002_0210e9c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5c0);
     data_ov002_0210e350.Construct(ASSET_PADDLE_CARRY_BCA);
-    func_020731dc(&data_ov002_0210e350, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5cc);
+    __register_global_object(&data_ov002_0210e350, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5cc);
     data_ov002_0210e5a8.Construct(ASSET_PADDLE_END_BCA);
-    func_020731dc(&data_ov002_0210e5a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5d8);
+    __register_global_object(&data_ov002_0210e5a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5d8);
     data_ov002_0210e9d8.Construct(0x8089);
-    func_020731dc(&data_ov002_0210e9d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5f0);
+    __register_global_object(&data_ov002_0210e9d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5f0);
     data_ov002_0210e358.Construct(0x808a);
-    func_020731dc(&data_ov002_0210e358, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5fc);
+    __register_global_object(&data_ov002_0210e358, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f5fc);
     data_ov002_0210e170.Construct(ASSET_PUTON_T_CAP_BCA);
-    func_020731dc(&data_ov002_0210e170, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f608);
+    __register_global_object(&data_ov002_0210e170, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f608);
     data_ov002_0210e9f8.Construct(ASSET_RETURN_DOWN_BCA);
-    func_020731dc(&data_ov002_0210e9f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f614);
+    __register_global_object(&data_ov002_0210e9f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f614);
     data_ov002_0210e360.Construct(ASSET_RETURN_NOCAP_BCA);
-    func_020731dc(&data_ov002_0210e360, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f620);
+    __register_global_object(&data_ov002_0210e360, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f620);
     data_ov002_0210e5b8.Construct(ASSET_RETURN_STAR_BCA);
-    func_020731dc(&data_ov002_0210e5b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f62c);
+    __register_global_object(&data_ov002_0210e5b8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f62c);
     data_ov002_0210ea00.Construct(0x808b);
-    func_020731dc(&data_ov002_0210ea00, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f638);
+    __register_global_object(&data_ov002_0210ea00, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f638);
     data_ov002_0210e368.Construct(0x808c);
-    func_020731dc(&data_ov002_0210e368, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f644);
+    __register_global_object(&data_ov002_0210e368, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f644);
     data_ov002_0210e370.Construct(0x808d);
-    func_020731dc(&data_ov002_0210e370, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f650);
+    __register_global_object(&data_ov002_0210e370, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f650);
     data_ov002_0210ea18.Construct(0x808e);
-    func_020731dc(&data_ov002_0210ea18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f65c);
+    __register_global_object(&data_ov002_0210ea18, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f65c);
     data_ov002_0210e210.Construct(0x808f);
-    func_020731dc(&data_ov002_0210e210, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f668);
+    __register_global_object(&data_ov002_0210e210, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f668);
     data_ov002_0210e5c8.Construct(0x8090);
-    func_020731dc(&data_ov002_0210e5c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f674);
+    __register_global_object(&data_ov002_0210e5c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f674);
     data_ov002_0210ea28.Construct(0x8091);
-    func_020731dc(&data_ov002_0210ea28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f680);
+    __register_global_object(&data_ov002_0210ea28, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f680);
     data_ov002_0210e378.Construct(ASSET_S_DIE_BCA);
-    func_020731dc(&data_ov002_0210e378, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f68c);
+    __register_global_object(&data_ov002_0210e378, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f68c);
     data_ov002_0210e190.Construct(ASSET_SCALE_UP_BCA);
-    func_020731dc(&data_ov002_0210e190, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f698);
+    __register_global_object(&data_ov002_0210e190, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f698);
     data_ov002_0210ea38.Construct(0x8092);
-    func_020731dc(&data_ov002_0210ea38, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6a4);
+    __register_global_object(&data_ov002_0210ea38, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6a4);
     data_ov002_0210e380.Construct(ASSET_SDROP_HEAD_BCA);
-    func_020731dc(&data_ov002_0210e380, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6b0);
+    __register_global_object(&data_ov002_0210e380, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6b0);
     data_ov002_0210ea40.Construct(ASSET_SDROP_HEAD_END_BCA);
-    func_020731dc(&data_ov002_0210ea40, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6bc);
+    __register_global_object(&data_ov002_0210ea40, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6bc);
     data_ov002_0210ea48.Construct(ASSET_SDROP_HEAD_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6c8);
+    __register_global_object(&data_ov002_0210ea48, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6c8);
     data_ov002_0210e5d8.Construct(ASSET_SDROP_HIP_BCA);
-    func_020731dc(&data_ov002_0210e5d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6d4);
+    __register_global_object(&data_ov002_0210e5d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6d4);
     data_ov002_0210e218.Construct(ASSET_SDROP_HIP_END_BCA);
-    func_020731dc(&data_ov002_0210e218, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6e0);
+    __register_global_object(&data_ov002_0210e218, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6e0);
     data_ov002_0210ea58.Construct(ASSET_SDROP_HIP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea58, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6ec);
+    __register_global_object(&data_ov002_0210ea58, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6ec);
     data_ov002_0210e5e0.Construct(ASSET_SDROP_LEG_BCA);
-    func_020731dc(&data_ov002_0210e5e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6f8);
+    __register_global_object(&data_ov002_0210e5e0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f6f8);
     data_ov002_0210ea60.Construct(ASSET_SDROP_LEG_END_BCA);
-    func_020731dc(&data_ov002_0210ea60, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f704);
+    __register_global_object(&data_ov002_0210ea60, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f704);
     data_ov002_0210e5e8.Construct(ASSET_SDROP_LEG_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e5e8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f710);
+    __register_global_object(&data_ov002_0210e5e8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f710);
     data_ov002_0210ea68.Construct(ASSET_SDROP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea68, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f71c);
+    __register_global_object(&data_ov002_0210ea68, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f71c);
     data_ov002_0210e388.Construct(ASSET_SDROP_WALK_BCA);
-    func_020731dc(&data_ov002_0210e388, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f728);
+    __register_global_object(&data_ov002_0210e388, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f728);
     data_ov002_0210e198.Construct(0x8093);
-    func_020731dc(&data_ov002_0210e198, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f734);
+    __register_global_object(&data_ov002_0210e198, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f734);
     data_ov002_0210ea78.Construct(0x8094);
-    func_020731dc(&data_ov002_0210ea78, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f740);
+    __register_global_object(&data_ov002_0210ea78, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f740);
     data_ov002_0210e390.Construct(ASSET_SHF_DIE_BCA);
-    func_020731dc(&data_ov002_0210e390, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f74c);
+    __register_global_object(&data_ov002_0210e390, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f74c);
     data_ov002_0210e5f8.Construct(0x8095);
-    func_020731dc(&data_ov002_0210e5f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f758);
+    __register_global_object(&data_ov002_0210e5f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f758);
     data_ov002_0210ea80.Construct(ASSET_SHOOT_BCA);
-    func_020731dc(&data_ov002_0210ea80, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f764);
+    __register_global_object(&data_ov002_0210ea80, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f764);
     data_ov002_0210e398.Construct(ASSET_SHOOT_TO_FLY_BCA);
-    func_020731dc(&data_ov002_0210e398, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f770);
+    __register_global_object(&data_ov002_0210e398, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f770);
     data_ov002_0210ea90.Construct(0x8096);
-    func_020731dc(&data_ov002_0210ea90, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f77c);
+    __register_global_object(&data_ov002_0210ea90, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f77c);
     data_ov002_0210ea98.Construct(ASSET_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210ea98, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f788);
+    __register_global_object(&data_ov002_0210ea98, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f788);
     data_ov002_0210e608.Construct(ASSET_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210e608, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f794);
+    __register_global_object(&data_ov002_0210e608, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f794);
     data_ov002_0210eaa8.Construct(ASSET_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210eaa8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7a0);
+    __register_global_object(&data_ov002_0210eaa8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7a0);
     data_ov002_0210eab0.Construct(ASSET_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eab0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7ac);
+    __register_global_object(&data_ov002_0210eab0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7ac);
     data_ov002_0210e610.Construct(0x8097);
-    func_020731dc(&data_ov002_0210e610, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7b8);
+    __register_global_object(&data_ov002_0210e610, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7b8);
     data_ov002_0210e220.Construct(0x8098);
-    func_020731dc(&data_ov002_0210e220, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7c4);
+    __register_global_object(&data_ov002_0210e220, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7c4);
     data_ov002_0210e168.Construct(0x8099);
-    func_020731dc(&data_ov002_0210e168, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7d0);
+    __register_global_object(&data_ov002_0210e168, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7d0);
     data_ov002_0210e180.Construct(0x809a);
-    func_020731dc(&data_ov002_0210e180, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7dc);
+    __register_global_object(&data_ov002_0210e180, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7dc);
     data_ov002_0210e3b8.Construct(0x809b);
-    func_020731dc(&data_ov002_0210e3b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7e8);
+    __register_global_object(&data_ov002_0210e3b8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f7e8);
     data_ov002_0210e1b0.Construct(0x809c);
-    func_020731dc(&data_ov002_0210e1b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f800);
+    __register_global_object(&data_ov002_0210e1b0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f800);
     data_ov002_0210e1c0.Construct(0x809d);
-    func_020731dc(&data_ov002_0210e1c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f80c);
+    __register_global_object(&data_ov002_0210e1c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f80c);
     data_ov002_0210ed58.Construct(0x809e);
-    func_020731dc(&data_ov002_0210ed58, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f818);
+    __register_global_object(&data_ov002_0210ed58, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f818);
     data_ov002_0210ed60.Construct(0x809f);
-    func_020731dc(&data_ov002_0210ed60, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f830);
+    __register_global_object(&data_ov002_0210ed60, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f830);
     data_ov002_0210ed50.Construct(0x80a0);
-    func_020731dc(&data_ov002_0210ed50, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f83c);
+    __register_global_object(&data_ov002_0210ed50, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f83c);
     data_ov002_0210ed48.Construct(0x80a1);
-    func_020731dc(&data_ov002_0210ed48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f848);
+    __register_global_object(&data_ov002_0210ed48, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f848);
     data_ov002_0210ed40.Construct(0x80a2);
-    func_020731dc(&data_ov002_0210ed40, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f854);
+    __register_global_object(&data_ov002_0210ed40, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f854);
     data_ov002_0210ed38.Construct(0x80a3);
-    func_020731dc(&data_ov002_0210ed38, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f860);
+    __register_global_object(&data_ov002_0210ed38, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f860);
     data_ov002_0210ed30.Construct(ASSET_STAR_OPEN_BCA);
-    func_020731dc(&data_ov002_0210ed30, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f86c);
+    __register_global_object(&data_ov002_0210ed30, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f86c);
     data_ov002_0210ed28.Construct(0x80a4);
-    func_020731dc(&data_ov002_0210ed28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f878);
+    __register_global_object(&data_ov002_0210ed28, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f878);
     data_ov002_0210ed20.Construct(ASSET_SU_HIPAT_BCA);
-    func_020731dc(&data_ov002_0210ed20, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f884);
+    __register_global_object(&data_ov002_0210ed20, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f884);
     data_ov002_0210ed18.Construct(ASSET_SU_HIPED_BCA);
-    func_020731dc(&data_ov002_0210ed18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f890);
+    __register_global_object(&data_ov002_0210ed18, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f890);
     data_ov002_0210ed10.Construct(ASSET_SU_HIPSR_BCA);
-    func_020731dc(&data_ov002_0210ed10, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8a8);
+    __register_global_object(&data_ov002_0210ed10, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8a8);
     data_ov002_0210ed08.Construct(ASSET_SU_JUMP_BCA);
-    func_020731dc(&data_ov002_0210ed08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8b4);
+    __register_global_object(&data_ov002_0210ed08, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8b4);
     data_ov002_0210ecf8.Construct(ASSET_SU_JUMP_END_BCA);
-    func_020731dc(&data_ov002_0210ecf8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8c0);
+    __register_global_object(&data_ov002_0210ecf8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8c0);
     data_ov002_0210ecf0.Construct(ASSET_SU_RUN_BCA);
-    func_020731dc(&data_ov002_0210ecf0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8d8);
+    __register_global_object(&data_ov002_0210ecf0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8d8);
     data_ov002_0210ece8.Construct(ASSET_SU_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ece8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8e4);
+    __register_global_object(&data_ov002_0210ece8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8e4);
     data_ov002_0210ece0.Construct(ASSET_SU_WALK_BCA);
-    func_020731dc(&data_ov002_0210ece0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8f0);
+    __register_global_object(&data_ov002_0210ece0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8f0);
     data_ov002_0210ecd8.Construct(ASSET_SU_WALK_END_BCA);
-    func_020731dc(&data_ov002_0210ecd8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8fc);
+    __register_global_object(&data_ov002_0210ecd8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f8fc);
     data_ov002_0210ecd0.Construct(ASSET_SU_WALK_START_BCA);
-    func_020731dc(&data_ov002_0210ecd0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f908);
+    __register_global_object(&data_ov002_0210ecd0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f908);
     data_ov002_0210ecc8.Construct(ASSET_SWIM_BCA);
-    func_020731dc(&data_ov002_0210ecc8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f914);
+    __register_global_object(&data_ov002_0210ecc8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f914);
     data_ov002_0210ecc0.Construct(ASSET_SWIM_ATTACK_BCA);
-    func_020731dc(&data_ov002_0210ecc0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f920);
+    __register_global_object(&data_ov002_0210ecc0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f920);
     data_ov002_0210e768.Construct(ASSET_SWIM_CARRY_BCA);
-    func_020731dc(&data_ov002_0210e768, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f938);
+    __register_global_object(&data_ov002_0210e768, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f938);
     data_ov002_0210eca0.Construct(ASSET_SWIM_DAMAGE_BCA);
-    func_020731dc(&data_ov002_0210eca0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f944);
+    __register_global_object(&data_ov002_0210eca0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f944);
     data_ov002_0210ec90.Construct(ASSET_SWIM_DIE_BCA);
-    func_020731dc(&data_ov002_0210ec90, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f950);
+    __register_global_object(&data_ov002_0210ec90, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f950);
     data_ov002_0210ec88.Construct(ASSET_SWIM_IN_BCA);
-    func_020731dc(&data_ov002_0210ec88, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f95c);
+    __register_global_object(&data_ov002_0210ec88, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f95c);
     data_ov002_0210ec80.Construct(ASSET_SWIM_STAR_GET_BCA);
-    func_020731dc(&data_ov002_0210ec80, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f968);
+    __register_global_object(&data_ov002_0210ec80, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f968);
     data_ov002_0210ec78.Construct(ASSET_SWIM_THROW_BCA);
-    func_020731dc(&data_ov002_0210ec78, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f974);
+    __register_global_object(&data_ov002_0210ec78, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f974);
     data_ov002_0210ec70.Construct(ASSET_SWIM_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ec70, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f980);
+    __register_global_object(&data_ov002_0210ec70, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f980);
     data_ov002_0210ec68.Construct(0x80a5);
-    func_020731dc(&data_ov002_0210ec68, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f98c);
+    __register_global_object(&data_ov002_0210ec68, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f98c);
     data_ov002_0210e4d8.Construct(0x80a6);
-    func_020731dc(&data_ov002_0210e4d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f998);
+    __register_global_object(&data_ov002_0210e4d8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f998);
     data_ov002_0210e920.Construct(0x80a7);
-    func_020731dc(&data_ov002_0210e920, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f9a4);
+    __register_global_object(&data_ov002_0210e920, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f9a4);
     data_ov002_0210e7c8.Construct(0x80a8);
-    func_020731dc(&data_ov002_0210e7c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f9bc);
+    __register_global_object(&data_ov002_0210e7c8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f9bc);
     data_ov002_0210ead8.Construct(0x80a9);
-    func_020731dc(&data_ov002_0210ead8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f9ec);
+    __register_global_object(&data_ov002_0210ead8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210f9ec);
     data_ov002_0210eb48.Construct(0x80aa);
-    func_020731dc(&data_ov002_0210eb48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa10);
+    __register_global_object(&data_ov002_0210eb48, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fa10);
     data_ov002_0210ec18.Construct(0x80ab);
-    func_020731dc(&data_ov002_0210ec18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa34);
+    __register_global_object(&data_ov002_0210ec18, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fa34);
     data_ov002_0210ec58.Construct(0x80ac);
-    func_020731dc(&data_ov002_0210ec58, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa58);
+    __register_global_object(&data_ov002_0210ec58, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fa58);
     data_ov002_0210ed00.Construct(0x80b3);
-    func_020731dc(&data_ov002_0210ed00, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa7c);
+    __register_global_object(&data_ov002_0210ed00, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fa7c);
     data_ov002_0210ec28.Construct(0x80b4);
-    func_020731dc(&data_ov002_0210ec28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210faac);
+    __register_global_object(&data_ov002_0210ec28, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210faac);
     data_ov002_0210e7e0.Construct(0x80b5);
-    func_020731dc(&data_ov002_0210e7e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fad0);
+    __register_global_object(&data_ov002_0210e7e0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fad0);
     data_ov002_0210e7f8.Construct(0x80b6);
-    func_020731dc(&data_ov002_0210e7f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210faf4);
+    __register_global_object(&data_ov002_0210e7f8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210faf4);
     data_ov002_0210e4a8.Construct(0x80b7);
-    func_020731dc(&data_ov002_0210e4a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb18);
+    __register_global_object(&data_ov002_0210e4a8, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb18);
     data_ov002_0210e828.Construct(0x80bb);
-    func_020731dc(&data_ov002_0210e828, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb3c);
+    __register_global_object(&data_ov002_0210e828, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb3c);
     data_ov002_0210e4c0.Construct(0x80bc);
-    func_020731dc(&data_ov002_0210e4c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb60);
+    __register_global_object(&data_ov002_0210e4c0, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb60);
     data_ov002_0210e878.Construct(0x80be);
-    func_020731dc(&data_ov002_0210e878, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb84);
+    __register_global_object(&data_ov002_0210e878, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fb84);
     data_ov002_0210e830.Construct(0x80bf);
-    func_020731dc(&data_ov002_0210e830, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fba8);
+    __register_global_object(&data_ov002_0210e830, (void *)SharedFilePtr_Destruct_Anim,
+                             data_ov002_0210fba8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e538, 0x8021);
-    func_020731dc(&data_ov002_0210e538, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fbd8);
+    __register_global_object(&data_ov002_0210e538, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fbd8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e8d0, 0x8022);
-    func_020731dc(&data_ov002_0210e8d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fbfc);
+    __register_global_object(&data_ov002_0210e8d0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fbfc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e8e8, ASSET_L_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210e8e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc20);
+    __register_global_object(&data_ov002_0210e8e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fc20);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e540, ASSET_L_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e540, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc44);
+    __register_global_object(&data_ov002_0210e540, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fc44);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e958, ASSET_L_TX_ED_AMAZED_BTP);
-    func_020731dc(&data_ov002_0210e958, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc5c);
+    __register_global_object(&data_ov002_0210e958, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fc5c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e898, 0x8023);
-    func_020731dc(&data_ov002_0210e898, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc80);
+    __register_global_object(&data_ov002_0210e898, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fc80);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e9e8, 0x8024);
-    func_020731dc(&data_ov002_0210e9e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fca4);
+    __register_global_object(&data_ov002_0210e9e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fca4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea70, ASSET_L_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210ea70, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fcc8);
+    __register_global_object(&data_ov002_0210ea70, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fcc8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ebd8, 0x8025);
-    func_020731dc(&data_ov002_0210ebd8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fcec);
+    __register_global_object(&data_ov002_0210ebd8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fcec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eac8, 0x8026);
-    func_020731dc(&data_ov002_0210eac8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd10);
+    __register_global_object(&data_ov002_0210eac8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fd10);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e460, ASSET_L_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210e460, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd34);
+    __register_global_object(&data_ov002_0210e460, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fd34);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e910, ASSET_L_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e910, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd58);
+    __register_global_object(&data_ov002_0210e910, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fd58);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e2f0, ASSET_L_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e2f0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd7c);
+    __register_global_object(&data_ov002_0210e2f0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fd7c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea10, 0x8027);
-    func_020731dc(&data_ov002_0210ea10, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fda0);
+    __register_global_object(&data_ov002_0210ea10, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fda0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e600, ASSET_L_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e600, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fdc4);
+    __register_global_object(&data_ov002_0210e600, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fdc4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec98, ASSET_L_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210ec98, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fde8);
+    __register_global_object(&data_ov002_0210ec98, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fde8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea88, ASSET_L_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210ea88, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe0c);
+    __register_global_object(&data_ov002_0210ea88, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fe0c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eca8, ASSET_L_TX_SLEEP_WAIT_BTP);
-    func_020731dc(&data_ov002_0210eca8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe30);
+    __register_global_object(&data_ov002_0210eca8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fe30);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e9d0, 0x8028);
-    func_020731dc(&data_ov002_0210e9d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe54);
+    __register_global_object(&data_ov002_0210e9d0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fe54);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eaf0, 0x8035);
-    func_020731dc(&data_ov002_0210eaf0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe78);
+    __register_global_object(&data_ov002_0210eaf0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fe78);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea30, ASSET_W_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210ea30, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe9c);
+    __register_global_object(&data_ov002_0210ea30, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fe9c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e660, ASSET_W_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e660, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fec0);
+    __register_global_object(&data_ov002_0210e660, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fec0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb10, ASSET_W_TX_ED_AMAZED_BTP);
-    func_020731dc(&data_ov002_0210eb10, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fee4);
+    __register_global_object(&data_ov002_0210eb10, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210fee4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e670, 0x8036);
-    func_020731dc(&data_ov002_0210e670, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff08);
+    __register_global_object(&data_ov002_0210e670, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ff08);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e680, 0x8037);
-    func_020731dc(&data_ov002_0210e680, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff2c);
+    __register_global_object(&data_ov002_0210e680, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ff2c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb38, ASSET_W_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210eb38, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff50);
+    __register_global_object(&data_ov002_0210eb38, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ff50);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e640, 0x8038);
-    func_020731dc(&data_ov002_0210e640, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff74);
+    __register_global_object(&data_ov002_0210e640, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ff74);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb58, ASSET_W_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210eb58, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff98);
+    __register_global_object(&data_ov002_0210eb58, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ff98);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6a0, ASSET_W_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e6a0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ffbc);
+    __register_global_object(&data_ov002_0210e6a0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ffbc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3e0, ASSET_W_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e3e0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ffe0);
+    __register_global_object(&data_ov002_0210e3e0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ffe0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb70, 0x8039);
-    func_020731dc(&data_ov002_0210eb70, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ed80);
+    __register_global_object(&data_ov002_0210eb70, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ed80);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6b8, ASSET_W_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e6b8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eda4);
+    __register_global_object(&data_ov002_0210e6b8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210eda4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb90, ASSET_W_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210eb90, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210edc8);
+    __register_global_object(&data_ov002_0210eb90, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210edc8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e620, ASSET_W_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210e620, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210edec);
+    __register_global_object(&data_ov002_0210e620, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210edec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3e8, ASSET_W_TX_SLEEP_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e3e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee10);
+    __register_global_object(&data_ov002_0210e3e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ee10);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eba8, 0x803a);
-    func_020731dc(&data_ov002_0210eba8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee34);
+    __register_global_object(&data_ov002_0210eba8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ee34);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3c8, 0x8049);
-    func_020731dc(&data_ov002_0210e3c8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee58);
+    __register_global_object(&data_ov002_0210e3c8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ee58);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6e0, ASSET_Y_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210e6e0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee7c);
+    __register_global_object(&data_ov002_0210e6e0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ee7c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ebc8, ASSET_Y_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210ebc8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eea0);
+    __register_global_object(&data_ov002_0210ebc8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210eea0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e400, 0x804a);
-    func_020731dc(&data_ov002_0210e400, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eeb8);
+    __register_global_object(&data_ov002_0210e400, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210eeb8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ecb8, 0x804b);
-    func_020731dc(&data_ov002_0210ecb8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eedc);
+    __register_global_object(&data_ov002_0210ecb8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210eedc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e708, ASSET_Y_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e708, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef00);
+    __register_global_object(&data_ov002_0210e708, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ef00);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e408, 0x804c);
-    func_020731dc(&data_ov002_0210e408, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef24);
+    __register_global_object(&data_ov002_0210e408, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ef24);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec00, ASSET_Y_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210ec00, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef48);
+    __register_global_object(&data_ov002_0210ec00, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ef48);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec10, ASSET_Y_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210ec10, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef6c);
+    __register_global_object(&data_ov002_0210ec10, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ef6c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e728, ASSET_Y_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e728, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef90);
+    __register_global_object(&data_ov002_0210e728, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210ef90);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3b0, 0x804d);
-    func_020731dc(&data_ov002_0210e3b0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210efa8);
+    __register_global_object(&data_ov002_0210e3b0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210efa8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e738, ASSET_Y_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e738, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210efcc);
+    __register_global_object(&data_ov002_0210e738, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210efcc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec40, ASSET_Y_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210ec40, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eff0);
+    __register_global_object(&data_ov002_0210ec40, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210eff0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e250, ASSET_Y_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210e250, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f014);
+    __register_global_object(&data_ov002_0210e250, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f014);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e430, 0x804e);
-    func_020731dc(&data_ov002_0210e430, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f038);
+    __register_global_object(&data_ov002_0210e430, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f038);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e438, 0x804f);
-    func_020731dc(&data_ov002_0210e438, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f05c);
+    __register_global_object(&data_ov002_0210e438, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f05c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e770, 0x80ad);
-    func_020731dc(&data_ov002_0210e770, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f080);
+    __register_global_object(&data_ov002_0210e770, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f080);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e788, ASSET_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210e788, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f0a4);
+    __register_global_object(&data_ov002_0210e788, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f0a4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e450, ASSET_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e450, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f0c8);
+    __register_global_object(&data_ov002_0210e450, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f0c8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e270, ASSET_TX_ED_KISS_TO_POSE_BTP);
-    func_020731dc(&data_ov002_0210e270, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f0ec);
+    __register_global_object(&data_ov002_0210e270, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f0ec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e458, ASSET_TX_ED_KISS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e458, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f110);
+    __register_global_object(&data_ov002_0210e458, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f110);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e288, 0x80ae);
-    func_020731dc(&data_ov002_0210e288, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f134);
+    __register_global_object(&data_ov002_0210e288, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f134);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e478, 0x80af);
-    func_020731dc(&data_ov002_0210e478, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f158);
+    __register_global_object(&data_ov002_0210e478, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f158);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e7e8, ASSET_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e7e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f17c);
+    __register_global_object(&data_ov002_0210e7e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f17c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e230, 0x80b0);
-    func_020731dc(&data_ov002_0210e230, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f1a0);
+    __register_global_object(&data_ov002_0210e230, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f1a0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e800, ASSET_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210e800, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f1d0);
+    __register_global_object(&data_ov002_0210e800, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f1d0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1d0, ASSET_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e1d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f1f4);
+    __register_global_object(&data_ov002_0210e1d0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f1f4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4b8, ASSET_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e4b8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f218);
+    __register_global_object(&data_ov002_0210e4b8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f218);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1c8, 0x80b1);
-    func_020731dc(&data_ov002_0210e1c8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f248);
+    __register_global_object(&data_ov002_0210e1c8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f248);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4d0, ASSET_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e4d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f26c);
+    __register_global_object(&data_ov002_0210e4d0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f26c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1e0, ASSET_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210e1e0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f290);
+    __register_global_object(&data_ov002_0210e1e0, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f290);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4e8, ASSET_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210e4e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f2b4);
+    __register_global_object(&data_ov002_0210e4e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f2b4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1e8, ASSET_TX_SLEEP_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e1e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f2d8);
+    __register_global_object(&data_ov002_0210e1e8, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f2d8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e500, 0x80b2);
-    func_020731dc(&data_ov002_0210e500, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f2fc);
+    __register_global_object(&data_ov002_0210e500, (void *)SharedFilePtr_Destruct_TexSeq,
+                             data_ov002_0210f2fc);
     data_ov002_0211013c.mInit = data_ov002_02109e0c;
     data_ov002_0211013c.mMain = data_ov002_02109f74;
     data_ov002_0211013c.mCleanup = 0;
@@ -27211,7 +27573,6 @@ void __sinit_ov002_021019d0(void) {
     data_ov002_0211075c[5] = data_ov002_0210a404;
     data_ov002_0211075c[6] = data_ov002_0210a3f4;
 }
-#undef func_020731dc
 }
 
 #pragma section initsec end

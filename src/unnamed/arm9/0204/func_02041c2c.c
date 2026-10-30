@@ -1,13 +1,14 @@
 #include "private/arm9_a1fc0_file_share.h"
 
 /* The parent's ready-list search: the first ready node (mState 2) whose
- * registered region starts at offset (mRegion's first word), else 0. */
-FileShareNode *func_02041c2c(FileShareParentArea *area, int offset) {
+ * registered block is blockId (mRegion's first word: the WBT block id
+ * func_020658c0, WBT_RegisterBlock, stored), else 0. */
+FileShareNode *func_02041c2c(FileShareParentArea *area, int blockId) {
     FileShareNode *node = area->mReadyList;
     if (node == 0)
         return node;
     do {
-        if (node->mState == 2 && *(int *)node->mRegion == offset)
+        if (node->mState == 2 && *(int *)node->mRegion == blockId)
             return node;
         node = node->mNext;
     } while (node != 0);
