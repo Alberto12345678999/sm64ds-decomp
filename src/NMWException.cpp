@@ -23,9 +23,17 @@
  * proof this file does not have yet. Until it does, the word at 0x0209a6fc
  * stays ROM bytes: thandler is declared extern, and dthandler has external
  * linkage because the ROM word's relocation reaches it from outside this
- * object. The mangled names are the same either way. Follow-up: promote
- * the file as an intact object that owns the .data word, and restore
- * MSL's `static` on both.
+ * object. The mangled names are the same either way.
+ *
+ * The same path keeps `#pragma exceptions on` out. Retail .exceptix has
+ * records for both functions (0x02073964 and 0x02073970), so MSL built this
+ * file with exceptions on, and the .text still matches with the pragma.
+ * But the compiler then also emits @EX@ records, and rombuild's isolate
+ * refuses any section beyond .text in a text-only multi-symbol object.
+ *
+ * Follow-up: promote the file as an intact object that owns the .data word
+ * and the two .exceptix records. Then turn exceptions on and restore MSL's
+ * `static` on dthandler and thandler.
  */
 extern "C" void abort(void);
 
