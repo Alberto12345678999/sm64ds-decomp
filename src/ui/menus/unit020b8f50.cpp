@@ -30,7 +30,7 @@
  * (it loads a portrait drawing into the picker), but it stays in its own
  * file, the intact object ov007/AnimationPathSets that owns the portrait
  * stroke tables. The .rodata layout does not let one TU hold both: this
- * unit's own tables (0x020d7b54..0x020d7b80) lie between
+ * unit's own tables (0x020d7b54..0x020d7c28) lie between
  * unit020b797c's and func_ov007_020bd1c0's, in text order, while the
  * stroke counts at 0x020cdb34 lie inside the portrait coordinate block
  * that follows unit020b2764's .rodata. The previous function,

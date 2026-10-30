@@ -10,7 +10,8 @@
  * slideOut to 0 and re-seeds the position through func_ov007_020ae810; 3/4/7
  * show it and ease slideOut toward the end chosen by the state (3 opens) over
  * 15 frames, feed its square to func_ov007_020aeb34, and request 0 when fully
- * closed, or 1 (3 for state 7) when fully open; 5/6 show it and ease fade
+ * open (slideOut 0), or 1 (3 for state 7) when fully closed (slideOut
+ * 0x1000); 5/6 show it and ease fade
  * over 20 frames the same way and request 0 at the far end. The wiggle timer
  * counts down at the tail.
  *
