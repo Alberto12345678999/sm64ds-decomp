@@ -4,13 +4,7 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 #include "Ov007LayerSlot.h"
-
-/* The 0x70-byte key record func_ov007_020c2304 allocates; names as in
- * func_ov007_020c20b8. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
+#include "Ov007Pad.h"
 
 extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
 extern void func_ov007_020b7d94(int kind);

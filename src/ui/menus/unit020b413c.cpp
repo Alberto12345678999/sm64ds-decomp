@@ -58,14 +58,9 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 #include "Ov007Item.h"
+#include "Ov007Pad.h"
 
 #pragma opt_loop_invariants off
-
-/* The pad record at Ov007Work's pad; names as in unit020b8f50. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
 
 /* The 0xc-byte item rows starting at data_ov007_020d77d8. Their columns
  * are separate ROM symbols (data_ov007_020d77d8 hit-box index,

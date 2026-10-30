@@ -6,19 +6,13 @@
 #include "cstd.h"
 #include "Ov007Item.h"
 #include "Ov007Model.h"
+#include "Ov007Pad.h"
 
 extern "C" {
 
 extern void func_ov007_020b2614(int a, int b, int c);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
-
-/* The 0x70-byte key record func_ov007_020c2304 allocates;
- * func_ov007_020c20b8 copies keys into prevKeys, then reads KEYINPUT. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

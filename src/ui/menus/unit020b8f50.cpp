@@ -50,6 +50,7 @@
 #include "Ov007Picker.h"
 #include "Ov007Camera.h"
 #include "Ov007Item.h"
+#include "Ov007Pad.h"
 
 extern "C" {
 
@@ -101,14 +102,6 @@ typedef struct Ov007PickerSprites {
      * point-budget bar */
     Ov007Sprite *sprites[4];
 } Ov007PickerSprites;
-
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-    /* 0x04: frames each button has been held, 1 on the press frame; 0 while
-     * it is up (func_ov007_020c20b8) */
-    u32 heldFrames[12];
-} Ov007Pad;
 
 /* func_ov007_020baa10 copies pos as three words. */
 typedef struct Vec3Words {

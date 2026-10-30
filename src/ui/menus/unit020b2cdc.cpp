@@ -42,6 +42,7 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 #include "Ov007Item.h"
+#include "Ov007Pad.h"
 
 extern "C" {
 
@@ -69,24 +70,6 @@ typedef struct Ov007Cursor {
 } Ov007Cursor;
 
 typedef char Ov007Cursor_size_must_be_0x1c[sizeof(Ov007Cursor) == 0x1c ? 1 : -1];
-
-/* The 0x70-byte key record func_ov007_020c2304 allocates (names as in
- * func_ov007_020b1cf0). func_ov007_020c20b8 keeps one counter per button,
- * in the order up, down, right, left, A, B, X, Y, L, R, START, SELECT. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-    /* 0x04: frames each button has been held, 1 on the press frame; 0 while
-     * it is up (func_ov007_020c20b8) */
-    u32 heldFrames[12];
-    char pad_34[0x30];
-    /* 0x64: bit 0 makes func_ov007_020c20b8 read no keys until every key is
-     * released, then clears it */
-    int inputLock;
-    char pad_68[8];
-} Ov007Pad;
-
-typedef char Ov007Pad_size_must_be_0x70[sizeof(Ov007Pad) == 0x70 ? 1 : -1];
 
 extern Ov007Cursor *data_ov007_02103360;
 extern int data_ov007_02103364;

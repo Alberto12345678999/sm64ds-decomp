@@ -5,7 +5,7 @@ extern void *func_ov007_020c9388(int initialState);
 extern struct Ov007Camera *func_ov007_020c023c(void);
 extern int func_ov007_020c241c(int a);
 extern char *func_ov007_020c2068(void);
-extern char *func_ov007_020c2304(void);
+extern struct Ov007Pad *func_ov007_020c2304(void);
 extern void *func_ov007_020c908c(void *r5);
 extern int func_ov007_020c3df4(int a, void *b);
 extern void func_02059eb0(unsigned char *dst);
@@ -28,7 +28,7 @@ void func_ov007_020b6a84(void) {
     WORK->lights[1] = (struct Ov007Light *)func_ov007_020c241c(1);
     WORK->touch = (struct Ov007Touch *)func_ov007_020c2068();
 
-    WORK->pad = (struct Ov007Pad *)func_ov007_020c2304();
+    WORK->pad = func_ov007_020c2304();
     WORK->tweens[0] = func_ov007_020c908c((void *)&WORK->tweenOut[0]);
     WORK->tweens[1] = func_ov007_020c908c((void *)&WORK->tweenOut[1]);
 

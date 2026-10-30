@@ -96,7 +96,7 @@ extern void func_ov007_020bf690(void);
 extern void func_ov007_020bfc54(void);
 extern void func_ov007_020bfcec(void);
 extern void func_ov007_020c1db0(void *c, u16 *in);
-extern void func_ov007_020c20b8(int a, void *b);
+extern void func_ov007_020c20b8(struct Ov007Pad *pad, void *src);
 extern void func_ov007_020c3bc8(void);
 extern void func_ov007_020c3e1c(int v);
 extern void func_ov007_020c3e2c(int v);
@@ -149,7 +149,7 @@ int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4) {
     int ret = 0;
 
     data_ov007_02103430 = 0;
-    func_ov007_020c20b8((int)WORK->pad, &arg4);
+    func_ov007_020c20b8(WORK->pad, &arg4);
     buf[0] = a0;
     buf[1] = a1;
     buf[2] = a2;
