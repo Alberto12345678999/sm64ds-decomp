@@ -780,9 +780,6 @@
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/unnamed/arm9/0206/func_0206a600.c": [
-        "return:unsigned int"
       ]
     },
     "InvMat4x3": {
@@ -10571,14 +10568,6 @@
       ],
       "src/unnamed/arm9/0206/func_02067928.cpp": [
         "return:void *"
-      ]
-    },
-    "data_020a9de0": {
-      "src/unnamed/arm9/0206/func_0206a694.c": [
-        "return:short"
-      ],
-      "src/unnamed/arm9/0206/func_0206a6d0.cpp": [
-        "return:unsigned short"
       ]
     },
     "data_023c0000": {
@@ -22131,6 +22120,11 @@
         "return:FSArchive"
       ]
     },
+    "WM_Initialize": {
+      "src/engine/mb/MB_WmBase.cpp": [
+        "param:#2 void *"
+      ]
+    },
     "WM_SetPortCallback": {
       "src/engine/mb/MB_WmBase.cpp": [
         "param:#2 void *"
@@ -22149,11 +22143,6 @@
     "func_020635d8": {
       "src/engine/mb/MB_WmBase.cpp": [
         "param:#1 void *"
-      ]
-    },
-    "WM_Initialize": {
-      "src/engine/mb/MB_WmBase.cpp": [
-        "param:#2 void *"
       ]
     }
   },

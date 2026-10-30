@@ -3445,20 +3445,9 @@ src/engine/ctrdg/CTRDG_Common.cpp:
     complete
     .text start:0x0206a318 end:0x0206a600
 
-src/unnamed/arm9/0206/func_0206a600.c:
+src/engine/ctrdg/CTRDG_Proc.cpp:
     complete
-    .text start:0x0206a600 end:0x0206a694
-src/unnamed/arm9/0206/func_0206a694.c:
-    complete
-    .text start:0x0206a694 end:0x0206a6d0
-
-src/unnamed/arm9/0206/func_0206a6d0.cpp:
-    complete
-    .text start:0x0206a6d0 end:0x0206a88c
-
-src/CTRDG_Init.c:
-    complete
-    .text start:0x0206a88c end:0x0206a928
+    .text start:0x0206a600 end:0x0206a928
 
 src/unnamed/arm9/0206/func_0206a928.c:
     complete

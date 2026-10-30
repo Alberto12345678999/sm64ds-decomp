@@ -2824,11 +2824,6 @@ src/MBi_ReadIconInfo.c	PURE-C	arm9				1		None		-
 src/MBi_MakeGameInfo.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a37c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a3a4.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a600.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a634.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a694.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a6d0.c	WEAK-refs-only	arm9				1		None		-
-src/CTRDG_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a928.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0206/func_0206bc8c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206bdb4.c	PURE-C	arm9				1		None		-
