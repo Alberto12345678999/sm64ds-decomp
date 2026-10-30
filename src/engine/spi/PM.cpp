@@ -2,9 +2,9 @@
 /* The power-management PXI channel (the Nitro SDK's spi/ARM9/pm.c),
  * arm9 .text 0x0205f5c0..0x0205ff70.
  *
- * Every request takes the channel lock (PMi_Lock), stores a completion
- * callback and its argument, and sends one or two words to the ARM7 on PXI
- * tag 8 (PMi_SendPxiData). PMi_CommonCallback, the tag's receive callback,
+ * Each command sender takes the channel lock (PMi_Lock) and sends one to
+ * three words to the ARM7 on PXI tag 8 (PMi_SendPxiData); all but
+ * PMi_SendSleepStart first store a completion callback and its argument. PMi_CommonCallback, the tag's receive callback,
  * stores any reply and finishes through PMi_CallCallbackAndUnlock. Each
  * synchronous form passes PMi_DummyCallback, which stores the result in a
  * stack word, and spins in PMi_WaitBusy until the lock drops.
@@ -88,6 +88,7 @@ void PMi_CommonCallback(int tag, u32 data, int err);
 u32 PMi_SendSleepStart(u16 trigger, u16 keyPattern);
 void PMi_SendPxiData(u32 data);
 
+// @symbol PMi_Lock
 int PMi_Lock(void) {
     u32 saved = IRQ::Disable();
     if (data_020a8114.lock != 0) {
@@ -99,16 +100,19 @@ int PMi_Lock(void) {
     return 1;
 }
 
+// @symbol PMi_WaitBusy
 void PMi_WaitBusy(void) {
     volatile int *lock = &data_020a8114.lock;
     while (*lock != 0) {
     }
 }
 
+// @symbol PMi_DummyCallback
 void PMi_DummyCallback(u32 result, void *arg) {
     *(u32 *)arg = result;
 }
 
+// @symbol PMi_CallCallbackAndUnlock
 void PMi_CallCallbackAndUnlock(u32 result) {
     int lock = data_020a8114.lock;
     PMCallback callback = data_020a8114.callback;
@@ -123,6 +127,7 @@ void PMi_CallCallbackAndUnlock(u32 result) {
     callback(result, arg);
 }
 
+// @symbol PM_Init
 void PM_Init(void) {
     int i;
     if (data_020a8104 != 0)
@@ -140,6 +145,7 @@ void PM_Init(void) {
     data_020a8110 = HW_VBLANK_COUNT;
 }
 
+// @symbol PMi_CommonCallback
 void PMi_CommonCallback(int tag, u32 data, int err) {
     u16 command;
     u16 result;
@@ -176,6 +182,7 @@ void PMi_CommonCallback(int tag, u32 data, int err) {
     PMi_CallCallbackAndUnlock(result);
 }
 
+// @symbol PMi_SendSleepStart
 u32 PMi_SendSleepStart(u16 trigger, u16 keyPattern) {
     volatile int *ready;
 
@@ -194,6 +201,7 @@ u32 PMi_SendSleepStart(u16 trigger, u16 keyPattern) {
     return 0;
 }
 
+// @symbol PM_SendUtilityCommandAsync
 u32 PM_SendUtilityCommandAsync(u32 number, PMCallback callback, void *arg) {
     if (!PMi_Lock())
         return 1;
@@ -204,6 +212,7 @@ u32 PM_SendUtilityCommandAsync(u32 number, PMCallback callback, void *arg) {
     return 0;
 }
 
+// @symbol PMi_ReadRegisterAsync
 u32 PMi_ReadRegisterAsync(u32 registerAddr, u16 *buffer, PMCallback callback, void *arg) {
     if (!PMi_Lock())
         return 1;
@@ -215,6 +224,7 @@ u32 PMi_ReadRegisterAsync(u32 registerAddr, u16 *buffer, PMCallback callback, vo
     return 0;
 }
 
+// @symbol PMi_ReadRegister
 u32 PMi_ReadRegister(u32 registerAddr, u16 *buffer) {
     u32 result;
     u32 sent = PMi_ReadRegisterAsync(registerAddr, buffer, PMi_DummyCallback, &result);
@@ -224,6 +234,7 @@ u32 PMi_ReadRegister(u32 registerAddr, u16 *buffer) {
     return result;
 }
 
+// @symbol PMi_SetLEDAsync
 u32 PMi_SetLEDAsync(u32 status, PMCallback callback, void *arg) {
     u32 command;
     switch (status) {
@@ -245,6 +256,7 @@ u32 PMi_SetLEDAsync(u32 status, PMCallback callback, void *arg) {
     return PM_SendUtilityCommandAsync(command, callback, arg);
 }
 
+// @symbol PMi_SetLED
 u32 PMi_SetLED(u32 status) {
     u32 result;
     u32 sent = PMi_SetLEDAsync(status, PMi_DummyCallback, &result);
@@ -254,6 +266,7 @@ u32 PMi_SetLED(u32 status) {
     return result;
 }
 
+// @symbol PM_SetBackLightAsync
 u32 PM_SetBackLightAsync(u32 target, u32 status, PMCallback callback, void *arg) {
     u32 command = 0;
     if (target == 0) {
@@ -277,6 +290,7 @@ u32 PM_SetBackLightAsync(u32 target, u32 status, PMCallback callback, void *arg)
     return PM_SendUtilityCommandAsync(command, callback, arg);
 }
 
+// @symbol PM_SetBackLight
 u32 PM_SetBackLight(u32 target, u32 status) {
     u32 result;
     u32 sent = PM_SetBackLightAsync(target, status, PMi_DummyCallback, &result);
@@ -286,10 +300,12 @@ u32 PM_SetBackLight(u32 target, u32 status) {
     return result;
 }
 
+// @symbol PM_ForceToPowerOffAsync
 u32 PM_ForceToPowerOffAsync(PMCallback callback, void *arg) {
     return PM_SendUtilityCommandAsync(0xe, callback, arg);
 }
 
+// @symbol PM_ForceToPowerOff
 u32 PM_ForceToPowerOff(void) {
     u32 result;
     u32 sent = PM_ForceToPowerOffAsync(PMi_DummyCallback, &result);
@@ -299,6 +315,7 @@ u32 PM_ForceToPowerOff(void) {
     return result;
 }
 
+// @symbol PM_GetBackLight
 u32 PM_GetBackLight(int *top, int *bottom) {
     u16 flags;
     u32 result = PMi_ReadRegister(0, &flags);
@@ -311,11 +328,13 @@ u32 PM_GetBackLight(int *top, int *bottom) {
     return result;
 }
 
+// @symbol PMi_SendPxiData
 void PMi_SendPxiData(u32 data) {
     while (PXI_SendWordByFifo(PXI_FIFO_TAG_PM, data, 0) != 0)
         ;
 }
 
+// @symbol PM_GoSleepMode
 void PM_GoSleepMode(u32 trigger, u32 logic, u32 keyPattern) {
     u32 saved_mode;
     u32 saved_mask;
@@ -360,6 +379,7 @@ void PM_GoSleepMode(u32 trigger, u32 logic, u32 keyPattern) {
     }
 }
 
+// @symbol PMi_SetLCDPower
 int PMi_SetLCDPower(u32 sw, u32 led, int skip, int isSync) {
     switch (sw) {
     case PM_LCD_POWER_ON:
@@ -389,6 +409,7 @@ int PMi_SetLCDPower(u32 sw, u32 led, int skip, int isSync) {
     return 1;
 }
 
+// @symbol PM_SetLCDPower
 int PM_SetLCDPower(u32 sw) {
     u32 mode = sw;
     if (sw != PM_LCD_POWER_ON)
@@ -396,10 +417,12 @@ int PM_SetLCDPower(u32 sw) {
     return PMi_SetLCDPower(mode, 0, 0, 1);
 }
 
+// @symbol PM_GetLCDPower
 int PM_GetLCDPower(void) {
     return (REG_POWCNT1 & 1) != 0;
 }
 
+// @symbol PMi_SendLEDPatternCommandAsync
 u32 PMi_SendLEDPatternCommandAsync(u32 pattern, PMCallback callback, void *arg) {
     if (!PMi_Lock())
         return 1;
@@ -409,6 +432,7 @@ u32 PMi_SendLEDPatternCommandAsync(u32 pattern, PMCallback callback, void *arg) 
     return 0;
 }
 
+// @symbol PMi_SendLEDPatternCommand
 u32 PMi_SendLEDPatternCommand(u32 pattern) {
     u32 result;
     u32 sent = PMi_SendLEDPatternCommandAsync(pattern, PMi_DummyCallback, &result);

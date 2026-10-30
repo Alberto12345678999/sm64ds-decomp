@@ -4,7 +4,7 @@ extern "C" void func_02062990(void *base, unsigned int a, unsigned int b);
 extern "C" void func_020627e8(void *base, int x);
 
 /* NitroSDK data sharing, the parent's port receive callback: WM_StartDataSharing
- * (WM_StartDataSharing) registers it with WM_SetPortCallback when this
+ * registers it with WM_SetPortCallback when this
  * station is the parent (status->aid == 0). PORT_RECV (0x15) stores the
  * child's data (func_02062990, WmDataSharingReceiveData) and tries to send the
  * next set (func_020627e8); CONNECTED (7) just tries the send; DISCONNECTED (9)

@@ -1,7 +1,7 @@
 //cpp
 /* NitroSDK fs_archive.c FSi_ExecuteAsyncCommand(p_file): run the archive's
  * queued commands one after another. A synchronous file (FS_FILE_STATUS_SYNC
- * 4) is woken to run itself; otherwise the file is marked operating (8) and
+ * 4) is woken to run itself; otherwise the file is marked asynchronous (FS_FILE_STATUS_ASYNC 8) and
  * its command translated, stopping when the archive answers
  * FS_RESULT_PROC_ASYNC (6), and FSi_NextCommand gives the next file. Only the
  * FSFile fields read here are spelled out. */

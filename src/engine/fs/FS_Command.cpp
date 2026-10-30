@@ -10,8 +10,9 @@
  * FS_command.c defines the same two functions in the same order; mwccarm
  * emits them in reverse, so FSi_TranslateCommand sits lower in the ROM.
  *
- * This SDK is older than pret's: FSi_ReleaseCommand takes no interrupt lock,
- * and the thread queues are 16-bit masks of thread ids.
+ * This SDK is older than pret's: FSi_ReleaseCommand takes no interrupt lock
+ * and clears only BUSY|CANCEL|SYNC|ASYNC (0xf; pret's mask also covers
+ * its OPERATING bit), and the thread queues are 16-bit masks of thread ids.
  */
 #include "types.h"
 #include "IRQ.h"
@@ -66,6 +67,7 @@ void FSi_CutFromList(FSFile *elem);
 void OS_SleepThread(u16 *queue);
 void OS_WakeupThread(u16 *queue);
 
+// @symbol FSi_ReleaseCommand
 void FSi_ReleaseCommand(FSFile *p_file, int ret) {
     FSi_CutFromList(p_file);
     p_file->stat &= ~FS_FILE_STATUS_COMMAND_MASK;
@@ -73,6 +75,7 @@ void FSi_ReleaseCommand(FSFile *p_file, int ret) {
     OS_WakeupThread(&p_file->queue);
 }
 
+// @symbol FSi_TranslateCommand
 int FSi_TranslateCommand(FSFile *p_file, int command) {
     FSArchive *p_arc;
     u32 stat;
