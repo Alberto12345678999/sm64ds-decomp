@@ -8849,71 +8849,71 @@ matched: yes</title></rect><rect x="17.23" y="820.10" width="5.12" height="11.00
 module: arm9
 addr: 0x02053e4c
 size: 84 bytes
-matched: yes</title></rect><rect x="17.23" y="831.10" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ea0
+matched: yes</title></rect><rect x="17.23" y="831.10" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX16GetBankForSubOBJEv
 module: arm9
 addr: 0x02053ea0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="833.19" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053eb0
+matched: yes</title></rect><rect x="17.23" y="833.19" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX15GetBankForSubBGEv
 module: arm9
 addr: 0x02053eb0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="835.28" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ec0
+matched: yes</title></rect><rect x="17.23" y="835.28" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17GetBankForTexPlttEv
 module: arm9
 addr: 0x02053ec0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="837.38" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ed0
+matched: yes</title></rect><rect x="17.23" y="837.38" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX13GetBankForTexEv
 module: arm9
 addr: 0x02053ed0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="839.47" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ee0
+matched: yes</title></rect><rect x="17.23" y="839.47" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX27DisableBankForSubOBJExtPlttEv
 module: arm9
 addr: 0x02053ee0
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="844.71" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f08
+matched: yes</title></rect><rect x="17.23" y="844.71" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX26DisableBankForSubBGExtPlttEv
 module: arm9
 addr: 0x02053f08
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="849.95" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f30
+matched: yes</title></rect><rect x="17.23" y="849.95" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX20DisableBankForSubOBJEv
 module: arm9
 addr: 0x02053f30
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="852.57" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f44
+matched: yes</title></rect><rect x="17.23" y="852.57" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX19DisableBankForSubBGEv
 module: arm9
 addr: 0x02053f44
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="855.18" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f58
+matched: yes</title></rect><rect x="17.23" y="855.18" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX18DisableBankForLCDCEv
 module: arm9
 addr: 0x02053f58
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="857.80" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f6c
+matched: yes</title></rect><rect x="17.23" y="857.80" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX18DisableBankForARM7Ev
 module: arm9
 addr: 0x02053f6c
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="860.42" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f80
+matched: yes</title></rect><rect x="17.23" y="860.42" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX24DisableBankForClearImageEv
 module: arm9
 addr: 0x02053f80
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="863.04" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f94
+matched: yes</title></rect><rect x="17.23" y="863.04" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX21DisableBankForTexPlttEv
 module: arm9
 addr: 0x02053f94
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="865.66" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053fa8
+matched: yes</title></rect><rect x="17.23" y="865.66" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17DisableBankForTexEv
 module: arm9
 addr: 0x02053fa8
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="868.27" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053fbc
+matched: yes</title></rect><rect x="17.23" y="868.27" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX24DisableBankForOBJExtPlttEv
 module: arm9
 addr: 0x02053fbc
 size: 36 bytes
-matched: yes</title></rect><rect x="17.23" y="872.99" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053fe0
+matched: yes</title></rect><rect x="17.23" y="872.99" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX23DisableBankForBGExtPlttEv
 module: arm9
 addr: 0x02053fe0
 size: 36 bytes
-matched: yes</title></rect><rect x="17.23" y="877.70" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054004
+matched: yes</title></rect><rect x="17.23" y="877.70" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17DisableBankForOBJEv
 module: arm9
 addr: 0x02054004
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="880.32" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054018
+matched: yes</title></rect><rect x="17.23" y="880.32" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX16DisableBankForBGEv
 module: arm9
 addr: 0x02054018
 size: 20 bytes
@@ -8921,39 +8921,39 @@ matched: yes</title></rect><rect x="17.23" y="882.94" width="5.12" height="25.66
 module: arm9
 addr: 0x0205402c
 size: 196 bytes
-matched: yes</title></rect><rect x="17.23" y="908.60" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020540f0
+matched: yes</title></rect><rect x="17.23" y="908.60" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX25ResetBankForSubOBJExtPlttEv
 module: arm9
 addr: 0x020540f0
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="913.83" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054118
+matched: yes</title></rect><rect x="17.23" y="913.83" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX24ResetBankForSubBGExtPlttEv
 module: arm9
 addr: 0x02054118
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="919.07" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054140
+matched: yes</title></rect><rect x="17.23" y="919.07" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX18ResetBankForSubOBJEv
 module: arm9
 addr: 0x02054140
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="921.69" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054154
+matched: yes</title></rect><rect x="17.23" y="921.69" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17ResetBankForSubBGEv
 module: arm9
 addr: 0x02054154
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="924.31" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054168
+matched: yes</title></rect><rect x="17.23" y="924.31" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX19ResetBankForTexPlttEv
 module: arm9
 addr: 0x02054168
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="926.92" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205417c
+matched: yes</title></rect><rect x="17.23" y="926.92" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX15ResetBankForTexEv
 module: arm9
 addr: 0x0205417c
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="929.54" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054190
+matched: yes</title></rect><rect x="17.23" y="929.54" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX15ResetBankForOBJEv
 module: arm9
 addr: 0x02054190
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="932.16" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020541a4
+matched: yes</title></rect><rect x="17.23" y="932.16" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX14ResetBankForBGEv
 module: arm9
 addr: 0x020541a4
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="934.78" width="5.12" height="7.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020541b8
+matched: yes</title></rect><rect x="17.23" y="934.78" width="5.12" height="7.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ResetVramBanks
 module: arm9
 addr: 0x020541b8
 size: 56 bytes
