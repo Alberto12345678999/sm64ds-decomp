@@ -1,7 +1,8 @@
-/* func_020421b4 at 0x020421b4
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
- */
+/* Stop the file-share loader thread (see func_02042200): until
+ * func_02058158 reports the thread at data_020a11e4 + 0x400 terminated (state
+ * 2), wake it (func_02058048) so that it sees mState cleared and returns, then
+ * wait on it (func_0205816c sleeps on its join queue). func_02040aa4 calls this
+ * at shutdown. */
 extern char data_020a11e4[];
 extern int func_02058158(void *p);
 extern void func_02058048(void *p);
