@@ -7,8 +7,8 @@ extern int data_ov000_020bd4b8[];
 
 extern int func_0201a9ec(int *timer);
 extern int func_02018a58(int count);
-extern int func_02057e7c(int thread);
-extern int func_02057e84(int thread, int priority);
+extern unsigned int OS_GetThreadPriority(int thread);
+extern int OS_SetThreadPriority(int thread, unsigned int priority);
 extern int func_020189f0(int path);
 extern void func_02018a40(unsigned handle, int fileId);
 extern int func_0201a9fc(int *timer);
@@ -23,8 +23,8 @@ void InitializeAssetHandleTable(void) {
 
     /* The scheduler's word at offset 0x08 holds the current thread. */
     int currentThread = data_020a6134[2];
-    int savedPriority = func_02057e7c(currentThread);
-    func_02057e84(currentThread, ASSET_LOOKUP_PRIORITY);
+    unsigned int savedPriority = OS_GetThreadPriority(currentThread);
+    OS_SetThreadPriority(currentThread, ASSET_LOOKUP_PRIORITY);
 
     /* Resolve each path once so later loads can use numeric file IDs. */
     int handle;
@@ -35,7 +35,7 @@ void InitializeAssetHandleTable(void) {
         }
     }
 
-    func_02057e84(currentThread, savedPriority);
+    OS_SetThreadPriority(currentThread, savedPriority);
 
     /* Reset elapsed time before restoring the timer's previous state. */
     func_0201a9fc(&data_0209d574);

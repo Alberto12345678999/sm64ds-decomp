@@ -1,5 +1,5 @@
 extern unsigned char data_020a8180;
-extern void func_02058048(void *self);
+extern void OS_WakeupThreadDirect(void *self);
 
 void func_02060310(int a, int b, int c)
 {
@@ -9,6 +9,6 @@ void func_02060310(int a, int b, int c)
         unsigned int val = *addr;
         val &= ~0x20u;
         *addr = val;
-        func_02058048(*(void **)(base + 0xd0));
+        OS_WakeupThreadDirect(*(void **)(base + 0xd0));
     }
 }

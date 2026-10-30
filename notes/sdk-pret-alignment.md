@@ -48,6 +48,7 @@ check against, and they don't.
 | MI_memory.c | 0x0205a448..0x0205a74c | 11/11 exact, 2 pret functions dropped by the linker: folded as arm9/MI_Memory |
 | FX_mtx33.c | 0x020524f0..0x020527c0 | 6 exact, 1 extra 0x3c function here (func_02052514) |
 | OS_spinLock.c | 0x02057014..0x02057410 | 18 of 19: 17 exact, OSi_DoLockByWord 0x54 to 0x58, OS_LockCartridge dropped by the linker, 1 extra (OSi_WaitByLoop, out of line here): folded as arm9/OS_SpinLock |
+| OS_thread.c | 0x02057e34..0x02058568 | 17 of 34: 11 exact, 6 drift from an older SDK (16-bit thread-id queues and a 16-entry id table: OSi_GetUnusedThreadId 0x18 to 0x30, OS_InitThread 0x15c to 0x180, OS_ExitThread 0x2c to 0x58, OS_SleepThread 0x54 to 0x68, OS_WakeupThread 0x80 to 0x74, and OS_RescheduleThread 0xc8 carrying pret's OSi_RescheduleThread body), in pret's source order reversed; 1 extra (OS_SetThreadStackWarningOffset); the rest absent or dropped by the linker: folded as arm9/OS_Thread |
 | OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
 | OS_exception.c, OS_tick.c, OS_alarm.c | 0x020593f4..0x02059cb4 | 4, 4 and 8 exact, edges unresolved |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |

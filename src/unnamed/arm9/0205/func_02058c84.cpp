@@ -10,7 +10,7 @@ extern void func_02057000(void);
 extern void func_02059594(void);
 extern void func_02059f48(int v);
 extern void func_02059cb4(void);
-extern void func_02058308(void);
+extern void OS_InitThread(void);
 extern void func_02059e48(void);
 extern void func_0206a88c(void);
 extern void func_02060890(void);
@@ -26,7 +26,7 @@ void func_02058c84(void)
     func_02059594();
     func_02059f48(3);
     func_02059cb4();
-    func_02058308();
+    OS_InitThread();
     func_02059e48();
     func_0206a88c();
     func_02060890();

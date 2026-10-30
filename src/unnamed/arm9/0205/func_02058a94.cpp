@@ -9,7 +9,7 @@ extern void OS_WakeupThread(char *node);
 /* NitroSDK OS_UnlockMutex(mutex): when the current thread owns the mutex,
  * drop one lock; on the last, take it off the thread's mutex list
  * (func_02058988), clear the owner and wake the waiters. OSMutex carries
- * func_02058b9c.c's names, OSThreadInfo func_02058308.c's. */
+ * func_02058b9c.c's names, OSThreadInfo src/engine/os/OS_Thread.cpp's. */
 struct OSThread;
 
 typedef struct OSMutex {
@@ -23,7 +23,7 @@ typedef struct OSThreadInfo {
     struct OSThread *current; /* 0x08 */
 } OSThreadInfo;
 
-/* Declared int [] elsewhere (func_02058308.c's THREAD_INFO): reached
+/* Declared int [] elsewhere (CARD_Common.cpp, IRQHandler.cpp): reached
    through a cast rather than a retyped extern. */
 extern int data_020a6134[];
 #define THREAD_INFO (*(OSThreadInfo *)data_020a6134)

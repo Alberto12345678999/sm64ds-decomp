@@ -5,9 +5,9 @@
 
 extern "C" {
 
-extern void func_02058200(void *c, int f, int a, int p, int s, int x);
-extern void func_02057f38(void *c, int v);
-extern void func_02058048(void *c);
+extern void OS_CreateThread(void *c, int f, int a, int p, unsigned int s, unsigned int x);
+extern void OS_SetThreadStackWarningOffset(void *c, unsigned int v);
+extern void OS_WakeupThreadDirect(void *c);
 extern unsigned char data_0209d4f8;
 extern int data_0209d518;
 extern char data_0209d5b8[];
@@ -30,9 +30,9 @@ int func_0201a244(AsyncJobCallback callback, int argument, int priority, int sta
         data_0209d518 = stack;
     }
     /* The unreconstructed OS thread API still takes its entry as a 32-bit address. */
-    func_02058200(data_0209d5b8, (int)callback, argument, stack + size, size, priority);
-    func_02057f38(data_0209d5b8, 0x400);
-    func_02058048(data_0209d5b8);
+    OS_CreateThread(data_0209d5b8, (int)callback, argument, stack + size, size, priority);
+    OS_SetThreadStackWarningOffset(data_0209d5b8, 0x400);
+    OS_WakeupThreadDirect(data_0209d5b8);
     return 0;
 }
 }

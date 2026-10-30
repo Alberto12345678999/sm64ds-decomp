@@ -2214,77 +2214,9 @@ src/unnamed/arm9/0205/func_02057e30.c:
     complete
     .text start:0x02057e30 end:0x02057e34
 
-src/unnamed/arm9/0205/func_02057e34.cpp:
+src/engine/os/OS_Thread.cpp:
     complete
-    .text start:0x02057e34 end:0x02057e48
-
-src/unnamed/arm9/0205/func_02057e48.cpp:
-    complete
-    .text start:0x02057e48 end:0x02057e7c
-
-src/unnamed/arm9/0205/func_02057e7c.c:
-    complete
-    .text start:0x02057e7c end:0x02057e84
-
-src/unnamed/arm9/0205/func_02057e84.cpp:
-    complete
-    .text start:0x02057e84 end:0x02057f38
-
-src/unnamed/arm9/0205/func_02057f38.c:
-    complete
-    .text start:0x02057f38 end:0x02057f54
-
-src/unnamed/arm9/0205/func_02057f54.c:
-    complete
-    .text start:0x02057f54 end:0x0205801c
-
-src/unnamed/arm9/0205/func_0205801c.c:
-    complete
-    .text start:0x0205801c end:0x02058048
-
-src/unnamed/arm9/0205/func_02058048.cpp:
-    complete
-    .text start:0x02058048 end:0x0205807c
-
-src/OS_WakeupThread.cpp:
-    complete
-    .text start:0x0205807c end:0x020580f0
-
-src/OS_SleepThread.cpp:
-    complete
-    .text start:0x020580f0 end:0x02058158
-
-src/unnamed/arm9/0205/func_02058158.c:
-    complete
-    .text start:0x02058158 end:0x0205816c
-
-src/unnamed/arm9/0205/func_0205816c.cpp:
-    complete
-    .text start:0x0205816c end:0x020581a8
-
-src/unnamed/arm9/0205/func_020581a8.cpp:
-    complete
-    .text start:0x020581a8 end:0x02058200
-
-src/unnamed/arm9/0205/func_02058200.cpp:
-    complete
-    .text start:0x02058200 end:0x02058308
-
-src/unnamed/arm9/0205/func_02058308.c:
-    complete
-    .text start:0x02058308 end:0x02058488
-
-src/unnamed/arm9/0205/func_02058488.c:
-    complete
-    .text start:0x02058488 end:0x020584d0
-
-src/unnamed/arm9/0205/func_020584d0.c:
-    complete
-    .text start:0x020584d0 end:0x02058538
-
-src/unnamed/arm9/0205/func_02058538.c:
-    complete
-    .text start:0x02058538 end:0x02058568
+    .text start:0x02057e34 end:0x02058568
 
 src/unnamed/arm9/0205/func_02058568.c:
     complete

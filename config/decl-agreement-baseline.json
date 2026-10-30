@@ -5593,11 +5593,6 @@
         "return:void"
       ]
     },
-    "_ZN3IRQ6EnableEv": {
-      "src/unnamed/arm9/0205/func_02057e34.cpp": [
-        "return:void"
-      ]
-    },
     "_ZN3IRQ7DisableEv": {
       "src/Crash.cpp": [
         "return:void"
@@ -5607,9 +5602,6 @@
       ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_020581a8.cpp": [
-        "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
         "return:int"
@@ -5696,15 +5688,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02049c48.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02057e48.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02057e84.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058200.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205865c.cpp": [
@@ -11209,39 +11192,15 @@
         "return:unsigned short []"
       ]
     },
-    "data_020a612c": {
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:void *"
-      ]
-    },
     "data_020a6134": {
-      "src/unnamed/arm9/0205/func_02057e48.cpp": [
-        "return:IRQState"
-      ],
-      "src/unnamed/arm9/0205/func_02057e84.cpp": [
-        "return:ListHead"
-      ],
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:Mgr"
-      ],
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
       ],
       "src/cstd6.cpp": [
         "return:char * []"
-      ]
-    },
-    "data_020a6188": {
-      "src/unnamed/arm9/0205/func_02057e84.cpp": [
-        "return:Node"
       ],
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:char []"
-      ]
-    },
-    "data_020a621c": {
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:char []"
+      "src/engine/os/OS_Thread.cpp": [
+        "return:OSThreadInfo"
       ]
     },
     "data_020a6378": {
@@ -11599,7 +11558,7 @@
       "src/engine/cp15/CP15_SystemSetup.cpp": [
         "return:char []"
       ],
-      "src/unnamed/arm9/0205/func_02058308.c": [
+      "src/engine/os/OS_Thread.cpp": [
         "return:char"
       ],
       "src/unnamed/arm9/0205/func_02058df4.c": [
@@ -20790,40 +20749,41 @@
         "param:#2 int"
       ]
     },
-    "func_02057e7c": {
+    "OS_GetThreadPriority": {
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "param:#1 int"
       ]
     },
-    "func_02057e84": {
+    "OS_SetThreadPriority": {
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "param:#1 int"
       ]
     },
-    "func_02058048": {
+    "OS_WakeupThreadDirect": {
       "src/unnamed/arm9/0206/func_0206081c.cpp": [
         "param:#1 char *"
+      ],
+      "src/unnamed/arm9/0206/func_02060e38.cpp": [
+        "param:#1 Obj *"
       ]
     },
-    "func_02058200": {
+    "OS_CreateThread": {
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "param:#2 void *",
-        "param:#4 void *"
+        "param:#2 void *"
       ],
       "src/unnamed/arm9/0204/func_02042200.c": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 void *"
+        "param:#2 void *"
       ],
       "src/engine/card/CARD_Common.cpp": [
-        "param:#2 void *",
-        "param:#4 void *"
-      ]
-    },
-    "func_02058568": {
-      "src/unnamed/arm9/0205/func_02058200.cpp": [
+        "param:#2 void *"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#2 void *"
+      ],
+      "src/unnamed/arm9/0201/func_0201a244.cpp": [
         "param:#2 int",
-        "param:#3 int"
+        "param:#3 int",
+        "param:#4 int"
       ]
     },
     "func_020587e4": {
@@ -20849,11 +20809,6 @@
     "func_02058988": {
       "src/unnamed/arm9/0205/func_02058a94.cpp": [
         "param:#2 char *"
-      ]
-    },
-    "func_02058a44": {
-      "src/unnamed/arm9/0205/func_020581a8.cpp": [
-        "param:#1 Obj581 *"
       ]
     },
     "func_02058cd0": {
@@ -25866,6 +25821,21 @@
     "func_02048d80": {
       "src/engine/sound/Sound.cpp": [
         "param:#2 int *"
+      ]
+    },
+    "OS_IsThreadTerminated": {
+      "src/unnamed/arm9/0201/func_0201a1bc.cpp": [
+        "param:#1 int *"
+      ]
+    },
+    "data_020a621c": {
+      "src/engine/os/OS_Thread.cpp": [
+        "return:OSThread"
+      ]
+    },
+    "func_02058a44": {
+      "src/engine/os/OS_Thread.cpp": [
+        "param:#1 OSThread *"
       ]
     }
   },

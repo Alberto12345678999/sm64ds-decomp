@@ -26,19 +26,17 @@
 extern "C" {
 
 /* local extern: no header declares these yet. Their SDK names: Crash is
- * OS_Terminate, func_02057e7c OS_GetThreadPriority, func_02057e84
- * OS_SetThreadPriority, func_02058048 OS_WakeupThreadDirect, func_02058200
- * OS_CreateThread, func_0205ba64 PXI_SetFifoRecvCallback, MultiStore32Bytes
+ * OS_Terminate, func_0205ba64 PXI_SetFifoRecvCallback, MultiStore32Bytes
  * MIi_CpuClearFast, func_020602bc CARDi_TaskThread and func_02060310
  * CARDi_OnFifoRecv. */
 extern void Crash(void);
 extern void OS_SleepThread(void *queue);
 extern void OS_WakeupThread(void *queue);
-extern int func_02057e7c(int *thread);
-extern int func_02057e84(void *thread, int priority);
-extern void func_02058048(void *thread);
-extern void func_02058200(void *thread, void *func, int arg, void *stack, int stackSize,
-                          int priority);
+extern u32 OS_GetThreadPriority(void *thread);
+extern int OS_SetThreadPriority(void *thread, u32 priority);
+extern void OS_WakeupThreadDirect(void *thread);
+extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack, u32 stackSize,
+                            u32 priority);
 extern void func_0205ba64(int tag, void *callback);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern void func_020602bc(void);
@@ -87,24 +85,24 @@ extern int *data_020a8760;
 
 void CARDi_SetTask(void *task) {
     CARDiCommon *const p = &data_020a8180;
-    int priority = p->priority;
+    u32 priority = p->priority;
     switch (priority) {
     case CARD_THREAD_PRIORITY_HIGHER:
-        priority = func_02057e7c((int *)data_020a6134[2]);
+        priority = OS_GetThreadPriority((int *)data_020a6134[2]);
         if (priority != 0)
             priority -= 1;
         break;
     case CARD_THREAD_PRIORITY_LOWER:
-        priority = func_02057e7c((int *)data_020a6134[2]);
-        if ((unsigned int)priority < 0x1f)
+        priority = OS_GetThreadPriority((int *)data_020a6134[2]);
+        if (priority < 0x1f)
             priority += 1;
         break;
     }
-    func_02057e84(p->thread, priority);
+    OS_SetThreadPriority(p->thread, priority);
     p->cur_th = p->thread;
     p->task_func = (CARDiTask)task;
     p->flag |= CARD_STAT_TASK;
-    func_02058048(p->thread);
+    OS_WakeupThreadDirect(p->thread);
 }
 
 void CARDi_LockResource(int owner, int target) {
@@ -157,8 +155,8 @@ void CARDi_InitCommon(void) {
     p->lock_queue = 0;
     p->busy_q = 0;
     p->priority = CARD_THREAD_PRIORITY_DEFAULT;
-    func_02058200(p->thread, (void *)func_020602bc, 0, &data_020a8760, 0x400, p->priority);
-    func_02058048(p->thread);
+    OS_CreateThread(p->thread, (void *)func_020602bc, 0, &data_020a8760, 0x400, p->priority);
+    OS_WakeupThreadDirect(p->thread);
     func_0205ba64(0xb, (void *)func_02060310);
 }
 

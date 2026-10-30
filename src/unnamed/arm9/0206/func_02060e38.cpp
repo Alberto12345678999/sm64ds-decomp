@@ -25,7 +25,7 @@ typedef struct {
 extern G data_020a8180;
 
 void OS_WakeupThread(u16 *self);
-void func_02058048(struct Obj *self);
+void OS_WakeupThreadDirect(struct Obj *self);
 
 void func_02060e38(void) {
     int gi = (int)&data_020a8180;
@@ -45,7 +45,7 @@ void func_02060e38(void) {
     }
     OS_WakeupThread(&g->fd4);
     if (g->flags & 0x10) {
-        func_02058048(&g->obj);
+        OS_WakeupThreadDirect(&g->obj);
     }
     IRQ::Restore(s);
     if (cb) {

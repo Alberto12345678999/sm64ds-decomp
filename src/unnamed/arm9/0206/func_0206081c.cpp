@@ -4,7 +4,7 @@
 extern "C" {
 
 extern void OS_WakeupThread(char* p);
-extern void func_02058048(char* p);
+extern void OS_WakeupThreadDirect(char *p);
 typedef void (*CB)(void*);
 
 /* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
@@ -21,8 +21,8 @@ typedef struct CardCommon {
     unsigned int mFlags;
     unsigned char pad_38[4];
     /* 0x3c -- the card task thread: CARDi_SetTask points mCurThread (0xd0) at
-     * it and wakes it with func_02058048 (OS_WakeupThreadDirect: mark it
-     * ready and reschedule) */
+     * it and wakes it with OS_WakeupThreadDirect (mark it ready and
+     * reschedule) */
     char mThread[0x94];
     unsigned char pad_d0[4];
     char mBusyQueue[4]; /* 0xd4 */
@@ -45,7 +45,7 @@ void func_0206081c(char* obj) {
     p->mFlags &= ~0xc;
     OS_WakeupThread(p->mBusyQueue);
     if (p->mFlags & 0x10) {
-        func_02058048(p->mThread);
+        OS_WakeupThreadDirect(p->mThread);
     }
     IRQ::Restore(saved);
     if (cb != 0) {
