@@ -800,13 +800,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination and the collision SharedFilePtr family identity"
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated static initialization call shape and the direct retail references in this initializer"
     }
   ],
   "defined_symbol_renames": [
@@ -907,7 +900,7 @@
       "source": "0x02134708",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -927,7 +920,7 @@
       "source": "0x02134724",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -947,7 +940,7 @@
       "source": "0x02134740",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -967,7 +960,7 @@
       "source": "0x0213475c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -987,7 +980,7 @@
       "source": "0x02134778",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1007,7 +1000,7 @@
       "source": "0x02134794",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1027,7 +1020,7 @@
       "source": "0x021347b0",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1047,7 +1040,7 @@
       "source": "0x021347cc",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1067,7 +1060,7 @@
       "source": "0x021347e8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1087,7 +1080,7 @@
       "source": "0x02134804",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1107,7 +1100,7 @@
       "source": "0x02134820",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1127,7 +1120,7 @@
       "source": "0x0213483c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1147,7 +1140,7 @@
       "source": "0x02134858",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1167,7 +1160,7 @@
       "source": "0x02134874",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"

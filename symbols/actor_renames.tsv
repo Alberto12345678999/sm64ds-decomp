@@ -7542,6 +7542,8 @@ arm9	0x02068680	func_02068680	MBi_MakeGameInfo	NitroSDK mb_gameinfo.c, matches s
 arm9	0x0206879c	func_0206879c	MBi_CheckWmErrcode	NitroSDK mb_wm.c, matches statement for statement
 arm9	0x020687f8	func_020687f8	MBi_IsStarted	NitroSDK mb_wm.c, matches statement for statement
 arm9	0x02073470	func_02073470	__cxa_vec_new	mwccarm emits a call to __cxa_vec_new by name for new T[n] of a class with a ctor and dtor (probe: new T[7] leaves an undefined __cxa_vec_new); this is the only array-new helper in the runtime, with the Itanium (count, size, padding, ctor, dtor) parameters and cookie layout
+arm9	0x020731dc	func_020731dc	__register_global_object	C++ runtime (MSL global_destructor_chain.c): pushes {next, destructor, object} onto the chain head at 0x020aa3f0; mwcc-emitted static initializers call it by this name (244 TU manifests aliased it to func_020731dc, and their compiled objects match retail byte for byte)
+arm9	0x020aa3f0	data_020aa3f0	__global_destructor_chain	the MSL destructor chain head: written by __register_global_object (push) and __destroy_global_chain (pop), and walked by FS_EndOverlay, which pret/pokediamond FS_overlay.c spells as an extern of __global_destructor_chain
 arm9	0x020684a8	func_020684a8	MB_InitSendGameInfoStatus	NitroSDK mb_gameinfo.c; matches the later SDKs less sSendVolatCallback = NULL, a hook this SDK lacks (its MBi_SendVolatBeacon calls none)
 arm9	0x0206dc4c	func_0206dc4c	abort	MSL abort: raise(SIGABRT), __aborting = 1, exit(EXIT_FAILURE); statement for statement with Spirit Tracks' abort_exit_arm_eabi.c
 arm9	0x0206dbf8	func_0206dbf8	exit	MSL exit: unless aborting, __destroy_global_chain and __stdio_exit, then __exit(status); statement for statement with Spirit Tracks' abort_exit_arm_eabi.c

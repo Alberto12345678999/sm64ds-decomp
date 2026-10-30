@@ -489,13 +489,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination for the four model handles"
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated static initialization call shape"
     }
   ],
   "symbol_binding_rewrites": [
@@ -552,7 +545,7 @@
       "source": "0x02111454",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -572,7 +565,7 @@
       "source": "0x02111470",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -592,7 +585,7 @@
       "source": "0x0211148c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -612,7 +605,7 @@
       "source": "0x021114a8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"

@@ -1010,15 +1010,7 @@
       "reason": "Base-object destructor emitted beside D1 by the out-of-line Mascot::~Mascot(). The cartridge carries only D1 at 0x020c21e4 (size 0x38), followed directly by C1 at 0x020c221c, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
-  "undefined_symbol_aliases": [
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated function-local static registration in FallingPetal_Spawn; retail calls func_020731dc with sAxis, ~Vector3() and the registration node"
-    }
-  ],
+  "undefined_symbol_aliases": [],
   "symbol_binding_rewrites": [
     {
       "symbol": "_ZGVsAxis$543",

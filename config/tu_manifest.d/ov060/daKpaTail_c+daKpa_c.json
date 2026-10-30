@@ -2321,13 +2321,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x0201791c",
       "evidence": "retail destructor registration destination and the wrapper destructor's exact ABS32 relocation"
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated static initialization call shape and the retail reference in this initializer"
     }
   ],
   "symbol_binding_rewrites": [
@@ -3012,7 +3005,7 @@
       "source": "0x21195fc",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3032,7 +3025,7 @@
       "source": "0x2119618",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3052,7 +3045,7 @@
       "source": "0x2119634",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3072,7 +3065,7 @@
       "source": "0x2119650",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3092,7 +3085,7 @@
       "source": "0x211966c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3112,7 +3105,7 @@
       "source": "0x2119688",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3132,7 +3125,7 @@
       "source": "0x21196a4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3152,7 +3145,7 @@
       "source": "0x21196c0",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3172,7 +3165,7 @@
       "source": "0x21196dc",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3192,7 +3185,7 @@
       "source": "0x21196f8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3212,7 +3205,7 @@
       "source": "0x2119714",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3232,7 +3225,7 @@
       "source": "0x2119730",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3252,7 +3245,7 @@
       "source": "0x211974c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3272,7 +3265,7 @@
       "source": "0x2119768",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3292,7 +3285,7 @@
       "source": "0x2119784",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3312,7 +3305,7 @@
       "source": "0x21197a0",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3332,7 +3325,7 @@
       "source": "0x21197bc",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3352,7 +3345,7 @@
       "source": "0x21197d8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3372,7 +3365,7 @@
       "source": "0x21197f4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3392,7 +3385,7 @@
       "source": "0x2119810",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3412,7 +3405,7 @@
       "source": "0x211982c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3432,7 +3425,7 @@
       "source": "0x2119848",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3452,7 +3445,7 @@
       "source": "0x2119864",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3472,7 +3465,7 @@
       "source": "0x2119880",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3492,7 +3485,7 @@
       "source": "0x211989c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3512,7 +3505,7 @@
       "source": "0x21198b8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3532,7 +3525,7 @@
       "source": "0x21198d4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3552,7 +3545,7 @@
       "source": "0x21198f0",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3572,7 +3565,7 @@
       "source": "0x211990c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3592,7 +3585,7 @@
       "source": "0x2119928",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3612,7 +3605,7 @@
       "source": "0x2119944",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3632,7 +3625,7 @@
       "source": "0x2119960",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3652,7 +3645,7 @@
       "source": "0x211997c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3672,7 +3665,7 @@
       "source": "0x2119998",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"
@@ -3692,7 +3685,7 @@
       "source": "0x21199b4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x20731dc"

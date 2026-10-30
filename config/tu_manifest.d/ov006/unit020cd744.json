@@ -1170,13 +1170,6 @@
   ],
   "undefined_symbol_aliases": [
     {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated static initialization call shape and the direct retail reference in this initializer and in the five functions with function-local Vector3 statics"
-    },
-    {
       "symbol": "_ZN21TrmpItemRingModelFileC1Ej",
       "canonical_symbol": "func_02017acc",
       "canonical_module": "arm9",
@@ -1475,7 +1468,7 @@
       "source": "0x0212fcac",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1495,7 +1488,7 @@
       "source": "0x0212fcc8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1515,7 +1508,7 @@
       "source": "0x0212fce4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1535,7 +1528,7 @@
       "source": "0x0212fd00",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
