@@ -28,6 +28,13 @@ struct Tmp {
     int f;
 };
 
+/* EH runtime: search the current frame's actions for a handler, walking
+   them with func_02072d90 (current) and func_020729f4 (next). Action 12 is
+   a catch clause: its type string is matched against the thrown type with
+   func_02072fcc (__throw_catch_compare). Action 15 is an exception
+   specification: a thrown type it does not list (func_02071f88) goes to
+   func_02071f1c. Actions 1 and 14, and any unknown action, call the
+   terminate path (func_020731fc). The other actions are skipped. */
 int func_02071d3c(int *self, struct S6 *src, int flag)
 {
     struct Tmp tmp;

@@ -19,6 +19,11 @@ static inline int fpclassify_(double x) {
     return 4;
 }
 
+/* MSL ldexp (fdlibm scalbn's body): x * 2^n by editing the exponent field.
+   Infinity, NaN and zero (the inlined fpclassify) come back as they are. A
+   subnormal x is first scaled by 2^54. Overflow returns huge * copysign
+   (huge, x) with huge 1e300 and underflow tiny * copysign(tiny, x) with
+   tiny 1e-300, so the soft-float multiply raises the right result. */
 double func_020708b4(double x, int n) {
     int hx, lx, k;
     if (fpclassify_(x) <= 2 || x == 0.0) return x;

@@ -1,3 +1,4 @@
+/* MSL fabs: clear the sign bit in x's high word. */
 double func_020707cc(double x)
 {
     int a = (int)(&x);

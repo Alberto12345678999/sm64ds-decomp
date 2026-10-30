@@ -1,9 +1,10 @@
 #include "types.h"
 #include "Decimal.h"
 
-// func_02071698 is still spelled the way its own definition is, over a raw byte
-// pointer and its own offsets; recovering that interface is a separate slice.
-extern int func_02071698(void *value, int length);
+/* MSL __rounddec: cut the significand to length digits, then round up
+   (func_02071644) when func_02071698 (__must_round) says so: above half,
+   or exactly half with an odd last kept digit. */
+extern int func_02071698(const Decimal *d, int digits);
 extern void func_02071644(Decimal *value, int length);
 
 void func_020715e0(Decimal *value, int length)

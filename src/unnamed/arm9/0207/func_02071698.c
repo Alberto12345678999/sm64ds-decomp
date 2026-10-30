@@ -1,16 +1,20 @@
 #include "types.h"
-int func_02071698(u8* base, int idx)
-{
-    u8* p = base + 5 + idx;
+#include "Decimal.h"
+/* MSL __must_round for __rounddec (func_020715e0): whether cutting d to
+   digits digits rounds up. 1 when the first dropped digit is above 5, or is
+   5 with a non-zero digit after it, or is exactly 5 after an odd last kept
+   digit (half to even). Otherwise -1. */
+int func_02071698(const Decimal *d, int digits) {
+    const u8 *p = d->sig.text + digits;
     u8 e = *p;
-    u8* end;
+    const u8 *end;
     if (e > 5) return 1;
     if (e < 5) return -1;
     p = p + 1;
-    end = base + 5 + base[4];
+    end = d->sig.text + d->sig.length;
     while (p < end) {
         if (*p != 0) return 1;
         p = p + 1;
     }
-    return ((base + (idx - 1))[5] & 1) ? 1 : -1;
+    return (d->sig.text[digits - 1] & 1) ? 1 : -1;
 }

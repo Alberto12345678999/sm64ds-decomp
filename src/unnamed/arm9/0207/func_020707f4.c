@@ -1,5 +1,9 @@
 
 extern double func_01ff8708(double x, double y);
+/* MSL frexp (fdlibm's body): split x into a fraction in [0.5, 1) and a
+   power of two in *eptr. Zero, infinity and NaN come back as they are with
+   *eptr = 0. A subnormal is first scaled by 2^54 (func_01ff8708, the
+   soft-double multiply) and the exponent corrected by -54. */
 double func_020707f4(double x, int *eptr)
 {
   int hi = ((int *) (&x))[1];

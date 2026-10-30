@@ -1,4 +1,12 @@
 
+/* Metrowerks __throw_catch_compare: does a catch clause's type string b
+   accept the thrown type string a? A null b is catch (...) and accepts
+   everything. A void pointer catch (P, optional V and K, then v) accepts
+   any pointer throw (P or *). A class throw (!) is a list of !name!offset
+   entries, the class first and then its bases; the first entry whose name
+   matches the catch type puts its offset in *out. Otherwise the pointer
+   and reference qualifiers are matched (the catch may add K and V, never
+   drop them) and the rest compared. Returns 1 on a match, 0 otherwise. */
 #pragma opt_loop_invariants off
 static inline int IsQualifiedPtr(unsigned char ca, unsigned char *p) {
     return ((ca == 'P') || (ca == 'R')) && (ca == (*p));

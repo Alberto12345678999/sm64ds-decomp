@@ -10,6 +10,9 @@ typedef struct Decimal
     unsigned char unused;
   } sig;
 } Decimal;
+/* MSL __ull2dec: v as a Decimal. Digit values (0..9, not ASCII) are
+   generated low first, the string is reversed, and the exponent is
+   length - 1. 0 gives length 0. */
 void func_02071510(Decimal *result, unsigned long long v)
 {
   result->sign = 0;

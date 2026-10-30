@@ -9,6 +9,8 @@
    file-scope copy while func_020712a0 and func_020715e0 carried flattened
    partial views of the same bytes (`struct S`, `struct T`), which is what made
    their declarations of func_02071644 disagree with its definition.
+   func_02070ec0 (__two_exp), func_02071698 (__must_round) and
+   func_0206f338 (printf.c's round_decimal) take it as well.
 
    func_02071510 (build from an unsigned long long) keeps its own identical
    local copy on purpose: it never names func_02071644, so no declaration there
