@@ -10966,6 +10966,9 @@
       "src/unnamed/arm9/0203/func_0203dafc.c": [
         "return:short []"
       ],
+      "src/unnamed/arm9/0203/func_0203db64.c": [
+        "return:Rec"
+      ],
       "src/unnamed/arm9/0203/func_0203df40.c": [
         "return:Rec"
       ],

@@ -8,8 +8,8 @@ extern void OS_WakeupThreadDirect(void *a);
 /* Start the file-share parent's loader thread (func_02042254).
    data_020a11e4 is its 0x400-byte stack, and the OSThread follows at +0x400
    (also the symbol data_020a15e4, which func_020423c8 wakes).
-   func_02058200 has OS_CreateThread's arguments (thread, entry, arg, stack
-   top, stack size, priority 15), and func_02058048 then wakes the thread.
+   OS_CreateThread takes (thread, entry, arg, stack top, stack size,
+   priority 15 here), and OS_WakeupThreadDirect then wakes the thread.
    The halfword at +0x494 is the OSThread's +0x94, a field of the thread
    cleared here before OS_CreateThread runs. The (int) launder keeps the one
    base register the ROM uses for every address. */

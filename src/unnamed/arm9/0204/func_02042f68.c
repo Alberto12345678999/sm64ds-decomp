@@ -2,10 +2,21 @@ extern int func_0203da3c(void);
 extern void func_02060890(void);
 extern void func_020603c8(int x);
 extern void func_0205a588(void *p, int v, int n);
+/* the 8-byte magic SaveData::SaveDataToCart writes with each block and
+   ReadDataFromCart checks */
 extern unsigned char data_020a4b40[];
 
-void func_02042f68(int a0, unsigned char *src)
-{
+/* Set up the save backup (func_0201a054 passes 0xd01 and "ds mario"):
+   NitroSDK CARD_Init (func_02060890), then func_020603c8 with backup type
+   a0, and keep src up to its NUL or 8 bytes, zero-padded, as the save
+   magic. It returns at once in link mode 2 (func_0203da3c), the mode
+   func_0203db64 gives a download-play child, but never does at its one call
+   site: func_0201a054 calls it while data_020a0f04 is still 0 (a child has
+   not run func_0201fec8 yet, and on any other console db64 leaves it 0).
+   0xd01 reads as CARD_BACKUP_TYPE_EEPROM_64KBITS (device 1, size 2^13
+   bytes), and func_020603c8 looks a table entry up by it
+   (func_02060364), so it is likely CARD_IdentifyBackup. */
+void func_02042f68(int a0, unsigned char *src) {
     int i;
     unsigned char *d;
     if (func_0203da3c() == 2)
