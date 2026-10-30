@@ -5383,9 +5383,6 @@
       "src/Crash.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
       ],
@@ -5430,35 +5427,16 @@
       "src/unnamed/arm9/0204/func_02040a5c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02040aa4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02041224.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02041a94.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02041d28.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205865c.cpp": [
@@ -5697,10 +5675,6 @@
       ],
       "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 void *"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#1 int",
-        "param:#2 int"
       ],
       "src/unnamed/arm9/0204/func_020499bc.cpp": [
         "param:#1 void *"
@@ -10384,20 +10358,9 @@
         "return:int []"
       ]
     },
-    "data_020a0f74": {
-      "src/unnamed/arm9/0204/func_0204068c.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0204/func_020406b4.c": [
-        "return:int"
-      ]
-    },
     "data_020a0f80": {
       "src/unnamed/arm9/0204/func_020406b4.c": [
         "return:unsigned short *"
-      ],
-      "src/unnamed/arm9/0204/func_020408b0.cpp": [
-        "return:void *"
       ]
     },
     "data_020a0f90": {
@@ -10500,9 +10463,6 @@
       "src/unnamed/arm9/0204/func_020418f0.c": [
         "return:unsigned int []"
       ],
-      "src/unnamed/arm9/0204/func_02041d28.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0204/func_02041e14.c": [
         "return:Globals"
       ],
@@ -10575,9 +10535,6 @@
     "data_020a4c70": {
       "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "return:unsigned short []"
-      ],
-      "src/unnamed/arm9/0204/func_02049cd8.c": [
-        "return:char []"
       ]
     },
     "data_020a6088": {
@@ -18519,44 +18476,6 @@
         "param:#4 void *"
       ]
     },
-    "func_02040f30": {
-      "src/unnamed/arm9/0204/func_02040bb0.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "arity:0"
-      ]
-    },
-    "func_020412f0": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "arity:0"
-      ]
-    },
-    "func_020417d0": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "arity:0"
-      ]
-    },
-    "func_02041a00": {
-      "src/unnamed/arm9/0204/func_02040f30.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_02041c2c": {
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02041c64": {
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02041ce0": {
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void *"
-      ]
-    },
     "func_02041d28": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "arity:3"
@@ -18869,11 +18788,6 @@
         "param:#4 Ctx *"
       ]
     },
-    "func_02049ba8": {
-      "src/unnamed/arm9/0204/func_02049cd8.c": [
-        "arity:0"
-      ]
-    },
     "func_02049cd8": {
       "src/engine/sound/Sound.cpp": [
         "param:#2 int"
@@ -19036,7 +18950,6 @@
     "func_020507e0": {
       "src/unnamed/arm9/0204/func_02049cd8.c": [
         "param:#1 void *",
-        "param:#2 void *",
         "param:#6 void *",
         "param:#7 void *"
       ]
@@ -19309,14 +19222,6 @@
         "param:#2 int",
         "param:#3 int",
         "return:int"
-      ]
-    },
-    "OS_GetTick": {
-      "src/unnamed/arm9/0204/func_02042784.c": [
-        "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0204/func_020427c4.c": [
-        "return:unsigned long long"
       ]
     },
     "OS_SetAlarm": {
@@ -19846,9 +19751,6 @@
     "WM_Init": {
       "src/WM_Initialize.c": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0204/func_020408b0.cpp": [
-        "return:void"
       ]
     },
     "func_020619ac": {
@@ -20002,13 +19904,6 @@
         "return:void *"
       ]
     },
-    "WM_GetSharedDataAddress": {
-      "src/unnamed/arm9/0204/func_0204068c.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
-      ]
-    },
     "func_02062990": {
       "src/unnamed/arm9/0206/func_02062bdc.cpp": [
         "param:#2 unsigned int",
@@ -20027,13 +19922,6 @@
     "func_02062bdc": {
       "src/unnamed/arm9/0206/func_020631dc.cpp": [
         "arity:0"
-      ]
-    },
-    "WM_StepDataSharing": {
-      "src/unnamed/arm9/0204/func_020406b4.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
       ]
     },
     "WM_MeasureChannel": {
@@ -20254,11 +20142,6 @@
       "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "param:#1 int",
         "return:void"
-      ]
-    },
-    "func_020658c0": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#6 int"
       ]
     },
     "func_02065ae0": {
