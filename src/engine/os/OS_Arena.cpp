@@ -35,9 +35,9 @@
 
 extern "C" {
 
-/* local extern: no header declares OS_GetConsoleType (func_02058764, the
- * SDK's os_emulator.c) yet. */
-extern int func_02058764(void);
+/* local extern: no header declares OS_GetConsoleType (the SDK's
+ * os_emulator.c) yet. */
+extern int OS_GetConsoleType(void);
 
 /* NitroSDK linker constants: the address is the value (the LCF assigns
  * SDK_SYS_STACKSIZE = 0 and SDK_IRQ_STACKSIZE = 0x600). */
@@ -73,7 +73,7 @@ void OS_InitArena(void) {
 }
 
 void OS_InitArenaEx(void) {
-    if ((func_02058764() & OS_CONSOLE_SIZE_MASK) != OS_CONSOLE_SIZE_8MB)
+    if ((OS_GetConsoleType() & OS_CONSOLE_SIZE_MASK) != OS_CONSOLE_SIZE_8MB)
         return;
     OS_SetArenaHi(OS_ARENA_MAINEX, OS_GetInitArenaHi(OS_ARENA_MAINEX));
     OS_SetArenaLo(OS_ARENA_MAINEX, OS_GetInitArenaLo(OS_ARENA_MAINEX));

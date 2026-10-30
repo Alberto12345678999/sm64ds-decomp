@@ -51,7 +51,9 @@ check against, and they don't.
 | OS_thread.c | 0x02057e34..0x02058568 | 17 of 34: 11 exact, 6 drift from an older SDK (16-bit thread-id queues and a 16-entry id table: OSi_GetUnusedThreadId 0x18 to 0x30, OS_InitThread 0x15c to 0x180, OS_ExitThread 0x2c to 0x58, OS_SleepThread 0x54 to 0x68, OS_WakeupThread 0x80 to 0x74, and OS_RescheduleThread 0xc8 carrying pret's OSi_RescheduleThread body), in pret's source order reversed; 1 extra (OS_SetThreadStackWarningOffset); the rest absent or dropped by the linker: folded as arm9/OS_Thread |
 | OS_arena.c | 0x02058cd0..0x02059040 | 9 of 10: 6 exact, 3 drift from an older SDK (OS_InitArenaEx 0x80 to 0x60, OS_GetInitArenaHi 0x130 to 0xac, OS_GetInitArenaLo 0xec to 0x74), in pret's source order reversed; OS_AllocFromArenaHi dropped by the linker: folded as arm9/OS_Arena |
 | OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
-| OS_exception.c, OS_tick.c, OS_alarm.c | 0x020593f4..0x02059cb4 | 4, 4 and 8 exact, edges unresolved |
+| OS_exception.c | 0x020593f4..0x02059624 | 5 of 5 plus 1: 4 exact, OS_InitException 0x70 to 0x90 (it also tests OS_GetConsoleType), 1 extra (OS_SetUserExceptionHandler, not in pret's revision); the three asm functions first, then the C bodies reversed: folded as arm9/OS_Exception |
+| OS_tick.c | 0x02059640..0x02059824 | 4 of 5, all exact, in pret's source order reversed; OS_IsTickAvailable dropped by the linker: folded as arm9/OS_Tick (OS_GetTick still func_02059650) |
+| OS_alarm.c | 0x02059824..0x02059cb4 | 9 of 9: 8 exact, OSi_ArrangeTimer 0x118 to 0x11c; asm OSi_AlarmHandler first, then the C bodies reversed: folded as arm9/OS_Alarm |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |
 | CARD_common.c | 0x0205ff70..0x020602bc | 9 of 14: 5 exact, 4 drift from an older SDK (CARDi_InitCommon 0x100 to 0xb4, CARDi_UnlockResource 0xa4 to 0xa8, CARDi_LockResource 0x9c to 0xa0, CARDi_SetTask 0x48 to 0x94), in pret's source order reversed; the other 5 dropped by the linker: folded as arm9/CARD_Common |
 | CARD_rom.c | 0x02060890..0x02060a64 | 3 renamed by body (CARD_WaitRomAsync, CARDi_ReadRom, CARDi_ReadRomSyncCore) and CARD_Init identified (still func_02060890), not folded; the order is not pret's reversed (CARD_Init sits below CARD_WaitRomAsync here) |
@@ -63,3 +65,5 @@ OS_init.c's OS_Init is src/OS_Init.cpp (0x02058c84). It makes pret's calls in pr
 each callee: PXI_init.c's PXI_Init (src/PXI_Init.c, 0x0205b858), MI_wram.c's MI_SetWramBank
 (src/MI_SetWramBank.c), OS_valarm.c's OS_InitVAlarm (src/OS_InitVAlarm.cpp), OS_reset.c's
 OS_InitReset (src/OS_InitReset.c), CTRDG_Init (src/CTRDG_Init.c) and PM_Init (src/PM_Init.c).
+OS_timer.c's OSi_SetTimerReserved is src/OSi_SetTimerReserved.c (0x02059624, 0x1c), between the
+OS_exception.c and OS_tick.c runs.

@@ -11,7 +11,7 @@ extern void OS_InitArena(void);
 extern void PXI_Init(void);
 extern void OS_InitArenaEx(void);
 extern void OS_InitIrqTable(void);
-extern void func_02059594(void); /* OS_InitException */
+extern void OS_InitException(void);
 extern void MI_SetWramBank(int cnt);
 extern void OS_InitVAlarm(void);
 extern void OS_InitThread(void);
@@ -27,7 +27,7 @@ void OS_Init(void) {
     OS_InitLock();
     OS_InitArenaEx();
     OS_InitIrqTable();
-    func_02059594();
+    OS_InitException();
     MI_SetWramBank(3);
     OS_InitVAlarm();
     OS_InitThread();

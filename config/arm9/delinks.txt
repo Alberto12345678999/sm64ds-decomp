@@ -2329,85 +2329,21 @@ src/engine/cp15/CP15_MPUDataRegion1.cpp:
     complete
     .text start:0x020593ec end:0x020593f4
 
-src/unnamed/arm9/0205/func_020593f4.c:
+src/engine/os/OS_Exception.cpp:
     complete
-    .text start:0x020593f4 end:0x02059468
+    .text start:0x020593f4 end:0x02059624
 
-src/unnamed/arm9/0205/func_02059468.c:
-    complete
-    .text start:0x02059468 end:0x0205947c
-
-src/unnamed/arm9/0205/func_0205947c.c:
-    complete
-    .text start:0x0205947c end:0x0205950c
-
-src/unnamed/arm9/0205/func_0205950c.cpp:
-    complete
-    .text start:0x0205950c end:0x02059578
-
-src/unnamed/arm9/0205/func_02059578.c:
-    complete
-    .text start:0x02059578 end:0x02059594
-
-src/unnamed/arm9/0205/func_02059594.c:
-    complete
-    .text start:0x02059594 end:0x02059624
-
-src/unnamed/arm9/0205/func_02059624.c:
+src/OSi_SetTimerReserved.c:
     complete
     .text start:0x02059624 end:0x02059640
 
-src/unnamed/arm9/0205/func_02059640.c:
+src/engine/os/OS_Tick.cpp:
     complete
-    .text start:0x02059640 end:0x02059650
+    .text start:0x02059640 end:0x02059824
 
-src/unnamed/arm9/0205/func_02059650.cpp:
+src/engine/os/OS_Alarm.cpp:
     complete
-    .text start:0x02059650 end:0x02059700
-
-src/unnamed/arm9/0205/func_02059700.c:
-    complete
-    .text start:0x02059700 end:0x02059788
-
-src/unnamed/arm9/0205/func_02059788.cpp:
-    complete
-    .text start:0x02059788 end:0x02059824
-
-src/unnamed/arm9/0205/func_02059824.c:
-    complete
-    .text start:0x02059824 end:0x02059834
-
-src/unnamed/arm9/0205/func_02059834.cpp:
-    complete
-    .text start:0x02059834 end:0x02059950
-
-src/unnamed/arm9/0205/func_02059950.cpp:
-    complete
-    .text start:0x02059950 end:0x020599e8
-
-src/unnamed/arm9/0205/func_020599e8.cpp:
-    complete
-    .text start:0x020599e8 end:0x02059a60
-
-src/unnamed/arm9/0205/func_02059a60.c:
-    complete
-    .text start:0x02059a60 end:0x02059ba0
-
-src/unnamed/arm9/0205/func_02059ba0.c:
-    complete
-    .text start:0x02059ba0 end:0x02059bb0
-
-src/unnamed/arm9/0205/func_02059bb0.c:
-    complete
-    .text start:0x02059bb0 end:0x02059bc0
-
-src/unnamed/arm9/0205/func_02059bc0.cpp:
-    complete
-    .text start:0x02059bc0 end:0x02059c18
-
-src/unnamed/arm9/0205/func_02059c18.cpp:
-    complete
-    .text start:0x02059c18 end:0x02059cb4
+    .text start:0x02059824 end:0x02059cb4
 
 src/OS_InitVAlarm.cpp:
     .text start:0x02059cb4 end:0x02059d08

@@ -2578,7 +2578,7 @@ src/unnamed/arm9/0205/func_0205947c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205950c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059578.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059594.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059624.c	PURE-C	arm9				1		None		-
+src/OSi_SetTimerReserved.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059640.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059650.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059700.c	PURE-C	arm9				1		None		-

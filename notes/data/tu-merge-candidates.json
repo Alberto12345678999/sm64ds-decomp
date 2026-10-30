@@ -13333,7 +13333,7 @@
     "src/unnamed/arm9/0205/func_0205950c.c",
     "src/unnamed/arm9/0205/func_02059578.c",
     "src/unnamed/arm9/0205/func_02059594.c",
-    "src/unnamed/arm9/0205/func_02059624.c",
+    "src/OSi_SetTimerReserved.c",
     "src/unnamed/arm9/0205/func_02059640.c",
     "src/unnamed/arm9/0205/func_02059650.c",
     "src/unnamed/arm9/0205/func_02059700.c",

@@ -5530,12 +5530,6 @@
       "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059788.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059c18.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:void"
       ],
@@ -5545,12 +5539,6 @@
     },
     "_ZN3IRQ11DisableIRQsEj": {
       "include/decl_common.h": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059834.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059cb4.c": [
@@ -5570,9 +5558,6 @@
     },
     "_ZN3IRQ13SetIRQHandlerEjPFvvE": {
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/unnamed/arm9/0205/func_02059788.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
@@ -5604,9 +5589,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
@@ -5712,12 +5694,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059170.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059650.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059f58.cpp": [
@@ -11208,51 +11184,6 @@
         "return:int * []"
       ]
     },
-    "data_020a63a0": {
-      "src/unnamed/arm9/0205/func_0205950c.cpp": [
-        "return:MPUFunc"
-      ],
-      "src/unnamed/arm9/0205/func_02059578.c": [
-        "return:int []"
-      ],
-      "src/unnamed/arm9/0205/func_02059594.c": [
-        "return:int"
-      ]
-    },
-    "data_020a63a4": {
-      "src/unnamed/arm9/0205/func_0205950c.cpp": [
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_02059578.c": [
-        "return:int []"
-      ]
-    },
-    "data_020a63a8": {
-      "src/unnamed/arm9/0205/func_02059594.c": [
-        "return:int"
-      ]
-    },
-    "data_020a63ac": {
-      "src/unnamed/arm9/0205/func_0205950c.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a6438": {
-      "src/unnamed/arm9/0205/func_02059650.cpp": [
-        "return:volatile unsigned int []"
-      ],
-      "src/unnamed/arm9/0205/func_02059700.c": [
-        "return:volatile unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059788.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a6440": {
-      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
-        "return:volatile unsigned short"
-      ]
-    },
     "data_020a645c": {
       "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
         "return:volatile unsigned short"
@@ -11546,11 +11477,11 @@
       "src/engine/os/OS_Arena.cpp": [
         "return:char"
       ],
-      "src/unnamed/arm9/0205/func_02059834.cpp": [
-        "return:int"
-      ],
       "src/IRQ2.cpp": [
         "return:char []"
+      ],
+      "src/engine/os/OS_Alarm.cpp": [
+        "return:char"
       ]
     },
     "data_ov002_020ff480": {
@@ -20673,13 +20604,6 @@
         "return:int"
       ]
     },
-    "OSi_EnterTimerCallback": {
-      "src/unnamed/arm9/0205/func_02059700.c": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#3 int"
-      ]
-    },
     "OSi_EnterDmaCallback": {
       "src/func_02059fd0.c": [
         "param:#1 int",
@@ -20838,55 +20762,23 @@
         "return:void *"
       ]
     },
-    "func_0205947c": {
-      "src/unnamed/arm9/0205/func_02059468.c": [
-        "arity:0"
-      ]
-    },
-    "func_02059624": {
-      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
     "func_02059650": {
       "src/unnamed/arm9/0204/func_02042784.c": [
         "return:unsigned long long"
       ],
       "src/unnamed/arm9/0204/func_020427c4.c": [
         "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059834.cpp": [
-        "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059a60.c": [
-        "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059c18.cpp": [
-        "arity:1"
       ]
     },
-    "func_02059950": {
+    "OS_CancelAlarm": {
       "src/unnamed/arm9/0201/func_0201aaa4.c": [
         "arity:0"
       ]
     },
-    "func_020599e8": {
+    "OS_SetAlarm": {
       "src/unnamed/arm9/0201/func_0201aa50.c": [
         "arity:5",
         "return:int"
-      ]
-    },
-    "func_02059a60": {
-      "src/unnamed/arm9/0205/func_020599e8.cpp": [
-        "param:#2 long long"
-      ]
-    },
-    "func_02059c18": {
-      "src/unnamed/arm9/0205/func_02059950.cpp": [
-        "param:#1 Node *"
-      ],
-      "src/unnamed/arm9/0205/func_02059a60.c": [
-        "param:#1 Node *"
       ]
     },
     "func_02059e04": {

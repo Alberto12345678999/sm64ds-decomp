@@ -67,9 +67,9 @@ were excluded:
 | Function | Inexpressible instructions |
 |---|---|
 | `func_020048d8` | `mcr` (cache maintenance) |
-| `func_020593f4` | `mrs` |
-| `func_0205947c` | `mrs`, `msr` |
-| `func_0205950c` | `msr` |
+| `OSi_ExceptionHandler` | `mrs` |
+| `OSi_SetExContext` | `mrs`, `msr` |
+| `OSi_DisplayExContext` | `msr` |
 | `func_0206d9cc` | `mrs`, `msr` |
 | `func_0206da18` | `mrs`, `msr` |
 | `func_0206da64` | `mcr`, `mrc` (CP15) |
@@ -81,7 +81,7 @@ These are indistinguishable in kind from `ARMSaveContext` (`mrs`/`msr`), `Div` (
 `CP15::FlushDataCache` (`mcr`), which were never in question. They were restored to matched
 status — not as a change of policy, but as a correction of how it was applied. Each was
 restored to its exact pre-reclassify content and re-verified: nine `VERIFIED`, one
-(`func_0205950c`) `BLIND-3`, meaning three relocation slots reference symbols not yet in
+(`OSi_DisplayExContext`) `BLIND-3`, meaning three relocation slots reference symbols not yet in
 `config/**/symbols.txt` and could not be link-checked; the rest of that function verified.
 
 The remaining **106 stay `// NONMATCHING`**. They are ordinary ARM — game logic
