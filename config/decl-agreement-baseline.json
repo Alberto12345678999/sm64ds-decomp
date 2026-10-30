@@ -20292,14 +20292,11 @@
     },
     "func_0204d0b8": {
       "src/unnamed/arm9/0204/func_0204a730.c": [
-        "param:#2 void *",
         "param:#3 unsigned int"
       ]
     },
     "func_0204d104": {
       "src/unnamed/arm9/0204/func_0204a730.c": [
-        "param:#1 void *",
-        "param:#2 void *",
         "param:#3 unsigned int"
       ]
     },

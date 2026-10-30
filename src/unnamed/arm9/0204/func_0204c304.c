@@ -9,51 +9,58 @@ typedef struct List {
     int count;
 } List;
 
-typedef struct Bf40 {
-    u16 f0 : 5;
-    u16 f5 : 5;
+/* The particle's 0x40 halfword (SPL's visibility). */
+typedef struct Visibility {
+    u16 baseAlpha : 5;
+    u16 animAlpha : 5;
     u16 rest : 6;
-} Bf40;
+} Visibility;
 
+/* Particle::Element (include/Particle__Element.h) and the fields past its
+   0x30 bytes, named as in func_0204c584 (the parent spawn). */
 typedef struct Particle {
-    u8 pad0[8];  /* 0x0 */
-    Vector3 v8;  /* 0x8 */
-    Vector3 v14; /* 0x14 */
-    int i20;     /* 0x20 */
-    int i24;     /* 0x24 */
-    int i28;     /* 0x28 */
-    u16 h2c;     /* 0x2c */
-    u16 h2e;     /* 0x2e */
-    int i30;     /* 0x30 */
-    s16 sh34;    /* 0x34 */
-    u16 h36;     /* 0x36 */
-    s16 sh38;    /* 0x38 */
-    u16 h3a;     /* 0x3a */
-    u16 h3c;     /* 0x3c */
-    u16 h3e;     /* 0x3e */
-    Bf40 bf40;   /* 0x40 */
-    u8 b42;      /* 0x42 */
+    u8 pad0[8];            /* 0x0 */
+    Vector3 basePosition;  /* 0x8 */
+    Vector3 offset;        /* 0x14 */
+    Vector3 velocity;      /* 0x20 */
+    u16 lifetime;          /* 0x2c */
+    u16 age;               /* 0x2e */
+    int scale;             /* 0x30 */
+    s16 animScale;         /* 0x34 */
+    u16 angle;             /* 0x36 */
+    s16 angularSpeed;      /* 0x38 */
+    u16 color;             /* 0x3a */
+    u16 loopTimeFactor;    /* 0x3c */
+    u16 lifeRateFactor;    /* 0x3e */
+    Visibility visibility; /* 0x40 */
+    u8 texture;            /* 0x42 */
 } Particle;
 
+/* The child record's flags (SPL's SPLChildResourceFlags). rotationType 0
+   starts a child unrotated, 1 copies the parent's angle, 2 also its angular
+   speed. useChildColor takes the record's color over the parent's. */
 typedef struct DefFlags {
-    u16 pad0 : 3; /* bits 0-2 */
-    u16 mode : 2; /* bits 3-4 */
-    u16 pad5 : 1; /* bit 5 */
-    u16 bit6 : 1; /* bit 6 */
-    u16 pad7 : 9; /* bits 7-15 */
+    u16 pad0 : 3;          /* bits 0-2 */
+    u16 rotationType : 2;  /* bits 3-4 */
+    u16 pad5 : 1;          /* bit 5 */
+    u16 useChildColor : 1; /* bit 6 */
+    u16 pad7 : 9;          /* bits 7-15 */
 } DefFlags;
 
+/* The child record (func_0204a730's PtclChild; SPL's SPLChildResource).
+   func_0204d104 reads endScale; func_0204a730 the emission delay and
+   interval at 0xd/0xe. */
 typedef struct Def {
-    DefFlags flags; /* 0x0 */
-    s16 spread;     /* 0x2 */
-    u8 pad4[2];     /* 0x4 */
-    u16 f6;         /* 0x6 */
-    u8 level;       /* 0x8 */
-    u8 f9;          /* 0x9 */
-    u16 fa;         /* 0xa */
-    u8 count;       /* 0xc */
-    u8 padd[2];     /* 0xd */
-    u8 ff;          /* 0xf */
+    DefFlags flags;   /* 0x0 */
+    s16 spread;       /* 0x2 -- random velocity spread */
+    s16 endScale;     /* 0x4 */
+    u16 lifetime;     /* 0x6 */
+    u8 velocityRatio; /* 0x8 -- a child inherits (velocityRatio + 1) / 256 of the velocity */
+    u8 scaleRatio;    /* 0x9 -- and (scaleRatio + 1) / 64 of the scale */
+    u16 color;        /* 0xa */
+    u8 count;         /* 0xc */
+    u8 padd[2];       /* 0xd */
+    u8 texture;       /* 0xf */
 } Def;
 
 /* Particle::SystemDefinition (include/Particle__Manager.h): child is the
@@ -79,10 +86,10 @@ extern void func_0204d9a0(List *list, Node *node);
 
 /* Spawn child->count particles from the parent particle self into sys's
    child list. func_0204a730 calls it for a live particle at the emission
-   interval. Each child takes the parent's position and offset, the parent
-   velocity scaled by (level + 1) / 256 plus a random spread, and a scale
-   derived from the parent's. The other fields come from the child record or
-   the parent. */
+   interval (SPL's child emission). Each child takes the parent's position
+   and offset, the parent velocity scaled by velocityRatio plus a random
+   spread, and the parent's animated scale times scaleRatio. The other fields
+   come from the child record or the parent. */
 void func_0204c304(Particle *self, ParticleSystem *sys, List *freelist) {
     Particle *p;
     Def *def;
@@ -103,7 +110,7 @@ void func_0204c304(Particle *self, ParticleSystem *sys, List *freelist) {
     rngC = 0x1b0cb173u;
 
     do {
-        int lvl;
+        int ratio;
 
         p = (Particle *)func_0204d958(freelist);
         if (p == 0)
@@ -111,66 +118,67 @@ void func_0204c304(Particle *self, ParticleSystem *sys, List *freelist) {
 
         func_0204d9a0(&sys->children, (Node *)p);
 
-        p->v14 = self->v14;
+        p->offset = self->offset;
 
-        lvl = def->level + 1;
-
-        data_020a4d30 = data_020a4d30 * rngA + rngC;
-        p->i20 = ((self->i20 * lvl) >> 8) +
-                 ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+        ratio = def->velocityRatio + 1;
 
         data_020a4d30 = data_020a4d30 * rngA + rngC;
-        p->i24 = ((self->i24 * lvl) >> 8) +
-                 ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+        p->velocity.x = ((self->velocity.x * ratio) >> 8) +
+                        ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
 
         data_020a4d30 = data_020a4d30 * rngA + rngC;
-        p->i28 = ((self->i28 * lvl) >> 8) +
-                 ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+        p->velocity.y = ((self->velocity.y * ratio) >> 8) +
+                        ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
 
-        p->v8 = self->v8;
+        data_020a4d30 = data_020a4d30 * rngA + rngC;
+        p->velocity.z = ((self->velocity.z * ratio) >> 8) +
+                        ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+
+        p->basePosition = self->basePosition;
 
         {
-            int c = *(volatile int *)&self->i30;
-            int m = (c * self->sh34) >> 12;
-            p->i30 = (m * (def->f9 + 1)) >> 6;
+            int c = *(volatile int *)&self->scale;
+            int m = (c * self->animScale) >> 12;
+            p->scale = (m * (def->scaleRatio + 1)) >> 6;
         }
 
-        p->sh34 = (u16)d1c;
+        p->animScale = (u16)d1c;
 
-        if (def->flags.bit6)
-            p->h3a = def->fa;
+        if (def->flags.useChildColor)
+            p->color = def->color;
         else
-            p->h3a = self->h3a;
+            p->color = self->color;
 
         {
-            Bf40 *q = &p->bf40;
-            q->f0 = (u16)((self->bf40.f0 * (self->bf40.f5 + 1)) >> 5);
-            q->f5 = 0x1f;
+            Visibility *q = &p->visibility;
+            q->baseAlpha =
+                (u16)((self->visibility.baseAlpha * (self->visibility.animAlpha + 1)) >> 5);
+            q->animAlpha = 0x1f;
         }
 
         {
-            int mode = def->flags.mode;
+            int mode = def->flags.rotationType;
             switch (mode) {
             case 0:
-                p->h36 = (u16)eB;
-                p->sh38 = (s16)eB;
+                p->angle = (u16)eB;
+                p->angularSpeed = (s16)eB;
                 break;
             case 1:
-                p->h36 = self->h36;
-                p->sh38 = (s16)eA;
+                p->angle = self->angle;
+                p->angularSpeed = (s16)eA;
                 break;
             case 2:
-                p->h36 = self->h36;
-                p->sh38 = self->sh38;
+                p->angle = self->angle;
+                p->angularSpeed = self->angularSpeed;
                 break;
             }
         }
 
-        p->h2c = def->f6;
-        p->h2e = (u16)eC;
-        p->b42 = def->ff;
-        p->h3c = 0xffff / (int)((u32)self->h2c >> 1);
-        p->h3e = 0xffff / self->h2c;
+        p->lifetime = def->lifetime;
+        p->age = (u16)eC;
+        p->texture = def->texture;
+        p->loopTimeFactor = 0xffff / (int)((u32)self->lifetime >> 1);
+        p->lifeRateFactor = 0xffff / self->lifetime;
 
         i += 1;
     } while (i < def->count);
