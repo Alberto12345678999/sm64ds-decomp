@@ -1,6 +1,6 @@
-int func_0203da9c(void);
-int GetPlayerFlagByte(int handle, int i);
-void func_0203db3c(int i, unsigned char v);
+extern int func_0203da9c(void);
+extern unsigned char GetPlayerFlagByte(int player, int byte);
+extern void func_0203db3c(int byte, int value);
 
 /* Player 0 only: bits 0-3 of link settings byte 2 become flags, one bit
    per player slot. func_02030ca0 and func_02030b58 post the slots

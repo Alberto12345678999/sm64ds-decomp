@@ -13,16 +13,16 @@ extern void NormalizeVec3(const struct Vector3* src, struct Vector3* dst);
 void func_0204da4c(struct Vector3* out)
 {
     s32 s = PARTICLE_RNG_STATE;
-    s32 r1 = (s32)((unsigned int)s * 0x5eedf715u + 0x1b0cb173u);
-    PARTICLE_RNG_STATE = r1;
-    out->x = r1 >> 8;
+    s32 x = (s32)((unsigned int)s * 0x5eedf715u + 0x1b0cb173u);
+    PARTICLE_RNG_STATE = x;
+    out->x = x >> 8;
     s = PARTICLE_RNG_STATE;
-    s32 r2 = (s32)((unsigned int)s * 0x5eedf715u + 0x1b0cb173u);
-    PARTICLE_RNG_STATE = r2;
-    out->y = r2 >> 8;
+    s32 y = (s32)((unsigned int)s * 0x5eedf715u + 0x1b0cb173u);
+    PARTICLE_RNG_STATE = y;
+    out->y = y >> 8;
     s = PARTICLE_RNG_STATE;
-    s32 r3 = (s32)((unsigned int)s * 0x5eedf715u + 0x1b0cb173u);
-    PARTICLE_RNG_STATE = r3;
-    out->z = r3 >> 8;
+    s32 z = (s32)((unsigned int)s * 0x5eedf715u + 0x1b0cb173u);
+    PARTICLE_RNG_STATE = z;
+    out->z = z >> 8;
     NormalizeVec3(out, out);
 }

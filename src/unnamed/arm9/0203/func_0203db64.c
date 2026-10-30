@@ -1,11 +1,11 @@
 #include "types.h"
+#include "nitro/os/thread.h"
 extern void CpuCopy8(void *dst, void *src, int n);
 extern void func_0205a588(void *dst, int c, int n);
 extern void func_02042778(void);
 extern void func_0203df40(void);
 extern int func_02040a94(void);
 extern void func_02040724(void);
-extern void OS_SleepThread(u16 *self);
 extern void func_0203d854(void);
 extern int func_0203d81c(void);
 extern void func_0203d918(void);

@@ -740,33 +740,6 @@
       ],
       "src/IsPlayerWarping.c": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020028.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020200b8.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020200e0.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020124.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020168.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020201f0.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020254.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020202dc.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020364.c": [
-        "return:int"
       ]
     },
     "GetViewObj": {
@@ -5399,9 +5372,6 @@
       ]
     },
     "_ZN3IRQ7DisableEv": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "return:int"
-      ],
       "src/Crash.cpp": [
         "return:void"
       ],
@@ -5450,19 +5420,7 @@
       "src/DMAStartTransferFB.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040a5c.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02040aa4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02041224.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_0204175c.cpp": [
@@ -5471,16 +5429,10 @@
       "src/unnamed/arm9/0204/func_02041a94.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02041d28.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205865c.cpp": [
@@ -5645,9 +5597,6 @@
       "src/minigames/d_s_mg_pachinko.cpp": [
         "param:#8 void *",
         "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_0202048c.cpp": [
-        "return:int"
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi": {
@@ -5697,10 +5646,6 @@
       ],
       "src/ui/hud/d_map.cpp": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0202/func_0202048c.cpp": [
-        "param:#1 int",
-        "return:int"
       ]
     },
     "_ZN3OAM7NUMBERSE": {
@@ -5718,9 +5663,6 @@
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_0202048c.cpp": [
-        "return:int"
       ]
     },
     "_ZN4CP1527FlushAndInvalidateDataCacheEjj": {
@@ -5729,10 +5671,6 @@
       ],
       "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 void *"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#1 int",
-        "param:#2 int"
       ],
       "src/unnamed/arm9/0204/func_020499bc.cpp": [
         "param:#1 void *"
@@ -9378,9 +9316,6 @@
       "src/minigames/d_s_mg_d3d_base.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0201/func_02019404.c": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:void * *"
       ],
@@ -9398,16 +9333,13 @@
       ]
     },
     "data_0209d4ac": {
-      "src/unnamed/arm9/0201/func_02018ec0.c": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0201/func_02019440.cpp": [
         "return:int"
       ]
     },
     "data_0209d4b0": {
-      "src/unnamed/arm9/0201/func_02018ec0.c": [
-        "return:void *"
+      "src/unnamed/arm9/0201/func_02018ec0.cpp": [
+        "return:dFdBrightness_c *"
       ],
       "src/KuppaScript.cpp": [
         "return:dFdBrightness_c *"
@@ -9479,7 +9411,7 @@
     },
     "data_0209d524": {
       "src/unnamed/arm9/0201/func_0201a428.cpp": [
-        "return:void *"
+        "return:mHeap::Heap_t *"
       ]
     },
     "data_0209d574": {
@@ -9490,9 +9422,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_020199a4.c": [
-        "return:char []"
-      ],
-      "src/unnamed/arm9/0201/func_0201a054.cpp": [
         "return:char []"
       ],
       "src/unnamed/arm9/0201/func_0201fec8.c": [
@@ -10425,20 +10354,9 @@
         "return:int []"
       ]
     },
-    "data_020a0f74": {
-      "src/unnamed/arm9/0204/func_0204068c.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0204/func_020406b4.c": [
-        "return:int"
-      ]
-    },
     "data_020a0f80": {
       "src/unnamed/arm9/0204/func_020406b4.c": [
         "return:unsigned short *"
-      ],
-      "src/unnamed/arm9/0204/func_020408b0.cpp": [
-        "return:void *"
       ]
     },
     "data_020a0f90": {
@@ -10541,9 +10459,6 @@
       "src/unnamed/arm9/0204/func_020418f0.c": [
         "return:unsigned int []"
       ],
-      "src/unnamed/arm9/0204/func_02041d28.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0204/func_02041e14.c": [
         "return:Globals"
       ],
@@ -10616,9 +10531,6 @@
     "data_020a4c70": {
       "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "return:unsigned short []"
-      ],
-      "src/unnamed/arm9/0204/func_02049cd8.c": [
-        "return:char []"
       ]
     },
     "data_020a6088": {
@@ -17709,11 +17621,6 @@
         "return:void"
       ]
     },
-    "func_02019f10": {
-      "src/unnamed/arm9/0201/func_02019ebc.c": [
-        "return:void"
-      ]
-    },
     "func_0201a03c": {
       "src/Crash.cpp": [
         "arity:2"
@@ -17756,11 +17663,6 @@
       "src/unnamed/arm9/0201/func_0201a5f8.c": [
         "param:#1 void *",
         "return:void"
-      ]
-    },
-    "func_0201a8b4": {
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "arity:0"
       ]
     },
     "func_0201a96c": {
@@ -17812,32 +17714,6 @@
     "func_0201aa18": {
       "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
         "return:void"
-      ]
-    },
-    "func_0201aa50": {
-      "src/unnamed/arm9/0201/func_0201a8b4.c": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int",
-        "param:#5 void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int",
-        "param:#5 Struct_0201a96c *",
-        "return:void"
-      ]
-    },
-    "func_0201aaa4": {
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/arm9/0201/func_0201aab0.c": [
-        "return:int"
-      ]
-    },
-    "func_0201aad4": {
-      "src/unnamed/arm9/0201/func_0201aa18.c": [
-        "param:#1 void *"
       ]
     },
     "func_0201aaec": {
@@ -18371,11 +18247,6 @@
         "param:#1 L *"
       ]
     },
-    "func_0203b9bc": {
-      "src/unnamed/arm9/0203/func_0203df40.c": [
-        "param:#1 Col4 *"
-      ]
-    },
     "func_0203c178": {
       "include/decl_common.h": [
         "arity:4"
@@ -18542,22 +18413,11 @@
     "func_0203db3c": {
       "src/WarpPlayer.c": [
         "param:#2 unsigned char"
-      ],
-      "src/unnamed/arm9/0202/func_020200e0.c": [
-        "param:#2 unsigned char"
-      ],
-      "src/unnamed/arm9/0202/func_02020124.c": [
-        "param:#2 unsigned char"
       ]
     },
     "func_0203e978": {
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "arity:0"
-      ]
-    },
-    "func_0203ea5c": {
-      "src/unnamed/arm9/0203/func_0203df40.c": [
-        "return:int"
       ]
     },
     "func_0203f604": {
@@ -18566,60 +18426,8 @@
         "return:void"
       ]
     },
-    "func_0203f920": {
-      "src/unnamed/arm9/0203/func_0203f6b4.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0203/func_0203f818.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0203/func_0203f9d4.c": [
-        "arity:0",
-        "return:int"
-      ]
-    },
-    "func_0203fdac": {
-      "src/unnamed/arm9/0203/func_0203faa8.c": [
-        "arity:0"
-      ]
-    },
-    "func_0203fec4": {
-      "src/unnamed/arm9/0203/func_0203fb5c.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040014": {
-      "src/unnamed/arm9/0203/func_0203fb98.c": [
-        "arity:0"
-      ]
-    },
-    "func_020401e8": {
-      "src/unnamed/arm9/0203/func_0203fbc4.c": [
-        "arity:0"
-      ]
-    },
     "func_020402a0": {
       "src/Wireless_Reset.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040388": {
-      "src/unnamed/arm9/0203/func_0203fc74.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040408": {
-      "src/unnamed/arm9/0203/func_0203fcb0.c": [
-        "arity:0"
-      ]
-    },
-    "func_02040504": {
-      "src/unnamed/arm9/0203/func_0203fcec.c": [
-        "arity:0"
-      ]
-    },
-    "func_020405b4": {
-      "src/unnamed/arm9/0203/func_0203fd28.c": [
         "arity:0"
       ]
     },
@@ -18650,53 +18458,10 @@
         "arity:0"
       ]
     },
-    "func_02040a94": {
-      "src/unnamed/arm9/0203/func_0203f644.c": [
-        "return:void"
-      ]
-    },
     "func_02040c34": {
       "src/unnamed/arm9/0203/func_0203ea5c.c": [
         "param:#3 void *",
         "param:#4 void *"
-      ]
-    },
-    "func_02040f30": {
-      "src/unnamed/arm9/0204/func_02040bb0.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "arity:0"
-      ]
-    },
-    "func_020412f0": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "arity:0"
-      ]
-    },
-    "func_020417d0": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "arity:0"
-      ]
-    },
-    "func_02041a00": {
-      "src/unnamed/arm9/0204/func_02040f30.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_02041c2c": {
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02041c64": {
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02041ce0": {
-      "src/unnamed/arm9/0204/func_020412f0.cpp": [
-        "return:void *"
       ]
     },
     "func_02041d28": {
@@ -19011,11 +18776,6 @@
         "param:#4 Ctx *"
       ]
     },
-    "func_02049ba8": {
-      "src/unnamed/arm9/0204/func_02049cd8.c": [
-        "arity:0"
-      ]
-    },
     "func_02049cd8": {
       "src/engine/sound/Sound.cpp": [
         "param:#2 int"
@@ -19178,7 +18938,6 @@
     "func_020507e0": {
       "src/unnamed/arm9/0204/func_02049cd8.c": [
         "param:#1 void *",
-        "param:#2 void *",
         "param:#6 void *",
         "param:#7 void *"
       ]
@@ -19453,23 +19212,9 @@
         "return:int"
       ]
     },
-    "OS_GetTick": {
-      "src/unnamed/arm9/0204/func_02042784.c": [
-        "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0204/func_020427c4.c": [
-        "return:unsigned long long"
-      ]
-    },
-    "OS_CancelAlarm": {
-      "src/unnamed/arm9/0201/func_0201aaa4.c": [
-        "arity:0"
-      ]
-    },
     "OS_SetAlarm": {
       "src/unnamed/arm9/0201/func_0201aa50.c": [
-        "arity:5",
-        "return:int"
+        "param:#3 void (*)(void *)"
       ]
     },
     "func_02059f2c": {
@@ -19849,7 +19594,7 @@
     },
     "func_02061128": {
       "src/unnamed/arm9/0201/func_02019ebc.c": [
-        "param:#1 void (*)(void)"
+        "param:#1 int (*)(void)"
       ]
     },
     "WmReceiveFifo": {
@@ -19860,9 +19605,6 @@
     "WM_Init": {
       "src/WM_Initialize.c": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0204/func_020408b0.cpp": [
-        "return:void"
       ]
     },
     "func_020619ac": {
@@ -20016,13 +19758,6 @@
         "return:void *"
       ]
     },
-    "WM_GetSharedDataAddress": {
-      "src/unnamed/arm9/0204/func_0204068c.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
-      ]
-    },
     "func_02062990": {
       "src/unnamed/arm9/0206/func_02062bdc.cpp": [
         "param:#2 unsigned int",
@@ -20041,13 +19776,6 @@
     "func_02062bdc": {
       "src/WM_StartDataSharing.cpp": [
         "arity:0"
-      ]
-    },
-    "WM_StepDataSharing": {
-      "src/unnamed/arm9/0204/func_020406b4.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
       ]
     },
     "WM_MeasureChannel": {
@@ -20268,11 +19996,6 @@
       "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "param:#1 int",
         "return:void"
-      ]
-    },
-    "func_020658c0": {
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#6 int"
       ]
     },
     "func_02065ae0": {
@@ -20521,14 +20244,6 @@
     "func_0206cbc0": {
       "src/cstd3.cpp": [
         "arity:0"
-      ]
-    },
-    "func_0206d32c": {
-      "src/unnamed/arm9/0201/func_02018b64.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "return:void"
       ]
     },
     "func_0206d868": {

@@ -11,29 +11,31 @@ extern int data_020a806c[2];
 extern int data_020a8074;
 extern void CpuCopy8(void *dst, void *src, int n);
 
-/* The card half of func_02018c00: read overlay table entry `shift` (0x20
-   bytes) straight out of the ROM, the table offset and length coming from
-   the header (a5/a6 for ARM9, a7/a8 for ARM7). 0 past the end. */
-int func_02018cbc(FSOverlayInfo *info, int flag, int shift, int a3, int a5, int a6, int a7,
-                  int a8) {
-    char local[0x48];
+/* The card half of func_02018c00: read overlay table entry index (0x20
+   bytes) straight out of archive's ROM, the table offset and length coming
+   from the cartridge header (ovt9Offset/ovt9Size or ovt7Offset/ovt7Size,
+   header +0x50..+0x5c).
+   0 past the end. */
+int func_02018cbc(FSOverlayInfo *info, int flag, int index, int archive, int ovt9Offset,
+                  int ovt9Size, int ovt7Offset, int ovt7Size) {
+    char file[0x48];
     int off;
     int base;
-    int hi;
+    int size;
     if (flag == 0) {
-        hi = a6;
-        base = a5;
+        size = ovt9Size;
+        base = ovt9Offset;
     } else {
-        hi = a8;
-        base = a7;
+        size = ovt7Size;
+        base = ovt7Offset;
     }
-    off = shift << 5;
-    if ((unsigned int)off >= (unsigned int)hi)
+    off = index << 5;
+    if ((unsigned int)off >= (unsigned int)size)
         return 0;
-    FS_InitFile(local);
-    myFS_OpenFileDirect(local, a3, base + off, base + hi, -1);
-    myFS_ReadFile(local, &info->header, 0x20);
-    FS_CloseFile(local);
+    FS_InitFile(file);
+    myFS_OpenFileDirect(file, archive, base + off, base + size, -1);
+    myFS_ReadFile(file, &info->header, 0x20);
+    FS_CloseFile(file);
     info->target = flag;
     return 1;
 }
