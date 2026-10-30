@@ -1,26 +1,17 @@
 #include "Ov007Work.h"
+#include "Ov007BgLayer.h"
 
 extern int func_ov007_020c3df4(int a, int b);
 extern int func_ov007_020c9388(int a);
 extern int func_ov007_020b8500(void);
 extern int func_ov007_020b84e8(void);
-extern void func_ov007_020c0384(int c, void* x);
+extern void func_ov007_020c0384(int c, void *x);
 extern int func_ov007_020b84f4(void);
 extern void func_ov007_020c02d8(int r0, int r1, unsigned short r2);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-
-/* The 0x38-byte BG layer record func_ov007_020c0aa8 allocates; only the two
- * screen buffers this file sets. func_ov007_020c076c uploads `screen` to the
- * layer's BG screen VRAM; func_ov007_020c0638 rebuilds `screen` from `source`
- * at a tile offset and func_ov007_020b1390 recolours `source`. */
-typedef struct Ov007BgLayer {
-    char pad_00[0x10];
-    void *screen; /* 0x10 */
-    void *source; /* 0x14 */
-} Ov007BgLayer;
 
 /* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
  * allocates. Only its two BG layer lists, which func_ov007_020c0604 creates
@@ -41,12 +32,11 @@ typedef struct Ov007LayerSlot {
 
 typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
 typedef char Ov007Display_size_must_be_0x10[sizeof(Ov007Display) == 0x10 ? 1 : -1];
-typedef char Ov007BgLayer_size_must_be_0x18[sizeof(Ov007BgLayer) == 0x18 ? 1 : -1];
 
 /* Builds layer slot `type` around `obj` and links obj into the main or sub
  * BG list: 6/7 take prebuilt screen pairs, 1 keeps the loaded screen as its
  * source behind a fresh buffer, 5 starts from a blank (tile 0x300) screen. */
-int func_ov007_020adc08(int type, char* obj) {
+int func_ov007_020adc08(int type, char *obj) {
     int r5 = func_ov007_020c3df4(0, 0xc);
     Ov007LayerSlot *slot = (Ov007LayerSlot *)r5;
     Ov007BgLayer *layer = (Ov007BgLayer *)obj;

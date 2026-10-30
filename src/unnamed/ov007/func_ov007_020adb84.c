@@ -1,13 +1,5 @@
 #include "Ov007Work.h"
-
-/* The BG layer record; names as in func_ov007_020ad660, only the slots this
- * file touches. */
-typedef struct Ov007BgLayer {
-    char pad_00[0xc];
-    /* 0x0c: func_ov007_020c076c re-uploads screen while it is set */
-    int dirty;
-    void *screen; /* 0x10 */
-} Ov007BgLayer;
+#include "Ov007BgLayer.h"
 
 /* func_ov007_020adc08's 0xc-byte layer slot; names as in that file. */
 typedef struct Ov007LayerSlot {

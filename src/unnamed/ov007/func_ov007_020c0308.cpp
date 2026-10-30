@@ -2,21 +2,20 @@
 #include "types.h"
 
 extern "C" {
-/* func_ov007_020c0308 — fill b*32 BG map entries at dst with sequential tile
- * numbers OR'd with palette (c & 0xf) << 12. No callees.
- */
+/* Fills rows 32-entry rows of a BG screen with the tile numbers 0, 1, 2...
+ * in palette (palette & 0xf). */
 #pragma opt_strength_reduction off
-void func_ov007_020c0308(u16 *dst, int b, int c) {
+void func_ov007_020c0308(u16 *screen, int rows, int palette) {
     u32 i = 0;
     u32 hi;
     u32 n;
-    if ((u32)(b << 5) == 0)
+    if ((u32)(rows << 5) == 0)
         return;
-    hi = ((u32)(c << 28)) >> 16;
-    n = b << 5;
+    hi = ((u32)(palette << 28)) >> 16;
+    n = rows << 5;
     do {
         u16 lo = i;
-        dst[i] = hi | lo;
+        screen[i] = hi | lo;
         i++;
     } while (i < n);
 }

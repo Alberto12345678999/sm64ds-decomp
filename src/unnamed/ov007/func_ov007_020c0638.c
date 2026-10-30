@@ -1,23 +1,11 @@
-#include "types.h"
+#include "Ov007BgLayer.h"
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern void MultiCopyHalf(char *src, char *dst, int nbytes);
 
-struct T {
-    int f0;
-    int f4;
-    int f8;
-    int fc;
-    char *f10;
-    char *f14;
-    int f18;
-    u16 f1c;
-    u16 f1e;
-    int f20;
-    int f24;
-};
-
-void func_ov007_020c0638(struct T *self, int x, int y, u16 val)
-{
+/* Rebuilds the layer's screen scrolled to pixel (x, y): fills it with tile,
+ * copies the overlapping part of source in at the tile offset and keeps the
+ * sub-tile remainder as the fine scroll. */
+void func_ov007_020c0638(Ov007BgLayer *self, int x, int y, u16 tile) {
     int ty;
     char *dst;
     char *src;
@@ -34,44 +22,35 @@ void func_ov007_020c0638(struct T *self, int x, int y, u16 val)
     ty = y >> 3;
     rx = x - (tx << 3);
     ry = y - (ty << 3);
-    sw = self->f1c;
-    sh = self->f1e;
+    sw = self->width;
+    sh = self->height;
     sx = 0;
     sy = 0;
-    dst = self->f10;
-    src = self->f14;
-    if (tx < 0)
-    {
+    dst = self->screen;
+    src = self->source;
+    if (tx < 0) {
         sw += tx;
         sx = -tx;
         tx = 0;
-    }
-    else if (tx > 0)
-    {
+    } else if (tx > 0) {
         sw -= tx;
     }
-    if (ty < 0)
-    {
+    if (ty < 0) {
         sh += ty;
         sy = -ty;
         ty = 0;
-    }
-    else if (ty > 0)
-    {
+    } else if (ty > 0) {
         sh -= ty;
     }
-    v = val;
-    MultiStore16(v, dst, self->f1c * self->f1e * 2);
-    self->f20 = -rx << 12;
-    self->f24 = -ry << 12;
-    if (sw > 0 && sh > 0)
-    {
-        for (rx = ty + sh; ty < rx; ty++, sy++)
-        {
-            MultiCopyHalf(src + sy * self->f1c * 2 + sx * 2,
-                          dst + ty * self->f1c * 2 + tx * 2,
+    v = tile;
+    MultiStore16(v, dst, self->width * self->height * 2);
+    self->fineScrollX = -rx << 12;
+    self->fineScrollY = -ry << 12;
+    if (sw > 0 && sh > 0) {
+        for (rx = ty + sh; ty < rx; ty++, sy++) {
+            MultiCopyHalf(src + sy * self->width * 2 + sx * 2, dst + ty * self->width * 2 + tx * 2,
                           sw * 2);
         }
     }
-    self->fc = 1;
+    self->dirty = 1;
 }
