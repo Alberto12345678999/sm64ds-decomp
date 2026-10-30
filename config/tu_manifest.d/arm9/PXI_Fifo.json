@@ -6,7 +6,7 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "One contiguous run of the Nitro SDK's pxi_fifo.c, 0x0205b864..0x0205bbdc: 5 functions, gapless in config/arm9/delinks.txt. Read from the highest address down (mwccarm emits .text in reverse source order) it is the file in order: PXI_InitFifo (func_0205bad8, registers the receive handler on IRQ 0x40000 and handshakes through SUBPINTF), PXI_SetFifoRecvCallback (func_0205ba64), PXI_IsCallbackReady (func_0205ba3c), PXI_SendWordByFifo (IPCSend), PXIi_HandlerRecvFifoNotEmpty (IRQ::IPCRxFifoNotEmptyHandler).",
+    "One contiguous run of the Nitro SDK's pxi_fifo.c, 0x0205b864..0x0205bbdc: 5 functions, gapless in config/arm9/delinks.txt. Read from the highest address down (mwccarm emits .text in reverse source order) it is the file in order: PXI_InitFifo (registers the receive handler on IRQ 0x40000 and handshakes through SUBPINTF), PXI_SetFifoRecvCallback, PXI_IsCallbackReady, PXI_SendWordByFifo (still IPCSend) and PXIi_HandlerRecvFifoNotEmpty.",
     "Every member touches the FIFO state: the SUBP_FIFO_CNT/SEND/RECV registers, the callback table data_020a7fc8, or the shared pxiHandleChecker word at 0x027fff88.",
     "TOP EDGE: func_0205bbdc (0x0205bbdc..0x0205bbe4, `return 0`) and the stream helpers after it touch none of that state.",
     "BOTTOM EDGE: PXI_Init (0x0205b858..0x0205b864, src/PXI_Init.c) is pxi_init.c's tail call to PXI_InitFifo, a separate SDK file; below it are cache-flushing list helpers."
@@ -20,7 +20,7 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv",
+      "symbol": "PXIi_HandlerRecvFifoNotEmpty",
       "address": "0x0205b864",
       "size": "0x00000124",
       "legacy_source": "src/_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv.cpp",
@@ -34,21 +34,21 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_0205ba3c",
+      "symbol": "PXI_IsCallbackReady",
       "address": "0x0205ba3c",
       "size": "0x00000028",
       "legacy_source": "src/unnamed/arm9/0205/func_0205ba3c.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_0205ba64",
+      "symbol": "PXI_SetFifoRecvCallback",
       "address": "0x0205ba64",
       "size": "0x00000074",
       "legacy_source": "src/unnamed/arm9/0205/func_0205ba64.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_0205bad8",
+      "symbol": "PXI_InitFifo",
       "address": "0x0205bad8",
       "size": "0x00000104",
       "legacy_source": "src/unnamed/arm9/0205/func_0205bad8.c",

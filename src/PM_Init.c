@@ -17,10 +17,9 @@ extern char data_020a8124;
 extern int data_020a8110;
 extern void func_0205fcfc(void); /* the tag-8 receive callback */
 extern void PXI_Init(void);
-/* func_0205ba3c PXI_IsCallbackReady, func_0205ba64 PXI_SetFifoRecvCallback
- * (src/engine/pxi/PXI_Fifo.cpp). */
-extern int func_0205ba3c(int tag, int proc);
-extern void func_0205ba64(int tag, void *callback);
+/* PXI_IsCallbackReady and PXI_SetFifoRecvCallback (src/engine/pxi/PXI_Fifo.cpp). */
+extern int PXI_IsCallbackReady(int tag, int proc);
+extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void func_02058b9c(char *p);
 
 void PM_Init(void) {
@@ -31,9 +30,9 @@ void PM_Init(void) {
     data_020a8114[0] = 0;
     data_020a8114[1] = 0;
     PXI_Init();
-    while (func_0205ba3c(PXI_FIFO_TAG_PM, PXI_PROC_ARM7) == 0)
+    while (PXI_IsCallbackReady(PXI_FIFO_TAG_PM, PXI_PROC_ARM7) == 0)
         ;
-    func_0205ba64(PXI_FIFO_TAG_PM, (void *)func_0205fcfc);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_PM, (void *)func_0205fcfc);
     for (i = 0; i < 4; i++)
         data_020a8138[i].flag = 0;
     func_02058b9c(&data_020a8124);

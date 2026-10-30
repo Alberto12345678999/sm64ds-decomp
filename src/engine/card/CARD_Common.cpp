@@ -26,7 +26,7 @@
 extern "C" {
 
 /* local extern: no header declares these yet. Their SDK names: Crash is
- * OS_Terminate, func_0205ba64 PXI_SetFifoRecvCallback, MultiStore32Bytes
+ * OS_Terminate, PXI_SetFifoRecvCallback, MultiStore32Bytes
  * MIi_CpuClearFast, func_020602bc CARDi_TaskThread and func_02060310
  * CARDi_OnFifoRecv. */
 extern void Crash(void);
@@ -37,7 +37,7 @@ extern int OS_SetThreadPriority(void *thread, u32 priority);
 extern void OS_WakeupThreadDirect(void *thread);
 extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack, u32 stackSize,
                             u32 priority);
-extern void func_0205ba64(int tag, void *callback);
+extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern void func_020602bc(void);
 extern void func_02060310(int tag, int data, int err);
@@ -157,7 +157,7 @@ void CARDi_InitCommon(void) {
     p->priority = CARD_THREAD_PRIORITY_DEFAULT;
     OS_CreateThread(p->thread, (void *)func_020602bc, 0, &data_020a8760, 0x400, p->priority);
     OS_WakeupThreadDirect(p->thread);
-    func_0205ba64(0xb, (void *)func_02060310);
+    PXI_SetFifoRecvCallback(0xb, (void *)func_02060310);
 }
 
 int CARDi_WaitAsync(void) {

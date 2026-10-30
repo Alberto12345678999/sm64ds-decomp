@@ -5,10 +5,9 @@
 #define PXI_PROC_ARM7 1
 
 extern void PXI_Init(void);
-/* func_0205ba3c PXI_IsCallbackReady, func_0205ba64 PXI_SetFifoRecvCallback
- * (src/engine/pxi/PXI_Fifo.cpp). */
-extern int func_0205ba3c(int tag, int proc);
-extern void func_0205ba64(int tag, void *callback);
+/* PXI_IsCallbackReady and PXI_SetFifoRecvCallback (src/engine/pxi/PXI_Fifo.cpp). */
+extern int PXI_IsCallbackReady(int tag, int proc);
+extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void func_0206a6d0(void);
 extern void func_0206a694(void);
 extern void func_0206a634(void);
@@ -22,11 +21,11 @@ void CTRDG_Init(void) {
     data_020a9de8 = 1;
     CTRDGi_InitCommon();
     PXI_Init();
-    while (func_0205ba3c(PXI_FIFO_TAG_CTRDG, PXI_PROC_ARM7) == 0)
+    while (PXI_IsCallbackReady(PXI_FIFO_TAG_CTRDG, PXI_PROC_ARM7) == 0)
         ;
-    func_0205ba64(PXI_FIFO_TAG_CTRDG, (void *)func_0206a694);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, (void *)func_0206a694);
     func_0206a6d0();
-    func_0205ba64(PXI_FIFO_TAG_CTRDG, 0);
-    func_0205ba64(PXI_FIFO_TAG_CTRDG, (void *)func_0206a634);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, 0);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, (void *)func_0206a634);
     data_020a9dec = 0;
 }
