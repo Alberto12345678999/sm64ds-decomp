@@ -34,6 +34,7 @@
 #include "types.h"
 #include "G2x.h"
 #include "Ov007Work.h"
+#include "Ov007Display.h"
 #include "Ov007Settings.h"
 
 extern "C" {
@@ -79,7 +80,7 @@ extern void func_ov007_020b7764(void);
 extern void func_ov007_020b782c(void);
 extern void func_ov007_020b8690(void);
 extern void func_ov007_020b8714(int a0, int a1, int a2);
-extern void func_ov007_020bc9c8(int x);
+extern void func_ov007_020bc9c8(Ov007Display *d);
 extern void func_ov007_020bcf90(void);
 extern void func_ov007_020bd4e8(void);
 extern void func_ov007_020bd500(void);
@@ -95,7 +96,7 @@ extern void func_ov007_020bf690(void);
 extern void func_ov007_020bfc54(void);
 extern void func_ov007_020bfcec(void);
 extern void func_ov007_020c1db0(void *c, u16 *in);
-extern void func_ov007_020c20b8(int a, void *b);
+extern void func_ov007_020c20b8(struct Ov007Pad *pad, void *src);
 extern void func_ov007_020c3bc8(void);
 extern void func_ov007_020c3e1c(int v);
 extern void func_ov007_020c3e2c(int v);
@@ -148,7 +149,7 @@ int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4) {
     int ret = 0;
 
     data_ov007_02103430 = 0;
-    func_ov007_020c20b8((int)WORK->pad, &arg4);
+    func_ov007_020c20b8(WORK->pad, &arg4);
     buf[0] = a0;
     buf[1] = a1;
     buf[2] = a2;
@@ -167,7 +168,7 @@ int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4) {
 // @symbol func_ov007_020b7040
 int func_ov007_020b7040(void) {
     func_ov007_020bcf90();
-    func_ov007_020bc9c8((int)WORK->display);
+    func_ov007_020bc9c8(WORK->display);
     WORK->frameCount++;
     data_ov007_02103430 = 1;
     return 1;

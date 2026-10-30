@@ -52,17 +52,10 @@
 #include "types.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "Ov007Model.h"
+#include "Ov007Figure.h"
 
 extern "C" {
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; only the slot
- * this file reads. */
-typedef struct Ov007Model {
-    struct ModelComponents *model; /* 0x00 */
-} Ov007Model;
-
-/* The 0x1c-byte figure func_ov007_020beaa0 builds (unit020be0dc). */
-typedef struct Ov007Figure Ov007Figure;
 
 /* One sprite's corner-colour pair (BGR555): `outer` feeds cornerColors[0]
  * and [3], `inner` cornerColors[1] and [2]. */
@@ -89,11 +82,11 @@ extern void func_ov007_020b3edc(int idx);
 extern void *func_ov007_020b3f20(int idx);
 extern void func_ov007_020b7708(int idx, void *pos);
 extern void func_ov007_020bbf98(void *model, int lights);
-extern void func_ov007_020bc53c(int model);
-extern void func_ov007_020bc5fc(void *model, void *files, int count);
-extern void func_ov007_020bc658(void *model, void *files, int count);
-extern void func_ov007_020bc6b4(void *model, void *files, int count);
-extern void *func_ov007_020bc6d4(void *bmd, int flags);
+extern void func_ov007_020bc53c(Ov007Model *model);
+extern void func_ov007_020bc5fc(Ov007Model *model, void *files, int count);
+extern void func_ov007_020bc658(Ov007Model *model, void *files, int count);
+extern void func_ov007_020bc6b4(Ov007Model *model, void *files, int count);
+extern Ov007Model *func_ov007_020bc6d4(void *bmd, int flags);
 extern void func_ov007_020bea44(Ov007Figure *fig);
 extern Ov007Figure *func_ov007_020beaa0(int index, int figureIndex);
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
@@ -116,7 +109,8 @@ void func_ov007_020b283c(void);
  * set 0x3def and 2 on every material and func_ov007_020bbf98 sets 3 in each
  * one's low four bits. */
 Ov007Model *func_ov007_020b2bd4(int figureIndex, int stage) {
-    void *model;
+    void *file;
+    Ov007Model *model;
     int i, set;
     int *setFiles, *figureFiles;
 
@@ -124,22 +118,22 @@ Ov007Model *func_ov007_020b2bd4(int figureIndex, int stage) {
         set = 2;
     else
         set = figureIndex;
-    model = func_ov007_020b3f20(data_ov007_020ccc48[figureIndex]);
+    file = func_ov007_020b3f20(data_ov007_020ccc48[figureIndex]);
     setFiles = data_ov007_020ccc80[set];
     figureFiles = data_ov007_020ccc68[figureIndex];
     for (i = 0; i < 3; i++) {
         data_ov007_02103348[i] = func_ov007_020b3f20(setFiles[i]);
         data_ov007_02103354[i] = func_ov007_020b3f20(figureFiles[i]);
     }
-    func_02044efc(model);
-    model = func_ov007_020bc6d4(model, 6);
+    func_02044efc(file);
+    model = func_ov007_020bc6d4(file, 6);
     func_ov007_020bc6b4(model, data_ov007_02103348, 3);
     func_ov007_020bc5fc(model, data_ov007_02103354, 3);
     func_ov007_020bc658(model, data_ov007_020d7ee8[set], 3);
-    func_02045ef8(((Ov007Model *)model)->model, (void *)0x3def);
-    func_02046234(((Ov007Model *)model)->model, (void *)2);
+    func_02045ef8(model->model, (void *)0x3def);
+    func_02046234(model->model, (void *)2);
     func_ov007_020bbf98(model, 3);
-    return (Ov007Model *)model;
+    return model;
 }
 
 // @symbol func_ov007_020b2998
@@ -227,7 +221,7 @@ void func_ov007_020b283c(void) {
     }
 
     if (WORK->model != 0) {
-        func_ov007_020bc53c((int)WORK->model);
+        func_ov007_020bc53c(WORK->model);
         WORK->model = 0;
     }
     if (WORK->figure != 0) {

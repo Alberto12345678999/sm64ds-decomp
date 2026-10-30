@@ -494,12 +494,6 @@
         "param:#1 int",
         "param:#3 int",
         "param:#4 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc9c8.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int"
       ]
     },
     "DMASyncWordTransfer": {
@@ -5894,9 +5888,6 @@
       "include/decl_Model.h": [
         "param:#1 void *",
         "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc47c.cpp": [
-        "param:#1 BMD_File *"
       ]
     },
     "_ZN17dExtSimpleModel_c23AddToCommonModelDataArrER8BMD_File": {
@@ -19403,10 +19394,6 @@
       "src/engine/model/d_ext_model.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BTA_File *"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc658.c": [
-        "param:#1 int",
-        "param:#2 int"
       ]
     },
     "func_02046bbc": {
@@ -19420,9 +19407,6 @@
     "func_02046d50": {
       "src/engine/model/d_ext_model.cpp": [
         "param:#2 BTP_File *"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc5fc.c": [
-        "param:#2 int"
       ]
     },
     "func_02046e28": {
@@ -19859,12 +19843,6 @@
     "func_020553c0": {
       "src/func_02055780.c": [
         "arity:1"
-      ]
-    },
-    "func_020555a4": {
-      "src/unnamed/ov007/func_ov007_020c93b4.c": [
-        "param:#1 int",
-        "return:int"
       ]
     },
     "OSi_EnterDmaCallback": {
@@ -22619,19 +22597,9 @@
         "param:#1 int"
       ]
     },
-    "func_ov007_020ad660": {
-      "src/unnamed/ov007/func_ov007_020aed98.cpp": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020adb84": {
       "src/unnamed/ov007/func_ov007_020ada70.cpp": [
         "return:void"
-      ]
-    },
-    "func_ov007_020add3c": {
-      "src/unnamed/ov007/func_ov007_020aed98.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020aea6c": {
@@ -22716,16 +22684,6 @@
         "return:int"
       ]
     },
-    "func_ov007_020b44ec": {
-      "src/unnamed/ov007/func_ov007_020aed98.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020b4c04": {
-      "src/unnamed/ov007/func_ov007_020b693c.c": [
-        "return:int"
-      ]
-    },
     "func_ov007_020b6eb4": {
       "src/game/stages/d_s_dsmt.cpp": [
         "arity:1",
@@ -22799,29 +22757,6 @@
         "arity:4"
       ]
     },
-    "func_ov007_020bc53c": {
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#1 void *"
-      ]
-    },
-    "func_ov007_020bc6b4": {
-      "src/ui/menus/unit020b2764.cpp": [
-        "param:#2 void *"
-      ]
-    },
-    "func_ov007_020bc6d4": {
-      "src/ui/menus/unit020b2764.cpp": [
-        "param:#2 int"
-      ],
-      "src/ui/menus/unit020be0dc.cpp": [
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020bc9c8": {
-      "src/ui/menus/unit020b6eb4.cpp": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020bce70": {
       "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "param:#1 int"
@@ -22874,15 +22809,12 @@
         "param:#4 int"
       ],
       "src/unnamed/ov007/func_ov007_020afc44.c": [
-        "param:#1 int",
         "param:#4 int"
       ],
       "src/unnamed/ov007/func_ov007_020b0244.c": [
-        "param:#1 int",
         "param:#4 int"
       ],
       "src/unnamed/ov007/func_ov007_020b0834.c": [
-        "param:#1 int",
         "param:#4 int"
       ],
       "src/unnamed/ov007/func_ov007_020b131c.c": [
@@ -22899,22 +22831,9 @@
         "return:void"
       ]
     },
-    "func_ov007_020c0af4": {
-      "src/unnamed/ov007/func_ov007_020ade58.c": [
-        "param:#2 void *"
-      ]
-    },
-    "func_ov007_020c0b78": {
-      "src/unnamed/ov007/func_ov007_020c0b20.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#6 int"
-      ]
-    },
     "func_ov007_020c0eb0": {
       "src/unnamed/ov007/func_ov007_020c0b78.c": [
         "param:#1 E8 *",
-        "param:#2 int",
         "param:#5 int",
         "return:int"
       ]
@@ -22922,36 +22841,6 @@
     "func_ov007_020c105c": {
       "src/unnamed/ov007/func_ov007_020b73b4.c": [
         "arity:1",
-        "return:void"
-      ]
-    },
-    "func_ov007_020c1068": {
-      "src/unnamed/ov007/func_ov007_020b7594.c": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020c10b0": {
-      "src/unnamed/ov007/func_ov007_020c3f00.c": [
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020c1180": {
-      "src/unnamed/ov007/func_ov007_020b73b4.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020c40b4.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov007_020c12ac": {
-      "src/unnamed/ov007/func_ov007_020c9688.c": [
-        "param:#1 unsigned int",
-        "param:#2 unsigned int"
-      ]
-    },
-    "func_ov007_020c13f4": {
-      "src/unnamed/ov007/func_ov007_020c121c.c": [
-        "param:#1 char *",
         "return:void"
       ]
     },
@@ -23022,16 +22911,6 @@
         "param:#1 char *"
       ]
     },
-    "func_ov007_020c20b8": {
-      "src/ui/menus/unit020b6eb4.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c22a0": {
-      "src/unnamed/ov007/func_ov007_020c22a0.c": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov007_020c22f8": {
       "src/unnamed/ov007/func_ov007_020b65e0.c": [
         "arity:1",
@@ -23044,12 +22923,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c241c": {
-      "src/unnamed/ov007/func_ov007_020b6a84.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
     "func_ov007_020c2b9c": {
       "src/unnamed/ov007/func_ov007_020c2acc.c": [
         "param:#2 int",
@@ -23059,11 +22932,6 @@
     "func_ov007_020c2c68": {
       "src/unnamed/ov007/func_ov007_020c2acc.c": [
         "return:void *"
-      ]
-    },
-    "func_ov007_020c32e8": {
-      "src/unnamed/ov007/func_ov007_020ada70.cpp": [
-        "param:#3 int"
       ]
     },
     "func_ov007_020c338c": {
@@ -23104,9 +22972,6 @@
       "src/unnamed/ov007/func_ov007_020aea4c.c": [
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020bc53c.cpp": [
-        "param:#1 int"
-      ],
       "src/unnamed/ov007/func_ov007_020c05f8.c": [
         "arity:0"
       ],
@@ -23119,13 +22984,6 @@
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c1180.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c1384.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c13f4.c": [
-        "param:#1 int",
         "return:int"
       ],
       "src/ui/menus/unit020c1404.cpp": [
@@ -23500,14 +23358,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c92ac": {
-      "src/unnamed/ov007/func_ov007_020bc658.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc6b4.c": [
-        "return:int"
-      ]
-    },
     "func_ov007_020c92d0": {
       "src/unnamed/ov007/func_ov007_020aed98.cpp": [
         "param:#1 int"
@@ -23522,17 +23372,8 @@
       ]
     },
     "func_ov007_020c9388": {
-      "src/unnamed/ov007/func_ov007_020adc08.c": [
-        "return:int"
-      ],
       "src/unnamed/ov007/func_ov007_020aea6c.c": [
-        "param:#1 int",
         "return:int"
-      ]
-    },
-    "func_ov007_020c93b4": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "return:void"
       ]
     },
     "func_ov007_020c9460": {
@@ -23544,11 +23385,6 @@
     "func_ov007_020c951c": {
       "src/ui/menus/unit020b797c.cpp": [
         "arity:3"
-      ]
-    },
-    "func_ov007_020c9688": {
-      "src/unnamed/ov007/func_ov007_020b6d40.c": [
-        "return:int"
       ]
     },
     "func_ov007_020c9a2c": {

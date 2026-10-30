@@ -19,7 +19,7 @@
 extern "C" {
 /* This TU's own free helpers, defined below the members that call them. */
 void func_020398fc(dBgW_KcMbg *self);
-void func_02039db8(dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res);
+void func_02039db8(dBgW_KcMbg *collider, Vector3 *v, Vector3 *res);
 void func_02039e18(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 void func_02039e30(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 void func_02039e48(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);

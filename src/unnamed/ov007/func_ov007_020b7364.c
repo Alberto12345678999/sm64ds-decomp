@@ -1,12 +1,4 @@
-#include "Ov007BgLayer.h"
-
-/* The 0x48-byte 2D display record func_ov007_020b7594 builds; names as
- * there, only the slots this file reads. */
-typedef struct Ov007Display {
-    char pad_00[8];
-    Ov007BgList *bgListMain; /* 0x08 */
-    Ov007BgList *bgListSub;  /* 0x0c */
-} Ov007Display;
+#include "Ov007Display.h"
 
 extern void func_ov007_020c03b0(Ov007BgList *list);
 

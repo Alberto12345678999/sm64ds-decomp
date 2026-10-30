@@ -41,6 +41,8 @@
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
+#include "Ov007Item.h"
+#include "Ov007Pad.h"
 
 extern "C" {
 
@@ -68,38 +70,6 @@ typedef struct Ov007Cursor {
 } Ov007Cursor;
 
 typedef char Ov007Cursor_size_must_be_0x1c[sizeof(Ov007Cursor) == 0x1c ? 1 : -1];
-
-/* The 0x70-byte key record func_ov007_020c2304 allocates (names as in
- * func_ov007_020b1cf0). func_ov007_020c20b8 keeps one counter per button,
- * in the order up, down, right, left, A, B, X, Y, L, R, START, SELECT. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-    /* 0x04: frames each button has been held, 1 on the press frame; 0 while
-     * it is up (func_ov007_020c20b8) */
-    u32 heldFrames[12];
-    char pad_34[0x30];
-    /* 0x64: bit 0 makes func_ov007_020c20b8 read no keys until every key is
-     * released, then clears it */
-    int inputLock;
-    char pad_68[8];
-} Ov007Pad;
-
-typedef char Ov007Pad_size_must_be_0x70[sizeof(Ov007Pad) == 0x70 ? 1 : -1];
-
-/* The 0x2c-byte item func_ov007_020aea6c allocates and the 0x1c-byte view
- * func_ov007_020b4c04 returns (names as in func_ov007_020beeb0). */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    int posX;              /* 0x08: Q12; func_ov007_020b3e84 reports it */
-    int posY;              /* 0x0c */
-} Ov007Item;
-
-typedef struct Ov007ItemView {
-    Ov007Item *item;     /* 0x00 */
-    Ov007Sprite *sprite; /* 0x04: func_ov007_020b2cf0 places the cursor on it */
-} Ov007ItemView;
 
 extern Ov007Cursor *data_ov007_02103360;
 extern int data_ov007_02103364;
@@ -174,12 +144,11 @@ void func_ov007_020b3e04(int sel, s16 *p1, s16 *p2) {
 }
 
 // @symbol func_ov007_020b3d30
-/* Sets up sprite `thiz` as entry idx of the data_ov007_020d7dc0..
+/* Sets up `sprite` as entry idx of the data_ov007_020d7dc0..
  * data_ov007_020d7dea tables: its texture, texel origin, pixel size, shadow
  * polygon id and shadow offset, and its depth; then sizes it in world space
  * through camera 1 (func_ov007_020c43bc). */
-void func_ov007_020b3d30(char *thiz, int idx) {
-    Ov007Sprite *sprite = (Ov007Sprite *)thiz;
+void func_ov007_020b3d30(Ov007Sprite *sprite, int idx) {
     sprite->frames[0] = WORK->textures[data_ov007_020d7dc8[idx]];
     sprite->texS = data_ov007_020d7dd0[idx * 2];
     sprite->texT = data_ov007_020d7dd1[idx * 2];
@@ -192,7 +161,7 @@ void func_ov007_020b3d30(char *thiz, int idx) {
         sprite->depth = -0x10c0;
     else
         sprite->depth = (int)0xffffef38;
-    func_ov007_020c43bc(thiz, (int)WORK->cameras[1]);
+    func_ov007_020c43bc(sprite, (int)WORK->cameras[1]);
 }
 
 // @symbol func_ov007_020b3c54
@@ -239,7 +208,7 @@ void func_ov007_020b3c54(void) {
         break;
     }
     CURSOR->mode = mode;
-    func_ov007_020b3d30((char *)CURSOR->sprite, mode);
+    func_ov007_020b3d30(CURSOR->sprite, mode);
 }
 
 // @symbol func_ov007_020b3708

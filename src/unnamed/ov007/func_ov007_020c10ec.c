@@ -1,38 +1,8 @@
-/* The 0x44-byte OAM sprite node func_ov007_020c11ac allocates and resets
- * here. Roles are from its drawer func_ov007_020c0b78, the animation step
- * func_ov007_020c0d70 (whose mode/rev/frame/tick/changed names are kept),
- * Sprite_SetAnimation and the child list func_ov007_020c10b0 builds
- * (owner/head/next as there); prev is the OAM node list's back link
- * (func_ov007_020c0af4). */
-typedef struct Ov007OamNode {
-    int x;       /* 0x00: Q12 screen x; func_ov007_020c0b78 adds it to the parent's */
-    int y;       /* 0x04: Q12 screen y */
-    int visible; /* 0x08: func_ov007_020c0b78 draws this node and its children only when set */
-    int flip;    /* 0x0c: the OAM flip mode func_ov007_020c0eb0 applies */
-    int mosaic;  /* 0x10: func_ov007_020c0eb0 sets the OAM mosaic bit when set */
-    unsigned char priority;  /* 0x14: OAM priority, used when the caller passes none (> 3) */
-    signed char affineIndex; /* 0x15: OAM affine matrix, -1 = none */
-    char pad_16[2];
-    void **anims;            /* 0x18: animCount animations (func_ov007_020c11ac) */
-    unsigned char animCount; /* 0x1c: func_ov007_020c1180 frees anims only when nonzero */
-    unsigned char animIndex; /* 0x1d: Sprite_SetAnimation's first argument */
-    char pad_1e[2];
-    int mode;    /* 0x20: 0 = stopped, 1 = looping, else once (func_ov007_020c0d70) */
-    int rev;     /* 0x24: 1 = step backwards */
-    int paused;  /* 0x28: func_ov007_020c0d70 does not step while set; no writer found */
-    short frame; /* 0x2c */
-    short tick;  /* 0x2e: ticks into the frame */
-    int changed; /* 0x30: set when the frame wraps or clamps at an end */
-    struct Ov007OamNode *owner; /* 0x34: func_ov007_020c10b0 */
-    struct Ov007OamNode *head;  /* 0x38: first child */
-    struct Ov007OamNode *next;  /* 0x3c: next sibling */
-    struct Ov007OamNode *prev;  /* 0x40: previous node in its OAM list */
-} Ov007OamNode;
+#include "Ov007OamNode.h"
 
-typedef char Ov007OamNode_size_must_be_0x44[sizeof(Ov007OamNode) == 0x44 ? 1 : -1];
-
-void func_ov007_020c10ec(char *c) {
-    Ov007OamNode *n = (Ov007OamNode *)c;
+/* Resets an OAM node: at the origin, shown, no animation playing, linked
+ * to nothing. */
+void func_ov007_020c10ec(Ov007OamNode *n) {
     int i;
     n->y = 0;
     n->x = n->y;

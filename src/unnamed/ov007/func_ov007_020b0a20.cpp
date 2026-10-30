@@ -5,6 +5,10 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "Ov007Item.h"
+#include "Ov007LayerSlot.h"
+#include "Ov007Pad.h"
+#include "Ov007Figure.h"
 
 extern "C" {
 
@@ -33,40 +37,6 @@ typedef struct Ov007Model {
     Vector3 scale; /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
 } Ov007Model;
 
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * names as in unit020be0dc, only the slots this file touches. */
-typedef struct Ov007Figure Ov007Figure;
-struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04 */
-    char pad_08[0x10];
-    void *update; /* 0x18: the per-frame hook */
-};
-
-/* The pad record at Ov007Work's pad; names as in unit020b8f50. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; only the slot this
- * file touches. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-} Ov007Item;
-
-/* The 8-byte record func_ov007_020ade58 returns. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemNode;
-
-/* The 0xc-byte record func_ov007_020adc08 builds. */
-typedef struct Ov007LayerSlot {
-    Ov007MenuState *state; /* 0x00 */
-    void *layer;           /* 0x04: the Ov007BgLayer func_ov007_020c0638 scrolls */
-} Ov007LayerSlot;
-
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
@@ -75,7 +45,7 @@ extern char *data_ov007_0210342c;
 extern int func_ov007_020aebac(void);
 extern void RequestScreenFade(int, int, int);
 extern void func_ov007_020b1fa4(int preset);
-extern void func_ov007_020b0da0(void *figure);
+extern void func_ov007_020b0da0(Ov007Figure *figure);
 extern void func_ov007_020be980(Ov007Figure *fig, int anim, int a2);
 extern int func_ov007_020be964(Ov007Figure *fig);
 extern void func_ov007_020c0638(void *layer, int x, int y, unsigned short tile);
@@ -109,7 +79,7 @@ void func_ov007_020b0a20(void) {
     if (ticks == 0) {
         RequestScreenFade(4, 6, 0);
         func_ov007_020b1fa4(4);
-        WORK->figure->update = (void *)func_ov007_020b0da0;
+        WORK->figure->update = func_ov007_020b0da0;
         func_ov007_020be980(WORK->figure, 1, 0);
         func_ov007_020be964(WORK->figure);
         func_ov007_020c0638(WORK->layerSlots[6]->layer, 0, 0, 0);
