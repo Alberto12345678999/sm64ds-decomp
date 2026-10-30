@@ -16028,11 +16028,6 @@
         "kind:data"
       ]
     },
-    "func_01ff859c": {
-      "src/__num2dec_internal.c": [
-        "return:unsigned long long"
-      ]
-    },
     "func_01ff9378": {
       "src/game/actors/d_a_kuri_king.cpp": [
         "param:#1 int",
@@ -21442,11 +21437,6 @@
     "func_0207037c": {
       "src/cstd4.cpp": [
         "return:void"
-      ]
-    },
-    "func_02071708": {
-      "src/__num2dec_internal.c": [
-        "arity:1"
       ]
     },
     "func_02071790": {

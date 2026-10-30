@@ -3970,45 +3970,9 @@ src/ldexp.c:
     complete
     .text start:0x020708b4 end:0x02070b98
 
-src/__num2dec.c:
+src/ansi_fp.c:
     complete
-    .text start:0x02070b98 end:0x02070c68
-
-src/__num2dec_internal.c:
-    complete
-    .text start:0x02070c68 end:0x02070ec0
-
-src/__two_exp.c:
-    complete
-    .text start:0x02070ec0 end:0x020712a0
-
-src/__str2dec.c:
-    complete
-    .text start:0x020712a0 end:0x02071364
-
-src/__timesdec.c:
-    complete
-    .text start:0x02071364 end:0x02071510
-
-src/__ull2dec.c:
-    complete
-    .text start:0x02071510 end:0x020715e0
-
-src/__rounddec.c:
-    complete
-    .text start:0x020715e0 end:0x02071644
-
-src/__dorounddecup.c:
-    complete
-    .text start:0x02071644 end:0x02071698
-
-src/__must_round.c:
-    complete
-    .text start:0x02071698 end:0x02071708
-
-src/unnamed/arm9/0207/func_02071708.c:
-    complete
-    .text start:0x02071708 end:0x02071784
+    .text start:0x02070b98 end:0x02071784
 
 src/unnamed/arm9/0207/func_02071784.c:
     complete
