@@ -164,14 +164,14 @@
       "ordinal": 19
     },
     {
-      "symbol": "_ZN10dScStage_c14GraphCallback2Ev",
+      "symbol": "_ZN10dScStage_c15graphCallback_c14GraphCallback2Ev",
       "address": "0x020297f4",
       "size": "0x00000044",
       "legacy_source": "src/_ZN10dScStage_c14GraphCallback2Ev.cpp",
       "ordinal": 20
     },
     {
-      "symbol": "_ZN10dScStage_c14GraphCallback1Ev",
+      "symbol": "_ZN10dScStage_c15graphCallback_c14GraphCallback1Ev",
       "address": "0x02029838",
       "size": "0x0000001c",
       "legacy_source": "src/_ZN10dScStage_c14GraphCallback1Ev.cpp",
@@ -972,6 +972,41 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020921c0",
       "reason": "Vtable for dScStage_c, emitted because this TU defines the key function. Cartridge home arm9:0x020921c0 is .data, outside the claimed .text."
+    },
+    {
+      "symbol": "_ZTVN10dScStage_c15graphCallback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02092188",
+      "reason": "Vtable for dScStage_c::graphCallback_c, emitted because this TU defines both its virtual hooks. Cartridge home arm9:0x02092188 is .data, outside the claimed .text."
+    },
+    {
+      "symbol": "_ZTIN10dScStage_c15graphCallback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02092164",
+      "reason": "Typeinfo for dScStage_c::graphCallback_c. Cartridge home arm9:0x02092164 is .data, outside the claimed .text."
+    },
+    {
+      "symbol": "_ZTSN10dScStage_c15graphCallback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02092198",
+      "reason": "Typeinfo name for dScStage_c::graphCallback_c. Cartridge home arm9:0x02092198 is .data, outside the claimed .text."
+    },
+    {
+      "symbol": "_ZTIN8dGraph_c10callback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208ee04",
+      "reason": "Vague-linkage typeinfo for the graph callback base. The cartridge copy is arm9:0x0208ee04, outside this entry's .text."
+    },
+    {
+      "symbol": "_ZTSN8dGraph_c10callback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208ee24",
+      "reason": "Vague-linkage typeinfo name for the graph callback base. The cartridge copy is arm9:0x0208ee24, outside this entry's .text."
     }
   ],
   "verification": {

@@ -89,15 +89,6 @@ struct Matrix2x2 {
 };
 
 // Partial view of the graph callback object, not the playable scene.
-struct StageGraphCallbackView {
-    void *vtable;
-    Matrix2x2 matrix;
-    s32 originX;
-    s32 originY;
-    s32 targetX;
-    s32 targetY;
-};
-
 /* TU-local overlay of the per-controller input records at data_0209f498,
  * 0x18 apart. CheckInput fills them from the pad and the touch screen each
  * frame; ResetInput clears them; the pause screen polls the mode byte at
@@ -251,14 +242,6 @@ extern void *data_ov001_020acb68[];
 struct MinimapDesc {
     u32 w[4];
 };
-/* data_0209f3c4 is the stage's graph callback object (InitResources hands
-   it to data_0209d4a8). Its last four words are StageGraphCallbackView's
-   BG3 affine origin and target, which GraphCallback2 passes to SetBGyAffine
-   and UpdateMinimap sets. */
-struct MinimapState {
-    char _pad[0x14];
-    volatile u32 originX, originY, targetX, targetY;
-};
 /* SetNextLevel's return table: level, return level, entrance. */
 struct LevelReturnEntry {
     s8 level;
@@ -378,8 +361,7 @@ extern unsigned char data_0209f370[];
 extern unsigned char data_0209f37c[];
 extern void *data_0209f394[];
 extern void *data_0209f3a4[];
-extern MinimapState data_0209f3c4;
-extern MinimapDesc data_0209f3c8;
+extern dScStage_c::graphCallback_c data_0209f3c4;
 extern int data_0209f3e8[];
 extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
@@ -2744,36 +2726,35 @@ int IsButtonInputValid(void) {
 }
 }
 
-// @symbol _ZN10dScStage_c14GraphCallback2Ev
-/* The callback object GraphCallback2 reads through `this`: vptr at +0 (never
-   touched as data), a fixed-point 2x2 matrix at +0x4 that the object's
-   static-init constructor at 0x02074edc seeds with 0x1000 (1.0), and the four
-   affine words after it (StageGraphCallbackView). */
-
+// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
 /* Nullary, and a member: vtable slot 2 of dScStage_c::graphCallback_c (RTTI
    si-child of dGraph_c::callback_c). Every dispatcher -- func_02018ec0,
    func_02018efc -- calls it as `ldr r1,[r0]; ldr r1,[r1,#8]; blx r1` with
    r0 = the callback object and r1 never set as an argument. Sets the BG3
    affine transform from the object's matrix. */
-s32 dScStage_c::GraphCallback2() {
-    StageGraphCallbackView *callback = (StageGraphCallbackView *)this;
-    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, &callback->matrix, callback->originX,
-                      callback->originY, callback->targetX, callback->targetY);
+int dScStage_c::graphCallback_c::GraphCallback2() {
+    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, (Matrix2x2 *)matrix, originX,
+                      originY, targetX, targetY);
     return 1;
 }
 
-// @symbol _ZN10dScStage_c14GraphCallback1Ev
+// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback1Ev
 /* Vtable slot 1 of dScStage_c::graphCallback_c: render every particle. */
-int dScStage_c::GraphCallback1() {
+int dScStage_c::graphCallback_c::GraphCallback1() {
     Particle::RenderAll();
     return 1;
 }
 
 // @symbol UpdateMinimap
-/* Copy a 16-byte descriptor into data_0209f3c8 and store the four scalar
-   params into data_0209f3c4 (+0x14..+0x20). */
+/* Copy a 16-byte descriptor into the callback object's matrix (+0x4) and store
+   the four affine params after it. The object is one 0x24-byte object; the
+   symbols.txt row data_0209f3c8 at the matrix stays only because dsd needs a
+   symbol at every relocs.txt target, and the copy's pool word points there.
+   The MinimapDesc cast stays because the ROM's copy is
+   a single ldm/stm block move and a struct copy of four named fields
+   scalarizes. */
 extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
-    *(MinimapDesc *)(((long long)(int)&data_0209f3c8)) = *desc;
+    *(MinimapDesc *)(((long long)(int)data_0209f3c4.matrix)) = *desc;
     data_0209f3c4.originX = a;
     data_0209f3c4.originY = b;
     data_0209f3c4.targetX = c;
