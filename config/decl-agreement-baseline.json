@@ -5454,9 +5454,6 @@
       "src/DMAStartTransferFB.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040a5c.cpp": [
         "return:void"
       ],
@@ -9386,9 +9383,6 @@
       "src/minigames/d_s_mg_d3d_base.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0201/func_02019404.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:void * *"
       ],
@@ -9406,16 +9400,13 @@
       ]
     },
     "data_0209d4ac": {
-      "src/unnamed/arm9/0201/func_02018ec0.cpp": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0201/func_02019440.cpp": [
         "return:int"
       ]
     },
     "data_0209d4b0": {
       "src/unnamed/arm9/0201/func_02018ec0.cpp": [
-        "return:void *"
+        "return:dFdBrightness_c *"
       ],
       "src/KuppaScript.cpp": [
         "return:dFdBrightness_c *"
@@ -9487,7 +9478,7 @@
     },
     "data_0209d524": {
       "src/unnamed/arm9/0201/func_0201a428.cpp": [
-        "return:void *"
+        "return:mHeap::Heap_t *"
       ]
     },
     "data_0209d574": {
@@ -9498,9 +9489,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_020199a4.c": [
-        "return:char []"
-      ],
-      "src/unnamed/arm9/0201/func_0201a054.cpp": [
         "return:char []"
       ],
       "src/unnamed/arm9/0201/func_0201fec8.c": [
@@ -17725,11 +17713,6 @@
         "return:void"
       ]
     },
-    "func_02019f10": {
-      "src/unnamed/arm9/0201/func_02019ebc.c": [
-        "return:void"
-      ]
-    },
     "func_0201a03c": {
       "src/Crash.cpp": [
         "arity:2"
@@ -17772,11 +17755,6 @@
       "src/unnamed/arm9/0201/func_0201a5f8.c": [
         "param:#1 void *",
         "return:void"
-      ]
-    },
-    "func_0201a8b4": {
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "arity:0"
       ]
     },
     "func_0201a96c": {
@@ -17828,32 +17806,6 @@
     "func_0201aa18": {
       "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
         "return:void"
-      ]
-    },
-    "func_0201aa50": {
-      "src/unnamed/arm9/0201/func_0201a8b4.c": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int",
-        "param:#5 void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int",
-        "param:#5 Struct_0201a96c *",
-        "return:void"
-      ]
-    },
-    "func_0201aaa4": {
-      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/arm9/0201/func_0201aab0.c": [
-        "return:int"
-      ]
-    },
-    "func_0201aad4": {
-      "src/unnamed/arm9/0201/func_0201aa18.c": [
-        "param:#1 void *"
       ]
     },
     "func_0201aaec": {
@@ -19477,15 +19429,9 @@
         "return:unsigned long long"
       ]
     },
-    "OS_CancelAlarm": {
-      "src/unnamed/arm9/0201/func_0201aaa4.c": [
-        "arity:0"
-      ]
-    },
     "OS_SetAlarm": {
       "src/unnamed/arm9/0201/func_0201aa50.c": [
-        "arity:5",
-        "return:int"
+        "param:#3 void (*)(void *)"
       ]
     },
     "func_02059f2c": {
@@ -19999,7 +19945,7 @@
     },
     "func_02061128": {
       "src/unnamed/arm9/0201/func_02019ebc.c": [
-        "param:#1 void (*)(void)"
+        "param:#1 int (*)(void)"
       ]
     },
     "func_02061188": {
@@ -20676,14 +20622,6 @@
     "func_0206cbc0": {
       "src/cstd3.cpp": [
         "arity:0"
-      ]
-    },
-    "func_0206d32c": {
-      "src/unnamed/arm9/0201/func_02018b64.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "return:void"
       ]
     },
     "func_0206d868": {

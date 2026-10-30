@@ -1,9 +1,17 @@
-extern void* data_0209d4a8;
-/* The scene's GraphCallback1 (data_0209d4a8): the main loop runs it after
-   the scene step (func_02044120), before the frame wait. */
-void func_02019404(void){
-  void** o = (void**)data_0209d4a8;
-  if(!o) return;
-  void** vt = (void**)o[0];
-  ((void(*)(void*))vt[1])(o);
+//cpp
+#include "dGraph_c.h"
+
+extern "C" {
+
+/* The scene's graph callback (d_s_dsmt.cpp and the other scenes set it). */
+extern dGraph_c::callback_c *data_0209d4a8;
+
+/* Run the scene's GraphCallback1: the main loop runs it after the scene step
+   (func_02044120), before the frame wait. */
+void func_02019404(void) {
+    dGraph_c::callback_c *callback = data_0209d4a8;
+    if (!callback)
+        return;
+    callback->GraphCallback1();
+}
 }
