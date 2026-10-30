@@ -1,0 +1,64 @@
+#ifndef NNSYS_SND_PLAYER_H
+#define NNSYS_SND_PLAYER_H
+
+/*
+ * NitroSystem's sequence-player handle and the player it points at, laid
+ * out as the Sonic Rush Adventure decomp spells NNS snd_player's types.
+ * SoundEngine.cpp's struct E1 is the same object (fader at 0x1c, status
+ * at 0x2c, player number at 0x3c, initial volume at 0x40). The record
+ * types it nests are opaque here past their size.
+ */
+
+#include "types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct NNSFndLink {
+    void *prevObject;
+    void *nextObject;
+} NNSFndLink;
+
+typedef struct NNSSndFader {
+    int origin;
+    int target;
+    int counter;
+    int frame;
+} NNSSndFader;
+
+typedef struct NNSSndSeqPlayer {
+    struct NNSSndHandle *handle; /* 0x00 */
+    void *player;                /* 0x04 -- NNSSndPlayer */
+    void *heap;                  /* 0x08 -- NNSSndPlayerHeap */
+    NNSFndLink playerLink;       /* 0x0c */
+    NNSFndLink prioLink;         /* 0x14 */
+    NNSSndFader fader;           /* 0x1c */
+    u8 status;                   /* 0x2c */
+    u8 startFlag;                /* 0x2d */
+    u8 pauseFlag;                /* 0x2e */
+    u8 prepareFlag;              /* 0x2f */
+    u32 commandTag;              /* 0x30 */
+    u16 seqType;                 /* 0x34 */
+    u16 pad2;                    /* 0x36 */
+    u16 seqNo;                   /* 0x38 */
+    u16 seqArcIndex;             /* 0x3a */
+    u8 playerNo;                 /* 0x3c */
+    u8 prio;                     /* 0x3d */
+    s16 volume;                  /* 0x3e */
+    u8 initVolume;               /* 0x40 */
+    u8 extVolume;                /* 0x41 */
+    u16 pad3_;                   /* 0x42 */
+} NNSSndSeqPlayer;
+
+typedef char NNSSndSeqPlayer_size_must_be_0x44[sizeof(NNSSndSeqPlayer) == 0x44 ? 1 : -1];
+
+typedef struct NNSSndHandle {
+    NNSSndSeqPlayer *player;
+} NNSSndHandle;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

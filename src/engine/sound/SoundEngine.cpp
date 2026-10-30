@@ -519,8 +519,8 @@ extern void func_0204f76c(char **c, int b, int d);
 extern void func_0204f79c(char **c, int b, int d);
 extern void func_0204f7cc(char **c, int b, int d);
 extern void func_0204f7fc(char **c, int b, int d);
-extern void func_0204f82c(void** obj, int b, int idx);
-extern void func_0204f86c(char **c, int b, int d);
+extern void NNS_SndPlayerSetTrackVolume(void **obj, int b, int idx);
+extern void NNS_SndPlayerSetTrackMute(char **c, int b, int d);
 extern void func_0204f89c(char **c, int b);
 extern void func_0204f8cc(char **c, int a, int b);
 extern void func_0204f914(void **p, unsigned char v);
@@ -2152,14 +2152,26 @@ extern "C" void func_0204f8cc(char **c, int a, int b) {
 // @symbol func_0204f89c
 extern "C" void func_0204f89c(char **c, int b) { unsigned char *p = (unsigned char *)*c; if (p) func_0205ad24(p[0x3c], b); }
 
-// @symbol func_0204f86c
-extern "C" void func_0204f86c(char **c, int b, int d) { unsigned char *p = (unsigned char *)*c; if (p) ((void(*)(int, int, int))func_0205aaf4)(p[0x3c], b, d); }
+/* NitroSystem's NNS_SndPlayerSetTrackMute: if the handle holds a player,
+   mute (flag 1) or unmute the tracks in trackBitMask through
+   SND_SetTrackMute (func_0205aaf4) on its player number (+0x3c). */
+// @symbol NNS_SndPlayerSetTrackMute
+extern "C" void NNS_SndPlayerSetTrackMute(char **handle, int trackBitMask, int flag) {
+    unsigned char *p = (unsigned char *)*handle;
+    if (p)
+        ((void (*)(int, int, int))func_0205aaf4)(p[0x3c], trackBitMask, flag);
+}
 
-// @symbol func_0204f82c
-extern "C" void func_0204f82c(void** obj, int b, int idx) {
-    unsigned char* p = (unsigned char*)*obj;
-    if (p == 0) return;
-    func_0205acfc(p[0x3c], b, data_02086384[idx]);
+/* NitroSystem's NNS_SndPlayerSetTrackVolume: if the handle holds a player,
+   set the tracks in trackBitMask to volume (0..127) through
+   SND_SetTrackVolume (func_0205acfc), converted by SND_CalcDecibel, which
+   is the SNDi_DecibelTable lookup data_02086384[volume]. */
+// @symbol NNS_SndPlayerSetTrackVolume
+extern "C" void NNS_SndPlayerSetTrackVolume(void **handle, int trackBitMask, int volume) {
+    unsigned char *p = (unsigned char *)*handle;
+    if (p == 0)
+        return;
+    func_0205acfc(p[0x3c], trackBitMask, data_02086384[volume]);
 }
 
 // @symbol func_0204f7fc

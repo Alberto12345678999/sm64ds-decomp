@@ -8307,11 +8307,11 @@
     },
     "arm9:0x0204f82c": {
       "author": "tangosdev",
-      "name": "func_0204f82c"
+      "name": "NNS_SndPlayerSetTrackVolume"
     },
     "arm9:0x0204f86c": {
       "author": "tangosdev",
-      "name": "func_0204f86c"
+      "name": "NNS_SndPlayerSetTrackMute"
     },
     "arm9:0x0204f89c": {
       "author": "tangosdev",
