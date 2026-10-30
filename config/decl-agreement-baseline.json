@@ -11069,6 +11069,9 @@
     "data_020a4b6c": {
       "include/decl_common.h": [
         "return:int"
+      ],
+      "src/runtime/actor/ActorBase.cpp": [
+        "return:int []"
       ]
     },
     "data_020a4bb8": {

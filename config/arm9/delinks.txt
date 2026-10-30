@@ -1741,6 +1741,9 @@ src/runtime/actor/ActorBase.cpp:
 src/fListNode.cpp:
     complete
     .text start:0x020440e8 end:0x020443c8
+    .init start:0x02075154 end:0x02075230
+    .ctor start:0x02086bb8 end:0x02086bbc
+    .bss start:0x020a4b6c end:0x020a4bb8
 
 src/engine/model/ModelComponents.cpp:
     complete
@@ -4333,7 +4336,3 @@ src/unnamed/arm9/0207/__sinit_0207511c.c:
 src/unnamed/arm9/0207/__sinit_02075150.c:
     complete
     .init start:0x02075150 end:0x02075154
-
-src/unnamed/arm9/0207/__sinit_02075154.c:
-    complete
-    .init start:0x02075154 end:0x02075230
