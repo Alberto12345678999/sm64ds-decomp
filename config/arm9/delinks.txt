@@ -2285,36 +2285,13 @@ src/engine/cp15/CP15.cpp:
     .text start:0x02058bb0 end:0x02058c84
     complete
 
-src/unnamed/arm9/0205/func_02058c84.cpp:
+src/OS_Init.cpp:
     .text start:0x02058c84 end:0x02058cd0
     complete
 
-src/unnamed/arm9/0205/func_02058cd0.cpp:
-    .text start:0x02058cd0 end:0x02058d80
+src/engine/os/OS_Arena.cpp:
     complete
-src/OS_GetInitArenaLo.cpp:
-    .text start:0x02058d80 end:0x02058df4
-    complete
-
-src/unnamed/arm9/0205/func_02058df4.c:
-    complete
-    .text start:0x02058df4 end:0x02058ea0
-
-src/unnamed/arm9/0205/func_02058ea0.c:
-    complete
-    .text start:0x02058ea0 end:0x02058eb4
-
-src/unnamed/arm9/0205/func_02058eb4.c:
-    complete
-    .text start:0x02058eb4 end:0x02058ec8
-
-src/unnamed/arm9/0205/func_02058ec8.cpp:
-    complete
-    .text start:0x02058ec8 end:0x02058f28
-
-src/unnamed/arm9/0205/func_02058f28.c:
-    complete
-    .text start:0x02058f28 end:0x02059040
+    .text start:0x02058cd0 end:0x02059040
 
 src/unnamed/arm9/0205/func_02059040.cpp:
     complete
@@ -2432,7 +2409,7 @@ src/unnamed/arm9/0205/func_02059c18.cpp:
     complete
     .text start:0x02059c18 end:0x02059cb4
 
-src/unnamed/arm9/0205/func_02059cb4.cpp:
+src/OS_InitVAlarm.cpp:
     .text start:0x02059cb4 end:0x02059d08
     complete
 
@@ -2456,7 +2433,7 @@ src/unnamed/arm9/0205/func_02059e04.c:
     complete
     .text start:0x02059e04 end:0x02059e48
 
-src/unnamed/arm9/0205/func_02059e48.c:
+src/OS_InitReset.c:
     complete
     .text start:0x02059e48 end:0x02059eb0
 
@@ -2468,7 +2445,7 @@ src/unnamed/arm9/0205/func_02059f2c.c:
     complete
     .text start:0x02059f2c end:0x02059f48
 
-src/unnamed/arm9/0205/func_02059f48.c:
+src/MI_SetWramBank.c:
     complete
     .text start:0x02059f48 end:0x02059f58
 
@@ -2735,7 +2712,7 @@ src/unnamed/arm9/0205/func_0205b78c.cpp:
     complete
     .text start:0x0205b78c end:0x0205b858
 
-src/unnamed/arm9/0205/func_0205b858.c:
+src/PXI_Init.c:
     complete
     .text start:0x0205b858 end:0x0205b864
 
@@ -3166,7 +3143,7 @@ src/unnamed/arm9/0205/func_0205fcfc.c:
     complete
     .text start:0x0205fcfc end:0x0205fde8
 
-src/unnamed/arm9/0205/func_0205fde8.c:
+src/PM_Init.c:
     complete
     .text start:0x0205fde8 end:0x0205feac
 
@@ -4016,7 +3993,7 @@ src/unnamed/arm9/0206/func_0206a6d0.cpp:
     complete
     .text start:0x0206a6d0 end:0x0206a88c
 
-src/unnamed/arm9/0206/func_0206a88c.c:
+src/CTRDG_Init.c:
     complete
     .text start:0x0206a88c end:0x0206a928
 

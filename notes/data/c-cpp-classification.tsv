@@ -2596,10 +2596,10 @@ src/unnamed/arm9/0205/func_02059d8c.c	PURE-C					0		None		NONMATCHING-draft;not-
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02059dd4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059e04.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059e48.c	PURE-C	arm9				1		None		-
+src/OS_InitReset.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059eb0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f2c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059f48.c	PURE-C	arm9				1		None		-
+src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f58.c	WEAK-refs-only	arm9				1		None		-
 src/func_02059fa8.c	PURE-C	arm9				1		None		-
 src/func_02059fd0.c	PURE-C	arm9				1		None		-
@@ -2662,7 +2662,7 @@ src/unnamed/arm9/0205/func_0205b63c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b6b0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b6f4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b78c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b858.c	PURE-C	arm9				1		None		-
+src/PXI_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ba3c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ba64.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205bad8.c	WEAK-refs-only	arm9				1		None		-
@@ -2764,7 +2764,7 @@ src/unnamed/arm9/0205/func_0205fb58.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205fbd0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205fc44.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205fcfc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205fde8.c	PURE-C	arm9				1		None		-
+src/PM_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205feac.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ff00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ff08.c	PURE-C	arm9				1		None		-
@@ -2985,7 +2985,7 @@ src/unnamed/arm9/0206/func_0206a600.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a634.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a694.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a6d0.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a88c.c	PURE-C	arm9				1		None		-
+src/CTRDG_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a928.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0206/func_0206bc8c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206bdb4.c	PURE-C	arm9				1		None		-

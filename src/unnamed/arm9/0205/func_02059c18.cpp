@@ -5,7 +5,7 @@
 extern "C" {
 
 extern long long func_02059650(void *obj);
-extern void func_02056e4c(u32 idx, u32 handler, u32 arg);
+extern void OSi_EnterTimerCallback(u32 idx, u32 handler, u32 arg);
 extern void func_02059824(void);
 typedef struct Obj
 {
@@ -20,7 +20,7 @@ void func_02059c18(Obj *obj)
   sub = func_02059650(obj);
   *((volatile u16 *) 0x4000106) = 0;
   v = obj->t - sub;
-  func_02056e4c(1, (u32) func_02059824, 0);
+  OSi_EnterTimerCallback(1, (u32)func_02059824, 0);
   if (v < 0)
   {
     timer = 0xfffe;

@@ -11203,11 +11203,6 @@
         "return:OSThreadInfo"
       ]
     },
-    "data_020a6378": {
-      "src/unnamed/arm9/0205/func_02058f28.c": [
-        "return:unsigned int"
-      ]
-    },
     "data_020a637c": {
       "src/unnamed/arm9/0205/func_02059170.cpp": [
         "return:int * []"
@@ -11369,19 +11364,11 @@
       ]
     },
     "data_020a8114": {
-      "src/unnamed/arm9/0205/func_0205fde8.c": [
-        "return:int []"
-      ],
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:unsigned int"
-      ]
-    },
-    "data_020a8138": {
-      "src/unnamed/arm9/0205/func_0205fde8.c": [
-        "return:short"
       ]
     },
     "data_020a8180": {
@@ -11546,11 +11533,6 @@
         "return:unsigned short"
       ]
     },
-    "data_020a9dec": {
-      "src/unnamed/arm9/0206/func_0206a88c.c": [
-        "return:int"
-      ]
-    },
     "data_023c0000": {
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "return:char []"
@@ -11561,7 +11543,7 @@
       "src/engine/os/OS_Thread.cpp": [
         "return:char"
       ],
-      "src/unnamed/arm9/0205/func_02058df4.c": [
+      "src/engine/os/OS_Arena.cpp": [
         "return:char"
       ],
       "src/unnamed/arm9/0205/func_02059834.cpp": [
@@ -20691,14 +20673,14 @@
         "return:int"
       ]
     },
-    "func_02056e4c": {
+    "OSi_EnterTimerCallback": {
       "src/unnamed/arm9/0205/func_02059700.c": [
         "param:#1 int",
         "param:#2 void *",
         "param:#3 int"
       ]
     },
-    "func_02056e98": {
+    "OSi_EnterDmaCallback": {
       "src/func_02059fd0.c": [
         "param:#1 int",
         "param:#2 void *",
@@ -20811,7 +20793,7 @@
         "param:#2 char *"
       ]
     },
-    "func_02058cd0": {
+    "OS_AllocFromArenaLo": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
@@ -20819,26 +20801,20 @@
         "return:void *"
       ]
     },
-    "func_02058d58": {
+    "OS_SetArenaLo": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "return:int"
       ]
     },
-    "func_02058df4": {
-      "src/unnamed/arm9/0205/func_02058ec8.cpp": [
-        "param:#1 int",
-        "return:unsigned int"
-      ]
-    },
-    "func_02058ea0": {
+    "OS_GetArenaLo": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "return:int"
       ]
     },
-    "func_02058eb4": {
+    "OS_GetArenaHi": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "return:int"
@@ -20914,7 +20890,7 @@
       ]
     },
     "func_02059e04": {
-      "src/unnamed/arm9/0205/func_02059e48.c": [
+      "src/OS_InitReset.c": [
         "arity:0"
       ]
     },
@@ -21456,7 +21432,7 @@
       ]
     },
     "func_0205fcfc": {
-      "src/unnamed/arm9/0205/func_0205fde8.c": [
+      "src/PM_Init.c": [
         "arity:0"
       ]
     },
@@ -22167,12 +22143,12 @@
       ]
     },
     "func_0206a634": {
-      "src/unnamed/arm9/0206/func_0206a88c.c": [
+      "src/CTRDG_Init.c": [
         "arity:0"
       ]
     },
     "func_0206a694": {
-      "src/unnamed/arm9/0206/func_0206a88c.c": [
+      "src/CTRDG_Init.c": [
         "arity:0"
       ]
     },
@@ -25836,6 +25812,16 @@
     "func_02058a44": {
       "src/engine/os/OS_Thread.cpp": [
         "param:#1 OSThread *"
+      ]
+    },
+    "data_020a6378": {
+      "src/engine/os/OS_Thread.cpp": [
+        "return:unsigned int []"
+      ]
+    },
+    "data_020a9dec": {
+      "src/unnamed/arm9/0206/func_0206a600.c": [
+        "return:int (*)(int)"
       ]
     }
   },

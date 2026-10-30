@@ -7,7 +7,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "ONE FUNCTION, ONE SECTION. 0x0205b864..0x0205b988 is IRQ::IPCRxFifoNotEmptyHandler (size 0x124), complete and enrolled in config/arm9/delinks.txt with a single .text claim and nothing else.",
-    "BOTTOM EDGE: src/IPCSend.c (0x0205b988..0x0205ba3c, C-linkage IPCSend) starts exactly where this run ends -- a different object, so the run stops at 0x0205b988. TOP EDGE: src/unnamed/arm9/0205/func_0205b858.c (0x0205b858..0x0205b864) ends exactly where this run begins -- an unattributed 12-byte helper outside the IRQ IPC family.",
+    "BOTTOM EDGE: src/IPCSend.c (0x0205b988..0x0205ba3c, C-linkage IPCSend) starts exactly where this run ends -- a different object, so the run stops at 0x0205b988. TOP EDGE: src/PXI_Init.c (0x0205b858..0x0205b864) ends exactly where this run begins -- an unattributed 12-byte helper outside the IRQ IPC family.",
     "ITS OWN ORIGINAL FILE, per notes/mangled-fold-decisions.md (V01): same class name, two files -- GameCardIREQMCHandler sits 151 functions later with FS_*/ARMMath* library code between -- so this handler is not folded into its class file or a neighbour. The cartridge's own config/arm9/symbols.txt row carries the mangled method name, which is the ROM evidence for the method spelling."
   ],
   "sections": [

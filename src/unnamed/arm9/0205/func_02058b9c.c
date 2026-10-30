@@ -11,7 +11,7 @@ typedef struct OSMutex {
 } OSMutex;
 
 /* NitroSDK OS_InitMutex(mutex). The parameter keeps its char * spelling:
- * func_0205fde8's declaration is checked against it. */
+ * PM_Init's declaration is checked against it. */
 void func_02058b9c(char *p)
 {
     OSMutex *mutex = (OSMutex *)p;

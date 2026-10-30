@@ -125,7 +125,7 @@ extern "C" void func_020553c0(unsigned addr) {
 // (func_0205a358/func_0205a290) is interrupt-driven on hardware: GXFIFO-timed
 // DMA chunks re-arm on the FIFO-half-empty IRQ (IE bit 21, mask 0x200000) and
 // the final chunk raises the DMA-channel IRQ, whose OS dispatcher calls the
-// callback registered through func_02056e98. On host the copies are
+// callback registered through OSi_EnterDmaCallback. On host the copies are
 // synchronous and the FIFO is always empty, so DMAStartTransfer delivers
 // those interrupts inline right after the copy; the recursion terminates
 // because the pump's re-entry finds no bytes remaining.

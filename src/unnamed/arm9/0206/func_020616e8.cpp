@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern void func_0205b858(void);
+extern void PXI_Init(void);
 extern int func_0205ba3c(int bit, int word);
 extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
 extern void func_0206116c(void);
@@ -38,7 +38,7 @@ int func_020616e8(void *buf, int ch)
         return 6;
     }
 
-    func_0205b858();
+    PXI_Init();
     if (func_0205ba3c(0xa, 1) == 0) {
         data_020a89a8 = 0;
         return 4;

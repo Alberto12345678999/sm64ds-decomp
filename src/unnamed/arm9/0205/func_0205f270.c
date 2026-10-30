@@ -1,5 +1,5 @@
 #include "types.h"
-extern void func_0205b858(void);
+extern void PXI_Init(void);
 extern int func_0205ba3c(int bit, int word);
 extern void func_0205ba64(int a, void *fn);
 extern void func_0205f300(void);
@@ -35,7 +35,7 @@ void func_0205f270(void)
 {
     if (*(u16 *)data_020a80c8 != 0) return;
     *(u16 *)data_020a80c8 = 1;
-    func_0205b858();
+    PXI_Init();
     TP_WORK.mState = 0;
     TP_WORK.mCommandFlags = 0;
     TP_WORK.mIndex = 0;
