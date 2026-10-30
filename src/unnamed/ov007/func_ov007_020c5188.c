@@ -18,7 +18,7 @@ typedef struct Ov007Picker {
     /* 0x18: three (stiffness, damping) pairs: [0..1] for each point list,
      * [2..3] for each groupLinks entry, [4..5] for headLinks/tailLinks */
     int *springConstants;
-    char *params; /* 0x1c: a4 of func_ov007_020c690c; +4 is the step stride */
+    char *params; /* 0x1c: func_ov007_020c690c's params; +4 is the step stride */
     char pad_20[0x14];
     int **groupLinks; /* 0x34: per group, one link per point */
     char pad_38[4];
@@ -37,8 +37,7 @@ typedef struct Ov007Picker {
     Vector3 boundsMax; /* 0xc4 */
 } Ov007Picker;
 
-void func_ov007_020c5188(char *sb, int arg1)
-{
+void func_ov007_020c5188(char *sb, int arg1) {
     Ov007Picker *self = (Ov007Picker *)sb;
     int p;
     int oc;

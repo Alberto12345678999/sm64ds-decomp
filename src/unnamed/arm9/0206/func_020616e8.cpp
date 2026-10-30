@@ -4,14 +4,14 @@
 
 extern "C" {
 
-extern void func_0205b858(void);
-extern int func_0205ba3c(int bit, int word);
+extern void PXI_Init(void);
+extern int PXI_IsCallbackReady(int tag, int proc);
 extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
 extern void func_0206116c(void);
 extern int func_02061c88(int idx, int b, int c);
 extern void func_02058940(void *s, int *v1, int v2);
 extern int func_02058894(void *q, void *val, int flag);
-extern void func_0205ba64(int idx, void *fn);
+extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 
 extern u16 data_020a89a8;
 extern int *data_020a89ac;
@@ -38,8 +38,8 @@ int func_020616e8(void *buf, int ch)
         return 6;
     }
 
-    func_0205b858();
-    if (func_0205ba3c(0xa, 1) == 0) {
+    PXI_Init();
+    if (PXI_IsCallbackReady(0xa, 1) == 0) {
         data_020a89a8 = 0;
         return 4;
     }
@@ -73,7 +73,7 @@ int func_020616e8(void *buf, int ch)
         }
     }
 
-    func_0205ba64(0xa, (void *)func_02061188);
+    PXI_SetFifoRecvCallback(0xa, (void *)func_02061188);
     return 0;
 }
 }

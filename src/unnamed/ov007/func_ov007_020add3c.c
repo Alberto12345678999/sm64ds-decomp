@@ -13,7 +13,7 @@ typedef struct Ov007Item {
     int ready; /* 0x20: set once the state settles, cleared on reset */
 } Ov007Item;
 
-/* The 0x40-byte OAM node func_ov007_020c11ac allocates; names as in
+/* The 0x44-byte OAM node func_ov007_020c11ac allocates; names as in
  * func_ov007_020c10ec, only the slots this file writes. */
 typedef struct Ov007OamNode {
     int x;       /* 0x00: Q12 screen x */

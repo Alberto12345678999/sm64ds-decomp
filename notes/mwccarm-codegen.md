@@ -1497,7 +1497,7 @@ under our flags reproduces, but they DO match as an mwccarm inline-`asm` functio
 stays unmangled and any `bl SYM` inside is a wildcarded reloc, so the oracle accepts it. This
 converts a whole class of "unmatchable floor" into matched (found 2026-06-22 cracking arm9):
 ```c
-asm void func_02059824(void) { push {lr}; bl callee; pop {lr}; bx lr }
+asm void OSi_AlarmHandler(void) { push {lr}; bl callee; pop {lr}; bx lr }
 ```
 WHEN to reach for it (these read as HARD floor from C but are really hand-asm):
 - A `push {lr}`-only frame with NO `sub sp,#4` around a single/double `bl` (C always either
@@ -1996,7 +1996,7 @@ Levers that landed:
   (`i = cnt-1; cnt = i; arr[i]();`), pinned str-before-ldr. Extends the 6-family volatile
   lever: the scheduler only serializes a pair when both ends are volatile.
   (NOTE: this function was matched concurrently upstream in #542 and was not banked here.)
-- **Read the callee's real width and arity** (`func_02059c18`, div 6->0). The callee returned
+- **Read the callee's real width and arity** (`OSi_SetTimer`, div 6->0). The callee returned
   a full `long long` (the `sbc` subtracts BOTH words) and took a third arg the ROM never
   materializes -- `mov r2,#0` is absent because r2 already held a CSE'd zero from an earlier
   `*(vu16*)0x4000106 = 0` store, which is exactly what kept r2 live and pushed another load

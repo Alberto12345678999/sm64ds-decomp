@@ -21,8 +21,8 @@
  * - Assigning mMeshCollider.beforeClsnCallback does not compile: the static
  *   takes references and the field takes pointers. Casting
  *   &dBgW::UpdatePosWithTransform onto the field type sizes InitResources
- *   0x104->0xfc. func_020393d4 is the store that matches. func_020393a4 and
- *   func_02039394 store the mesh range the same way.
+ *   0x104->0xfc. func_020393d4 is the store that matches. dBgW::SetClipRadius and
+ *   dBgW::SetClipOffsetY store the mesh range the same way.
  * - UpdateShadow keeps the dead stores. Dropping armOffset.y = 0, the
  *   first pos.y = bobY, or writing armOffset once, sizes it 0x12c->0x128.
  *   Dropping the bobPos zeros sizes it 0x12c->0x120.
@@ -85,8 +85,6 @@ extern "C" {
 extern void Matrix4x3_FromRotationZXYExt(Matrix4x3 *m, int x, int y, int z);
 extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern void func_02039394(void *p, int v);
-extern void func_020393a4(void *p, int v);
 extern void func_020393d4(void *p, void *v);
 }
 
@@ -115,8 +113,8 @@ int daObjCtMecha03_c::InitResources() {
     kcl = dBgW_Kc::LoadFile(data_ov065_0211d894);
     mMeshCollider.SetFile((KCL_File *)kcl, mClsnMat, 0x1000, mAngleY, data_ov035_02112198);
 
-    func_020393a4(&mMeshCollider, 0x300000);
-    func_02039394(&mMeshCollider, -0x200000);
+    mMeshCollider.SetClipRadius(0x300000);
+    mMeshCollider.SetClipOffsetY(-0x200000);
 
     if (data_0209f2c0 != 3) {
         func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);

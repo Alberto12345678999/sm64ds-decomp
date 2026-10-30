@@ -1002,7 +1002,8 @@
     "The inline destructor declared last makes mwccarm emit the exact D1 then D0 pair with no D2 body. The class-local operator new routes ordinary `new daBgSnwmn_c()` to the retail fBase_c allocator; the compiler emits and owns the vptr store.",
     "Legacy per-function contribution comparison is not applicable to the final lifecycle form: the two old out-of-line destructor shards cannot compile beside the inline destructor that emits their exact replacements. The ordinary intact-object linkcheck is the production proof.",
     "The file-scope model handles, texseq handle, and cylinder offset are defined in this TU. mwcc emits __sinit_d_a_bg_snwmn.cpp, the ctor word, and four anonymous registration nodes. Class RTTI and the vtable stay where they were. The handwritten src/__sinit_ov072_02122350.c is retired.",
-    "Local scratch link matched this machine's stock control. The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the owned ranges matched."
+    "Local scratch link matched this machine's stock control. The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the owned ranges matched.",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (30 sections, 123 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1172,22 +1173,22 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@453",
+      "from": "@452",
       "to": "@396",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@454",
+      "from": "@453",
       "to": "@397",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@455",
+      "from": "@454",
       "to": "@398",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@456",
+      "from": "@455",
       "to": "@399",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }

@@ -1,6 +1,6 @@
 //cpp
 #include "types.h"
-extern "C" int func_0205ba3c(int bit, int word);
+extern "C" int PXI_IsCallbackReady(int tag, int proc);
 extern "C" void OS_SpinWait(unsigned int cycles);
 extern "C" int IPCSend(unsigned int a, unsigned int c, unsigned int b);
 extern "C" void OS_SleepThread(u16 *x);
@@ -46,10 +46,10 @@ extern "C" int func_02060f60(CardCommon *thiz, int v, int count) {
 
     if (!(*(volatile int *)&thiz->mFlags & 2)) {
         thiz->mFlags |= 2;
-        if (func_0205ba3c(0xb, 1) == 0) {
+        if (PXI_IsCallbackReady(0xb, 1) == 0) {
             do {
                 OS_SpinWait(0x64);
-            } while (func_0205ba3c(0xb, 1) == 0);
+            } while (PXI_IsCallbackReady(0xb, 1) == 0);
         }
         func_02060f60(thiz, 0, 1);
     }

@@ -1,7 +1,7 @@
 struct OSThread;
 
 /* NitroSDK OSMutex, the fields set here. This build's thread queue is a
- * u16 (OSThread's joinQueue in func_02058200.cpp), and func_02058b08 and
+ * u16 (OSThread's joinQueue in src/engine/os/OS_Thread.cpp), and func_02058b08 and
  * func_02058a94 (OS_LockMutex / OS_UnlockMutex) read the owner at +0x04 and
  * the lock count at +0x08. */
 typedef struct OSMutex {
@@ -11,7 +11,7 @@ typedef struct OSMutex {
 } OSMutex;
 
 /* NitroSDK OS_InitMutex(mutex). The parameter keeps its char * spelling:
- * func_0205fde8's declaration is checked against it. */
+ * PM_Init's declaration is checked against it. */
 void func_02058b9c(char *p)
 {
     OSMutex *mutex = (OSMutex *)p;

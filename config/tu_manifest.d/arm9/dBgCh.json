@@ -88,7 +88,7 @@
       "ordinal": 8
     },
     {
-      "symbol": "func_0203543c",
+      "symbol": "_ZNK5dBgCh16IsDetectingToxicEv",
       "address": "0x0203543c",
       "size": "0x0000000c",
       "legacy_source": "src/func_0203543c.c",
@@ -102,21 +102,21 @@
       "ordinal": 10
     },
     {
-      "symbol": "func_0203545c",
+      "symbol": "_ZNK5dBgCh12IsCameraModeEv",
       "address": "0x0203545c",
       "size": "0x0000000c",
       "legacy_source": "src/func_0203545c.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_02035468",
+      "symbol": "_ZN5dBgCh16EnableCameraModeEv",
       "address": "0x02035468",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0203/func_02035468.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_0203547c",
+      "symbol": "_ZNK5dBgCh16IsDetectingWaterEv",
       "address": "0x0203547c",
       "size": "0x0000000c",
       "legacy_source": "src/func_0203547c.c",
@@ -137,7 +137,7 @@
       "ordinal": 15
     },
     {
-      "symbol": "func_020354b0",
+      "symbol": "_ZNK5dBgCh19IsDetectingOrdinaryEv",
       "address": "0x020354b0",
       "size": "0x0000000c",
       "legacy_source": "src/func_020354b0.c",

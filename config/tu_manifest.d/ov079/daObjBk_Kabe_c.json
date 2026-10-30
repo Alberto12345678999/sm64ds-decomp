@@ -170,7 +170,8 @@
     "fold branch tu/fold-highov-0921: 8/8 MATCH, objisolate clean, reloc-destinations clean -> text-verified. 13 UNLICENSED OUTPUT symbols (2 .text: _ZN14daObjBk_Kabe_cD2Ev, _ZN7Vector3D1Ev; 11 .data: the _ZTV/_ZTI/_ZTS group for daObjBk_Kabe_c and its ancestor chain). Key-function TU, .data RTTI emission expected; .data licensing NOT attempted here. Hand fixes over tubuild create: (1) removed the duplicate D0 destructor body; (2) data_ov079_02128058 and data_ov079_0212805c were declared twice under conflicting types ('char[]' then 'struct E12[]'); upgraded the FIRST declaration in place to the more complete E12 spelling, deleted the later duplicate, and rewrote the two char-arithmetic CleanupResources use sites as plain indexing (sizeof(E12)==0xc, identical address math). Byte-neutral.",
     "fold-lane-D-0929: folded the daObjBk_Kabe_c_classInit_BK_KABE01/_BK_KABE00 registry factories (0x0212757c..0x021275dc) into this already-promoted TU, widening the complete delinks.txt claim from 0x021271e4..0x0212757c to 0x021271e4..0x021275dc. Each loose one-function source hand-called fBase_c::operator new(804) + the inherited dBgActor_c ctor + this class's vtable store; daObjBk_Kabe_c has no user-declared constructor, so both are now `new daObjBk_Kabe_c()` -- same bytes, zero mangled calls. This TU keeps `#pragma defer_codegen off`, so emission follows source order (ROM-ascending); the two factories append after InitResources, in ROM order (BK_KABE01 then BK_KABE00). `tubuild.py verify` reports 10/10 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED, adding one new compiler_only_output deadstrip entry (_ZN10dBgActor_cD2Ev, the same 'return new' base-object-destructor byproduct src/game/actors/d_a_obj_hatena_block.cpp already documents and licenses). Retired: src/d_a_obj_bk_kabe_bk_kabe01.c, src/d_a_obj_bk_kabe_bk_kabe00.c (both credited andrewboudreau, carried into attribution.json as path#symbol overrides).",
     "Static initializer folded: the two BkKabeModelFile handles (files 0x593/0x595), the two BkKabeCollisionFilePtr handles (files 0x594/0x596) and their destructor-registration nodes move out of the handwritten src/unnamed shard into src/game/actors/d_a_obj_bk_kabe.cpp. The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov079_02127acc with the same instruction sequence, literal pool order and relocation sites; the handwritten shard is retired. @483/@485 clashed with the fleet and are renamed (@483->@886, @485->@882); @597/@484 were free and are kept. The .bss claim ends at 0x02128390 with a bound-symbol row capping it; the tail to the section end stays gap.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (34 sections, 118 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -558,22 +559,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@485",
+      "from": "@483",
       "to": "@886",
       "evidence": "mwcc numbers this registration node @483 per TU and the fleet already defines a global @483, so the scratch link would multiply-define it"
     },
     {
-      "from": "@487",
+      "from": "@485",
       "to": "@882",
       "evidence": "mwcc numbers this registration node @485 per TU and the fleet already defines a global @485, so the scratch link would multiply-define it"
     },
     {
-      "from": "@484",
+      "from": "@482",
       "to": "@597",
       "evidence": "batch-5 atdup: @482 collides cross-module (temps are fleet-global); renumber to unused same-length @597"
     },
     {
-      "from": "@486",
+      "from": "@484",
       "to": "@484",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @499 now; licensed under the existing pin @484"
     }

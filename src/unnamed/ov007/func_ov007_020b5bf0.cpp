@@ -49,102 +49,112 @@ typedef struct Ov007ItemView {
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
+/* The 0x3c-byte record at Ov007Work's settings; names as in unit020b413c,
+ * only the slot this file reads. */
+struct Ov007Settings {
+    u8 *bootArgs; /* 0x00: byte 9 picks which of items 0xc and 0xd is live */
+};
+
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020b5f64(void *a);
 extern void func_ov007_020c8f98(int a);
 
+/* One frame of a menu item's look. Kind 0 items wiggle: rotZ follows a
+ * sine at 72 degrees per frame, decaying over wiggleFrames, 4 degrees deep
+ * for item 0 and 8 for the rest. The kind then picks how the item's level
+ * shows: fade, or 1 - slideOut while it slides out (states 3 and 4), as the
+ * sprite's alpha, or for kind 3 as its colour from grey (0x4210) to white.
+ * Kind 7 moves the texture origin for item 9 and whichever of 0xc/0xd is
+ * live. Items 0xe..0x10 also run func_ov007_020b5f64, and the slide tween
+ * steps. */
 void func_ov007_020b5bf0(Ov007ItemView *view) {
-    Ov007Item *r7 = view->item;
-    int r6 = 0;
-    int r5 = r6;
-    int r4 = r6;
+    Ov007Item *item = view->item;
+    int dims = 0;
+    int fades = 0;
+    int slides = 0;
 
-    if (r7->layout->kind == 0) {
-        if (r7->wiggleTimer > 0) {
-            int a = r7->wiggleTimer;
-            int diff = r7->wiggleFrames - a;
-            int sb;
-            if (diff <= 0) {
-                sb = r6;
-            } else if (diff >= r7->wiggleFrames) {
-                sb = 0x1000;
+    if (item->layout->kind == 0) {
+        if (item->wiggleTimer > 0) {
+            int timer = item->wiggleTimer;
+            int elapsed = item->wiggleFrames - timer;
+            int progress;
+            if (elapsed <= 0) {
+                progress = 0;
+            } else if (elapsed >= item->wiggleFrames) {
+                progress = 0x1000;
             } else {
-                sb = cstd::div(diff << 0xc, r7->wiggleFrames);
+                progress = cstd::div(elapsed << 0xc, item->wiggleFrames);
             }
             {
-                int t1 = (sb * (r7->wiggleFrames * 0x48)) >> 0xc;
-                int r = cstd::div(t1 << 0x10, 0x168);
-                int idx;
-                short tblval;
-                int inv;
-                u16 typeField;
-                int r2;
-                int mulfactor;
-                int result;
+                int degrees = (progress * (item->wiggleFrames * 0x48)) >> 0xc;
+                int angle = cstd::div(degrees << 0x10, 0x168);
+                int sinIndex;
+                short sine;
+                int decay;
+                u16 id;
+                int wave;
+                int amplitude;
+                int tilt;
 
-                r = (u16)r;
-                idx = (r >> 4) * 2;
-                tblval = data_02082214[idx];
-                inv = 0x1000 - sb;
-                typeField = r7->id;
-                r2 = FX_MUL(tblval, inv);
-                mulfactor = (typeField == 0) ? 4 : 8;
-                result = (r2 * mulfactor) >> 0xc;
-                view->sprite->rotZ = cstd::div(result << 0x10, 0x168);
+                angle = (u16)angle;
+                sinIndex = (angle >> 4) * 2;
+                sine = data_02082214[sinIndex];
+                decay = 0x1000 - progress;
+                id = item->id;
+                wave = FX_MUL(sine, decay);
+                amplitude = (id == 0) ? 4 : 8;
+                tilt = (wave * amplitude) >> 0xc;
+                view->sprite->rotZ = cstd::div(tilt << 0x10, 0x168);
             }
         } else {
-            view->sprite->rotZ = r6;
+            view->sprite->rotZ = 0;
         }
     }
 
     {
-        u16 switchVal = r7->layout->kind;
-        int var_r0_2;
+        u16 kind = item->layout->kind;
+        int level;
 
-        switch (switchVal) {
+        switch (kind) {
         case 0:
         case 2:
         case 6:
-            r5 = 1;
+            fades = 1;
             break;
-        case 4:
-        {
+        case 4: {
             s16 v = view->item->state->currentState;
-            if ((u32)(u16)(s16)(v - 3) <= 1u) {
-                r4 = 1;
+            if (v == 3 || v == 4) {
+                slides = 1;
             } else {
-                r5 = 1;
+                fades = 1;
             }
             break;
         }
         case 8:
-            r4 = 1;
+            slides = 1;
             break;
-        case 7:
-        {
-            u16 typeField = r7->id;
-            char *obj = *(char **)WORK->settings;
-            s16 v = r7->state->currentState;
+        case 7: {
+            u16 id = item->id;
+            u8 *bootArgs = WORK->settings->bootArgs;
+            s16 v = item->state->currentState;
 
-            if ((v == 2 && (typeField == 9 || (typeField == 0xc && *(u8 *)(obj + 9) != 0) ||
-                            (typeField == 0xd && *(u8 *)(obj + 9) == 0))) ||
-                (typeField == 0xc && *(u8 *)(obj + 9) == 0) ||
-                (typeField == 0xd && *(u8 *)(obj + 9) != 0)) {
-                Ov007Sprite *m4 = view->sprite;
-                m4->texS = m4->width;
-            } else if (v != 2 && (typeField == 9 || (typeField == 0xc && *(u8 *)(obj + 9) != 0) ||
-                                  (typeField == 0xd && *(u8 *)(obj + 9) == 0))) {
+            if ((v == 2 &&
+                 (id == 9 || (id == 0xc && bootArgs[9] != 0) || (id == 0xd && bootArgs[9] == 0))) ||
+                (id == 0xc && bootArgs[9] == 0) || (id == 0xd && bootArgs[9] != 0)) {
+                Ov007Sprite *sprite = view->sprite;
+                sprite->texS = sprite->width;
+            } else if (v != 2 && (id == 9 || (id == 0xc && bootArgs[9] != 0) ||
+                                  (id == 0xd && bootArgs[9] == 0))) {
                 view->sprite->texS = 0;
             }
             break;
         }
-        case 3:
-        {
+        case 3: {
             s16 v = view->item->state->currentState;
-            if ((u32)(u16)(s16)(v - 3) <= 1u) {
-                r4 = 1;
+            if (v == 3 || v == 4) {
+                slides = 1;
             } else {
-                r6 = 1;
+                dims = 1;
             }
             break;
         }
@@ -152,30 +162,30 @@ void func_ov007_020b5bf0(Ov007ItemView *view) {
             break;
         }
 
-        var_r0_2 = (r4 != 0) ? (0x1000 - r7->slideOut) : r7->fade;
+        level = (slides != 0) ? (0x1000 - item->slideOut) : item->fade;
 
-        if (r5 != 0 || r4 != 0) {
-            if (var_r0_2 >= 0x1000) {
+        if (fades != 0 || slides != 0) {
+            if (level >= 0x1000) {
                 view->sprite->alpha = 0x1f000;
-            } else if (var_r0_2 <= 0) {
+            } else if (level <= 0) {
                 view->sprite->alpha = 0;
             } else {
-                view->sprite->alpha = FX_MUL(var_r0_2, 0x1f000);
+                view->sprite->alpha = FX_MUL(level, 0x1f000);
             }
         }
 
-        if (r6 != 0) {
-            if (var_r0_2 >= 0x1000) {
+        if (dims != 0) {
+            if (level >= 0x1000) {
                 view->sprite->color = 0x7fff;
-            } else if (var_r0_2 <= 0) {
+            } else if (level <= 0) {
                 view->sprite->color = 0x4210;
             } else {
-                view->sprite->color = func_ov007_020c3be0(var_r0_2, 0x4210, 0x7fff);
+                view->sprite->color = func_ov007_020c3be0(level, 0x4210, 0x7fff);
             }
         }
     }
 
-    if ((u32)(u16)(r7->id + 0xfff2) <= 2u) {
+    if ((u32)(u16)(item->id + 0xfff2) <= 2u) {
         func_ov007_020b5f64(view);
     }
     func_ov007_020c8f98((int)view->slideTween);

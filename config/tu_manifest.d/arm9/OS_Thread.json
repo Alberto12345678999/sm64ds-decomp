@@ -1,0 +1,182 @@
+{
+  "id": "arm9/OS_Thread",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Thread.cpp",
+  "promoted_source": "src/engine/os/OS_Thread.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_thread.c, 0x02057e34..0x02058568: 18 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_thread.c is a later revision of the file; seventeen of its functions are here, each identified by body, in its source order: OSi_GetUnusedThreadId, OSi_InsertThreadToList, OSi_RemoveThreadFromList, OS_InitThread, OS_CreateThread, OS_ExitThread, OS_JoinThread, OS_IsThreadTerminated, OS_SleepThread, OS_WakeupThread, OS_WakeupThreadDirect, OS_SelectThread, OS_RescheduleThread, OS_SetThreadPriority, OS_GetThreadPriority, OS_SetSwitchThreadCallback, OSi_IdleThreadProc. At pret's sizes: OSi_InsertThreadToList 0x68, OSi_RemoveThreadFromList 0x48, OS_CreateThread 0x108, OS_JoinThread 0x3c, OS_IsThreadTerminated 0x14, OS_WakeupThreadDirect 0x34, OS_SelectThread 0x2c, OS_SetThreadPriority 0xb4, OS_GetThreadPriority 0x8, OS_SetSwitchThreadCallback 0x34, OSi_IdleThreadProc 0x14. The eighteenth, OS_SetThreadStackWarningOffset (0x1c), writes the SDK's stack warning word 0x597dfbd9 at stackTop + stackWarningOffset; pret's revision does not keep it.",
+    "Order: all eighteen are C, and mwccarm emits deferred C bodies in reverse. The ROM run is pret's source order reversed (OSi_IdleThreadProc lowest, OSi_GetUnusedThreadId highest), with OS_SetThreadStackWarningOffset between OS_RescheduleThread and OS_SetThreadPriority, and with the functions this revision lacks or this game never calls absent (OS_IsThreadAvailable, OS_DestroyThread, OS_YieldThread, OS_Sleep, the scheduler lock, the destructor and the queue-link helpers).",
+    "This is an older revision than pret's: a thread queue is a 16-bit mask of thread ids, OSThreadInfo keeps a 16-entry id table (max_entry, entry[] at +0x14) that OSi_GetUnusedThreadId scans, OS_ExitThread clears the thread's slot, and OS_RescheduleThread carries the scheduler body with no interrupts-off wrapper.",
+    "BOTTOM EDGE: func_02057e30 (0x02057e30..0x02057e34) is an empty function whose only reference is the data word 0x0209a03c, beside the OS_IRQTable entries; below it, 0x02057410..0x02057e30 is the Nitro SDK's os_printf.c (OS_VSNPrintf 0x8d8, OS_VSPrintf, OS_SPrintf and the string_put / string_fill helpers).",
+    "TOP EDGE: func_02058568 (0x02058568..0x020585cc) is OS_InitContext, which pret keeps in OS_context.c with OS_SaveContext and OS_LoadContext; here those two follow it as ARMSaveContext (0x020585cc) and ARMRestoreContext (0x02058618)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02057e34",
+      "end": "0x02058568"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OSi_IdleThreadProc",
+      "address": "0x02057e34",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057e34.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OS_SetSwitchThreadCallback",
+      "address": "0x02057e48",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057e48.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_GetThreadPriority",
+      "address": "0x02057e7c",
+      "size": "0x00000008",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057e7c.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OS_SetThreadPriority",
+      "address": "0x02057e84",
+      "size": "0x000000b4",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057e84.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "OS_SetThreadStackWarningOffset",
+      "address": "0x02057f38",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057f38.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "OS_RescheduleThread",
+      "address": "0x02057f54",
+      "size": "0x000000c8",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057f54.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "OS_SelectThread",
+      "address": "0x0205801c",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205801c.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "OS_WakeupThreadDirect",
+      "address": "0x02058048",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058048.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "OS_WakeupThread",
+      "address": "0x0205807c",
+      "size": "0x00000074",
+      "legacy_source": "src/OS_WakeupThread.cpp",
+      "ordinal": 8
+    },
+    {
+      "symbol": "OS_SleepThread",
+      "address": "0x020580f0",
+      "size": "0x00000068",
+      "legacy_source": "src/OS_SleepThread.cpp",
+      "ordinal": 9
+    },
+    {
+      "symbol": "OS_IsThreadTerminated",
+      "address": "0x02058158",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058158.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "OS_JoinThread",
+      "address": "0x0205816c",
+      "size": "0x0000003c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205816c.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "OS_ExitThread",
+      "address": "0x020581a8",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0205/func_020581a8.cpp",
+      "ordinal": 12
+    },
+    {
+      "symbol": "OS_CreateThread",
+      "address": "0x02058200",
+      "size": "0x00000108",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058200.cpp",
+      "ordinal": 13
+    },
+    {
+      "symbol": "OS_InitThread",
+      "address": "0x02058308",
+      "size": "0x00000180",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058308.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "OSi_RemoveThreadFromList",
+      "address": "0x02058488",
+      "size": "0x00000048",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058488.c",
+      "ordinal": 15
+    },
+    {
+      "symbol": "OSi_InsertThreadToList",
+      "address": "0x020584d0",
+      "size": "0x00000068",
+      "legacy_source": "src/unnamed/arm9/0205/func_020584d0.c",
+      "ordinal": 16
+    },
+    {
+      "symbol": "OSi_GetUnusedThreadId",
+      "address": "0x02058538",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_02058538.c",
+      "ordinal": 17
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/MI_Memory, arm9/OS_SpinLock, arm9/CTRDG_Common and arm9/CARD_Common: tu_map cannot segment arm9/main.",
+    "Sixteen symbols were renamed from their func_ names to the SDK names in this change (symbols/actor_renames.tsv records the evidence); OS_WakeupThread and OS_SleepThread already carried theirs.",
+    "Text-only: OSi_ThreadInfo (data_020a6134), OSi_CurrentThreadPtr (data_020a612c), OSi_IsThreadInitialized (data_020a6130), OSi_SystemCallbackInSwitchThread (data_020a6128), the launcher and idle threads (data_020a621c, data_020a6188) and the idle stack (ends at data_020a6378) stay externs. The file claims no data.",
+    "pret's static helpers (OSi_GetUnusedThreadId, OSi_InsertThreadToList, OSi_RemoveThreadFromList, OSi_IdleThreadProc) keep external linkage here like every other arm9 symbol."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Thread/OS_Thread.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 18,
+    "functions_declared": 18,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

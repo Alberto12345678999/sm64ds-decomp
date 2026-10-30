@@ -36,7 +36,7 @@ typedef char Ov007SpriteGroup_size_must_be_0x18[sizeof(Ov007SpriteGroup) == 0x18
 
 extern int func_ov007_020c3df4(int a, void *b);
 extern void *func_ov007_020c11ac(int n);
-extern void *func_ov007_020c40d4(void *r5);
+extern void *func_ov007_020c40d4(int animCount);
 extern void func_ov007_020c10b0(void *a, int b);
 extern void func_ov007_020c4090(char *c);
 
@@ -73,7 +73,7 @@ void func_ov007_020c3fe4(Ov007SpriteItem *item) {
 /* Builds a sprite group for `layout` (whose count and animation count it
  * reads), an invisible root at priority 4 with an extra record of
  * `extraAnims` animations and one record per item under it. */
-void *func_ov007_020c3f00(int *layout, void *extraAnims) {
+void *func_ov007_020c3f00(int *layout, int extraAnims) {
     char *p = (char *)func_ov007_020c3df4(0, (void *)0x18);
     Ov007SpriteGroup *grp = (Ov007SpriteGroup *)p;
     grp->layout = layout;
@@ -85,7 +85,7 @@ void *func_ov007_020c3f00(int *layout, void *extraAnims) {
     grp->items = (Ov007SpriteItem **)func_ov007_020c3df4(0, (void *)(*layout << 2));
     int i = 0;
     while (i < *layout) {
-        grp->items[i] = func_ov007_020c40d4((void *)layout[2]);
+        grp->items[i] = func_ov007_020c40d4(layout[2]);
         Ov007SpriteItem *item = grp->items[i];
         func_ov007_020c4090((char *)item);
         func_ov007_020c10b0(grp->root, (int)item->node);

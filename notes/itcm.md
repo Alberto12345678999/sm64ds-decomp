@@ -245,7 +245,7 @@ packs two 5-bit fields from bits [4:0] and [20:16] into [4:0] and [12:8] on the 
 unpacks the reverse on the way out, and sets bit 30.
 
 **A finding about the existing tree, not about ITCM.** The two arm9 functions that skip the
-padding are `func_02059468` and `func_02059824`, and both are currently committed as
+padding are `OSi_GetAndDisplayContext` and `OSi_AlarmHandler`, and both are currently committed as
 whole-function `asm` blocks carrying the `HAND-ASM PRIMITIVE` banner. Their bodies are
 `stmdb`/`bl`/`ldmia`/`bx` and nothing else, which does not meet the objective test in
 `notes/asm-policy.md` — so under the project's own rule they are misclassified and should

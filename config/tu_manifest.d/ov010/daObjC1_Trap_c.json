@@ -290,37 +290,37 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@808",
+      "from": "@807",
       "to": "@744",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@817",
+      "from": "@816",
       "to": "@753",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@819",
+      "from": "@818",
       "to": "@755",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@809",
+      "from": "@808",
       "to": "@993",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@813",
+      "from": "@812",
       "to": "@994",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@815",
+      "from": "@814",
       "to": "@995",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@811",
+      "from": "@810",
       "to": "@996",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }
@@ -698,7 +698,8 @@
     "State0..State4, GetSpawner, UpdateCollisionTransform, UpdateModelTransform, and OnCollision are inferred class-anchored aliases: the class identity, relationships, relocations, and codegen are proven, but the original private source spellings are not. Behavior dispatches through the state record this TU defines.",
     "The inline virtual destructor plus out-of-line InitResources key function emits retail's D1 then D0 pair with no D2 and no forcing or dummy output. A POD position local avoids introducing Vector3's unrelated vague-linkage destructor helper.",
     "daObjC1_Trap_c_classInit (historical alias Trap_Spawn) and func_ov010_02111984 retain their proven C ABI linkage. The factory is `return new daObjC1_Trap_c()`; leaf operator new(unsigned long) forwards fBase_c::operator new. `new` emits homeless _ZN10dBgActor_cD2Ev, deadstripped by compiler-only policy. The adapter is the measured three-argument callback boundary and immediately calls typed OnCollision.",
-    "The file-scope handles data_ov010_02112d08 and data_ov010_02112d00 and the state record data_ov010_02112d28 are defined in this TU. mwcc emits __sinit_d_a_obj_c1_trap.cpp, the ctor word, two registration nodes, and five anonymous pointer-to-member descriptors. Class RTTI, profile, and vtable stay externalized; the data claim stops at 0x02112aa0, where _ZTI14daObjC1_Trap_c begins. CLPS data_ov010_021122f8 stays external. The handwritten src/__sinit_ov010_0211203c.c is retired."
+    "The file-scope handles data_ov010_02112d08 and data_ov010_02112d00 and the state record data_ov010_02112d28 are defined in this TU. mwcc emits __sinit_d_a_obj_c1_trap.cpp, the ctor word, two registration nodes, and five anonymous pointer-to-member descriptors. Class RTTI, profile, and vtable stay externalized; the data claim stops at 0x02112aa0, where _ZTI14daObjC1_Trap_c begins. CLPS data_ov010_021122f8 stays external. The handwritten src/__sinit_ov010_0211203c.c is retired.",
+    "Collision property member calls replace local helper declarations. Reconciled 7 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (42 sections, 141 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

@@ -12,10 +12,10 @@
  * (DMA 0-3, then timers 0-3 from data_020a60f4), which the stubs in
  * os_irqTable.c (src/engine/os/OS_IrqTable.cpp) dispatch.
  *
- * PC port: smoke_gx builds func_02056e98 from this file through
+ * PC port: smoke_gx builds OSi_EnterDmaCallback from this file through
  * port/tools/hostgen.py, which emits the whole file. port/ntr/runtime.cpp
  * supplies the host's interrupt registry (IRQ::EnableIRQs and the rest), so
- * everything except func_02056e98 sits under #ifndef _MSC_VER.
+ * everything except OSi_EnterDmaCallback sits under #ifndef _MSC_VER.
  */
 
 #include "IRQ.h"
@@ -31,15 +31,16 @@ extern IRQ::HandlerEntry data_020a60c4[];
 extern IRQ::HandlerEntry data_020a60f4[];
 extern short data_023c0000[];
 
-void func_02057000(void);
-void func_02056e98(u32 idx, u32 handler, u32 arg);
-void func_02056e4c(u32 idx, u32 handler, u32 arg);
+void OS_InitIrqTable(void);
+void OSi_EnterDmaCallback(u32 idx, u32 handler, u32 arg);
+void OSi_EnterTimerCallback(u32 idx, u32 handler, u32 arg);
 }
 
 #ifndef _MSC_VER
 
-// Clears the halfword at the start of DTCM that the IRQ wait loop reads.
-extern "C" void func_02057000(void) {
+// OS_InitThreadQueue(&OSi_IrqThreadQueue): this SDK's thread queue is a u16
+// mask of thread ids, and the IRQ thread queue is the first halfword of DTCM.
+extern "C" void OS_InitIrqTable(void) {
     data_023c0000[0] = 0;
 }
 
@@ -89,7 +90,7 @@ Handler GetIRQHandler(u32 mask) {
 
 // Installs a DMA channel's completion callback and enables its interrupt.
 // The entry stays armed only if the channel's interrupt was already enabled.
-extern "C" void func_02056e98(u32 idx, u32 handler, u32 arg) {
+extern "C" void OSi_EnterDmaCallback(u32 idx, u32 handler, u32 arg) {
     u32 mask = 1u << (idx + 8);
     data_020a60c4[idx].handler = (IRQ::Handler)handler;
     data_020a60c4[idx].argument = arg;
@@ -100,7 +101,7 @@ extern "C" void func_02056e98(u32 idx, u32 handler, u32 arg) {
 #ifndef _MSC_VER
 
 // Installs a timer's overflow callback and enables its interrupt.
-extern "C" void func_02056e4c(u32 idx, u32 handler, u32 arg) {
+extern "C" void OSi_EnterTimerCallback(u32 idx, u32 handler, u32 arg) {
     data_020a60f4[idx].handler = (IRQ::Handler)handler;
     data_020a60f4[idx].argument = arg;
     IRQ::EnableIRQs(1u << (idx + 3));

@@ -115,11 +115,11 @@ int daObjKm2_Nobiru_c::InitResources() {
     UpdateModelTransform();
     UpdateColliderTransform();
 
-    /* func_020396c0 stays a call because the direct
+    /* dBgW_Kc::SetEdgeToleranceShift stays a call because the direct
      * mCollider.edgeToleranceShift = 4 store makes InitResources differ. */
     mCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(PoleLift_ClsnFile), mColliderTransform, 0x1000,
                       mAngleY, *(CLPS_Block *)data_ov045_021125b0);
-    func_020396c0(&mCollider, 4);
+    mCollider.SetEdgeToleranceShift(4);
     mCollider.tolerantWallEdges = true;
     mCollider.Enable(this);
     mGrowing = 1;

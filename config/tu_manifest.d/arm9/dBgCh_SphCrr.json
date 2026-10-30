@@ -117,7 +117,7 @@
       "ordinal": 5
     },
     {
-      "symbol": "_ZN12dBgCh_SphCrr13func_02037940Eh",
+      "symbol": "_ZN12dBgCh_SphCrr13SetQueryFlagsEh",
       "address": "0x02037940",
       "size": "0x0000000c",
       "legacy_source": "src/func_02037940.c",
@@ -201,7 +201,7 @@
       "ordinal": 17
     },
     {
-      "symbol": "_ZN12dBgCh_SphCrr13func_02037b5cEv",
+      "symbol": "_ZN12dBgCh_SphCrr10ResetQueryEv",
       "address": "0x02037b5c",
       "size": "0x000000a4",
       "legacy_source": "src/func_02037b5c.c",

@@ -339,7 +339,8 @@
     "Leftover cleanup folded daObjPushblock_c_classInit (0x020b910c..0x020b9148) as return new daObjPushblock_c(); leaf operator new(unsigned long) forwards _ZN7fBase_cnwEj. Registry/factory-backed join: the factory sits immediately after InitResources and ends at daObjPowerUpItem_c D1.",
     "g_profile_PUSHBLOCK remains outside this manifest because data adjacency alone does not establish ownership.",
     "The TU owns its two resource handles outright: PushblockModelFilePtr data_ov002_0210df9c(0x486) and PushblockClsnFilePtr data_ov002_0210df94(0x487) are defined at file end in retail initializer order, so mwcc emits __sinit_d_a_obj_pushblock.cpp itself; the handwritten src/unnamed/ov002/__sinit_ov002_02101478.c is retired.",
-    "rom.sha256 records the shared stock SHA the other intact manifests carry (S38); this worktree's dump rebuilds sha256 ddab9300 with all module bytes and symbols byte-identical -- the same machine-local variance the dsd check-symbols errors come from."
+    "rom.sha256 records the shared stock SHA the other intact manifests carry (S38); this worktree's dump rebuilds sha256 ddab9300 with all module bytes and symbols byte-identical -- the same machine-local variance the dsd check-symbols errors come from.",
+    "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (29 sections, 125 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -636,12 +637,12 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@836",
+      "from": "@831",
       "to": "@716",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Deleting the leaf operator new from daObjPushblock_c.h moved the emission from @730 to @724 (same entity: section 21, symbol index 23)"
     },
     {
-      "from": "@837",
+      "from": "@832",
       "to": "@717",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Deleting the leaf operator new from daObjPushblock_c.h moved the emission from @731 to @725 (same entity: section 14, symbol index 22)"
     }

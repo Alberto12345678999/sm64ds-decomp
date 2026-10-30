@@ -257,7 +257,8 @@
   ],
   "notes": [
     "Hand-assembled: tubuild create generated the seventeen class members and helpers; the classInit factory was folded in by hand, following the ov045 daObjKm2_Agaru_c and ov091 daLinelift2_c promotions.",
-    "Static initializer folded: the FishModelFilePtr handles (files 0x447/0x448/0x44a), the three FishAnimationFileHandle handles (files 0x44b/0x44c/0x449), their destructor-registration nodes and the seven state-record copies make mwcc emit __sinit_d_a_fish.cpp itself (0x1bc, raw-byte-identical to retail __sinit_ov100_02147bc0 with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @679-@684 clash with ov070 daKrpa_c's renamed nodes in this batch and are renamed (@679->@152, @680->@153, @681->@154, @682->@155, @683->@156, @684->@157). This fold does NOT license the .data PMF descriptors or any other .data."
+    "Static initializer folded: the FishModelFilePtr handles (files 0x447/0x448/0x44a), the three FishAnimationFileHandle handles (files 0x44b/0x44c/0x449), their destructor-registration nodes and the seven state-record copies make mwcc emit __sinit_d_a_fish.cpp itself (0x1bc, raw-byte-identical to retail __sinit_ov100_02147bc0 with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @679-@684 clash with ov070 daKrpa_c's renamed nodes in this batch and are renamed (@679->@152, @680->@153, @681->@154, @682->@155, @683->@156, @684->@157). This fold does NOT license the .data PMF descriptors or any other .data.",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (43 sections, 173 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -631,32 +632,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@764",
+      "from": "@763",
       "to": "@152",
       "evidence": "compiler temporary; mwcc numbers it @679 per TU and ov070 daKrpa_c (this batch) also defines a global @679, so the scratch link collides"
     },
     {
-      "from": "@765",
+      "from": "@764",
       "to": "@153",
       "evidence": "compiler temporary; mwcc numbers it @680 per TU and ov070 daKrpa_c (this batch) also defines a global @680, so the scratch link collides"
     },
     {
-      "from": "@766",
+      "from": "@765",
       "to": "@154",
       "evidence": "compiler temporary; mwcc numbers it @681 per TU and ov070 daKrpa_c (this batch) also defines a global @681, so the scratch link collides"
     },
     {
-      "from": "@767",
+      "from": "@766",
       "to": "@155",
       "evidence": "compiler temporary; mwcc numbers it @682 per TU and ov070 daKrpa_c (this batch) also defines a global @682, so the scratch link collides"
     },
     {
-      "from": "@768",
+      "from": "@767",
       "to": "@156",
       "evidence": "compiler temporary; mwcc numbers it @683 per TU and ov070 daKrpa_c (this batch) also defines a global @683, so the scratch link collides"
     },
     {
-      "from": "@769",
+      "from": "@768",
       "to": "@157",
       "evidence": "compiler temporary; mwcc numbers it @684 per TU and ov070 daKrpa_c (this batch) also defines a global @684, so the scratch link collides"
     }

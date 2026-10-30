@@ -40,7 +40,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN9dBgCh_Lin13func_02037608Ev",
+      "symbol": "_ZN9dBgCh_Lin11ResetResultEv",
       "address": "0x02037608",
       "size": "0x00000068",
       "legacy_source": "src/func_02037608.c",

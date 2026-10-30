@@ -57,7 +57,6 @@ struct System {
 extern "C" {
 
 /* daObjFlMaruta_c's collaborators. */
-void func_020393a4(dBgW_KcMbg *p, int v);
 extern int data_ov022_02112c98[];
 
 /* Shared by the two flame helpers below. */
@@ -106,7 +105,7 @@ int daObjFlMaruta_c::CleanupResources()
 // @symbol _ZN15daObjFlMaruta_c8BehaviorEv
 int daObjFlMaruta_c::Behavior()
 {
-    func_020393a4(&mMeshCollider, 0x500000);
+    mMeshCollider.SetClipRadius(0x500000);
     return func_ov080_0212714c(((char *)this), data_ov022_02112c98) & 0xff;
 }
 

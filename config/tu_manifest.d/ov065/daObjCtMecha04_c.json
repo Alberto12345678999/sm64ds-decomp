@@ -267,22 +267,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@596",
+      "from": "@594",
       "to": "@50",
       "evidence": "mwcc numbers this model registration node @541 per TU and the in-flight ov060 fring fold already uses @541, so the batch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@597",
+      "from": "@595",
       "to": "@51",
       "evidence": "mwcc numbers this model registration node @542 per TU and ov080 already defines @542, so the link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@598",
+      "from": "@596",
       "to": "@52",
       "evidence": "mwcc numbers this collision registration node @543 per TU and the in-flight ov060 fring fold already uses @543, so the batch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@599",
+      "from": "@597",
       "to": "@53",
       "evidence": "mwcc numbers this collision registration node @544 per TU and ov080 already defines @544, so the link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }
@@ -487,7 +487,8 @@
     "UpdateShadow, MoveActorOnBelt, and AfterClsnCallback are descriptive reconstruction labels, not ROM-preserved English names. For MoveActorOnBelt, the member/free form, target type, and dActor_c& spelling encoded in the symbol are inferred. For AfterClsnCallback, static/member/free form and all pointer/type spellings encoded in the symbol are inferred. The ROM proves class ownership or callback role, register-level call shape, bodies, layout, and relocation destinations.",
     "Cleanup folded the adjacent CT_MECHA04L/CT_MECHA04S factories as return new daObjCtMecha04_c(). Leaf operator new(unsigned long) forwards _ZN7fBase_cnwEj((unsigned)size).",
     "FOLD 2026-10-10. The handwritten src/unnamed/ov065/__sinit_ov065_0211c7d8.c initializer folded into this TU as the four typed SharedFilePtr wrapper globals at its end (models 1472 then 1470, collisions 1473 then 1471 -- the retail .init order). mwcc emits __sinit_d_a_obj_ct_mecha04.cpp at 0x0211c7d8 and the .ctor word at 0x0211caf4, byte-identical to retail; the compiler temps @541/@542/@543/@544 are renamed @50/@51/@52/@53 because ov080 defines @540-@548 and the in-flight ov060 fring fold claims @541/@543. The TU reaches the handles only through the unowned .data variant tables data_ov065_0211d194/0211d198, so the globals are pure definitions here.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records).",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (34 sections, 144 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
