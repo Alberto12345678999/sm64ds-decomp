@@ -14,12 +14,12 @@ extern void func_02018aa4(void);
 extern void func_020134c8(void);
 extern int GetSoundMode(void);
 extern void SetSoundMode(int mode);
-extern int func_0205d94c(int a, int b);
+extern u32 FS_TryLoadTable(void *p_mem, u32 size);
 extern void LoadOverlay(int id);
 extern void InitializeAssetHandleTable(void);
 extern void UnloadOverlay(int id);
 extern void *FS_FindArchive(void *p, int n);
-extern void func_0205c91c(void);
+extern void *FS_UnloadArchiveTables(void *p_arc);
 extern void LoadFont(int id);
 
 extern int OVERLAY_0_ID;
@@ -37,16 +37,15 @@ void func_0201a2f8(int unused) {
     }
     ptr = 0;
     if (!cond) {
-        int size = func_0205d94c(0, 0);
+        int size = FS_TryLoadTable(0, 0);
         ptr = Memory::Allocate(size);
-        func_0205d94c((int)ptr, size);
+        FS_TryLoadTable(ptr, size);
     }
     LoadOverlay((int)&OVERLAY_0_ID);
     InitializeAssetHandleTable();
     UnloadOverlay((int)&OVERLAY_0_ID);
     if (ptr != 0) {
-        FS_FindArchive(&data_0208ee5c, 3);
-        func_0205c91c();
+        FS_UnloadArchiveTables(FS_FindArchive(&data_0208ee5c, 3));
         Memory::Deallocate(ptr);
     }
     LoadOverlay((int)&OVERLAY_1_ID);

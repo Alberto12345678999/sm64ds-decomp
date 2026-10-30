@@ -12,7 +12,7 @@ extern "C" {
  * SDK's FSFile. */
 typedef struct FSFile {
     char pad_00[8];
-    void *arc; /* 0x08 -- FS_NotifyArchiveAsyncEnd (func_0205cd5c) takes it */
+    void *arc; /* 0x08 -- FS_NotifyArchiveAsyncEnd takes it */
     char pad_0c[0x1c];
     u32 pos; /* 0x28 -- prop.file.pos */
     u32 dst; /* 0x2c -- arg.readfile.dst */
@@ -28,7 +28,7 @@ extern void func_02065730(u16 type, u32 arg1, const void *src1, u32 arg3, const 
 extern int func_020423dc(int *table);
 extern int func_020656d4(u16 arg0, const void *arg1, int arg2, u32 arg3);
 extern void func_020657d0(u16 id, void *obj);
-extern void func_0205cd5c(void *self, int arg);
+extern void FS_NotifyArchiveAsyncEnd(void *self, int arg);
 extern void func_02042160(void);
 extern void func_02040f30(void *arg);
 extern char data_020a1fc0[];
@@ -125,7 +125,7 @@ void func_02040f30(void *arg) {
             void *arc = p->arc;
             FILE_SHARE_WORK->mReadRequest = 0;
             p->pos += p->len;
-            func_0205cd5c(arc, 0);
+            FS_NotifyArchiveAsyncEnd(arc, 0);
             return;
         }
         }
