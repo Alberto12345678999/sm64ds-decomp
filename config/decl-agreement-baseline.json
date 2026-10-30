@@ -18050,6 +18050,10 @@
         "param:#2 int",
         "return:void"
       ],
+      "src/unnamed/arm9/0201/func_0201a9ec.c": [
+        "param:#2 unsigned char",
+        "return:unsigned char"
+      ],
       "src/unnamed/arm9/0201/func_0201fec8.c": [
         "param:#1 char *",
         "param:#2 int",
