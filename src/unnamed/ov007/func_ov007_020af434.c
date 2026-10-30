@@ -1,5 +1,5 @@
 #include "Ov007Work.h"
-#include "Ov007BgLayer.h"
+#include "Ov007Display.h"
 
 extern void func_ov007_020b283c(void);
 extern void func_ov007_020b76a0(void);
@@ -13,17 +13,6 @@ extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-
-/* The manager's +0x74: the 2D display record func_ov007_020b7594
- * allocates; only its BG layer table. */
-typedef struct Ov007Display {
-    char pad_00[0x34];
-    /* 0x34: eight func_ov007_020c95fc BG layers, each wrapped by
-     * func_ov007_020adc08 into a layer slot */
-    Ov007BgLayer **bgLayers;
-} Ov007Display;
-
-typedef char Ov007Display_size_must_be_0x38[sizeof(Ov007Display) == 0x38 ? 1 : -1];
 
 void func_ov007_020af434(void) {
     Ov007BgLayer **layers;

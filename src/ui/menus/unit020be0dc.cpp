@@ -49,6 +49,7 @@
  */
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007Display.h"
 #include "cstd.h"
 #include "Vector3s.h"
 #include "dExtModel_c.h"
@@ -197,26 +198,6 @@ struct TrackingRecord {
 };
 
 typedef char TrackingRecord_size_must_be_0xc[sizeof(TrackingRecord) == 0xc ? 1 : -1];
-
-/* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
- * allocates; names as in func_ov007_020ade58 and func_ov007_020adc08, only
- * the slots this file reads. A bank's +0xc (its array of 0x10-byte
- * animations) stays raw. */
-typedef struct Ov007Display {
-    void *oamListMain; /* 0x00 */
-    void *oamListSub;  /* 0x04 */
-    char pad_08[0xc];
-    /* 0x14: the sub screen's 0x400-byte OAM buffer; func_ov007_020b7384
-   * copies it to 0x07000400 (func_02056674), and +0x10 to the main
-   * screen's OAM */
-    char *oamSub;
-    char pad_18[0x24];
-    char **spriteBanks; /* 0x3c: the six func_ov007_020c9688 sprite banks */
-} Ov007Display;
-
-typedef char Ov007Display_spriteBanks_must_be_at_0x3c[(int)&((Ov007Display *)0)->spriteBanks == 0x3c
-                                                          ? 1
-                                                          : -1];
 
 /* NitroSDK's GXOamAttr: one 8-byte OAM entry, its fourth halfword an
  * affine parameter. */
@@ -562,16 +543,16 @@ void func_ov007_020be684(void *a0, char *ctx) {
  * animation 1 with an 8-pixel margin, the extra record animations 2 and 0
  * with a 0x20-pixel one. */
 void func_ov007_020be50c(void) {
-    int *t;
+    Ov007SpriteBank **t;
     Ov007SpriteGroup *n;
     Ov007SpriteItem *e;
     Ov007OamNode *ef0;
-    int *t2;
+    Ov007SpriteBank *t2;
     int count;
     int i;
     int off;
 
-    t = (int *)WORK->display->spriteBanks;
+    t = WORK->display->spriteBanks;
 
     SPRITES = (Ov007ParticleSprites *)func_ov007_020c3df4(0, (void *)sizeof(Ov007ParticleSprites));
     SPRITES->group = (Ov007SpriteGroup *)func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
@@ -588,9 +569,9 @@ void func_ov007_020be50c(void) {
         off = i;
         do {
             e = n->items[i];
-            t2 = (int *)t[2];
+            t2 = t[2];
             ef0 = e->node;
-            ef0->anims[0] = (void *)(t2[3] + 0x10);
+            ef0->anims[0] = &t2->anims[1];
             e->margin = 8;
             Sprite_SetAnimation((char *)e->node, 0, 1, 0, 0);
             func_0204dc84((char *)SPRITES->tracking + off);
@@ -602,9 +583,9 @@ void func_ov007_020be50c(void) {
     }
 
     e = n->extra;
-    e->node->anims[0] = (void *)(((int *)t[2])[3] + 0x20);
+    e->node->anims[0] = &t[2]->anims[2];
     ef0 = e->node;
-    ef0->anims[1] = (void *)((int *)t[2])[3];
+    ef0->anims[1] = &t[2]->anims[0];
     e->margin = 0x20;
 
     func_ov007_020be8b8();

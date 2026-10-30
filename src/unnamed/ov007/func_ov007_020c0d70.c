@@ -1,4 +1,4 @@
-#include "types.h"
+#include "Ov007SpriteBank.h"
 
 /* The 0x44-byte OAM sprite node func_ov007_020c11ac allocates; names as in
  * func_ov007_020c10ec, only the slots this file touches. */
@@ -11,15 +11,6 @@ typedef struct Ov007OamNode {
     short tick;  /* 0x2e: ticks into the frame */
     int changed; /* 0x30: set when the frame wraps or clamps at an end */
 } Ov007OamNode;
-
-/* A sprite bank's 0x10-byte cell animation (func_ov007_020c13a4); only
- * the slots this file reads. */
-typedef struct Ov007CellAnim {
-    void **frames;  /* 0x00 */
-    u16 *durations; /* 0x04: ticks per frame */
-    char pad_08[4];
-    u32 frameCount; /* 0x0c */
-} Ov007CellAnim;
 
 /* Steps the node's animation one tick forwards (or backwards when rev is
  * 1): past a frame's duration it moves to the next frame, and past either

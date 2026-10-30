@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007Work.h"
+#include "Ov007Display.h"
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
@@ -53,31 +54,13 @@ typedef struct Ov007ItemNode {
     Ov007OamNode *node; /* 0x04: func_ov007_020c11ac */
 } Ov007ItemNode;
 
-/* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
- * allocates (as in func_ov007_020adc08); only the slots this file reads. */
-typedef struct Ov007Display {
-    /* 0x00/0x04: the OAM node lists (func_ov007_020c1068) that
-     * func_ov007_020bc9c8 draws into the main (+0x10) and sub (+0x14) OAM
-     * buffers; func_ov007_020c0af4 appends a node */
-    void *oamListMain;
-    void *oamListSub;
-    char pad_08[0x34];
-    /* 0x3c: the six func_ov007_020c9688 sprite banks func_ov007_020b6d40
-     * builds (count at +0x38, func_ov007_020b72fc); a bank's +0xc is its
-     * array of 0x10-byte animations */
-    char **spriteBanks;
-} Ov007Display;
-
-typedef char Ov007OamNode_head_must_be_at_0x38[(int)&((Ov007OamNode *)0)->head == 0x38 ? 1 : -1];
-typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -1];
-
 
 void *func_ov007_020ade58(int self)
 {
     Ov007ItemNode *s = (Ov007ItemNode *)func_ov007_020c3df4(0, 8);
     Ov007Display *r6 = WORK->display;
     Ov007OamNode *r4;
-    char **sl;
+    Ov007SpriteBank **sl;
     int sb;
     int cnt;
 
@@ -129,12 +112,11 @@ void *func_ov007_020ade58(int self)
             if (state == 1 && sb >= 4) {
                 r7 = one;
             } else if (state == 0) {
-                r4->head->anims[sb] =
-                    (void *)(*(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
+                r4->head->anims[sb] = &sl[r7]->anims[entry->animIndices[sb]];
                 Sprite_SetAnimation(r4->head, zero, zero, zero, zero);
             }
 
-            r4->anims[sb] = (void *)(*(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
+            r4->anims[sb] = &sl[r7]->anims[entry->animIndices[sb]];
             sb++;
         } while (sb < r4->animCount);
     }
