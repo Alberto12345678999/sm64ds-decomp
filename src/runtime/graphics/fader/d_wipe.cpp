@@ -153,15 +153,14 @@ int dWipe_c::SetBackwardTime(u32 frames, u32 extra) {
    it. Loads the wipe's palette on both engines, arms the blend registers,
    then hands the per-scanline work to the HBlank IRQ with IME briefly masked
    around the install. */
-// @symbol _ZN7dWipe_c14SetForwardTimeEj
-int dWipe_c::SetForwardTime(u32 frames)
-{
+// @symbol _ZN7dWipe_c14SetForwardTimeEjj
+int dWipe_c::SetForwardTime(u32 frames, u32 extra) {
     if (state == 0 || state == 2) {
         int t;
         u16 saved;
 
         if (type == 1)
-            return dFdBrightness_c::SetForwardTime(frames);
+            return dFdBrightness_c::SetForwardTime(frames, extra);
 
         if (frames == 0) {
             wipeSpeed = -0x200000;

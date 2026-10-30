@@ -51,7 +51,7 @@ struct dFdDummy_c : dFdColor_c {
     virtual ~dFdDummy_c();                       /* slots 0 (D1), 1 (D0) */
     virtual void AdvanceFade();                  /* slot 2 */
     virtual int SetBackwardTime(u32 frames, u32); /* slot 3 */
-    virtual int  SetForwardTime(u32 frames);     /* slot 4 */
+    virtual int SetForwardTime(u32 frames, u32);  /* slot 4 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

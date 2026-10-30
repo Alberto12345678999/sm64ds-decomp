@@ -87,7 +87,7 @@ struct dFader_c {
     /* Pure, all eight: the corresponding words in data_0208eafc are null. */
     virtual void AdvanceFade() = 0;                  /* slot 2 */
     virtual int SetBackwardTime(u32 frames, u32) = 0; /* slot 3 */
-    virtual int  SetForwardTime(u32 frames) = 0;     /* slot 4 */
+    virtual int SetForwardTime(u32 frames, u32) = 0;  /* slot 4 */
     virtual int  IsAtStart() = 0;                    /* slot 5 */
     virtual int  IsAtEnd() = 0;                      /* slot 6 */
     virtual int  IsBetweenStartAndEnd() = 0;         /* slot 7 */
