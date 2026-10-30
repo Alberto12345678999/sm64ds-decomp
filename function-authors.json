@@ -4575,7 +4575,7 @@
     },
     "arm9:0x0202ffec": {
       "author": "andrewboudreau",
-      "name": "func_0202ffec"
+      "name": "Quaternion_Multiply"
     },
     "arm9:0x020301c4": {
       "author": "tangosdev",

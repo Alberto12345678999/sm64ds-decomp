@@ -28,6 +28,7 @@ void func_0203bc7c(void)
             keys &= ~0x30;
         if ((keys & 0xc0) == 0xc0)
             keys &= ~0xc0;
+        /* L+R+START+SELECT: the soft reset combo (func_0202345c.cpp). */
         if (keys == 0x30c)
             data_020a0e44 = 1;
         old = data_020a0e50[i];
