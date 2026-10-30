@@ -202,7 +202,7 @@ float func_0206ddcc(float a, int op) {
  * 6ai for the fBase_c::Process wrappers.
  */
 extern int func_02073238(void);
-extern int func_01ffb008(int a, int b);
+extern unsigned int __ieee_status(unsigned int mask, unsigned int flags);
 extern void func_0207037c(int idx);
 
 typedef void (*DispatchFn)(int a0, Pair p1, Pair p2, unsigned int flags);
@@ -213,7 +213,7 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
   DispatchFn fn = (DispatchFn) func_02073238();
   if ((flags & 0xc00000) == 0)
   {
-    flags |= func_01ffb008(0, 0) & 0xc00000;
+    flags |= __ieee_status(0, 0) & 0xc00000;
   }
   switch (flags & 0x7c000000)
   {

@@ -2931,6 +2931,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "Vec3_ApproachHorz": {
@@ -3159,10 +3164,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
-      ],
       "src/unnamed/arm9/0203/func_0203842c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -3287,10 +3288,6 @@
       "src/game/actors/d_a_obj_c1_trap.cpp": [
         "param:#1 const TrapVector3 *",
         "param:#2 const TrapVector3 *"
-      ],
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
       ],
       "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
@@ -3713,6 +3710,11 @@
         "param:#1 EntryMeshVec *",
         "param:#2 const EntryMeshVec *",
         "param:#3 const Vector3 *"
+      ],
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "Vec3_VertAngle": {
@@ -3761,10 +3763,6 @@
       "src/game/actors/d_a_wanwan.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
-      ],
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
       ],
       "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
@@ -15530,13 +15528,6 @@
         "return:int"
       ]
     },
-    "func_01ffb008": {
-      "src/cstd4.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
-      ]
-    },
     "OS_ResetSystem": {
       "src/func_02013f4c.cpp": [
         "param:#1 int"
@@ -15613,9 +15604,6 @@
       ]
     },
     "func_020091f8": {
-      "src/unnamed/arm9/0200/func_02005110.cpp": [
-        "param:#2 void *"
-      ],
       "src/engine/view/d_camera.cpp": [
         "param:#2 void *",
         "param:#2 dCamera_c *"
@@ -20968,9 +20956,6 @@
       "src/_fadd.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff97d8.c": [
-        "return:int"
-      ],
       "src/_ffix.c": [
         "return:int"
       ],
@@ -20982,21 +20967,9 @@
       ],
       "src/_fsub.c": [
         "return:int"
-      ],
-      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/01ff/func_01ffb008.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/01ff/func_01ffb030.c": [
-        "return:int"
       ]
     },
     "func_02073238": {
-      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
-        "return:int"
-      ],
       "src/cstd4.cpp": [
         "return:int"
       ]

@@ -64,11 +64,11 @@ src/unnamed/arm9/01ff/func_01ffafd4.c:
     complete
     .text start:0x01ffafd4 end:0x01ffb008
 
-src/unnamed/arm9/01ff/func_01ffb008.c:
+src/__ieee_status.c:
     complete
     .text start:0x01ffb008 end:0x01ffb030
 
-src/unnamed/arm9/01ff/func_01ffb030.c:
+src/__fp_status.c:
     complete
     .text start:0x01ffb030 end:0x01ffb07c
 
