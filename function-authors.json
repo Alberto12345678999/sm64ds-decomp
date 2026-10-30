@@ -11871,7 +11871,7 @@
     },
     "arm9:0x0206df14": {
       "author": "andrewboudreau",
-      "name": "func_0206df14"
+      "name": "__flush_all"
     },
     "arm9:0x0206df84": {
       "author": "tangosdev",
@@ -11891,7 +11891,7 @@
     },
     "arm9:0x0206e06c": {
       "author": "andrewboudreau",
-      "name": "func_0206e06c"
+      "name": "fflush"
     },
     "arm9:0x0206e184": {
       "author": "tangosdev",
