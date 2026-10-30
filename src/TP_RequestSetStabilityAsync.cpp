@@ -9,11 +9,6 @@
 extern "C" {
 int PXI_SendWordByFifo(int a, int b, int c);
 }
-/* C linkage: data_020a80cc is a ROM data symbol named by its exact final name,
-   so a C++ translation unit must not mangle it. mwccarm leaves a data extern
-   unmangled either way, but the PC port links this file with MSVC, which does
-   not -- that is the failure #4493 hit on the split IRQ files. */
-extern "C" TPWork data_020a80cc;
 extern "C" void TP_RequestSetStabilityAsync(int a, int b) {
     unsigned int irq = IRQ::Disable();
     int ok;

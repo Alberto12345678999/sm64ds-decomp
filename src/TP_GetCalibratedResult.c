@@ -2,7 +2,6 @@
  * else the last sample (mBuf) calibrated in place and 0. */
 #include "nitro/spi/tp.h"
 
-extern TPWork data_020a80cc;
 extern void TP_GetCalibratedPoint(TPData *disp, TPData *raw);
 
 int TP_GetCalibratedResult(TPData *result) {

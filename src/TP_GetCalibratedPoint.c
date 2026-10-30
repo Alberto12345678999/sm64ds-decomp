@@ -5,7 +5,6 @@
  * data_020a80e4, which this function's literal pool names; see
  * include/nitro/spi/tp.h. */
 #include "nitro/spi/tp.h"
-extern TPWork data_020a80cc;
 
 void TP_GetCalibratedPoint(TPData *disp, TPData *raw) {
     int *p;

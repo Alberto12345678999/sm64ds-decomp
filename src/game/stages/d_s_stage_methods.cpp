@@ -80,14 +80,12 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "GX.h"
 #include "cstd.h"
 #include "daMugenBGM_c.h"
+#include "Matrix2x2.h"
 #include "math/CalcLib.h"
 #include "dGraph_c.h"
 #include "dClipper.h"
 
 struct OamAttr;
-struct Matrix2x2 {
-    int m[4];
-};
 
 /* Definition order is the static-init order. The callback's implicit
    constructor stores the base vptr, then this vtable, and leaves the matrix
@@ -2744,8 +2742,8 @@ int IsButtonInputValid(void) {
    blx r1` with r0 = the callback object. The matrix at +0x4 stays zero until
    UpdateMinimap; the static initializer does not seed it. */
 int dScStage_c::graphCallback_c::GraphCallback2() {
-    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, (Matrix2x2 *)matrix, originX,
-                      originY, targetX, targetY);
+    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, &matrix, originX, originY, targetX,
+                      targetY);
     return 1;
 }
 
@@ -2765,7 +2763,7 @@ int dScStage_c::graphCallback_c::GraphCallback1() {
    a single ldm/stm block move and a struct copy of four named fields
    scalarizes. */
 extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
-    *(MinimapDesc *)(((long long)(int)data_0209f3c4.matrix)) = *desc;
+    *(MinimapDesc *)(((long long)(int)&data_0209f3c4.matrix)) = *desc;
     data_0209f3c4.originX = a;
     data_0209f3c4.originY = b;
     data_0209f3c4.targetX = c;
