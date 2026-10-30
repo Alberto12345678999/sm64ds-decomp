@@ -138,7 +138,7 @@ extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020c3d1c(void *);
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int b);
 extern void func_ov007_020c4f50(void *c, int a1, int a2, int a3, int a4);
 extern int func_ov007_020c5014(void *, int);
 extern void func_ov007_020c510c(char *c);

@@ -129,7 +129,7 @@ extern void func_ov007_020c1d8c(int i);
 extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c3598(int value, int count, char *digits, int base);
 extern void func_ov007_020c3d1c(void *p);
-extern void *func_ov007_020c3df4(int heap, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern int func_ov007_020c9080(int tween);
 extern void *func_ov007_020c908c(void *out);
 

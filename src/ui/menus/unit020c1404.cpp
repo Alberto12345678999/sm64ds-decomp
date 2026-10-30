@@ -64,7 +64,7 @@ extern u32 data_ov007_02104be4; /* end of the texture region */
 extern u32 data_ov007_02104be8; /* next free palette slot */
 
 extern void Crash(void);
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c3d1c(void *self);
 
 void func_ov007_020c15ec(Ov007Texture *tex);

@@ -88,7 +88,7 @@ extern void func_ov007_020bdeb0(int a);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020c2090(char *c);
 extern void func_ov007_020c3d1c(void *self);
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c92d0(char *record);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int initialState);

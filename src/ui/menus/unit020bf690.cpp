@@ -93,7 +93,7 @@ extern void func_ov007_020bc53c(void *p);
 extern Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020c3d1c(void *self);
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c8498(Ov007Transition *tr);
 extern void func_ov007_020c8688(Ov007Transition *tr, int v);
 extern void func_ov007_020c86a8(Ov007Transition *tr, int v);

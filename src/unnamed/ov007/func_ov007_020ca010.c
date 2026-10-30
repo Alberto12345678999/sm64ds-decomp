@@ -1,7 +1,7 @@
 #include "types.h"
 #include "Ov007Swing.h"
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, int flags);
 extern void func_ov007_020c7804(Ov007PointList *list);
 extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);

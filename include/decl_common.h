@@ -889,7 +889,7 @@ extern int RouletteResults_Tick(void);
 extern int RouletteBoard_LoadModels(char*);
 extern int func_ov007_020b6f4c(void);
 extern int func_ov007_020c3ba8(int);
-extern void *func_ov007_020c3df4(int, int);
+extern void *func_ov007_020c3df4(const char *, int);
 extern int func_ov010_02111984[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
    r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
