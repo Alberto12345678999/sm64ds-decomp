@@ -1,3 +1,6 @@
+//cpp
+extern "C" {
+
 /* func_02072168 @ 0x02072168 (arm9, size 0x880)   [mwccarm 1.2/base, 1.2/sp2, 1.2/sp2p3, 2004/b56]
  * C++ exception unwinder: interprets a function's exception-action table, running
  * the destructors of everything live in the frame, until it reaches `end`. (An
@@ -467,4 +470,5 @@ void func_02072168(ThrowContext *c, ActionIterator *s, char *end) {
         if ((op & 0x80) != 0)
             s->mAction = (unsigned char *)saved;
     }
+}
 }

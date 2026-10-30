@@ -8520,7 +8520,7 @@
         "param:#2 int",
         "return:long long"
       ],
-      "src/unnamed/arm9/0207/func_02072168.c": [
+      "src/unnamed/arm9/0207/func_02072168.cpp": [
         "param:#1 int",
         "param:#2 int",
         "return:int"
@@ -20222,7 +20222,7 @@
       ]
     },
     "func_02071790": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0207/func_02071f1c.c": [
@@ -20230,17 +20230,17 @@
       ]
     },
     "func_02071864": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#1 struct Src *",
         "param:#2 Ctx *"
       ],
-      "src/unnamed/arm9/0207/func_02072168.c": [
+      "src/unnamed/arm9/0207/func_02072168.cpp": [
         "param:#1 char *",
         "param:#2 char *"
       ]
     },
     "func_02071910": {
-      "src/unnamed/arm9/0207/func_02072168.c": [
+      "src/unnamed/arm9/0207/func_02072168.cpp": [
         "arity:2",
         "return:int"
       ],
@@ -20259,12 +20259,12 @@
       ]
     },
     "func_02071ccc": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#1 struct Src *"
       ]
     },
     "func_02071d3c": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#1 struct Src *",
         "param:#2 Ctx *",
         "param:#3 int *",
@@ -20272,13 +20272,13 @@
       ]
     },
     "func_02072014": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#1 struct Src *",
         "param:#2 Ctx *"
       ]
     },
     "func_02072168": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#1 struct Src *",
         "param:#2 Ctx *",
         "param:#3 unsigned char *"
@@ -20288,18 +20288,18 @@
       ]
     },
     "func_020729f4": {
-      "src/unnamed/arm9/0207/func_02071d3c.c": [
+      "src/unnamed/arm9/0207/func_02071d3c.cpp": [
         "param:#1 S72d90 *"
       ],
-      "src/unnamed/arm9/0207/func_02072014.c": [
+      "src/unnamed/arm9/0207/func_02072014.cpp": [
         "return:unsigned char"
       ]
     },
     "func_02072dac": {
-      "src/unnamed/arm9/0207/func_02071be8.c": [
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#2 Ctx *"
       ],
-      "src/unnamed/arm9/0207/func_02072168.c": [
+      "src/unnamed/arm9/0207/func_02072168.cpp": [
         "param:#2 char *"
       ],
       "src/unnamed/arm9/0207/func_020729f4.c": [
@@ -20307,7 +20307,7 @@
       ]
     },
     "__throw_catch_compare": {
-      "src/unnamed/arm9/0207/func_02071d3c.c": [
+      "src/unnamed/arm9/0207/func_02071d3c.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"

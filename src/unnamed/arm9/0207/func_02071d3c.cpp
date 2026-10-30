@@ -1,4 +1,8 @@
+//cpp
 #include "types.h"
+
+extern "C" {
+
 struct S6  { int v[6]; };
 struct S7  { int v[7]; };
 struct S21 { int v[21]; };
@@ -115,4 +119,5 @@ int func_02071d3c(int *self, struct S6 *src, int flag)
     }
 
     return buf.p0.v[2];
+}
 }

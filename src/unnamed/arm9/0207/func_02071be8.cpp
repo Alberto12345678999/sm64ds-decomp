@@ -1,3 +1,6 @@
+//cpp
+extern "C" {
+
 typedef struct Ctx { int f0; int f4; char rest[0x18 - 8]; } Ctx;
 typedef struct Src Src;
 extern void func_02072dac(int handle, Ctx *ctx);
@@ -35,4 +38,5 @@ void func_02071be8(struct Src *s)
     func_02072168(s, &ctx, q);
     func_02071ccc(s, blk[2], local0);
     func_02071790(s, &ctx, ctx.f0 + blk[1]);
+}
 }

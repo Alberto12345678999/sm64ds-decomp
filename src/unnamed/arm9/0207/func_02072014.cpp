@@ -1,3 +1,6 @@
+//cpp
+extern "C" {
+
 extern unsigned char func_02072d90(void *p);
 extern void func_020731fc(void);
 extern unsigned char func_020729f4(void *p);
@@ -85,4 +88,5 @@ int func_02072014(int *c, int *arg)
     c[2] = 0;
     c[3] = bt;
     return bt;
+}
 }
