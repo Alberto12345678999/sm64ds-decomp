@@ -1,9 +1,6 @@
 #include "Ov007OamNode.h"
 #include "Ov007Item.h"
 
-/* The 8-byte record func_ov007_020ade58 builds; the manager keeps nine in
- * its itemNodes. */
-
 extern int func_ov007_020c1180(Ov007OamNode *node);
 extern int func_ov007_020aea4c(Ov007Item *item);
 extern void func_ov007_020c3d1c(void *p);

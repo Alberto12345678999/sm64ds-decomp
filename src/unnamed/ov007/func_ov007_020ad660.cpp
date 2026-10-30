@@ -6,6 +6,9 @@
 #include "cstd.h"
 #include "Ov007BgLayer.h"
 #include "Ov007Item.h"
+#include "Ov007Model.h"
+#include "Ov007LayerSlot.h"
+#include "Ov007Figure.h"
 
 extern "C" {
 
@@ -19,48 +22,11 @@ extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020c1d8c(int a);
 extern void func_ov007_020ada70(void);
 
-/* The 0xc-byte record func_ov007_020adc08 returns; names as there. */
-typedef struct Ov007LayerSlot {
-    Ov007MenuState *state; /* 0x00: func_ov007_020c9388(0) */
-    Ov007BgLayer *layer;   /* 0x04 */
-    u8 kind;               /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
-} Ov007LayerSlot;
-typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
-
-/* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
-/* func_ov007_020c9110's animation player; names as in func_ov007_020bc02c. */
-typedef struct Ov007AnimPlayer {
-    char pad_00[0xc];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame; /* 0x10: the whole frame func_ov007_020c9110 last reached */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc02c, only the slot this file reads. */
-typedef struct Ov007Model {
-    char pad_00[0x18];
-    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
-} Ov007Model;
-
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * names as in func_ov007_020b0da0. */
-typedef struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-} Ov007Figure;
-
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
-/* Per-frame update of one BG layer slot (func_ov007_020aed98 runs all eight).
- * The parameter keeps the tree's char * spelling; `slot` is the typed local. */
-void func_ov007_020ad660(char *arg0) {
-    Ov007LayerSlot *slot = (Ov007LayerSlot *)arg0;
+/* Per-frame update of one BG layer slot (func_ov007_020aed98 runs all eight). */
+void func_ov007_020ad660(Ov007LayerSlot *slot) {
     Ov007Work *mgr;
     Ov007MenuState *temp_r5;
     Ov007MenuState *temp_r4;

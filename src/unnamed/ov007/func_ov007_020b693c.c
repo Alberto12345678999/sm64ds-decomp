@@ -1,6 +1,6 @@
 #include "Ov007Work.h"
 
-extern int func_ov007_020b4c04(int i);
+extern struct Ov007ItemView *func_ov007_020b4c04(int i);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
@@ -10,6 +10,6 @@ extern char *data_ov007_0210342c;
 void func_ov007_020b693c(void) {
     int i;
     for (i = 0; i < 0x18; i++) {
-        WORK->itemViews[i] = (struct Ov007ItemView *)func_ov007_020b4c04(i);
+        WORK->itemViews[i] = func_ov007_020b4c04(i);
     }
 }

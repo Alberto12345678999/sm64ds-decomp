@@ -58,32 +58,9 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 #include "Ov007Item.h"
+#include "Ov007Pad.h"
 
 #pragma opt_loop_invariants off
-
-/* The 0x1c-byte record func_ov007_020b4c04 returns (freed by
- * func_ov007_020b4bd4, stored in Ov007Work's itemViews by
- * func_ov007_020b693c). func_ov007_020b5f64 slides the item from slideFrom
- * to slideTo by slideT. */
-typedef struct Ov007ItemView {
-    Ov007Item *item;               /* 0x00 */
-    Ov007Sprite *sprite;           /* 0x04: func_ov007_020c44e4 */
-    s32 pad_08;                    /* 0x08: cleared by func_ov007_020b4c04; no reader found */
-    s32 slideT;                    /* 0x0c: slideTween output, 0..0x1000 */
-    struct Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c, bound to slideT */
-    s16 slideFromX;                /* 0x14 */
-    s16 slideFromY;                /* 0x16 */
-    s16 slideToX;                  /* 0x18 */
-    s16 slideToY;                  /* 0x1a */
-} Ov007ItemView;
-
-typedef char Ov007ItemView_size_must_be_0x1c[sizeof(Ov007ItemView) == 0x1c ? 1 : -1];
-
-/* The pad record at Ov007Work's pad; names as in unit020b8f50. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
 
 /* The 0xc-byte item rows starting at data_ov007_020d77d8. Their columns
  * are separate ROM symbols (data_ov007_020d77d8 hit-box index,
@@ -139,11 +116,11 @@ extern void func_ov007_020ae834(Ov007Item *item);
 extern Ov007Item *func_ov007_020aea6c(int id, Ov007ItemLayout *layout, Ov007HitBox *hitBox);
 extern int func_ov007_020aea4c(Ov007Item *item);
 extern void func_ov007_020aec94(int choice);
-extern int func_ov007_020b58e4(char *view);
+extern int func_ov007_020b58e4(Ov007ItemView *view);
 extern void func_ov007_020b5bf0(Ov007ItemView *view);
 extern void func_ov007_020b6134(int a);
 extern int func_ov007_020b6208(int id);
-extern void func_ov007_020b63e4(char **view);
+extern void func_ov007_020b63e4(Ov007ItemView *view);
 extern void func_ov007_020b647c(int r0, int r1, short r2);
 extern void func_ov007_020b64a8(int dir);
 extern int func_ov007_020b79e4(void);
@@ -169,16 +146,14 @@ extern int func_ov007_020c44e4(int mode);
 extern int func_ov007_020c9080(int tween);
 extern void *func_ov007_020c908c(void *out);
 
-void func_ov007_020b45b0(void *t);
+void func_ov007_020b45b0(Ov007ItemView *view);
 
 /* The item's state-2 step: on the state's first tick, sends the follow-up
  * state requests for this item, then over `thresh` ticks pops (ids 3/4),
  * nudges sideways (ids 10/11) or squashes its sprite; when the ticks run out
- * it resets the scale and requests the item's next state. arg keeps the
- * char * spelling of the definition; `view` is the typed view. */
+ * it resets the scale and requests the item's next state. */
 // @symbol func_ov007_020b50e8
-void func_ov007_020b50e8(char *arg) {
-    Ov007ItemView *view = (Ov007ItemView *)arg;
+void func_ov007_020b50e8(Ov007ItemView *view) {
     Ov007Item *st;
     u16 state;
     int t;
@@ -421,8 +396,7 @@ void func_ov007_020b50e8(char *arg) {
 /* The item's state-0 step: items 8, 0x14 and 0x17 are selected with the
  * B button (pressed this frame, not held) through func_ov007_020b45b0. */
 // @symbol func_ov007_020b5068
-void func_ov007_020b5068(void *t) {
-    Ov007ItemView *view = (Ov007ItemView *)t;
+void func_ov007_020b5068(Ov007ItemView *view) {
     u16 id = view->item->id;
     Ov007Pad *pad;
 
@@ -436,11 +410,11 @@ void func_ov007_020b5068(void *t) {
         return;
     if (func_ov007_020c1da0(0))
         return;
-    func_ov007_020b45b0(t);
+    func_ov007_020b45b0(view);
 }
 
 // @symbol func_ov007_020b4c04
-void *func_ov007_020b4c04(int arg0) {
+Ov007ItemView *func_ov007_020b4c04(int arg0) {
     Ov007ItemView *view;
     Ov007Sprite *sprite;
     s32 r5;
@@ -558,11 +532,9 @@ void func_ov007_020b4bd4(Ov007ItemView *view) {
 
 /* Resets the view's sprite to unit scale, full alpha and white, sizes it
  * for camera `arg` (func_ov007_020c43bc), puts it at the item's home point
- * and places it in the world (func_ov007_020c4388). c keeps the char *
- * spelling of the definition; `view` is the typed view. */
+ * and places it in the world (func_ov007_020c4388). */
 // @symbol func_ov007_020b4b5c
-void func_ov007_020b4b5c(char *c, int arg) {
-    Ov007ItemView *view = (Ov007ItemView *)c;
+void func_ov007_020b4b5c(Ov007ItemView *view, int arg) {
     Ov007Sprite *o = view->sprite;
     o->scaleY = 0x1000;
     o->scaleX = o->scaleY;
@@ -677,7 +649,7 @@ void func_ov007_020b46b0(void *arg0, void *arg1) {
                 int min_x = elem->item->hitBox->minX + pos_x;
                 if (touching != 0 && (s32)tp->cur.x >= min_x && (s32)tp->cur.x <= max_x &&
                     (s32)tp->cur.y >= min_y && (s32)tp->cur.y <= max_y) {
-                    func_ov007_020b63e4((char **)arg0);
+                    func_ov007_020b63e4((Ov007ItemView *)arg0);
                 } else {
                     u16 t = elem->item->id;
                     if ((t == 0xc && WORK->settings->bootArgs->backlightOn == 0) ||
@@ -687,7 +659,7 @@ void func_ov007_020b46b0(void *arg0, void *arg1) {
                             if (x >= 8 && x <= 0x66) {
                                 s32 y = tp->cur.y;
                                 if (y >= 0x50 && y <= 0x60)
-                                    func_ov007_020b63e4((char **)arg0);
+                                    func_ov007_020b63e4((Ov007ItemView *)arg0);
                             }
                         }
                     } else if (t == 9) {
@@ -696,7 +668,7 @@ void func_ov007_020b46b0(void *arg0, void *arg1) {
                             if (x >= 8 && x <= 0x48) {
                                 s32 y = tp->cur.y;
                                 if (y >= 0x20 && y <= 0x30)
-                                    func_ov007_020b63e4((char **)arg0);
+                                    func_ov007_020b63e4((Ov007ItemView *)arg0);
                             }
                         }
                     }
@@ -728,7 +700,7 @@ void func_ov007_020b46b0(void *arg0, void *arg1) {
                      * just above it: reusing the bound local compiles eight bytes
                      * short. */
                     if (elem->item->state->stateWork > 0x3a)
-                        func_ov007_020b63e4((char **)arg0);
+                        func_ov007_020b63e4((Ov007ItemView *)arg0);
                 }
             }
         }
@@ -748,11 +720,9 @@ done:
 }
 
 /* Selects the view's item (func_ov007_020b63e4) if it is selectable: the
- * same test as elem_selectable, written out. t keeps the void * spelling of
- * the callers' declarations; `view` is the typed view. */
+ * same test as elem_selectable, written out. */
 // @symbol func_ov007_020b45b0
-void func_ov007_020b45b0(void *t) {
-    Ov007ItemView *view = (Ov007ItemView *)t;
+void func_ov007_020b45b0(Ov007ItemView *view) {
     Ov007Item *p = view->item;
     int call_it = 0;
     int t0 = 0;
@@ -786,33 +756,33 @@ void func_ov007_020b45b0(void *t) {
     }
     if (!call_it)
         return;
-    func_ov007_020b63e4((char **)t);
+    func_ov007_020b63e4(view);
 }
 
 /* Runs one item view's frame unless its layout kind is 0xa or its state
  * work is 0xff: requests func_ov007_020b58e4's state, ticks the item, runs
- * the state-0 or state-2 handler, then func_ov007_020b5bf0 once the item is
- * ready. */
+ * the state-0 or state-2 handler, then func_ov007_020b5bf0 while the item
+ * is visible. */
 // @symbol func_ov007_020b44ec
-void func_ov007_020b44ec(void *self) {
-    Ov007Item *o = ((Ov007ItemView *)self)->item;
+void func_ov007_020b44ec(Ov007ItemView *view) {
+    Ov007Item *o = view->item;
     Ov007ItemLayout *p24 = o->layout;
     if (p24->kind == 0xa)
         return;
     Ov007MenuState *menu = o->state;
     if (menu->stateWork == 0xff)
         return;
-    short r = (short)func_ov007_020b58e4((char *)self);
+    short r = (short)func_ov007_020b58e4(view);
     menu = o->state;
     menu->requestedState = r;
     func_ov007_020ae834(o);
     menu = o->state;
     switch (menu->currentState) {
     case 0:
-        func_ov007_020b5068(self);
+        func_ov007_020b5068(view);
         break;
     case 2:
-        func_ov007_020b50e8((char *)self);
+        func_ov007_020b50e8(view);
         break;
     case 1:
     case 3:
@@ -822,19 +792,19 @@ void func_ov007_020b44ec(void *self) {
     case 7:
         break;
     }
-    if (o->ready == 0)
+    if (o->visible == 0)
         return;
-    func_ov007_020b5bf0((Ov007ItemView *)self);
+    func_ov007_020b5bf0(view);
 }
 
 /* Keeps the view's sprite on its item: when the item's position moved
  * since the last frame the sprite is re-placed for camera `arg`
- * (func_ov007_020c4388); while the item is ready the sprite is drawn
+ * (func_ov007_020c4388); while the item is visible the sprite is drawn
  * (func_ov007_020c421c). */
 // @symbol func_ov007_020b4464
 void func_ov007_020b4464(Ov007ItemView *view, int arg) {
     int changed;
-    if (view->item->ready == 0) {
+    if (view->item->visible == 0) {
         return;
     }
     changed = 0;

@@ -6,7 +6,7 @@ extern int func_ov007_020c9388(int a);
 extern void func_ov007_020ae810(Ov007Item *item);
 
 /* Allocates an item: its id, layout row and hit box; position 0, fade and
- * slideOut at 0x1000, flagged ready; then seeds its position from the
+ * slideOut at 0x1000, visible; then seeds its position from the
  * layout's home (func_ov007_020ae810). */
 Ov007Item *func_ov007_020aea6c(short id, Ov007ItemLayout *layout, Ov007HitBox *hitBox) {
     Ov007Item *item = (Ov007Item *)func_ov007_020c3df4(0, sizeof(Ov007Item));
@@ -17,7 +17,7 @@ Ov007Item *func_ov007_020aea6c(short id, Ov007ItemLayout *layout, Ov007HitBox *h
     item->hitBox = hitBox;
     item->posY = 0;
     item->posX = item->posY;
-    item->ready = 1;
+    item->visible = 1;
     item->fade = 0x1000;
     item->slideOut = 0x1000;
     item->wiggleTimer = 0;

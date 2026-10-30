@@ -1,16 +1,4 @@
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
- * func_ov007_020c9268, which resets it. */
-typedef struct Ov007AnimPlayer {
-    int state;                 /* 0x00: 0 playing, 1 held, 2 stopped */
-    int loopMode;              /* 0x04: 0 one-shot, 1 wrap, 2 ping-pong */
-    int flags;                 /* 0x08: bit 0 shows the start frame once */
-    short anim;                /* 0x0c: -1 none */
-    short prevAnim;            /* 0x0e */
-    short frame;               /* 0x10 */
-    unsigned short frameCount; /* 0x12: func_ov007_020c9110 reads it unsigned */
-    int framePos;              /* 0x14: Q12 */
-    int speed;                 /* 0x18: Q12 frames per tick */
-} Ov007AnimPlayer;
+#include "Ov007Model.h"
 
 /* Starts animation `anim` (frameCount frames long) at startFrame: playing,
  * with the old animation kept in prevAnim and the start frame held for one

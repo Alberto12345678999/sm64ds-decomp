@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "dExtModel_c.h"
+#include "Ov007Model.h"
 
 extern "C" {
 
@@ -8,50 +9,12 @@ typedef struct { int f[12]; } Blk;
 
 #define LS(a) (*(short*)(((long long)(int)(a))))
 
-extern void func_ov007_020bc968(char *c, void *other);
-extern void func_ov007_020bc894(char *c);
-extern void func_ov007_020bc7dc(char *c);
+extern void func_ov007_020bc968(Ov007Model *m, void *other);
+extern void func_ov007_020bc894(Ov007Model *m);
+extern void func_ov007_020bc7dc(Ov007Model *m);
 extern void func_02044dc4(void *self);
 
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates and
- * func_ov007_020c9110 ticks; only the slots this file reads. */
-typedef struct Ov007AnimPlayer {
-    s32 state; /* 0x00: 0 playing; func_ov007_020c9110 sets 2 when a one-shot ends */
-    char pad_04[8];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
-    u16 frameCount; /* 0x12 */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; only the slots
- * this file touches. */
-typedef struct Ov007Model {
-    struct ModelComponents *model; /* 0x00 */
-    void *transforms;              /* 0x04: the pose model->transforms points at
-                             * (func_ov007_020bc47c binds it) */
-    /* 0x08: flags & 2 only: the next frame's pose; on in-between frames this
-     * file averages it into transforms */
-    void *nextTransforms;
-    char pad_0c[8];
-    struct BCA_File **boneAnims; /* 0x14: boneAnim->anim indexes it */
-    Ov007AnimPlayer *boneAnim;   /* 0x18: func_ov007_020bc894 ticks it */
-    char pad_1c[0x70];
-    s16 blendFrames; /* 0x8c: frames left of func_ov007_020bc7dc's cross-fade */
-    char pad_8e[0xa];
-    /* 0x98: 1 on the frames that step the animations; with flags & 3 it
-     * alternates, so they run at half rate (func_ov007_020bc47c seeds 1) */
-    int animTick;
-    /* 0x9c: func_ov007_020bc6d4's second argument. 1/2 half-rate animation
-     * (2 also fills the in-between frames), 4 cross-fade buffers, 8 skips
-     * dExtSimpleModel_c::LoadTexAndPal (func_ov007_020bc47c) */
-    int flags;
-} Ov007Model;
-
-/* c keeps the char * spelling of the callers' declarations; `m` is the
- * typed view. */
-void func_ov007_020bc02c(char *c, void *other) {
-    Ov007Model *m = (Ov007Model *)c;
+void func_ov007_020bc02c(Ov007Model *m, void *other) {
     struct ModelComponents *r5 = m->model;
     int r4 = 0;
 
@@ -67,18 +30,18 @@ void func_ov007_020bc02c(char *c, void *other) {
         }
     }
 
-    func_ov007_020bc968(c, other);
+    func_ov007_020bc968(m, other);
     if (m->animTick != 0) {
-        func_ov007_020bc894(c);
+        func_ov007_020bc894(m);
         r5->UpdateVertsUsingBones();
     } else if (r4 != 0) {
         Ov007AnimPlayer *o = m->boneAnim;
         struct BCA_File **bones = m->boneAnims;
         r5->UpdateBones(bones[o->anim], (u16)(o->frame + 1));
-        r5->transforms = (Matrix4x3 *)m->nextTransforms;
+        r5->transforms = m->nextTransforms;
         r5->UpdateVertsUsingBones();
         unsigned int i = 0;
-        r5->transforms = (Matrix4x3 *)m->transforms;
+        r5->transforms = m->transforms;
         while (i < r5->modelFile->numBones) {
             Blk *a = (Blk *)((char *)m->transforms + i * 0x30);
             Blk *b = (Blk *)((char *)m->nextTransforms + i * 0x30);
@@ -100,7 +63,7 @@ void func_ov007_020bc02c(char *c, void *other) {
 
     if (m->animTick != 0 || r4 != 0) {
         if (m->blendFrames > 0)
-            func_ov007_020bc7dc(c);
+            func_ov007_020bc7dc(m);
         if (*(int *)((char *)r5->modelFile + 0x30) != 0)
             func_02044dc4(r5);
     }

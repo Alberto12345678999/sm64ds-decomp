@@ -27,12 +27,14 @@ typedef struct Ov007OamNode {
     u8 animCount; /* 0x1c: func_ov007_020c1180 frees anims only when nonzero */
     u8 animIndex; /* 0x1d: Sprite_SetAnimation's second argument */
     char pad_1e[2];
-    int mode;    /* 0x20: 0 = stopped, 1 = looping, else once (func_ov007_020c0d70) */
-    int rev;     /* 0x24: 1 = step backwards */
-    int paused;  /* 0x28: func_ov007_020c0d70 does not step while set; no writer found */
-    short frame; /* 0x2c */
-    short tick;  /* 0x2e: ticks into the frame */
-    int changed; /* 0x30: set when the frame wraps or clamps at an end */
+    int mode; /* 0x20: 0 = stopped, 1 = looping, else once (func_ov007_020c0d70) */
+    int rev;  /* 0x24: 1 = step backwards */
+    /* 0x28: func_ov007_020c0d70 does not step while it is set. Nothing sets
+     * it nonzero: func_ov007_020c10ec and func_ov007_020c0d70 only write 0 */
+    int paused;
+    short frame;                /* 0x2c */
+    short tick;                 /* 0x2e: ticks into the frame */
+    int changed;                /* 0x30: set when the frame wraps or clamps at an end */
     struct Ov007OamNode *owner; /* 0x34: func_ov007_020c10b0 */
     struct Ov007OamNode *head;  /* 0x38: first child */
     struct Ov007OamNode *next;  /* 0x3c: next sibling */

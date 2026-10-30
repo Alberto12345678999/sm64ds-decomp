@@ -2,11 +2,6 @@
 #include "Ov007Work.h"
 #include "Ov007Item.h"
 
-/* func_ov007_020b4c04's 0x1c-byte item view; names as in unit020b413c. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */

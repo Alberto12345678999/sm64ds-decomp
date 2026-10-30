@@ -13,9 +13,9 @@
  * screen. */
 typedef struct Ov007SpriteItem {
     Ov007OamNode *node; /* 0x00 */
-    short word4;        /* 0x04: 0 on reset */
-    short word6;        /* 0x06: 0 on reset */
-    short word8;        /* 0x08: -1 on reset */
+    short half4;        /* 0x04: 0 on reset */
+    short half6;        /* 0x06: 0 on reset */
+    short half8;        /* 0x08: -1 on reset */
     u8 margin;          /* 0x0a: in pixels */
 } Ov007SpriteItem;
 

@@ -3,18 +3,7 @@
 #include "Ov007Work.h"
 #include "Ov007BgLayer.h"
 #include "Ov007Item.h"
-
-/* func_ov007_020adc08's 0xc-byte layer slot; names as in that file. */
-typedef struct Ov007LayerSlot {
-    int state;           /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
-    Ov007BgLayer *layer; /* 0x04 */
-} Ov007LayerSlot;
-
-/* func_ov007_020b4c04's record; names as in func_ov007_020b3360. */
-typedef struct Ov007ItemView {
-    Ov007Item *item;     /* 0x00 */
-    Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
-} Ov007ItemView;
+#include "Ov007LayerSlot.h"
 
 extern char *data_ov007_0210342c;
 extern u8 data_ov007_020ccc44[];

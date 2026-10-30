@@ -5,41 +5,14 @@
 #include "Ov007Work.h"
 #include "cstd.h"
 #include "Ov007Item.h"
+#include "Ov007Model.h"
+#include "Ov007Pad.h"
 
 extern "C" {
 
 extern void func_ov007_020b2614(int a, int b, int c);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
-
-/* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
-/* The 0x70-byte key record func_ov007_020c2304 allocates;
- * func_ov007_020c20b8 copies keys into prevKeys, then reads KEYINPUT. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
-
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as
- * in func_ov007_020bc02c, only the slots read here. */
-typedef struct Ov007AnimPlayer {
-    char pad_00[0xc];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
-    u16 frameCount; /* 0x12 */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc02c, only the slot read here. */
-typedef struct Ov007Model {
-    char pad_00[0x18];
-    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
-} Ov007Model;
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

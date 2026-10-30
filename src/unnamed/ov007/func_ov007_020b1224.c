@@ -8,11 +8,6 @@ extern char *data_ov007_0210342c;
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
-/* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 void func_ov007_020b1224(void)
 {
     Ov007Work *w = WORK;

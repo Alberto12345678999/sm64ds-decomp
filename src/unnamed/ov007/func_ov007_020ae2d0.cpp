@@ -10,12 +10,6 @@ extern "C" {
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
-/* The 0x1c record func_ov007_020b4c04 returns (Ov007Work::itemViews); only
- * its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 typedef char
     Ov007Work_itemViews_must_be_at_0x114[(int)&((Ov007Work *)0)->itemViews == 0x114 ? 1 : -1];
 
@@ -24,7 +18,8 @@ typedef char
 
 /* Per-item idle effects, by item id: item 0 bobs its y about the layout's
  * home row on a 50-frame sine; item 1 arms a 60-frame wiggle every 270 frames
- * once the menu is idle; item 7 is ready only while item view 8's state is 0. */
+ * once the menu is idle; item 7 is visible only while item view 8's state
+ * is 0. */
 void func_ov007_020ae2d0(Ov007ItemNode *self) {
     Ov007Item *p = self->item;
     u16 id = p->id;
@@ -78,11 +73,11 @@ void func_ov007_020ae2d0(Ov007ItemNode *self) {
         Ov007Item *s = r->item;
         short t = s->state->currentState;
         if (t == 0) {
-            if (p->ready == 0)
-                p->ready = 1;
+            if (p->visible == 0)
+                p->visible = 1;
         } else {
-            if (p->ready != 0)
-                p->ready = 0;
+            if (p->visible != 0)
+                p->visible = 0;
         }
         return;
     }

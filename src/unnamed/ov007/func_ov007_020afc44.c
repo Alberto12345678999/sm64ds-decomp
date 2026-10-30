@@ -2,6 +2,7 @@
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
+#include "Ov007LayerSlot.h"
 
 extern int func_ov007_020c8f98(void *p);
 extern void func_ov007_020c1d78(int i);
@@ -11,15 +12,8 @@ extern int func_ov007_020b79e4(void);
 extern void func_ov007_020c1d8c(int i);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020b8188(int slot, void *records, int alt);
-extern void func_ov007_020c0638(int a, int b, int c, int d);
+extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
 extern void func_ov007_020b8070(int n);
-
-/* The 0xc-byte record func_ov007_020adc08 returns; names as in
- * func_ov007_020adc08, only the layer read here. */
-typedef struct Ov007LayerSlot {
-    int state; /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
-    int layer; /* 0x04: the Ov007BgLayer func_ov007_020c0638 scrolls */
-} Ov007LayerSlot;
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

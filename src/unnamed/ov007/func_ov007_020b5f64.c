@@ -5,27 +5,10 @@
 #include "Ov007Item.h"
 extern u8 data_ov007_0210342c[];
 
-/* The 0x1c record func_ov007_020b4c04 returns (names as in that file): this
- * function slides item from slideFrom to slideTo by slideT. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-    char pad_04[8];
-    s32 slideT;             /* 0x0c: slideTween output, 0..0x1000 */
-    Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c, bound to slideT */
-    s16 slideFromX;         /* 0x14 */
-    s16 slideFromY;         /* 0x16 */
-    s16 slideToX;           /* 0x18 */
-    s16 slideToY;           /* 0x1a */
-} Ov007ItemView;
-
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
-/* The parameter keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is a local. */
-void func_ov007_020b5f64(char *self)
-{
-    Ov007ItemView *view = (Ov007ItemView *)self;
+void func_ov007_020b5f64(Ov007ItemView *view) {
     Ov007Item *p;
     Ov007Work *g;
     int slot;

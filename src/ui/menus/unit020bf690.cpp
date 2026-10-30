@@ -40,6 +40,7 @@
 #include "G2x.h"
 #include "Ov007Camera.h"
 #include "Ov007Transition.h"
+#include "Ov007Model.h"
 
 extern "C" {
 
@@ -50,25 +51,12 @@ typedef struct Ov007MaterialColors {
     u32 specularEmission; /* 0x2c */
 } Ov007MaterialColors;
 
-/* ModelComponents' first two words. */
+/* ModelComponents' first two words, read through Ov007Model::model: BMD_File.h
+ * leaves the material colour words unnamed (pad_28), so this view names them. */
 typedef struct Ov007ModelParts {
     void *modelFile;                /* 0x00 */
     Ov007MaterialColors *materials; /* 0x04 */
 } Ov007ModelParts;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc434, only the slots this file touches. */
-typedef struct Ov007Model {
-    Ov007ModelParts *model; /* 0x00 */
-    char pad_04[0x30];
-    Vector3 pos;   /* 0x34: func_ov007_020bc968 copies it into the matrix translation */
-    Vector3 scale; /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
-    u16 rotX;      /* 0x4c: func_ov007_020c39f8's angles (func_ov007_020bc968) */
-    char pad_4e[0x46];
-    int visible; /* 0x94: func_ov007_020bbff0 renders only while it is nonzero */
-} Ov007Model;
-
-typedef char Ov007Model_visible_must_be_at_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];
 
 /* The 0x14-byte screen-fade record at data_ov007_02104bd8. */
 typedef struct Ov007Fade {
@@ -102,7 +90,7 @@ extern void func_ov007_020bbff0(void *c);
 extern void func_ov007_020bc02c(void *a, void *b);
 extern void func_ov007_020bc47c(void *thiz);
 extern void func_ov007_020bc53c(void *p);
-extern void *func_ov007_020bc6d4(char *r6, void *r7);
+extern Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020c3d1c(void *self);
 extern int func_ov007_020c3df4(int a, void *b);
@@ -116,14 +104,13 @@ extern Ov007Transition *func_ov007_020c8b10(void);
 
 // @symbol func_ov007_020bfcec
 void func_ov007_020bfcec(void) {
-    int r;
+    void *file;
 
     data_ov007_02104bd8 = (Ov007Fade *)func_ov007_020c3df4(0, (void *)sizeof(Ov007Fade));
     FADE->transition = func_ov007_020c8b10();
     InitialiseVramGlobals();
-    r = (int)func_ov007_020b3f20(0x24);
-    r = (int)func_ov007_020bc6d4((char *)r, 0);
-    FADE->model = (Ov007Model *)r;
+    file = func_ov007_020b3f20(0x24);
+    FADE->model = func_ov007_020bc6d4(file, 0);
     FADE->model->visible = 0;
     FADE->request = 0;
     FADE->flags = 0;
@@ -306,7 +293,7 @@ void func_ov007_020bf790(void) {
 
     if (r5 & 1) {
         int v;
-        Ov007ModelParts *a = data_ov007_02104bd8->model->model;
+        Ov007ModelParts *a = (Ov007ModelParts *)data_ov007_02104bd8->model->model;
         if (state == 1) {
             v = 0x7FFF;
         } else {

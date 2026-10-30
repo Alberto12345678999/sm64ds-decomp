@@ -40,7 +40,7 @@ void func_ov007_020add3c(Ov007ItemNode *self) {
     func_ov007_020ae454(self);
     self->node->x = self->item->posX;
     self->node->y = self->item->posY;
-    self->node->visible = self->item->ready;
+    self->node->visible = self->item->visible;
     if (self->node->visible != 0) {
         if (self->node->y <= -0x64000)
             self->node->visible = 0;

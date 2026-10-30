@@ -1,13 +1,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
-
-/* The 0x70-byte key record func_ov007_020c2304 allocates; names as in
- * func_ov007_020c20b8, only the slots read here. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
+#include "Ov007Pad.h"
 
 extern char *data_ov007_0210342c;
 extern int data_ov007_020ccc20[];
