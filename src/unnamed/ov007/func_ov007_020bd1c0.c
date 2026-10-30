@@ -3,14 +3,9 @@
 #include "Ov007Settings.h"
 #include "Ov007Light.h"
 
-extern char* data_ov007_0210342c;
 /* The lights' source points: lights[0] per menu, lights[1] in menu 0. */
 extern Vector3 data_ov007_020d7c34[];
 extern Vector3 data_ov007_020d7c28;
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern void func_ov007_020bce70(short n, int m);
 extern void* func_ov007_020b3f20(int idx);
@@ -19,7 +14,7 @@ extern void func_ov007_020b1fa4(int self);
 extern void func_ov007_020bd4a0(int r0);
 extern void func_ov007_020b2998(void);
 extern void func_ov007_020bfbdc(void* self);
-extern void func_ov007_020c14b8(void* t);
+extern void func_ov007_020c14b8(struct Ov007Texture *t);
 extern void func_ov007_020b77ac(void);
 extern void func_ov007_020b9880(int a, int b);
 extern void func_ov007_020bf428(void);

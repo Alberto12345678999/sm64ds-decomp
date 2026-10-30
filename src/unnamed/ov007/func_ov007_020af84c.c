@@ -3,12 +3,7 @@
 #include "Ov007Work.h"
 #include "Ov007Pad.h"
 
-extern char *data_ov007_0210342c;
 extern int data_ov007_020ccc20[];
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b0244(void);
@@ -26,11 +21,11 @@ extern void func_ov007_020b7a44(void);
 
 void func_ov007_020af84c(void)
 {
-    char *b = data_ov007_0210342c;
-    Ov007MenuState *s2 = ((Ov007Work *)b)->states[1];
+    Ov007Work *b = WORK;
+    Ov007MenuState *s2 = b->states[1];
     int state = s2->currentState;
     int r2var = s2->stateTicks;
-    unsigned char *base = *(unsigned char **)(*(char **)(b + 0x28)) + 0xb;
+    unsigned char *base = *(unsigned char **)b->settings + 0xb;
 
     switch (state) {
     case 7:

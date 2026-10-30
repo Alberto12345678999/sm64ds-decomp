@@ -7,14 +7,10 @@
 
 extern "C" {
 
-extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
 typedef char
     Ov007Work_itemViews_must_be_at_0x114[(int)&((Ov007Work *)0)->itemViews == 0x114 ? 1 : -1];
-
-/* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
 
 /* Per-item idle effects, by item id: item 0 bobs its y about the layout's
  * home row on a 50-frame sine; item 1 arms a 60-frame wiggle every 270 frames

@@ -8287,23 +8287,23 @@
     },
     "arm9:0x0204f73c": {
       "author": "tangosdev",
-      "name": "func_0204f73c"
+      "name": "NNS_SndPlayerSetTempoRatio"
     },
     "arm9:0x0204f76c": {
       "author": "tangosdev",
-      "name": "func_0204f76c"
+      "name": "NNS_SndPlayerSetTrackModSpeed"
     },
     "arm9:0x0204f79c": {
       "author": "tangosdev",
-      "name": "func_0204f79c"
+      "name": "NNS_SndPlayerSetTrackModDepth"
     },
     "arm9:0x0204f7cc": {
       "author": "tangosdev",
-      "name": "func_0204f7cc"
+      "name": "NNS_SndPlayerSetTrackPan"
     },
     "arm9:0x0204f7fc": {
       "author": "tangosdev",
-      "name": "func_0204f7fc"
+      "name": "NNS_SndPlayerSetTrackPitch"
     },
     "arm9:0x0204f82c": {
       "author": "tangosdev",
@@ -8315,19 +8315,19 @@
     },
     "arm9:0x0204f89c": {
       "author": "tangosdev",
-      "name": "func_0204f89c"
+      "name": "NNS_SndPlayerSetChannelPriority"
     },
     "arm9:0x0204f8cc": {
       "author": "andrewboudreau",
-      "name": "func_0204f8cc"
+      "name": "NNS_SndPlayerMoveVolume"
     },
     "arm9:0x0204f914": {
       "author": "tangosdev",
-      "name": "func_0204f914"
+      "name": "NNS_SndPlayerSetInitialVolume"
     },
     "arm9:0x0204f924": {
       "author": "tangosdev",
-      "name": "func_0204f924"
+      "name": "NNS_SndPlayerSetVolume"
     },
     "arm9:0x0204f934": {
       "author": "tangosdev",

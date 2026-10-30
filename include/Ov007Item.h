@@ -52,10 +52,11 @@ typedef struct Ov007Item {
     s32 wiggleTimer;  /* 0x18: func_ov007_020ae834 counts it down */
     s32 wiggleFrames; /* 0x1c: the wiggle's length; func_ov007_020ae2d0 arms 0x3c */
     /* 0x20: shown. func_ov007_020add3c copies it to the OAM node's
-     * visible, func_ov007_020b44ec and func_ov007_020b4464 run and draw
-     * the view only while it is set, func_ov007_020ae2d0 toggles it for
-     * item 7, and func_ov007_020ae834 sets it once the state settles and
-     * clears it on reset */
+     * visible. Only while it is set does func_ov007_020b44ec run
+     * func_ov007_020b5bf0, func_ov007_020b4464 draw the sprite and
+     * func_ov007_020beeb0 step the swing. func_ov007_020aea6c seeds it,
+     * func_ov007_020ae834 sets it on entry to states 0 and 3-7 and clears
+     * it on entry to state 1, and func_ov007_020ae2d0 toggles it for item 7 */
     s32 visible;
     Ov007ItemLayout *layout; /* 0x24: func_ov007_020aea6c's second argument */
     Ov007HitBox *hitBox;     /* 0x28: its third */

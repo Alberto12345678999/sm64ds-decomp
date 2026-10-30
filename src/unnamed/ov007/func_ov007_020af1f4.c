@@ -2,10 +2,6 @@
 #include "Ov007Work.h"
 
 extern int func_ov007_020c1d8c(int a);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Sends states[2] to state 4 unless it is in state 7 with no transition
  * mode, then sets states[1]'s current state to 1 when states[0] came from

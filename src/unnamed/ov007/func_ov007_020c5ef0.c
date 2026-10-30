@@ -2,9 +2,6 @@
 
 extern void func_ov007_020c6af0(Ov007Picker *c);
 extern void func_ov007_020c6b58(Ov007Picker *c);
-/* The definitions spell the picker char *; void * here spares the casts. */
-extern void func_ov007_020c64c4(void *c, int b);
-extern void func_ov007_020c62cc(void *c, int b);
 
 /* Rebuilds the picker's links from its rest points (func_ov007_020c6af0,
  * func_ov007_020c6b58, func_ov007_020c64c4, func_ov007_020c62cc), then

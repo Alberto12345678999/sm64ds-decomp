@@ -1,7 +1,8 @@
 #include "types.h"
 extern void func_0203f650(int x);
 extern void func_0203f8a4(void);
-extern void func_0203f714(void);
+struct WMMeasureChannelCallback;
+extern void func_0203f714(struct WMMeasureChannelCallback *s);
 extern void func_0203f6a4(int v);
 extern s16 data_020a0f18;
 extern int data_020a0f90;
@@ -20,7 +21,7 @@ void func_0203f920(u16 *o) {
             func_0203f8a4();
         break;
     case 0x1e:
-        func_0203f714();
+        func_0203f714((struct WMMeasureChannelCallback *)o);
         break;
     case 2:
         func_0203f6a4(3);

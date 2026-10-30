@@ -2,10 +2,6 @@
 #include "Ov007Model.h"
 #include "Ov007Figure.h"
 
-extern char* data_ov007_0210342c;
-
-#define WORK ((Ov007Work*)data_ov007_0210342c)
-
 /* Holds the manager model's three animation players where they are playing,
  * and stops both figures' bone animations (state 2). */
 void func_ov007_020b257c(void) {

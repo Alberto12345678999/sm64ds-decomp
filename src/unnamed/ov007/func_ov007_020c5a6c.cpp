@@ -10,7 +10,6 @@ struct Vec3Words {
 
 extern "C" {
 int func_ov007_020c30ac(void *arr, int count, void *target, int arg4, int *out);
-void func_ov007_020c64c4(char *c, int b);
 void SubVec3(void *a, void *b, void *c);
 int LenVec3(void *v);
 }
@@ -47,7 +46,7 @@ extern "C" void func_ov007_020c5a6c(Ov007Picker *self, void *target, int flag) {
     switch (self->mode) {
     case 0:
         *(Vec3Words *)&self->pos = *(Vec3Words *)hit->target;
-        func_ov007_020c64c4((char *)self, 1);
+        func_ov007_020c64c4(self, 1);
         break;
     case 1:
         SubVec3(&self->pos, hit->target, &self->hitOffset);

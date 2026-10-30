@@ -1,5 +1,4 @@
 #include "nitro/fs/overlay.h"
-extern int func_02018c00(void *info, int proc, int id);
 extern int func_02018b64(FSOverlayInfo *info);
 extern void Crash(void);
 extern void func_0205dd9c(char *self);

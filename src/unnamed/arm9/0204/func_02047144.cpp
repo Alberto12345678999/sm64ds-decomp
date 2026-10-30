@@ -16,6 +16,9 @@ typedef struct {
     Entry16* entries;
 } Table2;
 
+/* The index of the BMD palette named name: a search of the palette table
+   (count at +0x1c, 0x10-byte entries at +0x20). An unknown name crashes.
+   dExtAnmTexPat_c's prepare step (func_02046d50) uses it. */
 int func_02047144(const Table2* tbl, const char* name)
 {
     u32 count = tbl->count;

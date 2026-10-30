@@ -10,11 +10,8 @@ extern int LenVec3(struct Vector3 *v);
 /* Re-measures group idx's links at a pose blended between groupPoints
  * (weight t, Q12) and groupPointCopies: x and y blended, z from the copies.
  * Each link gets the offset between consecutive blended points as its dir,
- * and that offset's length. sb keeps the char * spelling of the callers'
- * declarations; `self` is the typed view. */
-void func_ov007_020c5fc8(char *sb, int idx, int t)
-{
-    Ov007Picker *self = (Ov007Picker *)sb;
+ * and that offset's length. */
+void func_ov007_020c5fc8(Ov007Picker *self, int idx, int t) {
     int i;
     int inv;
     struct Vector3 cur;

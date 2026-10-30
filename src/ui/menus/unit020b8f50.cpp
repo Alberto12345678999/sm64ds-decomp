@@ -108,13 +108,11 @@ typedef struct Vec3Words {
     Fix12i w[3];
 } Vec3Words;
 
-extern char *data_ov007_0210342c;
 extern char *data_ov007_02104ba0;
 extern Ov007PickerSprites *data_ov007_02104b9c;
 /* func_ov007_020ba368's settle counter, -1 until the drawing is complete */
 extern s16 data_ov007_02104b98[];
 
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
 #define SPRITES data_ov007_02104b9c
 
@@ -136,38 +134,23 @@ extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020c3d1c(void *);
 extern void *func_ov007_020c3df4(int a, int b);
-extern void func_ov007_020c421c(char *r4);
-extern void func_ov007_020c4388(char *r0, int r1);
-extern void func_ov007_020c43bc(void *a, int b);
-extern int func_ov007_020c44c4(int r4);
-extern void *func_ov007_020c44e4(int a);
-extern void func_ov007_020c4dfc(void *c, int a1, int a2, int a3);
-extern void func_ov007_020c4e98(void *c, int a1, int a2, int a3, int a4, int a5, int a6);
 extern void func_ov007_020c4f50(void *c, int a1, int a2, int a3, int a4);
 extern int func_ov007_020c5014(void *, int);
 extern void func_ov007_020c510c(char *c);
+/* local extern: the definition takes a5 as unsigned short; an int here
+ * keeps this caller from truncating func_ov007_020c3be0's result, which the
+ * ROM does not do. */
+extern void func_ov007_020c4e98(void *c, int a1, int a2, int a3, int a4, int a5, int a6);
 extern int func_ov007_020c5188(void *, int);
 extern void func_ov007_020c5490(char *obj, int *m);
 extern void func_ov007_020c55bc(char *c, int a, int b);
 extern void func_ov007_020c56bc(char *c, int a, int b, int d, int e, int f);
-extern int func_ov007_020c5854(int s, void *v, int a, int b, int c, int d);
-extern void func_ov007_020c5948(char *, int *);
 extern void func_ov007_020c5a6c(void *, int *, int);
 extern void func_ov007_020c5c14(void *o, void *p);
 extern int func_ov007_020c5d5c(void *o);
 extern int func_ov007_020c5db0(void *p);
 extern void func_ov007_020c5dec(void *c);
 extern void func_ov007_020c5ef0(void *o);
-extern void func_ov007_020c5fc8(char *, int, int);
-extern void func_ov007_020c6174(char *a, int i, int b);
-extern void func_ov007_020c62cc(char *a, int b);
-extern void func_ov007_020c6314(char *c, int i, int b);
-extern void func_ov007_020c64c4(char *c, int b);
-extern int func_ov007_020c6550(char *c);
-extern int func_ov007_020c65bc(char *t, int a1, int a2, int a3);
-extern void func_ov007_020c6684(int c);
-extern void func_ov007_020c6724(char *self, int flag);
-extern void *func_ov007_020c690c(int a0, int a1, int a2, int a3, void *a4, void *a5);
 extern int func_ov007_020c8f98(void *p);
 extern void func_ov007_020c9080(int);
 extern void *func_ov007_020c908c(void *r5);
@@ -242,8 +225,8 @@ void func_ov007_020bbc08(int mode, int a1, int a2) {
             func_ov007_020c5c14(SCENE->picker, &SCENE->picker->pos);
         }
         p = SCENE->picker;
-        func_ov007_020c64c4((char *)p, 0);
-        func_ov007_020c62cc((char *)p, 1);
+        func_ov007_020c64c4(p, 0);
+        func_ov007_020c62cc(p, 1);
         func_ov007_020c55bc((char *)SCENE->picker, 0x1000, 0x1000);
         SCENE->picker->posOffset.y = 0;
         SCENE->picker->posOffset.x = SCENE->picker->posOffset.y;
@@ -482,8 +465,8 @@ void func_ov007_020bb4b0(void) {
                     md = ((Ov007Picker *)s)->groupCount;
                 }
                 for (; dir2 < md; dir2++) {
-                    func_ov007_020c6314((char *)SCENE->picker, dir2, 0);
-                    func_ov007_020c6174((char *)SCENE->picker, dir2, 1);
+                    func_ov007_020c6314(SCENE->picker, dir2, 0);
+                    func_ov007_020c6174(SCENE->picker, dir2, 1);
                 }
             }
             func_ov007_020bda38(amp);
@@ -896,14 +879,14 @@ void func_ov007_020ba9bc(void) {
 
 // @symbol func_ov007_020ba368
 int func_ov007_020ba368(int t) {
-    int s;
+    Ov007Picker *s;
     int done = 0;
     int state;
     int local[3];
 
     {
         Ov007PickerScene *m = SCENE;
-        s = (int)m->picker;
+        s = m->picker;
         m->springSet = 0;
     }
 
@@ -1009,8 +992,8 @@ int func_ov007_020ba368(int t) {
             }
         }
         {
-            int ret =
-                func_ov007_020c5854(s, local, (ratio * 0xc8) >> 0xc, 0x2000, ratio * 0x12c, r8arg);
+            int ret = func_ov007_020c5854(s, (Vector3 *)local, (ratio * 0xc8) >> 0xc, 0x2000,
+                                          ratio * 0x12c, r8arg);
             int dv = cstd::div(ret << 0xc, SCENE->totalPoints);
             SPRITES->sprites[1]->alpha = dv * 0x1f;
             if (dv >= 0x1000) {
@@ -1131,7 +1114,7 @@ int func_ov007_020ba05c(void) {
     if (mgr->awaitingTap != 0 && r4->cur.touch != 0 && r4->prev.touch == 0 &&
         r4->releasedFrames >= 1 && func_ov007_020c1da0(0) == 0) {
         SCENE->awaitingTap = 0;
-        func_ov007_020c6724((char *)SCENE->picker, 0);
+        func_ov007_020c6724(SCENE->picker, 0);
         SCENE->strokeCount = 0;
     }
     {
@@ -1171,7 +1154,7 @@ int func_ov007_020ba05c(void) {
                         flag = 1;
                 }
                 if (flag == 0) {
-                    r5 = func_ov007_020c65bc((char *)((Ov007PickerScene *)r3)->picker, y, x,
+                    r5 = func_ov007_020c65bc(((Ov007PickerScene *)r3)->picker, y, x,
                                              ((Ov007PickerScene *)r3)->strokeTime >> 12);
                     func_ov007_020bdbcc(r4->deltaX, r4->deltaY);
                 } else {
@@ -1179,7 +1162,7 @@ int func_ov007_020ba05c(void) {
                     ((u32 *)obj)[11] = obj->flags | 1;
                 }
                 if (r5 == 2) {
-                    func_ov007_020c6550((char *)SCENE->picker);
+                    func_ov007_020c6550(SCENE->picker);
                     SCENE->strokeTime = 0;
                     r6 = 1;
                 } else if (r5 == 1) {
@@ -1189,7 +1172,7 @@ int func_ov007_020ba05c(void) {
             } else if (r4->cur.touch == 0) {
                 Ov007Touch *obj = WORK->touch;
                 if (obj->releasedFrames == 1) {
-                    int res = func_ov007_020c6550((char *)((Ov007PickerScene *)r3)->picker);
+                    int res = func_ov007_020c6550(((Ov007PickerScene *)r3)->picker);
                     if (res != 0) {
                         Ov007PickerScene *s;
                         if (res == 2)
@@ -1238,7 +1221,7 @@ int func_ov007_020b9fc0(void) {
 // @symbol func_ov007_020b9f0c
 void func_ov007_020b9f0c(void) {
     if (SCENE->picker->path->pointCount != 0) {
-        func_ov007_020c6550((char *)SCENE->picker);
+        func_ov007_020c6550(SCENE->picker);
     }
     func_ov007_020c5c14(SCENE->picker, &SCENE->picker->pos);
     func_ov007_020c5ef0(SCENE->picker);
@@ -1298,8 +1281,8 @@ void func_ov007_020b9ca8(void) {
                 f = cstd::div((t - 5) << 12, 0x127);
             picker = SCENE->picker;
             if (picker->groupCount >= 2)
-                func_ov007_020c6314((char *)picker, picker->hitGroup, 2);
-            func_ov007_020c5fc8((char *)SCENE->picker, SCENE->picker->hitGroup, f);
+                func_ov007_020c6314(picker, picker->hitGroup, 2);
+            func_ov007_020c5fc8(SCENE->picker, SCENE->picker->hitGroup, f);
         }
         r5->hitIndex = -1;
         r5->hitGroup = r5->hitIndex;
@@ -1308,7 +1291,7 @@ void func_ov007_020b9ca8(void) {
         r5->hitOffset.x = r5->hitOffset.y;
     }
 
-    func_ov007_020c5948((char *)r5, v);
+    func_ov007_020c5948(r5, (Vector3 *)v);
 
     if (r4->cur.touch != 0 || WORK->pad->keys != 0) {
         SCENE->idleFrames = 0;
@@ -1331,8 +1314,8 @@ void func_ov007_020b9880(int a0, int a1) {
     data_ov007_02104ba0 = (char *)func_ov007_020c3df4(0, 0x4c);
     data_ov007_02104b9c = (Ov007PickerSprites *)func_ov007_020c3df4(0, 0x14);
 
-    SCENE->picker = (Ov007Picker *)func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, (int)WORK->cameras[0],
-                                                       &data_ov007_020d7b60, data_ov007_020d7b80);
+    SCENE->picker = func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, WORK->cameras[0], &data_ov007_020d7b60,
+                                        data_ov007_020d7b80);
 
     SCENE->states[0] = (Ov007MenuState *)func_ov007_020c9388(0);
     SCENE->states[1] = (Ov007MenuState *)func_ov007_020c9388(-1);
@@ -1355,7 +1338,7 @@ void func_ov007_020b9880(int a0, int a1) {
     sp10 = 1;
 
     for (var_sl = 0; var_sl < 2; var_sl++) {
-        SPRITES->sprites[var_sl] = (Ov007Sprite *)func_ov007_020c44e4(sp10);
+        SPRITES->sprites[var_sl] = func_ov007_020c44e4(sp10);
         sprite = SPRITES->sprites[var_sl];
 
         if (var_sl == 0) {
@@ -1376,11 +1359,11 @@ void func_ov007_020b9880(int a0, int a1) {
         sprite->height = (s16)sp18;
         sprite->alpha = sp1c;
 
-        func_ov007_020c43bc(sprite, (int)WORK->cameras[1]);
-        func_ov007_020c4388((char *)sprite, (int)WORK->cameras[1]);
+        func_ov007_020c43bc(sprite, WORK->cameras[1]);
+        func_ov007_020c4388(sprite, WORK->cameras[1]);
     }
 
-    SPRITES->sprites[2] = (Ov007Sprite *)func_ov007_020c44e4(1);
+    SPRITES->sprites[2] = func_ov007_020c44e4(1);
     temp_r5 = SPRITES->sprites[2];
     temp_r5->width = 0x48;
     temp_r5->height = 8;
@@ -1391,7 +1374,7 @@ void func_ov007_020b9880(int a0, int a1) {
     temp_r5->drawFlags = temp_r5->drawFlags | 2;
     temp_r5->polygonId = 0x19;
 
-    SPRITES->sprites[3] = (Ov007Sprite *)func_ov007_020c44e4(1);
+    SPRITES->sprites[3] = func_ov007_020c44e4(1);
     temp_r5 = SPRITES->sprites[3];
     temp_r5->width = 0x48;
     temp_r5->height = 8;
@@ -1404,8 +1387,8 @@ void func_ov007_020b9880(int a0, int a1) {
     SPRITES->sprites[2]->depth = itemSprite->depth - 0x10;
     SPRITES->sprites[3]->depth = itemSprite->depth - 0xff;
 
-    func_ov007_020c43bc(SPRITES->sprites[2], (int)WORK->cameras[1]);
-    func_ov007_020c43bc(SPRITES->sprites[3], (int)WORK->cameras[1]);
+    func_ov007_020c43bc(SPRITES->sprites[2], WORK->cameras[1]);
+    func_ov007_020c43bc(SPRITES->sprites[3], WORK->cameras[1]);
 
     SCENE->strokeTime = 0;
     SCENE->tweens[0]->to = 0x800;
@@ -1436,7 +1419,7 @@ void func_ov007_020b9770(void) {
     if (SCENE == 0)
         return;
 
-    func_ov007_020c6684((int)SCENE->picker);
+    func_ov007_020c6684(SCENE->picker);
     func_ov007_020c937c(SCENE->states[0]);
     func_ov007_020c937c(SCENE->states[1]);
     func_ov007_020c937c(SCENE->states[2]);
@@ -1445,10 +1428,10 @@ void func_ov007_020b9770(void) {
     func_ov007_020c9080((int)SCENE->tweens[1]);
 
     for (i = 0; i < 2; i++)
-        func_ov007_020c44c4((int)SPRITES->sprites[i]);
+        func_ov007_020c44c4(SPRITES->sprites[i]);
 
-    func_ov007_020c44c4((int)SPRITES->sprites[2]);
-    func_ov007_020c44c4((int)SPRITES->sprites[3]);
+    func_ov007_020c44c4(SPRITES->sprites[2]);
+    func_ov007_020c44c4(SPRITES->sprites[3]);
     func_ov007_020c3d1c(SCENE);
     data_ov007_02104ba0 = 0;
     func_ov007_020c3d1c(SPRITES);
@@ -1644,7 +1627,7 @@ void func_ov007_020b91b4(void) {
 }
 
 // @symbol func_ov007_020b8fd4
-void func_ov007_020b8fd4(int param) {
+void func_ov007_020b8fd4(Ov007Camera *camera) {
     int v;
     int mode;
     int d;
@@ -1678,10 +1661,10 @@ void func_ov007_020b8fd4(int param) {
             b->screenY += (-d) << 8;
             break;
         }
-        func_ov007_020c4388((char *)SPRITES->sprites[1], (int)WORK->cameras[1]);
+        func_ov007_020c4388(SPRITES->sprites[1], WORK->cameras[1]);
     }
-    func_ov007_020c421c((char *)SPRITES->sprites[0]);
-    func_ov007_020c421c((char *)SPRITES->sprites[1]);
+    func_ov007_020c421c(SPRITES->sprites[0]);
+    func_ov007_020c421c(SPRITES->sprites[1]);
 
     {
         Ov007PickerScene *c;
@@ -1718,10 +1701,10 @@ void func_ov007_020b8fd4(int param) {
     p_c->scaleX = 0x1000 - scale;
     p_10->screenX = p5->item->posX;
     p_10->screenY = p5->item->posY;
-    func_ov007_020c4388((char *)p_c, param);
-    func_ov007_020c4388((char *)p_10, param);
-    func_ov007_020c421c((char *)p_c);
-    func_ov007_020c421c((char *)p_10);
+    func_ov007_020c4388(p_c, camera);
+    func_ov007_020c4388(p_10, camera);
+    func_ov007_020c421c(p_c);
+    func_ov007_020c421c(p_10);
 }
 
 // @symbol func_ov007_020b8fb4

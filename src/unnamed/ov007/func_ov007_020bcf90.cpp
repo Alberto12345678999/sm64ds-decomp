@@ -7,21 +7,16 @@
 
 extern "C" {
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 extern void func_ov007_020c93b4(struct Ov007PaletteBuf *buf);
 extern void func_020557b4(void);
 extern void func_02055624(void);
 extern void func_ov007_020b2160(int a);
-extern void func_ov007_020b8fd4(int a);
+extern void func_ov007_020b8fd4(struct Ov007Camera *camera);
 extern void func_ov007_020b413c(void *view, int number);
 extern void func_ov007_020b2728(void);
 extern int func_ov007_020b7a34(void);
 extern void func_ov007_020b7a00(void);
-extern void func_ov007_020b4464(void *view, int camera);
+extern void func_ov007_020b4464(void *view, struct Ov007Camera *camera);
 extern void func_ov007_020b2cf0(void);
 extern void func_ov007_020c2390(struct Ov007Light *light);
 extern void func_ov007_020c232c(struct Ov007Light *light);
@@ -29,7 +24,7 @@ extern void func_ov007_020b91b4(void);
 extern void func_ov007_020bee14(void);
 extern void func_ov007_020b7658(void *viewMatrix, int b);
 extern void func_ov007_020b2370(void);
-extern void func_ov007_020bfaf0(void *camera);
+extern void func_ov007_020bfaf0(struct Ov007Camera *camera);
 
 /* The menu's per-frame 3D draw. func_ov007_020b2728 and the model / figure
  * draw (func_ov007_020b2370) run only in main state 0, and in state 1 while
@@ -58,13 +53,13 @@ void func_ov007_020bcf90(void) {
         break;
     case 1:
         if (s1->currentState == 2) {
-            func_ov007_020b8fd4((int)WORK->cameras[1]);
+            func_ov007_020b8fd4(WORK->cameras[1]);
         }
         break;
     case 2:
     case 3:
     case 4:
-        func_ov007_020b8fd4((int)WORK->cameras[1]);
+        func_ov007_020b8fd4(WORK->cameras[1]);
         break;
     case 5:
         for (i = 0xe; i <= 0x10; i++) {
@@ -83,7 +78,7 @@ void func_ov007_020bcf90(void) {
         func_ov007_020b7a00();
     }
     for (j = 0; j < 0x18; j++) {
-        func_ov007_020b4464(WORK->itemViews[j], (int)WORK->cameras[1]);
+        func_ov007_020b4464(WORK->itemViews[j], WORK->cameras[1]);
     }
 
     func_ov007_020b2cf0();

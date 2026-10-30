@@ -14,11 +14,6 @@ extern void func_ov007_020b2614(int a, int b, int c);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 void func_ov007_020b1cf0(void) {
     Ov007Model *model = WORK->model;
     Ov007MenuState *menu = WORK->states[1];

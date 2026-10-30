@@ -37,11 +37,6 @@ typedef struct Ov007Model {
     Vector3 scale; /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
 } Ov007Model;
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 extern int func_ov007_020aebac(void);
 extern void RequestScreenFade(int, int, int);
 extern void func_ov007_020b1fa4(int preset);
