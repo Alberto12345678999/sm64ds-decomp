@@ -1,0 +1,138 @@
+{
+  "id": "arm9/FS_CommandDefault",
+  "module": "arm9",
+  "source": "src/engine/fs/FS_CommandDefault.cpp",
+  "promoted_source": "src/engine/fs/FS_CommandDefault.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's fs_command_default.c, 0x0205bbdc..0x0205c5e4: 12 functions, gapless in config/arm9/delinks.txt. The nine commands are the nine entries of fsi_default_command (0x02086758), whose relocations (config/arm9/relocs.txt) name them in FS_COMMAND order, the order pret/pokediamond's NitroSDK FS_command_default.c gives its table: FSi_ReadFileCommand, FSi_WriteFileCommand, FSi_SeekDirCommand, FSi_ReadDirCommand, FSi_FindPathCommand, FSi_GetPathCommand, FSi_OpenFileFastCommand, FSi_OpenFileDirectCommand, FSi_CloseFileCommand. The three helpers above them (FSi_StrNICmp, FSi_SeekDirDirect, FSi_ReadTable) are identified by body and are called only by these commands.",
+    "Order: mwccarm emits deferred bodies in reverse. The ROM run is the source order reversed: FSi_CloseFileCommand lowest, then the commands up to FSi_ReadFileCommand, then FSi_StrNICmp, FSi_SeekDirDirect and FSi_ReadTable highest. pret defines the helpers FSi_StrNICmp, FSi_ReadTable, FSi_SeekDirDirect; this older SDK has them as FSi_ReadTable, FSi_SeekDirDirect, FSi_StrNICmp.",
+    "BOTTOM EDGE: PXIi_HandlerRecvFifoNotEmpty and the rest of pxi_fifo.c (arm9/PXI_Fifo) end at 0x0205bbdc.",
+    "TOP EDGE: func_0205c5e4 (0x0205c5e4) is FSi_TranslateCommand, which indexes fsi_default_command; with FSi_ReleaseCommand above it, it is fs_command.c."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205bbdc",
+      "end": "0x0205c5e4"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "FSi_CloseFileCommand",
+      "address": "0x0205bbdc",
+      "size": "0x00000008",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205bbdc.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "FSi_OpenFileDirectCommand",
+      "address": "0x0205bbe4",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205bbe4.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "FSi_OpenFileFastCommand",
+      "address": "0x0205bc0c",
+      "size": "0x0000007c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205bc0c.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "FSi_GetPathCommand",
+      "address": "0x0205bc88",
+      "size": "0x000003c0",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205bc88.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "FSi_FindPathCommand",
+      "address": "0x0205c048",
+      "size": "0x0000021c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c048.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "FSi_ReadDirCommand",
+      "address": "0x0205c264",
+      "size": "0x00000114",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c264.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "FSi_SeekDirCommand",
+      "address": "0x0205c378",
+      "size": "0x00000098",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c378.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "FSi_WriteFileCommand",
+      "address": "0x0205c410",
+      "size": "0x00000038",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c410.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "FSi_ReadFileCommand",
+      "address": "0x0205c448",
+      "size": "0x00000038",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c448.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "FSi_StrNICmp",
+      "address": "0x0205c480",
+      "size": "0x00000064",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c480.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "FSi_SeekDirDirect",
+      "address": "0x0205c4e4",
+      "size": "0x00000044",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c4e4.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "FSi_ReadTable",
+      "address": "0x0205c528",
+      "size": "0x000000bc",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c528.cpp",
+      "ordinal": 11
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Tick and arm9/OS_Alarm: tu_map cannot segment arm9/main.",
+    "The SDK names were given in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only. fsi_default_command stays in .data with its owner unassigned. FSFile and FSArchive are this SDK's layouts (FSFile is 0x44 bytes, thread queues are u16) and stay local to the file: the other FS shards declare their own partial spellings."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-FS_CommandDefault/FS_CommandDefault.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 12,
+    "functions_declared": 12,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

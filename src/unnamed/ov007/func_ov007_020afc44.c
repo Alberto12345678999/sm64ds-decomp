@@ -15,11 +15,6 @@ extern void func_ov007_020b8188(int slot, void *records, int alt);
 extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
 extern void func_ov007_020b8070(int n);
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* states[1]'s save-file states 2..6 (func_ov007_020af390): 3 waits for a
  * slot to be picked (an unused one opens message 3), 4 draws the picked
  * file's record board (func_ov007_020b8188) and slides it in, 2 waits for

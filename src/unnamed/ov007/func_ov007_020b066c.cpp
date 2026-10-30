@@ -15,12 +15,7 @@ extern void func_ov007_020bca40(int i);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020bd1c0(int i);
 extern void func_ov007_020b131c(void);
-extern char *data_ov007_0210342c;
 }
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern "C" void func_ov007_020b066c(void) {
     switch (WORK->states[0]->previousState) {

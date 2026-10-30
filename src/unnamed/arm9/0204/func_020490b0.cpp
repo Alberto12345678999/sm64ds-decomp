@@ -7,9 +7,6 @@ extern s32 data_020a4c4c[];
 extern u16 data_020a4c48[];
 extern s32 data_020a4c54[];
 
-void NNS_SndPlayerSetTrackMute(void *p, u16 idx, s32 val);
-void NNS_SndPlayerSetTrackVolume(void *p, u16 idx, s32 val);
-
 /* Step the two track-mask volume ramps func_020494cc set up: move each
    current volume (data_020a4c5c) by its step (data_020a4c4c) toward its
    target (data_020a4c54), stopping the ramp there, and send it through

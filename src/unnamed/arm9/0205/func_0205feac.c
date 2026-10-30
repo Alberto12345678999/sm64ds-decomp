@@ -1,23 +1,17 @@
-typedef void (*Callback)(int, int);
+#include "nitro/spi/pm.h"
 
-struct CallbackSlot {
-    int flag;       /* 0x0 */
-    Callback cb;    /* 0x4 */
-    int arg;        /* 0x8 */
-};
-
-extern struct CallbackSlot data_020a8114;
-
+/* PMi_CallCallbackAndUnlock by shape: release the channel, then run and
+   clear the pending callback with `a` as its result. */
 void func_0205feac(int a) {
-    int flag = data_020a8114.flag;
-    Callback f = data_020a8114.cb;
-    int arg = data_020a8114.arg;
-    if (flag != 0) {
-        data_020a8114.flag = 0;
+    int lock = data_020a8114.lock;
+    PMCallback callback = data_020a8114.callback;
+    void *arg = data_020a8114.callbackArg;
+    if (lock != 0) {
+        data_020a8114.lock = 0;
     }
-    if (f == 0) {
+    if (callback == 0) {
         return;
     }
-    data_020a8114.cb = 0;
-    f(a, arg);
+    data_020a8114.callback = 0;
+    callback(a, arg);
 }

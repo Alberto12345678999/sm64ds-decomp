@@ -10,10 +10,9 @@ inline long long mul_add(long long a, int b, long long c) {
 /* Eases the picker's pos x/y toward target by scale (Q12) and sets its z,
  * then pulls every point of every group toward target with
  * func_ov007_020c704c: a point within snapRadius snaps onto it, one within
- * reach is pulled with strength pull. Returns how many points snapped. sl
- * keeps the char * spelling of the definition; `self` is the typed view. */
-int func_ov007_020c5854(char *sl, Vector3 *target, int pull, int snapRadius, int reach, int scale) {
-    Ov007Picker *self = (Ov007Picker *)sl;
+ * reach is pulled with strength pull. Returns how many points snapped. */
+int func_ov007_020c5854(Ov007Picker *self, Vector3 *target, int pull, int snapRadius, int reach,
+                        int scale) {
     long long v;
     int i, j, cnt = 0;
     v = mul_add(scale, target->x, ((long long)(0x1000 - scale)) * self->pos.x);

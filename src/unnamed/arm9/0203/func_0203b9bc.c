@@ -4,15 +4,14 @@
 extern volatile TPData data_020a0df8[];
 extern TPData data_020a0dd8;
 
-extern int func_0205edc8(void);
-extern void func_0205ea28(TPData *dst, TPData *src);
+extern int TP_GetLatestIndexInAuto(void);
+extern void TP_GetCalibratedPoint(TPData *dst, TPData *src);
 
 /* Read the touch panel through the auto-sampling ring func_0203bbc0 starts
    (data_020a0df8, nine samples, four samples a frame). Of the four samples
-   before the latest index (func_0205edc8, TP_GetLatestIndexInAuto by its
-   place in the TP run), an invalid one counts as untouched. The newest run
-   of three touched samples has its middle one calibrated into
-   data_020a0dd8 (func_0205ea28, TP_GetCalibratedPoint); with no touch at
+   before the latest index (TP_GetLatestIndexInAuto), an invalid one counts
+   as untouched. The newest run of three touched samples has its middle one
+   calibrated into data_020a0dd8 (TP_GetCalibratedPoint); with no touch at
    all it becomes a release at (0xff, 0xff), and anything in between keeps
    the last point.
    func_0203df40 copies the result into the local input record. */
@@ -22,7 +21,7 @@ void func_0203b9bc(TPData *out) {
     int flag;
     int idx;
 
-    idx = func_0205edc8();
+    idx = TP_GetLatestIndexInAuto();
     flag = 0;
     for (i = 0; i < 4; i++) {
         int k = idx - 4 + i;
@@ -41,9 +40,9 @@ void func_0203b9bc(TPData *out) {
     }
 
     if (tmp[3].touch != 0 && tmp[2].touch != 0 && tmp[1].touch != 0) {
-        func_0205ea28(&data_020a0dd8, &tmp[2]);
+        TP_GetCalibratedPoint(&data_020a0dd8, &tmp[2]);
     } else if (tmp[0].touch != 0 && tmp[1].touch != 0 && tmp[2].touch != 0) {
-        func_0205ea28(&data_020a0dd8, &tmp[1]);
+        TP_GetCalibratedPoint(&data_020a0dd8, &tmp[1]);
     } else if (flag == 0) {
         data_020a0dd8.touch = 0;
         data_020a0dd8.x = 0xff;

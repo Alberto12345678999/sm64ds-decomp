@@ -52,4 +52,26 @@ typedef struct Ov007Sprite {
 
 typedef char Ov007Sprite_size_must_be_0x88[sizeof(Ov007Sprite) == 0x88 ? 1 : -1];
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+struct Ov007Camera;
+
+Ov007Sprite *func_ov007_020c44e4(int frameCount);
+/* The int is func_ov007_020c3d1c's, the free the function tail-calls. */
+int func_ov007_020c44c4(Ov007Sprite *sprite);
+void func_ov007_020c4388(Ov007Sprite *sprite, struct Ov007Camera *camera);
+void func_ov007_020c43bc(Ov007Sprite *sprite, struct Ov007Camera *camera);
+void func_ov007_020c42f8(Ov007Sprite *sprite);
+void func_ov007_020c421c(Ov007Sprite *sprite);
+void func_ov007_020c41dc(Ov007Sprite *base, Ov007Sprite *sprite, struct Ov007Camera *camera);
+void func_ov007_020c4128(Ov007Sprite *parent, Ov007Sprite *child, struct Ov007Camera *camera);
+void func_ov007_020c4684(Ov007Sprite *sprite, int color, int alpha, int polygonId, int flags,
+                         s16 *vec);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

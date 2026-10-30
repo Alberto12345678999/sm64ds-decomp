@@ -10,22 +10,12 @@
  */
 
 #include "types.h"
+#include "nnsys/fnd.h"
+#include "nnsys/snd/fader.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef struct NNSFndLink {
-    void *prevObject;
-    void *nextObject;
-} NNSFndLink;
-
-typedef struct NNSSndFader {
-    int origin;
-    int target;
-    int counter;
-    int frame;
-} NNSSndFader;
 
 typedef struct NNSSndSeqPlayer {
     struct NNSSndHandle *handle; /* 0x00 */
@@ -56,6 +46,20 @@ typedef char NNSSndSeqPlayer_size_must_be_0x44[sizeof(NNSSndSeqPlayer) == 0x44 ?
 typedef struct NNSSndHandle {
     NNSSndSeqPlayer *player;
 } NNSSndHandle;
+
+/* The snd_player.c setters SoundEngine.cpp defines. The SDK spells
+   trackBitMask u16; these take int, as the byte-matched bodies do. */
+void NNS_SndPlayerSetVolume(NNSSndHandle *handle, int volume);
+void NNS_SndPlayerSetInitialVolume(NNSSndHandle *handle, int volume);
+void NNS_SndPlayerMoveVolume(NNSSndHandle *handle, int targetVolume, int frames);
+void NNS_SndPlayerSetChannelPriority(NNSSndHandle *handle, int priority);
+void NNS_SndPlayerSetTrackMute(NNSSndHandle *handle, int trackBitMask, int flag);
+void NNS_SndPlayerSetTrackVolume(NNSSndHandle *handle, int trackBitMask, int volume);
+void NNS_SndPlayerSetTrackPitch(NNSSndHandle *handle, int trackBitMask, int pitch);
+void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, int trackBitMask, int pan);
+void NNS_SndPlayerSetTrackModDepth(NNSSndHandle *handle, int trackBitMask, int depth);
+void NNS_SndPlayerSetTrackModSpeed(NNSSndHandle *handle, int trackBitMask, int speed);
+void NNS_SndPlayerSetTempoRatio(NNSSndHandle *handle, int ratio);
 
 #ifdef __cplusplus
 }

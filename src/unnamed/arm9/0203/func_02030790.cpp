@@ -15,6 +15,16 @@ extern int data_0209277c;
 extern unsigned char data_0209e64c;
 extern unsigned char data_0209b480;
 
+/* End the VS session on an error: session state data_0209fc68 becomes 6,
+   which dScEntry_c::HandlePlayerDisconnect reads as a connection error. If
+   a session was running (data_02092778, which d_s_entry_methods.cpp sets),
+   drop to local link mode (func_0203da2c(0)), put the BG1 picture up on
+   both screens (func_02030500), and with the link started (data_0209e64c)
+   and data_0209b480 set, play sound 0x123 and stop the loaded music.
+   func_0201ffcc then runs one more link step with the watchdog held, and
+   func_020199a4 follows. The state handlers func_02030b58
+   and func_02030c38 and the error checks in func_02030e4c call it after
+   setting their disconnect bits in data_0209fc58. */
 void func_02030790(void)
 {
     data_0209fc68 = 6;

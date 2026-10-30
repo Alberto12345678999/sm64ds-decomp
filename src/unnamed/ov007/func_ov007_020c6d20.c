@@ -1,26 +1,21 @@
 #include "Ov007StrokePath.h"
 #include "Ov007Picker.h"
 
-extern void func_ov007_020c6d90(char *self, int idx);
-
 extern Ov007StrokePath *func_ov007_020c2a04(Ov007StrokePath *src, int start, int end);
 extern void func_ov007_020c281c(Ov007StrokePath *path, int minTurn);
 extern void func_ov007_020c27b4(Ov007StrokePath *path);
 extern void func_ov007_020c26fc(Ov007StrokePath *path);
-extern void func_ov007_020c6e68(char *self, int i);
 
 /* Commits the stroke being drawn as group idx: frees what the slot held,
  * copies the path into it, and unless mergeAngle is negative straightens it
  * and recomputes its extrema before building the group's points
- * (func_ov007_020c6e68). The parameter keeps the char * spelling of the
- * callers' declarations; `self` is the typed view. */
-void func_ov007_020c6d20(char *picker, int idx) {
-    Ov007Picker *self = (Ov007Picker *)picker;
+ * (func_ov007_020c6e68). */
+void func_ov007_020c6d20(Ov007Picker *self, int idx) {
     Ov007StrokePath *src;
     Ov007StrokePath *d;
     int check;
 
-    func_ov007_020c6d90(picker, idx);
+    func_ov007_020c6d90(self, idx);
 
     src = self->path;
     self->groups[idx] = func_ov007_020c2a04(src, 0, src->pointCount - 1);
@@ -33,5 +28,5 @@ void func_ov007_020c6d20(char *picker, int idx) {
         func_ov007_020c26fc(d);
     }
 
-    func_ov007_020c6e68(picker, idx);
+    func_ov007_020c6e68(self, idx);
 }

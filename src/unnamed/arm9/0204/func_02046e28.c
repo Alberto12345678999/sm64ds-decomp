@@ -9,6 +9,13 @@ extern void Crash(void);
 
 #define LAUNDER(p) ((volatile u32 *)(int)(p))
 
+/* dExtAnmMaterial_c::Update's body: for each animated material, set its
+   13 colour channels for this frame. Each channel's value is
+   values[base + sel[which]], with sel {0, frame}, so a channel is either
+   constant or one value per frame. They are packed in GX's layout:
+   diffuse and ambient into diffAmb (with bit 15, set vertex colour),
+   specular and emission into specEmi, and the alpha into polygon
+   attribute bits 16-20. A material index of 0xffff crashes. */
 void func_02046e28(struct Model *model, struct MatAnimData *anim, short frame)
 {
     u32 zero[1];

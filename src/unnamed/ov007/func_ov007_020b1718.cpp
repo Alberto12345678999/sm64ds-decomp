@@ -42,11 +42,6 @@ extern void func_ov007_020bce70(int a, int b);
 extern int func_ov007_020c3be0(int a, int b, int c);
 extern void func_ov007_020b2764(int a);
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 void func_ov007_020b1718(void) {
     Ov007Model *F = WORK->model;
     int r7val;

@@ -64,8 +64,6 @@ typedef struct Ov007CornerPair {
     u16 inner;
 } Ov007CornerPair;
 
-extern char *data_ov007_0210342c;
-
 extern int data_ov007_020ccc48[2];             /* [figureIndex]: model file */
 extern Ov007CornerPair data_ov007_020ccc50[3]; /* colours at blend 0 */
 extern Ov007CornerPair data_ov007_020ccc5c[3]; /* colours at blend 0x1000 */
@@ -90,16 +88,8 @@ extern Ov007Model *func_ov007_020bc6d4(void *bmd, int flags);
 extern void func_ov007_020bea44(Ov007Figure *fig);
 extern Ov007Figure *func_ov007_020beaa0(int index, int figureIndex);
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
-extern void func_ov007_020c4388(char *sprite, int camera);
-extern void func_ov007_020c43bc(void *sprite, void *camera);
-extern int func_ov007_020c44c4(void *sprite);
-extern int func_ov007_020c44e4(int count);
 
 void func_ov007_020b283c(void);
-
-/* The extern keeps the tree's char * spelling of the work block; the typed
- * view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 // @symbol func_ov007_020b2bd4
 /* Loads figure figureIndex's model at the given stroke stage and returns
@@ -155,7 +145,7 @@ void func_ov007_020b2998(void) {
     func_ov007_020b7708(1, &pos);
     WORK->modelGrowth = 0x1000;
     for (i = 0; i < 3; i++) {
-        WORK->screenSprites[i] = (Ov007Sprite *)func_ov007_020c44e4(1);
+        WORK->screenSprites[i] = func_ov007_020c44e4(1);
         sprite = WORK->screenSprites[i];
         sprite->screenX = 0x80000;
         sprite->screenY = 0x60000;
@@ -186,7 +176,7 @@ void func_ov007_020b2998(void) {
             break;
         }
         func_ov007_020c43bc(sprite, WORK->cameras[1]);
-        func_ov007_020c4388((char *)sprite, (int)WORK->cameras[1]);
+        func_ov007_020c4388(sprite, WORK->cameras[1]);
     }
     WORK->modelReady = 1;
 }

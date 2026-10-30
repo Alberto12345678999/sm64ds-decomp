@@ -1,0 +1,97 @@
+//cpp
+/* NitroSDK CARDi_TryReadCardDma (card_rom.c): a ROM read can go by DMA when
+ * dst is word-aligned, the channel is a real one (0..3), the destination
+ * misses the TCMs (CARDi_IsInTcm, inlined), and src and len are whole pages
+ * and len is not 0. Set rom_stat's ROMCTRL value for a page read either way;
+ * if DMA is possible, flush the destination, hook CARDi_OnReadCard on the
+ * card IRQ (IE bit 19) and start the first page (CARDi_SetCardDma). Returns
+ * whether the read went by DMA. */
+#include "types.h"
+#include "CP15.h"
+#include "IRQ.h"
+#include "nitro/card/card_rom.h"
+
+extern "C" {
+
+extern char func_01ff8000; /* the ITCM's end: its first address past 0x01ff8000 */
+extern void CARDi_OnReadCard(void);
+extern void CARDi_SetCardDma(void);
+
+#pragma opt_propagation off
+int CARDi_TryReadCardDma(CARDRomStat *p) {
+    CARDRomStat *stat;
+    CARDiCommon *c;
+    u32 len;
+    u32 dtcm;
+    int is_async;
+    int whole_pages;
+    int not_in_tcm;
+    u32 dst;
+    int dma_ok;
+    int saved;
+
+    stat = p;
+    c = &cardi_common;
+    is_async = 0;
+    whole_pages = 0;
+    not_in_tcm = 0;
+    dma_ok = 0;
+
+    dst = c->dst;
+
+    if ((dst & 3) == 0) {
+        if (c->dma <= 3)
+            dma_ok = 1;
+    }
+
+    if (dma_ok != 0) {
+        int in_tcm;
+        int in_itcm;
+        u32 end;
+        len = c->len;
+        dtcm = CP15::GetDTCMBaseAddress();
+        end = dst + len;
+        in_tcm = 1;
+        in_itcm = 0;
+
+        if (end > (u32)&func_01ff8000) {
+            if (dst < 0x2000000)
+                in_itcm = in_tcm;
+        }
+
+        if (in_itcm == 0) {
+            if (dtcm >= end || dtcm + 0x4000 <= dst)
+                in_tcm = 0;
+        }
+
+        if (in_tcm == 0)
+            not_in_tcm = 1;
+    }
+
+    if (not_in_tcm != 0) {
+        if (((c->src | c->len) & (CARD_ROM_PAGE_SIZE - 1)) == 0)
+            whole_pages = 1;
+    }
+
+    if (whole_pages != 0) {
+        if (c->len != 0)
+            is_async = 1;
+    }
+
+    stat->ctrl = (*(u32 *)0x027ffe60 & ~0x7000000) | 0xa1000000;
+
+    if (is_async != 0) {
+        saved = IRQ::Disable();
+        CP15::FlushAndInvalidateDataCache(c->dst, c->len);
+        CP15::InvalidateInstructionCache(c->dst, c->len);
+        IRQ::SetIRQHandler(0x80000, CARDi_OnReadCard);
+        IRQ::ClearInterrupts(0x80000);
+        IRQ::EnableIRQs(0x80000);
+        CP15::DrainWriteBuffer();
+        IRQ::Restore(saved);
+        CARDi_SetCardDma();
+    }
+
+    return is_async;
+}
+}

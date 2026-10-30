@@ -6,14 +6,13 @@ extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);
 extern Ov007Link *func_ov007_020c80a4(void);
 extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
 extern int func_ov007_020c2c68(int a, int b, int c);
-extern void func_ov007_020c6724(void *self, int flag);
 
 /* Allocates the 0xd0-byte picker and its per-group tables for maxGroups
  * strokes, resets it (func_ov007_020c684c), builds the pos and anchor
  * followers joined by `link`, and a stroke path of pathCapacity points;
  * func_ov007_020c6724 then clears the groups. */
-void *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity, int camera, void *params,
-                          void *springConstants) {
+Ov007Picker *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity,
+                                 struct Ov007Camera *camera, void *params, void *springConstants) {
     Ov007Picker *p = (Ov007Picker *)func_ov007_020c3df4(0, 0xd0);
     int n4 = maxGroups << 2;
     int n2;
@@ -23,7 +22,7 @@ void *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity, int ca
     p->maxPoints = maxPoints;
     p->springConstants = (int *)springConstants;
     p->params = params;
-    p->camera = (struct Ov007Camera *)camera;
+    p->camera = camera;
 
     p->groupPoints = (Vector3 **)func_ov007_020c3df4(0, n4);
     p->groupPointCopies = (Vector3 **)func_ov007_020c3df4(0, n4);

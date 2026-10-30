@@ -18,10 +18,6 @@ extern void func_02056014(const void *src, unsigned int offset, unsigned int cou
 extern void func_ov007_020bcdb8(int idx);
 extern void func_ov007_020c33d0(Ov007CharRecord *rec, int target, unsigned int offset);
 extern void func_ov007_020b850c(void);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Loads screen set `idx`'s graphics: the message planes over the main and
  * sub BG1 (set 3 adds main BG3), its characters and palettes, and for set

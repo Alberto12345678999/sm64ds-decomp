@@ -2,9 +2,9 @@
 #define NITRO_SPI_TP_H
 
 /*
- * The touch panel, under the NitroSDK's own names. The bodies are tp.c, still
- * one function per file under src/unnamed/arm9/0205 (func_0205e9fc through
- * func_0205f300).
+ * The touch panel, under the NitroSDK's own names. The bodies are SPI_tp.c,
+ * still one function per file (src/TP_*.c, src/TP_*.cpp and
+ * src/TPi_TpCallback.c).
  *
  * Member names are coined from how the sibling functions use them; the
  * cartridge carries none. Nothing here is a recovered spelling.
@@ -16,7 +16,7 @@
 extern "C" {
 #endif
 
-/* One panel sample. func_0205ea28 transforms a raw pair into screen
+/* One panel sample. TP_GetCalibratedPoint transforms a raw pair into screen
    coordinates and copies the other two words through unchanged, so the first
    two are the axes and the last two the touch and validity flags the SDK
    carries alongside them. func_0205fcfc's Col4 is the same four words. */
@@ -33,17 +33,22 @@ typedef struct TPData {
  * 0x38 past the start, and the last member is the volatile halfword pair the
  * command helpers poll at +0x34/+0x36.
  *
- * Offsets from the sibling functions: func_0205f300, the PXI receive
+ * Offsets from the sibling functions: TPi_TpCallback, the PXI receive
  * callback, calls mCallback, fills mBuf, advances mIndex through
  * mSamplingBufs up to mBufSize, sets mState and the per-command bits in
- * mErrFlags / mCommandFlags; func_0205eeac sets up auto sampling
- * (mSamplingBufs, mIndex, mFrequency, mBufSize); func_0205f0e0 fills
- * mCalibration and sets mCalibrated, or clears mCalibrated when given no
- * parameters; func_0205ea28 reads mCalibration and mCalibrated to transform a
- * sample.
+ * mErrFlags / mCommandFlags; TP_RequestAutoSamplingStartAsync sets up auto
+ * sampling (mSamplingBufs, mIndex, mFrequency, mBufSize);
+ * TP_SetCalibrateParam fills mCalibration and sets mCalibrated, or clears
+ * mCalibrated when given no parameters; TP_GetCalibratedPoint reads
+ * mCalibration and mCalibrated to transform a sample.
  *
- * mSamplingBufs is a TPData array: func_0205eeac clears each entry's third
- * word with a byte stride of 8 (`(i << 3) + 4`), and func_0205f300 indexes it
+ * mCalibration keeps its own symbol row, data_020a80e4: relocs.txt names that
+ * address from TP_GetCalibratedPoint's literal pool, and dsd needs a symbol at
+ * every relocation target. The compiler reaches it as data_020a80cc + 0x18,
+ * which resolves to the same word.
+ *
+ * mSamplingBufs is a TPData array: TP_RequestAutoSamplingStartAsync clears each entry's third
+ * word with a byte stride of 8 (`(i << 3) + 4`), and TPi_TpCallback indexes it
  * by mIndex with that same stride. */
 typedef struct TPWork {
     void (*mCallback)(int, int, int); /* 0x00 */
