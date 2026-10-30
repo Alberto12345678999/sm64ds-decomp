@@ -16,10 +16,14 @@ typedef struct EchoWork {
     EchoChan ch[24]; /* 0x0c -- cleared (0xc0 bytes) when the kind changes */
 } EchoWork;
 
-/* Capture effect 2: each channel gets a quarter of the other channel's signal
-   from 24 samples earlier added in, saturated to s16 (a cross-feed). The
-   24-entry delay line carries over between buffers. Both buffers are then
-   flushed from the data cache for the sound hardware. */
+/* Capture effect 2, a feedback cross-echo: each output sample is the input
+   plus the delay-line entry from 24 samples earlier, saturated to s16. What
+   goes back into the delay line is a quarter of the other channel's mixed
+   output (the input with its own echo already added; the main loop takes it
+   before saturation, the tail after), so each echo feeds the next, swapping
+   sides each time. The 24-entry delay line carries over between buffers.
+   Both buffers are then flushed from the data cache for the sound
+   hardware. */
 
 void func_020497a0(s16 *p0, s16 *p1, u32 len, EchoWork *st) {
     int n = len >> 1;

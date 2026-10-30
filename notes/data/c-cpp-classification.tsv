@@ -1549,12 +1549,6 @@ src/func_020133bc.c	WEAK-refs-only	arm9				1		None		-
 src/func_020134c8.c	PURE-C	arm9				1		None		-
 src/func_020134d8.c	PURE-C	arm9				1		None		-
 src/func_02013524.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_02013568.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_02013580.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_02013598.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_020135d0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_0201361c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_02013638.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02013868.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02013890.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_020138dc.c	PURE-C	arm9				1		None		-
