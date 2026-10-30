@@ -35,69 +35,66 @@ extern void func_ov007_020b7a44(void);
 extern int func_ov007_020b79e4(void);
 extern void func_ov007_020aec94(int a);
 
-extern char* data_ov007_0210342c;
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
+/* Main state 9: on its first tick rebuilds layer slot 6's screen, opens the
+ * settings' dialog window (func_ov007_020b7d94) and starts
+ * func_ov007_020b2614(2, 0, 8). Once func_ov007_020b79c8 reports it, a new
+ * key press or a fresh tap replaces settings bytes +0x37 / +0x38 that are 1
+ * with what the callback returns for 0x16 (only for pending choice 9) /
+ * 0x17 and calls func_ov007_020b7a44; once func_ov007_020b79e4 reads 0 it
+ * replays the pending choice (func_ov007_020aec94). */
 void func_ov007_020b0834(void)
 {
-    char* G = data_ov007_0210342c;
-
-    if (((Ov007Work *)G)->states[1]->stateTicks == 0) {
-        func_ov007_020c0638((int)((Ov007Work *)G)->layerSlots[6]->layer, 0, 0, 0);
-        G = data_ov007_0210342c;
-        func_ov007_020b7d94(((Ov007Work *)G)->settings->dialogKind);
+    if (WORK->states[1]->stateTicks == 0) {
+        func_ov007_020c0638((int)WORK->layerSlots[6]->layer, 0, 0, 0);
+        func_ov007_020b7d94(WORK->settings->dialogKind);
         func_ov007_020b2614(2, 0, 8);
         func_ov007_020c1d8c(0);
     }
 
-    G = data_ov007_0210342c;
-    switch (((Ov007Work *)G)->states[1]->stateWork) {
+    switch (WORK->states[1]->stateWork) {
     case 0:
         if (func_ov007_020b79c8() == 0)
             return;
-        G = data_ov007_0210342c;
         {
-            Ov007Pad *p54 = ((Ov007Work *)G)->pad;
-            if ((p54->keys & ~p54->prevKeys) == 0) {
-                Ov007Touch *p50 = ((Ov007Work *)G)->touch;
-                if (p50->cur.touch == 0)
+            Ov007Pad *pad = WORK->pad;
+            if ((pad->keys & ~pad->prevKeys) == 0) {
+                Ov007Touch *touch = WORK->touch;
+                if (touch->cur.touch == 0)
                     return;
-                if (p50->prev.touch != 0)
+                if (touch->prev.touch != 0)
                     return;
-                if (p50->releasedFrames < 1)
+                if (touch->releasedFrames < 1)
                     return;
             }
         }
         {
-            char *pB = (char *)((Ov007Work *)G)->settings;
+            char *pB = (char *)WORK->settings;
             int r5 = (*(unsigned char*)(pB + 0x37) == 1);
             int r4 = (*(unsigned char*)(pB + 0x38) == 1);
             func_ov007_020bdeb0(0xc);
             if (r5) {
-                G = data_ov007_0210342c;
-                if (((Ov007Work *)G)->pendingChoice == 9) {
-                    int v = (*(int (**)(int))(G + 0x2c))(0x16);
-                    G = data_ov007_0210342c;
-                    *(unsigned char*)(*(int*)(G + 0x28) + 0x37) = v;
+                if (WORK->pendingChoice == 9) {
+                    int v = WORK->callback(0x16);
+                    *((unsigned char *)WORK->settings + 0x37) = v;
                 }
             }
             if (r4) {
-                G = data_ov007_0210342c;
-                {
-                    int v = (*(int (**)(int))(G + 0x2c))(0x17);
-                    G = data_ov007_0210342c;
-                    *(unsigned char*)(*(int*)(G + 0x28) + 0x38) = v;
-                }
+                int v = WORK->callback(0x17);
+                *((unsigned char *)WORK->settings + 0x38) = v;
             }
             func_ov007_020b7a44();
-            G = data_ov007_0210342c;
-            ((Ov007Work *)G)->states[1]->stateWork = 1;
+            WORK->states[1]->stateWork = 1;
         }
         return;
     case 1:
         if (func_ov007_020b79e4() != 0)
             return;
-        G = data_ov007_0210342c;
-        func_ov007_020aec94(((Ov007Work *)G)->pendingChoice);
+        func_ov007_020aec94(WORK->pendingChoice);
         return;
     }
 }
