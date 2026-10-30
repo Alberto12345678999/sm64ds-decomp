@@ -1528,7 +1528,6 @@ extern int func_ov007_020b7040(void*);
 extern int func_ov007_020b7138(void*, void*);
 extern void func_ov007_020bdeb0(int);
 extern void func_ov007_020c39f8(void*, int, int, int);
-extern void func_ov007_020c6314(void*, int, int);
 extern void func_ov007_020c7560(void*, int, int);
 extern void func_ov007_020c7694(struct Vector3*, struct Vector3*);
 extern void func_ov007_020c775c(struct Vector3*);

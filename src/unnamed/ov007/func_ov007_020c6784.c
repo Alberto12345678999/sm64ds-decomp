@@ -2,8 +2,6 @@
 #include "Ov007Picker.h"
 
 extern int func_ov007_020c3ce4(void);
-extern void func_ov007_020c6724(void *self, int flag);
-extern void func_ov007_020c6e68(void *self, int i);
 extern int func_ov007_020c5db0(void *c);
 
 /* Loads a whole drawing into the picker as count committed strokes: resets

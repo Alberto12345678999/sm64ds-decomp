@@ -2,7 +2,6 @@
 #include "Ov007StrokePath.h"
 #include "Ov007Picker.h"
 
-void func_ov007_020c6724(char* self, int flag);
 void func_ov007_020c3d1c(void* p);
 void func_ov007_020c8440(void* p);
 void func_ov007_020c8098(void* p);
@@ -10,9 +9,8 @@ void func_ov007_020c2bf8(void* p);
 
 /* Frees the picker func_ov007_020c690c built: its per-group tables, the two
  * points and the link between them, the stroke path, and the picker. */
-void func_ov007_020c6684(char* c){
-    Ov007Picker *p = (Ov007Picker *)c;
-    func_ov007_020c6724(c, 1);
+void func_ov007_020c6684(Ov007Picker *p) {
+    func_ov007_020c6724(p, 1);
     func_ov007_020c3d1c(p->groupPoints);
     func_ov007_020c3d1c(p->groupPointCopies);
     func_ov007_020c3d1c(p->groups);
@@ -29,5 +27,5 @@ void func_ov007_020c6684(char* c){
     func_ov007_020c8098(p->link);
     func_ov007_020c2bf8(p->path);
     func_ov007_020c3d1c(p->pathPoints);
-    func_ov007_020c3d1c(c);
+    func_ov007_020c3d1c(p);
 }
