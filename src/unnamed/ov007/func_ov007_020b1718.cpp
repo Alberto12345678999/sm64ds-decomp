@@ -5,6 +5,7 @@
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
 #include "cstd.h"
+#include "Ov007Camera.h"
 
 extern "C" {
 
@@ -31,20 +32,6 @@ typedef struct Vec3Words {
  * the predicated flag write); assigning them after the block instead lands the
  * movge first and rotates the block's coloring.
  */
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates. func_ov007_020b2160
- * passes +0x08/+0x20/+0x14 to G3i::LookAt_ as eye/up/target, and
- * func_ov007_020bffb8 places the eye `distance` from the target. Only the
- * slots this file touches are spelled. */
-typedef struct Ov007Camera {
-    char pad_00[0x14];
-    Vector3 target; /* 0x14 */
-    char pad_20[0xc];
-    int distance; /* 0x2c */
-    char pad_30[0xc];
-    Ov007VecTween *targetTween; /* 0x3c: func_ov007_020c023c binds it to target */
-    Ov007Tween *distanceTween;  /* 0x40: bound to distance */
-} Ov007Camera;
 
 /* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
  * func_ov007_020bc02c, only the slots this file touches. */

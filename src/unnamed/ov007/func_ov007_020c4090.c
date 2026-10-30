@@ -15,10 +15,8 @@ typedef struct Ov007SpriteItem {
     unsigned char margin; /* 0x0a */
 } Ov007SpriteItem;
 
-/* Resets a sprite item and hides its node. c keeps the callers' char *
- * spelling; `item` is the typed view. */
-void func_ov007_020c4090(char *c) {
-    Ov007SpriteItem *item = (Ov007SpriteItem *)c;
+/* Resets a sprite item and hides its node. */
+void func_ov007_020c4090(Ov007SpriteItem *item) {
     item->word8 = -1;
     item->word6 = 0;
     item->word4 = item->word6;

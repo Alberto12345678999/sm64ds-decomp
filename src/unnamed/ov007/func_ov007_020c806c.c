@@ -1,10 +1,13 @@
+#include "Ov007Spring.h"
+
 extern void *func_ov007_020c3df4(int a, int b);
 extern void func_ov007_020c806c(void *c);
 extern int func_ov007_020c3d1c(void);
 extern void MultiStore_Int(int val, void *dst, int size);
 
-void *func_ov007_020c80a4(void) {
-    void *c = func_ov007_020c3df4(0, 0x18);
+/* Allocates a link and clears it (func_ov007_020c806c). */
+Ov007Link *func_ov007_020c80a4(void) {
+    Ov007Link *c = (Ov007Link *)func_ov007_020c3df4(0, sizeof(Ov007Link));
     func_ov007_020c806c(c);
     return c;
 }

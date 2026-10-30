@@ -40,6 +40,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 extern "C" {
 
@@ -451,7 +452,7 @@ int func_ov007_020b3708(void) {
             }
         }
     } else {
-        u8 b = *(u8 *)(*(char **)WORK->settings + 9);
+        u8 b = WORK->settings->bootArgs->backlightOn;
         r4 = (b != 0) ? 0xc : 0xd;
     }
 

@@ -5,7 +5,7 @@ extern int func_ov007_020c3df4(int a, int b);
 extern int func_ov007_020c9388(int a);
 extern int func_ov007_020b8500(void);
 extern int func_ov007_020b84e8(void);
-extern void func_ov007_020c0384(int c, void *x);
+extern void func_ov007_020c0384(Ov007BgList *list, Ov007BgLayer *layer);
 extern int func_ov007_020b84f4(void);
 extern void func_ov007_020c02d8(int r0, int r1, unsigned short r2);
 extern char *data_ov007_0210342c;
@@ -18,8 +18,8 @@ extern char *data_ov007_0210342c;
  * for engine bit 1 (main) and 2 (sub) and func_ov007_020c0384 appends to. */
 typedef struct Ov007Display {
     char pad_00[8];
-    int bgListMain; /* 0x08 */
-    int bgListSub;  /* 0x0c */
+    Ov007BgList *bgListMain; /* 0x08 */
+    Ov007BgList *bgListSub;  /* 0x0c */
 } Ov007Display;
 
 /* The 0xc-byte record this function returns; func_ov007_020b6d40 keeps the
@@ -48,29 +48,29 @@ int func_ov007_020adc08(int type, char *obj) {
     case 6:
         layer->screen = (void *)func_ov007_020b8500();
         layer->source = (void *)func_ov007_020b84e8();
-        func_ov007_020c0384(display->bgListMain, obj);
+        func_ov007_020c0384(display->bgListMain, layer);
         break;
     case 7:
         layer->screen = (void *)func_ov007_020b84f4();
         layer->source = (void *)func_ov007_020b84e8();
-        func_ov007_020c0384(display->bgListSub, obj);
+        func_ov007_020c0384(display->bgListSub, layer);
         break;
     case 1:
         layer->source = layer->screen;
         layer->screen = (void *)func_ov007_020c3df4(0, 0x800);
-        func_ov007_020c0384(display->bgListMain, obj);
+        func_ov007_020c0384(display->bgListMain, layer);
         break;
     case 2:
-        func_ov007_020c0384(display->bgListSub, obj);
+        func_ov007_020c0384(display->bgListSub, layer);
         break;
     case 3:
     case 4:
-        func_ov007_020c0384(display->bgListSub, obj);
+        func_ov007_020c0384(display->bgListSub, layer);
         break;
     case 5:
         layer->screen = (void *)func_ov007_020c3df4(0, 0x800);
         func_ov007_020c02d8((int)layer->screen, 0x18, 0x300);
-        func_ov007_020c0384(display->bgListSub, obj);
+        func_ov007_020c0384(display->bgListSub, layer);
         break;
     default:
         break;

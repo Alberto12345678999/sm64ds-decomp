@@ -1,15 +1,11 @@
-extern void func_ov007_020c80c8(int x, int b, int c);
+#include "Ov007Spring.h"
 
-struct S {
-    int n;       /* [0]  inner bound */
-    int m;       /* [4]  outer bound */
-    int ***tbl;  /* [8] */
-};
+extern void func_ov007_020c80c8(Ov007Follower *f, int damping, int shift);
 
-void func_ov007_020c71c0(struct S *s, int b, int c)
-{
+/* Integrates every grid point along z (func_ov007_020c80c8), row by row. */
+void func_ov007_020c71c0(Ov007Grid *grid, int damping, int shift) {
     int j, i;
-    for (i = 0; i < s->m; i++)
-        for (j = 0; j < s->n; j++)
-            func_ov007_020c80c8(s->tbl[i][0][j], b, c);
+    for (i = 0; i < grid->rows; i++)
+        for (j = 0; j < grid->columns; j++)
+            func_ov007_020c80c8(grid->rowLists[i]->items[j], damping, shift);
 }

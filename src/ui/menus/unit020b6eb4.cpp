@@ -34,6 +34,7 @@
 #include "types.h"
 #include "G2x.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 extern "C" {
 
@@ -47,16 +48,6 @@ typedef struct Ov007MenuHooks {
     int fileRelease;         /* 0x10: func_ov007_020b4100 */
     int (*callback)(int id); /* 0x14: becomes the work block's callback */
 } Ov007MenuHooks;
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; only the slots this
- * file touches. */
-typedef struct Ov007Settings {
-    /* 0x00: func_ov007_020b7138's second argument, whose first word holds
-     * the boot flags */
-    int *bootArgs;
-    char pad_04[0x36];
-    unsigned char language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
-} Ov007Settings;
 
 typedef struct ARMMathState {
     int pad[7];
@@ -111,17 +102,17 @@ extern void func_ov007_020c3e2c(int v);
 extern void func_ov007_020c3e3c(int v);
 
 // @symbol func_ov007_020b7138
-int func_ov007_020b7138(Ov007MenuHooks *a, int *b) {
+int func_ov007_020b7138(Ov007MenuHooks *hooks, Ov007BootArgs *bootArgs) {
     Ov007Work *p;
     int flags;
 
     data_ov007_02103430 = 0;
     func_ov007_020b6c54();
-    func_ov007_020c3e3c(a->alloc);
-    func_ov007_020c3e2c(a->free);
-    func_ov007_020c3e1c(a->query);
+    func_ov007_020c3e3c(hooks->alloc);
+    func_ov007_020c3e2c(hooks->free);
+    func_ov007_020c3e1c(hooks->query);
     func_ov007_020c3bc8();
-    func_ov007_020b4100(a->fileLoad, a->fileRelease);
+    func_ov007_020b4100(hooks->fileLoad, hooks->fileRelease);
     func_ov007_020bd960();
     func_ov007_020bd5a8();
     func_ov007_020bd500();
@@ -133,8 +124,8 @@ int func_ov007_020b7138(Ov007MenuHooks *a, int *b) {
     *(unsigned int *)0x4001000 &= ~0x1f00;
     *(unsigned short *)0x4000304 &= ~0x8000;
     func_ov007_020b68e8();
-    WORK->settings->bootArgs = b;
-    WORK->callback = a->callback;
+    WORK->settings->bootArgs = bootArgs;
+    WORK->callback = hooks->callback;
     func_ov007_020b30b0();
     func_ov007_020be00c();
     p = WORK;
@@ -143,7 +134,7 @@ int func_ov007_020b7138(Ov007MenuHooks *a, int *b) {
     func_ov007_020bfcec();
     func_ov007_020be50c();
     func_ov007_020b6544();
-    flags = *b;
+    flags = bootArgs->bootFlags;
     WORK->nextFigureIndex = flags & 1;
     WORK->strokeStage[0] = (flags & 6) >> 1;
     WORK->strokeStage[1] = (flags & 0x18) >> 3;

@@ -1,5 +1,6 @@
 //cpp
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 #include "G2.h"
 #include "GX.h"
 
@@ -41,23 +42,6 @@ typedef struct Ov007Display {
      * fills it with func_ov007_020c9988 palettes */
     char **palettes;
 } Ov007Display;
-
-/* func_ov007_020b7138's second argument: dScDSMT_c's byte-packed
- * download-play table (data_0209b340); only the slot this file reads. */
-typedef struct Ov007BootArgs {
-    char pad_00[0x9c];
-    /* 0x9c: dScDSMT_c::InitResources copies data_0209d6fc here, the
-     * message file Message.cpp reads */
-    void *messages;
-} Ov007BootArgs;
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; names as in
- * func_ov007_020b4c04, only the slots this file reads. */
-typedef struct Ov007Settings {
-    Ov007BootArgs *bootArgs; /* 0x00 */
-    char pad_04[0x36];
-    unsigned char language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
-} Ov007Settings;
 
 typedef char Ov007Display_size_must_be_0x30[sizeof(Ov007Display) == 0x30 ? 1 : -1];
 
