@@ -11371,59 +11371,59 @@
     },
     "arm9:0x02065eb8": {
       "author": "tangosdev",
-      "name": "func_02065eb8"
+      "name": "MBi_CommCallParentError"
     },
     "arm9:0x02065edc": {
       "author": "tangosdev",
-      "name": "func_02065edc"
+      "name": "IsChildAidValid"
     },
     "arm9:0x02065ef8": {
       "author": "tangosdev",
-      "name": "func_02065ef8"
+      "name": "MBi_Calc_NextSendBlock"
     },
     "arm9:0x02065f08": {
       "author": "tangosdev",
-      "name": "func_02065f08"
+      "name": "MBi_Calc_SendBlock"
     },
     "arm9:0x02065f78": {
       "author": "andrewboudreau",
-      "name": "func_02065f78"
+      "name": "MBi_CommParentSendData"
     },
     "arm9:0x0206610c": {
       "author": "tangosdev",
-      "name": "func_0206610c"
+      "name": "MBi_CommParentSendBlock"
     },
     "arm9:0x020662c0": {
       "author": "tangosdev",
-      "name": "func_020662c0"
+      "name": "MBi_CommParentSendDlFileInfo"
     },
     "arm9:0x02066470": {
       "author": "tangosdev",
-      "name": "func_02066470"
+      "name": "MBi_CommParentSendMsg"
     },
     "arm9:0x020664b4": {
       "author": "tangosdev",
-      "name": "func_020664b4"
+      "name": "MBi_CommParentRecvData"
     },
     "arm9:0x0206655c": {
       "author": "tangosdev",
-      "name": "func_0206655c"
+      "name": "MBi_CommParentRecvDataPerChild"
     },
     "arm9:0x02066a94": {
       "author": "andrewboudreau",
-      "name": "func_02066a94"
+      "name": "MBi_CommParentCallback"
     },
     "arm9:0x02066fb0": {
       "author": "andrewboudreau",
-      "name": "func_02066fb0"
+      "name": "MBi_CommChangeParentStateCallbackOnly"
     },
     "arm9:0x02066fec": {
       "author": "andrewboudreau",
-      "name": "func_02066fec"
+      "name": "MBi_CommChangeParentState"
     },
     "arm9:0x0206703c": {
       "author": "tangosdev",
-      "name": "func_0206703c"
+      "name": "MB_CommResponseRequest"
     },
     "arm9:0x02067138": {
       "author": "tangosdev",
@@ -11431,15 +11431,15 @@
     },
     "arm9:0x02067194": {
       "author": "tangosdev",
-      "name": "func_02067194"
+      "name": "MB_CommGetChildrenNumber"
     },
     "arm9:0x020671b4": {
       "author": "tangosdev",
-      "name": "func_020671b4"
+      "name": "MB_CommGetChildUser"
     },
     "arm9:0x02067250": {
       "author": "tangosdev",
-      "name": "func_02067250"
+      "name": "MB_CommGetParentState"
     },
     "arm9:0x020672a4": {
       "author": "tangosdev",
