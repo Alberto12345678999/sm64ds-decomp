@@ -1,0 +1,97 @@
+{
+  "id": "arm9/OS_Exception",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Exception.cpp",
+  "promoted_source": "src/engine/os/OS_Exception.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_exception.c, 0x020593f4..0x02059624: 6 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_exception.c defines, in this order, OS_InitException, OSi_ExceptionHandler (asm), OSi_GetAndDisplayContext (asm), OSi_SetExContext (asm) and OSi_DisplayExContext. Each is here, identified by body; all but OS_InitException are at pret's sizes (ExceptionHandler 0x74, GetAndDisplayContext 0x14, SetExContext 0x90, DisplayExContext 0x6c). OS_InitException is 0x90 (pret 0x70) because this older SDK also tests OS_GetConsoleType before installing the vector.",
+    "This SDK also has OS_SetUserExceptionHandler (0x1c), which stores the two words OSi_DisplayExContext calls through; pret's revision lacks it. main() installs the game's handler with it.",
+    "Order: mwccarm emits an asm function where it stands and defers the C bodies, which come out in reverse. The three asm functions open the run in source order; the C bodies follow reversed: OSi_DisplayExContext, OS_SetUserExceptionHandler, OS_InitException.",
+    "BOTTOM EDGE: CP15::MPUDataRegion1 (0x020593ec..0x020593f4, src/engine/cp15/CP15_MPUDataRegion1.cpp), the last of three CP15 files below this run, is not exception code.",
+    "TOP EDGE: OSi_SetTimerReserved (0x02059624, src/OSi_SetTimerReserved.c) is os_timer.c, a separate one-function SDK file."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020593f4",
+      "end": "0x02059624"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OSi_ExceptionHandler",
+      "address": "0x020593f4",
+      "size": "0x00000074",
+      "legacy_source": "src/unnamed/arm9/0205/func_020593f4.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OSi_GetAndDisplayContext",
+      "address": "0x02059468",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059468.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OSi_SetExContext",
+      "address": "0x0205947c",
+      "size": "0x00000090",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205947c.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OSi_DisplayExContext",
+      "address": "0x0205950c",
+      "size": "0x0000006c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205950c.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "OS_SetUserExceptionHandler",
+      "address": "0x02059578",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059578.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "OS_InitException",
+      "address": "0x02059594",
+      "size": "0x00000090",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059594.c",
+      "ordinal": 5
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Thread and arm9/OS_Arena: tu_map cannot segment arm9/main.",
+    "Every symbol was renamed from its func_ name to the SDK name in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only: OSi_UserExceptionHandler (data_020a63a0), its arg (data_020a63a4), OSi_DebuggerHandler (data_020a63a8) and OSi_ExContext (data_020a63ac) stay externs. The file claims no data."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Exception/OS_Exception.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 6,
+    "functions_declared": 6,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

@@ -346,6 +346,22 @@
    "ref": "tools/tiers_ratchet.py"
   },
   {
+   "file": "notes/agents/handoffs/port-split1015.md",
+   "ref": "src/OS_GetInitArenaLo.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/port-split1015.md",
+   "ref": "src/unnamed/arm9/0205/func_02058c84.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/port-split1015.md",
+   "ref": "src/unnamed/arm9/0205/func_02058cd0.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/port-split1015.md",
+   "ref": "src/unnamed/arm9/0205/func_02059cb4.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/pr-2445-source-review-fixes.md",
    "ref": "src/_ZN8dActor_cC2Ev.cpp"
   },

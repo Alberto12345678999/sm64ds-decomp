@@ -2495,24 +2495,8 @@ src/func_020566dc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02056e4c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02056e98.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057000.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057014.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_02057020.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_02057078.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_020570a8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020570b8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020570c0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020570d8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020570f0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205710c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057128.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057140.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057158.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057178.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057198.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057218.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057228.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_020572b8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020572c8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057410.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057ce8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057d00.c	PURE-C	arm9				1		None		-
@@ -2522,19 +2506,10 @@ src/unnamed/arm9/0205/func_02057e00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e30.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e34.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e48.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057e7c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e84.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057f38.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057f54.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205801c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058048.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058158.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205816c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058200.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058308.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058488.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020584d0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058538.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058568.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_0205865c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058690.c	WEAK-refs-only	arm9				1		None		-
@@ -2555,45 +2530,29 @@ src/unnamed/arm9/0205/func_02058c84.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058cd0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058d58.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058d6c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058df4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058ea0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058eb4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058ec8.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058f28.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059040.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_020590fc.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059170.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205929c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059364.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205938c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020593f4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059468.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_0205947c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205950c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059578.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059594.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059624.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059640.c	PURE-C	arm9				1		None		-
+src/OSi_SetTimerReserved.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059650.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059700.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059788.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059824.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02059834.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059950.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059a60.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059ba0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059bb0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059bc0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059c18.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059cb4.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059d8c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02059dd4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059e04.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059e48.c	PURE-C	arm9				1		None		-
+src/OS_InitReset.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059eb0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f2c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059f48.c	PURE-C	arm9				1		None		-
+src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f58.c	WEAK-refs-only	arm9				1		None		-
 src/func_02059fa8.c	PURE-C	arm9				1		None		-
 src/func_02059fd0.c	PURE-C	arm9				1		None		-
@@ -2601,7 +2560,6 @@ src/unnamed/arm9/0205/func_0205a064.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a21c.c	WEAK-refs-only	arm9				1		None		-
 src/func_0205a290.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a588.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_0205a74c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a82c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a8c4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a8f0.c	PURE-C	arm9				1		None		-
@@ -2656,7 +2614,7 @@ src/unnamed/arm9/0205/func_0205b63c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b6b0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b6f4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b78c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b858.c	PURE-C	arm9				1		None		-
+src/PXI_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ba3c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ba64.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205bad8.c	WEAK-refs-only	arm9				1		None		-
@@ -2758,20 +2716,15 @@ src/unnamed/arm9/0205/func_0205fb58.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205fbd0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205fc44.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205fcfc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205fde8.c	PURE-C	arm9				1		None		-
+src/PM_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205feac.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ff00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ff08.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ff20.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ff70.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ff80.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ff90.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ffb0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205ffd0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206002c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_020600e0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060188.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060228.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060310.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060364.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060398.c	PURE-C	arm9				1		None		-
@@ -2782,9 +2735,7 @@ src/unnamed/arm9/0206/func_0206071c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_020607e8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206081c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060890.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206090c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060918.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060a30.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060a64.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060b64.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060cac.c	WEAK-refs-only	arm9				1		None		-
@@ -2968,18 +2919,13 @@ src/unnamed/arm9/0206/func_02069918.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02069994.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a230.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a29c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a318.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a37c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a3a4.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a424.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a458.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a4a0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a5c0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a600.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a634.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a694.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a6d0.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206a88c.c	PURE-C	arm9				1		None		-
+src/CTRDG_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a928.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0206/func_0206bc8c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206bdb4.c	PURE-C	arm9				1		None		-

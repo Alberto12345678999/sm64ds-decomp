@@ -10,7 +10,7 @@ extern void func_020427f8(void);
 extern u32 func_02042784(void);
 extern void func_02053a8c(void);
 extern void func_02053c40(void);
-extern void func_0205b858(void);
+extern void PXI_Init(void);
 extern void func_0203d740(void);
 extern void func_02013e64(void);
 extern void func_0201a4e4(void);
@@ -42,7 +42,7 @@ void func_0201a054(void){
   func_02042784();
   func_02053a8c();
   func_02053c40();
-  func_0205b858();
+  PXI_Init();
   func_0203d740();
   func_02013e64();
   func_0201a4e4();

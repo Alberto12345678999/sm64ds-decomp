@@ -7,9 +7,9 @@ extern "C" {
 extern int func_02058690(void);
 extern int func_020587dc(void);
 extern int func_0205865c(void);
-extern int data_0209a040;
+extern int data_0209a040; /* OSi_ConsoleTypeCache, initialised to -1 */
 
-int func_02058764(void) {
+int OS_GetConsoleType(void) {
     if (data_0209a040 == -1) {
         int r4 = func_02058690();
         int flags;
