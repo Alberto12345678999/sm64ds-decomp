@@ -10075,11 +10075,11 @@
     },
     "arm9:0x0205a8f0": {
       "author": "tangosdev",
-      "name": "func_0205a8f0"
+      "name": "SNDi_SetTrackParam"
     },
     "arm9:0x0205a924": {
       "author": "tangosdev",
-      "name": "func_0205a924"
+      "name": "SNDi_SetPlayerParam"
     },
     "arm9:0x0205a958": {
       "author": "tangosdev",
@@ -10115,7 +10115,7 @@
     },
     "arm9:0x0205aaf4": {
       "author": "tangosdev",
-      "name": "func_0205aaf4"
+      "name": "SND_SetTrackMute"
     },
     "arm9:0x0205ab28": {
       "author": "tangosdev",
@@ -10135,35 +10135,35 @@
     },
     "arm9:0x0205ac5c": {
       "author": "tangosdev",
-      "name": "func_0205ac5c"
+      "name": "SND_SetTrackModSpeed"
     },
     "arm9:0x0205ac84": {
       "author": "tangosdev",
-      "name": "func_0205ac84"
+      "name": "SND_SetTrackModDepth"
     },
     "arm9:0x0205acac": {
       "author": "tangosdev",
-      "name": "func_0205acac"
+      "name": "SND_SetTrackPan"
     },
     "arm9:0x0205acd4": {
       "author": "tangosdev",
-      "name": "func_0205acd4"
+      "name": "SND_SetTrackPitch"
     },
     "arm9:0x0205acfc": {
       "author": "tangosdev",
-      "name": "func_0205acfc"
+      "name": "SND_SetTrackVolume"
     },
     "arm9:0x0205ad24": {
       "author": "tangosdev",
-      "name": "func_0205ad24"
+      "name": "SND_SetPlayerChannelPriority"
     },
     "arm9:0x0205ad3c": {
       "author": "ruspecial",
-      "name": "func_0205ad3c"
+      "name": "SND_SetPlayerVolume"
     },
     "arm9:0x0205ad54": {
       "author": "ruspecial",
-      "name": "func_0205ad54"
+      "name": "SND_SetPlayerTempoRatio"
     },
     "arm9:0x0205ad6c": {
       "author": "tangosdev",
@@ -10171,11 +10171,11 @@
     },
     "arm9:0x0205ad98": {
       "author": "tangosdev",
-      "name": "func_0205ad98"
+      "name": "SND_StopSeq"
     },
     "arm9:0x0205adc4": {
       "author": "tangosdev",
-      "name": "func_0205adc4"
+      "name": "SND_StartSeq"
     },
     "arm9:0x0205adf8": {
       "author": "tangosdev",

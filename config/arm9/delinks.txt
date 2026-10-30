@@ -2374,11 +2374,11 @@ src/unnamed/arm9/0205/func_0205a8c4.c:
     complete
     .text start:0x0205a8c4 end:0x0205a8f0
 
-src/unnamed/arm9/0205/func_0205a8f0.c:
+src/SNDi_SetTrackParam.c:
     complete
     .text start:0x0205a8f0 end:0x0205a924
 
-src/unnamed/arm9/0205/func_0205a924.c:
+src/SNDi_SetPlayerParam.c:
     complete
     .text start:0x0205a924 end:0x0205a958
 
@@ -2414,7 +2414,7 @@ src/unnamed/arm9/0205/func_0205aac8.c:
     complete
     .text start:0x0205aac8 end:0x0205aaf4
 
-src/unnamed/arm9/0205/func_0205aaf4.c:
+src/SND_SetTrackMute.c:
     complete
     .text start:0x0205aaf4 end:0x0205ab28
 
@@ -2434,35 +2434,35 @@ src/unnamed/arm9/0205/func_0205ac28.c:
     complete
     .text start:0x0205ac28 end:0x0205ac5c
 
-src/unnamed/arm9/0205/func_0205ac5c.c:
+src/SND_SetTrackModSpeed.c:
     complete
     .text start:0x0205ac5c end:0x0205ac84
 
-src/unnamed/arm9/0205/func_0205ac84.c:
+src/SND_SetTrackModDepth.c:
     complete
     .text start:0x0205ac84 end:0x0205acac
 
-src/unnamed/arm9/0205/func_0205acac.c:
+src/SND_SetTrackPan.c:
     complete
     .text start:0x0205acac end:0x0205acd4
 
-src/unnamed/arm9/0205/func_0205acd4.c:
+src/SND_SetTrackPitch.c:
     complete
     .text start:0x0205acd4 end:0x0205acfc
 
-src/unnamed/arm9/0205/func_0205acfc.c:
+src/SND_SetTrackVolume.c:
     complete
     .text start:0x0205acfc end:0x0205ad24
 
-src/unnamed/arm9/0205/func_0205ad24.c:
+src/SND_SetPlayerChannelPriority.c:
     complete
     .text start:0x0205ad24 end:0x0205ad3c
 
-src/unnamed/arm9/0205/func_0205ad3c.c:
+src/SND_SetPlayerVolume.c:
     complete
     .text start:0x0205ad3c end:0x0205ad54
 
-src/unnamed/arm9/0205/func_0205ad54.c:
+src/SND_SetPlayerTempoRatio.c:
     complete
     .text start:0x0205ad54 end:0x0205ad6c
 
@@ -2470,11 +2470,11 @@ src/unnamed/arm9/0205/func_0205ad6c.c:
     complete
     .text start:0x0205ad6c end:0x0205ad98
 
-src/unnamed/arm9/0205/func_0205ad98.c:
+src/SND_StopSeq.c:
     complete
     .text start:0x0205ad98 end:0x0205adc4
 
-src/unnamed/arm9/0205/func_0205adc4.c:
+src/SND_StartSeq.c:
     complete
     .text start:0x0205adc4 end:0x0205adf8
 

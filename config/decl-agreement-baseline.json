@@ -2630,9 +2630,6 @@
       "src/unnamed/arm9/0205/func_0205a8c4.c": [
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0205/func_0205a924.c": [
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0205/func_0205a958.c": [
         "param:#2 void *"
       ],
@@ -2659,19 +2656,10 @@
       "src/unnamed/arm9/0205/func_0205aac8.c": [
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0205/func_0205aaf4.c": [
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0205/func_0205ac28.c": [
         "param:#2 void *"
       ],
       "src/unnamed/arm9/0205/func_0205ad6c.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad98.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205adc4.c": [
         "param:#2 void *"
       ]
     },
@@ -20165,44 +20153,6 @@
     },
     "func_0205a8c4": {
       "src/unnamed/arm9/0204/func_02049c48.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_0205a8f0": {
-      "src/unnamed/arm9/0205/func_0205ac5c.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205ac84.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205acac.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205acd4.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205acfc.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ]
-    },
-    "func_0205a924": {
-      "src/unnamed/arm9/0205/func_0205ad24.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad3c.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad54.c": [
         "param:#1 int"
       ]
     },
