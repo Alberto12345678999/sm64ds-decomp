@@ -4,6 +4,11 @@ extern int data_0209d510;
 extern void func_0205f8e0(int *a, int *b);
 extern int func_0205f9ac(int a, int b);
 
+/* Turn both backlights off for a closed lid, once: keep their states
+   (func_0205f8e0 into data_0209d508 and data_0209d510), then
+   func_0205f9ac(2, 0), PM_SetBackLight's shape (both screens, off), as
+   TurnBacklightOff does. data_0209d4d4 records it. The lid check
+   func_02019ac4 calls it when the lid closes. */
 void func_02019e60(void) {
     if (data_0209d4d4)
         return;
@@ -12,6 +17,9 @@ void func_02019e60(void) {
     data_0209d4d4 = 1;
 }
 
+/* Put the backlights back as func_02019e60 kept them: the top (0) from
+   data_0209d508, the bottom (1) from data_0209d510. The lid check
+   func_02019ac4 calls it when the lid opens again. */
 void func_02019dfc(void) {
     if (data_0209d4d4 == 0)
         return;

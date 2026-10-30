@@ -6,6 +6,14 @@ extern unsigned char data_0209fc58;
 extern unsigned char data_0209fc54;
 extern void (*data_020927ec[])(void);
 
+/* The per-frame session check func_020197b8 runs. In states 1..4 a link
+   error (data_020a0f1c bits 0x9d, func_0203da80) ends the session
+   (func_02030790). It sets disconnect bit 0x10 for error 4, 0x20 for
+   error 0x80, else all four player bits, plus 0x20 before state 4. In
+   states 3 and 4, losing the parent (slot 0) or the data_0209fc54 flag
+   d_s_entry_methods.cpp raises ends it too: player bit 0, 0x20 before
+   state 4, 0x40 for the flag. Then the current state's handler from
+   data_020927ec runs. Always 1. */
 int func_02030e4c(void)
 {
     void (*fn)(void);

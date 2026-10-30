@@ -1,5 +1,10 @@
 #include "nitro/fx/fx.h"
 
+/* Add t times the product m1 m0 of two 4x3 matrices (row vectors: m1,
+   then m0) into dst: each row of m1 is taken through m0's rotation, and
+   the translation row adds m0's translation too. func_02044e50 sums one
+   such term per weight, with byte weights shifted up to Fix12, to build a
+   blended matrix. */
 void func_02047218(fx32 *m0, fx32 *m1, fx32 *dst, fx32 t)
 {
     fx32 s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;

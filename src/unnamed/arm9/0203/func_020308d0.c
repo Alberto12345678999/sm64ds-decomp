@@ -2,6 +2,9 @@ extern unsigned char data_0209fc50;
 extern char data_0209fc64[];
 extern unsigned char data_0209fc5c[];
 
+/* Seat n players for a local game (SetNumPlayers): slots 0..n-1 are
+   present (data_0209fc5c) and ranked in order (data_0209fc64), the rest
+   absent with rank -1, and data_0209fc50 holds the count. */
 void func_020308d0(int n)
 {
     int i;

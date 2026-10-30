@@ -9,6 +9,12 @@ extern char data_0209fc64[];
 extern unsigned char data_0209fc50;
 extern int data_0209fc68;
 
+/* Session state 3's per-frame handler (data_020927ec[3]): mark the first
+   data_0208f274 slots present if the link reports them (func_0203d950).
+   An absent one clears slot 1, not its own slot, as the ROM does. Then
+   rank the present slots, and once their count matches the player count
+   the parent posts (func_0203d890) move to state 4 and post their mask
+   (func_02020214). */
 void func_02030ca0(void) {
     int count;
     int i;
