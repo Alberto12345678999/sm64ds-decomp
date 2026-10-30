@@ -12,11 +12,8 @@ extern int DotVec3(const Vector3 *a, const Vector3 *b);
 /* func_ov007_020c7560's spring step that holds the link's rest length: adds
  * -r5 times the stretch along the unit from - to direction into each end's
  * force (opposite signs), then damps each end's velocity along that
- * direction by r4. self keeps the char ** spelling of the definition;
- * `link` is the typed view. */
-void func_ov007_020c7d60(char **self, int r5, int r4)
-{
-    Ov007Link *link = (Ov007Link *)self;
+ * direction by r4. */
+void func_ov007_020c7d60(Ov007Link *link, int r5, int r4) {
     Vector3 d;
     s64 sq;
     volatile u16 *ime;

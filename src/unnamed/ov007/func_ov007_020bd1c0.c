@@ -14,7 +14,7 @@ extern void func_ov007_020b1fa4(int self);
 extern void func_ov007_020bd4a0(int r0);
 extern void func_ov007_020b2998(void);
 extern void func_ov007_020bfbdc(void* self);
-extern void func_ov007_020c14b8(void* t);
+extern void func_ov007_020c14b8(struct Ov007Texture *t);
 extern void func_ov007_020b77ac(void);
 extern void func_ov007_020b9880(int a, int b);
 extern void func_ov007_020bf428(void);

@@ -24,7 +24,7 @@ extern void func_ov007_020b91b4(void);
 extern void func_ov007_020bee14(void);
 extern void func_ov007_020b7658(void *viewMatrix, int b);
 extern void func_ov007_020b2370(void);
-extern void func_ov007_020bfaf0(void *camera);
+extern void func_ov007_020bfaf0(struct Ov007Camera *camera);
 
 /* The menu's per-frame 3D draw. func_ov007_020b2728 and the model / figure
  * draw (func_ov007_020b2370) run only in main state 0, and in state 1 while

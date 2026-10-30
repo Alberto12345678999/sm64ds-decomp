@@ -1,7 +1,7 @@
 #include "Ov007Work.h"
 
 extern void func_ov007_020c937c(void *state);
-extern void func_ov007_020c020c(void *a);
+extern void func_ov007_020c020c(struct Ov007Camera *cam);
 extern void func_ov007_020c2410(int a);
 extern void func_ov007_020c2018(int a);
 extern void func_ov007_020c22f8(int a);
