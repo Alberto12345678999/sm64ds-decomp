@@ -5,7 +5,7 @@ extern int _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(int);
 extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(int, int);
 extern void _ZN4CP1516DrainWriteBufferEv(void);
-extern int func_02061c88(int a, int b, int c);
+extern int WM_SetPortCallback(int a, int b, int c);
 extern void Crash(void);
 extern void FS_Init(int x);
 extern void FS_InitFile(int *s);
@@ -51,7 +51,7 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
         G->mParentPacketSize = 0;
         G->mChildPacketSize = 0xe;
         data_020a0f88 = 0;
-        if (func_02061c88((u16)a1, (int)func_020417d0, 0) != 0)
+        if (WM_SetPortCallback((u16)a1, (int)func_020417d0, 0) != 0)
             Crash();
         FS_Init(-1);
 

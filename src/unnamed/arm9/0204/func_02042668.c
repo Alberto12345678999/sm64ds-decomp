@@ -10,7 +10,7 @@ extern char data_020a1fc0[];
 extern void func_02041a00(FSFile *self);
 
 /* The child's archive proc. func_020423dc installs it for every command with
- * func_0205c7c4 (FS_SetArchiveProc), and it returns NitroSDK FSResult codes.
+ * FS_SetArchiveProc, and it returns NitroSDK FSResult codes.
  * A read (FS_COMMAND_READFILE, 0) fails with 5 (ERROR) until the share is
  * ready (mState 2), and succeeds at once (0) when empty. Otherwise
  * func_02041a00 asks the parent for the data and the read goes asynchronous

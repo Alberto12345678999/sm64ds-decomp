@@ -14,7 +14,7 @@ int func_0205fb58(int a, int b, int c, int d)
     data_020a8138[a].flag = (u16)z;
     data_020a8114.callback = (PMCallback)c;
     data_020a8114.callbackArg = (void *)d;
-    data_020a8138[a].arg = b;
+    data_020a8138[a].reply = (short *)b;
     func_0205f8b0((a & 0xff) | 0x3006500);
     return z;
 }

@@ -279,7 +279,7 @@ struct E1 {
     /* 0x3c */ unsigned char f3c; /* player number */
     /* func_0204f364's key; func_0204f400 keeps the list sorted by it */
     /* 0x3d */ unsigned char priority;
-    /* 0x3e */ short lastVolume;    /* last value sent with func_0205ad3c */
+    /* 0x3e */ short lastVolume;    /* last value sent with SND_SetPlayerVolume */
     /* 0x40 */ unsigned char unk40; /* 0..0x7f, indexes data_02086384 */
     /* 0x41 */ unsigned char unk41; /* 0..0x7f, indexes data_02086384 */
     /* 0x42 */ unsigned char pad_42[2];
@@ -455,22 +455,22 @@ extern void func_0205aa10(unsigned int p0, unsigned int p1, int p2, unsigned int
 extern void func_0205aa68(void *a, int b, int c);
 extern void func_0205aa9c(void *a, int b);
 extern void func_0205aac8(void *a, int b);
-extern void func_0205aaf4(void *a, int b, int c);
+extern void SND_SetTrackMute(s32 player, u32 trackBitMask, int flag);
 extern void func_0205ab28(int a, int b, int c, int d, int e);
 extern void func_0205ab6c(unsigned int a, unsigned int b, int c, int d, unsigned int e, unsigned int f, unsigned int g);
 extern void func_0205abb8(int a, int b, int c, int d);
 extern void func_0205ac28(void *a, int b, int c, int d);
-extern int func_0205ac5c(int a, int b, int c);
-extern int func_0205ac84(int a, int b, int c);
-extern int func_0205acac(int a, int b, int c);
-extern int func_0205acd4(int a, int b, int c);
-extern int func_0205acfc(int a, int b, int c);
-extern void func_0205ad24(int, int);
-extern void func_0205ad3c(int a, int b);
-extern void func_0205ad54(int, int);
+extern void SND_SetTrackModSpeed(s32 player, u32 trackBitMask, s32 speed);
+extern void SND_SetTrackModDepth(s32 player, u32 trackBitMask, s32 depth);
+extern void SND_SetTrackPan(s32 player, u32 trackBitMask, s32 pan);
+extern void SND_SetTrackPitch(s32 player, u32 trackBitMask, s32 pitch);
+extern void SND_SetTrackVolume(s32 player, u32 trackBitMask, s32 volume);
+extern void SND_SetPlayerChannelPriority(s32 player, s32 prio);
+extern void SND_SetPlayerVolume(s32 player, s32 volume);
+extern void SND_SetPlayerTempoRatio(s32 player, s32 ratio);
 extern void func_0205ad6c(void *a, int b);
-extern void func_0205ad98(void *c);
-extern void func_0205adc4(void *a, int b, int c, int d);
+extern void SND_StopSeq(s32 player);
+extern void SND_StartSeq(s32 player, int seqBase, int seqOffset, int bank);
 extern int func_0205af78(unsigned int x);
 extern void *func_0205afb4(void);
 extern void func_0205afe0(unsigned int c);
@@ -482,10 +482,10 @@ extern void func_0205b6b0(void *c);
 extern void func_0205b6f4(void *c);
 extern void func_0205b78c(struct Node *base, int index, struct Node *arg);
 extern int func_0205caa8(void *thiz);
-extern int func_0205cb68(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
-extern void func_0205cbe4(void *thiz);
-extern int func_0205cc80(void *thiz, void *a, void *b);
-extern void func_0205cd34(void *o);
+extern int FS_LoadArchive(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+extern void FS_ReleaseArchiveName(void *thiz);
+extern int FS_RegisterArchiveName(void *thiz, void *a, void *b);
+extern void FS_InitArchive(void *o);
 extern int func_0205d368(void *o, int r1, int sel);
 extern int func_0205d568(Node *node, int b, ...);
 extern int func_0205d644(void *out_file_id, const char *path);
@@ -2037,7 +2037,7 @@ extern "C" void func_0204fafc(void) {
                 v = 0;
             }
             if (v != node->lastVolume) {
-                ((extern void (*)(unsigned int a, int b))func_0205ad3c)(node->f3c, v);
+                SND_SetPlayerVolume(node->f3c, v);
                 node->lastVolume = v;
             }
             if (node->f2c == 2) {
@@ -2155,84 +2155,83 @@ extern "C" void NNS_SndPlayerMoveVolume(NNSSndHandle *handle, int targetVolume, 
 }
 
 /* NitroSystem's NNS_SndPlayerSetChannelPriority: SND_SetPlayerChannelPriority
-   (func_0205ad24) on the player number. */
+   on the player number. */
 // @symbol NNS_SndPlayerSetChannelPriority
 extern "C" void NNS_SndPlayerSetChannelPriority(NNSSndHandle *handle, int priority) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        func_0205ad24(player->playerNo, priority);
+        SND_SetPlayerChannelPriority(player->playerNo, priority);
 }
 
 /* NitroSystem's NNS_SndPlayerSetTrackMute: if the handle holds a player,
    mute (flag 1) or unmute the tracks in trackBitMask through
-   SND_SetTrackMute (func_0205aaf4) on its player number. */
+   SND_SetTrackMute on its player number. */
 // @symbol NNS_SndPlayerSetTrackMute
 extern "C" void NNS_SndPlayerSetTrackMute(NNSSndHandle *handle, int trackBitMask, int flag) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        ((void (*)(int, int, int))func_0205aaf4)(player->playerNo, trackBitMask, flag);
+        SND_SetTrackMute(player->playerNo, trackBitMask, flag);
 }
 
 /* NitroSystem's NNS_SndPlayerSetTrackVolume: if the handle holds a player,
    set the tracks in trackBitMask to volume (0..127) through
-   SND_SetTrackVolume (func_0205acfc), converted by SND_CalcDecibel, which
+   SND_SetTrackVolume, converted by SND_CalcDecibel, which
    is the SNDi_DecibelTable lookup data_02086384[volume]. */
 // @symbol NNS_SndPlayerSetTrackVolume
 extern "C" void NNS_SndPlayerSetTrackVolume(NNSSndHandle *handle, int trackBitMask, int volume) {
     NNSSndSeqPlayer *player = handle->player;
     if (player == 0)
         return;
-    func_0205acfc(player->playerNo, trackBitMask, data_02086384[volume]);
+    SND_SetTrackVolume(player->playerNo, trackBitMask, data_02086384[volume]);
 }
 
 /* NitroSystem's NNS_SndPlayerSetTrackPitch: SND_SetTrackPitch
-   (func_0205acd4, SNDTrack.ext_pitch at 0xc) on the player number. The
-   track setters below take the same shape; each SND_ callee is one
-   SNDi_SetTrackParam (func_0205a8f0) write at the SNDTrack offset named. */
+   (SNDTrack.ext_pitch at 0xc) on the player number. The track setters
+   below take the same shape; each SND_ callee is one SNDi_SetTrackParam
+   write at the SNDTrack offset named. */
 // @symbol NNS_SndPlayerSetTrackPitch
 extern "C" void NNS_SndPlayerSetTrackPitch(NNSSndHandle *handle, int trackBitMask, int pitch) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        ((void (*)(int, int, int))func_0205acd4)(player->playerNo, trackBitMask, pitch);
+        SND_SetTrackPitch(player->playerNo, trackBitMask, pitch);
 }
 
-/* NitroSystem's NNS_SndPlayerSetTrackPan: SND_SetTrackPan (func_0205acac,
-   SNDTrack.ext_pan at 9). */
+/* NitroSystem's NNS_SndPlayerSetTrackPan: SND_SetTrackPan (SNDTrack.ext_pan
+   at 9). */
 // @symbol NNS_SndPlayerSetTrackPan
 extern "C" void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, int trackBitMask, int pan) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        ((void (*)(int, int, int))func_0205acac)(player->playerNo, trackBitMask, pan);
+        SND_SetTrackPan(player->playerNo, trackBitMask, pan);
 }
 
 /* NitroSystem's NNS_SndPlayerSetTrackModDepth: SND_SetTrackModDepth
-   (func_0205ac84, SNDTrack.mod.depth at 0x1a). The source puts
+   (SNDTrack.mod.depth at 0x1a). The source puts
    NNS_SndPlayerSetTrackPanRange between this and the pan setter; it is
    absent here (the two are adjacent), presumably dead-stripped. */
 // @symbol NNS_SndPlayerSetTrackModDepth
 extern "C" void NNS_SndPlayerSetTrackModDepth(NNSSndHandle *handle, int trackBitMask, int depth) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        ((void (*)(int, int, int))func_0205ac84)(player->playerNo, trackBitMask, depth);
+        SND_SetTrackModDepth(player->playerNo, trackBitMask, depth);
 }
 
 /* NitroSystem's NNS_SndPlayerSetTrackModSpeed: SND_SetTrackModSpeed
-   (func_0205ac5c, SNDTrack.mod.speed at 0x19). */
+   (SNDTrack.mod.speed at 0x19). */
 // @symbol NNS_SndPlayerSetTrackModSpeed
 extern "C" void NNS_SndPlayerSetTrackModSpeed(NNSSndHandle *handle, int trackBitMask, int speed) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        ((void (*)(int, int, int))func_0205ac5c)(player->playerNo, trackBitMask, speed);
+        SND_SetTrackModSpeed(player->playerNo, trackBitMask, speed);
 }
 
-/* NitroSystem's NNS_SndPlayerSetTempoRatio: SND_SetPlayerTempoRatio
-   (func_0205ad54, an SNDi_SetPlayerParam write of SNDPlayer.tempo_ratio at
-   0x1a). */
+/* NitroSystem's NNS_SndPlayerSetTempoRatio: SND_SetPlayerTempoRatio (an
+   SNDi_SetPlayerParam write of SNDPlayer.tempo_ratio at 0x1a). */
 // @symbol NNS_SndPlayerSetTempoRatio
 extern "C" void NNS_SndPlayerSetTempoRatio(NNSSndHandle *handle, int ratio) {
     NNSSndSeqPlayer *player = handle->player;
     if (player)
-        func_0205ad54(player->playerNo, ratio);
+        SND_SetPlayerTempoRatio(player->playerNo, ratio);
 }
 
 // @symbol func_0204f720
@@ -2282,7 +2281,7 @@ extern "C" void func_0204f630(void) {
 
 // @symbol _ZN2E113func_0204f600Eiii
 int E1::func_0204f600(int seqData, int seqOffset, int bank) {
-    func_0205adc4((void *)this->f3c, seqData, seqOffset, bank);
+    SND_StartSeq(this->f3c, seqData, seqOffset, bank);
     ((void (*)(void *thiz))func_0204f4bc)(this);
     this->cmdTag = func_0205afb4();
     this->f2c = 1;
@@ -2375,7 +2374,7 @@ extern "C" void func_0204f400(HeapAllocator_204f400* self) {
 // @symbol func_0204f3e0
 extern "C" void func_0204f3e0(unsigned char *c)
 {
-    ((void (*)(unsigned int x))func_0205ad98)(((struct E1 *)c)->f3c);
+    SND_StopSeq(((struct E1 *)c)->f3c);
     ((void(*)(void *c))func_0204f2d4)(c);
 }
 
@@ -2607,21 +2606,22 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
         } while (i < n);
     }
 
-    func_0205cd34(self);
+    FS_InitArchive(self);
     self->narc = p;
     self->f54 = (unsigned char *)fatb;
     fimg_off = fimg + 8;
     self->f58 = (unsigned char *)fimg_off;
 
-    if (func_0205cc80(self, (void *)name, (void *)cstd::strlen(name)) == 0)
+    if (FS_RegisterArchiveName(self, (void *)name, (void *)cstd::strlen(name)) == 0)
         return 0;
 
-    if (((int(*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1, void *fn2))func_0205cb68)(self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off,
-                      *(int *)(fatb + 4) - 0xc, (int)(fntb + 8) - (int)fimg_off,
-                      *(int *)(fntb + 4) - 8, 0, 0))
+    if (((int (*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1,
+                  void *fn2))FS_LoadArchive)(
+            self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off, *(int *)(fatb + 4) - 0xc,
+            (int)(fntb + 8) - (int)fimg_off, *(int *)(fntb + 4) - 8, 0, 0))
         return 1;
 
-    func_0205cbe4(self);
+    FS_ReleaseArchiveName(self);
     return 0;
 }
 
@@ -2629,7 +2629,7 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
 extern "C" int func_0204ee10(void *thiz)
 {
     if (!func_0205caa8(thiz)) return 0;
-    func_0205cbe4(thiz);
+    FS_ReleaseArchiveName(thiz);
     return 1;
 }
 

@@ -3897,11 +3897,11 @@ matched: yes</title></rect><rect x="59.34" y="337.81" width="38.44" height="7.26
 module: arm9
 addr: 0x02029654
 size: 416 bytes
-matched: yes</title></rect><rect x="97.78" y="337.81" width="6.28" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14GraphCallback2Ev
+matched: yes</title></rect><rect x="97.78" y="337.81" width="6.28" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
 module: arm9
 addr: 0x020297f4
 size: 68 bytes
-matched: yes</title></rect><rect x="104.07" y="337.81" width="2.59" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14GraphCallback1Ev
+matched: yes</title></rect><rect x="104.07" y="337.81" width="2.59" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c15graphCallback_c14GraphCallback1Ev
 module: arm9
 addr: 0x02029838
 size: 28 bytes
@@ -8209,23 +8209,23 @@ matched: yes</title></rect><rect x="239.32" y="664.65" width="2.89" height="6.50
 module: arm9
 addr: 0x0204f720
 size: 28 bytes
-matched: yes</title></rect><rect x="242.21" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f73c
+matched: yes</title></rect><rect x="242.21" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTempoRatio
 module: arm9
 addr: 0x0204f73c
 size: 48 bytes
-matched: yes</title></rect><rect x="247.16" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f76c
+matched: yes</title></rect><rect x="247.16" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackModSpeed
 module: arm9
 addr: 0x0204f76c
 size: 48 bytes
-matched: yes</title></rect><rect x="252.11" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f79c
+matched: yes</title></rect><rect x="252.11" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackModDepth
 module: arm9
 addr: 0x0204f79c
 size: 48 bytes
-matched: yes</title></rect><rect x="257.06" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7cc
+matched: yes</title></rect><rect x="257.06" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackPan
 module: arm9
 addr: 0x0204f7cc
 size: 48 bytes
-matched: yes</title></rect><rect x="262.01" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7fc
+matched: yes</title></rect><rect x="262.01" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackPitch
 module: arm9
 addr: 0x0204f7fc
 size: 48 bytes
@@ -8237,19 +8237,19 @@ matched: yes</title></rect><rect x="273.56" y="664.65" width="4.95" height="6.50
 module: arm9
 addr: 0x0204f86c
 size: 48 bytes
-matched: yes</title></rect><rect x="278.51" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f89c
+matched: yes</title></rect><rect x="278.51" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetChannelPriority
 module: arm9
 addr: 0x0204f89c
 size: 48 bytes
-matched: yes</title></rect><rect x="283.47" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f8cc
+matched: yes</title></rect><rect x="283.47" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerMoveVolume
 module: arm9
 addr: 0x0204f8cc
 size: 72 bytes
-matched: yes</title></rect><rect x="290.89" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f914
+matched: yes</title></rect><rect x="290.89" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetInitialVolume
 module: arm9
 addr: 0x0204f914
 size: 16 bytes
-matched: yes</title></rect><rect x="292.54" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f924
+matched: yes</title></rect><rect x="292.54" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetVolume
 module: arm9
 addr: 0x0204f924
 size: 16 bytes
