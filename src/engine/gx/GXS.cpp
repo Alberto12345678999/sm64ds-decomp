@@ -47,8 +47,6 @@ extern u32 data_020a60a4;  // BG ext-palette bank saved by BeginLoadBG, restored
 extern u32 data_020a60a8;  // OBJ ext-palette bank saved by BeginLoadOBJ, restored by EndLoadOBJ
 
 extern "C" {
-extern u16 func_020540f0(void);
-extern u16 func_02054118(void);
 extern void func_02059fa8(int ch);
 extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
 // local extern: u8 channel per the definition inserts a narrowing op at the call
@@ -386,9 +384,9 @@ namespace GXS {
 
 // @symbol _ZN3GXS18BeginLoadBGExtPlttEv
 // Clears the sub-engine BG ext-palette enable bit and unmaps the bank back to
-// LCDC (func_02054118); the result is held for EndLoadBGExtPltt.
+// LCDC (GX::ResetBankForSubBGExtPltt); the result is held for EndLoadBGExtPltt.
 void BeginLoadBGExtPltt() {
-    data_020a60a4 = func_02054118();
+    data_020a60a4 = GX::ResetBankForSubBGExtPltt();
 }
 
 // @symbol _ZN3GXS13LoadBGExtPlttEPKvjj
@@ -412,10 +410,10 @@ void EndLoadBGExtPltt() {
 }
 
 // @symbol _ZN3GXS19BeginLoadOBJExtPlttEv
-// The OBJ counterpart (func_020540f0); the result is held for
+// The OBJ counterpart (GX::ResetBankForSubOBJExtPltt); the result is held for
 // EndLoadOBJExtPltt.
 void BeginLoadOBJExtPltt() {
-    data_020a60a8 = func_020540f0();
+    data_020a60a8 = GX::ResetBankForSubOBJExtPltt();
 }
 
 // @symbol _ZN3GXS14LoadOBJExtPlttEPKvjj

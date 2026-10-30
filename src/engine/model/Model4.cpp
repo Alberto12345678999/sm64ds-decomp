@@ -13,6 +13,7 @@
 #include "dExtSimpleModel_c.h"
 #include "G3X.h"
 #include "cstd.h"
+#include "GX.h"
 
 namespace CP15 {
 void EnableDTCM(void);
@@ -494,8 +495,6 @@ extern "C" void func_02045e2c(int obj, int i, int a, short b)
     e->b = b;
 }
 
-extern "C" u16 func_02053ed0(void);
-extern "C" u16 func_02053ec0(void);
 
 // @symbol func_02045d9c
 extern "C" void func_02045d9c(void)
@@ -511,10 +510,10 @@ extern "C" void func_02045d9c(void)
     ip = (ip & ~0x3000u) | 8;
     *(volatile u16 *)0x4000060 = ip;
     G3X::SetClearColor(0, 0, r2, 0, false);
-    if (func_02053ed0() == 0) {
+    if (GX::GetBankForTex() == 0) {
         Crash();
     }
-    if (func_02053ec0() != 0) {
+    if (GX::GetBankForTexPltt() != 0) {
         return;
     }
     Crash();
@@ -544,15 +543,6 @@ extern "C" int func_02045cf0(void) { return data_020a4bcc; }
 
 // @symbol func_02045ce0
 extern "C" int func_02045ce0(void) { return data_020a4bd8; }
-
-struct GX {
-    static void BeginLoadTexPltt();                          /* _ZN2GX16BeginLoadTexPlttEv */
-    static void LoadTexPltt(const void *src, u32 addr, u32 size);
-    static void EndLoadTexPltt();
-    static void BeginLoadTex();                              /* _ZN2GX12BeginLoadTexEv */
-    static void LoadTex(const void *src, u32 offset, u32 size);
-    static void EndLoadTex();
-};
 
 // @symbol _ZN17dExtSimpleModel_c13GetVramOffsetEj
 u32 dExtSimpleModel_c::GetVramOffset(u32 size) {

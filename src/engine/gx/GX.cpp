@@ -25,8 +25,6 @@ extern u16 data_02086326[];
 extern u16 data_02086328[];
 
 extern "C" {
-extern u16 func_02054168(void);
-extern u16 func_0205417c(void);
 extern void func_02059fa8(int ch);
 extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
 extern void DMASyncHalfTransfer(u32 channel, void *src, void *dst, u32 numHalfs);
@@ -40,7 +38,7 @@ namespace GX {
 
 // @symbol _ZN2GX12BeginLoadTexEv
 void BeginLoadTex() {
-    int r = func_0205417c();
+    int r = GX::ResetBankForTex();
     int i = r * 6;
     data_020a60b8 = r;
     data_020a60ac = (int)*(u16 *)((char *)data_02086324 + i) << 12;
@@ -101,7 +99,7 @@ void EndLoadTex()
 
 // @symbol _ZN2GX16BeginLoadTexPlttEv
 void BeginLoadTexPltt() {
-    int r = func_02054168();
+    int r = GX::ResetBankForTexPltt();
     data_020a60b4 = r;
     data_020a60b0 = (int)data_02086314[r >> 4] << 12;
 }

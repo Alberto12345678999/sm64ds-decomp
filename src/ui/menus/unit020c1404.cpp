@@ -82,8 +82,6 @@ extern u32 data_ov007_02104be4; /* end of the texture region */
 extern u32 data_ov007_02104be8; /* next free palette slot */
 
 extern void Crash(void);
-extern int func_02053ec0(void);
-extern int func_02053ed0(void);
 extern char *func_ov007_020c3df4(int a, int b);
 extern void func_ov007_020c3d1c(void *self);
 
@@ -93,12 +91,12 @@ void func_ov007_020c16dc(int fmt, int width, int height, int colorCount, u32 *te
 
 // @symbol func_ov007_020c184c
 /* Resets both regions to start at 0: the texture region's end from the
- * texture VRAM banks func_02053ed0 reports (one 0x20000-byte bank per
- * bit), the palette region's end from the palette banks func_02053ec0
+ * texture VRAM banks GX::GetBankForTex reports (one 0x20000-byte bank per
+ * bit), the palette region's end from the palette banks GX::GetBankForTexPltt
  * reports. */
 void func_ov007_020c184c(void) {
-    int texBanks = func_02053ed0();
-    int plttBanks = func_02053ec0();
+    int texBanks = GX::GetBankForTex();
+    int plttBanks = GX::GetBankForTexPltt();
 
     data_ov007_02104bdc = 0;
     data_ov007_02104be4 = 0;
