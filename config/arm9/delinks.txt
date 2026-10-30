@@ -2023,7 +2023,7 @@ src/engine/sound/SoundEngine.cpp:
     complete
     .text start:0x0204eda4 end:0x020524e4
 
-src/unnamed/arm9/0205/func_020524e4.c:
+src/MTX_Rot22_.c:
     complete
     .text start:0x020524e4 end:0x020524f0
 
@@ -2035,11 +2035,11 @@ src/unnamed/arm9/0205/func_02052514.c:
     complete
     .text start:0x02052514 end:0x02052550
 
-src/unnamed/arm9/0205/func_02052550.c:
+src/MTX_RotX33_.c:
     complete
     .text start:0x02052550 end:0x0205256c
 
-src/unnamed/arm9/0205/func_0205256c.c:
+src/MTX_RotY33_.c:
     complete
     .text start:0x0205256c end:0x02052588
 

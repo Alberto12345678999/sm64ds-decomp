@@ -2407,10 +2407,10 @@ src/func_02052438.c	PURE-C	arm9				1		None		-
 src/func_02052458.c	PURE-C	arm9				1		None		-
 src/func_02052494.c	PURE-C	arm9				1		None		-
 src/func_020524c4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020524e4.c	PURE-C					0		None		not-in-delinks
+src/MTX_Rot22_.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/0205/func_02052514.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_02052550.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/0205/func_0205256c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
+src/MTX_RotX33_.c	PURE-C					0		None		not-in-delinks
+src/MTX_RotY33_.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_020527e8.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02052800.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02052820.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks

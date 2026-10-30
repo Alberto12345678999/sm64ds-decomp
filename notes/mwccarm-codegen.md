@@ -5062,7 +5062,8 @@ the previous instruction. The ROM's compiler skips it and takes the next registe
 not been used yet.
 
 **Four sites, same delta -- the entire residue on `func_0205256c`, and three of the fourteen
-divergent words on `func_0205a588`.**
+divergent words on `func_0205a588`.** (`func_0205256c` is the SDK's MTX_RotY33_, src/MTX_RotY33_.c. pret/pokediamond's FX_mtx33.c has it as
+hand-written Thumb asm, so no compiler ever had to emit the ROM's register choice.)
 
 | site | dead register at that point | ROM picks | every build picks |
 |---|---|---|---|

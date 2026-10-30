@@ -20258,7 +20258,7 @@
         "return:void"
       ]
     },
-    "func_02052550": {
+    "MTX_RotX33_": {
       "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
@@ -20266,7 +20266,7 @@
         "param:#1 Mat3 *"
       ]
     },
-    "func_0205256c": {
+    "MTX_RotY33_": {
       "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],

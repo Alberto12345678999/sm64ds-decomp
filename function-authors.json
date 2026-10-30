@@ -8711,7 +8711,7 @@
     },
     "arm9:0x020524e4": {
       "author": "ruspecial",
-      "name": "func_020524e4"
+      "name": "MTX_Rot22_"
     },
     "arm9:0x020524f0": {
       "author": "tangosdev",
@@ -8723,11 +8723,11 @@
     },
     "arm9:0x02052550": {
       "author": "ruspecial",
-      "name": "func_02052550"
+      "name": "MTX_RotX33_"
     },
     "arm9:0x0205256c": {
       "author": "ruspecial",
-      "name": "func_0205256c"
+      "name": "MTX_RotY33_"
     },
     "arm9:0x02052588": {
       "author": "ruspecial",
