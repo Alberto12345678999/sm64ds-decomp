@@ -10,7 +10,7 @@ extern void OS_SleepThread(void *p);
  * (FS_ARCHIVE_FLAG_RUNNING, 0x10) set FS_ARCHIVE_FLAG_SUSPENDING (0x40) and
  * sleep on stat_q until that clears, otherwise set SUSPEND at once. Returns
  * whether the archive was not suspended before. Field names follow the SDK's
- * FSArchive, as func_0205d044.cpp spells it; only the fields this function
+ * FSArchive, as FSi_NextCommand.cpp spells it; only the fields this function
  * touches are spelled out. */
 typedef struct FSArchive {
     char pad_00[0xe];

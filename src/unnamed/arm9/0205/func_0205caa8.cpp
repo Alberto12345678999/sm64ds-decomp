@@ -6,14 +6,14 @@ extern "C" {
 extern void func_0205c864(int *thiz);
 extern void func_0205c788(int *p, int n);
 
-/* NitroSDK FSFile, the link field followed here (func_0205d044.cpp's name). */
+/* NitroSDK FSFile, the link field followed here (FSi_NextCommand.cpp's name). */
 typedef struct FSFile {
     struct FSFile *prev; /* 0x00 -- link.prev */
     struct FSFile *next; /* 0x04 -- link.next */
 } FSFile;
 
 /* NitroSDK FSArchive, the fields cleared here; names follow the SDK's, as
- * func_0205d044.cpp and func_0205c9b8.c spell them. */
+ * FSi_NextCommand.cpp and func_0205c9b8.c spell them. */
 typedef struct FSArchive {
     char pad_00[0x10];
     unsigned int flag; /* 0x10 */

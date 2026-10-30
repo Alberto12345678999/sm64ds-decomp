@@ -2648,7 +2648,7 @@ src/unnamed/arm9/0205/func_0205d23c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d28c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d2b0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d2dc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d304.c	PURE-C	arm9				1		None		-
+src/FSi_GetPackedName.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d368.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d3e4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d3f4.c	WEAK-refs-only	arm9				1		None		-
@@ -2748,7 +2748,7 @@ src/unnamed/arm9/0206/func_0206116c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02061188.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_020614d0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206152c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02061674.c	PURE-C	arm9				1		None		-
+src/WM_Finish.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020616e8.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_020618b8.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02061960.c	WEAK-refs-only	arm9				1		None		-

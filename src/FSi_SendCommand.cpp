@@ -8,7 +8,7 @@ extern "C" {
 
 extern void func_0205c788(char *self, int arg);
 extern void func_0205d8d8(void *node, void *list);
-extern void func_0205cfa4(char *self);
+extern void FSi_ExecuteAsyncCommand(char *self);
 extern void OS_SleepThread(char *self);
 extern int func_0205cf5c(char *self);
 
@@ -39,8 +39,7 @@ static inline int HasBits(int word, int bits) {
 }
 
 #pragma opt_loop_invariants off
-int func_0205cdf4(char *self, int arg1)
-{
+int FSi_SendCommand(char *self, int arg1) {
     FsFile *file = (FsFile *)self;
     FsArchive *list = file->mArchive;
     unsigned int mask = 1 << arg1;
@@ -66,7 +65,7 @@ int func_0205cdf4(char *self, int arg1)
             list->mCallback(self, 9);
         }
         if (!HasBits(file->mStat, 4)) {
-            func_0205cfa4(self);
+            FSi_ExecuteAsyncCommand(self);
             return 1;
         }
     } else {

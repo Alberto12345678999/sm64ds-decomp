@@ -10,7 +10,7 @@ extern char data_02099e6c[];
 extern int data_020a1fc0;
 extern char data_020a2400[];
 
-extern void *func_0205d23c(void *a, int b);
+extern void *FS_FindArchive(void *a, int b);
 extern void OS_SleepThread(unsigned short *self);
 extern int func_0205d5e8(char *self, int a1, int a2, int a3, int a4);
 extern int FS_ReadFile(char *a, char *b, int c);
@@ -24,12 +24,12 @@ extern void func_02041a94(FileShareParentArea *area, FileShareNode *node);
  * [mFileOffset, mFileOffset + mFileSize), by mFileId), its first three
  * 0x400-byte pages read into the cache, and is handed to func_02041d28; a
  * releasing one has its file closed and goes back to the free list
- * (func_02041a94). The arc local is the archive func_0205d23c finds (by name,
+ * (func_02041a94). The arc local is the archive FS_FindArchive finds (by name,
  * 3 characters). */
 void func_02042254(void) {
     int i;
     FileShareNode *node;
-    int arc = (int)func_0205d23c(data_02099e6c, 3);
+    int arc = (int)FS_FindArchive(data_02099e6c, 3);
     int b = 2;
     int c = 3;
     int d = 1;

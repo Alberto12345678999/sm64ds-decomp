@@ -10407,7 +10407,7 @@
     },
     "arm9:0x0205cdf4": {
       "author": "tangosdev",
-      "name": "func_0205cdf4"
+      "name": "FSi_SendCommand"
     },
     "arm9:0x0205cf5c": {
       "author": "tangosdev",
@@ -10415,15 +10415,15 @@
     },
     "arm9:0x0205cfa4": {
       "author": "ruspecial",
-      "name": "func_0205cfa4"
+      "name": "FSi_ExecuteAsyncCommand"
     },
     "arm9:0x0205d044": {
       "author": "tangosdev",
-      "name": "func_0205d044"
+      "name": "FSi_NextCommand"
     },
     "arm9:0x0205d23c": {
       "author": "tangosdev",
-      "name": "func_0205d23c"
+      "name": "FS_FindArchive"
     },
     "arm9:0x0205d28c": {
       "author": "tangosdev",
@@ -10439,7 +10439,7 @@
     },
     "arm9:0x0205d304": {
       "author": "andrewboudreau",
-      "name": "func_0205d304"
+      "name": "FSi_GetPackedName"
     },
     "arm9:0x0205d368": {
       "author": "tangosdev",
@@ -10911,11 +10911,11 @@
     },
     "arm9:0x0206116c": {
       "author": "tangosdev",
-      "name": "func_0206116c"
+      "name": "WmClearFifoRecvFlag"
     },
     "arm9:0x02061188": {
       "author": "andrewboudreau",
-      "name": "func_02061188"
+      "name": "WmReceiveFifo"
     },
     "arm9:0x02061428": {
       "author": "tangosdev",
@@ -10943,7 +10943,7 @@
     },
     "arm9:0x02061674": {
       "author": "tangosdev",
-      "name": "func_02061674"
+      "name": "WM_Finish"
     },
     "arm9:0x020616e8": {
       "author": "tangosdev",
@@ -11083,7 +11083,7 @@
     },
     "arm9:0x020631dc": {
       "author": "ruspecial",
-      "name": "func_020631dc"
+      "name": "WM_StartDataSharing"
     },
     "arm9:0x020634fc": {
       "author": "tangosdev",

@@ -7,12 +7,12 @@ extern "C" {
 /* NitroSDK FS_NotifyArchiveAsyncEnd(p_arc, ret): the archive's procedure
  * finished the command at the head of its list. An asynchronous one
  * (FS_ARCHIVE_FLAG_IS_ASYNC 0x100) is released with ret (func_0205c788 =
- * FSi_ReleaseCommand) and the next command started (func_0205d044 =
- * FSi_NextCommand, func_0205cfa4 = FSi_ExecuteAsyncCommand); a synchronous
- * one gets ret as its error, FS_ARCHIVE_FLAG_IS_SYNC (0x200) is cleared and
- * the waiting caller woken on sync_q. Field names follow the SDK's FSFile
- * and FSArchive, as func_0205d044.cpp spells them; only the fields this
- * function touches are spelled out. */
+ * FSi_ReleaseCommand) and the next command started (FSi_NextCommand,
+ * FSi_ExecuteAsyncCommand); a synchronous one gets ret as its error,
+ * FS_ARCHIVE_FLAG_IS_SYNC (0x200) is cleared and the waiting caller woken on
+ * sync_q. Field names follow the SDK's FSFile and FSArchive, as
+ * FSi_NextCommand.cpp spells them; only the fields this function touches are
+ * spelled out. */
 typedef struct FSFile {
     char pad_00[0x14];
     int error; /* 0x14 */
@@ -30,8 +30,8 @@ typedef struct FSArchive {
 } FSArchive;
 
 extern void func_0205c788(void *p, int arg);
-extern int func_0205d044(void *self);
-extern void func_0205cfa4(int x);
+extern int FSi_NextCommand(void *self);
+extern void FSi_ExecuteAsyncCommand(int x);
 extern void OS_WakeupThread(u16 *p);
 
 void func_0205cd5c(FSArchive *self, int arg) {
@@ -45,11 +45,11 @@ void func_0205cd5c(FSArchive *self, int arg) {
 
         self->flag &= ~0x100;
         func_0205c788(t, arg);
-        r = func_0205d044(self);
+        r = FSi_NextCommand(self);
         if (r == 0) {
             return;
         }
-        func_0205cfa4(r);
+        FSi_ExecuteAsyncCommand(r);
         return;
     }
     {

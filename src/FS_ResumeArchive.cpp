@@ -1,8 +1,8 @@
 //cpp
 /* NitroSDK FS_archive.c FS_ResumeArchive: if the archive is suspended
  * (FS_ARCHIVE_FLAG_SUSPEND, 8), clear the flag and pick up its next command
- * (func_0205d044, FSi_NextCommand), all with interrupts off; once they are
- * restored, run a command that came back (func_0205cfa4). Returns whether
+ * (FSi_NextCommand), all with interrupts off; once they are
+ * restored, run a command that came back (FSi_ExecuteAsyncCommand). Returns whether
  * the archive was not suspended. */
 #include "IRQ.h"
 
@@ -10,10 +10,10 @@ extern "C" {
 
 enum Bool { FALSE, TRUE };
 
-extern void *func_0205d044(void *p_arc);
-extern void func_0205cfa4(void *p_cmd);
+extern void *FSi_NextCommand(void *p_arc);
+extern void FSi_ExecuteAsyncCommand(void *p_cmd);
 
-/* NitroSDK FSArchive, the field touched here (func_0205d044.cpp's name). */
+/* NitroSDK FSArchive, the field touched here (FSi_NextCommand.cpp's name). */
 typedef struct FSArchive {
     char pad_00[0x10];
     int flag; /* 0x10 */
@@ -30,11 +30,11 @@ int FS_ResumeArchive(FSArchive *p_arc) {
     running = (enum Bool)(suspended == FALSE);
     if (running == FALSE) {
         p_arc->flag &= ~8;
-        p_cmd = func_0205d044(p_arc);
+        p_cmd = FSi_NextCommand(p_arc);
     }
     IRQ::Restore(enabled);
     if (p_cmd != 0)
-        func_0205cfa4(p_cmd);
+        FSi_ExecuteAsyncCommand(p_cmd);
     return running;
 }
 }

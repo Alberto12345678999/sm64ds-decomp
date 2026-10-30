@@ -9,7 +9,7 @@
  * synchronous caller sleeps on sync_q until IS_SYNC clears; anything else
  * clears the busy bit and either releases the file (func_0205c788 =
  * FSi_ReleaseCommand) or stores the result for the waiter. Field names follow
- * the SDK's FSFile and FSArchive, as func_0205d044.cpp spells them; only the
+ * the SDK's FSFile and FSArchive, as FSi_NextCommand.cpp spells them; only the
  * fields this function touches are spelled out. */
 #include "IRQ.h"
 

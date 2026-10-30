@@ -1,8 +1,8 @@
-extern int func_0205cdf4(char* self, int n);
+extern int FSi_SendCommand(char *self, int n);
 
 /* NitroSDK FS_OpenFileDirect(p_file, p_arc, image_top, image_bottom,
  * file_index): store the archive and arg.openfiledirect, send
- * FS_COMMAND_OPENFILEDIRECT (7) through func_0205cdf4 (FSi_SendCommand), and
+ * FS_COMMAND_OPENFILEDIRECT (7) through FSi_SendCommand, and
  * on success mark the handle FS_FILE_STATUS_IS_FILE (0x10), not
  * FS_FILE_STATUS_IS_DIR (0x20). Field names follow the SDK's FSFile, as
  * src/engine/fs/FS_CommandDefault.cpp spells it; only the fields this function touches are
@@ -31,7 +31,8 @@ int func_0205d5e8(char* self, int a1, int a2, int a3, int a4)
     p_file->arg.openfiledirect.index = a4;
     p_file->arg.openfiledirect.top = a2;
     p_file->arg.openfiledirect.bottom = a3;
-    if(func_0205cdf4(self, 7) == 0) return 0;
+    if (FSi_SendCommand(self, 7) == 0)
+        return 0;
     p = &p_file->stat;
     *p |= 0x10;
     *p &= ~0x20;

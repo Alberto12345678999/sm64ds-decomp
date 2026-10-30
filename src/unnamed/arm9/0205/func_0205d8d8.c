@@ -1,5 +1,5 @@
 /* NitroSDK FSi_AppendToList: unlink a file from whatever request list it is
- * on, then append it at the tail of `list` (func_0205cdf4 passes the
+ * on, then append it at the tail of `list` (FSi_SendCommand passes the
  * archive's pending list). FSFile starts with its FSFileLink, prev at 0 and
  * next at 4; only the link is spelled out. */
 typedef struct FSFile FSFile;

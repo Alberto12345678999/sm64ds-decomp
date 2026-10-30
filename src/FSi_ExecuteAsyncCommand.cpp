@@ -6,7 +6,7 @@ extern "C" {
 
 extern void OS_WakeupThread(u16 *p);
 extern int func_0205c5e4(void *self, int a);
-extern void *func_0205d044(void *pool);
+extern void *FSi_NextCommand(void *pool);
 
 typedef struct Node {
     char pad0[8];
@@ -17,8 +17,7 @@ typedef struct Node {
     u16 f18;         /* 0x18 */
 } Node;
 
-void func_0205cfa4(Node *self)
-{
+void FSi_ExecuteAsyncCommand(Node *self) {
     void *pool = self->pool;
     if (self == 0) return;
     do {
@@ -31,7 +30,7 @@ void func_0205cfa4(Node *self)
         *(u32 *)((u32)self + 0xc) |= 8u;
         IRQ::Restore(saved);
         if (func_0205c5e4(self, self->f10) == 6) return;
-        self = (Node *)func_0205d044(pool);
+        self = (Node *)FSi_NextCommand(pool);
     } while (self != 0);
 }
 }

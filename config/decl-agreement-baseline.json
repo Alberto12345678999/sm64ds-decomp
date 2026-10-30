@@ -1586,7 +1586,7 @@
       "src/OS_GetOwnerInfo.c": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_0206116c.cpp": [
+      "src/WmClearFifoRecvFlag.cpp": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0206/func_02062aa4.cpp": [
@@ -1753,7 +1753,7 @@
       "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
+      "src/FSi_SendCommand.cpp": [
         "param:#1 char *"
       ]
     },
@@ -3775,7 +3775,7 @@
       ]
     },
     "WM_CheckStateEx": {
-      "src/unnamed/arm9/0206/func_02061674.c": [
+      "src/WM_Finish.c": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_02061b9c.cpp": [
@@ -5533,13 +5533,13 @@
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
+      "src/FSi_SendCommand.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cfa4.cpp": [
+      "src/FSi_ExecuteAsyncCommand.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205d044.cpp": [
+      "src/FSi_NextCommand.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
@@ -11034,7 +11034,7 @@
       "src/WM_SetCallbackTable.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02061674.c": [
+      "src/WM_Finish.c": [
         "return:int"
       ],
       "src/WM_Init.cpp": [
@@ -20114,7 +20114,7 @@
       "src/unnamed/arm9/0205/func_0205cf5c.c": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0205/func_0205d044.cpp": [
+      "src/FSi_NextCommand.cpp": [
         "param:#1 Node *"
       ]
     },
@@ -20152,7 +20152,7 @@
         "return:void"
       ]
     },
-    "func_0205cdf4": {
+    "FSi_SendCommand": {
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 UnkStruct_0205d4a0 *",
         "return:void"
@@ -20165,25 +20165,25 @@
       ]
     },
     "func_0205cf5c": {
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
+      "src/FSi_SendCommand.cpp": [
         "param:#1 char *"
       ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 struct Obj *"
       ]
     },
-    "func_0205cfa4": {
+    "FSi_ExecuteAsyncCommand": {
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
+      "src/FSi_SendCommand.cpp": [
         "param:#1 char *"
       ],
       "src/unnamed/arm9/0205/func_0205cf5c.c": [
         "param:#1 int"
       ]
     },
-    "func_0205d044": {
+    "FSi_NextCommand": {
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "return:int"
       ],
@@ -20192,7 +20192,7 @@
         "return:int"
       ]
     },
-    "func_0205d23c": {
+    "FS_FindArchive": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
       ],
@@ -20204,10 +20204,6 @@
       ],
       "src/FS_RegisterArchiveName.cpp": [
         "return:void *"
-      ],
-      "src/FSi_FindPath.c": [
-        "param:#1 char *",
-        "return:FSArchive *"
       ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
@@ -20234,7 +20230,7 @@
         "return:void"
       ]
     },
-    "func_0205d304": {
+    "FSi_GetPackedName": {
       "src/FS_RegisterArchiveName.cpp": [
         "param:#2 void *",
         "return:void *"
@@ -20286,7 +20282,7 @@
       ]
     },
     "func_0205d8d8": {
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
+      "src/FSi_SendCommand.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ]
@@ -20513,7 +20509,7 @@
         "param:#1 void (*)(void)"
       ]
     },
-    "func_02061188": {
+    "WmReceiveFifo": {
       "src/WM_Init.cpp": [
         "arity:0"
       ]
@@ -20634,7 +20630,7 @@
       "src/WM_StepDataSharing.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020631dc.cpp": [
+      "src/WM_StartDataSharing.cpp": [
         "param:#1 void (*)(void *)",
         "return:int"
       ],
@@ -20695,12 +20691,12 @@
       ]
     },
     "func_02062aa4": {
-      "src/unnamed/arm9/0206/func_020631dc.cpp": [
+      "src/WM_StartDataSharing.cpp": [
         "arity:0"
       ]
     },
     "func_02062bdc": {
-      "src/unnamed/arm9/0206/func_020631dc.cpp": [
+      "src/WM_StartDataSharing.cpp": [
         "arity:0"
       ]
     },

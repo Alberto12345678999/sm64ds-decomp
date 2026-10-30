@@ -1,15 +1,14 @@
 extern int func_0205c5e4(int this, int a);
 extern void func_0205c788(int this, int a);
-extern int func_0205d044(int a);
-extern void func_0205cfa4(int a);
+extern int FSi_NextCommand(int a);
+extern void FSi_ExecuteAsyncCommand(int a);
 
 /* NitroSDK FSi_ExecuteSyncCommand(p_file): run the file's command through
  * func_0205c5e4 (FSi_TranslateCommand) and release it with the result
- * (func_0205c788 = FSi_ReleaseCommand), start the archive's next queued
- * command (func_0205d044 = FSi_NextCommand, func_0205cfa4 =
- * FSi_ExecuteAsyncCommand), and report whether the file's error is
- * FS_RESULT_SUCCESS (0). FSFile carries the names func_0205d044.cpp gives
- * those fields. */
+ * (func_0205c788 = FSi_ReleaseCommand), start the archive's next queued command
+ * (FSi_NextCommand, FSi_ExecuteAsyncCommand), and report whether the file's
+ * error is FS_RESULT_SUCCESS (0). FSFile carries the names FSi_NextCommand.cpp
+ * gives those fields. */
 typedef struct FSFile {
     char pad_00[8];
     int arc;           /* 0x08 */
@@ -24,7 +23,8 @@ int func_0205cf5c(int this)
     int r;
     r = func_0205c5e4(this, p_file->command);
     func_0205c788(this, r);
-    r = func_0205d044(p_file->arc);
-    if (r != 0) func_0205cfa4(r);
+    r = FSi_NextCommand(p_file->arc);
+    if (r != 0)
+        FSi_ExecuteAsyncCommand(r);
     return p_file->error == 0;
 }

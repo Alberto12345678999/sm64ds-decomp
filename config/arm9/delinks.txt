@@ -2637,7 +2637,7 @@ src/unnamed/arm9/0205/func_0205cd5c.cpp:
     complete
     .text start:0x0205cd5c end:0x0205cdf4
 
-src/unnamed/arm9/0205/func_0205cdf4.cpp:
+src/FSi_SendCommand.cpp:
     complete
     .text start:0x0205cdf4 end:0x0205cf5c
 
@@ -2645,15 +2645,15 @@ src/unnamed/arm9/0205/func_0205cf5c.c:
     complete
     .text start:0x0205cf5c end:0x0205cfa4
 
-src/unnamed/arm9/0205/func_0205cfa4.cpp:
+src/FSi_ExecuteAsyncCommand.cpp:
     complete
     .text start:0x0205cfa4 end:0x0205d044
 
-src/unnamed/arm9/0205/func_0205d044.cpp:
+src/FSi_NextCommand.cpp:
     complete
     .text start:0x0205d044 end:0x0205d23c
 
-src/unnamed/arm9/0205/func_0205d23c.cpp:
+src/FS_FindArchive.cpp:
     complete
     .text start:0x0205d23c end:0x0205d28c
 
@@ -2669,7 +2669,7 @@ src/unnamed/arm9/0205/func_0205d2dc.c:
     complete
     .text start:0x0205d2dc end:0x0205d304
 
-src/unnamed/arm9/0205/func_0205d304.c:
+src/FSi_GetPackedName.c:
     complete
     .text start:0x0205d304 end:0x0205d368
 
@@ -3088,7 +3088,7 @@ src/engine/card/CARD_PullOut.cpp:
     complete
     .text start:0x020610ac end:0x0206116c
 
-src/unnamed/arm9/0206/func_0206116c.cpp:
+src/WmClearFifoRecvFlag.cpp:
     complete
     .text start:0x0206116c end:0x02061428
 src/WM_CheckStateEx.cpp:
@@ -3110,7 +3110,7 @@ src/WM_SetCallbackTable.c:
     complete
     .text start:0x0206165c end:0x02061674
 
-src/unnamed/arm9/0206/func_02061674.c:
+src/WM_Finish.c:
     complete
     .text start:0x02061674 end:0x020616e8
 
@@ -3250,7 +3250,7 @@ src/WM_StepDataSharing.cpp:
     complete
     .text start:0x02062df0 end:0x020631dc
 
-src/unnamed/arm9/0206/func_020631dc.cpp:
+src/WM_StartDataSharing.cpp:
     complete
     .text start:0x020631dc end:0x020634fc
 

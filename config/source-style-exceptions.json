@@ -802,7 +802,7 @@
       "evidence": "present on origin/main in src/unnamed/arm9/0201/func_02018cbc.c; folded into src/unnamed/arm9/0201/func_02018c00.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/arm9/0206/func_0206116c.cpp",
+      "path": "src/WmClearFifoRecvFlag.cpp",
       "rule": "raw-offset",
       "match": "(char*)msg+0x14",
       "count": 2,
@@ -810,7 +810,7 @@
       "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/arm9/0206/func_0206116c.cpp",
+      "path": "src/WmClearFifoRecvFlag.cpp",
       "rule": "raw-offset",
       "match": "(char*)msg+0x1c",
       "count": 1,

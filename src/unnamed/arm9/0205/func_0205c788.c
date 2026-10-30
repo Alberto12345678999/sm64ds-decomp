@@ -2,7 +2,7 @@ struct Node;
 extern void func_0205d920(struct Node *node);
 extern void OS_WakeupThread(unsigned short *self);
 
-/* NitroSDK FSFile, the fields touched here, with the names func_0205d044.cpp
+/* NitroSDK FSFile, the fields touched here, with the names FSi_NextCommand.cpp
  * gives them. */
 typedef struct FSFile {
     char pad_00[0xc];

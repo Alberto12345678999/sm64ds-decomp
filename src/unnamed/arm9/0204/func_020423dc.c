@@ -1,4 +1,4 @@
-extern void *func_0205d23c(void *p, int a);
+extern void *FS_FindArchive(void *p, int a);
 extern int func_0205caa8(int *p_arc);
 extern void FS_SetArchiveProc(void *p, void *fn, int b);
 extern void FS_LoadArchive(void *p, int a, int b0, int b4, int c0, int c4, void *fn1, void *fn2);
@@ -18,7 +18,7 @@ struct Pair {
  * leading word, then the FAT, FNT, ARM9 and ARM7 overlay tables, each as its
  * size word and data rounded up to 0x20) as the "rom" archive.
  * The calls have the NitroSDK FS shapes:
- * - func_0205d23c finds the archive by name (FS_FindArchive).
+ * - FS_FindArchive finds the archive by name.
  * - func_0205caa8 unloads it (FS_UnloadArchive).
  * - FS_SetArchiveProc installs func_02042668 as its proc for every command.
  * - FS_LoadArchive loads it from the FAT and FNT here, at base 0.
@@ -32,7 +32,7 @@ int func_020423dc(int *r6) {
     int r3;
     struct Pair arr[4];
 
-    h = func_0205d23c(&data_02099e6c, 3);
+    h = FS_FindArchive(&data_02099e6c, 3);
     func_0205caa8(h);
     FS_SetArchiveProc(h, &func_02042668, -1);
     r5 = *r6;

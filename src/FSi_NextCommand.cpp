@@ -50,7 +50,7 @@ extern void func_0205c788(char *self, int arg);
 extern void OS_WakeupThread(u16 *self);
 extern void FS_InitFile(int *s);
 
-void *func_0205d044(void *pool) {
+void *FSi_NextCommand(void *pool) {
     FSArchive *p_arc = (FSArchive *)pool;
     u32 irqSave = IRQ::Disable();
     int f1 = (int)((*(volatile u32 *)&p_arc->flag & 0x20) != 0);

@@ -9,7 +9,7 @@ struct Node {
     int field30;
 };
 
-extern int func_0205cdf4(Node *node, int a, int b, int c);
+extern int FSi_SendCommand(Node *node, int a, int b, int c);
 
 int func_0205d568(Node *node, int b, ...)
 {
@@ -23,7 +23,7 @@ int func_0205d568(Node *node, int b, ...)
         int c = *(int *)((char *)&b + 4);
         node->field2C = b2;
         node->field30 = c;
-        if (func_0205cdf4(node, 6, c, b2) == 0) {
+        if (FSi_SendCommand(node, 6, c, b2) == 0) {
             return 0;
         }
     }
