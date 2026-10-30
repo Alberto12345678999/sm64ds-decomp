@@ -274,8 +274,11 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206df14
-/* Heap-walk helper: consults func_0206e06c for each of three records. */
+/* MSL __flush_all's shape over the three console FILEs of the __files table
+   at data_0209a330 (0x4c bytes each): flush (func_0206e06c, fflush's place)
+   every FILE whose file_kind, bits 7..9 of the mode word at +4, is not
+   closed, and return -1 if any flush fails. Spirit Tracks' __flush_all is
+   0x64 bytes against this 0x70, so the address name stays. */
 extern char data_0209a330[];
 typedef struct S6e06c S6e06c;
 int func_0206e06c(S6e06c *p);
