@@ -7,6 +7,7 @@
  * FSFile fields read here are spelled out. */
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 typedef struct FSArchive FSArchive;
 typedef struct FSFile FSFile;
@@ -22,7 +23,6 @@ struct FSFile {
 
 extern "C" {
 
-extern void OS_WakeupThread(u16 *queue);
 extern int FSi_TranslateCommand(FSFile *p_file, int command);
 extern FSFile *FSi_NextCommand(FSArchive *p_arc);
 

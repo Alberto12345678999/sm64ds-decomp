@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 /* NitroSDK FSi_NextCommand(p_arc): with interrupts off, release every queued
  * file marked for cancel (FS_ARCHIVE_FLAG_CANCELING 0x20, FS_FILE_STATUS_CANCEL
@@ -51,7 +52,6 @@ typedef char FSArchive_proc_flag_must_be_at_0x4c[sizeof(FSArchive) == 0x50 ? 1 :
 extern "C" {
 
 extern void FSi_ReleaseCommand(FSFile *p_file, int ret);
-extern void OS_WakeupThread(u16 *self);
 extern void FS_InitFile(int *s);
 
 FSFile *FSi_NextCommand(FSArchive *p_arc) {

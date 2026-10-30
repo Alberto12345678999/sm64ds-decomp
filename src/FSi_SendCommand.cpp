@@ -12,6 +12,7 @@
  * out. */
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 
@@ -46,7 +47,6 @@ struct FSArchive {
 extern void FSi_ReleaseCommand(FSFile *p_file, int ret);
 extern void FSi_AppendToList(FSFile *elem, FSFile *list);
 extern void FSi_ExecuteAsyncCommand(FSFile *p_file);
-extern void OS_SleepThread(u16 *queue);
 extern int FSi_ExecuteSyncCommand(FSFile *p_file);
 
 /* The ROM materialises each of these flag tests as 0/1 before branching on it. */
