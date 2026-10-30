@@ -104,9 +104,8 @@ int dFdBrightness_c::SetBackwardTime(u32 frames, u32 extra) {
 }
 
 /* Fade in over `frames` frames: speed = 1.0 / frames. 0 means "instant". */
-// @symbol _ZN15dFdBrightness_c14SetForwardTimeEj
-int dFdBrightness_c::SetForwardTime(u32 frames)
-{
+// @symbol _ZN15dFdBrightness_c14SetForwardTimeEjj
+int dFdBrightness_c::SetForwardTime(u32 frames, u32 extra) {
     if (frames == 0) {
         speed = (Fix12i)0x1000;
     } else {
@@ -292,9 +291,8 @@ int dFdDummy_c::SetBackwardTime(u32, u32) {
 /* dFdDummy_c::SetForwardTime -- writes speed = 0x1000, then makes a genuine
    virtual call through slot 6 (dFdDummy_c overrides none of slots 5-9, so
    this lands on dFdColor_c/dFdBrightness_c's own inherited body). */
-// @symbol _ZN10dFdDummy_c14SetForwardTimeEj
-int dFdDummy_c::SetForwardTime(u32)
-{
+// @symbol _ZN10dFdDummy_c14SetForwardTimeEjj
+int dFdDummy_c::SetForwardTime(u32, u32) {
     speed = 0x1000;
     return IsAtEnd();
 }
