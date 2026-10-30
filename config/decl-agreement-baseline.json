@@ -1055,9 +1055,6 @@
       "src/unnamed/arm9/0200/func_0200f13c.cpp": [
         "param:#1 unsigned int"
       ],
-      "src/unnamed/arm9/0200/func_0200f220.cpp": [
-        "param:#1 unsigned int"
-      ],
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 int"
       ]
