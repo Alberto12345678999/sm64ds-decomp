@@ -726,13 +726,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "The ordinary C++ resource-family constructor/destructor or compiler registration call targets the original arm9 function."
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "The ordinary C++ resource-family constructor/destructor or compiler registration call targets the original arm9 function."
     }
   ],
   "relocations": [
@@ -761,7 +754,7 @@
       "source": "0x02113068",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -781,7 +774,7 @@
       "source": "0x02113084",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -801,7 +794,7 @@
       "source": "0x021130a0",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -821,7 +814,7 @@
       "source": "0x021130bc",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"

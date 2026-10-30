@@ -430,7 +430,7 @@
       "source": "0x0213c230",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -540,13 +540,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor-registration destination and the model wrapper destructor's exact ABS32 relocation"
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "retail static-destructor registrar destination and the emitted call's exact PC24 relocation"
     }
   ],
   "symbol_binding_rewrites": [

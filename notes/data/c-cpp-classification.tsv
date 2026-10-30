@@ -2988,7 +2988,7 @@ src/unnamed/arm9/0207/func_02072ed0.c	PURE-C	arm9				1		None		-
 src/__destroy_global_chain.c	PURE-C	arm9				1		None		-
 src/__call_static_initializers.c	PURE-C	arm9				1		None		-
 src/__throw_catch_compare.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020731dc.c	PURE-C	arm9				1		None		-
+src/__register_global_object.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_020731fc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02073220.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207322c.c	PURE-C	arm9				1		None		-

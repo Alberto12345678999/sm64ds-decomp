@@ -26,7 +26,7 @@ struct EntryStepSet {
 };
 
 extern void *_ZN10dScEntry_c15graphCallback_cC1Ev(void *);
-extern void func_020731dc(void *, void *, void **);
+extern void __register_global_object(void *, void *, void **);
 extern void NoOpDestructor(void);
 
 extern char data_ov075_0211d71c[];
@@ -175,136 +175,136 @@ void __sinit_ov075_0211bb00(void) {
        mwccarm schedules the stores differently. */
     data_ov075_0211d948[0] = 0x80;
     data_ov075_0211d948[1] = 0x10;
-    func_020731dc(data_ov075_0211d948, (void *)NoOpDestructor, data_ov075_0211d5fc);
+    __register_global_object(data_ov075_0211d948, (void *)NoOpDestructor, data_ov075_0211d5fc);
 
     p = (short *)data_ov075_0211d94c;
     p[0] = 0x3c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6bc);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6bc);
     p = (short *)data_ov075_0211d950;
     p[0] = 0x1c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6c8);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6c8);
 
     p = (short *)data_ov075_0211d954;
     p[0] = 8;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6e0);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6e0);
     p = (short *)data_ov075_0211d958;
     p[0] = 8;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6a4);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6a4);
     p = (short *)data_ov075_0211d95c;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6ec);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6ec);
     p = (short *)data_ov075_0211d960;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6f8);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6f8);
     p = (short *)data_ov075_0211d964;
     p[0] = 0x20;
     p[1] = 0x20;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d710);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d710);
     p = (short *)data_ov075_0211d968;
     p[0] = 0x28;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d698);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d698);
     p = (short *)data_ov075_0211d96c;
     p[0] = 0x58;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5c0);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d5c0);
     p = (short *)data_ov075_0211d970;
     p[0] = 0x78;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5cc);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d5cc);
     p = (short *)data_ov075_0211d974;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5d8);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d5d8);
     p = (short *)data_ov075_0211d978;
     p[0] = 0xa;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6b0);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6b0);
     p = (short *)data_ov075_0211d97c;
     p[0] = 0;
     p[1] = 0;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d5e4);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d5e4);
 
     {
         int sz = 0x20;
         int h = 0x10;
         data_ov075_0211d72c[0] = (short)sz;
         data_ov075_0211d72c[1] = (short)h;
-        func_020731dc(data_ov075_0211d72c, (void *)NoOpDestructor, data_ov075_0211d5f0);
+        __register_global_object(data_ov075_0211d72c, (void *)NoOpDestructor, data_ov075_0211d5f0);
     }
 
     p = (short *)data_ov075_0211d730;
     p[0] = 0x18;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d68c);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d68c);
     p = (short *)data_ov075_0211d734;
     p[0] = 0x1c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d608);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d608);
     p = (short *)data_ov075_0211d738;
     p[0] = 0x1c;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d614);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d614);
     p = (short *)data_ov075_0211d73c;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d620);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d620);
 
     {
         int sz = 0x30;
         int h = 0x10;
         data_ov075_0211d740[0] = (short)sz;
         data_ov075_0211d740[1] = (short)h;
-        func_020731dc(data_ov075_0211d740, (void *)NoOpDestructor, data_ov075_0211d62c);
+        __register_global_object(data_ov075_0211d740, (void *)NoOpDestructor, data_ov075_0211d62c);
     }
 
     p = (short *)data_ov075_0211d744;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d638);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d638);
     p = (short *)data_ov075_0211d748;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d644);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d644);
     p = (short *)data_ov075_0211d74c;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d704);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d704);
     p = (short *)data_ov075_0211d750;
     p[0] = 0x18;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d650);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d650);
 
     {
         int sz = 0x20;
         int h = 0x10;
         data_ov075_0211d754[0] = (short)sz;
         data_ov075_0211d754[1] = (short)h;
-        func_020731dc(data_ov075_0211d754, (void *)NoOpDestructor, data_ov075_0211d65c);
+        __register_global_object(data_ov075_0211d754, (void *)NoOpDestructor, data_ov075_0211d65c);
     }
 
     p = (short *)data_ov075_0211d758;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d6d4);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d6d4);
     p = (short *)data_ov075_0211d75c;
     p[0] = 0x28;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d668);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d668);
     p = (short *)data_ov075_0211d760;
     p[0] = 0x20;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d674);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d674);
     p = (short *)data_ov075_0211d764;
     p[0] = 0x30;
     p[1] = 0x10;
-    func_020731dc(p, (void *)NoOpDestructor, data_ov075_0211d680);
+    __register_global_object(p, (void *)NoOpDestructor, data_ov075_0211d680);
 
     tmp = data_02086b58;
     ta = tmp.func;
