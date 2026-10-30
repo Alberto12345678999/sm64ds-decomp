@@ -15,8 +15,11 @@ extern void func_02059f2c(void *p);
 
 /* A player's 0x16-byte profile as the link exchanges it (func_0203ea5c sends
    them a chunk at a time): the owner's favourite colour and nickname.
-   data_020a10fc is this console's, data_020a10a4 the first of the four
-   players'; data_020a10fe and data_020a10a6 are their nickName fields. */
+   data_020a10fc and data_020a10a4 are each a table of four (0x58 bytes,
+   cleared below); func_0203d8a0 hands out player i's from data_020a10fc in
+   link mode 3 and from data_020a10a4 otherwise. Off a download-play child
+   this fills in entry 0 of both from the owner settings; data_020a10fe and
+   data_020a10a6 are those entries' nickName fields. */
 typedef struct {
     u8 favoriteColor : 4;
     u8 hi : 4;
@@ -26,7 +29,13 @@ typedef struct {
 extern u8 data_020a0ef0;
 extern u8 data_020a1064[];
 extern u8 data_020a0fec[];
-extern u16 data_020a1040[];
+/* This console's input record (func_0203df40's Rec), as far as this reads. */
+typedef struct {
+    u8 pad_00[0x0c];
+    u16 flags; /* 0x0c */
+    u8 pad_0e[0x16];
+} Rec;
+extern Rec data_020a1040;
 extern u8 data_020a0fb8[];
 extern u8 data_020a0fa0[];
 extern Profile data_020a10fc;
@@ -45,7 +54,8 @@ extern u8 data_020a0f00;
 
 /* The owner settings func_02059eb0 copies out of the firmware's user info at
    0x27ffc80: NitroSDK's OSOwnerInfo, which OS_GetOwnerInfo fills in (the
-   language there is the one func_0201fec8 switches on). */
+   language there is the one func_0201fec8 switches on). This is the older
+   SDK's 0x50-byte layout: nickName and comment have no terminator slot. */
 typedef struct {
     u8 language;        /* 0x00 */
     u8 favoriteColor;   /* 0x01 */
@@ -71,7 +81,7 @@ void func_0203db64(void *arg0, void *arg1) {
     data_020a0ef0 = 0;
     CpuCopy8(arg0, data_020a1064, 0x40);
     CpuCopy8(arg1, data_020a0fec, 0x1c);
-    func_0205a588(data_020a1040, 0, 0x24);
+    func_0205a588(&data_020a1040, 0, 0x24);
     func_0205a588(data_020a0fb8, 0, 0x18);
     func_0205a588(data_020a0fa0, 0, 0x18);
     func_0205a588(&data_020a10fc, 0, 0x58);
@@ -107,8 +117,8 @@ void func_0203db64(void *arg0, void *arg1) {
         }
 
         count = 0x258;
-        data_020a1040[6] |= 1; /* the local record's flags (0x0c), bit 0 */
-        while ((data_020a1040[6] & 1) && count != 0) {
+        data_020a1040.flags |= 1;
+        while ((data_020a1040.flags & 1) && count != 0) {
             data_020a0f1c |= 0x2000;
             func_02042778();
             func_0203df40();

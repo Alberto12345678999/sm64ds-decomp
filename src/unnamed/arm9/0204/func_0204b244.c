@@ -4,6 +4,9 @@
 #define reg_G3_COLOR        (*(volatile u32 *)0x04000480)
 #define reg_G3_POLYGON_ATTR (*(volatile u32 *)0x040004a4)
 
+/* The SPL field names here (such as dbbScale, textureTileCountS/T,
+ * polygonRotAxis, polygonReferencePlane, polygonIDs) are pret's lib/spl
+ * coinages, kept so the two can be read side by side. */
 /* The particle definition's header (func_0204a730's PtclData; SPL's
  * SPLResourceHeader), as far as this draw reads it: the polygon rotation axis
  * and reference plane flag bits, the aspect ratio, and the texture tile
@@ -82,8 +85,9 @@ extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
 extern void func_020553a4(void *m); /* load the 4x3 matrix */
 extern void func_02055388(void *m); /* multiply by the 4x3 matrix */
 
-/* Draw one particle as a textured quad (draw type 2, func_0204a5c8): alpha and the next polygon ID into
- * POLYGON_ATTR (nothing more when the alpha is 0), rotate by its angle about
+/* Draw one particle as a textured quad (draw type 2, func_0204a5c8): alpha
+ * and the next polygon ID into POLYGON_ATTR (nothing more when the alpha is
+ * 0), rotate by its angle about
  * the definition's axis, scale by scale * animScale (x by aspectRatio too),
  * translate to basePosition + offset, set its color and emit the quad in the
  * definition's plane. pret's SPL calls this SPLDraw_Polygon; func_0204b028

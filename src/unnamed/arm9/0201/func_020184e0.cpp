@@ -3,11 +3,13 @@
 
 extern "C" {
 
-/* FSFile, the two words this reads: the read position and the file's end. */
+/* FSFile, the two words this reads: top and bottom of prop.file (at 0x1c),
+   the file's extent in its archive. bottom - top is its length
+   (FS_GetLength). */
 struct Obj {
     char pad[0x20];
-    unsigned int cur;
-    unsigned int end;
+    unsigned int top;    /* 0x20 */
+    unsigned int bottom; /* 0x24 */
 };
 
 extern int myFS_ReadFile(void *a, unsigned int b, unsigned int c);
@@ -21,7 +23,7 @@ extern int func_02018568(unsigned int a);
    and dropped: this path never decompresses. */
 int func_020184e0(struct Obj *self, unsigned int buf, unsigned int n) {
     int r;
-    unsigned int len = self->end - self->cur;
+    unsigned int len = self->bottom - self->top;
     if (len > n)
         len = n;
     CP15::FlushAndInvalidateDataCache(buf, len);

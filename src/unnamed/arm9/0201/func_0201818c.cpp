@@ -4,11 +4,13 @@
 
 extern "C" {
 
-/* FSFile, the two words this reads: the read position and the file's end. */
+/* FSFile, the two words this reads: top and bottom of prop.file (at 0x1c),
+   the file's extent in its archive. bottom - top is its length
+   (FS_GetLength). */
 struct Obj {
     char pad[0x20];
-    unsigned int cur;
-    unsigned int end;
+    unsigned int top;    /* 0x20 */
+    unsigned int bottom; /* 0x24 */
     char pad2[0x1c];
 };
 
@@ -41,7 +43,7 @@ int func_0201818c(unsigned int arg0, int arg1) {
             DecompressLZ16(q, (void *)mem);
         } else {
             func_020185c0(&obj, arg0);
-            size = obj.end - obj.cur;
+            size = obj.bottom - obj.top;
             FS_CloseFile(&obj);
             mem = (int)Memory::Allocate(size, 0x20);
             CpuCopy8(p, mem, size);

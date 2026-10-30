@@ -40,12 +40,14 @@ struct S0209ee90 {
 extern struct S0209ee90 data_0209ee90;
 
 /* The game's start-up, run once from main before the frame loop
-   (func_020197b8). A download-play child (boot type 2 at 0x27ffc40) skips
-   the language setup (func_0201fec8), the file system (func_02018aa4), the
-   /BUILDTIME read (func_0203ad84) and func_020134c8, and masks the card
-   IREQ interrupt (bit 20). Every console then calls the save setup
-   (func_02042f68) and sets up the game heap, the display (func_02019440),
-   the actor spawn table and the boot scene. */
+   (func_020197b8). On a download-play child (boot type 2 at 0x27ffc40) it
+   leaves out func_0201fec8 (which reads the owner's language and starts the
+   link through func_0203db64), the file system (func_02018aa4) and
+   func_020134c8; the boot job func_0201a2f8 runs those three later for a
+   child. The /BUILDTIME read (func_0203ad84) is the one step a child never
+   makes, and it masks the card IREQ interrupt (bit 20). Every console
+   calls the save setup (func_02042f68) and sets up the game heap, the
+   display (func_02019440), the actor spawn table and the boot scene. */
 void func_0201a054(void) {
     int r4 = (*(u16 *)0x27ffc40 == 2);
     func_020427f8();

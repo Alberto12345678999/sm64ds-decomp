@@ -10,25 +10,25 @@
 #define MONE 0x3c0
 
 /* Draw the unit quad in the XZ plane (y = 0), with the texture repeated
- * 2^s by 2^t times (s and t come in as the tile counts). The particle draws pick it or func_0204c24c out of
+ * 2^tileS by 2^tileT times. The particle draws pick it or func_0204c24c out of
  * data_02099fb4 by the definition's polygon reference plane; pret's SPL names
  * it SPLUtil_DrawXZPlane (that revision adds an offset). */
-void func_0204c194(int s, int t) {
-    s = 0x1000 << s;
-    t = 0x1000 << t;
-    s = s << 8;
-    t = t << 8;
-    s = s >> 16;
-    t = t >> 16;
+void func_0204c194(int tileS, int tileT) {
+    tileS = 0x1000 << tileS;
+    tileT = 0x1000 << tileT;
+    tileS = tileS << 8;
+    tileT = tileT << 8;
+    tileS = tileS >> 16;
+    tileT = tileT >> 16;
 
     reg_G3_BEGIN_VTXS = 1; /* GX_BEGIN_QUADS */
     reg_G3_TEXCOORD = 0;
     reg_G3_VTX_10 = VTX10(MONE, 0, ONE);
-    reg_G3_TEXCOORD = (unsigned short)s;
+    reg_G3_TEXCOORD = (unsigned short)tileS;
     reg_G3_VTX_10 = VTX10(ONE, 0, ONE);
-    reg_G3_TEXCOORD = (unsigned short)s | ((unsigned short)t << 0x10);
+    reg_G3_TEXCOORD = (unsigned short)tileS | ((unsigned short)tileT << 0x10);
     reg_G3_VTX_10 = VTX10(ONE, 0, MONE);
-    reg_G3_TEXCOORD = (unsigned short)t << 0x10;
+    reg_G3_TEXCOORD = (unsigned short)tileT << 0x10;
     reg_G3_VTX_10 = VTX10(MONE, 0, MONE);
     reg_G3_END_VTXS = 0;
 }

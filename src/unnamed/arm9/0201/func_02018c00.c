@@ -37,9 +37,9 @@ int func_02018cbc(char *self, int flag, int shift, int a3, int a5, int a6, int a
 }
 
 /* The game's copy of NitroSDK FS_LoadOverlayInfo(info, target, id), which
-   LoadOverlay, UnloadOverlay and FS_LoadOverlay call: fill the 0x24-byte
-   FSOverlayInfo with overlay `index`'s 0x20-byte table entry, then the
-   target processor (0 ARM9, 1 ARM7) at +0x20. The entry comes from the
+   LoadOverlay, UnloadOverlay, func_02017e94 and FS_LoadOverlay call: fill
+   the 0x24-byte FSOverlayInfo with overlay `index`'s 0x20-byte table entry,
+   then the target processor (0 ARM9, 1 ARM7) at +0x20. The entry comes from the
    in-memory table if there is one, else from the card, with the table's ROM
    offset and length from the cartridge header copy at 0x27ffe00 (+0x50 ARM9,
    +0x58 ARM7). 0 if index is past the table. */
