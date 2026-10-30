@@ -8,11 +8,6 @@ extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int
 typedef char
     Ov007Work_selectedSlot_must_be_at_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* func_ov007_020add3c calls this while the item is in state 3. On that
  * state's first tick, item 1 sets its node's animation to follow the mode
  * states[2] is in. */

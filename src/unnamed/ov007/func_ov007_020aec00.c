@@ -2,11 +2,6 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* Totals each save file's stars from the boot-args table: every course's
  * stars plus level 0x1d's. */
 void func_ov007_020aec00(void) {

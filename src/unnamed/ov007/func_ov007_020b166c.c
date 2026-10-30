@@ -5,10 +5,6 @@ extern void func_ov007_020c1d8c(int i);
 extern void func_ov007_020b2764(int n);
 extern void RequestScreenFade(int r0, int r1, int r2);
 extern void func_ov007_020b16f0(void);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* On states[1]'s first tick: sets the screen quads' corner colours to their
  * end values and fades to func_ov007_020b16f0, with fade 1 / 2 when states[0]

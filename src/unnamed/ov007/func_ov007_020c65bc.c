@@ -11,10 +11,8 @@ extern void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, Vector
  * func_ov007_020c25fc takes it, the point gets `progress` as its progress
  * threshold and is unprojected through the camera, at the camera's
  * distance, into pathPoints. Returns 1 if the point was added, 0 if it was
- * refused and 2 once maxPoints is reached. t keeps the callers' char *
- * spelling; `p` is the typed view. */
-int func_ov007_020c65bc(char *t, int x, int y, int progress) {
-    Ov007Picker *p = (Ov007Picker *)t;
+ * refused and 2 once maxPoints is reached. */
+int func_ov007_020c65bc(Ov007Picker *p, int x, int y, int progress) {
     int ret = 0;
     Ov007StrokePath *path = p->path;
     if (p->totalPoints < p->maxPoints) {

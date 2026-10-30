@@ -31,6 +31,7 @@
  * named-init spellings, and every integer width for the counters; only the
  * shared cursor moves it. */
 #include "Ov007SpriteBank.h"
+#include "Ov007BinFile.h"
 
 /* List A: a cell's 4-byte header (its record count), then one 0x14-byte
  * record per OAM entry. The names are the OAM attribute fields each byte
@@ -53,14 +54,6 @@ typedef struct Ov007OamRecord {
     u16 tile;       /* 0x10: attr2 bits 0-9 */
     u16 pad_12;     /* 0x12 */
 } Ov007OamRecord;
-
-typedef struct Ctx {
-    u8 pad[0x44];
-    u32 *listA;
-    u8 pad2[8];
-    u32 *listB;
-    u8 pad3[0x30];
-} Ctx;
 
 /* List B: a 0xc-byte cell-animation header, then `frameCount` 0x18-byte
  * frames. Only the slots this function reads are named. */
@@ -86,7 +79,6 @@ typedef struct Ov007OamAttrs {
     u16 attr2;
 } Ov007OamAttrs;
 
-extern void func_ov007_020c9a2c(Ctx *ctx, int a);
 extern Ov007SpriteBank *func_ov007_020c12ac(int cellCount, int animCount);
 extern void *func_ov007_020c3df4(int a, u32 b);
 extern void func_ov007_020c13a4(Ov007CellAnim *anim, int frameCount, u16 offsetX, u16 offsetY);
@@ -100,16 +92,16 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
     // Every other caller of func_ov007_020c3df4 passes a literal 0; this named local is deliberate (one of the near-miss row's nine zero-plumbing shapes).
     u32 heap = 0;
     Ov007OamAttrs attrs;
-    Ctx ctx;
+    Ov007BinFile file;
     u32 j;
     u8 *p;
 
-    func_ov007_020c9a2c(&ctx, arg);
-    nA = *ctx.listA;
-    nB = *ctx.listB;
+    func_ov007_020c9a2c(&file, arg);
+    nA = *(u32 *)file.blockData[0];
+    nB = *(u32 *)file.blockData[3];
     s = func_ov007_020c12ac(nA, nB);
 
-    p = (u8 *)ctx.listA + 4;
+    p = (u8 *)file.blockData[0] + 4;
     for (i = 0; i < nA; i++) {
         Ov007Cell *cell;
         cnt = *p;
@@ -178,7 +170,7 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
         Ov007CellAnim *anim;
         u32 f;
         u32 frameCount;
-        p = (u8 *)ctx.listB + 4;
+        p = (u8 *)file.blockData[3] + 4;
         for (k = 0; k < nB; k++) {
             frameCount = ((Ov007CellAnimHeader *)p)->frameCount;
             anim = &s->anims[k];

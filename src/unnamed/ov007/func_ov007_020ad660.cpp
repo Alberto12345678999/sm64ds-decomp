@@ -12,7 +12,6 @@
 
 extern "C" {
 
-extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
 extern void func_ov007_020c92d0(void *a);
@@ -21,9 +20,6 @@ extern void func_ov007_020c02d8(void *a, int b, u16 c);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020c1d8c(int a);
 extern void func_ov007_020ada70(void);
-
-/* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
 
 /* Per-frame update of one BG layer slot (func_ov007_020aed98 runs all eight). */
 void func_ov007_020ad660(Ov007LayerSlot *slot) {

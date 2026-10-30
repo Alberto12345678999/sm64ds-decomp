@@ -6,14 +6,9 @@
 
 extern "C" {
 
-extern char* data_ov007_0210342c;
 extern void func_ov007_020c0128(Ov007Camera *cam);
 extern void func_ov007_020bffb8(Ov007Camera *cam);
 extern void func_ov007_020c0078(Ov007Camera *cam);
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Resets the second camera and frames it: distance 8, fovy 0x4da, scaleW
  * 0x12bb, then orbits the eye and rebuilds its view matrix. */

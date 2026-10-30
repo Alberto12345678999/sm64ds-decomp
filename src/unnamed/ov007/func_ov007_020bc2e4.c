@@ -1,6 +1,7 @@
 #include "Ov007Model.h"
 
-/* The BTP header word this file reads, as dExtAnmTexPat_c.h spells it. */
+/* The BTP header word this file reads, as dExtAnmTexPat_c.h spells it: a
+ * partial C view of a tag that header defines only for C++. */
 struct BTP_File {
     unsigned short numFrames; /* 0x00 */
 };

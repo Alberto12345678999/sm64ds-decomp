@@ -24,10 +24,6 @@ extern void func_ov007_020b0324(void);
 extern void func_ov007_020b44ec(struct Ov007ItemView *view);
 extern void func_ov007_020add3c(struct Ov007ItemNode *self);
 extern void func_ov007_020ad660(struct Ov007LayerSlot *slot);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020aed98(void)
 {

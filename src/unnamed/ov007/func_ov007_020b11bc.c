@@ -4,10 +4,6 @@
 extern int func_ov007_020b2614(int a, int b, int c);
 extern void func_ov007_020b131c(void);
 extern void func_ov007_020b12e8(void);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* On states[1]'s first tick: states[2] to state 0xe, func_ov007_020b2614(2,
  * 0, 8), item 9 as the chosen item and func_ov007_020b131c; on its second

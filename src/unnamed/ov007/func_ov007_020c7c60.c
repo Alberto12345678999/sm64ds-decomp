@@ -10,11 +10,8 @@ extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 
 /* func_ov007_020c7560's spring step that holds the link's rest offset: pulls
  * from - to towards dir with stiffness r6 (into each end's force, opposite
- * signs), then damps each end's velocity by r4. self keeps the char **
- * spelling of the definition; `link` is the typed view. */
-void func_ov007_020c7c60(char **self, int r6, int r4)
-{
-    Ov007Link *link = (Ov007Link *)self;
+ * signs), then damps each end's velocity by r4. */
+void func_ov007_020c7c60(Ov007Link *link, int r6, int r4) {
     struct Vector3 d2, scaled, d1;
     int m, s;
 

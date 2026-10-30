@@ -1,10 +1,8 @@
 #include "Ov007StrokePath.h"
 
 /* Clears a new stroke path (func_ov007_020c2c68 calls it on the 0x30-byte
- * allocation); segmentAngles and progressThresholds are left alone. The
- * parameter keeps the tree's char * spelling; `path` is the typed view. */
-void func_ov007_020c29b4(char *c) {
-    Ov007StrokePath *path = (Ov007StrokePath *)c;
+ * allocation); segmentAngles and progressThresholds are left alone. */
+void func_ov007_020c29b4(Ov007StrokePath *path) {
     path->representation = 0;
     path->flags = 0;
     path->pointCount = 0;

@@ -16,11 +16,6 @@ extern void func_ov007_020b7a44(void);
 extern int func_ov007_020b79e4(void);
 extern void func_ov007_020aec94(int a);
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* Main state 9: on its first tick rebuilds layer slot 6's screen, opens the
  * settings' dialog window (func_ov007_020b7d94) and starts
  * func_ov007_020b2614(2, 0, 8). Once func_ov007_020b79c8 reports it, a new
