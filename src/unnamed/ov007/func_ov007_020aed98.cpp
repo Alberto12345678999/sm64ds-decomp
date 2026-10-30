@@ -22,7 +22,7 @@ extern void func_ov007_020aef78(void);
 extern void func_ov007_020af390(void);
 extern void func_ov007_020b0324(void);
 extern void func_ov007_020b44ec(int a);
-extern void func_ov007_020add3c(int c);
+extern void func_ov007_020add3c(struct Ov007ItemNode *self);
 extern void func_ov007_020ad660(int a);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
@@ -78,7 +78,7 @@ void func_ov007_020aed98(void)
         func_ov007_020b44ec((int)WORK->itemViews[i]);
     }
     for (i = 0; i < 9; i++) {
-        func_ov007_020add3c((int)WORK->itemNodes[i]);
+        func_ov007_020add3c(WORK->itemNodes[i]);
     }
     for (i = 0; i < 8; i++) {
         func_ov007_020ad660((int)WORK->layerSlots[i]);

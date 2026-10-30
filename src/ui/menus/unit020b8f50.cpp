@@ -49,6 +49,7 @@
 #include "Ov007Touch.h"
 #include "Ov007Picker.h"
 #include "Ov007Camera.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
@@ -108,14 +109,6 @@ typedef struct Ov007Pad {
      * it is up (func_ov007_020c20b8) */
     u32 heldFrames[12];
 } Ov007Pad;
-
-typedef struct Ov007Item {
-    u16 id; /* 0x00 */
-    char pad_02[2];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    s32 posX;              /* 0x08: Q12 */
-    s32 posY;              /* 0x0c */
-} Ov007Item;
 
 typedef struct Ov007ItemView {
     Ov007Item *item;     /* 0x00 */

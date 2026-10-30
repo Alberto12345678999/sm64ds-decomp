@@ -1,18 +1,12 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007Item.h"
 extern void func_ov007_020b1390(int x);
 extern char* func_ov007_020b2cdc(void);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020ad660, only the slot this file reads. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-} Ov007Item;
 
 /* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
 typedef struct Ov007ItemView {

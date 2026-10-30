@@ -14,7 +14,7 @@ extern Ov007CharRecord *func_ov007_020c99d8(int x);
 extern Ov007Palette *func_ov007_020c9988(int x);
 extern void func_ov007_020b72fc(Ov007Display *d, int n);
 extern Ov007SpriteBank *func_ov007_020c9688(int arg);
-extern void *func_ov007_020ade58(int self);
+extern struct Ov007ItemNode *func_ov007_020ade58(int index);
 extern void func_ov007_020b72d8(Ov007Display *d, int n);
 extern Ov007BgLayer *func_ov007_020c95fc(void *a, int b, int c);
 extern int func_ov007_020adc08(int type, Ov007BgLayer *layer);

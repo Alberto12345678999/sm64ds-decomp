@@ -57,49 +57,9 @@
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
+#include "Ov007Item.h"
 
 #pragma opt_loop_invariants off
-
-/* The 10-byte layout row func_ov007_020aea6c's item points at; names as in
- * func_ov007_020b5bf0. */
-typedef struct Ov007ItemLayout {
-    u16 kind;  /* 0x0: func_ov007_020b5bf0 switches on it; func_ov007_020b44ec skips 0xa */
-    s16 homeX; /* 0x2: func_ov007_020ae810 seeds the item position from home */
-    s16 homeY; /* 0x4 */
-    char pad_06[4];
-} Ov007ItemLayout;
-
-typedef char Ov007ItemLayout_size_must_be_0xa[sizeof(Ov007ItemLayout) == 0xa ? 1 : -1];
-
-/* The 0x14-byte touch rectangles func_ov007_020b4c04 points hitBox at
- * (data_ov007_020d78f8, data_ov007_020d76c0, ...): pixel offsets from the
- * sprite's screen position. */
-typedef struct Ov007HitBox {
-    char pad_00[4];
-    s32 minX; /* 0x04 */
-    s32 minY; /* 0x08 */
-    s32 maxX; /* 0x0c */
-    s32 maxY; /* 0x10 */
-} Ov007HitBox;
-
-typedef char Ov007HitBox_size_must_be_0x14[sizeof(Ov007HitBox) == 0x14 ? 1 : -1];
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; only the slots this
- * unit touches. */
-typedef struct Ov007Item {
-    u16 id; /* 0x00: func_ov007_020b4c04's index */
-    char pad_02[2];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1); ticked by func_ov007_020ae834 */
-    s32 posX;              /* 0x08: Q12; func_ov007_020ae810 seeds it from the layout */
-    s32 posY;              /* 0x0c */
-    s32 fade;              /* 0x10: Q12; selectable once fully faded in (>= 0x1000) */
-    char pad_14[0xc];
-    s32 ready;               /* 0x20: func_ov007_020ae834 sets it once the state settles */
-    Ov007ItemLayout *layout; /* 0x24 */
-    Ov007HitBox *hitBox;     /* 0x28 */
-} Ov007Item;
-
-typedef char Ov007Item_size_must_be_0x2c[sizeof(Ov007Item) == 0x2c ? 1 : -1];
 
 /* The 0x1c-byte record func_ov007_020b4c04 returns (freed by
  * func_ov007_020b4bd4, stored in Ov007Work's itemViews by
@@ -175,9 +135,9 @@ extern unsigned char data_ov007_020d7610[];
 
 extern "C" {
 
-extern void func_ov007_020ae834(char *item);
-extern char *func_ov007_020aea6c(int id, void *layout, void *hitBox);
-extern int func_ov007_020aea4c(char *item);
+extern void func_ov007_020ae834(Ov007Item *item);
+extern Ov007Item *func_ov007_020aea6c(int id, Ov007ItemLayout *layout, Ov007HitBox *hitBox);
+extern int func_ov007_020aea4c(Ov007Item *item);
 extern void func_ov007_020aec94(int choice);
 extern int func_ov007_020b58e4(char *view);
 extern void func_ov007_020b5bf0(Ov007ItemView *view);
@@ -488,8 +448,7 @@ void *func_ov007_020b4c04(int arg0) {
 
     view = (Ov007ItemView *)func_ov007_020c3df4(0, 0x1c);
     r5 = *(s32 *)((char *)data_ov007_020d77d8 + arg0 * 0xc);
-    view->item = (Ov007Item *)func_ov007_020aea6c(arg0, &data_ov007_020d76e8[arg0],
-                                                  &data_ov007_020d78f8[r5]);
+    view->item = func_ov007_020aea6c(arg0, &data_ov007_020d76e8[arg0], &data_ov007_020d78f8[r5]);
     view->sprite = (Ov007Sprite *)func_ov007_020c44e4(data_ov007_020d77e0[view->item->id * 0xc]);
     sprite = view->sprite;
     if (arg0 == 0x15) {
@@ -592,7 +551,7 @@ void *func_ov007_020b4c04(int arg0) {
 // @symbol func_ov007_020b4bd4
 void func_ov007_020b4bd4(Ov007ItemView *view) {
     func_ov007_020c9080((int)view->slideTween);
-    func_ov007_020aea4c((char *)view->item);
+    func_ov007_020aea4c(view->item);
     func_ov007_020c44c4((char *)view->sprite);
     func_ov007_020c3d1c(view);
 }
@@ -846,7 +805,7 @@ void func_ov007_020b44ec(void *self) {
     short r = (short)func_ov007_020b58e4((char *)self);
     menu = o->state;
     menu->requestedState = r;
-    func_ov007_020ae834((char *)o);
+    func_ov007_020ae834(o);
     menu = o->state;
     switch (menu->currentState) {
     case 0:

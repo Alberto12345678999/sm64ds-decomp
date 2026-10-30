@@ -1,26 +1,21 @@
 #include "types.h"
 #include "Ov007Work.h"
 #include "Ov007Display.h"
+#include "Ov007Item.h"
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-extern u8 data_ov007_020ccbc4[];
+extern Ov007ItemLayout data_ov007_020ccbc4[];
 extern u8 data_ov007_020ccb7d[];
 extern u8 data_ov007_020ccb7c[];
 
 extern int func_ov007_020c3df4(int a, int b);
-extern char *func_ov007_020aea6c(int a, void *b, void *c);
+extern Ov007Item *func_ov007_020aea6c(int id, Ov007ItemLayout *layout, Ov007HitBox *hitBox);
 extern Ov007OamNode *func_ov007_020c11ac(int n);
 extern void func_ov007_020c10b0(Ov007OamNode *parent, Ov007OamNode *child);
 extern void func_ov007_020c0af4(Ov007OamList *list, Ov007OamNode *node);
 extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020ae070, only the slot this file reads. */
-typedef struct Ov007Item {
-    u16 id; /* 0x00: aea6c's first argument */
-} Ov007Item;
 
 /* data_ov007_020ccb7c: one 8-byte row per item. data_ov007_020ccb7d is
  * the same table's animCount byte, read by its own symbol. */
@@ -33,17 +28,10 @@ typedef struct Ov007NodeSprites {
 
 typedef char Ov007NodeSprites_size_must_be_0x8[sizeof(Ov007NodeSprites) == 0x8 ? 1 : -1];
 
-/* The 8-byte record this function returns (names as in
- * func_ov007_020ae558); func_ov007_020b6d40 keeps nine of them in the
- * manager's itemNodes. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item;    /* 0x00: func_ov007_020aea6c */
-    Ov007OamNode *node; /* 0x04: func_ov007_020c11ac */
-} Ov007ItemNode;
-
-
-void *func_ov007_020ade58(int self)
-{
+/* Builds item node `index` (func_ov007_020b6d40 builds nine): the item, with
+ * its layout row from data_ov007_020ccbc4 and no hit box, and its OAM node,
+ * linked into the display's list for that item with its animations. */
+Ov007ItemNode *func_ov007_020ade58(int index) {
     Ov007ItemNode *s = (Ov007ItemNode *)func_ov007_020c3df4(0, 8);
     Ov007Display *r6 = WORK->display;
     Ov007OamNode *r4;
@@ -51,8 +39,8 @@ void *func_ov007_020ade58(int self)
     int sb;
     int cnt;
 
-    s->item = (Ov007Item *)func_ov007_020aea6c(self, &data_ov007_020ccbc4[self * 0xa], 0);
-    r4 = func_ov007_020c11ac(data_ov007_020ccb7d[self * 8]);
+    s->item = func_ov007_020aea6c(index, &data_ov007_020ccbc4[index], 0);
+    r4 = func_ov007_020c11ac(data_ov007_020ccb7d[index * 8]);
     s->node = r4;
 
     switch (s->item->id) {

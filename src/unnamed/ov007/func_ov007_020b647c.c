@@ -1,12 +1,6 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
-
-/* func_ov007_020aea6c's 0x2c-byte item; names as in unit020b413c, only the
- * slot this file reads. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04 */
-} Ov007Item;
+#include "Ov007Item.h"
 
 /* func_ov007_020b4c04's 0x1c-byte item view; names as in unit020b413c. */
 typedef struct Ov007ItemView {
