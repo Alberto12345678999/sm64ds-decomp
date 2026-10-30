@@ -10,7 +10,7 @@ extern void PXI_Init(void);
  * func_02059e04 OSi_CommonCallback. */
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
-extern void func_02059e04(void);
+extern void func_02059e04(int tag, unsigned int data);
 
 extern u16 data_020a6458; /* OSi_IsInitReset */
 

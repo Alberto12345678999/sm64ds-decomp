@@ -1,5 +1,6 @@
 //cpp
 #include "Heap.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 
@@ -10,9 +11,9 @@ extern void OS_SetUserExceptionHandler(OSExceptionHandler handler, void *arg);
 extern void func_0201a054(void);
 extern void func_020197b8(void);
 
-/* The game's exception handler: it takes the context and ignores arg. */
+/* The game's exception handler: it takes the context and ignores arg, which
+ * main passes as the launcher thread (the thread main runs on). */
 extern void func_0201a03c(int context);
-extern int data_020a621c;
 extern mHeap::Heap_t *data_020a0e9c;
 
 void main(void) {

@@ -16,7 +16,9 @@ extern void func_02040724(void);
 extern void func_0201a4d0(void);
 extern unsigned char data_0209d4e4;
 extern char data_02086214[];
+/* local extern: the thread is untyped storage here (void *) */
 extern void OS_CreateThread(void *a, void *fn, void *c, void *d, unsigned int e, unsigned int f);
+/* local extern: as above */
 extern void OS_WakeupThreadDirect(void *a);
 
 void func_0201a028(void) {

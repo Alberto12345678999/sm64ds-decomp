@@ -1,53 +1,63 @@
-typedef struct {
-    int f0;
-    int f4;
-    int f8;
-    short f_c;
-    short _e;
-    short f10;
-    unsigned short f12;
-    int f14;
-    int f18;
-} Obj;
+/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
+ * func_ov007_020c9268, which resets it. */
+typedef struct Ov007AnimPlayer {
+    int state;                 /* 0x00: 0 playing, 1 held, 2 stopped */
+    int loopMode;              /* 0x04: 0 one-shot, 1 wrap, 2 ping-pong */
+    int flags;                 /* 0x08: bit 0 shows the start frame once */
+    short anim;                /* 0x0c: -1 none */
+    short prevAnim;            /* 0x0e */
+    short frame;               /* 0x10 */
+    unsigned short frameCount; /* 0x12 */
+    int framePos;              /* 0x14: Q12 */
+    int speed;                 /* 0x18: Q12 frames per tick */
+} Ov007AnimPlayer;
 
-void func_ov007_020c9110(Obj *this) {
-    if (this->f_c == -1) return;
+/* Advances a player one tick. While playing, speed moves framePos; past
+ * either end loopMode decides: one-shot stops, wrap jumps to the other end,
+ * ping-pong negates speed and clamps. frame always follows framePos. */
+void func_ov007_020c9110(Ov007AnimPlayer *p) {
+    if (p->anim == -1)
+        return;
     {
-        int f8 = this->f8;
-        if ((f8 & 1) == 0) {
-            int thresh = (this->f12 - 1) << 12;
-            int flag = 0;
-            switch (this->f0) {
-            case 0: {
-                int *p = (int *)(((long long)(int)&this->f14) & -1LL);
-                *p += this->f18;
-                if (this->f14 > thresh) flag = 2;
-                else if (this->f14 < 0) flag = 1;
+        int flags = p->flags;
+        if ((flags & 1) == 0) {
+            int last = (p->frameCount - 1) << 12;
+            int hit = 0; /* 1 ran below 0, 2 ran past the last frame */
+            switch (p->state) {
+            case 0:
+                p->framePos += p->speed;
+                if (p->framePos > last)
+                    hit = 2;
+                else if (p->framePos < 0)
+                    hit = 1;
+                break;
+            case 1:
+                break;
+            case 2:
                 break;
             }
-            case 1: break;
-            case 2: break;
-            }
-            if (flag != 0) {
-                switch (this->f4) {
+            if (hit != 0) {
+                switch (p->loopMode) {
                 case 0:
-                    this->f0 = 2;
+                    p->state = 2;
                     break;
                 case 1:
-                    if (flag == 1) flag = 2; else flag = 1;
+                    if (hit == 1)
+                        hit = 2;
+                    else
+                        hit = 1;
                     break;
-                case 2: {
-                    int *p = (int *)(((long long)(int)&this->f18) & -1LL);
-                    *p *= -1;
+                case 2:
+                    p->speed *= -1;
                     break;
                 }
-                }
-                if (flag == 1) thresh = 0;
-                this->f14 = thresh;
+                if (hit == 1)
+                    last = 0;
+                p->framePos = last;
             }
         } else {
-            this->f8 = f8 & ~1;
+            p->flags = flags & ~1;
         }
     }
-    this->f10 = this->f14 >> 12;
+    p->frame = p->framePos >> 12;
 }

@@ -1,26 +1,26 @@
-typedef struct Node87 {
-    char pad4[4];
-    int field_4;
-    int field_8;
-} Node87;
+#include "nitro/os/thread.h"
 
-typedef struct Obj87 {
-    char pad7c[0x7c];
-    int field_7c;
-} Obj87;
+/* The Nitro SDK's OSMutex, this SDK's layout (see func_02058960.c). */
+struct OSMutex {
+    u16 queue;            /* 0x00 */
+    u16 pad02;            /* 0x02 */
+    OSThread *thread;     /* 0x04 -- the owner */
+    s32 count;            /* 0x08 */
+    struct OSMutex *prev; /* 0x0c */
+    struct OSMutex *next; /* 0x10 */
+};
 
-extern Node87 *func_02058960(Obj87 *o);
-extern void OS_WakeupThread(void);
+/* local extern: no header declares os_mutex.c's functions yet. */
+extern struct OSMutex *func_02058960(OSThread *thread);
 
-void func_02058a44(Obj87 *o)
-{
-    Node87 *n;
-    if (o->field_7c == 0)
-        return;
-    do {
-        n = func_02058960(o);
-        n->field_8 = 0;
-        n->field_4 = 0;
-        OS_WakeupThread();
-    } while (o->field_7c != 0);
+/* The Nitro SDK's OSi_UnlockAllMutex: OS_ExitThread releases every mutex
+ * the exiting thread still holds and wakes its waiters. */
+void func_02058a44(OSThread *thread) {
+    struct OSMutex *mutex;
+    while (thread->mutexQueue.head != 0) {
+        mutex = func_02058960(thread);
+        mutex->count = 0;
+        mutex->thread = 0;
+        OS_WakeupThread(&mutex->queue);
+    }
 }

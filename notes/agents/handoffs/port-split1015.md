@@ -17,12 +17,12 @@ Extract the ordinary C helper from IRQ3 and the entire ordinary C tail from CP15
 
 | Symbol | ARM9 range | Production source |
 | --- | --- | --- |
-| `func_02058c84` | `0x02058c84..0x02058cd0` | `src/OS_Init.cpp` |
-| `func_02058cd0` | `0x02058cd0..0x02058d58` | `src/engine/os/OS_Arena.cpp` |
-| `func_02058d58` | `0x02058d58..0x02058d6c` | `src/engine/os/OS_Arena.cpp` |
-| `func_02058d6c` | `0x02058d6c..0x02058d80` | `src/engine/os/OS_Arena.cpp` |
-| `OS_GetInitArenaLo` | `0x02058d80..0x02058df4` | `src/engine/os/OS_Arena.cpp` |
-| `func_02059cb4` | `0x02059cb4..0x02059d08` | `src/OS_InitVAlarm.cpp` |
+| `func_02058c84` | `0x02058c84..0x02058cd0` | `src/unnamed/arm9/0205/func_02058c84.cpp` |
+| `func_02058cd0` | `0x02058cd0..0x02058d58` | `src/unnamed/arm9/0205/func_02058cd0.cpp` |
+| `func_02058d58` | `0x02058d58..0x02058d6c` | `src/unnamed/arm9/0205/func_02058cd0.cpp` |
+| `func_02058d6c` | `0x02058d6c..0x02058d80` | `src/unnamed/arm9/0205/func_02058cd0.cpp` |
+| `OS_GetInitArenaLo` | `0x02058d80..0x02058df4` | `src/OS_GetInitArenaLo.cpp` |
+| `func_02059cb4` | `0x02059cb4..0x02059d08` | `src/unnamed/arm9/0205/func_02059cb4.cpp` |
 
 The IRQ initializer includes `IRQ.h` and calls `IRQ::DisableIRQs(4)`, replacing a redundant local mangled declaration with the existing interface. Other function bodies and signatures are preserved. Remaining assembly, absolute arena addresses, address-based names and the startup helper's local declarations are unchanged. No shared headers, classes, layouts, lifecycle, vtables or owned data change. Function-address attribution stays unchanged; the existing CP15 path/symbol attribution overrides all refer to the retained assembly functions.
 

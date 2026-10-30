@@ -9,11 +9,11 @@ extern void PXI_Init(void);
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void func_0206a6d0(void);
-extern void func_0206a694(void);
-extern void func_0206a634(void);
+extern void func_0206a694(int tag, int data);
+extern void func_0206a634(int tag, int data);
 
-extern int data_020a9de8; /* the init flag */
-extern int data_020a9dec;
+extern int data_020a9de8;         /* the init flag */
+extern int (*data_020a9dec)(int); /* the hook func_0206a634 (func_0206a600.c) calls */
 
 void CTRDG_Init(void) {
     if (data_020a9de8)

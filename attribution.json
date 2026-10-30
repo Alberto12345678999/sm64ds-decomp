@@ -8230,7 +8230,7 @@
     "src/runtime/actor/d_actor.cpp#_ZN8Vector3sD1Ev": "andrewboudreau",
     "src/runtime/actor/d_actor.cpp#_ZN8dActor_cC2Ev": "tangosdev",
 
-    "src/engine/gx/GX.cpp#_ZN2GX10LoadBGPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN2GX10LoadBGPlttEPKvjj": "tangosdev",
     "src/engine/gx/GX.cpp#_ZN2GX14EndLoadTexPlttEv": "tangosdev",
     "src/engine/gx/GX.cpp#_ZN2GX11LoadTexPlttEPKvjj": "tangosdev",
     "src/engine/gx/GX.cpp#_ZN2GX16BeginLoadTexPlttEv": "tangosdev",

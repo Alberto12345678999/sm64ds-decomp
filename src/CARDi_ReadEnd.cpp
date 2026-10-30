@@ -1,13 +1,9 @@
 //cpp
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
-
-struct Obj {
-    char pad[0x64];
-    u32 unk64;
-};
 
 typedef struct {
     u32 *f0;            /* 0x00 */
@@ -17,15 +13,12 @@ typedef struct {
     char pad30[4];      /* 0x30 */
     u32 flags;          /* 0x34 */
     char pad38[4];      /* 0x38 */
-    struct Obj obj;     /* 0x3c */
-    char pada4[0x30];   /* 0xa4 */
+    OSThread thread;    /* 0x3c -- the card task thread */
+    char padd0[4];      /* 0xd0 */
     u16 fd4;            /* 0xd4 */
 } G;
 
 extern G cardi_common;
-
-void OS_WakeupThread(u16 *self);
-void OS_WakeupThreadDirect(struct Obj *self);
 
 void CARDi_ReadEnd(void) {
     int gi = (int)&cardi_common;
@@ -45,7 +38,7 @@ void CARDi_ReadEnd(void) {
     }
     OS_WakeupThread(&g->fd4);
     if (g->flags & 0x10) {
-        OS_WakeupThreadDirect(&g->obj);
+        OS_WakeupThreadDirect(&g->thread);
     }
     IRQ::Restore(s);
     if (cb) {

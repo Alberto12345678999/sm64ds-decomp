@@ -1,3 +1,31 @@
+/* The 0x48-byte 2D display record func_ov007_020b7594 builds; names as
+ * there. */
+typedef struct Ov007Display {
+    void *oamListMain;   /* 0x00 */
+    void *oamListSub;    /* 0x04 */
+    void *bgListMain;    /* 0x08 */
+    void *bgListSub;     /* 0x0c */
+    void *oamMain;       /* 0x10 */
+    void *oamSub;        /* 0x14 */
+    int transitionCount; /* 0x18 */
+    void **transitions;  /* 0x1c */
+    int characterCount;  /* 0x20 */
+    void **characters;   /* 0x24 */
+    int paletteCount;    /* 0x28 */
+    void **palettes;     /* 0x2c */
+    int bgLayerCount;    /* 0x30 */
+    void **bgLayers;     /* 0x34 */
+    int spriteBankCount; /* 0x38 */
+    void **spriteBanks;  /* 0x3c */
+    int oamNodeCount;    /* 0x40 */
+    void **oamNodes;     /* 0x44 */
+} Ov007Display;
+
+typedef char Ov007Display_size_must_be_0x48[sizeof(Ov007Display) == 0x48 ? 1 : -1];
+
+/* The menu's free hook and the per-record frees; the long-branch veneers
+ * (func_ov007_020c105c, 020c05f8, 020c8b04, 020c3544, 020c338c, 020c0a9c)
+ * all tail-call func_ov007_020c3d1c. */
 extern void func_ov007_020c3d1c(void *p);
 extern void func_ov007_020c105c(void *p);
 extern void func_ov007_020c05f8(void *p);
@@ -8,59 +36,65 @@ extern void func_ov007_020c121c(void *p);
 extern void func_ov007_020c1180(void *p);
 extern void func_ov007_020c0a9c(void *p);
 
-void func_ov007_020b73b4(int *self)
-{
+/* Frees the display record and everything its tables hold. */
+void func_ov007_020b73b4(Ov007Display *d) {
     void **arr;
     int i;
 
-    func_ov007_020c3d1c((void *)self[4]);
-    func_ov007_020c3d1c((void *)self[5]);
-    func_ov007_020c105c((void *)self[0]);
-    func_ov007_020c105c((void *)self[1]);
-    func_ov007_020c05f8((void *)self[2]);
-    func_ov007_020c05f8((void *)self[3]);
+    func_ov007_020c3d1c(d->oamMain);
+    func_ov007_020c3d1c(d->oamSub);
+    func_ov007_020c105c(d->oamListMain);
+    func_ov007_020c105c(d->oamListSub);
+    func_ov007_020c05f8(d->bgListMain);
+    func_ov007_020c05f8(d->bgListSub);
 
-    if (self[6] > 0) {
-        arr = (void **)self[7];
-        for (i = 0; i < self[6]; i++)
-            if (arr[i]) func_ov007_020c8b04(arr[i]);
+    if (d->transitionCount > 0) {
+        arr = d->transitions;
+        for (i = 0; i < d->transitionCount; i++)
+            if (arr[i])
+                func_ov007_020c8b04(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[8] > 0) {
-        arr = (void **)self[9];
-        for (i = 0; i < self[8]; i++)
-            if (arr[i]) func_ov007_020c3544(arr[i]);
+    if (d->characterCount > 0) {
+        arr = d->characters;
+        for (i = 0; i < d->characterCount; i++)
+            if (arr[i])
+                func_ov007_020c3544(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[10] > 0) {
-        arr = (void **)self[11];
-        for (i = 0; i < self[10]; i++)
-            if (arr[i]) func_ov007_020c338c(arr[i]);
+    if (d->paletteCount > 0) {
+        arr = d->palettes;
+        for (i = 0; i < d->paletteCount; i++)
+            if (arr[i])
+                func_ov007_020c338c(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[14] > 0) {
-        arr = (void **)self[15];
-        for (i = 0; i < self[14]; i++)
-            if (arr[i]) func_ov007_020c121c(arr[i]);
+    if (d->spriteBankCount > 0) {
+        arr = d->spriteBanks;
+        for (i = 0; i < d->spriteBankCount; i++)
+            if (arr[i])
+                func_ov007_020c121c(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[16] > 0) {
-        arr = (void **)self[17];
-        for (i = 0; i < self[16]; i++)
-            if (arr[i]) func_ov007_020c1180(arr[i]);
+    if (d->oamNodeCount > 0) {
+        arr = d->oamNodes;
+        for (i = 0; i < d->oamNodeCount; i++)
+            if (arr[i])
+                func_ov007_020c1180(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[12] > 0) {
-        arr = (void **)self[13];
-        for (i = 0; i < self[12]; i++)
-            if (arr[i]) func_ov007_020c0a9c(arr[i]);
+    if (d->bgLayerCount > 0) {
+        arr = d->bgLayers;
+        for (i = 0; i < d->bgLayerCount; i++)
+            if (arr[i])
+                func_ov007_020c0a9c(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    func_ov007_020c3d1c((void *)self);
+    func_ov007_020c3d1c(d);
 }

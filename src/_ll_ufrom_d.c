@@ -1,8 +1,11 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ff859c at 0x01ff859c (ITCM) -- double to 64-bit integer conversion, sitting
-// directly between _dadd (0x01ff8000) and _dmul (0x01ff8708) in the soft-float runtime
-// block. Assembly in the original.
+// _ll_ufrom_d at 0x01ff859c (ITCM), also known as func_01ff859c -- double to unsigned
+// 64-bit integer conversion. Toolchain runtime, shipped as assembly; there is no C source
+// for it in the game. The name is the one mwccarm 2004/b56 itself emits a `bl` to for
+// `(unsigned long long)d` (checked by compiling that expression). The unsigned reading is
+// in the body: the 0x43e bias (0x3ff + 63) puts the hidden bit at bit 63, a negative input
+// returns 0, and an overflow returns all ones.
 //
 // 0x43e is 0x3ff + 63: the biased exponent of a double whose value is exactly 2^63, so
 // `0x43e - (bits >> 20)` is the right shift that lands the 53-bit mantissa in a 64-bit
@@ -17,7 +20,7 @@
 extern int func_0207322c(void);
 extern void func_0206dd7c(void);
 
-asm long long func_01ff859c(double x)
+asm long long _ll_ufrom_d(double x)
 {
     tst r1, #0x80000000
     bne _L0f0

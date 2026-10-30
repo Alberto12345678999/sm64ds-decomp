@@ -14,6 +14,7 @@
  * per-function defer_codegen off. */
 #include "types.h"
 #include "cstd.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 // HAND-ASM PRIMITIVE: `swp` atomic swap has no C equivalent under mwccarm, so asm is the source.
@@ -47,7 +48,6 @@ int func_0206e06c(S6e06c *p);
 extern void func_02071784(void);
 
 extern int data_020aa020;
-extern int data_020a6134[];
 extern int data_020a9fd8;
 extern int data_020a9ffc;
 extern volatile int data_020a9ed0;
@@ -57,13 +57,13 @@ extern void (*data_020a9ec8)(void);
 int func_0206dac4(int a)
 {
     if (func_020589d4(&data_020aa020) == 0) {
-        data_020a9fd8 = *(int *)((char *)data_020a6134[2] + 0x6c);
+        data_020a9fd8 = data_020a6134.current->id;
         data_020a9ffc = 1;
-    } else if (data_020a9fd8 == *(int *)((char *)data_020a6134[2] + 0x6c)) {
+    } else if (data_020a9fd8 == data_020a6134.current->id) {
         data_020a9ffc++;
     } else {
         func_02058b08(&data_020aa020);
-        data_020a9fd8 = *(int *)((char *)data_020a6134[2] + 0x6c);
+        data_020a9fd8 = data_020a6134.current->id;
         data_020a9ffc = 1;
     }
 

@@ -1,9 +1,10 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ff9378 at 0x01ff9378 (ITCM) -- single-precision float add. The compiler emits a
-// call to this for every `+` on a float; toolchain runtime, shipped as assembly, no C
-// source for it anywhere in the game. No zero-size alias names this address, so it is
-// filed under its address, matching the arm9 twenty's convention.
+// _fadd at 0x01ff9378 (ITCM), also known as func_01ff9378 -- single-precision float add.
+// Toolchain runtime, shipped as assembly; there is no C source for it in the game. The name
+// is the one mwccarm 2004/b56 itself emits a `bl` to for `float + float` (checked by
+// compiling that expression). It agrees with the `_fadd_core` label at this function's
+// +0x14 that func_01ffa594 (_fsub) branches to.
 //
 // Operands arrive as two 32-bit floats in r0 and r1 (not a register pair for one value --
 // the exponent sits at bit 23, the 8-bit IEEE-754 single field, not the bit-52 double
@@ -32,7 +33,7 @@ extern void func_0206ddcc(void);
 extern void func_0206dd30(void);
 extern void _fsub_core(void);
 
-asm float func_01ff9378(float a, float b)
+asm float _fadd(float a, float b)
 {
     mov r2, #1
     stmdb sp!, {r0, r1, r2}

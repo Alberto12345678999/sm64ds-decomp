@@ -1,9 +1,10 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ffa594 at 0x01ffa594 (ITCM) -- single-precision float subtract. The compiler
-// emits a call to this for every `-` on a float; toolchain runtime, shipped as assembly,
-// no C source for it anywhere in the game. No zero-size alias names this address, so it
-// is filed under its address, matching the arm9 twenty's convention.
+// _fsub at 0x01ffa594 (ITCM), also known as func_01ffa594 -- single-precision float
+// subtract. Toolchain runtime, shipped as assembly; there is no C source for it in the
+// game. The name is the one mwccarm 2004/b56 itself emits a `bl` to for `float - float`
+// (checked by compiling that expression). It agrees with the `_fsub_core` label at this
+// function's +0x14 that func_01ff9378 (_fadd) branches to.
 //
 // This is func_01ff9378's (float-add) mirror image, the same relationship _dadd and
 // func_01ff8e10 (double add/subtract) have four rows up: operands arrive as two 32-bit
@@ -28,7 +29,7 @@ extern void func_0206ddcc(void);
 extern void func_0206dd30(void);
 extern void _fadd_core(void);
 
-asm float func_01ffa594(float a, float b)
+asm float _fsub(float a, float b)
 {
     mov r2, #2
     stmdb sp!, {r0, r1, r2}

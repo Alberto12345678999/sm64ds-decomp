@@ -7,8 +7,6 @@
 
 #define PXI_FIFO_TAG_FS 0xb
 
-extern void OS_WakeupThreadDirect(void *thread);
-
 void CARDi_OnFifoRecv(int tag, u32 data, int err)
 {
     if (tag == PXI_FIFO_TAG_FS && err) {

@@ -5,17 +5,8 @@
 
 extern "C" {
 
-/* OSi_ThreadInfo; current is the running thread. */
-struct OSThreadInfo {
-    char pad[8];
-    void *current;
-};
+extern char rom_stat; /* rom_stat */
 
-extern struct CARDiCommon cardi_common; /* cardi_common */
-extern char rom_stat;               /* rom_stat */
-extern struct OSThreadInfo data_020a6134;
-
-void OS_SleepThread(void *p);
 void func_02059f58(int a);  /* MI_StopDma */
 int CARDi_TryReadCardDma(char *p); /* CARDi_TryReadCardDma */
 void CARD_WaitRomAsync(void);

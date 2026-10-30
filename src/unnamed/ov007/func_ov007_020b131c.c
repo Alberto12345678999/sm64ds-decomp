@@ -1,7 +1,10 @@
 #include "Ov007Work.h"
 
 extern int func_ov007_020c0638(void* p, int a, int b, int d);
-extern int* data_ov007_0210342c[];
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* The 0x38-byte BG layer record func_ov007_020c0aa8 allocates; only the
  * slots this file clears. func_ov007_020c076c writes (scroll + fineScroll)
@@ -27,8 +30,8 @@ typedef char Ov007BgLayer_size_must_be_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -
 
 /* Resets the scroll of layer slots 6 and 1 and rebuilds both screens from
  * their sources at a y offset of -0xc0 pixels (func_ov007_020c0638). */
-void func_ov007_020b131c(void){
-    Ov007Work *work = (Ov007Work *)data_ov007_0210342c[0];
+void func_ov007_020b131c(void) {
+    Ov007Work *work = WORK;
     Ov007BgLayer *a = work->layerSlots[6]->layer;
     Ov007BgLayer *b = work->layerSlots[1]->layer;
     a->scrollX = 0;

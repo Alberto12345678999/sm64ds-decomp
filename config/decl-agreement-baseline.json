@@ -205,7 +205,7 @@
       "src/game/actors/d_a_yurei_mucho.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0200/func_02005000.c": [
+      "src/unnamed/arm9/0200/func_02005000.cpp": [
         "param:#3 short",
         "param:#4 short",
         "param:#5 short"
@@ -465,7 +465,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffde98.c": [
+      "src/MI_SendGXCommand.c": [
         "param:#2 void *",
         "param:#3 void *"
       ],
@@ -1644,9 +1644,6 @@
       ],
       "src/unnamed/ov007/func_ov007_020c0638.c": [
         "param:#1 char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c940c.c": [
-        "param:#1 int"
       ]
     },
     "MultiCopy_Int": {
@@ -1804,13 +1801,13 @@
       ]
     },
     "OSReadROMArea": {
-      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
+      "src/OSi_ReloadRomData.cpp": [
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ]
     },
     "OS_SleepThread": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
@@ -1821,17 +1818,11 @@
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
       ],
-      "src/unnamed/arm9/0205/func_02058a44.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "param:#1 char *"
+      "src/IRQ2.cpp": [
+        "param:#1 int *"
       ],
       "src/CARDi_EndTask.cpp": [
         "param:#1 char *"
-      ],
-      "src/IRQ2.cpp": [
-        "param:#1 int *"
       ]
     },
     "ObjectMessageIDToActualMessageID": {
@@ -2846,10 +2837,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c8010.cpp": [
-        "param:#1 int",
-        "param:#2 int"
       ],
       "src/game/stages/d_s_entry_entry.cpp": [
         "param:#1 const EntryMeshVec *",
@@ -5563,26 +5550,23 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#2 void (*)(void)"
       ],
-      "src/CARDi_TryReadCardDma.cpp": [
+      "src/IRQ2.cpp": [
         "param:#2 void (*)(void)"
       ],
-      "src/IRQ2.cpp": [
+      "src/CARDi_TryReadCardDma.cpp": [
         "param:#2 void (*)(void)"
       ]
     },
     "_ZN3IRQ15ClearInterruptsEj": {
-      "src/CARDi_TryReadCardDma.cpp": [
+      "src/CARDi_OnReadCard.cpp": [
         "return:void"
       ],
-      "src/CARDi_OnReadCard.cpp": [
+      "src/CARDi_TryReadCardDma.cpp": [
         "return:void"
       ]
     },
     "_ZN3IRQ7DisableEv": {
       "src/Crash.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
@@ -5601,9 +5585,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:int"
-      ],
-      "src/CARDi_TryReadCardDma.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02061c88.cpp": [
@@ -5625,6 +5606,9 @@
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
+        "return:int"
+      ],
+      "src/CARDi_TryReadCardDma.cpp": [
         "return:int"
       ]
     },
@@ -5676,15 +5660,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02058894.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_020589d4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058b08.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
@@ -5748,19 +5723,6 @@
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:void"
       ],
-      "src/CARDi_TaskThread.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02060484.cpp": [
-        "return:void"
-      ],
-      "src/CARDi_EndTask.cpp": [
-        "return:void"
-      ],
-      "src/CARDi_TryReadCardDma.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/unnamed/arm9/0206/func_02061c88.cpp": [
         "param:#1 int",
         "return:void"
@@ -5813,6 +5775,16 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/CARDi_EndTask.cpp": [
+        "return:void"
+      ],
+      "src/CARDi_TaskThread.cpp": [
+        "return:void"
+      ],
+      "src/CARDi_TryReadCardDma.cpp": [
         "param:#1 int",
         "return:void"
       ]
@@ -9120,7 +9092,7 @@
       ]
     },
     "data_020874cc": {
-      "src/unnamed/arm9/0200/func_02005060.c": [
+      "src/unnamed/arm9/0200/func_02005060.cpp": [
         "return:int []"
       ]
     },
@@ -10034,11 +10006,6 @@
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "return:int"
-      ]
-    },
-    "data_0209d5b8": {
-      "src/unnamed/arm9/0201/func_0201a244.cpp": [
-        "return:char []"
       ]
     },
     "data_0209d65c": {
@@ -11171,12 +11138,6 @@
     "data_020a6134": {
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
-      ],
-      "src/cstd6.cpp": [
-        "return:char * []"
-      ],
-      "src/engine/os/OS_Thread.cpp": [
-        "return:OSThreadInfo"
       ]
     },
     "data_020a637c": {
@@ -11185,7 +11146,7 @@
       ]
     },
     "data_020a645c": {
-      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
+      "src/OSi_ReloadRomData.cpp": [
         "return:volatile unsigned short"
       ],
       "src/unnamed/arm9/0205/func_02059e04.c": [
@@ -11303,37 +11264,37 @@
       ]
     },
     "data_020a8180": {
+      "src/engine/card/CARD_Common.cpp": [
+        "return:CARDiCommon"
+      ],
+      "src/unnamed/arm9/0206/func_02060890.c": [
+        "return:CARDiCommon"
+      ],
       "src/CARDi_OnFifoRecv.c": [
         "return:unsigned char"
       ],
-      "src/CARDi_ReadCard.c": [
-        "return:CardXferState"
-      ],
       "src/CARDi_OnReadCard.cpp": [
         "return:G"
+      ],
+      "src/CARDi_ReadCard.c": [
+        "return:CardXferState"
       ],
       "src/CARDi_ReadEnd.cpp": [
         "return:G"
       ],
       "src/CARDi_ReadFromCache.c": [
         "return:G"
-      ],
-      "src/engine/card/CARD_Common.cpp": [
-        "return:CARDiCommon"
-      ],
-      "src/unnamed/arm9/0206/func_02060890.c": [
-        "return:CARDiCommon"
       ]
     },
     "data_020a8780": {
-      "src/CARDi_SetCardDma.c": [
-        "return:char []"
-      ],
       "src/CARDi_ReadRomSyncCore.c": [
         "return:CARDRomStat"
       ],
       "src/unnamed/arm9/0206/func_02060890.c": [
         "return:void *"
+      ],
+      "src/CARDi_SetCardDma.c": [
+        "return:char []"
       ]
     },
     "data_020a89ac": {
@@ -11474,17 +11435,8 @@
       "src/engine/cp15/CP15_SystemSetup.cpp": [
         "return:char []"
       ],
-      "src/engine/os/OS_Thread.cpp": [
-        "return:char"
-      ],
-      "src/engine/os/OS_Arena.cpp": [
-        "return:char"
-      ],
       "src/IRQ2.cpp": [
         "return:char []"
-      ],
-      "src/engine/os/OS_Alarm.cpp": [
-        "return:char"
       ]
     },
     "data_ov002_020ff480": {
@@ -13268,16 +13220,6 @@
         "return:int []"
       ]
     },
-    "data_ov007_020ccc68": {
-      "src/unnamed/ov007/func_ov007_020b2bd4.c": [
-        "return:char []"
-      ]
-    },
-    "data_ov007_020ccc80": {
-      "src/unnamed/ov007/func_ov007_020b2bd4.c": [
-        "return:char []"
-      ]
-    },
     "data_ov007_020d7a5c": {
       "src/ui/menus/unit020b797c.cpp": [
         "return:int"
@@ -13286,11 +13228,6 @@
     "data_ov007_020d7b80": {
       "src/ui/menus/unit020b8f50.cpp": [
         "return:char []"
-      ]
-    },
-    "data_ov007_020d7c5c": {
-      "src/unnamed/ov007/func_ov007_020bea44.cpp": [
-        "return:int []"
       ]
     },
     "data_ov007_02102dd8": {
@@ -13349,77 +13286,14 @@
       "src/unnamed/ov007/func_ov007_020ad660.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020ada70.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020adb84.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020adc08.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ade58.c": [
-        "return:char * []"
-      ],
-      "src/unnamed/ov007/func_ov007_020ae070.c": [
-        "return:unsigned char []"
-      ],
       "src/unnamed/ov007/func_ov007_020ae2d0.cpp": [
         "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020ae558.c": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020aec00.c": [
-        "return:int *"
       ],
       "src/unnamed/ov007/func_ov007_020aec94.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020af0e4.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020af12c.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020af390.c": [
-        "return:S *"
-      ],
-      "src/unnamed/ov007/func_ov007_020af434.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020af4dc.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b0548.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
-        "return:Game *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b10dc.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b11bc.c": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b1224.c": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b131c.c": [
-        "return:int * []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b155c.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b1604.c": [
-        "return:void *"
-      ],
       "src/unnamed/ov007/func_ov007_020b2454.c": [
         "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2614.c": [
-        "return:G *"
       ],
       "src/unnamed/ov007/func_ov007_020b2728.c": [
         "return:int *"
@@ -13443,35 +13317,11 @@
       "src/unnamed/ov007/func_ov007_020b5f64.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020b647c.c": [
-        "return:int []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b68e8.c": [
-        "return:int []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b693c.c": [
-        "return:void * []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b69c4.c": [
-        "return:unsigned char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b6cd0.c": [
-        "return:Foo *"
-      ],
       "src/ui/menus/unit020b6eb4.cpp": [
         "return:S *"
       ],
       "src/ui/menus/unit020b8f50.cpp": [
         "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bca40.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bce70.cpp": [
-        "return:S *"
-      ],
-      "src/ui/menus/unit020be0dc.cpp": [
-        "return:int *"
       ],
       "src/ui/menus/unit020bed60.cpp": [
         "return:int *",
@@ -13599,12 +13449,6 @@
     },
     "data_ov007_02104bbc": {
       "src/ui/menus/unit020bd9e4.cpp": [
-        "return:char *"
-      ]
-    },
-    "data_ov007_02104bc0": {
-      "src/ui/menus/unit020be0dc.cpp": [
-        "return:char * *",
         "return:char *"
       ]
     },
@@ -16597,11 +16441,11 @@
       ]
     },
     "func_01ff8000": {
-      "src/CARDi_TryReadCardDma.cpp": [
-        "kind:data"
-      ],
       "src/unnamed/arm9/0207/func_020708b4.c": [
         "kind:function"
+      ],
+      "src/CARDi_TryReadCardDma.cpp": [
+        "kind:data"
       ]
     },
     "func_01ff859c": {
@@ -16651,12 +16495,12 @@
         "return:void"
       ]
     },
-    "func_01ffdd98": {
+    "OS_ResetSystem": {
       "src/func_02013f4c.cpp": [
         "param:#1 int"
       ]
     },
-    "func_01ffde98": {
+    "MI_SendGXCommand": {
       "include/decl_common.h": [
         "param:#1 int",
         "param:#2 int",
@@ -16668,7 +16512,7 @@
         "param:#3 int"
       ]
     },
-    "func_020048d8": {
+    "MIi_UncompressBackward": {
       "src/unnamed/arm9/0205/func_0205dd9c.c": [
         "arity:1"
       ]
@@ -16726,7 +16570,7 @@
       ]
     },
     "func_02009138": {
-      "src/unnamed/arm9/0200/func_02005098.c": [
+      "src/unnamed/arm9/0200/func_02005098.cpp": [
         "param:#1 int"
       ],
       "src/engine/view/d_camera.cpp": [
@@ -16777,7 +16621,7 @@
       ]
     },
     "func_02009e70": {
-      "src/unnamed/arm9/0200/func_02005000.c": [
+      "src/unnamed/arm9/0200/func_02005000.cpp": [
         "return:void"
       ],
       "src/engine/view/d_camera.cpp": [
@@ -16796,7 +16640,7 @@
       ]
     },
     "func_0200bec4": {
-      "src/unnamed/arm9/0200/func_02005098.c": [
+      "src/unnamed/arm9/0200/func_02005098.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#4 int"
@@ -18823,7 +18667,7 @@
         "return:void"
       ]
     },
-    "func_02018d48": {
+    "myFS_ReadFile": {
       "src/SharedFilePtr.cpp": [
         "param:#1 void *",
         "param:#2 void *",
@@ -18851,12 +18695,12 @@
         "param:#2 void *"
       ]
     },
-    "func_02018d98": {
+    "myFS_OpenFile": {
       "src/unnamed/arm9/0201/func_02018934.cpp": [
         "param:#2 int"
       ]
     },
-    "func_02018dc4": {
+    "myFS_OpenFileFast": {
       "src/unnamed/arm9/0201/func_020182bc.c": [
         "arity:2"
       ],
@@ -18870,12 +18714,12 @@
         "arity:2"
       ]
     },
-    "func_02018e00": {
+    "myFS_OpenFileDirect": {
       "src/unnamed/arm9/0201/func_02018c00.c": [
         "param:#1 void *"
       ]
     },
-    "func_02018e3c": {
+    "myFS_ConvertPathToFileID": {
       "src/unnamed/arm9/0201/func_02018434.c": [
         "param:#2 int",
         "return:void"
@@ -18893,9 +18737,6 @@
     "func_0201a03c": {
       "src/Crash.cpp": [
         "arity:2"
-      ],
-      "src/main.cpp": [
-        "kind:data"
       ]
     },
     "func_0201a244": {
@@ -20370,10 +20211,6 @@
     "func_0204dab4": {
       "include/decl_common.h": [
         "param:#3 unsigned int"
-      ],
-      "src/ui/menus/unit020be0dc.cpp": [
-        "param:#3 void *",
-        "param:#4 int"
       ]
     },
     "func_0204dcc0": {
@@ -20568,10 +20405,6 @@
       "include/decl_common.h": [
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c2e90.c": [
-        "param:#1 int",
-        "param:#2 int"
       ]
     },
     "func_02053380": {
@@ -20658,24 +20491,6 @@
         "param:#2 int"
       ]
     },
-    "OS_GetThreadPriority": {
-      "src/runtime/filesystem/InitializeAssetHandleTable.c": [
-        "param:#1 int"
-      ]
-    },
-    "OS_SetThreadPriority": {
-      "src/runtime/filesystem/InitializeAssetHandleTable.c": [
-        "param:#1 int"
-      ]
-    },
-    "OS_WakeupThreadDirect": {
-      "src/CARDi_EndTask.cpp": [
-        "param:#1 char *"
-      ],
-      "src/CARDi_ReadEnd.cpp": [
-        "param:#1 Obj *"
-      ]
-    },
     "OS_CreateThread": {
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "param:#2 void *"
@@ -20683,16 +20498,8 @@
       "src/unnamed/arm9/0204/func_02042200.c": [
         "param:#2 void *"
       ],
-      "src/engine/card/CARD_Common.cpp": [
-        "param:#2 void *"
-      ],
       "src/engine/sound/SoundEngine.cpp": [
         "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201a244.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int"
       ]
     },
     "func_020587e4": {
@@ -20782,11 +20589,6 @@
       "src/unnamed/arm9/0201/func_0201aa50.c": [
         "arity:5",
         "return:int"
-      ]
-    },
-    "func_02059e04": {
-      "src/OS_InitReset.c": [
-        "arity:0"
       ]
     },
     "func_02059f2c": {
@@ -21092,7 +20894,7 @@
       ]
     },
     "func_0205d4a0": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int",
         "param:#2 void *"
       ]
@@ -21108,7 +20910,7 @@
       ]
     },
     "func_0205d5e8": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205c9b8.c": [
@@ -21324,11 +21126,6 @@
       "src/unnamed/arm9/0205/func_0205f77c.cpp": [
         "param:#1 unsigned short",
         "param:#2 unsigned short"
-      ]
-    },
-    "func_0205fcfc": {
-      "src/PM_Init.c": [
-        "arity:0"
       ]
     },
     "func_0205ff00": {
@@ -22037,16 +21834,6 @@
         "arity:0"
       ]
     },
-    "func_0206a634": {
-      "src/CTRDG_Init.c": [
-        "arity:0"
-      ]
-    },
-    "func_0206a694": {
-      "src/CTRDG_Init.c": [
-        "arity:0"
-      ]
-    },
     "func_0206a928": {
       "src/cstd3.cpp": [
         "arity:4"
@@ -22138,13 +21925,13 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ff8e10.c": [
+      "src/_dsub.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0206dd30": {
-      "src/unnamed/arm9/01ff/func_01ff9378.c": [
+      "src/_fadd.c": [
         "arity:0",
         "return:void"
       ],
@@ -22152,7 +21939,7 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa594.c": [
+      "src/_fsub.c": [
         "arity:0",
         "return:void"
       ]
@@ -22166,29 +21953,29 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ff859c.c": [
+      "src/_ll_ufrom_d.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ff8e10.c": [
+      "src/_dsub.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0206ddcc": {
-      "src/unnamed/arm9/01ff/func_01ff9378.c": [
+      "src/_fadd.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa344.c": [
+      "src/_ffix.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa4bc.c": [
+      "src/_fflt.c": [
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa594.c": [
+      "src/_fsub.c": [
         "arity:0",
         "return:void"
       ]
@@ -22378,28 +22165,28 @@
       "src/_dmul.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff859c.c": [
+      "src/_ll_ufrom_d.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff8e10.c": [
+      "src/_dsub.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ff9378.c": [
+      "src/_fadd.c": [
         "return:int"
       ],
       "src/unnamed/arm9/01ff/func_01ff97d8.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa344.c": [
+      "src/_ffix.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa440.c": [
+      "src/_ffltu.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa4bc.c": [
+      "src/_fflt.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffa594.c": [
+      "src/_fsub.c": [
         "return:int"
       ],
       "src/unnamed/arm9/01ff/func_01ffafd4.c": [
@@ -23540,18 +23327,8 @@
         "return:void"
       ]
     },
-    "func_ov007_020adbc8": {
-      "src/unnamed/ov007/func_ov007_020b6cd0.c": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020add3c": {
       "src/unnamed/ov007/func_ov007_020aed98.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020ade14": {
-      "src/unnamed/ov007/func_ov007_020b6cd0.c": [
         "param:#1 int"
       ]
     },
@@ -23602,11 +23379,6 @@
         "kind:data"
       ]
     },
-    "func_ov007_020b0da0": {
-      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
-        "arity:0"
-      ]
-    },
     "func_ov007_020b1604": {
       "src/unnamed/ov007/func_ov007_020b155c.c": [
         "kind:data"
@@ -23625,19 +23397,8 @@
         "return:void"
       ]
     },
-    "func_ov007_020b2308": {
-      "src/unnamed/ov007/func_ov007_020b697c.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
     "func_ov007_020b2614": {
       "src/unnamed/ov007/func_ov007_020b11bc.c": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020b2bd4": {
-      "src/unnamed/ov007/func_ov007_020b2998.c": [
         "return:int"
       ]
     },
@@ -23675,33 +23436,13 @@
       ]
     },
     "func_ov007_020b3f20": {
-      "src/unnamed/ov007/func_ov007_020b2bd4.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b697c.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bcdb8.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
       "src/ui/menus/unit020bf690.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov007_020b413c": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020b42d8": {
       "src/ui/menus/unit020bed60.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov007_020b4464": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020b44ec": {
@@ -23712,11 +23453,6 @@
     "func_ov007_020b45b0": {
       "src/ui/menus/unit020b413c.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov007_020b4b5c": {
-      "src/unnamed/ov007/func_ov007_020b6544.c": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020b4c04": {
@@ -23755,17 +23491,6 @@
         "return:int"
       ]
     },
-    "func_ov007_020b73b4": {
-      "src/unnamed/ov007/func_ov007_020b6cd0.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
-    "func_ov007_020b7658": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020b76c4": {
       "src/ui/menus/unit020b7658.cpp": [
         "return:int"
@@ -23793,20 +23518,6 @@
         "param:#1 void *"
       ]
     },
-    "func_ov007_020b7eec": {
-      "src/unnamed/ov007/func_ov007_020b12e8.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b64a8.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
-    "func_ov007_020b8188": {
-      "src/unnamed/ov007/func_ov007_020afc44.c": [
-        "param:#2 int"
-      ]
-    },
     "func_ov007_020b84e8": {
       "src/unnamed/ov007/func_ov007_020adc08.c": [
         "return:int"
@@ -23820,14 +23531,6 @@
     "func_ov007_020b8500": {
       "src/unnamed/ov007/func_ov007_020adc08.c": [
         "return:int"
-      ]
-    },
-    "func_ov007_020b8548": {
-      "src/unnamed/ov007/func_ov007_020bcba8.cpp": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#5 unsigned int",
-        "param:#7 int"
       ]
     },
     "func_ov007_020b883c": {
@@ -23858,14 +23561,6 @@
         "return:void *"
       ]
     },
-    "func_ov007_020b8f8c": {
-      "src/unnamed/ov007/func_ov007_020af0e4.c": [
-        "return:short *"
-      ],
-      "src/unnamed/ov007/func_ov007_020af12c.c": [
-        "return:short *"
-      ]
-    },
     "func_ov007_020b9640": {
       "src/unnamed/ov007/func_ov007_020aefb4.cpp": [
         "return:int"
@@ -23882,12 +23577,7 @@
       ]
     },
     "func_ov007_020bbf98": {
-      "src/unnamed/ov007/func_ov007_020b2bd4.c": [
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020bc02c": {
-      "src/unnamed/ov007/func_ov007_020be9ac.c": [
+      "src/ui/menus/unit020b2764.cpp": [
         "param:#2 int"
       ]
     },
@@ -23902,15 +23592,15 @@
       ]
     },
     "func_ov007_020bc6b4": {
-      "src/unnamed/ov007/func_ov007_020b2bd4.c": [
+      "src/ui/menus/unit020b2764.cpp": [
         "param:#2 void *"
       ]
     },
     "func_ov007_020bc6d4": {
-      "src/unnamed/ov007/func_ov007_020b2bd4.c": [
+      "src/ui/menus/unit020b2764.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/ov007/func_ov007_020beaa0.c": [
+      "src/ui/menus/unit020be0dc.cpp": [
         "param:#2 int"
       ],
       "src/ui/menus/unit020bf690.cpp": [
@@ -23934,21 +23624,6 @@
     },
     "func_ov007_020bdeb0": {
       "include/decl_common.h": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020af84c.c": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020b0834.c": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020b10dc.c": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "arity:1"
       ],
       "src/ui/menus/unit020b2cdc.cpp": [
@@ -23985,53 +23660,14 @@
         "return:void"
       ]
     },
-    "func_ov007_020be7a8": {
-      "src/ui/menus/unit020be0dc.cpp": [
-        "arity:0"
-      ]
-    },
     "func_ov007_020be964": {
-      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
-        "param:#1 Sub100 *"
-      ],
       "src/unnamed/ov007/func_ov007_020b2614.c": [
         "return:void"
-      ]
-    },
-    "func_ov007_020be980": {
-      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
-        "param:#1 Sub100 *"
-      ]
-    },
-    "func_ov007_020be9ac": {
-      "src/unnamed/ov007/func_ov007_020b2370.cpp": [
-        "param:#3 void *"
-      ]
-    },
-    "func_ov007_020bea44": {
-      "src/unnamed/ov007/func_ov007_020b283c.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020beaa0": {
-      "src/unnamed/ov007/func_ov007_020b2998.c": [
-        "return:int"
       ]
     },
     "func_ov007_020bf630": {
       "src/ui/menus/unit020bed60.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov007_020bfaf0": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020bfd70": {
-      "src/ui/menus/unit020be0dc.cpp": [
-        "param:#1 int",
-        "param:#2 int"
       ]
     },
     "func_ov007_020bfe4c": {
@@ -24041,15 +23677,8 @@
       "src/ui/menus/unit020bed60.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020c4388.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
       "src/unnamed/ov007/func_ov007_020c5c14.c": [
         "param:#5 int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c65bc.c": [
-        "param:#5 int"
       ]
     },
     "func_ov007_020bff38": {
@@ -24063,15 +23692,7 @@
       ]
     },
     "func_ov007_020c02d8": {
-      "src/unnamed/ov007/func_ov007_020adb84.c": [
-        "return:int"
-      ],
       "src/unnamed/ov007/func_ov007_020adc08.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c0354": {
-      "src/unnamed/ov007/func_ov007_020b7594.c": [
         "param:#1 int"
       ]
     },
@@ -24110,10 +23731,6 @@
         "param:#4 int"
       ],
       "src/unnamed/ov007/func_ov007_020b0834.c": [
-        "param:#1 int",
-        "param:#4 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "param:#1 int",
         "param:#4 int"
       ],
@@ -24194,8 +23811,7 @@
     "func_ov007_020c12ac": {
       "src/unnamed/ov007/func_ov007_020c9688.c": [
         "param:#1 unsigned int",
-        "param:#2 unsigned int",
-        "return:Res *"
+        "param:#2 unsigned int"
       ]
     },
     "func_ov007_020c13f4": {
@@ -24292,16 +23908,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c232c": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c2390": {
-      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020c2410": {
       "src/unnamed/ov007/func_ov007_020b65e0.c": [
         "arity:1",
@@ -24314,17 +23920,6 @@
         "return:int"
       ]
     },
-    "func_ov007_020c24d0": {
-      "src/unnamed/ov007/func_ov007_020c281c.cpp": [
-        "param:#1 char *",
-        "return:int"
-      ]
-    },
-    "func_ov007_020c26fc": {
-      "src/unnamed/ov007/func_ov007_020c2a04.c": [
-        "param:#1 S *"
-      ]
-    },
     "func_ov007_020c2b9c": {
       "src/unnamed/ov007/func_ov007_020c2acc.c": [
         "param:#2 int",
@@ -24332,22 +23927,8 @@
       ]
     },
     "func_ov007_020c2c68": {
-      "src/unnamed/ov007/func_ov007_020c2a04.c": [
-        "return:S *"
-      ],
       "src/unnamed/ov007/func_ov007_020c2acc.c": [
         "return:void *"
-      ]
-    },
-    "func_ov007_020c2dfc": {
-      "src/unnamed/ov007/func_ov007_020c25fc.c": [
-        "param:#1 S *"
-      ]
-    },
-    "func_ov007_020c2e90": {
-      "src/unnamed/ov007/func_ov007_020c25fc.c": [
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
       ]
     },
     "func_ov007_020c2f14": {
@@ -24380,17 +23961,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c3398": {
-      "src/unnamed/ov007/func_ov007_020c9988.c": [
-        "param:#1 char *",
-        "param:#2 unsigned short"
-      ]
-    },
-    "func_ov007_020c33d0": {
-      "src/unnamed/ov007/func_ov007_020bcdb8.cpp": [
-        "param:#3 int"
-      ]
-    },
     "func_ov007_020c3544": {
       "src/unnamed/ov007/func_ov007_020b73b4.c": [
         "arity:1",
@@ -24418,29 +23988,11 @@
       "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020b2764.c": [
-        "param:#1 void *",
-        "param:#2 unsigned short",
-        "param:#3 unsigned short",
-        "return:short"
-      ],
       "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c93c4.c": [
-        "param:#1 void *",
-        "param:#2 unsigned short",
-        "param:#3 unsigned short",
-        "return:short"
       ]
     },
     "func_ov007_020c3d1c": {
-      "src/unnamed/ov007/func_ov007_020adbc8.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020ade14.c": [
-        "return:int"
-      ],
       "src/unnamed/ov007/func_ov007_020aea4c.c": [
         "return:int"
       ],
@@ -24570,9 +24122,6 @@
         "param:#2 int",
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020b68e8.c": [
-        "param:#2 int"
-      ],
       "src/unnamed/ov007/func_ov007_020b7594.c": [
         "param:#2 int"
       ],
@@ -24581,10 +24130,6 @@
         "return:void *"
       ],
       "src/unnamed/ov007/func_ov007_020bc6d4.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020beaa0.c": [
         "param:#2 int",
         "return:void *"
       ],
@@ -24638,14 +24183,6 @@
       "src/unnamed/ov007/func_ov007_020c2c68.c": [
         "param:#2 int"
       ],
-      "src/unnamed/ov007/func_ov007_020c3398.c": [
-        "param:#2 int",
-        "return:char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c3550.c": [
-        "param:#2 int",
-        "return:void *"
-      ],
       "src/ui/menus/unit020c3ce4.cpp": [
         "param:#2 int"
       ],
@@ -24684,9 +24221,6 @@
       "src/unnamed/ov007/func_ov007_020c9388.c": [
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020c946c.c": [
-        "return:void *"
-      ],
       "src/unnamed/ov007/func_ov007_020c9688.c": [
         "param:#2 unsigned int",
         "return:void *"
@@ -24704,12 +24238,6 @@
         "return:void *"
       ]
     },
-    "func_ov007_020c3ee8": {
-      "src/ui/menus/unit020be0dc.cpp": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
     "func_ov007_020c421c": {
       "src/unnamed/ov007/func_ov007_020b2728.c": [
         "param:#1 int"
@@ -24725,9 +24253,6 @@
       ]
     },
     "func_ov007_020c4388": {
-      "src/unnamed/ov007/func_ov007_020b2998.c": [
-        "param:#1 Widget *"
-      ],
       "src/ui/menus/unit020b2cdc.cpp": [
         "param:#1 Obj *",
         "param:#2 void *"
@@ -24743,10 +24268,6 @@
       ]
     },
     "func_ov007_020c43bc": {
-      "src/unnamed/ov007/func_ov007_020b2998.c": [
-        "param:#1 Widget *",
-        "param:#2 int"
-      ],
       "src/ui/menus/unit020b2cdc.cpp": [
         "param:#2 int"
       ],
@@ -24765,10 +24286,6 @@
       ]
     },
     "func_ov007_020c44c4": {
-      "src/unnamed/ov007/func_ov007_020b283c.c": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/ui/menus/unit020b413c.cpp": [
         "param:#1 int"
       ],
@@ -24777,9 +24294,6 @@
       ]
     },
     "func_ov007_020c44e4": {
-      "src/unnamed/ov007/func_ov007_020b2998.c": [
-        "return:Widget *"
-      ],
       "src/ui/menus/unit020b413c.cpp": [
         "return:Obj *",
         "param:#1 unsigned char",
@@ -25029,12 +24543,6 @@
         "param:#1 int"
       ]
     },
-    "func_ov007_020c8f58": {
-      "src/unnamed/ov007/func_ov007_020c020c.c": [
-        "arity:1",
-        "return:void"
-      ]
-    },
     "func_ov007_020c8f64": {
       "src/unnamed/ov007/func_ov007_020c023c.c": [
         "return:int"
@@ -25060,25 +24568,10 @@
       "src/ui/menus/unit020b8f50.cpp": [
         "arity:1",
         "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020c020c.c": [
-        "arity:1",
-        "return:void"
       ]
     },
     "func_ov007_020c908c": {
       "src/unnamed/ov007/func_ov007_020c023c.c": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020c9214": {
-      "src/unnamed/ov007/func_ov007_020bc2e4.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc32c.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bc3dc.c": [
         "return:int"
       ]
     },
@@ -25107,9 +24600,6 @@
         "param:#1 T *",
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020bce70.cpp": [
-        "param:#1 Sub *"
-      ],
       "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
         "param:#1 int"
       ]
@@ -25123,14 +24613,7 @@
       ]
     },
     "func_ov007_020c937c": {
-      "src/unnamed/ov007/func_ov007_020aea4c.c": [
-        "arity:1"
-      ],
       "src/ui/menus/unit020b2cdc.cpp": [
-        "arity:1",
-        "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020b65e0.c": [
         "arity:1",
         "return:void"
       ],
@@ -25141,7 +24624,6 @@
     },
     "func_ov007_020c9388": {
       "src/unnamed/ov007/func_ov007_020adc08.c": [
-        "param:#1 int",
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020aea6c.c": [
@@ -25177,12 +24659,6 @@
         "return:int"
       ]
     },
-    "func_ov007_020c99d8": {
-      "src/unnamed/ov007/func_ov007_020bcdb8.cpp": [
-        "arity:0",
-        "return:void *"
-      ]
-    },
     "func_ov007_020c9a2c": {
       "src/unnamed/ov007/func_ov007_020c95fc.c": [
         "param:#1 Ctx *",
@@ -25190,9 +24666,6 @@
       ],
       "src/unnamed/ov007/func_ov007_020c9688.c": [
         "param:#1 Ctx *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c9988.c": [
-        "param:#1 Local *"
       ]
     },
     "func_ov007_020c9a84": {
@@ -25694,29 +25167,12 @@
         "param:#2 int *"
       ]
     },
-    "OS_IsThreadTerminated": {
-      "src/unnamed/arm9/0201/func_0201a1bc.cpp": [
-        "param:#1 int *"
-      ]
-    },
-    "data_020a621c": {
-      "src/engine/os/OS_Thread.cpp": [
-        "return:OSThread"
-      ]
-    },
-    "func_02058a44": {
-      "src/engine/os/OS_Thread.cpp": [
-        "param:#1 OSThread *"
-      ]
-    },
-    "data_020a6378": {
-      "src/engine/os/OS_Thread.cpp": [
-        "return:unsigned int []"
-      ]
-    },
-    "data_020a9dec": {
-      "src/unnamed/arm9/0206/func_0206a600.c": [
-        "return:int (*)(int)"
+    "OS_WakeupThreadDirect": {
+      "src/CARDi_EndTask.cpp": [
+        "param:#1 char *"
+      ],
+      "src/CARDi_ReadEnd.cpp": [
+        "param:#1 Obj *"
       ]
     }
   },

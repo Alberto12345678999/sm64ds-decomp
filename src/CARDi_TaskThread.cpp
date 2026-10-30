@@ -10,14 +10,12 @@
 
 extern "C" {
 
-void OS_SleepThread(u16 *queue);
-
 void CARDi_TaskThread(void *arg) {
     CARDiCommon *const p = &cardi_common;
     for (;;) {
         u32 bak_psr = IRQ::Disable();
         while ((p->flag & CARD_STAT_TASK) == 0) {
-            p->cur_th = p->thread;
+            p->cur_th = &p->thread;
             OS_SleepThread(0);
         }
         IRQ::Restore(bak_psr);
