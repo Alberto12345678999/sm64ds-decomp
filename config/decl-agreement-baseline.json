@@ -5286,12 +5286,6 @@
       "src/unnamed/arm9/0204/func_02041a94.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02042254.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void"
-      ],
       "src/engine/fs/FS_Command.cpp": [
         "return:void"
       ],
@@ -8756,11 +8750,6 @@
         "return:int"
       ]
     },
-    "data_02099e6c": {
-      "src/unnamed/arm9/0204/func_02042254.cpp": [
-        "return:char []"
-      ]
-    },
     "data_02099e70": {
       "src/runtime/actor/ActorBase.cpp": [
         "return:unsigned int"
@@ -8798,13 +8787,6 @@
       "src/engine/sound/SoundEngine.cpp": [
         "param:#1 struct Node *",
         "param:#3 struct Node *"
-      ]
-    },
-    "FSi_CompareDigest": {
-      "src/unnamed/arm9/0205/func_0205db88.cpp": [
-        "param:#1 Obj *",
-        "param:#3 void *",
-        "return:unsigned int"
       ]
     },
     "func_0205e904": {
@@ -17282,11 +17264,6 @@
         "arity:2"
       ]
     },
-    "myFS_OpenFileDirect": {
-      "src/unnamed/arm9/0201/func_02018c00.c": [
-        "param:#1 void *"
-      ]
-    },
     "myFS_ConvertPathToFileID": {
       "src/unnamed/arm9/0201/func_02018434.c": [
         "param:#2 int",
@@ -18893,24 +18870,6 @@
         "param:#1 struct Obj *"
       ]
     },
-    "FS_FindArchive": {
-      "src/unnamed/arm9/0204/func_02042254.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0206/func_02067bfc.cpp": [
-        "param:#1 int *",
-        "return:void *"
-      ],
-      "src/func_0201a2f8.cpp": [
-        "return:void *"
-      ]
-    },
     "func_0205d4a0": {
       "src/myFS_ReadFile.c": [
         "param:#1 int",
@@ -18946,24 +18905,12 @@
         "return:int"
       ]
     },
-    "func_0205db88": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ]
-    },
     "FS_UnloadOverlay": {
       "src/UnloadOverlay.c": [
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_02017e94.c": [
         "return:void"
-      ]
-    },
-    "FSi_LoadOverlayInfoCore": {
-      "src/FS_LoadOverlayInfo.c": [
-        "param:#4 void *"
       ]
     },
     "func_0205e280": {
@@ -22070,32 +22017,6 @@
     "func_02067f2c": {
       "src/engine/mb/MB_Parent.cpp": [
         "return:int"
-      ]
-    },
-    "FS_OpenFileDirect": {
-      "src/myFS_ReadFile.c": [
-        "param:#1 int"
-      ],
-      "src/engine/fs/FS_Archive.cpp": [
-        "param:#2 FSArchive *",
-        "param:#3 unsigned int",
-        "param:#4 unsigned int",
-        "param:#5 unsigned int"
-      ]
-    },
-    "data_020a8064": {
-      "src/engine/fs/FS_Rom.cpp": [
-        "return:CARDRomRegion"
-      ]
-    },
-    "data_020a806c": {
-      "src/engine/fs/FS_Rom.cpp": [
-        "return:CARDRomRegion"
-      ]
-    },
-    "data_020a8074": {
-      "src/engine/fs/FS_Rom.cpp": [
-        "return:FSArchive"
       ]
     },
     "OS_GetMacAddress": {

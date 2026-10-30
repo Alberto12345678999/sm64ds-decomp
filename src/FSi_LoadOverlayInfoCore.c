@@ -5,17 +5,20 @@
  * and set the target. */
 #include "nitro/fs/overlay.h"
 
+struct FSArchive;
+
 extern void FS_InitFile(void *s);
-extern int FS_OpenFileDirect(void *s, int b, int c, int d, int e);
+extern int FS_OpenFileDirect(char *p_file, struct FSArchive *p_arc, u32 image_top, u32 image_bottom,
+                             u32 file_index);
 extern int FS_ReadFile(void *s, void *b, int c);
 extern int FS_CloseFile(void *self);
 
-int FSi_LoadOverlayInfoCore(FSOverlayInfo *p_ovi, int target, int id, int arc, int offset_arm9,
-                            int len_arm9, int offset_arm7, int len_arm7) {
+int FSi_LoadOverlayInfoCore(FSOverlayInfo *p_ovi, int target, int id, struct FSArchive *arc,
+                            u32 offset_arm9, u32 len_arm9, u32 offset_arm7, u32 len_arm7) {
     char file[0x48];
-    int pos;
-    int offset;
-    int length;
+    u32 pos;
+    u32 offset;
+    u32 length;
     if (target == 0) {
         length = len_arm9;
         offset = offset_arm9;
@@ -24,7 +27,7 @@ int FSi_LoadOverlayInfoCore(FSOverlayInfo *p_ovi, int target, int id, int arc, i
         offset = offset_arm7;
     }
     pos = id << 5;
-    if ((unsigned int)pos >= (unsigned int)length)
+    if (pos >= length)
         return 0;
     FS_InitFile(file);
     FS_OpenFileDirect(file, arc, offset + pos, offset + length, -1);
