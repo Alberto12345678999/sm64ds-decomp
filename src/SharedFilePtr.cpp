@@ -79,7 +79,7 @@ void FS_CloseFile(void *a);
 void CpuCopy8(void *a, void *b, unsigned int c);
 void func_02018770(void);
 void Crash(void);
-int func_02018d48(void *a, void *b, unsigned int c);
+int myFS_ReadFile(void *a, void *b, unsigned int c);
 }
 
 #ifndef _MSC_VER
@@ -148,7 +148,7 @@ void *SharedFilePtr::Load() {
         Crash();
     raw = (int)Memory::Allocate(fsize, 0x20);
     CP15::FlushAndInvalidateDataCache((unsigned int)raw, fsize);
-    int r = func_02018d48(&obj2, (void *)raw, fsize);
+    int r = myFS_ReadFile(&obj2, (void *)raw, fsize);
     if (r != fsize)
         return 0;
     FS_CloseFile(&obj2);

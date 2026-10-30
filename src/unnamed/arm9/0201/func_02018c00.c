@@ -1,6 +1,6 @@
 extern void FS_InitFile(void *s);
-extern int func_02018e00(void *s, int b, int c, int d, int e);
-extern int func_02018d48(void *s, void *b, int c);
+extern int myFS_OpenFileDirect(void *s, int b, int c, int d, int e);
+extern int myFS_ReadFile(void *s, void *b, int c);
 extern int FS_CloseFile(void *self);
 extern int data_020a8064[2];
 extern int data_020a806c[2];
@@ -23,8 +23,8 @@ int func_02018cbc(char *self, int flag, int shift, int a3, int a5, int a6, int a
     if ((unsigned int)off >= (unsigned int)hi)
         return 0;
     FS_InitFile(local);
-    func_02018e00(local, a3, base + off, base + hi, -1);
-    func_02018d48(local, self, 0x20);
+    myFS_OpenFileDirect(local, a3, base + off, base + hi, -1);
+    myFS_ReadFile(local, self, 0x20);
     FS_CloseFile(local);
     *(int *)(self + 0x20) = flag;
     return 1;

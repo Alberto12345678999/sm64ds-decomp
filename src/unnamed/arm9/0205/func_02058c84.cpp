@@ -1,9 +1,10 @@
 //cpp
+#include "nitro/os/spinLock.h"
+
 extern "C" {
 
 extern void func_02058f28(void);
 extern void func_0205b858(void);
-extern void func_02057320(void);
 extern void func_02058ec8(void);
 extern void func_02057000(void);
 extern void func_02059594(void);
@@ -19,7 +20,7 @@ void func_02058c84(void)
 {
     func_02058f28();
     func_0205b858();
-    func_02057320();
+    OS_InitLock();
     func_02058ec8();
     func_02057000();
     func_02059594();

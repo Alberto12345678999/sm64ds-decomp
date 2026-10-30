@@ -1,8 +1,12 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
-extern u8 data_ov007_0210342c[];
-extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
+extern void Sprite_SetAnimation(void *node, int animIndex, int mode, int rev, int frame);
 
 /* The 10-byte layout row an item points at (names as in
  * func_ov007_020b5bf0); only its kind is read here. */
@@ -21,7 +25,7 @@ typedef struct Ov007Item {
     char pad_28[4];
 } Ov007Item;
 
-/* The 0x40-byte OAM node func_ov007_020c11ac allocates; names as in
+/* The 0x44-byte OAM node func_ov007_020c11ac allocates; names as in
  * func_ov007_020c10ec, only the slot this file reads. */
 typedef struct Ov007OamNode {
     char pad_00[0x1d];
@@ -42,71 +46,133 @@ typedef char Ov007Item_size_must_be_0x2c[sizeof(Ov007Item) == 0x2c ? 1 : -1];
  * (func_ov007_020add3c); `self` is the typed view. */
 int func_ov007_020ae558(char *node) {
     Ov007ItemNode *self = (Ov007ItemNode *)node;
-    Ov007Work *g = *(Ov007Work **)data_ov007_0210342c;
-    Ov007MenuState *b = g->states[2];
-    int flag = b->stateTicks;
-    Ov007Item *a = self->item;
-    int sel = b->currentState;
-    Ov007ItemLayout *r3ptr = a->layout;
-    int r6 = (flag == 0);
-    Ov007MenuState *c = a->state;
-    int lr_v = r3ptr->kind;
-    int ip_v = a->id;
-    int r3_v = c->currentState;
-    int ret = c->requestedState;
+    Ov007Work *g = WORK;
+    Ov007MenuState *mode = g->states[2];
+    int modeTicks = mode->stateTicks;
+    Ov007Item *item = self->item;
+    int modeState = mode->currentState;
+    Ov007ItemLayout *layout = item->layout;
+    int entering = (modeTicks == 0);
+    Ov007MenuState *itemState = item->state;
+    int kind = layout->kind;
+    int id = item->id;
+    int itemCurrent = itemState->currentState;
+    int ret = itemState->requestedState;
 
-    switch (sel) {
-    case 0:  if (r6) ret = 1; break;
+    switch (modeState) {
+    case 0:
+        if (entering)
+            ret = 1;
+        break;
     case 1:
-        if (r6) {
-            if (ip_v == 1)
-                Sprite_SetAnimation((char *)self->node, 0, 0, 0, 0);
+        if (entering) {
+            if (id == 1)
+                Sprite_SetAnimation(self->node, 0, 0, 0, 0);
         }
         break;
-    case 3:  if (r6) { if (lr_v == 1) ret = 7; else if (ip_v == 7) ret = 1; } break;
-    case 2:  if (r6) { if (lr_v == 1) { if (ip_v != 2) ret = 4; } } break;
-    case 4:  if (r6) { if (lr_v == 1) ret = 7; } break;
-    case 5:  if (r6) { if (lr_v == 1) ret = 7; } break;
-    case 7:  if (r6) { if (lr_v == 1) ret = 3; } break;
-    case 6:  if (r6) { if (lr_v == 1) ret = 4; } break;
+    case 3:
+        if (entering) {
+            if (kind == 1)
+                ret = 7;
+            else if (id == 7)
+                ret = 1;
+        }
+        break;
+    case 2:
+        if (entering) {
+            if (kind == 1) {
+                if (id != 2)
+                    ret = 4;
+            }
+        }
+        break;
+    case 4:
+        if (entering) {
+            if (kind == 1)
+                ret = 7;
+        }
+        break;
+    case 5:
+        if (entering) {
+            if (kind == 1)
+                ret = 7;
+        }
+        break;
+    case 7:
+        if (entering) {
+            if (kind == 1)
+                ret = 3;
+        }
+        break;
+    case 6:
+        if (entering) {
+            if (kind == 1)
+                ret = 4;
+        }
+        break;
     case 8:
-        if (r6) {
-            short d = b->previousState;
+        if (entering) {
+            short d = mode->previousState;
             int t = (d == 1 || d == 3);
-            if (lr_v == 1) {
+            if (kind == 1) {
                 if (t) {
-                    if (ip_v != 2) {
+                    if (id != 2) {
                         ret = 0;
-                        if (ip_v == 1)
-                            Sprite_SetAnimation((char *)self->node, 4, 0, 0, 0);
+                        if (id == 1)
+                            Sprite_SetAnimation(self->node, 4, 0, 0, 0);
                     } else
                         ret = 1;
-                } else ret = 7;
-            } else if (lr_v == 5) {
+                } else
+                    ret = 7;
+            } else if (kind == 5) {
                 ret = 0;
-                Sprite_SetAnimation((char *)self->node, 0, 1, 0, 0);
-            } else ret = 1;
+                Sprite_SetAnimation(self->node, 0, 1, 0, 0);
+            } else
+                ret = 1;
         }
         break;
-    case 9: case 10: case 13: if (r6) { if (lr_v == 1) ret = 7; } break;
-    case 11: if (lr_v == 1) { if (r6) ret = 4; } break;
+    case 9:
+    case 10:
+    case 13:
+        if (entering) {
+            if (kind == 1)
+                ret = 7;
+        }
+        break;
+    case 11:
+        if (kind == 1) {
+            if (entering)
+                ret = 4;
+        }
+        break;
     case 12:
-        if (lr_v == 1) {
-            if (r6) ret = 7;
+        if (kind == 1) {
+            if (entering)
+                ret = 7;
             else {
-                Ov007Work *g2 = *(Ov007Work *volatile *)data_ov007_0210342c;
-                short v = g2->states[1]->currentState;
-                u8 flag2 = g2->itemNodes[1]->node->animIndex;
+                /* the ROM reloads the work pointer here */
+                Ov007Work *g2 = (Ov007Work *)*(char *volatile *)&data_ov007_0210342c;
+                short menuState = g2->states[1]->currentState;
+                u8 nodeAnim = g2->itemNodes[1]->node->animIndex;
                 int x;
-                if (v != 7) break;
-                if (r3_v != 0) break;
+                if (menuState != 7)
+                    break;
+                if (itemCurrent != 0)
+                    break;
                 x = g->selectedSlot;
-                if ((x != -1 && flag2 == 7) || (x == -1 && flag2 == 8))
+                if ((x != -1 && nodeAnim == 7) || (x == -1 && nodeAnim == 8))
                     ret = 7;
             }
         }
         break;
-    case 14: if (r6) { if (lr_v == 1) ret = 7; else if (ip_v == 7) ret = 0; } break;
+    case 14:
+        if (entering) {
+            if (kind == 1)
+                ret = 7;
+            else if (id == 7)
+                ret = 0;
+        }
+        break;
     }
     return ret;
 }

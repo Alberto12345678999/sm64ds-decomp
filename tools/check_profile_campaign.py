@@ -110,10 +110,13 @@ def symbols_path(repo, module):
     """Module name -> its symbols.txt, or None.
 
     arm9's file is `config/arm9/symbols.txt`; every overlay's is
-    `config/arm9/overlays/<mod>/symbols.txt`. There is no `main/` subdirectory
-    under `config/arm9`, which is the spelling that keeps getting written down.
+    `config/arm9/overlays/<mod>/symbols.txt`; the autoload blocks' are
+    `config/arm9/itcm/symbols.txt` and `config/arm9/dtcm/symbols.txt`. There is
+    no `main/` subdirectory under `config/arm9`, which is the spelling that keeps
+    getting written down.
     """
     for rel in ("config/arm9/overlays/%s/symbols.txt" % module,
+                "config/arm9/%s/symbols.txt" % module,
                 "config/%s/symbols.txt" % module):
         p = os.path.join(repo, rel)
         if os.path.exists(p):

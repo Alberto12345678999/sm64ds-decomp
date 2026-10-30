@@ -79,11 +79,11 @@
     },
     "arm9:0x020048d8": {
       "author": "tangosdev",
-      "name": "func_020048d8"
+      "name": "MIi_UncompressBackward"
     },
     "arm9:0x0200497c": {
       "author": "tangosdev",
-      "name": "func_0200497c"
+      "name": "do_autoload"
     },
     "arm9:0x020049ec": {
       "author": "tangosdev",
@@ -1879,7 +1879,7 @@
     },
     "arm9:0x0201473c": {
       "author": "tangosdev",
-      "name": "func_0201473c"
+      "name": "nds_vprintf"
     },
     "arm9:0x02014770": {
       "author": "andrewboudreau",
@@ -2895,23 +2895,23 @@
     },
     "arm9:0x02018d48": {
       "author": "tangosdev",
-      "name": "func_02018d48"
+      "name": "myFS_ReadFile"
     },
     "arm9:0x02018d98": {
       "author": "tangosdev",
-      "name": "func_02018d98"
+      "name": "myFS_OpenFile"
     },
     "arm9:0x02018dc4": {
       "author": "tangosdev",
-      "name": "func_02018dc4"
+      "name": "myFS_OpenFileFast"
     },
     "arm9:0x02018e00": {
       "author": "tangosdev",
-      "name": "func_02018e00"
+      "name": "myFS_OpenFileDirect"
     },
     "arm9:0x02018e3c": {
       "author": "tangosdev",
-      "name": "func_02018e3c"
+      "name": "myFS_ConvertPathToFileID"
     },
     "arm9:0x02018e68": {
       "author": "tangosdev",
@@ -12499,7 +12499,7 @@
     },
     "itcm:0x01ffdb28": {
       "author": "ruspecial",
-      "name": "func_01ffdb28"
+      "name": "OSi_DoBoot"
     },
     "itcm:0x01ffdbd8": {
       "author": "andrewboudreau",
@@ -12507,11 +12507,11 @@
     },
     "itcm:0x01ffdd08": {
       "author": "andrewboudreau",
-      "name": "func_01ffdd08"
+      "name": "OSi_ReloadRomData"
     },
     "itcm:0x01ffdd98": {
       "author": "andrewboudreau",
-      "name": "func_01ffdd98"
+      "name": "OS_ResetSystem"
     },
     "itcm:0x01ffde00": {
       "author": "andrewboudreau",
@@ -12523,7 +12523,7 @@
     },
     "itcm:0x01ffde98": {
       "author": "andrewboudreau",
-      "name": "func_01ffde98"
+      "name": "MI_SendGXCommand"
     },
     "ov000:0x020aa420": {
       "author": "tangosdev",

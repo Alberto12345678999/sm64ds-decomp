@@ -978,12 +978,52 @@
       "evidence": "origin/main:src/unnamed/arm9/0200/func_0200af20.c 2x _ZN8dClipper13Func_020156DCEitii; head 2x _ZN8dClipper13Func_020156DCEisii; tools/source_style.py --base origin/main"
     },
     {
+      "path": "src/unnamed/arm9/0201/func_02019440.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX18DisableBankForLCDCEv",
+      "count": 2,
+      "reason": "This TU is C, so it cannot name a C++ namespaced function and include/GX.h's `GX::DisableBankForLCDC` spelling is unusable here. The symbol was func_02053f58 before this PR named the GX VRAM bank reset/disable/get families after the gGXState field each one releases; every other caller of the 26 renamed symbols is C++ and takes the namespace spelling. Follow-up: the handspelled pair goes away when this one-function-per-file boot helper is reconstructed as C++.",
+      "evidence": "src/engine/gx/GX_VramCnt.cpp defines it as GX::DisableBankForLCDC under // @symbol _ZN2GX18DisableBankForLCDCEv, one DisableVramBanks(&data_020a6088.lcdc) call; config/arm9/symbols.txt row addr:0x02053f58 size=0x14; name_roundtrip --symbol _ZN2GX18DisableBankForLCDCEv ROUND-TRIPS under the 2004/b56 pin; match.py 41/41 MATCH over GX_VramCnt.cpp and this TU verified renames-only (1 reloc destination, 1 symbol name) against its pre-rename object"
+    },
+    {
       "path": "src/engine/sound/Sound.cpp",
       "rule": "handspelled-member",
       "match": "_ZN11SndRegTable13func_0201186cEiis",
       "count": 2,
       "reason": "SndRegTable::func_0201186c takes short for argument 4, and Sound_PlayIfNotActive passes that word untruncated. A direct method call narrows it and the function no longer matches. mwccarm rejects a cast of the member to a function pointer, so the int-arity cast names the mangled symbol. Follow-up: drop the cast if a direct call can pass the word untruncated.",
       "evidence": "tubuild verify arm9/Sound: direct call diffs Sound_PlayIfNotActive (0x020124c4, grew past 0x58); the int-arity cast of this symbol is 89/89 MATCH. mwccarm: illegal explicit conversion from the member to int (*)(char *, int, int, int)."
+    },
+    {
+      "path": "src/engine/sound/SoundEngine.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN12Elem_204f27813func_0204f278Ev",
+      "count": 2,
+      "reason": "Elem_204f278::func_0204f278 is passed as a function pointer into func_020511d4. mwccarm will not form that pointer from the member, so the call names the mangled symbol. The local extern exists for the same pointer.",
+      "evidence": "arm9/SoundEngine 138/138 MATCH with the mangled pointer; a member-pointer conversion is not a legal argument to the int-arity callee."
+    },
+    {
+      "path": "src/engine/sound/SoundEngine.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN2E113func_0204f5a0Ei",
+      "count": 2,
+      "reason": "E1::func_0204f5a0 is called through an int-arity cast because the receiver at that site is a raw byte. The local extern keeps the pool word pointed at the method.",
+      "evidence": "arm9/SoundEngine 138/138 MATCH. The direct E1 method call is used at the typed site; this cast is the untyped one."
+    },
+    {
+      "path": "src/engine/sound/SoundEngine.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN1T13func_020500a4Ev",
+      "count": 2,
+      "reason": "T::func_020500a4 is passed as a callback word to func_0205ab28. A member cannot be cast to that function pointer, so the call names the mangled symbol. The local extern is the same pointer.",
+      "evidence": "arm9/SoundEngine 138/138 MATCH with the mangled callback word."
+    },
+    {
+      "path": "src/minigames/d_s_mg_m_carlo2.cpp",
+      "rule": "raw-offset",
+      "match": "(Dealer*)(raw+0x4f38",
+      "count": 1,
+      "reason": "Dealer_Update now takes Dealer *. The dealer object in this scene is still the byte at raw+0x4f38. The previous line was the same offset cast to char *, which the checker already treated as old debt. The type of the cast changed with the parameter.",
+      "evidence": "ov006 callers of Dealer_Update matched after the Dealer * change. The offset itself was already in the function."
     }
   ]
 }

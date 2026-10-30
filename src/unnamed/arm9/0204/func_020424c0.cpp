@@ -25,34 +25,47 @@ typedef struct {
     int end;
 } Entry;
 
+/* An (offset, size) pair of the card header copy at 0x027ffe00. */
+typedef struct {
+    int offset;
+    int size;
+} RomRegion;
+
 extern WorkInfo data_020a1fc0;
 extern int data_02099e6c;
 
-extern void* func_0205d23c(void* a, int b);
-extern void FS_InitFile(int* s);
-extern int func_0205d5e8(char* self, int a1, int a2, int a3, int a4);
+extern void *func_0205d23c(void *a, int b);
+extern void FS_InitFile(int *s);
+extern int func_0205d5e8(char *self, int a1, int a2, int a3, int a4);
 extern int FS_ReadFile(int a, int b, int c);
-extern int FS_CloseFile(char* self);
+extern int FS_CloseFile(char *self);
 
-void func_020424c0(void)
-{
+/* Allocate one block for the card's FAT, FNT and both overlay tables (each
+ * as its size word followed by the data rounded up to 0x20 bytes, after one
+ * leading word) and store it as mTable / mTableSize. The parent fills it from
+ * the ROM archive: it reads each region, then sets the leading word to the
+ * larger of the block size and the largest FAT file. The child only
+ * allocates. Its caller func_02040c34 then registers the parent's block as
+ * region 0x20000, or on the child passes mTableSize to func_02041224 to grow
+ * the receive work. */
+void func_020424c0(void) {
     int sizes[4];
-    void* ptrs[4];
+    RomRegion *ptrs[4];
     int local[18];
     u32 sl;
     u32 irq;
-    void* fp;
+    void *fp;
     int i;
 
-    ptrs[0] = (void*)0x27ffe48;
-    ptrs[1] = (void*)0x27ffe40;
-    ptrs[2] = (void*)0x27ffe50;
-    ptrs[3] = (void*)0x27ffe58;
+    ptrs[0] = (RomRegion *)0x27ffe48; /* FAT */
+    ptrs[1] = (RomRegion *)0x27ffe40; /* FNT */
+    ptrs[2] = (RomRegion *)0x27ffe50; /* ARM9 overlay table */
+    ptrs[3] = (RomRegion *)0x27ffe58; /* ARM7 overlay table */
 
     i = 0;
     sl = i + 4;
     do {
-        sizes[i] = (((int*)ptrs[i])[1] + 0x1f) & ~0x1f;
+        sizes[i] = (ptrs[i]->size + 0x1f) & ~0x1f;
         sl += sizes[i] + 4;
         i++;
     } while (i < 4);
@@ -62,48 +75,49 @@ void func_020424c0(void)
     IRQ::Restore(irq);
 
     if (data_020a1fc0.mIsParent != 0) {
-        void* sb;
-        char* buf;
+        void *sb;
+        char *buf;
         int roundedSize;
         int j;
 
         sb = func_0205d23c(&data_02099e6c, 3);
-        buf = (char*)fp + 4;
+        buf = (char *)fp + 4;
         FS_InitFile(local);
         j = 0;
 
         do {
-            int* p = (int*)ptrs[j];
-            int origSize = p[1];
+            RomRegion *p = ptrs[j];
+            int origSize = p->size;
             int data0;
             int end;
 
             roundedSize = sizes[j];
-            *(int*)buf = origSize;
+            *(int *)buf = origSize;
             buf += 4;
-            data0 = p[0];
+            data0 = p->offset;
             end = roundedSize + data0;
-            func_0205d5e8((char*)local, (int)sb, data0, end, -1);
+            func_0205d5e8((char *)local, (int)sb, data0, end, -1);
             FS_ReadFile((int)local, (int)buf, roundedSize);
-            FS_CloseFile((char*)local);
+            FS_CloseFile((char *)local);
             buf += roundedSize;
             j++;
         } while (j < 4);
 
         {
-            Entry* entries = (Entry*)((char*)fp + 8);
-            int count = (int)((u32)(((int*)ptrs[0])[1]) >> 3);
+            Entry *entries = (Entry *)((char *)fp + 8);
+            int count = (int)((u32)ptrs[0]->size >> 3);
             u32 max = sl;
             int k;
             k = 0;
             if (count > 0) {
                 do {
                     u32 diff = (u32)entries[k].end - (u32)entries[k].start;
-                    if (max < diff) max = diff;
+                    if (max < diff)
+                        max = diff;
                     k++;
                 } while (k < count);
             }
-            *(int*)fp = max;
+            *(int *)fp = max;
         }
 
         CP15::FlushAndInvalidateDataCache((u32)fp, sl);

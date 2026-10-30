@@ -29,7 +29,6 @@ extern void Crash(void);
 extern void func_ov007_020bdeb0(int idx);
 extern void func_ov007_020b7a44(void);
 
-typedef int (*pfn)(int);
 
 void func_ov007_020af84c(void)
 {
@@ -108,7 +107,7 @@ void func_ov007_020af84c(void)
             int r;
             if (func_ov007_020b79c8() == 0)
                 return;
-            r = (*(pfn *)(data_ov007_0210342c + 0x2c))(
+            r = WORK->callback(
                 ((int(*)[3])data_ov007_020ccc20)[WORK->selectedSlot][WORK->targetSlot]);
             func_ov007_020aec00();
             switch (r) {

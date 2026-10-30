@@ -30,6 +30,10 @@
 #include "Memory.h"
 #include "math/Approach.h"
 
+struct HeapOwner {
+    void func_020510a4(int);
+};
+
 extern "C" {
 
 /* Foreign callees. */
@@ -38,7 +42,6 @@ extern int func_02051e60(int a, int b, int c, int d, int e, int f);
 extern int func_02051074(int a);
 extern int func_020511d4(int a, int b, int c, int d, int e);
 extern int func_0203d974(void);
-extern int func_020510a4(int a, int b);
 extern int func_0205117c(int a);
 extern int func_0203d7d4(int a);
 extern int func_02048a1c(int *a0, int kind, int id);
@@ -771,7 +774,7 @@ void LoadGroupAndSetBank(int a, int b)
         func_020134d8((void *)a, (void *)data_0209b498);
         data_0209b4a8 = func_0205117c(data_0209b498);
     } else if (data_0209b47c != a) {
-        func_020510a4(data_0209b498, data_0209b4a8);
+        ((HeapOwner *)data_0209b498)->func_020510a4(data_0209b4a8);
         func_020134d8((void *)a, (void *)data_0209b498);
         data_0209b484 = func_0205117c(data_0209b498);
     }
@@ -798,7 +801,7 @@ void UnsetPlayerVoiceGroup(void)
 extern "C" void func_02011f7c(void *self)
 {
     if (!func_0203d974()) {
-        func_020510a4(data_0209b498, data_0209b484);
+        ((HeapOwner *)data_0209b498)->func_020510a4(data_0209b484);
         func_020134d8(self, (void *)data_0209b498);
         data_0209b488 = func_0205117c(data_0209b498);
     }
@@ -811,7 +814,7 @@ namespace Sound {
 void ResetPlayerVoiceGroup(void)
 {
     if (func_0203d974() == 0) {
-        func_020510a4(data_0209b498, data_0209b484);
+        ((HeapOwner *)data_0209b498)->func_020510a4(data_0209b484);
     }
     data_0209b478 = 0;
 }
@@ -823,7 +826,7 @@ extern "C" int func_02011ee4(void *c)
 {
     int x = func_0203d974();
     if (x != 0) return x;
-    func_020510a4(data_0209b498, data_0209b488);
+    ((HeapOwner *)data_0209b498)->func_020510a4(data_0209b488);
     return func_020134d8(c, (void *)data_0209b498);
 }
 

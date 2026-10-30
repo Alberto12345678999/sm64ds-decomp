@@ -1,0 +1,72 @@
+// HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
+//
+// _ffltu at 0x01ffa440 (ITCM), also known as func_01ffa440 -- unsigned 32-bit integer to
+// float conversion. Toolchain runtime, shipped as assembly; there is no C source for it in
+// the game. The name is the one mwccarm 2004/b56 itself emits a `bl` to for `(float)u` on
+// an unsigned (checked by compiling that expression).
+//
+// It skips the sign work func_01ffa4bc opens with. Zero returns straight away, and the
+// `bmi` skips the `clz` / `lsls` normalisation whenever bit 31 is already set, because a
+// value with the top bit set is already in range at the 0x9e exponent bias (127 + 31).
+// From there it runs the same tail its signed twin does: the eight bits shifted out of
+// the bottom are captured in r2, and if any of them are set the result is inexact, so it
+// reads the FP status word through func_0207322c, sets the inexact flag, and then picks a
+// rounding direction from the mode bits -- round-to-nearest with ties to even (the
+// `ands r1, r2, #0x7f` / `andeqs r1, r0, #1` pair), toward +infinity, or toward zero.
+//
+// Two of the branches leave the function body. The `bne` at +0x48 goes to 0x01ffa558 and
+// the `bne` at +0x60 goes to 0x01ffa538, both of which sit inside func_01ffa4bc's address
+// range on instructions that are unreachable from func_01ffa4bc's own entry: the
+// assembler laid this routine's two out-of-line tails out inside its neighbour.
+// 0x01ffa538 is the `add r0, r0, #1; bx lr` round-away-from-zero tail, and 0x01ffa558 is
+// the enabled-trap exit that leaves through func_0206ddcc with the packed exception code
+// 0x40000308. No C construct expresses a jump into another function's interior, so both
+// are named by their addresses and branched to as externs -- the same idea `_fadd_core`
+// and `_fsub_core` use to tie _fadd and _fsub together, but without a
+// config/arm9/itcm/symbols.txt row: 0x01ffa538 and 0x01ffa558 sit inside src/_fflt.c's
+// enrolled range, and a row there is reported by `dsd check symbols` as a symbol missing
+// from the linked binary.
+//
+// The two branches are raw PC-relative words, not symbol relocations, so this
+// file is enrolled on its own. The landing sites stay inside func_01ffa4bc.
+//
+// The argument registers are pushed across the call as they are in every other routine in
+// this block, which is the tell that these are one hand-written assembly file.
+
+extern int func_0207322c(void);
+
+asm float _ffltu(unsigned int value)
+{
+    cmp r0, #0
+    bxeq lr
+    mov r3, #0x9e
+    bmi _L01c
+    clz ip, r0
+    movs r0, r0, lsl ip
+    sub r3, r3, ip
+_L01c:
+    ands r2, r0, #0xff
+    add r0, r0, r0
+    mov r0, r0, lsr #9
+    orr r0, r0, r3, lsl #23
+    bxeq lr
+    stmdb sp!, {r0, r2, r3, ip, lr}
+    bl func_0207322c
+    mov r1, r0
+    ldmia sp!, {r0, r2, r3, ip, lr}
+    ldr r3, [r1]
+    tst r3, #0x1000
+    dcd 0x1a000032
+    orr r3, r3, #0x10
+    str r3, [r1]
+    tst r3, #0x800000
+    bxne lr
+    tst r3, #0x400000
+    dcd 0x1a000024
+    tst r2, #0x80
+    bxeq lr
+    ands r1, r2, #0x7f
+    andeqs r1, r0, #1
+    addne r0, r0, #1
+    bx lr
+}

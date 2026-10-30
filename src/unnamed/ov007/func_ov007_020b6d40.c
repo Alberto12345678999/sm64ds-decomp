@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007Work.h"
+#include "Ov007BgLayer.h"
 extern char *data_ov007_0210342c;
 extern int data_ov007_020d7e28[];
 extern int data_ov007_020d7e38[];
@@ -15,7 +16,7 @@ extern void func_ov007_020b72fc(char *c, int n);
 extern int func_ov007_020c9688(int a);
 extern void *func_ov007_020ade58(int self);
 extern void func_ov007_020b72d8(char *c, int n);
-extern int *func_ov007_020c95fc(void *a, int b, int c);
+extern Ov007BgLayer *func_ov007_020c95fc(void *a, int b, int c);
 extern int func_ov007_020adc08(int type, char *obj);
 
 /* A func_ov007_020c9988 palette (func_ov007_020c3398 builds the 8-byte
@@ -35,14 +36,14 @@ typedef struct Ov007Palette {
 typedef struct Ov007Display {
     char pad_00[0x24];
     /* 0x24: four func_ov007_020c99d8 character records; func_ov007_020c33d0
-     * loads one into OBJ VRAM */
+     * loads one into a chosen BG or OBJ character VRAM */
     void **characters;
     char pad_28[4];
     Ov007Palette **palettes; /* 0x2c: six func_ov007_020c9988 palettes */
     char pad_30[4];
     /* 0x34: eight func_ov007_020c95fc BG layers, each wrapped by
      * func_ov007_020adc08 into a layer slot */
-    int **bgLayers;
+    Ov007BgLayer **bgLayers;
     char pad_38[4];
     char **spriteBanks; /* 0x3c: six func_ov007_020c9688 sprite banks */
 } Ov007Display;
@@ -56,8 +57,7 @@ typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 
-void func_ov007_020b6d40(void)
-{
+void func_ov007_020b6d40(void) {
     Ov007Display *c;
     int i;
     int tmp;

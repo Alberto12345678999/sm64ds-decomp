@@ -4,7 +4,6 @@
 #include "GX.h"
 
 extern "C" {
-extern void func_020541a4(void);
 extern void func_02054430(int a);
 
 #define BG0CNT (*(volatile u16 *)0x4000008)
@@ -17,7 +16,7 @@ extern void func_02054430(int a);
 void func_ov007_020bd648(int mode) {
     switch (mode) {
     case 1:
-        func_020541a4();
+        GX::ResetBankForBG();
         GX::SetGraphicsMode(1, 0, 1);
         GX::SetBankForBG(8);
         BG1CNT = (BG1CNT & 0x43) | 4;
@@ -29,12 +28,12 @@ void func_ov007_020bd648(int mode) {
         BG2CNT = (BG2CNT & ~3);
         break;
     case 2:
-        func_020541a4();
+        GX::ResetBankForBG();
         func_02054430(8);
         GX::SetBankForBG(0x10);
         break;
     case 3:
-        func_020541a4();
+        GX::ResetBankForBG();
         GX::SetGraphicsMode(1, 3, 1);
         GX::SetBankForBG(8);
         BG3CNT = (BG3CNT & 0x43) | 0x4284;
@@ -47,7 +46,7 @@ void func_ov007_020bd648(int mode) {
         BG0CNT = (BG0CNT & ~3) | 1;
         break;
     case 6:
-        func_020541a4();
+        GX::ResetBankForBG();
         GX::SetGraphicsMode(1, 0, 1);
         GX::SetBankForBG(8);
         BG1CNT = (BG1CNT & 0x43) | 4;

@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
+#include "nitro/card/card_common.h"
 extern "C" {
 extern char data_020a8180[];
 extern int data_020a6134[];
 void OS_SleepThread(void* p);
-void func_02060228(void* fn);
 int func_0206071c(void* g);
 }
 namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
@@ -41,7 +41,7 @@ extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
     g->d = d;
     g->e = e;
     if (f != 0) {
-        func_02060228((void*)func_0206071c);
+        CARDi_SetTask((void *)func_0206071c);
         return 1;
     }
     *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];

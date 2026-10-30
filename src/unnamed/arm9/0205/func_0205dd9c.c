@@ -1,7 +1,7 @@
 extern int func_0205de9c(char *arg0, int arg1, int arg2);
 extern void func_0205a588(int a, int b, int c);
 extern void Crash(void);
-extern void func_020048d8(int a);
+extern void MIi_UncompressBackward(int a);
 
 extern char data_0209aff8[];
 extern char data_0209a7ec[];
@@ -10,7 +10,7 @@ extern char data_0209a7ec[];
  * digest when the halfword at 0x027ffc40 reads 2 and the overlay is
  * flagged authenticated (func_0205de9c against its 20-byte entry at
  * data_0209a7ec), clearing the image and crashing on failure; decompress it
- * in place when flagged compressed (func_020048d8, the backward
+ * in place when flagged compressed (MIi_UncompressBackward, the backward
  * decompressor, given the end of the compressed image); then run its static
  * initializers from sinit_init to sinit_init_end. FSOverlayInfo is the SDK's
  * header layout; FS_LoadOverlay passes the record func_02018c00 filled. */
@@ -53,7 +53,7 @@ void func_0205dd9c(char *self) {
         }
     }
     if (ovi->flag & 1) {
-        func_020048d8((int)ovi->ram_address + r4);
+        MIi_UncompressBackward((int)ovi->ram_address + r4);
     }
     {
         FSOverlayInitFunc *p = ovi->sinit_init;

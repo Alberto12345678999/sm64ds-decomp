@@ -1,6 +1,7 @@
-/* GX -- VRAM bank/transfer helpers (Nitro SDK namespace, not a class).
- * Owns .text 0x02056870..0x02056c1c: the palette/texture upload family
- * (LoadBGPltt .. BeginLoadTex). Below sits GXS::LoadBGPltt at 0x02056808;
+/* GX -- 3D VRAM uploads (the Nitro SDK's gx_load3d.c).
+ * Owns .text 0x020568cc..0x02056c1c: the texture and texture-palette upload
+ * family (EndLoadTexPltt .. BeginLoadTex). Below sits GX::LoadBGPltt at
+ * 0x02056870, the last function of gx_load2d.c (src/engine/gx/GXS.cpp);
  * above is Copy48BytesFixed at 0x02056c1c.
  */
 // leftovers: the DMASyncWordTransfer declaration stays wide (local extern):
@@ -25,14 +26,10 @@ extern u16 data_02086326[];
 extern u16 data_02086328[];
 
 extern "C" {
-extern u16 func_02054168(void);
-extern u16 func_0205417c(void);
 extern void func_02059fa8(int ch);
 extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
-extern void DMASyncHalfTransfer(u32 channel, void *src, void *dst, u32 numHalfs);
 // local extern: u8 channel per the definition inserts a narrowing op at the call
 extern void DMASyncWordTransfer(unsigned int channel, const void *src, void *dest, unsigned int len);
-extern void MultiCopyHalf(const void *src, void *dst, s32 size);
 extern void MultiCopy_Int(int *src, int *dst, int len);
 }
 
@@ -40,7 +37,7 @@ namespace GX {
 
 // @symbol _ZN2GX12BeginLoadTexEv
 void BeginLoadTex() {
-    int r = func_0205417c();
+    int r = GX::ResetBankForTex();
     int i = r * 6;
     data_020a60b8 = r;
     data_020a60ac = (int)*(u16 *)((char *)data_02086324 + i) << 12;
@@ -101,7 +98,7 @@ void EndLoadTex()
 
 // @symbol _ZN2GX16BeginLoadTexPlttEv
 void BeginLoadTexPltt() {
-    int r = func_02054168();
+    int r = GX::ResetBankForTexPltt();
     data_020a60b4 = r;
     data_020a60b0 = (int)data_02086314[r >> 4] << 12;
 }
@@ -128,17 +125,6 @@ void EndLoadTexPltt(){
     SetBankForTexPltt(data_020a60b4);
     data_020a60b4 = 0;
     data_020a60b0 = 0;
-}
-
-// Loads BG palette data to main-screen (GX) palette VRAM at 0x05000000.
-// @symbol _ZN2GX10LoadBGPlttEPKvjj
-void LoadBGPltt(const void* src, unsigned int offset, unsigned int size){
-    int channel = data_02099fd0;
-    if (channel != -1) {
-        DMASyncHalfTransfer(channel, (void*)src, (void*)(offset + 0x05000000), size);
-    } else {
-        MultiCopyHalf(src, (void*)(offset + 0x05000000), size);
-    }
 }
 
 }

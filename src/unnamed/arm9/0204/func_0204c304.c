@@ -1,7 +1,13 @@
 #include "types.h"
 
-typedef struct Node { struct Node *next; struct Node *prev; } Node;
-typedef struct List { Node *head; int count; } List;
+typedef struct Node {
+    struct Node *next;
+    struct Node *prev;
+} Node;
+typedef struct List {
+    Node *head;
+    int count;
+} List;
 
 typedef struct Bf40 {
     u16 f0 : 5;
@@ -10,23 +16,23 @@ typedef struct Bf40 {
 } Bf40;
 
 typedef struct Particle {
-    u8 pad0[8];   /* 0x0 */
-    Vector3 v8;   /* 0x8 */
-    Vector3 v14;  /* 0x14 */
-    int i20;      /* 0x20 */
-    int i24;      /* 0x24 */
-    int i28;      /* 0x28 */
-    u16 h2c;      /* 0x2c */
-    u16 h2e;      /* 0x2e */
-    int i30;      /* 0x30 */
-    s16 sh34;     /* 0x34 */
-    u16 h36;      /* 0x36 */
-    s16 sh38;     /* 0x38 */
-    u16 h3a;      /* 0x3a */
-    u16 h3c;      /* 0x3c */
-    u16 h3e;      /* 0x3e */
-    Bf40 bf40;    /* 0x40 */
-    u8 b42;       /* 0x42 */
+    u8 pad0[8];  /* 0x0 */
+    Vector3 v8;  /* 0x8 */
+    Vector3 v14; /* 0x14 */
+    int i20;     /* 0x20 */
+    int i24;     /* 0x24 */
+    int i28;     /* 0x28 */
+    u16 h2c;     /* 0x2c */
+    u16 h2e;     /* 0x2e */
+    int i30;     /* 0x30 */
+    s16 sh34;    /* 0x34 */
+    u16 h36;     /* 0x36 */
+    s16 sh38;    /* 0x38 */
+    u16 h3a;     /* 0x3a */
+    u16 h3c;     /* 0x3c */
+    u16 h3e;     /* 0x3e */
+    Bf40 bf40;   /* 0x40 */
+    u8 b42;      /* 0x42 */
 } Particle;
 
 typedef struct DefFlags {
@@ -50,20 +56,41 @@ typedef struct Def {
     u8 ff;          /* 0xf */
 } Def;
 
+/* Particle::SystemDefinition (include/Particle__Manager.h): child is the
+   0x14-byte child record, present when data's flags bit 16 is set. */
+typedef struct SystemDefinition {
+    void *data;   /* 0x00 */
+    void *opt[4]; /* 0x04 */
+    Def *child;   /* 0x14 */
+} SystemDefinition;
+
+/* Particle::System (include/Particle__System.h): the second particle list
+   holds the children. */
+typedef struct ParticleSystem {
+    u8 pad_00[0x10];
+    List children;                 /* 0x10 */
+    SystemDefinition *mDefinition; /* 0x18 */
+} ParticleSystem;
+
 extern u32 data_020a4d30;
 
 extern Node *func_0204d958(List *list);
 extern void func_0204d9a0(List *list, Node *node);
 
-void func_0204c304(Particle *self, u8 *mgr, List *freelist)
-{
+/* Spawn child->count particles from the parent particle self into sys's
+   child list. func_0204a730 calls it for a live particle at the emission
+   interval. Each child takes the parent's position and offset, the parent
+   velocity scaled by (level + 1) / 256 plus a random spread, and a scale
+   derived from the parent's. The other fields come from the child record or
+   the parent. */
+void func_0204c304(Particle *self, ParticleSystem *sys, List *freelist) {
     Particle *p;
     Def *def;
     int i;
     int eA, eB, eC, d1c;
     u32 rngA, rngC;
 
-    def = *(Def **)(*(u8 **)(mgr + 0x18) + 0x14);
+    def = sys->mDefinition->child;
     i = 0;
     if (i >= def->count)
         return;
@@ -82,24 +109,31 @@ void func_0204c304(Particle *self, u8 *mgr, List *freelist)
         if (p == 0)
             return;
 
-        func_0204d9a0((List *)(mgr + 0x10), (Node *)p);
+        func_0204d9a0(&sys->children, (Node *)p);
 
         p->v14 = self->v14;
 
         lvl = def->level + 1;
 
         data_020a4d30 = data_020a4d30 * rngA + rngC;
-        p->i20 = ((self->i20 * lvl) >> 8) + ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+        p->i20 = ((self->i20 * lvl) >> 8) +
+                 ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
 
         data_020a4d30 = data_020a4d30 * rngA + rngC;
-        p->i24 = ((self->i24 * lvl) >> 8) + ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+        p->i24 = ((self->i24 * lvl) >> 8) +
+                 ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
 
         data_020a4d30 = data_020a4d30 * rngA + rngC;
-        p->i28 = ((self->i28 * lvl) >> 8) + ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
+        p->i28 = ((self->i28 * lvl) >> 8) +
+                 ((def->spread * (int)(data_020a4d30 >> 0x17) - (def->spread << 8)) >> 8);
 
         p->v8 = self->v8;
 
-        { int c = *(volatile int *)&self->i30; int m = (c * self->sh34) >> 12; p->i30 = (m * (def->f9 + 1)) >> 6; }
+        {
+            int c = *(volatile int *)&self->i30;
+            int m = (c * self->sh34) >> 12;
+            p->i30 = (m * (def->f9 + 1)) >> 6;
+        }
 
         p->sh34 = (u16)d1c;
 
@@ -109,27 +143,27 @@ void func_0204c304(Particle *self, u8 *mgr, List *freelist)
             p->h3a = self->h3a;
 
         {
-            Bf40 *q = (Bf40 *)((u8 *)p + 0x40);
+            Bf40 *q = &p->bf40;
             q->f0 = (u16)((self->bf40.f0 * (self->bf40.f5 + 1)) >> 5);
             q->f5 = 0x1f;
         }
 
         {
-        int mode = def->flags.mode;
-        switch (mode) {
-        case 0:
-            p->h36 = (u16)eB;
-            p->sh38 = (s16)eB;
-            break;
-        case 1:
-            p->h36 = self->h36;
-            p->sh38 = (s16)eA;
-            break;
-        case 2:
-            p->h36 = self->h36;
-            p->sh38 = self->sh38;
-            break;
-        }
+            int mode = def->flags.mode;
+            switch (mode) {
+            case 0:
+                p->h36 = (u16)eB;
+                p->sh38 = (s16)eB;
+                break;
+            case 1:
+                p->h36 = self->h36;
+                p->sh38 = (s16)eA;
+                break;
+            case 2:
+                p->h36 = self->h36;
+                p->sh38 = self->sh38;
+                break;
+            }
         }
 
         p->h2c = def->f6;

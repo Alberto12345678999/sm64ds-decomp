@@ -10927,7 +10927,7 @@
    "n_files": 3,
    "files": [
     "src/Entry.c",
-    "src/unnamed/arm9/0200/func_020048d8.c",
+    "src/MIi_UncompressBackward.c",
     "src/AutoloadCallback.c"
    ],
    "ext_mix": {
@@ -11054,10 +11054,10 @@
    "n_files": 2903,
    "files": [
     "src/engine/cp15/CP15_SystemSetup.cpp",
-    "src/unnamed/arm9/0200/func_02005000.c",
-    "src/unnamed/arm9/0200/func_02005060.c",
-    "src/unnamed/arm9/0200/func_02005098.c",
-    "src/unnamed/arm9/0200/func_020050dc.c",
+    "src/unnamed/arm9/0200/func_02005000.cpp",
+    "src/unnamed/arm9/0200/func_02005060.cpp",
+    "src/unnamed/arm9/0200/func_02005098.cpp",
+    "src/unnamed/arm9/0200/func_020050dc.cpp",
     "src/unnamed/arm9/0200/func_02005110.c",
     "src/unnamed/arm9/0200/func_02005324.c",
     "src/func_02005348.c",
@@ -11354,12 +11354,6 @@
     "src/func_02013524.c",
     "src/GetLevelPart.c",
     "src/SublevelToLevel.c",
-    "src/unnamed/arm9/0201/func_02013568.c",
-    "src/unnamed/arm9/0201/func_02013580.c",
-    "src/unnamed/arm9/0201/func_02013598.c",
-    "src/unnamed/arm9/0201/func_020135d0.c",
-    "src/unnamed/arm9/0201/func_0201361c.c",
-    "src/unnamed/arm9/0201/func_02013638.c",
     "src/_ZN8SaveData21SetCoinRecordIfHigherEah.cpp",
     "src/_ZN8SaveData13GetCoinRecordEj.cpp",
     "src/NumStars.c",
@@ -11410,7 +11404,7 @@
     "src/ShowCrashScreen.c",
     "src/nds_printt.c",
     "src/nds_printf.c",
-    "src/unnamed/arm9/0201/func_0201473c.c",
+    "src/nds_vprintf.c",
     "src/nds_print.c",
     "src/unnamed/arm9/0201/func_020147bc.c",
     "src/_ZN19CylinderClsnWithPos4InitERK7Vector35Fix12IiES4_jj.c",
@@ -11653,7 +11647,7 @@
     "src/unnamed/arm9/0201/func_02018b64.c",
     "src/unnamed/arm9/0201/func_02018c00.c",
     "src/unnamed/arm9/0201/func_02018cbc.c",
-    "src/unnamed/arm9/0201/func_02018d48.c",
+    "src/myFS_ReadFile.c",
     "src/unnamed/arm9/0201/func_02018d98.c",
     "src/unnamed/arm9/0201/func_02018dc4.c",
     "src/unnamed/arm9/0201/func_02018e00.c",
@@ -14222,8 +14216,8 @@
    "n_functions_map": 5,
    "n_files": 2,
    "files": [
-    "src/unnamed/arm9/01ff/func_01ffa344.c",
-    "src/unnamed/arm9/01ff/func_01ffa4bc.c"
+    "src/_ffix.c",
+    "src/_fflt.c"
    ],
    "ext_mix": {
     ".c": 2
@@ -14379,13 +14373,13 @@
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/unnamed/arm9/01ff/func_01ffdb28.c",
+    "src/OSi_DoBoot.c",
     "src/OSReadROMArea.c",
     "src/unnamed/arm9/01ff/func_01ffdd08.c",
     "src/unnamed/arm9/01ff/func_01ffdd98.c",
     "src/DMAStartTransferFB.c",
     "src/DMAStartTransfer.c",
-    "src/unnamed/arm9/01ff/func_01ffde98.c"
+    "src/MI_SendGXCommand.c"
    ],
    "ext_mix": {
     ".c": 7
@@ -23479,10 +23473,6 @@
     "src/unnamed/ov007/func_ov007_020b257c.c",
     "src/unnamed/ov007/func_ov007_020b2614.c",
     "src/unnamed/ov007/func_ov007_020b2728.c",
-    "src/unnamed/ov007/func_ov007_020b2764.c",
-    "src/unnamed/ov007/func_ov007_020b283c.c",
-    "src/unnamed/ov007/func_ov007_020b2998.c",
-    "src/unnamed/ov007/func_ov007_020b2bd4.c",
     "src/unnamed/ov007/func_ov007_020b2cf0.c",
     "src/unnamed/ov007/func_ov007_020b2e64.c",
     "src/unnamed/ov007/func_ov007_020b3f20.c",
@@ -23616,12 +23606,6 @@
     "src/unnamed/ov007/func_ov007_020bdbcc.c",
     "src/unnamed/ov007/func_ov007_020be0dc.c",
     "src/unnamed/ov007/func_ov007_020be8b8.c",
-    "src/unnamed/ov007/func_ov007_020be964.c",
-    "src/unnamed/ov007/func_ov007_020be980.c",
-    "src/unnamed/ov007/func_ov007_020be9ac.c",
-    "src/unnamed/ov007/func_ov007_020bea44.cpp",
-    "src/unnamed/ov007/func_ov007_020beaa0.c",
-    "src/unnamed/ov007/func_ov007_020beb80.c",
     "src/unnamed/ov007/func_ov007_020bed60.c",
     "src/unnamed/ov007/func_ov007_020beeb0.c",
     "src/unnamed/ov007/func_ov007_020bf690.c",
@@ -31265,7 +31249,7 @@
    "n_functions_map": 3,
    "n_files": 1,
    "files": [
-    "src/unnamed/arm9/01ff/func_01ff859c.c"
+    "src/_ll_ufrom_d.c"
    ],
    "ext_mix": {
     ".c": 1

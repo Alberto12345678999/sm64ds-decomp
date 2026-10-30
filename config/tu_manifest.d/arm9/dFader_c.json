@@ -27,7 +27,7 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN10dFdDummy_c14SetForwardTimeEj",
+      "symbol": "_ZN10dFdDummy_c14SetForwardTimeEjj",
       "address": "0x020171c8",
       "size": "0x00000028",
       "legacy_source": "src/_ZN10dFdDummy_c14SetForwardTimeEj.cpp",
@@ -174,7 +174,7 @@
       "ordinal": 20
     },
     {
-      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEjj",
       "address": "0x02017698",
       "size": "0x00000040",
       "legacy_source": "src/engine/fader/_ZN15dFdBrightness_c14SetForwardTimeEj.cpp",
@@ -591,7 +591,7 @@
       "source": "0x0208ea7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN10dFdDummy_c14SetForwardTimeEj",
+      "symbol": "_ZN10dFdDummy_c14SetForwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x020171c8"
@@ -701,7 +701,7 @@
       "source": "0x0208eaac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017698"
@@ -811,7 +811,7 @@
       "source": "0x0208eadc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017698"
@@ -951,7 +951,7 @@
       "source": "0x0208eb3c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c14SetForwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017698"

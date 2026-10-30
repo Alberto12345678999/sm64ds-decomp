@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Tween.h"
 
 extern void func_ov007_020c90c0(void *self);
 /* SubVec3/LenVec3 still define their vector as their own struct Vec3;
@@ -9,78 +10,65 @@ extern int LenVec3(struct Vec3 *v);
 extern void NormalizeVec3(int *v, int *out); /* as defined */
 extern void func_02053320(int s, int *a, int *b, int *out);
 
-struct T
-{
-  int state;
-  int sub;
-  char pad_8[4];
-  s16 f_c;
-  char pad_e[2];
-  int *f10;
-  int f14;
-  int f18;
-  int f1c;
-  int f20;
-  int f24;
-  int f28;
-};
-
-int func_ov007_020c8de0(struct T *o) {
+/* One frame of a vector tween: mode 0 blends *out from `from` to `to` by t
+ * (then steps t, func_ov007_020c90c0), mode 1 moves *out toward `to` by
+ * at most step. Returns 1 once it has arrived (state 3). */
+int func_ov007_020c8de0(Ov007VecTween *o) {
     Vector3 tmp;
     if (o->state == 2) {
         o->state = 3;
     }
     if (o->state == 1) {
-        switch (o->sub) {
+        switch (o->mode) {
         case 0: {
             {
-                int t0 = o->f_c;
-                int a0 = o->f20;
-                int b0 = o->f14;
-                o->f10[0] =
+                int t0 = o->t;
+                int a0 = o->to.x;
+                int b0 = o->from.x;
+                o->out->x =
                     (t0 >= 0x1000)
                         ? (a0)
                         : ((t0 <= 0)
                                ? (b0)
-                               : (((((s64)(0x1000 - t0)) * b0) + (((s64)t0) * o->f20)) >> 0xc));
+                               : (((((s64)(0x1000 - t0)) * b0) + (((s64)t0) * o->to.x)) >> 0xc));
             }
             {
-                int t1 = o->f_c;
-                int a1 = o->f24;
-                int b1 = o->f18;
-                o->f10[1] =
+                int t1 = o->t;
+                int a1 = o->to.y;
+                int b1 = o->from.y;
+                o->out->y =
                     (t1 >= 0x1000)
                         ? (a1)
                         : ((t1 <= 0)
                                ? (b1)
-                               : (((((s64)(0x1000 - t1)) * b1) + (((s64)t1) * o->f24)) >> 0xc));
+                               : (((((s64)(0x1000 - t1)) * b1) + (((s64)t1) * o->to.y)) >> 0xc));
             }
             {
-                int t2 = o->f_c;
-                int a2 = o->f28;
-                int b2 = o->f1c;
-                o->f10[2] =
+                int t2 = o->t;
+                int a2 = o->to.z;
+                int b2 = o->from.z;
+                o->out->z =
                     (t2 >= 0x1000)
                         ? (a2)
                         : ((t2 <= 0)
                                ? (b2)
-                               : (((((s64)(0x1000 - t2)) * b2) + (((s64)t2) * o->f28)) >> 0xc));
+                               : (((((s64)(0x1000 - t2)) * b2) + (((s64)t2) * o->to.z)) >> 0xc));
             }
             func_ov007_020c90c0(o);
             break;
         }
 
         case 1: {
-            int *dst = o->f10;
-            int r5 = *((int *)(((char *)o) + 8));
+            Vector3 *dst = o->out;
+            int step = o->step;
             int ok; /* stays a flag: setting state inside the arm shrinks it (0x170) */
-            SubVec3((struct Vec3 *)(&o->f20), (struct Vec3 *)dst, (struct Vec3 *)&tmp);
-            if (LenVec3((struct Vec3 *)&tmp) <= r5) {
-                *((Vector3 *)dst) = *((Vector3 *)(&o->f20));
+            SubVec3((struct Vec3 *)&o->to, (struct Vec3 *)dst, (struct Vec3 *)&tmp);
+            if (LenVec3((struct Vec3 *)&tmp) <= step) {
+                *dst = o->to;
                 ok = 1;
             } else {
                 NormalizeVec3((int *)&tmp, (int *)&tmp);
-                func_02053320(r5, (int *)(&tmp), dst, dst);
+                func_02053320(step, (int *)&tmp, (int *)dst, (int *)dst);
                 ok = 0;
             }
             if (ok) {

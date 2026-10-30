@@ -1,14 +1,7 @@
 #include "types.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
-
-/* The 0x38-byte BG layer record (func_ov007_020c0aa8); names as in
- * func_ov007_020adc08, only the buffer this file recolours. */
-typedef struct Ov007BgLayer {
-    char pad_00[0x10];
-    void *screen; /* 0x10: func_ov007_020c076c uploads it to BG screen VRAM */
-    void *source; /* 0x14: func_ov007_020c0638 rebuilds screen from it */
-} Ov007BgLayer;
+#include "Ov007BgLayer.h"
 
 /* func_ov007_020adc08's 0xc-byte layer slot; names as in that file. */
 typedef struct Ov007LayerSlot {

@@ -5000,7 +5000,7 @@ register forms:
 ```
 ldr r12,[pc,#0] ; bx r12   58 sites   <- compiler output; 56 have a src file, 0 NONMATCHING
 ldr r0, [pc,#0] ; bx lr     4 sites   <- not a veneer: returns a constant address
-ldr r1, [pc,#0] ; bx r1     1 site    <- func_02057014, the only one
+ldr r1, [pc,#0] ; bx r1     1 site    <- func_02057014 (OS_UnLockCartridge), the only one
 ```
 So the ip form is a solved shape (a one-line tail call in a plain `.c` file reproduces it;
 of the 56 banked sources, 33 are plain `.c` files that do exactly that and the other 23 are

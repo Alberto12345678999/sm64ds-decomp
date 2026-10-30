@@ -1,14 +1,23 @@
 #include "types.h"
+/* A calibrated touch-panel sample, as func_0203b9bc returns it (NitroSDK
+   TPData's x, y, touch, validity). */
+struct Col4 {
+    u16 x, y, touch, validity;
+};
+
+/* The per-frame input record at data_020a1040 (0x24 bytes; data_020a1154
+   holds four of them, one per player). func_0203dafc stores the camera's
+   input yaw at 0x10 (dCamera_c.h). */
 typedef struct {
-    s32 unk0;
-    u8 unk4, unk5, unk6, unk7, unk8, unk9, unkA, unkB;
-    u16 unkC, unkE, unk10;
+    s32 frame;         /* 0x00 -- counts up once per frame here */
+    struct Col4 touch; /* 0x04 */
+    u16 flags;         /* 0x0c -- 0x8000 set every frame here */
+    u16 keys;          /* 0x0e -- pressed buttons (PAD_Read inlined) */
+    u16 inputYaw;      /* 0x10 -- the camera's input yaw */
     u8 unk12[0x10];
     u8 unk22;
     u8 unk23;
 } Rec;
-
-struct Col4 { u16 a, b, c, d; };
 
 extern Rec data_020a1040;
 extern u8 data_020a0f04;
@@ -23,20 +32,25 @@ extern void func_0203e20c(void);
 extern void func_0203e0ac(void);
 extern void func_02040724(void);
 
-void func_0203df40(void)
-{
+/* Sample this frame's local input into data_020a1040, the buttons and the
+   calibrated touch point, then run the link step for the current mode
+   (data_020a0f04: 0 local only, func_0203e0ac; 1 and 2 func_0203ea5c; 3
+   func_0203e20c) and count the frame. When the mode has just dropped back to
+   0 from 1 or 2, it shuts the link down with func_02040724. */
+void func_0203df40(void) {
     struct Col4 col;
     u8 sel;
 
-    data_020a1040.unkE = ((*(volatile u16 *)0x4000130 | *(volatile u16 *)0x27fffa8) ^ 0x2fff) & 0x2fff;
+    data_020a1040.keys =
+        ((*(volatile u16 *)0x4000130 | *(volatile u16 *)0x27fffa8) ^ 0x2fff) & 0x2fff;
 
     func_0203b9bc(&col);
 
-    *(u16 *)&data_020a1040.unk4 = col.a;
-    *(u16 *)&data_020a1040.unk6 = col.b;
-    *(u16 *)&data_020a1040.unk8 = col.c;
-    *(u16 *)&data_020a1040.unkA = col.d;
-    data_020a1040.unkC |= 0x8000;
+    data_020a1040.touch.x = col.x;
+    data_020a1040.touch.y = col.y;
+    data_020a1040.touch.touch = col.touch;
+    data_020a1040.touch.validity = col.validity;
+    data_020a1040.flags |= 0x8000;
 
     sel = data_020a0f04;
     switch (sel) {
@@ -56,7 +70,7 @@ void func_0203df40(void)
         break;
     }
 
-    data_020a1040.unk0 += 1;
+    data_020a1040.frame += 1;
 
     if (data_020a0f04 == 0) {
         switch (data_020a0f98) {

@@ -1,7 +1,8 @@
 // cpp
-/* unit020be0dc -- ov007 unit 0x020be0dc..0x020be964: 8 functions, .text only.
+/* unit020be0dc -- ov007 unit 0x020be0dc..0x020bed60: 14 functions, .text only.
  *
- * The title menu's particle-tracking sprites. ov007 is the title and
+ * The title menu's figures and the particle-tracking sprites that follow
+ * them. ov007 is the title and
  * file-select menu program that dScDSMT_c hosts; outside dScDSMT_c it has no
  * ROM RTTI or vtable, so no class name is claimed and the file keeps the
  * unit<addr> name.
@@ -20,11 +21,25 @@
  * projects a particle into screen pixels). func_ov007_020be3bc copies the
  * affine matrices into the sub screen's OAM buffer.
  *
- * Edges: the bss word 0x02104bc0 is referenced by these functions and
- * nothing else in the overlay. The previous function, func_ov007_020be098,
- * is the last of the sound module (bss 0x02104ba4..0x02104bc0); the next
- * one, func_ov007_020be964, references no ov007 data and is called only
- * from func_ov007_020b0a20 and func_ov007_020b2614.
+ * The figures are the two 0x1c-byte Ov007Figure records the work block
+ * holds (figure, altFigure). func_ov007_020beaa0 builds one around an
+ * Ov007Model and func_ov007_020bea44 frees it; func_ov007_020be9ac poses it
+ * each frame and func_ov007_020beb80 then aims its particle system along
+ * bone 0's motion; func_ov007_020be980 starts an animation on it and
+ * func_ov007_020be964 holds that animation.
+ *
+ * Edges: the bss word 0x02104bc0 is referenced by 0x020be0dc..0x020be964
+ * and nothing else in the overlay. The .rodata tables put the figure
+ * functions in the same unit: data_ov007_020d7c5c (func_ov007_020bea44,
+ * func_ov007_020beaa0) lies between data_ov007_020d7c58
+ * (func_ov007_020be0dc, func_ov007_020be7a8) and data_ov007_020d7c6c
+ * (func_ov007_020be50c), and one unit's .rodata is contiguous.
+ * func_ov007_020beaa0 alone uses the bss array 0x02104bc4..0x02104bd4,
+ * right after 0x02104bc0. func_ov007_020beb80 references no ov007 data; its
+ * one caller is func_ov007_020be9ac and it works on the same figure record.
+ * The previous function, func_ov007_020be098, is the last of the sound
+ * module (bss 0x02104ba4..0x02104bc0); the next one, func_ov007_020bed60,
+ * starts unit020bed60 (bss 0x02104bd4).
  *
  * Emission order: mwccarm 2004/b56 emits one .text section per function in
  * the reverse of source order, so the highest-address function is written
@@ -35,21 +50,37 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
 #include "cstd.h"
+#include "Vector3s.h"
 #include "dExtModel_c.h"
+#include "nitro/fx/fx.h"
 #include "types.h"
 
 extern "C" {
 
+/* Vector3 declares a constructor and destructor under C++, which makes its
+ * assignment copy word by word. The ROM copies these with C's ldm/stm block
+ * move, which C++ keeps for a struct with an array member. */
+typedef struct Vec3Words {
+    Fix12i w[3];
+} Vec3Words;
+
+/* The same for Vector3s's six-byte halfword copy. */
+typedef struct Vec3sWords {
+    s16 w[3];
+} Vec3sWords;
+
 /* func_ov007_020c9110's animation player; names as in func_ov007_020bc02c,
  * only the slots this file reads. */
 typedef struct Ov007AnimPlayer {
-    char pad_00[0xc];
+    /* 0x00: 0 playing; 1 held; func_ov007_020c9110 sets 2 when a one-shot ends */
+    s32 state;
+    char pad_04[8];
     s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
     char pad_0e[2];
     u16 frame; /* 0x10: the whole frame func_ov007_020c9110 last reached */
 } Ov007AnimPlayer;
 
-/* The model record func_ov007_020bc6d4 allocates; names as in
+/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
  * func_ov007_020bc02c, only the slots this file reads. */
 typedef struct Ov007Model {
     struct ModelComponents *model; /* 0x00 */
@@ -57,18 +88,51 @@ typedef struct Ov007Model {
     Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
     char pad_1c[0x78];
     int visible; /* 0x94: func_ov007_020bbff0 renders only while it is nonzero */
+    /* 0x98: 1 on the frames that step the animations (func_ov007_020bc02c) */
+    int animTick;
 } Ov007Model;
 
-/* func_ov007_020beaa0's 0x1c-byte figure; func_ov007_020be850 returns one. */
-typedef struct Ov007Figure {
-    char pad_00;
+typedef char
+    Ov007Model_animTick_must_be_at_0x98[(int)&((Ov007Model *)0)->animTick == 0x98 ? 1 : -1];
+
+/* The 0x1c-byte figure func_ov007_020beaa0 builds around an Ov007Model:
+ * Ov007Work's figure (index 0) and altFigure (index 1);
+ * func_ov007_020be850 returns one of them. */
+typedef struct Ov007Figure Ov007Figure;
+struct Ov007Figure {
+    u8 index;       /* 0x00: 0 for Ov007Work::figure, 1 for altFigure */
     u8 figureIndex; /* 0x01: a copy of Ov007Work's figureIndex */
-    /* 0x02: func_ov007_020beaa0 seeds it (figure index != 0); this file
-   * hands it to func_ov007_020b7690, the particle system lookup */
+    /* 0x02: func_ov007_020beaa0 seeds it (index != 0); this file hands it
+     * to func_ov007_020b7690, the particle system lookup */
     u8 particleIndex;
     char pad_03;
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-} Ov007Figure;
+    /* 0x08: bone 0's yaw, from func_020538b8 (atan2) of its third rotation
+     * row; func_ov007_020beb80 refreshes it on the stepped frames */
+    int yaw;
+    Vector3 prevPos; /* 0x0c: bone 0's translation on the last stepped frame */
+    /* 0x18: the per-frame hook; func_ov007_020b0a20 installs one there */
+    void (*update)(Ov007Figure *);
+};
+
+typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
+
+/* The particle system func_ov007_020b7690 hands back, a Particle::System
+ * (include/Particle__System.h): only the fields func_ov007_020beb80 writes,
+ * under the header's names, plus the byte at 0x58 that the header leaves in
+ * its padding. */
+typedef struct Ov007ParticleSystem {
+    u8 pad_00[0x1c];
+    /* 0x1c: bit 1 is the callback flag that suppresses spawning */
+    int callbackFlags;
+    Vector3 position; /* 0x20 */
+    u8 pad_2c[0x10];
+    Vector3s direction; /* 0x3c */
+    u8 pad_42[0xa];
+    int callbackVelocity; /* 0x4c */
+    u8 pad_50[8];
+    u8 spawnFrames; /* 0x58: 1..5, fewer the faster the figure moves */
+} Ov007ParticleSystem;
 
 /* The 0x44-byte OAM sprite node func_ov007_020c11ac allocates; names as in
  * func_ov007_020c10ec and func_ov007_020ade58, only the slots this file
@@ -209,13 +273,188 @@ extern void func_ov007_020c3d1c(void *p);
 extern int func_ov007_020c3df4(int a, void *b);
 extern void func_ov007_020c3e7c(char *c);
 extern void func_ov007_020c3ee8(int *c, int x);
-extern void *func_ov007_020c3f00(int *r6, void *r4);
+extern void *func_ov007_020c3f00(int *layout, int extraAnims);
 extern void func_ov007_020c3fe4(void *self);
+
+/* the figure and its files */
+extern int data_ov007_020d7c5c[2][2]; /* [figureIndex][index]: animation file */
+extern void *data_ov007_02104bc4[2][2];
+extern int func_02053644(s16 *v);
+extern void func_02053380(s16 *in, s16 *out);
+extern void func_ov007_020b3edc(int idx);
+extern void *func_ov007_020b3f20(int idx);
+extern int func_ov007_020aebac(void);
+extern void func_ov007_020bc02c(char *model, void *viewMatrix);
+extern void func_ov007_020bc3dc(void *model, int anim, int a2);
+extern void func_ov007_020bc53c(int model);
+extern void func_ov007_020bc6b4(int *model, int files, int count);
+extern void *func_ov007_020bc6d4(void *file, int flags);
 
 /* The extern keeps the tree's char * spelling of the work block; the typed
  * view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SPRITES data_ov007_02104bc0
+
+// @symbol func_ov007_020beb80
+/* Points the figure's particle system along bone 0's motion: on the frames
+ * the model steps, refreshes the figure's yaw and remembered position; while
+ * the model is shown and its animation is not finished, moves the system to
+ * the bone and aims it along the motion since the last step, faster and
+ * spawning more often the faster the bone moves; otherwise hides it. */
+void func_ov007_020beb80(Ov007Figure *fig) {
+    struct ModelComponents *comps = fig->model->model;
+    Matrix4x3 *bone0 = comps->transforms;
+    int *row = &bone0->r.m[6];
+    int yaw;
+    Vector3s motion;
+    Ov007ParticleSystem *sys;
+    int frames;
+    int vel;
+    int speed;
+    Vector3 *pos = &bone0->t;
+    yaw = func_020538b8(row[0], row[2]);
+    motion.x = (short)(pos->x - fig->prevPos.x);
+    motion.y = (short)(pos->y - fig->prevPos.y);
+    motion.z = (short)(pos->z - fig->prevPos.z);
+    if (fig->model->animTick != 0) {
+        fig->yaw = yaw;
+        *(Vec3Words *)&fig->prevPos = *(Vec3Words *)pos;
+    }
+    sys = (Ov007ParticleSystem *)func_ov007_020b7690(fig->particleIndex);
+    {
+        Ov007Model *m = fig->model;
+        if (m->visible != 0 && (unsigned)m->boneAnim->state <= 1) {
+            vel = 0;
+            frames = 0x1000;
+            if (motion.x != 0 || motion.y != 0 || motion.z != 0) {
+                int mag = (short)func_02053644((s16 *)&motion);
+                int t;
+                if (mag <= 0)
+                    speed = 0;
+                else if (mag >= 0xfa0)
+                    speed = 0x1000;
+                else
+                    speed = cstd::fdiv(mag, 0xfa0);
+                if (mag <= 0x1f4)
+                    t = 0;
+                else if (mag >= 0x3e8)
+                    t = 0x1000;
+                else
+                    t = cstd::fdiv(mag - 0x1f4, 0x1f4);
+                frames -= t;
+                func_02053380((s16 *)&motion, (s16 *)&motion);
+                *(Vec3sWords *)&sys->direction = *(Vec3sWords *)&motion;
+                vel = (short)FX_MUL(speed, 0x460);
+            }
+            sys->spawnFrames = (u8)(((frames << 2) >> 12) + 1);
+            sys->callbackVelocity = vel;
+            sys->callbackFlags &= ~2;
+            *(Vec3Words *)&sys->position = *(Vec3Words *)pos;
+        } else {
+            sys->callbackFlags |= 2;
+        }
+    }
+}
+
+// @symbol func_ov007_020beaa0
+/* Builds figure `index` (0 the figure, 1 the second) for the work block's
+ * figureIndex: makes the model from file 3, then hands func_ov007_020bc6b4
+ * two animation files to bind to it -- the figure's own from
+ * data_ov007_020d7c5c and a shared one (0xe, or 0xf when
+ * func_ov007_020aebac returns 0). */
+Ov007Figure *func_ov007_020beaa0(int index, int figureIndex) {
+    Ov007Figure *fig;
+    void *file;
+    int flags;
+
+    fig = (Ov007Figure *)func_ov007_020c3df4(0, (void *)sizeof(Ov007Figure));
+    fig->index = index;
+    fig->figureIndex = figureIndex;
+    /* Only a pointer-typed conditional gives the ROM's arm order (moveq #0
+     * before movne #1); every int spelling tried swaps the two. */
+    fig->particleIndex = (int)((index == 0) ? (char *)0 : (char *)1);
+
+    file = func_ov007_020b3f20(3);
+    data_ov007_02104bc4[index][0] = func_ov007_020b3f20(data_ov007_020d7c5c[figureIndex][index]);
+    data_ov007_02104bc4[index][1] = func_ov007_020b3f20(func_ov007_020aebac() != 0 ? 0xe : 0xf);
+
+    flags = 2;
+    if (index == 1)
+        flags |= 8;
+    fig->model = (Ov007Model *)func_ov007_020bc6d4(file, flags);
+    func_ov007_020bc6b4((int *)fig->model, (int)data_ov007_02104bc4[index], 2);
+
+    fig->yaw = 0;
+    fig->prevPos.z = 0;
+    fig->prevPos.y = fig->prevPos.z;
+    fig->prevPos.x = fig->prevPos.y;
+    fig->update = 0;
+    return fig;
+}
+
+// @symbol func_ov007_020bea44
+/* Frees a figure built by func_ov007_020beaa0: releases its files (3, its
+ * animation file, 0xe) and its model. It always releases 0xe, even when
+ * func_ov007_020beaa0 loaded 0xf instead. */
+void func_ov007_020bea44(Ov007Figure *fig) {
+    func_ov007_020b3edc(3);
+    func_ov007_020b3edc(data_ov007_020d7c5c[fig->figureIndex][fig->index]);
+    func_ov007_020b3edc(0xe);
+    if (fig->model != 0) {
+        func_ov007_020bc53c((int)fig->model);
+        fig->model = 0;
+    }
+    func_ov007_020c3d1c(fig);
+}
+
+// @symbol func_ov007_020be9ac
+/* Poses a figure for the frame: hides its model while the main model plays
+ * animation 1 or 2, and hides the second figure while figureIndex is 0;
+ * then poses the model under viewMatrix, runs the figure's hook and
+ * func_ov007_020beb80. */
+void func_ov007_020be9ac(Ov007Figure *fig, Ov007Model *owner, void *viewMatrix) {
+    switch (owner->boneAnim->anim) {
+    case 0:
+        break;
+    case 1:
+    case 2: {
+        Ov007Model *m = fig->model;
+        if (m->visible != 0)
+            m->visible = 0;
+        break;
+    }
+    }
+
+    {
+        Ov007Model *m = fig->model;
+        if (m->visible != 0 && fig->index == 1 && fig->figureIndex == 0)
+            m->visible = 0;
+    }
+
+    func_ov007_020bc02c((char *)fig->model, viewMatrix);
+    if (fig->update != 0)
+        fig->update(fig);
+    func_ov007_020beb80(fig);
+}
+
+// @symbol func_ov007_020be980
+/* Starts animation `anim` on the figure's model and shows it. */
+void func_ov007_020be980(Ov007Figure *fig, int anim, int a2) {
+    func_ov007_020bc3dc(fig->model, anim, a2);
+    fig->model->visible = 1;
+    fig->model->animTick = 1;
+}
+
+// @symbol func_ov007_020be964
+/* Holds the figure's bone animation if it is playing; returns its state. */
+int func_ov007_020be964(Ov007Figure *fig) {
+    s32 *state = &fig->model->boneAnim->state;
+    if (*state == 0) {
+        *state = 1;
+        return 1;
+    }
+    return *state;
+}
 
 // @symbol func_ov007_020be8b8
 /* Fills the sixteen affine matrices with uniform scales: matrix i scales by
@@ -335,7 +574,7 @@ void func_ov007_020be50c(void) {
     t = (int *)WORK->display->spriteBanks;
 
     SPRITES = (Ov007ParticleSprites *)func_ov007_020c3df4(0, (void *)sizeof(Ov007ParticleSprites));
-    SPRITES->group = (Ov007SpriteGroup *)func_ov007_020c3f00(&data_ov007_020d7c6c, (void *)2);
+    SPRITES->group = (Ov007SpriteGroup *)func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
 
     SPRITES->tracking = (TrackingRecord *)func_ov007_020c3df4(
         (int)&data_ov007_02103234, (void *)(data_ov007_020d7c6c * sizeof(TrackingRecord)));

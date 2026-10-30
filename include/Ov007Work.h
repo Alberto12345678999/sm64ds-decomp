@@ -6,7 +6,8 @@
 /* Reconstructed names and layout, not an original class identity.
  *
  * ov007's work block: func_ov007_020b68e8 allocates it,
- * func_ov007_020c3df4(data_ov007_02102dc4, 0x188), and stores it in
+ * func_ov007_020c3df4(data_ov007_02102dc4, 0x188), data_ov007_02102dc4 being
+ * the heap-name string "global data", and stores it in
  * data_ov007_0210342c; func_ov007_020b65e0 frees it with func_ov007_020c3d1c.
  * Each field below was named by the files that use it; where they agreed on
  * a name but not a type, the typed pointer is the one kept. Words no file
@@ -34,9 +35,12 @@ typedef struct Ov007Work {
     int cameraPreset; /* 0x024 */
     /* the 0x3c-byte record func_ov007_020b6a84 allocates */
     struct Ov007Settings *settings; /* 0x028 */
-    /* func_ov007_020b7138 takes it from its caller's argument record; called
-     * with a request id (0x12, 0x16, 0x17, ...), and func_ov007_020b0834
-     * stores what ids 0x16 / 0x17 return into the settings */
+    /* func_ov007_020b7138 takes it from its caller's argument record:
+     * dScDSMT_c's command dispatcher func_ov007_020cc600. Commands 1-3 set
+     * the sound mode, 4/5 the backlight, 8-10 erase a save file, 11-16 copy
+     * one, 17-19 change or stop the music, 0x14/0x15 read the save files /
+     * minigame data, 0x16 erases the files not in use, 0x17 saves the
+     * minigame data; it returns 1 when a save read or copy failed */
     int (*callback)(int id); /* 0x02c */
     /* both built by func_ov007_020c023c; func_ov007_020b2160 loads [0] into
      * the hardware projection and computes [1] into its own matrices */
@@ -58,9 +62,10 @@ typedef struct Ov007Work {
      * func_ov007_020af84c indexes data_ov007_020ccc20[selectedSlot][targetSlot] */
     int selectedSlot; /* 0x058 */
     int targetSlot;   /* 0x05c */
-    /* left unnamed: func_ov007_020afc44 passes it as func_ov007_020b8188's
-     * third argument; func_ov007_020b0244 zeroes it */
-    u8 pad_060[4];
+    /* func_ov007_020afc44 passes it as func_ov007_020b8188's `alt`: the
+     * record board's second heading is 0x1f62 when it is set, else 0x1f58.
+     * func_ov007_020b0244 zeroes it; no ov007 writer sets it. */
+    int recordBoardAlt; /* 0x060 */
     /* bound as tweens[i]->out (func_ov007_020b6a84) */
     int tweenOut[2];              /* 0x064 */
     struct Ov007Tween *tweens[2]; /* 0x06c: func_ov007_020c908c */
@@ -101,7 +106,9 @@ typedef struct Ov007Work {
     struct Ov007Sprite *numberSprites[3]; /* 0x174 */
     /* the id of the item chosen this frame, -1 = none */
     int chosenItemId; /* 0x180 */
-    u8 pad_184[4];    /* func_ov007_020b68e8 clears this word after allocating */
+    /* func_ov007_020b68e8 clears this word after allocating; nothing in
+     * ov007 reads it, so it stays unnamed */
+    int pad_184; /* 0x184 */
 } Ov007Work;
 
 typedef char Ov007Work_size_must_be_0x188[sizeof(Ov007Work) == 0x188 ? 1 : -1];
