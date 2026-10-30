@@ -15,8 +15,9 @@ typedef struct FSFile {
     u32 len; /* 0x34 -- arg.readfile.len */
 } FSFile;
 
-/* The open request (kind 0) a child sends the parent. func_020412f0 reads it
- * back: it compares the two packet-size bytes with its own mParentPacketSize,
+/* The open request (kind 0) a child sends the parent: FileShareMsg's layout
+ * (arm9_a1fc0_file_share.h), with the region's length and offset where the
+ * replies carry mFlag and mFileId. func_020412f0 reads it back: it compares the two packet-size bytes with its own mParentPacketSize,
  * and looks the region up by (offset, length) with func_02041ce0 and
  * func_02041c64. */
 typedef struct {

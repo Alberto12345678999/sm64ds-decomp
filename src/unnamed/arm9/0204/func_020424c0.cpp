@@ -45,7 +45,9 @@ extern int FS_CloseFile(char *self);
  * leading word) and store it as mTable / mTableSize. The parent fills it from
  * the ROM archive: it reads each region, then sets the leading word to the
  * larger of the block size and the largest FAT file. The child only
- * allocates; func_02041224 is given the size. */
+ * allocates. Its caller func_02040c34 then registers the parent's block as
+ * region 0x20000, or on the child passes mTableSize to func_02041224 to grow
+ * the receive work. */
 void func_020424c0(void) {
     int sizes[4];
     RomRegion *ptrs[4];

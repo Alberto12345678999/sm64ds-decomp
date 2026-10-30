@@ -19915,9 +19915,6 @@
     "func_02041a00": {
       "src/unnamed/arm9/0204/func_02040f30.cpp": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0204/func_02042668.c": [
-        "param:#1 S *"
       ]
     },
     "func_02041c2c": {

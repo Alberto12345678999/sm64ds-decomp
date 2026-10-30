@@ -10,21 +10,6 @@ extern void func_02041b24(FileShareParentArea *area, FileShareNode *node);
 extern char data_020a1fc0[];
 extern int data_02082158;
 
-/* The two FSFile words of mFile that hold the open region's extent. */
-struct FileShareFileExtent {
-    unsigned char pad_00[0x20];
-    int top;    /* 0x20 */
-    int bottom; /* 0x24 */
-};
-
-#define FILE_EXTENT(node) ((FileShareFileExtent *)(node)->mFile)
-
-/* One reply slot of mReplies: the file id goes in the second word. */
-struct FileShareReply {
-    int f0;
-    int mFileId; /* 0x04 */
-};
-
 /* A node has finished loading (func_02042254). The children that asked for it
    while it was loading become owed a reply. If no child holds it yet, it is
    registered with func_020658c0 (with the first page as data when the region
@@ -42,7 +27,7 @@ void func_02041d28(char *r7, FileShareNode *node) {
         node->mWaitingChildren = 0;
         *q |= mask;
         if (node->mRefCount <= 0) {
-            unsigned int diff = FILE_EXTENT(node)->bottom - FILE_EXTENT(node)->top;
+            unsigned int diff = FILE_SHARE_EXTENT(node)->bottom - FILE_SHARE_EXTENT(node)->top;
             int a1 = node->mFileId;
             func_020658c0(node->mRegion, a1, &data_02082158,
                           (diff <= 0x400) ? (int)node->mPages[0] : 0, diff, 0);
@@ -54,7 +39,7 @@ void func_02041d28(char *r7, FileShareNode *node) {
             }
             if ((1 << bit) & mask) {
                 node->mRefCount++;
-                ((FileShareReply *)r7)->mFileId = node->mFileId;
+                ((FileShareMsg *)r7)->mFileId = node->mFileId;
             }
             r7 += 0xc;
         }
