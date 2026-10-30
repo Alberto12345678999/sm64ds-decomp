@@ -320,7 +320,8 @@
     "The destructor is declared in the header and defined once, out of line, first in the file. Under #pragma defer_codegen off that emits D1 then D0 in ROM order, plus a homeless D2.",
     "InitResources calls dExtAnmModel_c::SetAnim and dCcAc_c::Init as members through their scalar Fix12i declarations.",
     "Owns the module static initializer: HeartModelFilePtr/HeartAnimationFilePtr subclass SharedFilePtr so mwcc emits __sinit_d_a_obj_heart.cpp (0x02101900, 0x68), the .ctor word at 0x02108108, and the @560/@561 destructor-registration nodes. The handwritten src/__sinit_ov002_02101900.c is retired.",
-    "rom.sha256 records the shared stock SHA the other intact manifests carry (S38); this worktree's dump rebuilds sha256 ddab9300 with all module bytes and symbols byte-identical -- the same machine-local variance the dsd check-symbols errors come from."
+    "rom.sha256 records the shared stock SHA the other intact manifests carry (S38); this worktree's dump rebuilds sha256 ddab9300 with all module bytes and symbols byte-identical -- the same machine-local variance the dsd check-symbols errors come from.",
+    "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (24 sections, 94 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -593,12 +594,12 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@620",
+      "from": "@619",
       "to": "@560",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@621",
+      "from": "@620",
       "to": "@561",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }

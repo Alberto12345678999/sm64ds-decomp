@@ -18,7 +18,7 @@
  * structor variants; the exact original wrapper spelling is not known.
  *
  * LAYOUT: the base ends at 0x20; SetFile re-runs the shared init
- * func_02039624 and then fills everything from 0x20 up, which is where
+ * dBgW::Reset and then fills everything from 0x20 up, which is where
  * every offset below comes from.
  */
 
@@ -98,7 +98,7 @@ struct dBgW_Kc : dBgW {
        whose normal dots above depthDirMinDot against depthDir and caps the rest
        at 10.0.
        Set and cleared by func_01ffb0bc/0b0 (shallowOnly), func_01ffb0a4/098
-       (depthByDir), func_01ffb07c (depthDir) and func_020396d0 (depthDirMinDot). */
+       (depthByDir), func_01ffb07c (depthDir) and dBgW_Kc::SetDepthDirMinDot (depthDirMinDot). */
     bool shallowOnly; /* 0x34 */
     bool depthByDir;  /* 0x35 */
     u8 pad_36[2];
@@ -131,6 +131,10 @@ struct dBgW_Kc : dBgW {
     /* C1 and the C2 base-subobject variant are defined in
        src/engine/collision/d_bg_w_kc.cpp (notes/ctor-migration.md section 2). */
     dBgW_Kc();
+    /* Inferred from the sphere face/edge tests and their setup callers. */
+    void SetEdgeToleranceShift(int);
+    /* Inferred from the sphere face/edge tests and their setup callers. */
+    void SetDepthDirMinDot(Fix12i);
 
     /* --- non-virtual --- */
     void SetFile(KCL_File *file, CLPS_Block &clps);

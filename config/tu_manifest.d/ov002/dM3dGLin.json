@@ -19,14 +19,14 @@
   ],
   "functions": [
     {
-      "symbol": "func_ov002_020fea4c",
+      "symbol": "_ZNK8dM3dGLin6GetEndEv",
       "address": "0x020fea4c",
       "size": "0x0000001c",
       "legacy_source": "src/unnamed/ov002/func_ov002_020fea4c.c",
       "ordinal": 0
     },
     {
-      "symbol": "func_ov002_020fea68",
+      "symbol": "_ZNK8dM3dGLin8GetStartEv",
       "address": "0x020fea68",
       "size": "0x0000001c",
       "legacy_source": "src/unnamed/ov002/func_ov002_020fea68.c",

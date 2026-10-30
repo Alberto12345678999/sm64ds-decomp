@@ -143,7 +143,8 @@
     "Consolidates the seven daObjShell_c one-function sources plus the class factory into one translation unit. The destructor is inline in include/daObjShell_c.h so mwccarm emits D1 before D0, the cartridge's own order, and no leaf D2.",
     "daObjShell_c::UpdateModelTransform at 0x0211a9b4 is this TU's own helper. The cartridge records no name for it; it is named after its structural twin daObjTbox_c::UpdateModelTransform in the same overlay.",
     "Class identity is the ROM's own, not coined: _ZTS12daObjShell_c at 0x0211c594 holds the literal \"12daObjShell_c\", _ZTI12daObjShell_c at 0x0211c588 is an __si_class_type_info record naming _ZTI8dActor_c (arm9:0x0208e390) as its single direct base at offset zero, and _ZTV12daObjShell_c at 0x0211c5c8 is a 31-slot table overriding slots 0, 3, 6, 9, 16 and 17.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records).",
+    "Collision property member calls replace local helper declarations. Reconciled 3 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (25 sections, 107 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -468,17 +469,17 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@665",
+      "from": "@664",
       "to": "@88",
       "evidence": "emitted destructor-registration node name collides with the configured @360 on ov023 on main; @88 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@666",
+      "from": "@665",
       "to": "@89",
       "evidence": "emitted destructor-registration node name collides with the configured @361 on ov036 on main; @89 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@667",
+      "from": "@666",
       "to": "@90",
       "evidence": "emitted destructor-registration node name collides with the configured @362 on ov036 on main; @90 is unused everywhere and shorter than the original"
     }
