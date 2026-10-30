@@ -1,7 +1,7 @@
 #include "Ov007Work.h"
 
-extern int func_ov007_020ade14(void *node);
-extern int func_ov007_020adbc8(void *slot);
+extern void func_ov007_020ade14(void *node);
+extern void func_ov007_020adbc8(void *slot);
 extern void func_ov007_020b73b4(void *display);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

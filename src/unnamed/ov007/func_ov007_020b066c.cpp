@@ -15,9 +15,6 @@ extern void func_ov007_020b131c(void);
 extern char *data_ov007_0210342c;
 }
 
-typedef int (*FP)(int);
-#define G  (data_ov007_0210342c)
-
 /* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
  * func_ov007_020bc47c, only the slot this file writes. */
 struct Ov007Model {
@@ -32,11 +29,25 @@ struct Ov007Figure {
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 };
 
+/* func_ov007_020b7138's second argument: dScDSMT_c's byte-packed
+ * download-play table (data_0209b340); only the slot this file reads. */
+struct Ov007BootArgs {
+    int bootFlags; /* 0x00 */
+    /* 0x04: dScDSMT_c::InitResources stores 1 here (when data_0209f1e0 is
+     * set), CleanupResources 2 */
+    int status;
+};
+
 /* The 0x3c-byte record func_ov007_020b6a84 allocates; names as in
- * func_ov007_020aec94. +0x37/+0x38 (the bytes the +0x2c callback returns for
- * queries 0x14/0x15 here) and the record its first word points at stay raw. */
+ * func_ov007_020aec94, only the slots this file touches. */
 struct Ov007Settings {
-    char pad_00[0x39];
+    Ov007BootArgs *bootArgs; /* 0x00 */
+    char pad_04[0x33];
+    /* 0x37 / 0x38: what the owner's dispatcher (func_ov007_020cc600) returns
+     * for command 0x14 (read the three save files) and 0x15 (read the
+     * minigame data): 1 when the read failed */
+    unsigned char filesFailed;
+    unsigned char minigamesFailed;
     /* 0x39: func_ov007_020b7d94's kind, the window menu state 9 opens before
      * the choice goes through (func_ov007_020b0834); cleared here */
     unsigned char dialogKind;
@@ -48,8 +59,7 @@ typedef char Ov007Model_visible_must_be_at_0x94[(int)&((Ov007Model *)0)->visible
  * through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
-extern "C" void func_ov007_020b066c(void)
-{
+extern "C" void func_ov007_020b066c(void) {
     switch (WORK->states[0]->previousState) {
     case 6:
         func_ov007_020b283c();
@@ -59,11 +69,11 @@ extern "C" void func_ov007_020b066c(void)
         break;
     case 5:
         func_ov007_020bf304();
-        (*(FP*)(G + 0x2c))(0x11);
+        WORK->callback(0x11);
         break;
     default:
-        *((unsigned char *)WORK->settings + 0x38) = (unsigned char)(*(FP *)(G + 0x2c))(0x15);
-        *((unsigned char *)WORK->settings + 0x37) = (unsigned char)(*(FP *)(G + 0x2c))(0x14);
+        WORK->settings->minigamesFailed = WORK->callback(0x15);
+        WORK->settings->filesFailed = WORK->callback(0x14);
         WORK->settings->dialogKind = 0;
         break;
     }
@@ -77,7 +87,7 @@ extern "C" void func_ov007_020b066c(void)
         if ((unsigned short)(short)(bb->states[0]->previousState - 4) <= 2) {
             bb->states[1]->requestedState = 5;
         } else {
-            switch (*(int *)(*(char **)bb->settings + 4)) {
+            switch (bb->settings->bootArgs->status) {
             case 0:
             case 2:
                 bb->states[1]->requestedState = 0xb;
@@ -92,12 +102,12 @@ extern "C" void func_ov007_020b066c(void)
 
     WORK->states[2]->requestedState = 0;
 
-    *(int*)(G + 0xec) = *(int*)(G + 0xf0);
+    WORK->figureIndex = WORK->nextFigureIndex;
 
-    if (*(int*)(G + 0xf0) == 0)
-        *(int*)(G + 0xf0) = 1;
+    if (WORK->nextFigureIndex == 0)
+        WORK->nextFigureIndex = 1;
     else
-        *(int*)(G + 0xf0) = 0;
+        WORK->nextFigureIndex = 0;
 
     func_ov007_020bd1c0(0);
 

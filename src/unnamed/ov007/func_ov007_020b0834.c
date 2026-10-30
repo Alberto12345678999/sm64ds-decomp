@@ -4,9 +4,14 @@
 #include "Ov007Work.h"
 
 /* The 0x3c-byte record func_ov007_020b6a84 allocates; names as in
- * func_ov007_020aec94. +0x37 and +0x38 stay raw, as there. */
+ * func_ov007_020aec94, only the slots this file touches. */
 typedef struct Ov007Settings {
-    char pad_00[0x39];
+    char pad_00[0x37];
+    /* 0x37 / 0x38: 1 when the owner's dispatcher (func_ov007_020cc600)
+     * failed to read the save files (command 0x14) / the minigame data
+     * (0x15), as func_ov007_020b066c stores them */
+    unsigned char filesFailed;
+    unsigned char minigamesFailed;
     /* 0x39: func_ov007_020b7d94's kind, the window menu state 9 opens before
      * the choice goes through; 0 = none (func_ov007_020b066c) */
     unsigned char dialogKind;
@@ -43,12 +48,12 @@ extern char *data_ov007_0210342c;
 /* Main state 9: on its first tick rebuilds layer slot 6's screen, opens the
  * settings' dialog window (func_ov007_020b7d94) and starts
  * func_ov007_020b2614(2, 0, 8). Once func_ov007_020b79c8 reports it, a new
- * key press or a fresh tap replaces settings bytes +0x37 / +0x38 that are 1
- * with what the callback returns for 0x16 (only for pending choice 9) /
- * 0x17 and calls func_ov007_020b7a44; once func_ov007_020b79e4 reads 0 it
+ * key press or a fresh tap answers it: a set filesFailed (only for pending
+ * choice 9) / minigamesFailed is replaced with what the owner's commands
+ * 0x16 (erase the files not in use) / 0x17 (save the minigame data) return,
+ * and func_ov007_020b7a44 runs; once func_ov007_020b79e4 reads 0 it
  * replays the pending choice (func_ov007_020aec94). */
-void func_ov007_020b0834(void)
-{
+void func_ov007_020b0834(void) {
     if (WORK->states[1]->stateTicks == 0) {
         func_ov007_020c0638((int)WORK->layerSlots[6]->layer, 0, 0, 0);
         func_ov007_020b7d94(WORK->settings->dialogKind);
@@ -73,19 +78,19 @@ void func_ov007_020b0834(void)
             }
         }
         {
-            char *pB = (char *)WORK->settings;
-            int r5 = (*(unsigned char*)(pB + 0x37) == 1);
-            int r4 = (*(unsigned char*)(pB + 0x38) == 1);
+            Ov007Settings *settings = WORK->settings;
+            int filesFailed = (settings->filesFailed == 1);
+            int minigamesFailed = (settings->minigamesFailed == 1);
             func_ov007_020bdeb0(0xc);
-            if (r5) {
+            if (filesFailed) {
                 if (WORK->pendingChoice == 9) {
                     int v = WORK->callback(0x16);
-                    *((unsigned char *)WORK->settings + 0x37) = v;
+                    WORK->settings->filesFailed = v;
                 }
             }
-            if (r4) {
+            if (minigamesFailed) {
                 int v = WORK->callback(0x17);
-                *((unsigned char *)WORK->settings + 0x38) = v;
+                WORK->settings->minigamesFailed = v;
             }
             func_ov007_020b7a44();
             WORK->states[1]->stateWork = 1;
