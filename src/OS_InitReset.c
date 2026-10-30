@@ -7,19 +7,19 @@
 
 extern void PXI_Init(void);
 /* PXI_IsCallbackReady and PXI_SetFifoRecvCallback (src/engine/pxi/PXI_Fifo.cpp);
- * func_02059e04 OSi_CommonCallback. */
+ * OSi_CommonCallback (os_reset.c). */
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
-extern void func_02059e04(int tag, unsigned int data);
+extern void OSi_CommonCallback(int tag, u32 data, int err);
 
-extern u16 data_020a6458; /* OSi_IsInitReset */
+extern u16 OSi_IsInitReset;
 
 void OS_InitReset(void) {
-    if (data_020a6458 != 0)
+    if (OSi_IsInitReset != 0)
         return;
-    data_020a6458 = 1;
+    OSi_IsInitReset = 1;
     PXI_Init();
     while (PXI_IsCallbackReady(PXI_FIFO_TAG_OS, PXI_PROC_ARM7) == 0)
         ;
-    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_OS, (void *)func_02059e04);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_OS, (void *)OSi_CommonCallback);
 }

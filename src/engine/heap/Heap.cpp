@@ -69,7 +69,7 @@ extern "C" {
 
     int OS_GetArenaLo(u32 arena);
     int OS_GetArenaHi(u32 arena);
-    int func_02059040(u32 arena, int lo, int hi, int align);
+    int OS_InitAlloc(u32 arena, int lo, int hi, int maxHeaps);
     int OS_SetArenaLo(u32 arena, int lo);
     void *OS_AllocFromArenaLo(u32 arena, int size, int align);
 }
@@ -172,14 +172,15 @@ namespace mHeap {
  * into it to select OS_ARENA_MAIN, and it is passed by value as the first
  * argument to each OS entry point.
  *
- * The five OS entry points are still func_* . They live outside this class and
- * naming them is not this file's claim to make. */
+ * OS_InitAlloc's last argument is a heap count, not an alignment: it reserves
+ * descriptors for four OS heaps at lo and returns the 32-aligned memory after
+ * them (src/engine/os/OS_Alloc.cpp). */
 Heap_t* Heap_t::SetupRootHeap()
 {
     int lo = OS_GetArenaLo(ROOT_HEAP_ARENA_ID);
     int hi = OS_GetArenaHi(ROOT_HEAP_ARENA_ID);
 
-    lo = func_02059040(ROOT_HEAP_ARENA_ID, lo, hi, 4);
+    lo = OS_InitAlloc(ROOT_HEAP_ARENA_ID, lo, hi, 4);
     OS_SetArenaLo(ROOT_HEAP_ARENA_ID, lo);
 
     int top = OS_GetArenaHi(ROOT_HEAP_ARENA_ID);
