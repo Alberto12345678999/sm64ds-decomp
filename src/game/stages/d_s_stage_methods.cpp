@@ -321,7 +321,7 @@ extern u16 *data_0209214c[];
 extern s32 data_02092208[];
 extern u8 data_0209caa0[];
 extern s32 data_0209cef0;
-/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+/* The one graph callback the frame dispatchers poll (func_02019390 and
    friends): the scene registers its own object here and clears it on the way
    out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
    graphCallback_c (include/dGraph_c.h). */

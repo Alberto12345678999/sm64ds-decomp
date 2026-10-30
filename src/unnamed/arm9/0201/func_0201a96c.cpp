@@ -4,21 +4,20 @@
 
 extern "C" {
 
-/* The watchdog alarm at data_0209d574; layout and names are func_0201aa18's.
-   This function hands the limit on as its two halves. */
+/* The watchdog alarm at data_0209d574; layout and names are func_0201aa18's. */
 typedef struct {
     char alarm[0x2c]; /* 0x00 -- OSAlarm */
-    char pad_2c[4];
-    u32 limitLo;    /* 0x30 */
-    u32 limitHi;    /* 0x34 */
+    char unread_2c[4];
+    u64 limit;      /* 0x30 */
     char base[0x8]; /* 0x38 -- u64 tick, reset by func_0201a9fc */
     u8 suspended;   /* 0x40 */
 } Struct_0201a96c;
 
-extern void func_0201aa50(Struct_0201a96c *self, u32 a, u32 b, void *funcPtr, Struct_0201a96c *ctx);
-extern void func_0201aaa4(Struct_0201a96c *self);
+typedef void (*OSAlarmHandler)(void *);
+extern void func_0201aa50(void *, long long, OSAlarmHandler, void *);
+extern void func_0201aaa4(void *);
 
-extern void func_0201a8b4(void);
+extern void func_0201a8b4(void *);
 
 /* Set the suspended flag and return the old one. Clearing it re-arms the
    alarm for the full limit with func_0201a8b4 as the handler; setting it
@@ -30,7 +29,7 @@ u8 func_0201a96c(Struct_0201a96c *self, u8 newVal)
     self->suspended = newVal;
 
     if (oldVal != 0 && newVal == 0) {
-        func_0201aa50(self, self->limitLo, self->limitHi, func_0201a8b4, self);
+        func_0201aa50(self, self->limit, func_0201a8b4, self);
     } else if (oldVal == 0 && newVal != 0) {
         func_0201aaa4(self);
     }

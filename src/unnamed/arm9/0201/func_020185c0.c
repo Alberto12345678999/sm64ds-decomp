@@ -11,29 +11,29 @@ extern void func_02018598(struct FSFileID *c, unsigned int arg);
 extern int myFS_OpenFileFast(int a, struct FSFileID v);
 extern int LoadArchive(int idx);
 extern void Crash(void);
-extern int func_0204eda4(int r0, char *a, unsigned int idx);
+extern int func_0204eda4(int file, char *archive, unsigned int index);
 
-/* Open game file id a1 into the FSFile at a0. Ids below 0x8000 are FAT ids
+/* Open game file id into the FSFile at file. Ids below 0x8000 are FAT ids
    in the ROM archive (func_02018598 builds the FSFileID); higher ids are
    opened inside the archive whose range holds them, mounting it first if
    needed (and recording it in data_0208eb54). Any failure is fatal. */
-int func_020185c0(int a0, unsigned int a1) {
+int func_020185c0(int file, unsigned int id) {
     int result = 0;
 
-    FS_InitFile((int *)a0);
+    FS_InitFile((int *)file);
 
-    if (a1 < 0x8000) {
+    if (id < 0x8000) {
         struct FSFileID arg;
-        struct FSFileID v;
-        func_02018598(&v, a1);
-        arg.arc = v.arc;
-        arg.file_id = v.file_id;
-        result = myFS_OpenFileFast(a0, arg);
+        struct FSFileID fileId;
+        func_02018598(&fileId, id);
+        arg.arc = fileId.arc;
+        arg.file_id = fileId.file_id;
+        result = myFS_OpenFileFast(file, arg);
     } else {
         unsigned int i = 0;
         ArchiveTableEntry *e = data_0208ecf4;
         do {
-            if (e->firstFileId <= a1 && a1 < e->endFileId) {
+            if (e->firstFileId <= id && id < e->endFileId) {
                 if (e->archive == 0) {
                     if (LoadArchive(i) != 0)
                         data_0208eb54 = i;
@@ -42,7 +42,7 @@ int func_020185c0(int a0, unsigned int a1) {
                         return 0;
                     }
                 }
-                result = func_0204eda4(a0, e->archive, a1 - e->firstFileId);
+                result = func_0204eda4(file, e->archive, id - e->firstFileId);
                 break;
             }
             i++;

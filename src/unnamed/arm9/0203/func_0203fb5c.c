@@ -1,5 +1,6 @@
 extern int func_02061e38(void *cb, int arg, int z);
-extern void func_0203fec4(void);
+struct WmStartConnectCallback;
+extern void func_0203fec4(struct WmStartConnectCallback *cb);
 extern int data_020a0f54;
 
 /* Connect to the chosen parent: WM_StartConnect (func_02061e38) on the

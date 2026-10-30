@@ -8,7 +8,7 @@ extern int WM_ReadStatus(int *arg);
 extern void func_02065a84(int x);
 extern void func_020657d0(u16 id, void *obj);
 extern void func_02041930(void);
-extern void func_02040f30(int arg);
+extern void func_02040f30(void *arg);
 
 void func_02040bb0(void) {
     int old;

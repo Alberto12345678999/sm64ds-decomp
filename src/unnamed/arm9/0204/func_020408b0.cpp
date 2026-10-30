@@ -17,8 +17,8 @@ typedef struct WMBssDesc {
 } WMBssDesc;
 
 /* MB_ReadMultiBootParentBssDesc */
-extern void func_020672d0(void *thiz, int a1, int a2, int a3, int a4);
-extern void WM_Init(void *p, int a1);
+extern void func_020672d0(void *thiz, int parentMaxSize, int childMaxSize, int ksFlag, int csFlag);
+extern int WM_Init(void *buf, int ch);
 
 extern unsigned short data_020a0f14;
 extern int data_020a0f94;
