@@ -1,73 +1,84 @@
 #include "common.h"
 #include "nitro/fx/fx.h"
 
-typedef struct {
-    u32 start : 6;
-    u32 limit : 6;
-    u32 count : 6;
-    u32 : 14;
-} Cnt74;
+#define reg_G3_COLOR        (*(volatile u32 *)0x04000480)
+#define reg_G3_IDENTITY     (*(volatile u32 *)0x04000454)
+#define reg_G3_POLYGON_ATTR (*(volatile u32 *)0x040004a4)
 
-typedef struct {
-    char _pad[0x10];
-    u32 tx : 2;
-    u32 ty : 2;
+/* The particle definition's header (func_0204a730's PtclData; SPL's
+ * SPLResourceHeader), as far as this draw reads it: the aspect ratio and the
+ * misc word's stretch factor. */
+typedef struct PtclData {
+    char pad_00[0x20];
+    s16 aspectRatio; /* 0x20 -- x scale over y scale */
+    char pad_22[0x34 - 0x22];
+    u32 : 8;           /* 0x34 -- loopFrames */
+    u32 dbbScale : 16; /* bits 8-23 -- y stretch when flying across the view */
+    u32 : 8;
+} PtclData;
+
+/* The child record (func_0204c304's Def; SPL's SPLChildResource), as far as
+ * this draw reads it: the texture tile counts. */
+typedef struct PtclChild {
+    char pad_00[0x10];
+    u32 textureTileCountS : 2; /* 0x10 bits 0-1 */
+    u32 textureTileCountT : 2; /* bits 2-3 */
     u32 : 28;
-} Bdat;
+} PtclChild;
 
-typedef struct {
-    char _pad[0x20];
-    s16 q20;
-    char _pad2[0x12];
-    u32 : 8;
-    u32 val : 16;
-    u32 : 8;
-} P0;
+/* The particle definition (func_0204a730's PtclDef; SPL's SPLResource). */
+typedef struct PtclDef {
+    PtclData *data;
+    char pad_04[0x14 - 4];
+    PtclChild *child; /* 0x14 */
+} PtclDef;
 
-typedef struct {
-    P0 *p0;
-    char _pad[0x10];
-    Bdat *p14;
-} Adat;
+/* The polygon IDs a system's particles cycle through, one per particle. */
+typedef struct PolygonIDs {
+    u32 min : 6;
+    u32 max : 6;
+    u32 current : 6;
+    u32 : 14;
+} PolygonIDs;
 
-typedef struct {
-    char _pad[0x18];
-    Adat *p18;
-    char _pad2[0x74 - 0x1c];
-    Cnt74 cnt;
-} Ctx;
+/* Particle::System, named as func_0204c584.c's view. */
+typedef struct ParticleSystem {
+    char pad_00[0x18];
+    PtclDef *mDefinition; /* 0x18 */
+    char pad_1c[0x74 - 0x1c];
+    PolygonIDs polygonIDs; /* 0x74 */
+} ParticleSystem;
 
-typedef struct {
-    u16 lo : 5;
-    u16 hi : 5;
+typedef struct Visibility {
+    u16 baseAlpha : 5;
+    u16 animAlpha : 5;
     u16 : 6;
-} M40;
+} Visibility;
 
-typedef struct {
-    char _pad0[8];
-    int p8;
-    int pc;
-    int p10;
-    int p14;
-    int p18;
-    int p1c;
-    Vector3 v20;
-    char _pad2c[4];
-    int p30;
-    s16 p34;
-    u16 p36;
-    char _pad38[2];
-    u16 p3a;
-    char _pad3c[4];
-    M40 p40;
-} Node;
+/* Particle::Element and the fields past its 0x30 bytes, named as in
+ * func_0204c584.c. */
+typedef struct Particle {
+    char pad_00[8];
+    Vector3 basePosition; /* 0x08 */
+    Vector3 offset;       /* 0x14 */
+    Vector3 velocity;     /* 0x20 */
+    char pad_2c[4];
+    int scale;      /* 0x30 */
+    s16 animScale;  /* 0x34 */
+    u16 angle;      /* 0x36 */
+    char pad_38[2]; /* angularSpeed */
+    u16 color;      /* 0x3a */
+    char pad_3c[4];
+    Visibility visibility; /* 0x40 */
+} Particle;
 
-typedef struct {
-    char _pad[0x30];
-    int p30;
-    Ctx *p34;
-    int *p38;
-} Self;
+/* Particle::Manager (include/Particle__Manager.h is C++), named as there. */
+typedef struct ManagerView {
+    char pad_00[0x30];
+    u32 mPolygonAttr;               /* 0x30 */
+    ParticleSystem *mCurrentSystem; /* 0x34 -- the system being drawn */
+    int *mDrawMatrix;               /* 0x38 */
+} ManagerView;
 
 /* No header declares these; each is spelled as its definition spells it
    (CrossVec3's vector is a Vec3_Fix12, NormalizeVec3 and MulVec3Mat3x3 take
@@ -80,94 +91,103 @@ extern void NormalizeVec3(int *v, int *out);
 extern void Copy36Bytes(int *src, int *dst);
 extern void MulVec3Mat3x3(const int *in, const int *m, int *out);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
-extern void func_02055388(int *m);
-extern void func_0204c24c(u8 a, u8 b);
+extern void func_02055388(int *m);             /* multiply by the 4x3 matrix */
+extern void func_0204c24c(u8 tileS, u8 tileT); /* the XY-plane quad */
 
-void func_0204b460(Self *self, Node *node)
-{
-    Ctx *c = self->p34;
-    s16 q = c->p18->p0->q20;
-    int scale = (node->p40.lo * (node->p40.hi + 1)) >> 5;
-    int *mtx = self->p38;
-    Vector3 nv;
+/* Draw one child particle as a quad stretched along its flight (child draw
+ * type 1, func_0204a5c8): func_0204b81c, still with the parent header's
+ * aspect ratio and dbbScale, but the child record's tile counts. pret's SPL
+ * calls this SPLDraw_Child_DirectionalBillboard. */
+void func_0204b460(ManagerView *mgr, Particle *ptcl) {
+    ParticleSystem *sys = mgr->mCurrentSystem;
+    s16 aspectRatio = sys->mDefinition->data->aspectRatio;
+    int alpha = (ptcl->visibility.baseAlpha * (ptcl->visibility.animAlpha + 1)) >> 5;
+    int *view = mgr->mDrawMatrix;
+    Vector3 velDir;
     Vector3 trans;
-    Vector3 cr;
-    Vector3 col;
-    int tmp[9];
+    Vector3 dir;
+    Vector3 look;
+    int rot[9];
     int mat[12];
-    u32 f2;
+    u32 id;
     u32 v;
-    int v2;
-    s64 v1w;
+    int sx;
+    s64 sy; /* s64, not int: int does not match */
 
-    v = *(u32 *)&c->cnt << 14;
-    f2 = v >> 26;
-    v = self->p30 | 0xc0;
-    v |= f2 << 24;
-    v |= scale << 16;
-    *(volatile u32 *)0x40004a4 = v;
-    *(volatile u32 *)0x40004a4;
+    /* polygonIDs.current, read through the whole word: the field read does not match */
+    v = *(u32 *)&sys->polygonIDs << 14;
+    id = v >> 26;
+    v = mgr->mPolygonAttr | 0xc0;
+    v |= id << 24;
+    v |= alpha << 16;
+    reg_G3_POLYGON_ATTR = v;
+    reg_G3_POLYGON_ATTR;
     {
-        Cnt74 *qq = &c->cnt;
-        qq->count++;
-        if (c->cnt.count > c->cnt.limit)
-            qq->count = c->cnt.start;
+        PolygonIDs *ids = &sys->polygonIDs;
+        ids->current++;
+        if (sys->polygonIDs.current > sys->polygonIDs.max)
+            ids->current = sys->polygonIDs.min;
     }
 
-    if (scale == 0)
+    if (alpha == 0)
         return;
 
-    v1w = FX_MUL(node->p30, node->p34);
-    trans.x = node->p14 + node->p8;
-    trans.y = node->p18 + node->pc;
-    trans.z = node->p1c + node->p10;
-    v2 = FX_MUL((int)v1w, q);
-    cr = node->v20;
-    col.x = mtx[2];
-    col.y = mtx[5];
-    col.z = mtx[8];
-    CrossVec3((Vec3_Fix12 *)&cr, (Vec3_Fix12 *)&col, (Vec3_Fix12 *)&cr);
+    sy = FX_MUL(ptcl->scale, ptcl->animScale);
+    trans.x = ptcl->offset.x + ptcl->basePosition.x;
+    trans.y = ptcl->offset.y + ptcl->basePosition.y;
+    trans.z = ptcl->offset.z + ptcl->basePosition.z;
+    sx = FX_MUL((int)sy, aspectRatio);
 
-    if (cr.x == 0 && cr.y == 0 && cr.z == 0)
+    /* the quad's x axis: velocity x the view's z column, in view space */
+    dir = ptcl->velocity;
+    look.x = view[2];
+    look.y = view[5];
+    look.z = view[8];
+    CrossVec3((Vec3_Fix12 *)&dir, (Vec3_Fix12 *)&look, (Vec3_Fix12 *)&dir);
+
+    if (dir.x == 0 && dir.y == 0 && dir.z == 0)
         return;
 
-    NormalizeVec3((int *)&cr, (int *)&cr);
-    Copy36Bytes(mtx, tmp);
-    MulVec3Mat3x3((int *)&cr, tmp, (int *)&cr);
-    MulVec3Mat4x3(&trans, (Matrix4x3 *)mtx, &trans);
-    nv = node->v20;
-    NormalizeVec3((int *)&nv, (int *)&nv);
+    NormalizeVec3((int *)&dir, (int *)&dir);
+    Copy36Bytes(view, rot);
+    MulVec3Mat3x3((int *)&dir, rot, (int *)&dir);
+    MulVec3Mat4x3(&trans, (Matrix4x3 *)view, &trans);
+    velDir = ptcl->velocity;
+    NormalizeVec3((int *)&velDir, (int *)&velDir);
 
     {
-        int d = FX_MUL(nv.x, -mtx[2]) + FX_MUL(nv.y, -mtx[5]) + FX_MUL(nv.z, -mtx[8]);
-        int w;
-        int s;
-        int t;
-        if (d < 0)
-            d = -d;
-        w = 0x1000 - d;
-        s = FX_MUL(w, (int)self->p34->p18->p0->val);
-        t = FX_MUL(v1w, (s + 0x1000));
+        /* |velocity . -view z|: 1 when the particle flies straight at the
+         * camera, 0 across it; y stretches by (1 - that) * dbbScale + 1 */
+        int dot =
+            FX_MUL(velDir.x, -view[2]) + FX_MUL(velDir.y, -view[5]) + FX_MUL(velDir.z, -view[8]);
+        int side;
+        int stretch;
+        int sy2;
+        if (dot < 0)
+            dot = -dot;
+        side = 0x1000 - dot;
+        stretch = FX_MUL(side, (int)mgr->mCurrentSystem->mDefinition->data->dbbScale);
+        sy2 = FX_MUL(sy, (stretch + 0x1000));
 
-        mat[0] = FX_MUL(cr.x, v2);
+        mat[0] = FX_MUL(dir.x, sx);
         mat[8] = 0x1000;
         mat[9] = trans.x;
         mat[10] = trans.y;
         mat[11] = trans.z;
-        mat[3] = FX_MUL(-cr.y, t);
-        mat[1] = FX_MUL(cr.y, v2);
+        mat[3] = FX_MUL(-dir.y, sy2);
+        mat[1] = FX_MUL(dir.y, sx);
         mat[6] = 0;
-        mat[4] = FX_MUL(cr.x, t);
+        mat[4] = FX_MUL(dir.x, sy2);
         mat[7] = 0;
         mat[2] = 0;
         mat[5] = 0;
-        *(volatile u32 *)0x4000454 = 0;
+        reg_G3_IDENTITY = 0;
         func_02055388(mat);
     }
 
-    *(volatile u32 *)0x4000480 = node->p3a;
+    reg_G3_COLOR = ptcl->color;
     {
-        Bdat *B = self->p34->p18->p14;
-        func_0204c24c(B->tx, B->ty);
+        PtclChild *child = mgr->mCurrentSystem->mDefinition->child;
+        func_0204c24c(child->textureTileCountS, child->textureTileCountT);
     }
 }
