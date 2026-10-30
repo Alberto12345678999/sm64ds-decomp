@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern void func_0205cd5c(void *arg0, int arg1);
+extern void FS_NotifyArchiveAsyncEnd(void *arg0, int arg1);
 extern void func_020421b4(void);
 extern void func_02065170(void);
 
@@ -54,7 +54,7 @@ void func_02040aa4(void) {
             if (p != 0) {
                 void *arg = p->arc;
                 work->mReadRequest = 0;
-                func_0205cd5c(arg, 5);
+                FS_NotifyArchiveAsyncEnd(arg, 5);
             }
 
             {

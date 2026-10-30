@@ -303,15 +303,6 @@
       "src/unnamed/arm9/0205/func_02059f2c.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205d28c.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2b0.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2dc.c": [
-        "arity:3"
-      ],
       "src/FS_LoadOverlayInfo.c": [
         "arity:3"
       ],
@@ -419,6 +410,9 @@
         "arity:3"
       ],
       "src/engine/fs/FS_CommandDefault.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ]
     },
@@ -687,10 +681,6 @@
       "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/unnamed/arm9/0206/func_020685cc.c": [
         "param:#1 int *",
         "return:void"
@@ -712,10 +702,6 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/FSi_LoadOverlayInfoCore.c": [
         "param:#1 void *",
         "param:#2 void *"
@@ -727,6 +713,9 @@
       "src/unnamed/arm9/0206/func_020685cc.c": [
         "param:#1 int *",
         "return:void"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#1 int *"
       ]
     },
     "GetLevelPart": {
@@ -19505,9 +19494,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/FS_InitArchive.c": [
-        "arity:3"
-      ],
       "src/FS_StartOverlay.c": [
         "arity:3"
       ],
@@ -19536,6 +19522,9 @@
         "arity:3"
       ],
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ]
     },
@@ -19576,45 +19565,64 @@
       ]
     },
     "FSi_ReleaseCommand": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "param:#1 int *"
-      ],
       "src/FSi_NextCommand.cpp": [
         "param:#1 Node *"
       ]
     },
     "FS_SetArchiveProc": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#2 void *"
+        "param:#2 void *",
+        "param:#3 int"
+      ],
+      "src/FSi_InitRom.c": [
+        "param:#1 int *",
+        "param:#2 int",
+        "param:#3 int"
       ]
     },
-    "FS_ResumeArchive": {
-      "src/unnamed/arm9/0205/func_0205c91c.c": [
-        "return:void"
-      ]
-    },
-    "func_0205c864": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205c91c": {
+    "FS_UnloadArchiveTables": {
       "src/func_0201a2f8.cpp": [
         "arity:0",
         "return:void"
       ]
     },
-    "func_0205caa8": {
+    "FS_UnloadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "arity:0",
-        "return:void"
+        "return:void",
+        "param:#1 int *"
       ]
     },
     "FS_LoadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#7 void *",
         "param:#8 void *",
-        "return:void"
+        "return:void",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#1 int *",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int",
+        "param:#7 int",
+        "param:#8 int"
+      ],
+      "src/FSi_InitRom.c": [
+        "param:#1 int *",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int",
+        "param:#7 int",
+        "param:#8 int"
       ]
     },
     "FSi_SendCommand": {
@@ -19634,16 +19642,6 @@
         "param:#1 struct Obj *"
       ]
     },
-    "FSi_ExecuteAsyncCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "FSi_NextCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:int"
-      ]
-    },
     "FS_FindArchive": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
@@ -19654,37 +19652,11 @@
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
         "return:void *"
       ],
       "src/func_0201a2f8.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_0205d28c": {
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205d2b0": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205d2dc": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "FSi_GetPackedName": {
-      "src/FS_RegisterArchiveName.cpp": [
-        "param:#2 void *",
         "return:void *"
       ]
     },
@@ -19704,14 +19676,15 @@
         "arity:2"
       ]
     },
-    "func_0205d5e8": {
+    "FS_OpenFileDirect": {
       "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "param:#2 void *",
-        "return:void"
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#2 FSArchive *",
+        "param:#3 unsigned int",
+        "param:#4 unsigned int",
+        "param:#5 unsigned int"
       ]
     },
     "func_0205d688": {
@@ -23084,6 +23057,20 @@
     "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev": {
       "src/game/actors/d_a_demo.cpp": [
         "arity:0"
+      ]
+    },
+    "FS_LoadArchiveTables": {
+      "src/unnamed/arm9/0205/func_0205d94c.c": [
+        "param:#1 char *",
+        "param:#2 int"
+      ]
+    },
+    "FS_RegisterArchiveName": {
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#3 void *"
+      ],
+      "src/FSi_InitRom.c": [
+        "param:#3 void *"
       ]
     }
   },

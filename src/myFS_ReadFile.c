@@ -19,7 +19,7 @@ extern void *data_0209d3c0;
 extern int func_0205d644(void *out_file_id, const char *path);
 extern void Crash(void);
 extern int data_0208ecd8[];
-extern int func_0205d5e8(int a, int b, int c, int d, int e);
+extern int FS_OpenFileDirect(int a, int b, int c, int d, int e);
 extern int data_0208ecc4;
 extern char data_0208ec74;
 int func_0205d568(int a, struct BC bc);
@@ -50,7 +50,7 @@ int myFS_ConvertPathToFileID(void *out_file_id, const char *path) {
 }
 
 int myFS_OpenFileDirect(int a, int b, int c, int d, int e) {
-    int r = func_0205d5e8(a, b, c, d, e);
+    int r = FS_OpenFileDirect(a, b, c, d, e);
     if (r == 0) {
         func_02018e68(&data_0208ecc4);
         Crash();

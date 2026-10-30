@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's fs_command.c, 0x0205c5e4..0x0205c7c4: 2 functions, gapless in config/arm9/delinks.txt. pret's pokediamond FS_command.c defines exactly two functions, FSi_ReleaseCommand and then FSi_TranslateCommand, and both are here, each identified by body. FSi_TranslateCommand indexes fsi_default_command, the table of FS_COMMAND handlers that fs_command_default.c below it fills.",
     "Order: mwccarm emits deferred bodies in reverse. The ROM run is pret's source order reversed: FSi_TranslateCommand lowest, FSi_ReleaseCommand highest. FSi_TranslateCommand (0x1a4) follows pokediamond's C statement for statement; FSi_ReleaseCommand (0x3c) is pret's body without the OS_DisableInterrupts/OS_RestoreInterrupts pair, which this older SDK does not have, and it clears only BUSY|CANCEL|SYNC|ASYNC (0xf), where pret's mask also covers its OPERATING bit.",
     "BOTTOM EDGE: FSi_CloseFileCommand and the rest of fs_command_default.c (arm9/FS_CommandDefault) end at 0x0205c5e4.",
-    "TOP EDGE: FS_SetArchiveProc (0x0205c7c4, src/FS_SetArchiveProc.c) is fs_archive.c, which pret keeps in its own file."
+    "TOP EDGE: FS_SetArchiveProc (0x0205c7c4) starts FS_archive.c (arm9/FS_Archive), which pret keeps in its own file."
   ],
   "sections": [
     {
