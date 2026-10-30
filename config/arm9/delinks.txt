@@ -3254,41 +3254,9 @@ src/unnamed/arm9/0205/func_0205ff20.cpp:
     complete
     .text start:0x0205ff20 end:0x0205ff70
 
-src/unnamed/arm9/0205/func_0205ff70.c:
+src/engine/card/CARD_Common.cpp:
     complete
-    .text start:0x0205ff70 end:0x0205ff80
-
-src/unnamed/arm9/0205/func_0205ff80.c:
-    complete
-    .text start:0x0205ff80 end:0x0205ff90
-
-src/unnamed/arm9/0205/func_0205ff90.c:
-    complete
-    .text start:0x0205ff90 end:0x0205ffb0
-
-src/unnamed/arm9/0205/func_0205ffb0.c:
-    complete
-    .text start:0x0205ffb0 end:0x0205ffd0
-
-src/unnamed/arm9/0205/func_0205ffd0.cpp:
-    complete
-    .text start:0x0205ffd0 end:0x0206002c
-
-src/unnamed/arm9/0206/func_0206002c.cpp:
-    complete
-    .text start:0x0206002c end:0x020600e0
-
-src/unnamed/arm9/0206/func_020600e0.cpp:
-    complete
-    .text start:0x020600e0 end:0x02060188
-
-src/unnamed/arm9/0206/func_02060188.cpp:
-    complete
-    .text start:0x02060188 end:0x02060228
-
-src/unnamed/arm9/0206/func_02060228.c:
-    complete
-    .text start:0x02060228 end:0x020602bc
+    .text start:0x0205ff70 end:0x020602bc
 
 src/unnamed/arm9/0206/func_020602bc.cpp:
     complete
@@ -3346,15 +3314,15 @@ src/unnamed/arm9/0206/func_02060890.c:
     complete
     .text start:0x02060890 end:0x0206090c
 
-src/unnamed/arm9/0206/func_0206090c.c:
+src/CARD_WaitRomAsync.c:
     complete
     .text start:0x0206090c end:0x02060918
 
-src/unnamed/arm9/0206/func_02060918.cpp:
+src/CARDi_ReadRom.cpp:
     complete
     .text start:0x02060918 end:0x02060a30
 
-src/unnamed/arm9/0206/func_02060a30.c:
+src/CARDi_ReadRomSyncCore.c:
     complete
     .text start:0x02060a30 end:0x02060a64
 

@@ -5789,9 +5789,6 @@
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205ffd0.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0206/func_020602bc.cpp": [
         "return:void"
       ],
@@ -5799,9 +5796,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_0206081c.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02060918.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02060b64.cpp": [
@@ -9704,13 +9698,8 @@
         "return:int"
       ]
     },
-    "func_02060a30": {
-      "src/unnamed/arm9/0206/func_02060918.cpp": [
-        "arity:1"
-      ]
-    },
     "func_02060b64": {
-      "src/unnamed/arm9/0206/func_02060918.cpp": [
+      "src/CARDi_ReadRom.cpp": [
         "param:#1 char *"
       ]
     },
@@ -11437,12 +11426,6 @@
       ]
     },
     "data_020a8180": {
-      "src/unnamed/arm9/0206/func_020600e0.cpp": [
-        "return:G"
-      ],
-      "src/unnamed/arm9/0206/func_02060188.cpp": [
-        "return:G"
-      ],
       "src/unnamed/arm9/0206/func_02060310.c": [
         "return:unsigned char"
       ],
@@ -11457,22 +11440,20 @@
       ],
       "src/unnamed/arm9/0206/func_02060ebc.c": [
         "return:G"
-      ]
-    },
-    "data_020a8760": {
-      "src/unnamed/arm9/0206/func_0206002c.cpp": [
-        "return:char"
+      ],
+      "src/engine/card/CARD_Common.cpp": [
+        "return:CARDiCommon"
       ]
     },
     "data_020a8780": {
-      "src/unnamed/arm9/0206/func_02060918.cpp": [
-        "return:char"
-      ],
-      "src/unnamed/arm9/0206/func_02060a30.c": [
-        "return:SomeObj"
-      ],
       "src/unnamed/arm9/0206/func_02060d1c.c": [
         "return:char []"
+      ],
+      "src/CARDi_ReadRomSyncCore.c": [
+        "return:CARDRomStat"
+      ],
+      "src/unnamed/arm9/0206/func_02060890.c": [
+        "return:void *"
       ]
     },
     "data_020a89ac": {
@@ -20834,7 +20815,7 @@
         "param:#3 void *",
         "param:#4 void *"
       ],
-      "src/unnamed/arm9/0206/func_0206002c.cpp": [
+      "src/engine/card/CARD_Common.cpp": [
         "param:#2 void *",
         "param:#4 void *"
       ]
@@ -21550,53 +21531,6 @@
         "return:int"
       ]
     },
-    "func_0205ff70": {
-      "src/engine/save/SaveData2.cpp": [
-        "param:#1 unsigned short"
-      ]
-    },
-    "func_0205ff80": {
-      "src/engine/save/SaveData2.cpp": [
-        "param:#1 unsigned short"
-      ]
-    },
-    "func_0205ff90": {
-      "src/unnamed/arm9/0205/func_0205da94.c": [
-        "param:#1 unsigned short"
-      ]
-    },
-    "func_0205ffb0": {
-      "src/unnamed/arm9/0205/func_0205da94.c": [
-        "param:#1 unsigned short"
-      ]
-    },
-    "func_0205ffd0": {
-      "src/unnamed/arm9/0206/func_0206090c.c": [
-        "return:void"
-      ]
-    },
-    "func_020600e0": {
-      "src/unnamed/arm9/0205/func_0205ff70.c": [
-        "param:#1 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ff90.c": [
-        "param:#1 void *"
-      ]
-    },
-    "func_02060188": {
-      "src/unnamed/arm9/0205/func_0205ff80.c": [
-        "param:#1 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ffb0.c": [
-        "param:#1 void *",
-        "return:int"
-      ]
-    },
-    "func_02060310": {
-      "src/unnamed/arm9/0206/func_0206002c.cpp": [
-        "arity:0"
-      ]
-    },
     "func_0206045c": {
       "src/engine/save/SaveData2.cpp": [
         "return:unsigned int"
@@ -21614,7 +21548,7 @@
         "return:int"
       ]
     },
-    "func_02060918": {
+    "CARDi_ReadRom": {
       "src/unnamed/arm9/0205/func_0205db2c.c": [
         "param:#1 int",
         "param:#2 int",

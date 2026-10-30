@@ -13,13 +13,12 @@
 #include "types.h"
 #include "decl_common.h"
 #include "SaveData.h"
+#include "nitro/card/card_common.h"
 #include "nitro/os/spinLock.h"
 
 extern "C" {
 int func_0203da3c(void);
 u32 func_0206045c(void);
-void func_0205ff80(u16 a);
-void func_0205ff70(u16 a);
 int func_02060558(u32 addr, void* buf, u32 len, int d, int e, int f);
 int func_02060484(int a, int b, int c, int d, int e, int f);
 }
@@ -82,7 +81,7 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
     if (lockID == -3)
         return 1;
 
-    func_0205ff80((u16)lockID);
+    CARD_LockBackup((u16)lockID);
 
     retry = 0;
     v14 = 0;
@@ -95,14 +94,14 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
            func_02060484(dataOff, (int)data, (int)size, v18, v18, v18) != 1) {
         retry++;
         if (retry > 0) {
-            func_0205ff70((u16)lockID);
+            CARD_UnlockBackup((u16)lockID);
             OS_ReleaseLockID((u16)lockID);
             return 1;
         }
     }
 
-    func_0205ff70((u16)lockID);
-    func_0205ff80((u16)lockID);
+    CARD_UnlockBackup((u16)lockID);
+    CARD_LockBackup((u16)lockID);
 
     retry2 = 0;
     newBase = freeVal + need;
@@ -116,13 +115,13 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
            func_02060484(dataOff2, (int)data, (int)size, v24, v24, v24) != 1) {
         retry2++;
         if (retry2 > 0) {
-            func_0205ff70((u16)lockID);
+            CARD_UnlockBackup((u16)lockID);
             OS_ReleaseLockID((u16)lockID);
             return 1;
         }
     }
 
-    func_0205ff70((u16)lockID);
+    CARD_UnlockBackup((u16)lockID);
     OS_ReleaseLockID((u16)lockID);
     return 0;
 }
@@ -170,7 +169,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
     lock = OS_GetLockID();
     if (lock == -3)
         return 1;
-    func_0205ff80((u16)lock);
+    CARD_LockBackup((u16)lock);
     retry = 0;
     fb = 0;
     fc = 0;
@@ -184,7 +183,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
         if (retry > 0)
             break;
     }
-    func_0205ff70((u16)lock);
+    CARD_UnlockBackup((u16)lock);
     if (retry <= 0) {
         ok = 1;
         pd = data_020a4b40;
@@ -211,7 +210,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
             }
         }
     }
-    func_0205ff80((u16)lock);
+    CARD_LockBackup((u16)lock);
     retry2 = 0;
     off2 = half + off;
     gb = 0;
@@ -224,12 +223,12 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
            func_02060558(b10, buf, len, gc, gc, gc) != 1) {
         retry2++;
         if (retry2 > 0) {
-            func_0205ff70((u16)lock);
+            CARD_UnlockBackup((u16)lock);
             OS_ReleaseLockID((u16)lock);
             return 1;
         }
     }
-    func_0205ff70((u16)lock);
+    CARD_UnlockBackup((u16)lock);
     OS_ReleaseLockID((u16)lock);
     pd = data_020a4b40;
     pm = magic;

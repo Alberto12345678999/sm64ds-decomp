@@ -1,13 +1,13 @@
 //cpp
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/card/card_common.h"
 
 extern "C" {
 
 extern char data_020a8180[];
 extern int data_020a6134[];
 void OS_SleepThread(void* p);
-void func_02060228(void* fn);
 int func_0206062c(void* g);
 
 /* The request block a chunk is handed over in (NitroSDK CARDiCommandArg);
@@ -36,7 +36,7 @@ typedef struct CardCommon {
     u32 mFlags;
     unsigned char pad_38[0x98];
     /* 0xd0 -- the thread the request runs on: the caller's for a synchronous
-     * request, the card task thread (func_02060228) otherwise */
+     * request, the card task thread (CARDi_SetTask) otherwise */
     int mCurThread;
     /* 0xd4 -- callers wait here while another request holds the busy bit */
     char mBusyQueue[4];
@@ -62,7 +62,7 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
     g->mCallback = callback;
     g->mCallbackArg = arg;
     if (is_async != 0) {
-        func_02060228((void *)func_0206062c);
+        CARDi_SetTask((void *)func_0206062c);
         return 1;
     }
     /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */
