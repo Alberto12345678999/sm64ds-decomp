@@ -1,0 +1,68 @@
+{
+  "id": "arm9/OS_OwnerInfo",
+  "module": "arm9",
+  "source": "src/engine/os/OS_OwnerInfo.c",
+  "promoted_source": "src/engine/os/OS_OwnerInfo.c",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_ownerInfo.c, 0x02059eb0..0x02059f48: 2 functions, gapless in config/arm9/delinks.txt, each identified by its body against pret's pokediamond OS_ownerInfo.c. OS_GetOwnerInfo copies the language, favourite colour, birthday, nickname and comment out of the NVRAM user-info block at 0x027ffc80, the strings by MIi_CpuCopy16 (MultiCopyHalf). OS_GetMacAddress copies the 6 bytes at 0x027ffcf4 by MI_CpuCopy8 (CpuCopy8).",
+    "Order: pret's file defines OS_GetMacAddress, OS_GetOwnerInfo and OS_GetOwnerRtcOffset. mwccarm emits the bodies in reverse, so OS_GetOwnerInfo is lowest and OS_GetMacAddress highest. OS_GetOwnerRtcOffset is absent: nothing in this game calls it, so the linker dropped it.",
+    "BOTTOM EDGE: OS_InitReset (0x02059e48..0x02059eb0), the highest of os_reset.c (arm9/OS_Reset).",
+    "TOP EDGE: MI_SetWramBank (0x02059f48..0x02059f58) is mi_wram.c, the whole of that SDK file, and stays its own source (src/MI_SetWramBank.c)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02059eb0",
+      "end": "0x02059f48"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OS_GetOwnerInfo",
+      "address": "0x02059eb0",
+      "size": "0x0000007c",
+      "legacy_source": "src/OS_GetOwnerInfo.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OS_GetMacAddress",
+      "address": "0x02059f2c",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059f2c.c",
+      "ordinal": 1
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Rom: tu_map cannot segment arm9/main.",
+    "func_02059f2c was renamed OS_GetMacAddress from its body in this change. symbols/actor_renames.tsv records the evidence. OS_GetOwnerInfo was already named.",
+    "Text-only."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_OwnerInfo/OS_OwnerInfo.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 2,
+    "functions_declared": 2,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

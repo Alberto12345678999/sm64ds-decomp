@@ -58,6 +58,8 @@ check against, and they don't.
 | OS_exception.c | 0x020593f4..0x02059624 | 5 of 5 plus 1: 4 exact, OS_InitException 0x70 to 0x90 (it also tests OS_GetConsoleType), 1 extra (OS_SetUserExceptionHandler, not in pret's revision); the three asm functions first, then the C bodies reversed: folded as arm9/OS_Exception |
 | OS_tick.c | 0x02059640..0x02059824 | 4 of 5, all exact, in pret's source order reversed; OS_IsTickAvailable dropped by the linker: folded as arm9/OS_Tick |
 | OS_alarm.c | 0x02059824..0x02059cb4 | 9 of 9: 8 exact, OSi_ArrangeTimer 0x118 to 0x11c; asm OSi_AlarmHandler first, then the C bodies reversed: folded as arm9/OS_Alarm |
+| OS_reset.c | 0x02059dd4..0x02059eb0 | 3 of 9, each identified by body against pret's pokediamond OS_reset.c (OSi_SendToPxi, OSi_CommonCallback, OS_InitReset), in its source order reversed; OS_ResetSystem and the rest of the file are not in this ROM: folded as arm9/OS_Reset |
+| OS_ownerInfo.c | 0x02059eb0..0x02059f48 | 2 of 3, each identified by body against pret's pokediamond OS_ownerInfo.c (OS_GetOwnerInfo, OS_GetMacAddress), in its source order reversed; OS_GetOwnerRtcOffset dropped by the linker: folded as arm9/OS_OwnerInfo |
 | SND_main.c | 0x0205a82c..0x0205a86c | 1 of 1: SND_Init by body (behind a once-only flag, SND_CommandInit then SND_AlarmInit; no sound mutex in this SDK); renamed, src/SND_Init.c |
 | SND_interface.c | 0x0205a86c..0x0205adf8 | 28 functions, each identified by body (a PushCommand_impl call with the command's arguments, or SNDi_SetPlayerParam/SNDi_SetTrackParam with a field's offset and size), in pret's source order reversed; from an older SDK (no SND_PrepareSeq or SND_StartPreparedSeq, command numbers below pret's: SND_PauseSeq is 2, SND_SetOutputSelector 0x15, the invalidates 0x1b..0x1d); 4 of them pret's file does not define (SND_SetTrackModDepth and SND_SetTrackModSpeed, in its header's order; SND_SetTrackMute and SNDi_SetSurroundDecay, where it leaves them as comments): folded as arm9/SND_Interface |
 | SND_command.c | 0x0205adf8..0x0205b470 | 15 of 15, identified by body, in pret's source order reversed; from an older SDK (no interrupt masking around the lists, no OS_SpinWait on a full FIFO, no SND_CMD_FLAG_IMMEDIATE, no IsCommandAvailable: SND_AllocCommand and InitPXI test OS_IsRunOnEmulator): folded as arm9/SND_Command |
@@ -77,8 +79,8 @@ is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is src/MI_SwapWord.c (0x020
 OS_init.c's OS_Init is src/OS_Init.cpp (0x02058c84). It makes pret's calls in pret's order, which names
 each callee: PXI_init.c's PXI_Init (src/PXI_Init.c, 0x0205b858), MI_wram.c's MI_SetWramBank
 (src/MI_SetWramBank.c), OS_valarm.c's OS_InitVAlarm (src/OS_InitVAlarm.cpp), OS_reset.c's
-OS_InitReset (src/OS_InitReset.c), CTRDG_Init (src/CTRDG_Init.c) and PM_Init (src/engine/spi/PM.cpp).
+OS_InitReset (arm9/OS_Reset), CTRDG_Init (src/CTRDG_Init.c) and PM_Init (src/engine/spi/PM.cpp).
 OS_timer.c's OSi_SetTimerReserved is src/OSi_SetTimerReserved.c (0x02059624, 0x1c), between the
 OS_exception.c and OS_tick.c runs.
-OS_reset.c's OSi_SendToPxi and OSi_CommonCallback are src/OSi_SendToPxi.c and src/OSi_CommonCallback.c
-(0x02059dd4, 0x02059e04), just below OS_InitReset in pret's order reversed.
+OS_reset.c's OSi_SendToPxi and OSi_CommonCallback (0x02059dd4, 0x02059e04) sit just below OS_InitReset
+in pret's order reversed, and the three are folded as arm9/OS_Reset.

@@ -2530,11 +2530,6 @@ src/unnamed/arm9/0205/func_02059bc0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059c18.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059cb4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/OSi_SendToPxi.c	PURE-C	arm9				1		None		-
-src/OSi_CommonCallback.c	PURE-C	arm9				1		None		-
-src/OS_InitReset.c	PURE-C	arm9				1		None		-
-src/OS_GetOwnerInfo.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059f2c.c	PURE-C	arm9				1		None		-
 src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f58.c	WEAK-refs-only	arm9				1		None		-
 src/func_02059fa8.c	PURE-C	arm9				1		None		-

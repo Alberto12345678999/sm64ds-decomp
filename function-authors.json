@@ -9963,7 +9963,7 @@
     },
     "arm9:0x02059f2c": {
       "author": "ruspecial",
-      "name": "func_02059f2c"
+      "name": "OS_GetMacAddress"
     },
     "arm9:0x02059f48": {
       "author": "tangosdev",

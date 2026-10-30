@@ -279,6 +279,9 @@
       "src/SharedFilePtr.cpp": [
         "arity:3"
       ],
+      "src/engine/os/OS_OwnerInfo.c": [
+        "arity:3"
+      ],
       "src/engine/save/SaveData.cpp": [
         "arity:3"
       ],
@@ -298,9 +301,6 @@
         "arity:3"
       ],
       "src/unnamed/arm9/0204/func_020426f8.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_02059f2c.c": [
         "arity:3"
       ],
       "src/unnamed/arm9/0205/func_0205d28c.c": [
@@ -1535,9 +1535,6 @@
     },
     "MultiCopyHalf": {
       "src/game/actors/d_a_demo.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/OS_GetOwnerInfo.c": [
         "param:#3 unsigned int"
       ],
       "src/WmClearFifoRecvFlag.cpp": [
@@ -19024,7 +19021,7 @@
         "param:#3 void (*)(void *)"
       ]
     },
-    "func_02059f2c": {
+    "OS_GetMacAddress": {
       "src/unnamed/arm9/0203/func_0203db64.c": [
         "param:#1 void *"
       ],

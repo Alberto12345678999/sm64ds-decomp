@@ -2260,25 +2260,13 @@ src/unnamed/arm9/0205/func_02059d98.c:
     complete
     .text start:0x02059d98 end:0x02059dd4
 
-src/OSi_SendToPxi.c:
+src/engine/os/OS_Reset.c:
     complete
-    .text start:0x02059dd4 end:0x02059e04
+    .text start:0x02059dd4 end:0x02059eb0
 
-src/OSi_CommonCallback.c:
+src/engine/os/OS_OwnerInfo.c:
     complete
-    .text start:0x02059e04 end:0x02059e48
-
-src/OS_InitReset.c:
-    complete
-    .text start:0x02059e48 end:0x02059eb0
-
-src/OS_GetOwnerInfo.c:
-    complete
-    .text start:0x02059eb0 end:0x02059f2c
-
-src/unnamed/arm9/0205/func_02059f2c.c:
-    complete
-    .text start:0x02059f2c end:0x02059f48
+    .text start:0x02059eb0 end:0x02059f48
 
 src/MI_SetWramBank.c:
     complete

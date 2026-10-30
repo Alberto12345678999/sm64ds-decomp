@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern void func_02059f2c(void *p);
+extern void OS_GetMacAddress(void *p);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiStore16(int val, char *dst, int nbytes);
 extern void CpuCopy8(u16 *a, char *b, int c);
@@ -18,7 +18,7 @@ int func_02069038(void) {
     unsigned char buf[12];
     int i;
     int sum;
-    func_02059f2c(buf);
+    OS_GetMacAddress(buf);
     for (i = 0, sum = 0; i < 6; i++) {
         sum += buf[i];
     }
