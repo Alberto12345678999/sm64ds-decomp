@@ -18,6 +18,12 @@
 // The two nested catch contexts are why the frame is 0x30 rather than
 // __cxa_vec_cleanup's 0x18: 0x18 bytes of catch state each, sp spilled at +0x14
 // inside each one (fp+0x14 for the outer try, fp+0x2c for the inner).
+//
+// It does the job of the Itanium C++ ABI's __cxa_vec_dtor, and
+// __cxa_vec_delete calls it for that step, but it keeps its address name:
+// mwccarm never emits a call to __cxa_vec_dtor, so no compiler output
+// confirms the name, and its body does not follow GCC's __cxa_vec_dtor
+// statement for statement.
 
 extern "C" void func_020731fc(void);
 
