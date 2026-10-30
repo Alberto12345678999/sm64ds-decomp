@@ -149,7 +149,7 @@ typedef struct WMMpRecvData {
 /* Leading fields of NitroSDK WMStartParentCallback, the argument the WM
  * parent callback (func_02069994) passes for CONNECTED (code 0),
  * DISCONNECTED (code 1) and BEACON_SENT (code 0x1c). Codes 0xff (a failed
- * WM call, from func_0206879c: {apiid, errcode}) and 0x100 (any other WM
+ * WM call, from MBi_CheckWmErrcode: {apiid, errcode}) and 0x100 (any other WM
  * result) read only the WMCallback header the SDK callbacks all share. */
 typedef struct WmStartParentCallback {
     u16 apiid;        /* 0x00 */
@@ -173,8 +173,8 @@ extern int func_02067530(struct Out *bi, char *table, u32 block, char *dlinfo);
 /* local extern: defined void, but it hands back func_020688fc's result,
    which the senders here return. */
 extern int func_02067f2c(u32 size, u32 pollbmp, u32 buf);
-extern void func_02068410(void);
-extern void func_0206853c(char *self, void *src, u32 flags, int s);
+extern void MB_SendGameInfoBeacon(void);
+extern void MB_UpdateGameInfoMember(char *self, void *src, u32 flags, int s);
 extern int func_0206881c(void);
 
 void MBi_CommCallParentError(u16 aid, u16 errcode);
@@ -358,11 +358,11 @@ void MBi_CommParentCallback(int type, char *arg) {
             if (e->mFiles->mActive != 0) {
                 u16 f48 = e->mFiles->mEntryChanged;
                 if (f48 != 0) {
-                    /* the game info record func_0206853c refreshes sits after
+                    /* the game info record MB_UpdateGameInfoMember refreshes sits after
                      * the 0xe4 bytes of mHeader that MBi_CommParentSendDlFileInfo
                      * sends */
-                    func_0206853c((char *)&MB_WORK->mFiles[i].mHeader[0xe4], MB_WORK->mChildUser,
-                                  e->mFiles->mEntryBitmap, f48);
+                    MB_UpdateGameInfoMember((char *)&MB_WORK->mFiles[i].mHeader[0xe4],
+                                            MB_WORK->mChildUser, e->mFiles->mEntryBitmap, f48);
                     /* the signed-index stepped form; MB_FILE (unsigned sizeof)
                      * or e reallocates registers */
                     ((MbParentWork *)(data_020a9db8 + i * (int)sizeof(MbParentFile)))
@@ -370,7 +370,7 @@ void MBi_CommParentCallback(int type, char *arg) {
                 }
             }
         }
-        func_02068410();
+        MB_SendGameInfoBeacon();
         break;
     }
     case 0xff: {

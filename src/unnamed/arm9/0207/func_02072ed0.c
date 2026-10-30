@@ -1,5 +1,8 @@
 struct E { unsigned int f0; unsigned int f4; int f8; };
 
+/* EH runtime: binary search of count index entries for the one whose
+   [f0, f0 + (f4 & ~1)] range holds key. Returns 0 when none does.
+   func_02072dac calls it. */
 struct E *func_02072ed0(struct E *base, int count, unsigned int key)
 {
     int lo = 0, hi = count - 1;

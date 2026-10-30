@@ -45,7 +45,7 @@
 #include "CP15.h"
 #include "cstd.h"
 
-struct Matrix2x2 { s32 m00, m01, m10, m11; };
+#include "Matrix2x2.h"
 
 /* The hardware entry as Render(Matrix2x2*) decomposes it. */
 struct OamAttrEntry {

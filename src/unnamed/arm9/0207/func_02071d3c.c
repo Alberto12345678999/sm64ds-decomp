@@ -12,7 +12,7 @@ struct S72d90 {
 extern unsigned char func_02072d90(struct S72d90 *c);
 extern u8 *func_02071a50(u8 *p, int *out);
 extern u8 *ReadSignedVarInt(u8 *p, int *out);
-extern int func_02072fcc(int a, int b, int c);
+extern int __throw_catch_compare(int a, int b, int c);
 extern int func_02071f88(void *a, void *list);
 extern void func_02071f1c(char *a, void *b, char *c, int d);
 extern void func_020731fc(void);
@@ -28,6 +28,13 @@ struct Tmp {
     int f;
 };
 
+/* EH runtime: search the current frame's actions for a handler, walking
+   them with func_02072d90 (current) and func_020729f4 (next). Action 12 is
+   a catch clause: its type string is matched against the thrown type with
+   __throw_catch_compare. Action 15 is an exception
+   specification: a thrown type it does not list (func_02071f88) goes to
+   func_02071f1c. Actions 1 and 14, and any unknown action, call the
+   terminate path (func_020731fc). The other actions are skipped. */
 int func_02071d3c(int *self, struct S6 *src, int flag)
 {
     struct Tmp tmp;
@@ -61,7 +68,7 @@ int func_02071d3c(int *self, struct S6 *src, int flag)
             tmp.val = cur[1] | (cur[2] << 8) | (cur[3] << 16) | (cur[4] << 24);
             u8 *p = func_02071a50(cur + 5, &tmp.a);
             p = ReadSignedVarInt(p, &tmp.b);
-            if (func_02072fcc(self[0], tmp.val, flag) == 0) {
+            if (__throw_catch_compare(self[0], tmp.val, flag) == 0) {
                 continue;
             }
             break;
