@@ -2,9 +2,9 @@
 /* cstd6 -- second cstd string/printf-band TU, arm9 0x02070348..0x020707a4,
  * 7 functions: cstd::strchr, cstd::strcmp, cstd::strncpy, cstd::strlen +
  * 3 C helpers (rand-LCG, idx-dispatcher, strcpy-like). Below the run,
- * func_0206fd6c (parse_format) stays a one-function source: mwccarm keeps its
+ * parse_format stays a one-function source: mwccarm keeps its
  * local print_format struct in registers under -lang c++ while the ROM spills
- * it to the stack. Above, func_020707a4 begins exactly where the run ends.
+ * it to the stack. Above, copysign begins exactly where the run ends.
  */
 // leftovers: the three helpers keep address names (no ROM method evidence).
 // func_020706b0's alignment preamble and word-at-a-time copy stay as built

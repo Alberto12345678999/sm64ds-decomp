@@ -1,12 +1,16 @@
-struct Out { int a; int b; };
-void *func_02071a50(void *p, struct Out *out);
+unsigned char *func_02071a50(unsigned char *p, int *out);
 
-void func_0207180c(unsigned char *p) {
-    struct Out local;
-    unsigned char b = *p;
+/* EH runtime: skip the header of an exception action table and return the
+   first range record. The header is a flag byte, one more byte, then an
+   unsigned varint (func_02071a50), and a second varint when flag 0x40 is
+   set. func_02072dac calls it before walking the range records. */
+unsigned char *func_0207180c(unsigned char *p) {
+    int skipped;
+    unsigned char flags = *p;
     p += 2;
-    p = func_02071a50(p, &local);
-    if (b & 0x40) {
-        func_02071a50(p, &local);
+    p = func_02071a50(p, &skipped);
+    if (flags & 0x40) {
+        p = func_02071a50(p, &skipped);
     }
+    return p;
 }

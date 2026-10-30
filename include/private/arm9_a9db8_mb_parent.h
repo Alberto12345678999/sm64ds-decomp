@@ -22,7 +22,7 @@ typedef struct MbParentFile {
     u8 *mGameRegistry;    /* 0x5b0 -- the NitroSDK MBGameRegistry the file was
                              registered with: func_02067928 stores its first
                              argument here (and refuses it twice) and builds
-                             the MBGameInfo from it at +0xe4 (func_02068680);
+                             the MBGameInfo from it at +0xe4 (MBi_MakeGameInfo);
                              MBi_CommParentRecvDataPerChild checks a child's ggid (+0x14) and
                              maxPlayerNum (+0x18) in it */
     s32 mSrcAddr;         /* 0x5b4 -- added to a block's offset before CpuCopy8 */
@@ -37,7 +37,7 @@ typedef struct MbParentFile {
                              its population is checked against the player limit */
     u16 mEntryChanged;    /* 0x5c0 -- children accepted or dropped since the
                              last update: MBi_CommParentCallback passes it and
-                             mEntryBitmap to func_0206853c, then clears it */
+                             mEntryBitmap to MB_UpdateGameInfoMember, then clears it */
     u8  mActive;          /* 0x5c2 -- nonzero once the file is registered */
     u8  pad_5c3[0x1];
 } MbParentFile;
@@ -66,7 +66,7 @@ typedef char MbChildRequest_size_must_be_0x20[sizeof(MbChildRequest) == 0x20 ? 1
 typedef struct MbParentWork {
     u8 pad_0000[0x1300];
     /* 0x1300 -- the parent's own MBUserInfo (NitroSDK parentInfo):
-     * func_02067928 hands it to func_02068680, which copies its 0x16 bytes
+     * func_02067928 hands it to MBi_MakeGameInfo, which copies its 0x16 bytes
      * into each registered file's game record */
     u8 mParentUser[0x16];
     u8 pad_1316[0x2];
@@ -85,7 +85,7 @@ typedef struct MbParentWork {
     u8 pad_1324[0x1340 - 0x1324];
     /* 0x1340 -- per child (AID - 1): the user record from its entry request,
      * AID in the high nibble of byte 0 (MBi_CommParentRecvDataPerChild);
-     * MBi_CommParentCallback hands the table to func_0206853c */
+     * MBi_CommParentCallback hands the table to MB_UpdateGameInfoMember */
     u8 mChildUser[15][0x16];
     /* 0x148a -- the entry request's u16 at +0x1a; cleared on disconnect, not
      * read back in this cluster (medium) */

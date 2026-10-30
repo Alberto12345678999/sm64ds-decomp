@@ -7502,3 +7502,43 @@ arm9	0x0206703c	func_0206703c	MB_CommResponseRequest	NitroSDK mb_parent.c, by bo
 arm9	0x02067194	func_02067194	MB_CommGetChildrenNumber	NitroSDK mb_parent.c MB_CommGetChildrenNumber: returns the byte at pPwork+0x1535, the accepted-children count MBi_CommParentRecvDataPerChild raises and MBi_CommParentCallback lowers, or 0 with no pPwork. Absent from pret's pmd-sky; the name is the SDK's public API u8 MB_CommGetChildrenNumber(void) (mb.h, as RushRE carries it), and it sits between MB_CommIsBootable and MB_CommGetChildUser in this run
 arm9	0x020671b4	func_020671b4	MB_CommGetChildUser	NitroSDK mb_parent.c, by body against pret's pmd-sky overlay_00 MB_CommGetChildUser: with interrupts off, copies the child's 0x16-byte user record from pPwork+0x1340 to the buffer at +0x1772 and returns it
 arm9	0x02067250	func_02067250	MB_CommGetParentState	NitroSDK mb_parent.c, by body against pret's pmd-sky overlay_00 MB_CommGetParentState: the child's state word at pPwork+0x14e8 when pPwork is set and the aid valid, else 0
+arm9	0x020707a4	func_020707a4	copysign	MSL copysign, as in the Advance Wars DS decomp's MSL; body: x's high word with y's sign bit
+arm9	0x020707cc	func_020707cc	fabs	MSL fabs, as in the Advance Wars DS decomp's MSL; body: clears the sign bit of x's high word
+arm9	0x020707f4	func_020707f4	frexp	MSL frexp (fdlibm), as in the Advance Wars DS decomp's MSL; body: exponent split, subnormal scaled by 2^54
+arm9	0x020708b4	func_020708b4	ldexp	MSL ldexp (fdlibm scalbn), as in the Advance Wars DS decomp's MSL; body: exponent-field edit, huge/tiny via copysign
+arm9	0x02070b98	func_02070b98	__num2dec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: __num2dec_internal, __rounddec to the decform digits, pad, ASCII
+arm9	0x02070c68	func_02070c68	__num2dec_internal	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: zero/inf/nan, frexp, __two_exp, __ull2dec of ldexp, __timesdec
+arm9	0x02070ec0	func_02070ec0	__two_exp	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digit-string switch on -64..8, else square 2^(n/2)
+arm9	0x020712a0	func_020712a0	__str2dec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digit string to Decimal, half-even round up via __dorounddecup
+arm9	0x02071364	func_02071364	__timesdec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digit-by-digit Decimal multiply with carry and round
+arm9	0x02071510	func_02071510	__ull2dec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digits of an unsigned long long, reversed, exp = length - 1
+arm9	0x020715e0	func_020715e0	__rounddec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: truncate to dig digits, __must_round, __dorounddecup
+arm9	0x02071644	func_02071644	__dorounddecup	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: increment the last kept digit, carry into the exponent
+arm9	0x02071698	func_02071698	__must_round	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: first dropped digit vs 5, then half to even
+arm9	0x0206ece0	func_0206ece0	float2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %e/%f/%g via __num2dec and round_decimal, inf/nan strings
+arm9	0x0206f338	func_0206f338	round_decimal	MSL printf.c, reverse source order (Petari decomp's printf.c); body: round ASCII digits to new_length, half to even, trim zeros
+arm9	0x0206f46c	func_0206f46c	double2hex	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %a/%A: __num2dec, hex mantissa digits, exponent via long2str
+arm9	0x0206f820	func_0206f820	longlong2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: 64-bit base 8/10/16 digits backwards, sign, zero fill, # prefix
+arm9	0x0206fb08	func_0206fb08	long2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: 32-bit base 8/10/16 digits backwards, sign, zero fill, # prefix
+arm9	0x0206fd6c	func_0206fd6c	parse_format	MSL printf.c, reverse source order (Petari decomp's printf.c); body: flags, width, precision, length modifier and conversion char
+arm9	0x0206e4a4	func_0206e4a4	__pformatter	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %-walk via parse_format, argument fetch per length modifier, the long/float/hex helpers, fill and justification
+arm9	0x02072f3c	func_02072f3c	__destroy_global_chain	Metrowerks runtime global_destructor_chain.c, as in the Advance Wars DS decomp; body: pop each registered node, call its destructor with -1; exit calls it
+arm9	0x02072f94	func_02072f94	__call_static_initializers	Metrowerks runtime, as in the Advance Wars DS decomp; body: run the null-ended static-initializer table; pret's NitroSDK crt0 calls it by this name at the same point of the entry code
+arm9	0x020719ec	func_020719ec	__read_console	MSL console_io.c, as in the Advance Wars DS decomp; body: semihosting read until CR or LF; the read_proc of the three console FILEs at 0x0209a36c
+arm9	0x020719b4	func_020719b4	__write_console	MSL console_io.c, as in the Advance Wars DS decomp; body: semihosting write per byte; the write_proc of the three console FILEs at 0x0209a36c
+arm9	0x020719ac	func_020719ac	__close_console	MSL console_io.c; body: return 0; the close_proc beside __read_console and __write_console in all three console FILEs at 0x0209a36c
+arm9	0x02072fcc	func_02072fcc	__throw_catch_compare	Metrowerks runtime NMWException, as in the Wind Waker decomp's NMWException.cp; body: catch-type string match, K for const where PowerPC has C
+arm9	0x02073244	func_02073244	__cxa_vec_delete	the compiler's name: mwccarm 2004/b56 compiles delete[] of a class with a destructor to __cxa_vec_delete(p, size, 8, dtor), byte-identical to the explicit call; body is the Itanium ABI's
+arm9	0x02068188	func_02068188	MBi_InitSendVolatBeacon	NitroSDK mb_gameinfo.c, matches statement for statement
+arm9	0x0206834c	func_0206834c	MBi_InitSendFixedBeacon	NitroSDK mb_gameinfo.c, matches statement for statement
+arm9	0x020681b8	func_020681b8	MBi_SendFixedBeacon	NitroSDK mb_gameinfo.c, matches statement for statement; this older SDK fetches ggid/tgid/attr itself
+arm9	0x02068410	func_02068410	MB_SendGameInfoBeacon	NitroSDK mb_gameinfo.c, matches statement for statement; this older SDK takes no parameters
+arm9	0x02068484	func_02068484	MBi_ClearSendStatus	NitroSDK mb_gameinfo.c, matches statement for statement
+arm9	0x020684d0	func_020684d0	MB_AddGameInfo	NitroSDK mb_gameinfo.c, matches statement for statement
+arm9	0x02068514	func_02068514	mystrlen	NitroSDK mb_gameinfo.c, matches statement for statement
+arm9	0x0206853c	func_0206853c	MB_UpdateGameInfoMember	NitroSDK mb_gameinfo.c, matches statement for statement
+arm9	0x020685cc	func_020685cc	MBi_ReadIconInfo	NitroSDK mb_gameinfo.c, matches statement for statement; this older SDK opens with FS_OpenFile
+arm9	0x02068680	func_02068680	MBi_MakeGameInfo	NitroSDK mb_gameinfo.c, matches statement for statement; the introduction copy is sized by mystrlen
+arm9	0x0206879c	func_0206879c	MBi_CheckWmErrcode	NitroSDK mb_wm.c, matches statement for statement
+arm9	0x020687f8	func_020687f8	MBi_IsStarted	NitroSDK mb_wm.c, matches statement for statement
+arm9	0x02073470	func_02073470	__cxa_vec_new	mwccarm emits a call to __cxa_vec_new by name for new T[n] of a class with a ctor and dtor (probe: new T[7] leaves an undefined __cxa_vec_new); this is the only array-new helper in the runtime, with the Itanium (count, size, padding, ctor, dtor) parameters and cookie layout

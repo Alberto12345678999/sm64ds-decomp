@@ -18,7 +18,7 @@ always the address of a function in `config/arm9/symbols.txt` (53 of 53).
   0x020736f4..0x020737a8. This is a function with cleanups or a try block:
   func_0206a928, func_02071d3c, func_02071f1c, func_02072014, func_02072168,
   func_020729f4, `__cxa_vec_cleanup`, func_02073300, `__cxa_vec_ctor`,
-  func_02073470 and func_02073534.
+  `__cxa_vec_new` and func_02073534.
 
 `.text` ends at 0x020736f4, which is where `.exception` begins.
 
@@ -26,7 +26,7 @@ always the address of a function in `config/arm9/symbols.txt` (53 of 53).
 
 A function gets an entry exactly when it makes a call. Leaf functions get no
 entry even if they push registers (func_0206ca7c, func_02071910,
-`ReadSignedVarInt`, func_02072fcc). The two 0xc-byte entries (func_02071784
+`ReadSignedVarInt`, `__throw_catch_compare`). The two 0xc-byte entries (func_02071784
 and func_02073220) are tail calls through `ldr ip, =target; bx ip`. So a function that
 pushes `lr` and calls something but has **no** entry was built with exceptions
 off. That is the signal used below. A leaf between two blocks cannot be
@@ -42,8 +42,8 @@ and no entry. The scratch script matched `bl`/`blx` words and
 |---|---|---|---|
 | ..0x0206a928 | off | func_0206a29c..func_0206a88c all call, none has an entry | hard: func_0206a88c (calls, no entry) ends at 0x0206a928 |
 | **0x0206a928..~0x0206d9cc** | **on** | the debug-print cluster: func_0206a928 (printf core, with an action table), its soft-double helpers func_0206bc8c/func_0206bdb4/func_0206c244/func_0206c51c, the stream callbacks, `src/cstd3.cpp` (`cstd::__assert` plus the card-wait helpers), func_0206ce90..func_0206d940 | top hard at 0x0206a928. Bottom: func_0206d940 is the last caller with an entry, and the leaves func_0206d9cc/func_0206da18 are undecidable, so the edge is at 0x0206d9cc, 0x0206da18 or 0x0206da64 |
-| **~0x0206da64..~0x02071644** | **off** | `src/engine/cp15/CP154.cpp`, `src/cstd4.cpp` (including `__pformatter` func_0206e4a4, which the 2.0 compiler built, see `notes/arm9-msl-walls.md`), func_0206ece0..func_0206fd6c (`float2hex` among them), `src/cstd6.cpp` (str*), func_020707f4..func_020715e0 | 32 functions call with no entry. The last is func_020715e0 (ends at 0x02071644) |
-| **~0x02071644..0x020736f4** | **on** | the C++ runtime: func_02071784, `__rethrow`, func_0207180c, func_02071864, `__end__catch`, func_02071be8..func_02072dac (func_02072168 is 0x88c with an action table, probably the unwinder), func_02072f3c..func_02073244, `__cxa_vec_cleanup`, func_02073300, `__cxa_vec_ctor`, func_02073470, func_02073534, `src/typeinfo.cpp` | bottom: the leaves func_02071644/func_02071698/func_02071708 are undecidable, so the edge is at 0x02071644, 0x02071698, 0x02071708 or 0x02071784. Top hard at 0x020736f4 (`.exception` begins) |
+| **~0x0206da64..~0x02071644** | **off** | `src/engine/cp15/CP154.cpp`, `src/cstd4.cpp` (including `__pformatter`, which the 2.0 compiler built, see `notes/arm9-msl-walls.md`), `float2str`..`parse_format` (`float2hex` among them), `src/cstd6.cpp` (str*), `frexp`..`__rounddec` | 32 functions call with no entry. The last is `__rounddec` (ends at 0x02071644) |
+| **~0x02071644..0x020736f4** | **on** | the C++ runtime: func_02071784, `__rethrow`, func_0207180c, func_02071864, `__end__catch`, func_02071be8..func_02072dac (func_02072168 is 0x88c with an action table, probably the unwinder), `__destroy_global_chain`..`__cxa_vec_delete`, `__cxa_vec_cleanup`, func_02073300, `__cxa_vec_ctor`, `__cxa_vec_new`, func_02073534, `src/typeinfo.cpp` | bottom: hard at 0x02071784. The leaves `__dorounddecup`/`__must_round`/func_02071708 have no entry either way, but `src/ansi_fp.c` now holds them with the rest of MSL's ansi_fp.c (0x02070b98..0x02071784, the Petari decomp's order), and func_02071784 is a linker veneer. Top hard at 0x020736f4 (`.exception` begins) |
 
 ## What it does not tell you
 
@@ -64,6 +64,6 @@ several of the original files (the runtime block alone mixes `__rethrow`,
 splits them. An exceptions-on TU would also emit `.exceptix`/`.exception`
 entries, and its manifest would have to claim them, which no arm9 manifest does
 today. Revisit when an MSL source layout for this toolchain turns up. The
-`__cxa_vec_*` neighbours (func_02073300, func_02073470, func_02073534) are the
+`__cxa_vec_*` neighbours (func_02073300, `__cxa_vec_new`, func_02073534) are the
 first candidates, because they sit between two named runtime functions with
 action tables of the same shape.

@@ -17,6 +17,13 @@ extern struct E *func_02072ed0(struct E *base, int count, unsigned int key);
 extern unsigned char *func_0207180c(unsigned char *p);
 extern unsigned char *func_02071a50(unsigned char *p, int *out);
 
+/* EH runtime: find the action table that covers the code address r4. The
+   index entries {start, size with an inline flag in bit 0, table} are
+   searched with func_02072ed0. The table is stored inline in the entry
+   when bit 0 is set, otherwise it is a pointer. After the header
+   (func_0207180c) come {gap, length, action offset} varint records. The
+   record covering r4 sets sb->f2 to the table plus its action offset; f1
+   and f2 stay 0 when nothing covers it. */
 void func_02072dac(int r4, struct S *sb)
 {
     struct E *e;
