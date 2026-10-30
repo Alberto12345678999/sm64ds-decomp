@@ -13451,7 +13451,7 @@
     "src/FS_CloseFile.c",
     "src/unnamed/arm9/0205/func_0205d518.c",
     "src/unnamed/arm9/0205/func_0205d568.c",
-    "src/unnamed/arm9/0205/func_0205d5e8.c",
+    "src/FS_OpenFileDirect.c",
     "src/unnamed/arm9/0205/func_0205d644.c",
     "src/unnamed/arm9/0205/func_0205d688.c",
     "src/FSi_FindPath.c",

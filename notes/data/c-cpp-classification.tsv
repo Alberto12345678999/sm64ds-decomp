@@ -2629,7 +2629,7 @@ src/unnamed/arm9/0205/func_0205d3f4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d4a0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d518.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d568.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d5e8.c	PURE-C	arm9				1		None		-
+src/FS_OpenFileDirect.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d644.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d688.c	PURE-C	arm9				1		None		-
 src/FSi_FindPath.c	PURE-C	arm9				1		None		-

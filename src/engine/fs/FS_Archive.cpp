@@ -277,12 +277,13 @@ FSArchive *FS_FindArchive(const char *name, int name_len) {
 }
 
 // @symbol FSi_NextCommand
-/* With interrupts off: release every queued file marked for cancel as
- * FS_RESULT_CANCELED. Unless the archive is suspended, mark it running
- * (proc gets FS_COMMAND_ACTIVATE when proc_flag asks for it) and return the
- * head of the list, or wake a synchronous one and return NULL. Otherwise the
- * archive goes idle: proc gets FS_COMMAND_IDLE on a scratch FSFile, and a
- * pending suspend takes effect and wakes stat_q. */
+/* With interrupts off: if the archive is canceling, release every queued
+ * file marked for cancel as FS_RESULT_CANCELED. Unless the archive is
+ * suspended, mark it running (proc gets FS_COMMAND_ACTIVATE when proc_flag
+ * asks for it) and return the head of the list, or wake a synchronous one
+ * and return NULL. Otherwise the archive goes idle: proc gets
+ * FS_COMMAND_IDLE on a scratch FSFile, and a pending suspend takes effect
+ * and wakes stat_q. */
 FSFile *FSi_NextCommand(FSArchive *p_arc) {
     u32 bak_psr = IRQ::Disable();
     if (FSi_IsArchiveCanceling(p_arc)) {

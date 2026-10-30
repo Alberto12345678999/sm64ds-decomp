@@ -19,7 +19,7 @@ extern void LoadOverlay(int id);
 extern void InitializeAssetHandleTable(void);
 extern void UnloadOverlay(int id);
 extern void *FS_FindArchive(void *p, int n);
-extern void FS_UnloadArchiveTables(void);
+extern void *FS_UnloadArchiveTables(void *p_arc);
 extern void LoadFont(int id);
 
 extern int OVERLAY_0_ID;
@@ -45,8 +45,7 @@ void func_0201a2f8(int unused) {
     InitializeAssetHandleTable();
     UnloadOverlay((int)&OVERLAY_0_ID);
     if (ptr != 0) {
-        FS_FindArchive(&data_0208ee5c, 3);
-        FS_UnloadArchiveTables();
+        FS_UnloadArchiveTables(FS_FindArchive(&data_0208ee5c, 3));
         Memory::Deallocate(ptr);
     }
     LoadOverlay((int)&OVERLAY_1_ID);

@@ -115,7 +115,7 @@ typedef char
 #endif
 
 /* NitroSDK MB_BlockInfo, one block's place as func_02067530
- * (MBi_Get_BlockInfo) gives it. The tag is that file's. */
+ * (pmd-sky's MBi_Get_BlockInfo) gives it. The tag is that file's. */
 struct Out {
     int child_recv_buff_addr; /* 0x0 */
     u32 size;                 /* 0x4 */

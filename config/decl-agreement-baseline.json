@@ -22512,16 +22512,8 @@
         "return:int"
       ]
     },
-    "FS_UnloadArchiveTables": {
-      "src/func_0201a2f8.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
     "FS_UnloadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
-        "arity:0",
-        "return:void",
         "param:#1 int *"
       ]
     },
