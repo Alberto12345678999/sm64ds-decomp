@@ -2,9 +2,10 @@
 #define WMWORK_H
 
 /* NitroSDK WM views over the wireless work buffer data_020a9db4 (0x3700
- * bytes, carved by func_02068e4c). SDK field names where the SDK has one;
- * per-field evidence is in func_020690b0.c's banner. Plain C types: some of
- * the consumers (func_02068d08, MBi_IsSendEnabled) do not include types.h. */
+ * bytes, carved by func_02068e4c), the multiboot library's sWmWork in
+ * src/engine/mb/MB_WmBase.cpp. SDK field names where the SDK has one; the
+ * evidence for each is above WmWork. Plain C types: a consumer
+ * (func_02062024.c) does not include types.h. */
 typedef struct {
     unsigned char bytes[0xc0];
 } WmBssDesc; /* WMBssDesc */
@@ -59,6 +60,33 @@ typedef struct {
     unsigned char pad_178[8];
 } WmParentRecord; /* one scanned parent, 0x180 */
 
+/* WmWork field evidence (WM API ids from each wrapper's WM_SetCallbackTable):
+ *   wmSysBuf        buffer arg of WM_Initialize (id 0, WM_Initialize)
+ *   parentParam     func_020620b0 (id 7, WM_SetParentParameter); KS_Flag at
+ *                   +0x12 and the max sizes at +0x32/+0x34 are its size check;
+ *                   MBi_GetAttribute packs entry/MB/KS/CS into WM_ATTR_FLAG_*
+ *   scanBuf         WMScanParam.scanBuf; DMA'd into parents[i].bssDesc
+ *   parent/childMaxSize   set by func_02068dc8, copied into parentParam
+ *   sendBuf/recvBuf, sendBufSize/recvBufSize   WM_StartMP (func_020625fc)
+ *   stateCallback   WM_Initialize / WM_SetIndCallback / WM_Reset callback
+ *   mpSending       set while WM_SetMPDataToPort is pending, cleared in its
+ *                   callback (id 0xf)
+ *   initialized     set after WM_Initialize, cleared in the WM_End callback
+ *   userCallback    every DISPATCH; func_02068ae8 installs MBi_CommParentCallback
+ *   connectBssDesc  WM_StartConnect's pInfo (func_02061e38, id 0xc)
+ *   mode            func_02068ae8 sets 1 (parent); func_020688fc's case 2
+ *                   sends through this (child) callback
+ *   resetting       set by func_02068a74 before WM_Reset; while set the
+ *                   callbacks only accept the RESET and END results
+ *   mpStarted       set on WM_StartMP's MP_START state (0xa)
+ *   childBitmap     WmStatus.child_bitmap after a parent-side (dis)connect, 1
+ *                   on the child's CONNECTED; gates MBi_IsSendEnabled
+ *   mpContinuous    nonzero passes mpFreq 0 (continuous) to WM_StartMP
+ *   parentCount, lastParentIndex   the parents[] fill count / last hit
+ *   aid             WMStartConnectCallback.aid on CONNECTED
+ *   scanContinue    cleared by func_02068a74; scanning stops when 0
+ *   scanNextChannel when set, func_0206a29c steps WMScanParam.channel
+ * child_bitmap's offset inside WMStatus (+0x17e) is from this code, not the SDK. */
 typedef struct {
     unsigned char wmSysBuf[0x1300];    /* 0x0000 */
     WmParentParam parentParam;         /* 0x1300 */
