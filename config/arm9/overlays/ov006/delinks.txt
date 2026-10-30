@@ -58,6 +58,9 @@ src/minigames/d_s_mg_amida.cpp:
 src/minigames/d_s_mg_bomroom.cpp:
     complete
     .text start:0x020d5a54 end:0x020d95a4
+    .init start:0x0212fd48 end:0x021300b0
+    .ctor start:0x02133580 end:0x02133584
+    .bss start:0x02141660 end:0x02141768
 
 src/minigames/d_s_mg_card.cpp:
     complete
@@ -269,10 +272,6 @@ src/minigames/d_s_mg_snowball.cpp:
 src/minigames/d_s_mg_flower.cpp:
     complete
     .text start:0x0212a554 end:0x0212b890
-
-src/unnamed/ov006/__sinit_ov006_0212fd48.c:
-    complete
-    .init start:0x0212fd48 end:0x021300b0
 
 src/unnamed/ov006/__sinit_ov006_02130a04.c:
     complete
