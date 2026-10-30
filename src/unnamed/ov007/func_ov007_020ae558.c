@@ -25,7 +25,7 @@ typedef struct Ov007Item {
     char pad_28[4];
 } Ov007Item;
 
-/* The 0x40-byte OAM node func_ov007_020c11ac allocates; names as in
+/* The 0x44-byte OAM node func_ov007_020c11ac allocates; names as in
  * func_ov007_020c10ec, only the slot this file reads. */
 typedef struct Ov007OamNode {
     char pad_00[0x1d];

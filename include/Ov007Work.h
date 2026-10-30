@@ -62,9 +62,10 @@ typedef struct Ov007Work {
      * func_ov007_020af84c indexes data_ov007_020ccc20[selectedSlot][targetSlot] */
     int selectedSlot; /* 0x058 */
     int targetSlot;   /* 0x05c */
-    /* left unnamed: func_ov007_020afc44 passes it as func_ov007_020b8188's
-     * third argument; func_ov007_020b0244 zeroes it */
-    int pad_060;
+    /* func_ov007_020afc44 passes it as func_ov007_020b8188's `alt`: the
+     * record board's second heading is 0x1f62 when it is set, else 0x1f58.
+     * func_ov007_020b0244 zeroes it; no ov007 writer sets it. */
+    int recordBoardAlt; /* 0x060 */
     /* bound as tweens[i]->out (func_ov007_020b6a84) */
     int tweenOut[2];              /* 0x064 */
     struct Ov007Tween *tweens[2]; /* 0x06c: func_ov007_020c908c */
@@ -105,7 +106,9 @@ typedef struct Ov007Work {
     struct Ov007Sprite *numberSprites[3]; /* 0x174 */
     /* the id of the item chosen this frame, -1 = none */
     int chosenItemId; /* 0x180 */
-    int pad_184;      /* func_ov007_020b68e8 clears this word after allocating */
+    /* func_ov007_020b68e8 clears this word after allocating; nothing in
+     * ov007 reads it, so it stays unnamed */
+    int pad_184; /* 0x184 */
 } Ov007Work;
 
 typedef char Ov007Work_size_must_be_0x188[sizeof(Ov007Work) == 0x188 ? 1 : -1];

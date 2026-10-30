@@ -89,7 +89,7 @@ void func_ov007_020afc44(void) {
             func_ov007_020c1d8c(0);
             RequestScreenFade(8, 0xa, 0);
             WORK->states[2]->requestedState = 0xb;
-            func_ov007_020b8188(WORK->selectedSlot, WORK->settings, WORK->pad_060);
+            func_ov007_020b8188(WORK->selectedSlot, WORK->settings, WORK->recordBoardAlt);
             tween0->state = 1;
             tween0->mode = 1;
             tween0->t = 0;
@@ -154,7 +154,7 @@ void func_ov007_020afc44(void) {
                             RequestScreenFade(8, 0xa, 0);
                             WORK->states[2]->requestedState = 0xb;
                         }
-                        func_ov007_020b8188(WORK->targetSlot, WORK->settings, WORK->pad_060);
+                        func_ov007_020b8188(WORK->targetSlot, WORK->settings, WORK->recordBoardAlt);
                         scrollLayers = 1;
                         tween0->state = 1;
                         tween0->mode = 1;

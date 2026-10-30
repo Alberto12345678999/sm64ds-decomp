@@ -5,7 +5,7 @@ extern int func_ov007_020c25fc(Ov007StrokePath *path, int x, int y, int minLen, 
                                int minTurn);
 extern void func_ov007_020bfe4c(char *camera, int x, int y, int z, Vector3 *out);
 
-/* The picker's +0x1c (func_ov007_020c690c's a4); only the point thresholds
+/* The picker's +0x1c (func_ov007_020c690c's params); only the point thresholds
  * this file hands to func_ov007_020c25fc. */
 typedef struct Ov007PickerParams {
     char pad_00[8];

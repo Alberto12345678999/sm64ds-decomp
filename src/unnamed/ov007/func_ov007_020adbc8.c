@@ -1,9 +1,4 @@
-/* The 0x38-byte BG layer record func_ov007_020c0aa8 allocates; names as in
- * func_ov007_020adc08, only the slot this file reads. */
-typedef struct Ov007BgLayer {
-    char pad_00[0x10];
-    void *screen; /* 0x10 */
-} Ov007BgLayer;
+#include "Ov007BgLayer.h"
 
 /* The 0xc-byte record func_ov007_020adc08 builds; the manager keeps eight
  * in its layerSlots. */
