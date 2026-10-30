@@ -1,8 +1,6 @@
 #include "nitro/fs/overlay.h"
 extern void func_0205dc0c(int a, int b);
-extern void func_02018c00(void *info, int a, int b);
 extern int func_0203d7b8(void);
-extern void func_02017fd0(void *info);
 
 /* A loaded-overlay slot (see func_02017e60.c). */
 struct OverlaySlot {

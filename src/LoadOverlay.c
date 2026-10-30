@@ -1,6 +1,5 @@
 #include "types.h"
 #include "nitro/fs/overlay.h"
-void func_02018c00(void *dst, int a, int id);
 int func_0203d7b8(void);
 struct Pair;
 void func_0205e088(struct Pair *dst, char *src);

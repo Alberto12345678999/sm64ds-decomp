@@ -18622,14 +18622,6 @@
         "param:#2 int"
       ]
     },
-    "func_02018c00": {
-      "src/UnloadOverlay.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_02017e94.c": [
-        "return:void"
-      ]
-    },
     "myFS_ReadFile": {
       "src/SharedFilePtr.cpp": [
         "param:#1 void *",
@@ -19543,11 +19535,6 @@
       "src/unnamed/arm9/0203/func_0203ea5c.c": [
         "arity:0",
         "return:void"
-      ]
-    },
-    "func_0203f714": {
-      "src/unnamed/arm9/0203/func_0203f920.c": [
-        "arity:0"
       ]
     },
     "func_0203f920": {
