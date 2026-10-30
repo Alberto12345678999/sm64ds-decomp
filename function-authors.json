@@ -10355,11 +10355,11 @@
     },
     "arm9:0x0205c5e4": {
       "author": "tangosdev",
-      "name": "func_0205c5e4"
+      "name": "FSi_TranslateCommand"
     },
     "arm9:0x0205c788": {
       "author": "lplaat",
-      "name": "func_0205c788"
+      "name": "FSi_ReleaseCommand"
     },
     "arm9:0x0205c7c4": {
       "author": "tangosdev",
@@ -10411,7 +10411,7 @@
     },
     "arm9:0x0205cf5c": {
       "author": "tangosdev",
-      "name": "func_0205cf5c"
+      "name": "FSi_ExecuteSyncCommand"
     },
     "arm9:0x0205cfa4": {
       "author": "ruspecial",
@@ -10499,11 +10499,11 @@
     },
     "arm9:0x0205d8d8": {
       "author": "tangosdev",
-      "name": "func_0205d8d8"
+      "name": "FSi_AppendToList"
     },
     "arm9:0x0205d920": {
       "author": "tangosdev",
-      "name": "func_0205d920"
+      "name": "FSi_CutFromList"
     },
     "arm9:0x0205d94c": {
       "author": "ruspecial",

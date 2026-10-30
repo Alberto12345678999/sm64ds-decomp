@@ -2641,7 +2641,7 @@ src/unnamed/arm9/0205/func_0205cbe4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205cc80.c	WEAK-refs-only	arm9				1		None		-
 src/FS_InitArchive.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205cd5c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205cf5c.c	PURE-C	arm9				1		None		-
+src/FSi_ExecuteSyncCommand.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205cfa4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d044.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d23c.c	WEAK-refs-only	arm9				1		None		-
@@ -2660,8 +2660,8 @@ src/unnamed/arm9/0205/func_0205d644.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d688.c	PURE-C	arm9				1		None		-
 src/FSi_FindPath.c	PURE-C	arm9				1		None		-
 src/FS_Init.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d8d8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d920.c	PURE-C	arm9				1		None		-
+src/FSi_AppendToList.c	PURE-C	arm9				1		None		-
+src/FSi_CutFromList.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d94c.c	PURE-C	arm9				1		None		-
 src/FSi_InitRom.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205da94.c	PURE-C	arm9				1		None		-

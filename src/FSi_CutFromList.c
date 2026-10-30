@@ -1,0 +1,25 @@
+/* NitroSDK FSi_CutFromList(elem): unlink a file from its archive's command
+ * list and clear its link. pret's pokediamond FSi_util.h has it as a static
+ * inline over FSi_CutFromListCore; this older SDK calls it out of line, from
+ * FSi_ReleaseCommand. */
+typedef struct FSFile FSFile;
+
+typedef struct FSFileLink {
+    FSFile *prev; /* 0x00 */
+    FSFile *next; /* 0x04 */
+} FSFileLink;
+
+/* NitroSDK FSFile, the link field touched here. */
+struct FSFile {
+    FSFileLink link; /* 0x00 */
+};
+
+void FSi_CutFromList(FSFile *elem) {
+    FSFile *prev = elem->link.prev;
+    FSFile *next = elem->link.next;
+    if (prev)
+        prev->link.next = next;
+    if (next)
+        next->link.prev = prev;
+    elem->link.next = elem->link.prev = 0;
+}

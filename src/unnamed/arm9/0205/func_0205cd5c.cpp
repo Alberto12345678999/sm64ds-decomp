@@ -6,8 +6,8 @@ extern "C" {
 
 /* NitroSDK FS_NotifyArchiveAsyncEnd(p_arc, ret): the archive's procedure
  * finished the command at the head of its list. An asynchronous one
- * (FS_ARCHIVE_FLAG_IS_ASYNC 0x100) is released with ret (func_0205c788 =
- * FSi_ReleaseCommand) and the next command started (FSi_NextCommand,
+ * (FS_ARCHIVE_FLAG_IS_ASYNC 0x100) is released with ret
+ * (FSi_ReleaseCommand) and the next command started (FSi_NextCommand,
  * FSi_ExecuteAsyncCommand); a synchronous one gets ret as its error,
  * FS_ARCHIVE_FLAG_IS_SYNC (0x200) is cleared and the waiting caller woken on
  * sync_q. Field names follow the SDK's FSFile and FSArchive, as
@@ -29,7 +29,7 @@ typedef struct FSArchive {
     } list;
 } FSArchive;
 
-extern void func_0205c788(void *p, int arg);
+extern void FSi_ReleaseCommand(void *p, int arg);
 extern int FSi_NextCommand(void *self);
 extern void FSi_ExecuteAsyncCommand(int x);
 extern void OS_WakeupThread(u16 *p);
@@ -44,7 +44,7 @@ void func_0205cd5c(FSArchive *self, int arg) {
         int r;
 
         self->flag &= ~0x100;
-        func_0205c788(t, arg);
+        FSi_ReleaseCommand(t, arg);
         r = FSi_NextCommand(self);
         if (r == 0) {
             return;

@@ -2585,13 +2585,9 @@ src/engine/fs/FS_CommandDefault.cpp:
     complete
     .text start:0x0205bbdc end:0x0205c5e4
 
-src/unnamed/arm9/0205/func_0205c5e4.cpp:
+src/engine/fs/FS_Command.cpp:
     complete
-    .text start:0x0205c5e4 end:0x0205c788
-
-src/unnamed/arm9/0205/func_0205c788.c:
-    complete
-    .text start:0x0205c788 end:0x0205c7c4
+    .text start:0x0205c5e4 end:0x0205c7c4
 
 src/FS_SetArchiveProc.c:
     complete
@@ -2641,7 +2637,7 @@ src/FSi_SendCommand.cpp:
     complete
     .text start:0x0205cdf4 end:0x0205cf5c
 
-src/unnamed/arm9/0205/func_0205cf5c.c:
+src/FSi_ExecuteSyncCommand.c:
     complete
     .text start:0x0205cf5c end:0x0205cfa4
 
@@ -2720,11 +2716,11 @@ src/FS_Init.c:
     complete
     .text start:0x0205d89c end:0x0205d8d8
 
-src/unnamed/arm9/0205/func_0205d8d8.c:
+src/FSi_AppendToList.c:
     complete
     .text start:0x0205d8d8 end:0x0205d920
 
-src/unnamed/arm9/0205/func_0205d920.c:
+src/FSi_CutFromList.c:
     complete
     .text start:0x0205d920 end:0x0205d94c
 

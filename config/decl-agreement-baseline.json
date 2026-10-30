@@ -1752,16 +1752,13 @@
     "OS_SleepThread": {
       "src/myFS_ReadFile.c": [
         "param:#1 int"
-      ],
-      "src/FSi_SendCommand.cpp": [
-        "param:#1 char *"
       ]
     },
     "OS_WakeupThread": {
-      "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
+      "src/IRQ2.cpp": [
         "param:#1 int *"
       ],
-      "src/IRQ2.cpp": [
+      "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
       ],
       "src/CARDi_EndTask.cpp": [
@@ -5418,11 +5415,11 @@
       ]
     },
     "_ZN3IRQ7DisableEv": {
-      "src/Crash.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "return:int"
+      ],
+      "src/Crash.cpp": [
+        "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
@@ -5459,6 +5456,10 @@
       ]
     },
     "_ZN3IRQ7RestoreEj": {
+      "src/unnamed/arm9/0204/func_02040c34.c": [
+        "param:#1 int",
+        "return:void"
+      ],
       "src/DMAStartTransfer.cpp": [
         "return:void"
       ],
@@ -5472,10 +5473,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02040aa4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#1 int",
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02041224.cpp": [
@@ -5512,7 +5509,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c5e4.cpp": [
+      "src/engine/fs/FS_Command.cpp": [
         "return:void"
       ],
       "src/FS_ResumeArchive.cpp": [
@@ -20059,17 +20056,9 @@
         "param:#2 int"
       ]
     },
-    "func_0205c5e4": {
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_0205c788": {
+    "FSi_ReleaseCommand": {
       "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "param:#1 int *"
-      ],
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int"
       ],
       "src/FSi_NextCommand.cpp": [
         "param:#1 Node *"
@@ -20121,10 +20110,7 @@
         "param:#1 FSFile *"
       ]
     },
-    "func_0205cf5c": {
-      "src/FSi_SendCommand.cpp": [
-        "param:#1 char *"
-      ],
+    "FSi_ExecuteSyncCommand": {
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 struct Obj *"
       ]
@@ -20132,20 +20118,10 @@
     "FSi_ExecuteAsyncCommand": {
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "param:#1 int"
-      ],
-      "src/FSi_SendCommand.cpp": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int"
       ]
     },
     "FSi_NextCommand": {
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int",
         "return:int"
       ]
     },
@@ -20236,12 +20212,6 @@
     "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
         "return:int"
-      ]
-    },
-    "func_0205d8d8": {
-      "src/FSi_SendCommand.cpp": [
-        "param:#1 void *",
-        "param:#2 void *"
       ]
     },
     "func_0205da94": {
