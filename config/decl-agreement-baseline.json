@@ -300,9 +300,6 @@
       "src/unnamed/arm9/0204/func_020426f8.c": [
         "arity:3"
       ],
-      "src/FS_LoadOverlayInfo.c": [
-        "arity:3"
-      ],
       "src/unnamed/arm9/0206/func_0206062c.cpp": [
         "arity:3"
       ],
@@ -404,6 +401,9 @@
         "arity:3"
       ],
       "src/engine/os/OS_OwnerInfo.c": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Overlay.cpp": [
         "arity:3"
       ]
     },
@@ -647,10 +647,6 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/FSi_LoadOverlayInfoCore.c": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0206/func_02067e70.c": [
         "param:#1 void *",
         "param:#2 void *"
@@ -661,6 +657,10 @@
       ],
       "src/engine/fs/FS_Archive.cpp": [
         "param:#1 int *"
+      ],
+      "src/engine/fs/FS_Overlay.cpp": [
+        "param:#1 void *",
+        "param:#2 void *"
       ]
     },
     "GetLevelPart": {
@@ -8789,20 +8789,9 @@
         "param:#3 struct Node *"
       ]
     },
-    "func_0205e904": {
-      "src/unnamed/arm9/0205/func_0205db88.cpp": [
-        "param:#1 unsigned int",
-        "return:unsigned int"
-      ]
-    },
     "func_0206062c": {
       "src/unnamed/arm9/0206/func_02060484.cpp": [
         "return:int"
-      ]
-    },
-    "func_0206cf98": {
-      "src/FS_EndOverlay.cpp": [
-        "return:void"
       ]
     },
     "gMgSaveDirty": {
@@ -15108,11 +15097,6 @@
         "param:#3 int"
       ]
     },
-    "MIi_UncompressBackward": {
-      "src/FS_StartOverlay.c": [
-        "arity:1"
-      ]
-    },
     "func_020070e8": {
       "src/engine/view/d_camera.cpp": [
         "param:#1 dCamera_c *",
@@ -18822,12 +18806,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/FS_StartOverlay.c": [
-        "arity:3"
-      ],
-      "src/FS_ClearOverlayImage.cpp": [
-        "arity:3"
-      ],
       "src/unnamed/arm9/0206/func_020647fc.c": [
         "arity:3"
       ],
@@ -18850,6 +18828,9 @@
         "arity:3"
       ],
       "src/WM_StartConnect.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Overlay.cpp": [
         "arity:3"
       ]
     },
@@ -22100,6 +22081,22 @@
     },
     "WmCheckParentParameter": {
       "src/WM_SetParentParameter.cpp": [
+        "return:void"
+      ]
+    },
+    "MIi_UncompressBackward": {
+      "src/engine/fs/FS_Overlay.cpp": [
+        "arity:1"
+      ]
+    },
+    "func_0205e904": {
+      "src/engine/fs/FS_Overlay.cpp": [
+        "param:#1 unsigned int",
+        "return:unsigned int"
+      ]
+    },
+    "func_0206cf98": {
+      "src/engine/fs/FS_Overlay.cpp": [
         "return:void"
       ]
     }

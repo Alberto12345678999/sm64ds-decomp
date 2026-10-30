@@ -2407,45 +2407,9 @@ src/engine/fs/FS_Rom.cpp:
     complete
     .text start:0x0205d94c end:0x0205db88
 
-src/unnamed/arm9/0205/func_0205db88.cpp:
+src/engine/fs/FS_Overlay.cpp:
     complete
-    .text start:0x0205db88 end:0x0205dc0c
-
-src/FS_UnloadOverlay.c:
-    complete
-    .text start:0x0205dc0c end:0x0205dc60
-
-src/FS_UnloadOverlayImage.c:
-    complete
-    .text start:0x0205dc60 end:0x0205dc7c
-
-src/FS_EndOverlay.cpp:
-    complete
-    .text start:0x0205dc7c end:0x0205dd9c
-
-src/FS_StartOverlay.c:
-    complete
-    .text start:0x0205dd9c end:0x0205de9c
-
-src/FSi_CompareDigest.c:
-    complete
-    .text start:0x0205de9c end:0x0205df40
-
-src/FS_LoadOverlayInfo.c:
-    complete
-    .text start:0x0205df40 end:0x0205dffc
-
-src/FSi_LoadOverlayInfoCore.c:
-    complete
-    .text start:0x0205dffc end:0x0205e088
-
-src/FS_GetOverlayFileID.c:
-    complete
-    .text start:0x0205e088 end:0x0205e0b0
-
-src/FS_ClearOverlayImage.cpp:
-    complete
-    .text start:0x0205e0b0 end:0x0205e0f4
+    .text start:0x0205db88 end:0x0205e0f4
 
 src/DGT_Hash2CalcHmac.c:
     complete
