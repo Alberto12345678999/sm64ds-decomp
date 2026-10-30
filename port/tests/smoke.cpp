@@ -88,7 +88,7 @@ static void test_fader(void)
     CHECK(f.IsBetweenStartAndEnd() == 0);
 
     // 16-frame forward fade: speed = fdiv(1.0, 16.0) through the HAL divider
-    f.SetForwardTime(16);
+    f.SetForwardTime(16, 0);
     CHECK(f.speed == ONE / 16);
     for (int i = 0; i < 15; ++i) {
         f.AdvanceInterp();
