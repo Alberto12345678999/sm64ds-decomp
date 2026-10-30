@@ -43,7 +43,7 @@ __aeabi_uidiv kind:function(arm,size=0x1e4) addr:0x01ffadf0
 _u32_div_f kind:function(arm,size=0x0) addr:0x01ffadf0
 .L_01ffadf8 kind:label(arm) addr:0x01ffadf8
 _u32_div_f_core kind:label(arm) addr:0x01ffadf8
-func_01ffafd4 kind:function(arm,size=0x34) addr:0x01ffafd4
+_fp_init kind:function(arm,size=0x34) addr:0x01ffafd4
 __ieee_status kind:function(arm,size=0x28) addr:0x01ffb008
 __fp_status kind:function(arm,size=0x4c) addr:0x01ffb030
 func_01ffb07c kind:function(arm,size=0x1c) addr:0x01ffb07c
