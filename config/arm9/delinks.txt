@@ -2361,11 +2361,11 @@ src/unnamed/arm9/0205/func_02059d98.c:
     complete
     .text start:0x02059d98 end:0x02059dd4
 
-src/unnamed/arm9/0205/func_02059dd4.c:
+src/OSi_SendToPxi.c:
     complete
     .text start:0x02059dd4 end:0x02059e04
 
-src/unnamed/arm9/0205/func_02059e04.c:
+src/OSi_CommonCallback.c:
     complete
     .text start:0x02059e04 end:0x02059e48
 

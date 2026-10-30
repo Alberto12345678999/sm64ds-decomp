@@ -6,7 +6,7 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "One contiguous run of the Nitro SDK's pxi_fifo.c, 0x0205b864..0x0205bbdc: 5 functions, gapless in config/arm9/delinks.txt. Read from the highest address down (mwccarm emits .text in reverse source order) it is the file in order: PXI_InitFifo (registers the receive handler on IRQ 0x40000 and handshakes through SUBPINTF), PXI_SetFifoRecvCallback, PXI_IsCallbackReady, PXI_SendWordByFifo (still IPCSend) and PXIi_HandlerRecvFifoNotEmpty.",
+    "One contiguous run of the Nitro SDK's pxi_fifo.c, 0x0205b864..0x0205bbdc: 5 functions, gapless in config/arm9/delinks.txt. Read from the highest address down (mwccarm emits .text in reverse source order) it is the file in order: PXI_InitFifo (registers the receive handler on IRQ 0x40000 and handshakes through SUBPINTF), PXI_SetFifoRecvCallback, PXI_IsCallbackReady, PXI_SendWordByFifo and PXIi_HandlerRecvFifoNotEmpty.",
     "Every member touches the FIFO state: the SUBP_FIFO_CNT/SEND/RECV registers, the callback table data_020a7fc8, or the shared pxiHandleChecker word at 0x027fff88.",
     "TOP EDGE: func_0205bbdc (0x0205bbdc..0x0205bbe4, `return 0`) and the stream helpers after it touch none of that state.",
     "BOTTOM EDGE: PXI_Init (0x0205b858..0x0205b864, src/PXI_Init.c) is pxi_init.c's tail call to PXI_InitFifo, a separate SDK file; below it are cache-flushing list helpers."
@@ -27,7 +27,7 @@
       "ordinal": 0
     },
     {
-      "symbol": "IPCSend",
+      "symbol": "PXI_SendWordByFifo",
       "address": "0x0205b988",
       "size": "0x000000b4",
       "legacy_source": "src/IPCSend.c",

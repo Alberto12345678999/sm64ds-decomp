@@ -9859,7 +9859,7 @@
     },
     "arm9:0x02059650": {
       "author": "ruspecial",
-      "name": "func_02059650"
+      "name": "OS_GetTick"
     },
     "arm9:0x02059700": {
       "author": "tangosdev",
@@ -9947,11 +9947,11 @@
     },
     "arm9:0x02059dd4": {
       "author": "tangosdev",
-      "name": "func_02059dd4"
+      "name": "OSi_SendToPxi"
     },
     "arm9:0x02059e04": {
       "author": "tangosdev",
-      "name": "func_02059e04"
+      "name": "OSi_CommonCallback"
     },
     "arm9:0x02059e48": {
       "author": "tangosdev",
@@ -10291,7 +10291,7 @@
     },
     "arm9:0x0205b988": {
       "author": "tangosdev",
-      "name": "IPCSend"
+      "name": "PXI_SendWordByFifo"
     },
     "arm9:0x0205ba3c": {
       "author": "tangosdev",
@@ -10847,7 +10847,7 @@
     },
     "arm9:0x02060890": {
       "author": "tangosdev",
-      "name": "func_02060890"
+      "name": "CARD_Init"
     },
     "arm9:0x0206090c": {
       "author": "ruspecial",

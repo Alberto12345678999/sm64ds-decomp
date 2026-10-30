@@ -832,7 +832,7 @@
         "return:char"
       ]
     },
-    "IPCSend": {
+    "PXI_SendWordByFifo": {
       "src/func_0205ae30.c": [
         "param:#1 int",
         "param:#2 int",
@@ -840,11 +840,6 @@
       ],
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:IPCStatus"
-      ],
-      "src/unnamed/arm9/0205/func_02059dd4.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
       ],
       "src/unnamed/arm9/0205/func_0205edd8.cpp": [
         "param:#1 int",
@@ -11148,14 +11143,6 @@
         "return:int * []"
       ]
     },
-    "data_020a645c": {
-      "src/OSi_ReloadRomData.cpp": [
-        "return:volatile unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_02059e04.c": [
-        "return:char []"
-      ]
-    },
     "data_020a6484": {
       "src/unnamed/arm9/0205/func_0205b274.c": [
         "return:void * *"
@@ -20541,7 +20528,7 @@
         "return:void *"
       ]
     },
-    "func_02059650": {
+    "OS_GetTick": {
       "src/unnamed/arm9/0204/func_02042784.c": [
         "return:unsigned long long"
       ],

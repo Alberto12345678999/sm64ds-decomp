@@ -2463,7 +2463,7 @@ OS_SetUserExceptionHandler kind:function(arm,size=0x1c) addr:0x02059578
 OS_InitException kind:function(arm,size=0x90) addr:0x02059594
 OSi_SetTimerReserved kind:function(arm,size=0x1c) addr:0x02059624
 OS_GetTickLo kind:function(arm,size=0x10) addr:0x02059640
-func_02059650 kind:function(arm,size=0xb0) addr:0x02059650
+OS_GetTick kind:function(arm,size=0xb0) addr:0x02059650
 OSi_CountUpTick kind:function(arm,size=0x88) addr:0x02059700
 OS_InitTick kind:function(arm,size=0x9c) addr:0x02059788
 OSi_AlarmHandler kind:function(arm,size=0x10) addr:0x02059824
@@ -2485,8 +2485,8 @@ ARMProcessorMode kind:function(arm,size=0xc) addr:0x02059d74
 _ZN4CP1516WaitForInterruptEv kind:function(arm,size=0xc) addr:0x02059d80
 OS_SpinWait kind:function(arm,size=0xc) addr:0x02059d8c
 func_02059d98 kind:function(arm,size=0x3c) addr:0x02059d98
-func_02059dd4 kind:function(arm,size=0x30) addr:0x02059dd4
-func_02059e04 kind:function(arm,size=0x44) addr:0x02059e04
+OSi_SendToPxi kind:function(arm,size=0x30) addr:0x02059dd4
+OSi_CommonCallback kind:function(arm,size=0x44) addr:0x02059e04
 OS_InitReset kind:function(arm,size=0x68) addr:0x02059e48
 func_02059eb0 kind:function(arm,size=0x7c) addr:0x02059eb0
 func_02059f2c kind:function(arm,size=0x1c) addr:0x02059f2c
@@ -2571,7 +2571,7 @@ func_0205b6f4 kind:function(arm,size=0x98) addr:0x0205b6f4
 func_0205b78c kind:function(arm,size=0xcc) addr:0x0205b78c
 PXI_Init kind:function(arm,size=0xc) addr:0x0205b858
 PXIi_HandlerRecvFifoNotEmpty kind:function(arm,size=0x124) addr:0x0205b864
-IPCSend kind:function(arm,size=0xb4) addr:0x0205b988
+PXI_SendWordByFifo kind:function(arm,size=0xb4) addr:0x0205b988
 PXI_IsCallbackReady kind:function(arm,size=0x28) addr:0x0205ba3c
 PXI_SetFifoRecvCallback kind:function(arm,size=0x74) addr:0x0205ba64
 PXI_InitFifo kind:function(arm,size=0x104) addr:0x0205bad8
@@ -5183,8 +5183,8 @@ data_020a6440 kind:bss addr:0x020a6440
 data_020a6444 kind:bss addr:0x020a6444
 data_020a644c kind:bss addr:0x020a644c
 data_020a6450 kind:bss addr:0x020a6450
-data_020a6458 kind:bss addr:0x020a6458
-data_020a645c kind:bss addr:0x020a645c
+OSi_IsInitReset kind:bss addr:0x020a6458
+OSi_IsResetOccurred kind:bss addr:0x020a645c
 data_020a6460 kind:bss addr:0x020a6460
 data_020a6480 kind:bss addr:0x020a6480
 data_020a6484 kind:bss addr:0x020a6484

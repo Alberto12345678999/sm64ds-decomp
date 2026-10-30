@@ -5,7 +5,7 @@
 #include "nitro/card/card_common.h"
 extern "C" int PXI_IsCallbackReady(int tag, int proc);
 extern "C" void OS_SpinWait(unsigned int cycles);
-extern "C" int IPCSend(unsigned int a, unsigned int c, unsigned int b);
+extern "C" int PXI_SendWordByFifo(unsigned int a, unsigned int c, unsigned int b);
 
 /* NitroSDK CARDi_Request(p, req_type, retry_count): the first time, wait
  * for ARM7's FS PXI callback (tag 0xb) and send the INIT request (0)
@@ -35,12 +35,12 @@ extern "C" int CARDi_Request(CARDiCommon *p, s32 req_type, s32 retry_count) {
         p->command = req_type;
         p->flag |= CARD_STAT_REQ;
 
-        while (IPCSend(0xb, req_type, 1) < 0) {
+        while (PXI_SendWordByFifo(0xb, req_type, 1) < 0) {
         }
 
         if (req_type == CARD_REQ_INIT) {
             CARDiCommandArg *q = p->cmd;
-            while (IPCSend(0xb, (unsigned int)q, 1) < 0) {
+            while (PXI_SendWordByFifo(0xb, (unsigned int)q, 1) < 0) {
             }
         }
 

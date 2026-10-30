@@ -1,4 +1,4 @@
-extern long long func_02059650(void);
+extern long long OS_GetTick(void);
 extern int func_0201aa50(void *a, unsigned int lo, unsigned int hi, void *fn, void *e);
 extern unsigned short func_0203da80(unsigned short x);
 extern void func_02013f28(void);
@@ -12,7 +12,7 @@ typedef struct {
 void func_0201a8b4(void *thiz)
 {
     Obj *o = (Obj *)thiz;
-    unsigned long long delta = (unsigned long long)func_02059650() - o->base;
+    unsigned long long delta = (unsigned long long)OS_GetTick() - o->base;
 
     if (delta < o->limit) {
         unsigned long long rem = o->limit - delta;

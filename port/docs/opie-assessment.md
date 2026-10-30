@@ -110,7 +110,7 @@ So the 3D seam for us is the **command stream**, not per-call immediate inlines.
 
 **Failure mode correction:** dead registers do not produce a blank screen, they produce a
 **hang**. The game spin-waits on hardware — `while (*(volatile unsigned *)(0x40000b0 + (ch*3+2)*4) & 0x80000000);`
-(`src/func_02059fa8.c:2`), `while (IPCSend(7,0,0) < 0);` (`src/func_0205ae30.c`). Any
+(`src/func_02059fa8.c:2`), `while (PXI_SendWordByFifo(7,0,0) < 0);` (`src/func_0205ae30.c`). Any
 register the host layer leaves inert is a deadlock in the boot path.
 
 ### 2b. Our tree is *not* pre-wrapped in SDK-shaped inlines
@@ -166,7 +166,7 @@ side is the **stock NitroSDK sound stack over SDAT**:
 - `src/Snd_SendCommand.c` builds command records from a pool and dispatches them —
   NitroSDK's `SND` command-queue shape.
 - `src/func_0205b070.cpp` is `SND_FlushCommand` (DC-flush of 0x1800 = 256 × 0x18, then IPC
-  on **PXI tag 7** = sound). `IPCSend` in `src/engine/pxi/PXI_Fifo.cpp` is `PXI_SendWordByFifo` on `0x4000188`.
+  on **PXI tag 7** = sound). `PXI_SendWordByFifo` in `src/engine/pxi/PXI_Fifo.cpp` writes the send FIFO at `0x4000188`.
 - The data is SDAT: `symbols/verified.tsv` names `0x020a5bb8` as
   `_ZN5Sound8SDAT_RAM3PTRE`, and `Sound::InfoSequenceEntry::GetWithID` walks the SDAT
   INFO block. `roadmap.md:42` already says "SDAT / SSEQ playback."

@@ -52,7 +52,7 @@ check against, and they don't.
 | OS_arena.c | 0x02058cd0..0x02059040 | 9 of 10: 6 exact, 3 drift from an older SDK (OS_InitArenaEx 0x80 to 0x60, OS_GetInitArenaHi 0x130 to 0xac, OS_GetInitArenaLo 0xec to 0x74), in pret's source order reversed; OS_AllocFromArenaHi dropped by the linker: folded as arm9/OS_Arena |
 | OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
 | OS_exception.c | 0x020593f4..0x02059624 | 5 of 5 plus 1: 4 exact, OS_InitException 0x70 to 0x90 (it also tests OS_GetConsoleType), 1 extra (OS_SetUserExceptionHandler, not in pret's revision); the three asm functions first, then the C bodies reversed: folded as arm9/OS_Exception |
-| OS_tick.c | 0x02059640..0x02059824 | 4 of 5, all exact, in pret's source order reversed; OS_IsTickAvailable dropped by the linker: folded as arm9/OS_Tick (OS_GetTick still func_02059650) |
+| OS_tick.c | 0x02059640..0x02059824 | 4 of 5, all exact, in pret's source order reversed; OS_IsTickAvailable dropped by the linker: folded as arm9/OS_Tick |
 | OS_alarm.c | 0x02059824..0x02059cb4 | 9 of 9: 8 exact, OSi_ArrangeTimer 0x118 to 0x11c; asm OSi_AlarmHandler first, then the C bodies reversed: folded as arm9/OS_Alarm |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |
 | CARD_common.c | 0x0205ff70..0x020602bc | 9 of 14: 5 exact, 4 drift from an older SDK (CARDi_InitCommon 0x100 to 0xb4, CARDi_UnlockResource 0xa4 to 0xa8, CARDi_LockResource 0x9c to 0xa0, CARDi_SetTask 0x48 to 0x94), in pret's source order reversed; the other 5 dropped by the linker: folded as arm9/CARD_Common |
@@ -67,3 +67,5 @@ each callee: PXI_init.c's PXI_Init (src/PXI_Init.c, 0x0205b858), MI_wram.c's MI_
 OS_InitReset (src/OS_InitReset.c), CTRDG_Init (src/CTRDG_Init.c) and PM_Init (src/PM_Init.c).
 OS_timer.c's OSi_SetTimerReserved is src/OSi_SetTimerReserved.c (0x02059624, 0x1c), between the
 OS_exception.c and OS_tick.c runs.
+OS_reset.c's OSi_SendToPxi and OSi_CommonCallback are src/OSi_SendToPxi.c and src/OSi_CommonCallback.c
+(0x02059dd4, 0x02059e04), just below OS_InitReset in pret's order reversed.
