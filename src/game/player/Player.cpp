@@ -3675,7 +3675,7 @@ void Player::func_ov002_020c2db8() {
 extern "C" {
 void Player::func_ov002_020c2e78(){
     extern unsigned char IsPlayerWarping(int a0);
-    extern void func_02020388(int handle);
+    extern void func_02020388(int playerNo);
     extern Player::State data_ov002_02110154;
   unsigned char w = IsPlayerWarping(mPlayerNo);
   if(w==0) return;

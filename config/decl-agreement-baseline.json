@@ -17421,12 +17421,6 @@
         "return:int"
       ]
     },
-    "func_02018474": {
-      "src/unnamed/arm9/0201/func_02018434.c": [
-        "arity:3",
-        "return:void"
-      ]
-    },
     "func_020184e0": {
       "src/unnamed/arm9/0201/func_02018270.c": [
         "param:#2 int",
@@ -17519,10 +17513,6 @@
       ]
     },
     "myFS_ConvertPathToFileID": {
-      "src/unnamed/arm9/0201/func_02018434.c": [
-        "param:#2 int",
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_020189f0.c": [
         "param:#2 int",
         "return:void"
@@ -19033,9 +19023,6 @@
       ]
     },
     "OS_CreateThread": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0204/func_02042200.c": [
         "param:#2 void *"
       ],
