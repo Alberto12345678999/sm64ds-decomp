@@ -15,11 +15,10 @@ enum { only_minus = 0, sign_always = 1, space_holder = 2 };
 enum { left_justification = 0, right_justification = 1, zero_fill = 2 };
 
 /* MSL printf.c's longlong2str: the 64-bit sibling of long2str
-   (func_0206fb08) for %lld and friends. Formats num backwards from
+   (long2str) for %lld and friends. Formats num backwards from
    buff_end in base 8, 10 or 16. Handles the sign, zero fill, precision and
    the # prefix. Returns the first character, or 0 past 509 characters. */
-char *func_0206f820(long long num, char *buff_end, print_format format)
-{
+char *longlong2str(long long num, char *buff_end, print_format format) {
     unsigned long long base;
     char *p;
     int n, digits;

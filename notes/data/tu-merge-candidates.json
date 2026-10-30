@@ -13828,12 +13828,12 @@
     "src/unnamed/arm9/0206/func_0206e3dc.c",
     "src/unnamed/arm9/0206/func_0206e450.c",
     "src/unnamed/arm9/0206/func_0206e4a4.c",
-    "src/unnamed/arm9/0206/func_0206ece0.c",
-    "src/unnamed/arm9/0206/func_0206f338.c",
-    "src/unnamed/arm9/0206/func_0206f46c.c",
-    "src/unnamed/arm9/0206/func_0206f820.c",
-    "src/unnamed/arm9/0206/func_0206fb08.c",
-    "src/unnamed/arm9/0206/func_0206fd6c.c",
+    "src/float2str.c",
+    "src/round_decimal.c",
+    "src/double2hex.c",
+    "src/longlong2str.c",
+    "src/long2str.c",
+    "src/parse_format.c",
     "src/unnamed/arm9/0207/func_02070348.c",
     "src/unnamed/arm9/0207/func_0207037c.c",
     "src/_ZN4cstd6strchrEPKcc.cpp",
@@ -13841,8 +13841,8 @@
     "src/_ZN4cstd7strncpyEPcPKcj.cpp",
     "src/unnamed/arm9/0207/func_020706b0.c",
     "src/_ZN4cstd6strlenEPKc.cpp",
-    "src/unnamed/arm9/0207/func_020707cc.c",
-    "src/unnamed/arm9/0207/func_02070b98.c",
+    "src/fabs.c",
+    "src/__num2dec.c",
     "src/unnamed/arm9/0207/func_02071784.c",
     "src/unnamed/arm9/0207/func_02072f3c.c",
     "src/unnamed/arm9/0207/func_02073238.c",
@@ -13916,8 +13916,8 @@
    "n_functions_map": 2,
    "n_files": 2,
    "files": [
-    "src/unnamed/arm9/0207/func_020707f4.c",
-    "src/unnamed/arm9/0207/func_020708b4.c"
+    "src/frexp.c",
+    "src/ldexp.c"
    ],
    "ext_mix": {
     ".c": 2
@@ -13967,13 +13967,13 @@
    "n_files": 9,
    "files": [
     "src/func_02071694.c",
-    "src/unnamed/arm9/0207/func_02070c68.c",
-    "src/unnamed/arm9/0207/func_02070ec0.c",
-    "src/unnamed/arm9/0207/func_020712a0.c",
-    "src/unnamed/arm9/0207/func_02071364.c",
-    "src/unnamed/arm9/0207/func_02071510.c",
-    "src/unnamed/arm9/0207/func_020715e0.c",
-    "src/unnamed/arm9/0207/func_02071698.c",
+    "src/__num2dec_internal.c",
+    "src/__two_exp.c",
+    "src/__str2dec.c",
+    "src/__timesdec.c",
+    "src/__ull2dec.c",
+    "src/__rounddec.c",
+    "src/__must_round.c",
     "src/unnamed/arm9/0207/func_02071708.c"
    ],
    "ext_mix": {
@@ -31066,7 +31066,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/unnamed/arm9/0207/func_020707a4.c"
+    "src/copysign.c"
    ],
    "ext_mix": {
     ".c": 1

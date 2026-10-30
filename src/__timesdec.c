@@ -1,9 +1,8 @@
 #include "Decimal.h"
 
-extern void func_02071644(Decimal *result, int length);
+extern void __dorounddecup(Decimal *result, int length);
 
-void func_02071364(Decimal *result, const Decimal *x, const Decimal *y)
-{
+void __timesdec(Decimal *result, const Decimal *x, const Decimal *y) {
     unsigned int accumulator = 0;
     unsigned char mantissa[64];
     int i = x->sig.length + y->sig.length - 1;
@@ -70,6 +69,6 @@ void func_02071364(Decimal *result, const Decimal *x, const Decimal *y)
             }
         }
     round:
-        func_02071644(result, result->sig.length);
+        __dorounddecup(result, result->sig.length);
     }
 }

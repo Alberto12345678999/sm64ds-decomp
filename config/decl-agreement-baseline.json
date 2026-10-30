@@ -16093,12 +16093,12 @@
       "src/unnamed/arm9/0206/func_02060b64.cpp": [
         "kind:data"
       ],
-      "src/unnamed/arm9/0207/func_020708b4.c": [
+      "src/ldexp.c": [
         "kind:function"
       ]
     },
     "func_01ff859c": {
-      "src/unnamed/arm9/0207/func_02070c68.c": [
+      "src/__num2dec_internal.c": [
         "return:unsigned long long"
       ]
     },
@@ -21516,7 +21516,7 @@
         "return:void"
       ]
     },
-    "func_0206e4a4": {
+    "__pformatter": {
       "src/unnamed/arm9/0206/func_0206e3dc.c": [
         "param:#1 void (*)(void)",
         "param:#3 unsigned int",
@@ -21524,22 +21524,22 @@
         "return:unsigned int"
       ]
     },
-    "func_0206ece0": {
+    "float2str": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"
       ]
     },
-    "func_0206f338": {
-      "src/unnamed/arm9/0206/func_0206ece0.c": [
+    "round_decimal": {
+      "src/float2str.c": [
         "param:#1 decimal *"
       ]
     },
-    "func_0206f46c": {
+    "double2hex": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"
       ]
     },
-    "func_0206fd6c": {
+    "parse_format": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 const unsigned char *"
       ]
@@ -21556,7 +21556,7 @@
       ]
     },
     "func_02071708": {
-      "src/unnamed/arm9/0207/func_02070c68.c": [
+      "src/__num2dec_internal.c": [
         "arity:1"
       ]
     },

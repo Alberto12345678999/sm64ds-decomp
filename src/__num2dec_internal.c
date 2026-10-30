@@ -1,15 +1,14 @@
 extern int func_01ff9d40(double, double);
 extern double func_01ff8e10(double, double);
-extern double func_020707f4(double, int *);
-extern double func_020708b4(double, int);
+extern double frexp(double, int *);
+extern double ldexp(double, int);
 extern int func_02071708(int);
 extern unsigned long long func_01ff859c(double);
-extern void func_02071510(void *, unsigned long long);
-extern void func_02070ec0(void *, int);
-extern void func_02071364(void *, void *, void *);
+extern void __ull2dec(void *, unsigned long long);
+extern void __two_exp(void *, int);
+extern void __timesdec(void *, void *, void *);
 
-void func_02070c68(char *out, double x)
-{
+void __num2dec_internal(char *out, double x) {
     int e;
     double t1;
     double t2;
@@ -80,7 +79,7 @@ void func_02070c68(char *out, double x)
         int *mp;
 
         if (neg) x = func_01ff8e10(0.0, v);
-        m = func_020707f4(x, &e);
+        m = frexp(x, &e);
         mm = m;
         mp = (int *)&mm;
         if (mp[0] != 0)
@@ -88,9 +87,9 @@ void func_02070c68(char *out, double x)
         else
             nbits = func_02071708(mp[1] | 0x100000) + 0x20;
         k = 0x35 - nbits;
-        func_02070ec0(big, e - k);
-        func_02071510(dec, func_01ff859c(func_020708b4(m, k)));
-        func_02071364(out, dec, big);
+        __two_exp(big, e - k);
+        __ull2dec(dec, func_01ff859c(ldexp(m, k)));
+        __timesdec(out, dec, big);
         out[0] = neg;
     }
 }

@@ -1,9 +1,8 @@
 #include "Decimal.h"
 
-extern void func_02071644(Decimal *result, int length);
+extern void __dorounddecup(Decimal *result, int length);
 
-void func_020712a0(Decimal *result, unsigned char *digits, short exp)
-{
+void __str2dec(Decimal *result, unsigned char *digits, short exp) {
     int i;
     unsigned char c;
     result->exp = exp;
@@ -30,5 +29,5 @@ void func_020712a0(Decimal *result, unsigned char *digits, short exp)
             return;
     }
 docall:
-    func_02071644(result, result->sig.length);
+    __dorounddecup(result, result->sig.length);
 }

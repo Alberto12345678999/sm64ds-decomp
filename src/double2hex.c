@@ -1,7 +1,7 @@
-/* func_0206f46c @ 0x0206f46c (arm9, size 0x3b4)   [mwccarm 2004/b56]
+/* double2hex @ 0x0206f46c (arm9, size 0x3b4)   [mwccarm 2004/b56]
  * MSL printf helper hex_double2str: formats a double backwards into buff_end
  * as the C99 %a/%A hexadecimal form "0x1.<hex digits>p<exp>", handling
- * zero/inf/nan, sign and alternate form. Sibling of float2str (func_0206ece0),
+ * zero/inf/nan, sign and alternate form. Sibling of float2str,
  * which does %e/%f/%g. Returns a pointer to the first character, or NULL if the
  * requested precision would exceed 509 characters.
  */
@@ -37,10 +37,10 @@ typedef struct {
 enum { only_minus = 0, sign_always = 1, space_holder = 2 };
 enum { left_justification = 0, right_justification = 1, zero_fill = 2 };
 
-extern void func_02070b98(decform *f, double x, decimal *d); /* __num2dec */
-extern double func_020707cc(double x);                       /* fabs */
+extern void __num2dec(decform *f, double x, decimal *d);
+extern double fabs(double x);
 extern char *func_020706b0(char *dst, const char *src);      /* strcpy */
-extern char *func_0206fb08(long num, char *buff_end, print_format format);
+extern char *long2str(long num, char *buff_end, print_format format);
 
 extern char data_0209a5ec[]; /* "-INF" */
 extern char data_0209a5f4[]; /* "-inf" */
@@ -52,8 +52,7 @@ extern char data_0209a614[]; /* "NAN" */
 extern char data_0209a618[]; /* "nan" */
 extern char data_0209a61c[]; /* "0x0p0" */
 
-char *func_0206f46c(double x, char *buff_end, print_format format)
-{
+char *double2hex(double x, char *buff_end, print_format format) {
     decform form;
     print_format exp_format;
     decimal dec;
@@ -81,9 +80,9 @@ char *func_0206f46c(double x, char *buff_end, print_format format)
     form.style = 0;
     form.digits = 32;
 
-    func_02070b98(&form, x, &dec);
+    __num2dec(&form, x, &dec);
 
-    if (func_020707cc(x) == 0.0) {
+    if (fabs(x) == 0.0) {
         p = buff_end - 6;
         func_020706b0(p, data_0209a61c);
         return p;
@@ -141,7 +140,7 @@ char *func_0206f46c(double x, char *buff_end, print_format format)
     exponent = (((unsigned char *)&x)[0] << 25 | ((unsigned char *)&x)[1] << 17);
     exponent = (exponent >> 21) & 0x7ff;
 
-    p = func_0206fb08(exponent - 1023, buff_end, exp_format);
+    p = long2str(exponent - 1023, buff_end, exp_format);
 
     if (code == 'a')
         *--p = 'p';

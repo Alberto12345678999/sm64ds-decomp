@@ -4026,27 +4026,27 @@ src/cstd4.cpp:
     complete
     .text start:0x0206dab4 end:0x0206ece0
 
-src/unnamed/arm9/0206/func_0206ece0.c:
+src/float2str.c:
     complete
     .text start:0x0206ece0 end:0x0206f338
 
-src/unnamed/arm9/0206/func_0206f338.c:
+src/round_decimal.c:
     complete
     .text start:0x0206f338 end:0x0206f46c
 
-src/unnamed/arm9/0206/func_0206f46c.c:
+src/double2hex.c:
     complete
     .text start:0x0206f46c end:0x0206f820
 
-src/unnamed/arm9/0206/func_0206f820.c:
+src/longlong2str.c:
     complete
     .text start:0x0206f820 end:0x0206fb08
 
-src/unnamed/arm9/0206/func_0206fb08.c:
+src/long2str.c:
     complete
     .text start:0x0206fb08 end:0x0206fd6c
 
-src/unnamed/arm9/0206/func_0206fd6c.c:
+src/parse_format.c:
     complete
     .text start:0x0206fd6c end:0x02070348
 
@@ -4054,55 +4054,55 @@ src/cstd6.cpp:
     complete
     .text start:0x02070348 end:0x020707a4
 
-src/unnamed/arm9/0207/func_020707a4.c:
+src/copysign.c:
     complete
     .text start:0x020707a4 end:0x020707cc
 
-src/unnamed/arm9/0207/func_020707cc.c:
+src/fabs.c:
     complete
     .text start:0x020707cc end:0x020707f4
 
-src/unnamed/arm9/0207/func_020707f4.c:
+src/frexp.c:
     complete
     .text start:0x020707f4 end:0x020708b4
 
-src/unnamed/arm9/0207/func_020708b4.c:
+src/ldexp.c:
     complete
     .text start:0x020708b4 end:0x02070b98
 
-src/unnamed/arm9/0207/func_02070b98.c:
+src/__num2dec.c:
     complete
     .text start:0x02070b98 end:0x02070c68
 
-src/unnamed/arm9/0207/func_02070c68.c:
+src/__num2dec_internal.c:
     complete
     .text start:0x02070c68 end:0x02070ec0
 
-src/unnamed/arm9/0207/func_02070ec0.c:
+src/__two_exp.c:
     complete
     .text start:0x02070ec0 end:0x020712a0
 
-src/unnamed/arm9/0207/func_020712a0.c:
+src/__str2dec.c:
     complete
     .text start:0x020712a0 end:0x02071364
 
-src/unnamed/arm9/0207/func_02071364.c:
+src/__timesdec.c:
     complete
     .text start:0x02071364 end:0x02071510
 
-src/unnamed/arm9/0207/func_02071510.c:
+src/__ull2dec.c:
     complete
     .text start:0x02071510 end:0x020715e0
 
-src/unnamed/arm9/0207/func_020715e0.c:
+src/__rounddec.c:
     complete
     .text start:0x020715e0 end:0x02071644
 
-src/unnamed/arm9/0207/func_02071644.c:
+src/__dorounddecup.c:
     complete
     .text start:0x02071644 end:0x02071698
 
-src/unnamed/arm9/0207/func_02071698.c:
+src/__must_round.c:
     complete
     .text start:0x02071698 end:0x02071708
 

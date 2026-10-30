@@ -1,4 +1,4 @@
-/* func_0206ece0 @ 0x0206ece0 (arm9, size 0x658)
+/* float2str @ 0x0206ece0 (arm9, size 0x658)
  * MSL printf helper float2str: formats a double backwards into buff_end
  * for %e/%E/%f/%F/%g/%G, handling inf/nan, sign and alternate form.
  * Returns pointer to first character, or NULL if result would exceed 509 chars.
@@ -34,10 +34,10 @@ typedef struct {
 
 enum { only_minus = 0, sign_always = 1, space_holder = 2 };
 
-extern void func_02070b98(decform *f, double x, decimal *d); /* __num2dec */
+extern void __num2dec(decform *f, double x, decimal *d);
 extern int func_01ff9e2c(double a, double b);                      /* double less-than */
 extern char *func_020706b0(char *dst, const char *src);           /* strcpy */
-extern void func_0206f338(decimal *d, int digits);                /* __round_decimal */
+extern void round_decimal(decimal *d, int digits);
 extern unsigned short data_02086a58[];                            /* ctype map */
 extern char data_0209a5ec[]; /* "-INF" */
 extern char data_0209a5f4[]; /* "-inf" */
@@ -50,8 +50,7 @@ extern char data_0209a618[]; /* "nan" */
 
 #define ISUPPER(c) (((c) < 0 || (c) >= 0x80) ? 0 : (data_02086a58[c] & 0x200))
 
-char *func_0206ece0(double x, char *buff_end, print_format format)
-{
+char *float2str(double x, char *buff_end, print_format format) {
     int int_digits;
     int code;
     decform form;
@@ -74,7 +73,7 @@ char *func_0206ece0(double x, char *buff_end, print_format format)
     alt = format.alternate_form;
     sign_opt = format.sign_options;
 
-    func_02070b98(&form, x, &dec);
+    __num2dec(&form, x, &dec);
 
     p = dec.sig.text + dec.sig.length; /* strip off trailing zeroes */
 
@@ -132,7 +131,7 @@ char *func_0206ece0(double x, char *buff_end, print_format format)
     case 'g':
     case 'G':
         if (dec.sig.length > prec)
-            func_0206f338(&dec, prec);
+            round_decimal(&dec, prec);
 
         if (dec.exp < -4 || dec.exp >= prec) {
             if (alt)
@@ -159,7 +158,7 @@ char *func_0206ece0(double x, char *buff_end, print_format format)
     case 'E':
     e_format:
         if (dec.sig.length > prec + 1)
-            func_0206f338(&dec, prec + 1);
+            round_decimal(&dec, prec + 1);
 
         power = dec.exp;
         sign = '+';
@@ -214,7 +213,7 @@ char *func_0206ece0(double x, char *buff_end, print_format format)
             digits = 0;
 
         if (digits > prec) {
-            func_0206f338(&dec, dec.sig.length - (digits - prec));
+            round_decimal(&dec, dec.sig.length - (digits - prec));
 
             if ((digits = dec.sig.length - dec.exp - 1) < 0)
                 digits = 0;

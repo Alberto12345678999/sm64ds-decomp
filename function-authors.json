@@ -11939,31 +11939,31 @@
     },
     "arm9:0x0206e4a4": {
       "author": "tangosdev",
-      "name": "func_0206e4a4"
+      "name": "__pformatter"
     },
     "arm9:0x0206ece0": {
       "author": "tangosdev",
-      "name": "func_0206ece0"
+      "name": "float2str"
     },
     "arm9:0x0206f338": {
       "author": "tangosdev",
-      "name": "func_0206f338"
+      "name": "round_decimal"
     },
     "arm9:0x0206f46c": {
       "author": "tangosdev",
-      "name": "func_0206f46c"
+      "name": "double2hex"
     },
     "arm9:0x0206f820": {
       "author": "tangosdev",
-      "name": "func_0206f820"
+      "name": "longlong2str"
     },
     "arm9:0x0206fb08": {
       "author": "ruspecial",
-      "name": "func_0206fb08"
+      "name": "long2str"
     },
     "arm9:0x0206fd6c": {
       "author": "andrewboudreau",
-      "name": "func_0206fd6c"
+      "name": "parse_format"
     },
     "arm9:0x02070348": {
       "author": "tangosdev",
@@ -11995,55 +11995,55 @@
     },
     "arm9:0x020707a4": {
       "author": "ruspecial",
-      "name": "func_020707a4"
+      "name": "copysign"
     },
     "arm9:0x020707cc": {
       "author": "ruspecial",
-      "name": "func_020707cc"
+      "name": "fabs"
     },
     "arm9:0x020707f4": {
       "author": "tangosdev",
-      "name": "func_020707f4"
+      "name": "frexp"
     },
     "arm9:0x020708b4": {
       "author": "andrewboudreau",
-      "name": "func_020708b4"
+      "name": "ldexp"
     },
     "arm9:0x02070b98": {
       "author": "andrewboudreau",
-      "name": "func_02070b98"
+      "name": "__num2dec"
     },
     "arm9:0x02070c68": {
       "author": "tangosdev",
-      "name": "func_02070c68"
+      "name": "__num2dec_internal"
     },
     "arm9:0x02070ec0": {
       "author": "tangosdev",
-      "name": "func_02070ec0"
+      "name": "__two_exp"
     },
     "arm9:0x020712a0": {
       "author": "tangosdev",
-      "name": "func_020712a0"
+      "name": "__str2dec"
     },
     "arm9:0x02071364": {
       "author": "aitddlabs",
-      "name": "func_02071364"
+      "name": "__timesdec"
     },
     "arm9:0x02071510": {
       "author": "tangosdev",
-      "name": "func_02071510"
+      "name": "__ull2dec"
     },
     "arm9:0x020715e0": {
       "author": "tangosdev",
-      "name": "func_020715e0"
+      "name": "__rounddec"
     },
     "arm9:0x02071644": {
       "author": "tangosdev",
-      "name": "func_02071644"
+      "name": "__dorounddecup"
     },
     "arm9:0x02071698": {
       "author": "tangosdev",
-      "name": "func_02071698"
+      "name": "__must_round"
     },
     "arm9:0x02071708": {
       "author": "tangosdev",

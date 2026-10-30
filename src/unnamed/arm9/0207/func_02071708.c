@@ -1,6 +1,6 @@
 /* Count the trailing zero bits of w0, 32 for 0: skip whole zero bytes from
    the low end, then count the low set bits of the complemented byte.
-   __num2dec_internal (func_02070c68) uses it as MSL's __count_trailing_zero
+   __num2dec_internal uses it as MSL's __count_trailing_zero
    to strip the significand's low zeros. The variadic signature keeps w0 in
    memory for the byte walk. */
 int func_02071708(int w0, ...)

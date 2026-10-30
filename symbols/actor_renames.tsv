@@ -7324,3 +7324,23 @@ arm9	0x0204f89c	func_0204f89c	NNS_SndPlayerSetChannelPriority	NitroSystem snd_pl
 arm9	0x0204f8cc	func_0204f8cc	NNS_SndPlayerMoveVolume	NitroSystem snd_player.c setter run, reverse source order (Sonic Rush Adventure decomp); body: fader set to target<<8 unless status is FADEOUT (2)
 arm9	0x0204f914	func_0204f914	NNS_SndPlayerSetInitialVolume	NitroSystem snd_player.c setter run, reverse source order (Sonic Rush Adventure decomp); body: stores initVolume (+0x40)
 arm9	0x0204f924	func_0204f924	NNS_SndPlayerSetVolume	NitroSystem snd_player.c setter run, reverse source order (Sonic Rush Adventure decomp); body: stores extVolume (+0x41)
+arm9	0x020707a4	func_020707a4	copysign	MSL copysign, as in the Advance Wars DS decomp's MSL; body: x's high word with y's sign bit
+arm9	0x020707cc	func_020707cc	fabs	MSL fabs, as in the Advance Wars DS decomp's MSL; body: clears the sign bit of x's high word
+arm9	0x020707f4	func_020707f4	frexp	MSL frexp (fdlibm), as in the Advance Wars DS decomp's MSL; body: exponent split, subnormal scaled by 2^54
+arm9	0x020708b4	func_020708b4	ldexp	MSL ldexp (fdlibm scalbn), as in the Advance Wars DS decomp's MSL; body: exponent-field edit, huge/tiny via copysign
+arm9	0x02070b98	func_02070b98	__num2dec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: __num2dec_internal, __rounddec to the decform digits, pad, ASCII
+arm9	0x02070c68	func_02070c68	__num2dec_internal	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: zero/inf/nan, frexp, __two_exp, __ull2dec of ldexp, __timesdec
+arm9	0x02070ec0	func_02070ec0	__two_exp	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digit-string switch on -64..8, else square 2^(n/2)
+arm9	0x020712a0	func_020712a0	__str2dec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digit string to Decimal, half-even round up via __dorounddecup
+arm9	0x02071364	func_02071364	__timesdec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digit-by-digit Decimal multiply with carry and round
+arm9	0x02071510	func_02071510	__ull2dec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: digits of an unsigned long long, reversed, exp = length - 1
+arm9	0x020715e0	func_020715e0	__rounddec	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: truncate to dig digits, __must_round, __dorounddecup
+arm9	0x02071644	func_02071644	__dorounddecup	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: increment the last kept digit, carry into the exponent
+arm9	0x02071698	func_02071698	__must_round	MSL ansi_fp.c, reverse source order (Petari decomp's ansi_fp.c); body: first dropped digit vs 5, then half to even
+arm9	0x0206ece0	func_0206ece0	float2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %e/%f/%g via __num2dec and round_decimal, inf/nan strings
+arm9	0x0206f338	func_0206f338	round_decimal	MSL printf.c, reverse source order (Petari decomp's printf.c); body: round ASCII digits to new_length, half to even, trim zeros
+arm9	0x0206f46c	func_0206f46c	double2hex	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %a/%A: __num2dec, hex mantissa digits, exponent via long2str
+arm9	0x0206f820	func_0206f820	longlong2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: 64-bit base 8/10/16 digits backwards, sign, zero fill, # prefix
+arm9	0x0206fb08	func_0206fb08	long2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: 32-bit base 8/10/16 digits backwards, sign, zero fill, # prefix
+arm9	0x0206fd6c	func_0206fd6c	parse_format	MSL printf.c, reverse source order (Petari decomp's printf.c); body: flags, width, precision, length modifier and conversion char
+arm9	0x0206e4a4	func_0206e4a4	__pformatter	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %-walk via parse_format, argument fetch per length modifier, the long/float/hex helpers, fill and justification

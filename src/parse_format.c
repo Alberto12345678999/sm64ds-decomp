@@ -1,4 +1,4 @@
-/* func_0206fd6c @ 0x0206fd6c (arm9, size 0x5dc)
+/* parse_format @ 0x0206fd6c (arm9, size 0x5dc)
  * MSL printf helper parse_format: parses a %-conversion specification
  * (flags, field width, precision, length modifier, conversion char)
  * into a print_format struct. Returns pointer past the specifier.
@@ -35,8 +35,7 @@ extern unsigned short data_02086a58[];
 
 #define isdigit_(c) ((c) < 0 || (c) >= 0x80 ? 0 : data_02086a58[c] & 8)
 
-unsigned char *func_0206fd6c(unsigned char *format_string, char **arg, print_format *format)
-{
+unsigned char *parse_format(unsigned char *format_string, char **arg, print_format *format) {
     print_format f;
     unsigned char *s = format_string;
     int c;

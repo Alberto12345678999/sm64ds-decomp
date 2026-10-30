@@ -1,4 +1,4 @@
-/* func_0206fb08 @ 0x0206fb08 (arm9, size 0x264)
+/* long2str @ 0x0206fb08 (arm9, size 0x264)
  * MSL printf helper long2str: formats an integer backwards into buff_end
  * for %d/%i/%o/%u/%x/%X, handling sign/zero-fill/alternate form.
  * Returns pointer to the first character, or NULL if the result would
@@ -20,8 +20,7 @@ typedef struct {
 enum { only_minus = 0, sign_always = 1, space_holder = 2 };
 enum { left_justification = 0, right_justification = 1, zero_fill = 2 };
 
-char *func_0206fb08(long num, char *buff_end, print_format format)
-{
+char *long2str(long num, char *buff_end, print_format format) {
     unsigned long unsigned_num, base;
     char *p;
     int n, digits;

@@ -2,15 +2,15 @@
 /* cstd tail -- MSL runtime helpers, 0x0206dab4..0x0206ece0.
  * __builtin_trap through __pformatter. The five CP15 coprocessor functions
  * ahead of this run live in src/engine/cp15/CP154.cpp. */
-/* leftovers: func_0206ece0..func_0206fb08 stay one-function sources. They
- * match under -lang c++, but enrolling them is unresolvable: func_0206ece0
- * calls func_01ff9e2c and func_0206f46c calls _deq, both inner addresses of
- * the enrolled itcm asm blob func_01ff97d8.o, which exports only its outer
- * symbol. A TU claims one contiguous .text span, so those two walls stop the
- * absorb before func_0206f338/func_0206f820/func_0206fb08 as well.
- * func_0206fd6c (parse_format) is C-only under -lang c++ and stays a
- * one-function source; cstd6 (0x02070348..0x020707a4) sits beyond it. Whole-
- * function asm is emitted in source order; compiled bodies are too, under a
+/* leftovers: float2str..long2str (0x0206ece0..0x0206fd6c) stay one-function
+ * sources. They match under -lang c++, but enrolling them is unresolvable:
+ * float2str calls func_01ff9e2c and double2hex calls _deq, both inner
+ * addresses of the enrolled itcm asm blob func_01ff97d8.o, which exports only
+ * its outer symbol. A TU claims one contiguous .text span, so those two walls
+ * stop the absorb before round_decimal/longlong2str/long2str as well.
+ * parse_format is C-only under -lang c++ and stays a one-function source;
+ * cstd6 (0x02070348..0x020707a4) sits beyond it. Whole-function asm is
+ * emitted in source order; compiled bodies are too, under a
  * per-function defer_codegen off. */
 #include "types.h"
 #include "cstd.h"
@@ -554,15 +554,15 @@ enum {
 
 #define MAX_BUFF 512
 
-extern unsigned char *func_0206fd6c(unsigned char *format_string, char **arg, print_format *format); /* parse_format */
+extern unsigned char *parse_format(unsigned char *format_string, char **arg, print_format *format);
 
 extern int func_0206e450(char *obj, const void *src, unsigned int n);
-extern int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
+extern int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
                          const unsigned char *format_str, char *arg);
-extern char *func_0206ece0(double x, char *buff_end, print_format format);
-extern char *func_0206f46c(double x, char *buff_end, print_format format);
-extern char *func_0206f820(long long num, char *buff_end, print_format format);
-extern char *func_0206fb08(long num, char *buff_end, print_format format);
+extern char *float2str(double x, char *buff_end, print_format format);
+extern char *double2hex(double x, char *buff_end, print_format format);
+extern char *longlong2str(long long num, char *buff_end, print_format format);
+extern char *long2str(long num, char *buff_end, print_format format);
 
 extern unsigned short data_0209a5e4[];
 extern char data_0209a5e8[];
@@ -639,7 +639,7 @@ unsigned int func_0206e3dc(char *buf, unsigned int len,
     ctx.buf = buf;
     ctx.len = len;
     ctx.z = 0;
-    r = func_0206e4a4((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
+    r = __pformatter((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
                       (const unsigned char *)fmtAddr, (char *)val);
     if (buf == 0) return r;
     if (r < len) {
@@ -674,15 +674,15 @@ int func_0206e450(char *obj, const void *src, unsigned int n)
 
 #pragma push
 #pragma defer_codegen off
-/* func_0206e4a4 @ 0x0206e4a4 (arm9, size 0x83c)
+/* __pformatter @ 0x0206e4a4 (arm9, size 0x83c)
  * MSL __pformatter: the printf formatting engine. Walks the format string,
- * hands each %-specifier to parse_format (func_0206fd6c), pulls the matching
+ * hands each %-specifier to parse_format, pulls the matching
  * argument off the va_list, renders it with the long/float/hex-float helpers
  * and emits the result through the caller's WriteProc, applying field width,
  * justification and fill. Returns the character count, or -1 if WriteProc fails.
  */
-// @symbol func_0206e4a4
-int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
+// @symbol __pformatter
+int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
                   const unsigned char *format_str, char *arg)
 {
     int num_chars;
@@ -714,7 +714,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
         if (n && !(*WriteProc)(WriteProcArg, (const char *)format_str, n))
             return -1;
 
-        format_str = func_0206fd6c((unsigned char *)curr_format, &arg, &format);
+        format_str = parse_format((unsigned char *)curr_format, &arg, &format);
 
         switch (format.conversion_char) {
         case 'd':
@@ -738,10 +738,10 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_num = (signed char)long_num;
 
             if (format.argument_options == long_long_argument) {
-                if (!(buff_ptr = (unsigned char *)func_0206f820(long_long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)longlong2str(long_long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             } else {
-                if (!(buff_ptr = (unsigned char *)func_0206fb08(long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)long2str(long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             }
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
@@ -770,10 +770,10 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_num = (unsigned char)long_num;
 
             if (format.argument_options == long_long_argument) {
-                if (!(buff_ptr = (unsigned char *)func_0206f820(long_long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)longlong2str(long_long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             } else {
-                if (!(buff_ptr = (unsigned char *)func_0206fb08(long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)long2str(long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             }
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
@@ -789,7 +789,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_double_num = *(long double *)((arg += sizeof(long double)) - sizeof(long double));
             else
                 long_double_num = *(double *)((arg += sizeof(double)) - sizeof(double));
-            if (!(buff_ptr = (unsigned char *)func_0206ece0(long_double_num, conv_buff + MAX_BUFF, format)))
+            if (!(buff_ptr = (unsigned char *)float2str(long_double_num, conv_buff + MAX_BUFF, format)))
                 goto invalid_conversion;
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
             break;
@@ -800,7 +800,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_double_num = *(long double *)((arg += sizeof(long double)) - sizeof(long double));
             else
                 long_double_num = *(double *)((arg += sizeof(double)) - sizeof(double));
-            if (!(buff_ptr = (unsigned char *)func_0206f46c(long_double_num, conv_buff + MAX_BUFF, format)))
+            if (!(buff_ptr = (unsigned char *)double2hex(long_double_num, conv_buff + MAX_BUFF, format)))
                 goto invalid_conversion;
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
             break;
