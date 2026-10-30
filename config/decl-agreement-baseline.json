@@ -18158,14 +18158,6 @@
         "param:#2 int"
       ]
     },
-    "func_02018c00": {
-      "src/UnloadOverlay.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_02017e94.c": [
-        "return:void"
-      ]
-    },
     "myFS_ReadFile": {
       "src/SharedFilePtr.cpp": [
         "param:#1 void *",
@@ -19074,11 +19066,6 @@
         "return:void"
       ]
     },
-    "func_0203f714": {
-      "src/unnamed/arm9/0203/func_0203f920.c": [
-        "arity:0"
-      ]
-    },
     "func_0203f920": {
       "src/unnamed/arm9/0203/func_0203f6b4.c": [
         "arity:0"
@@ -19669,39 +19656,9 @@
         "arity:0"
       ]
     },
-    "func_0204f73c": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_0204f7fc": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "param:#1 char *",
-        "param:#1 int *"
-      ]
-    },
-    "NNS_SndPlayerSetTrackVolume": {
-      "src/unnamed/arm9/0204/func_020490b0.cpp": [
-        "param:#2 unsigned short"
-      ]
-    },
-    "NNS_SndPlayerSetTrackMute": {
-      "src/unnamed/arm9/0204/func_020490b0.cpp": [
-        "param:#2 unsigned short"
-      ]
-    },
-    "func_0204f8cc": {
+    "NNS_SndPlayerMoveVolume": {
       "src/engine/sound/Sound.cpp": [
         "param:#1 int"
-      ]
-    },
-    "func_0204f924": {
-      "src/ui/menus/unit020bd9e4.cpp": [
-        "param:#1 int *",
-        "param:#2 int"
-      ],
-      "src/engine/sound/Sound2.cpp": [
-        "param:#2 int"
       ]
     },
     "func_0204f934": {

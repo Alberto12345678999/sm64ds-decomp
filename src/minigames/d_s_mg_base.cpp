@@ -1535,7 +1535,7 @@ void dScMgBase_c::RestoreScreenFromMenu() {
 
     *(u32*)0x4000000 &= ~0x1f00;
     *(u32*)0x4001000 &= ~0x1f00;
-    *(u16*)0x4000304 = (mSavedScreenSwap << 15) | (*(u16*)0x4000304 & ~0x8000);
+    REG_POWCNT1 = (mSavedScreenSwap << 15) | (REG_POWCNT1 & ~0x8000);
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0xe000) | ((u32)data_0209d460 << 13);
     *(u32*)0x4001000 = (*(u32*)0x4001000 & ~0xe000) | ((u32)data_0209d458 << 13);
 
