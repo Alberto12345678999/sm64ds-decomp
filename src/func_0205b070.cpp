@@ -11,7 +11,7 @@ extern volatile int data_020a64a8[];
 extern int data_020a64a4;
 extern int data_020a6490;
 
-extern int IPCSend(unsigned int a, unsigned int c, unsigned int b);
+extern int PXI_SendWordByFifo(unsigned int a, unsigned int c, unsigned int b);
 extern int func_0205b274(int a);
 
 int func_0205b070(int x)
@@ -24,9 +24,9 @@ int func_0205b070(int x)
         } while (data_020a64a0 >= 8);
     }
     CP15::FlushAndInvalidateDataCache((unsigned int)&data_020a6760, 0x1800);
-    if (IPCSend(7, data_020a648c, 0) < 0) {
+    if (PXI_SendWordByFifo(7, data_020a648c, 0) < 0) {
         if (x == 0) return 0;
-        while (IPCSend(7, data_020a648c, 0) < 0)
+        while (PXI_SendWordByFifo(7, data_020a648c, 0) < 0)
             ;
     }
     int temp = data_020a648c;

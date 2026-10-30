@@ -1,0 +1,96 @@
+{
+  "id": "arm9/OS_Alloc",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Alloc.cpp",
+  "promoted_source": "src/engine/os/OS_Alloc.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_alloc.c, 0x02059040..0x020593a8: 6 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_alloc.c defines, in this order, DLAddFront, DLExtract, DLInsert, OS_AllocFromHeap and OS_FreeToHeap; all five are here, body for body. pret leaves out OS_InitAlloc, which comes after them in the SDK's file: 0x02059040 is it by body (OSiHeapInfo[id] = arenaStart, maxHeaps heap descriptors of size -1, currentHeap -1, the 32-aligned memory after them returned).",
+    "Order: mwccarm emits deferred bodies in reverse. The ROM run is the source order reversed, OS_InitAlloc lowest and DLAddFront highest. The SDK's other heap functions are not called and were dropped by the linker.",
+    "BOTTOM EDGE: OS_arena.c (arm9/OS_Arena) ends at 0x02059040.",
+    "TOP EDGE: CP15::EnableDTCM (0x020593a8) opens the next run."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02059040",
+      "end": "0x020593a8"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OS_InitAlloc",
+      "address": "0x02059040",
+      "size": "0x000000bc",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059040.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OS_FreeToHeap",
+      "address": "0x020590fc",
+      "size": "0x00000074",
+      "legacy_source": "src/unnamed/arm9/0205/func_020590fc.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_AllocFromHeap",
+      "address": "0x02059170",
+      "size": "0x0000012c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059170.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "DLInsert",
+      "address": "0x0205929c",
+      "size": "0x000000c8",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205929c.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "DLExtract",
+      "address": "0x02059364",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059364.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "DLAddFront",
+      "address": "0x0205938c",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205938c.c",
+      "ordinal": 5
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Tick and arm9/OS_Alarm: tu_map cannot segment arm9/main.",
+    "The SDK names were given in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only. OSiHeapInfo stays in .bss with its owner unassigned. Cell, HeapDesc and OSHeapInfo stay local to the file: the callers (Heap.cpp, ov007) pass ids and pointers."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Alloc/OS_Alloc.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 6,
+    "functions_declared": 6,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

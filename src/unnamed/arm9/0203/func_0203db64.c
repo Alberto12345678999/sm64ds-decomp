@@ -10,7 +10,7 @@ extern void func_0203d854(void);
 extern int func_0203d81c(void);
 extern void func_0203d918(void);
 extern int func_0203d8fc(void);
-extern void func_02059eb0(void *dst);
+extern void OS_GetOwnerInfo(void *dst);
 extern void func_02059f2c(void *p);
 
 /* A player's 0x16-byte profile as the link exchanges it (func_0203ea5c sends
@@ -52,7 +52,7 @@ extern u8 data_020a10fe[];
 extern u8 data_020a10a6[];
 extern u8 data_020a0f00;
 
-/* The owner settings func_02059eb0 copies out of the firmware's user info at
+/* The owner settings OS_GetOwnerInfo copies out of the firmware's user info at
    0x27ffc80: NitroSDK's OSOwnerInfo, which OS_GetOwnerInfo fills in (the
    language there is the one func_0201fec8 switches on). This is the older
    SDK's 0x50-byte layout: nickName and comment have no terminator slot. */
@@ -158,7 +158,7 @@ void func_0203db64(void *arg0, void *arg1) {
             OS_SleepThread(0);
         }
     } else {
-        func_02059eb0(&buf);
+        OS_GetOwnerInfo(&buf);
         func_0205a588(&data_020a10fc, 0, 0x16);
         data_020a10fc.favoriteColor = buf.favoriteColor;
         data_020a10fc.nickNameLength = buf.nickNameLength;

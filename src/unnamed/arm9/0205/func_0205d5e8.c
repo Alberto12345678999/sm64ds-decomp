@@ -5,7 +5,7 @@ extern int func_0205cdf4(char* self, int n);
  * FS_COMMAND_OPENFILEDIRECT (7) through func_0205cdf4 (FSi_SendCommand), and
  * on success mark the handle FS_FILE_STATUS_IS_FILE (0x10), not
  * FS_FILE_STATUS_IS_DIR (0x20). Field names follow the SDK's FSFile, as
- * func_0205bc0c.c spells it; only the fields this function touches are
+ * src/engine/fs/FS_CommandDefault.cpp spells it; only the fields this function touches are
  * spelled out. */
 typedef struct FSOpenFileDirectArg {
     int top;    /* 0x00 */

@@ -1,6 +1,6 @@
 #include "nitro/fs/overlay.h"
 extern void Crash(void);
-extern void func_0205dc0c(int a, int b);
+extern void FS_UnloadOverlay(int a, int b);
 extern int func_0203d7b8(void);
 
 /* A loaded-overlay slot (see func_02017e60.c): the overlay id, -1 when the
@@ -27,7 +27,7 @@ void UnloadOverlay(int id) {
     }
     if (found == 0)
         Crash();
-    func_0205dc0c(0, id);
+    FS_UnloadOverlay(0, id);
     func_02018c00(&info, 0, id);
     if (func_0203d7b8() != 0)
         return;

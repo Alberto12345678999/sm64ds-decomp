@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's os_arena.c, 0x02058cd0..0x02059040: 9 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_arena.c defines, in this order, OS_InitArena, OS_InitArenaEx, OS_GetArenaHi, OS_GetArenaLo, OS_GetInitArenaHi, OS_GetInitArenaLo, OS_SetArenaHi, OS_SetArenaLo, OS_AllocFromArenaLo and OS_AllocFromArenaHi. The first nine are here, each identified by body. At pret's sizes: OS_InitArena 0x118, OS_GetArenaHi 0x14, OS_GetArenaLo 0x14, OS_SetArenaHi 0x14, OS_SetArenaLo 0x14, OS_AllocFromArenaLo 0x88. The three that drift come from an older SDK: OS_InitArenaEx 0x60 (pret 0x80), OS_GetInitArenaHi 0xac (0x130) and OS_GetInitArenaLo 0x74 (0xec).",
     "Order: all nine are C, and mwccarm emits deferred C bodies in reverse. The ROM run is pret's source order reversed, OS_AllocFromArenaLo lowest and OS_InitArena highest. Nothing calls OS_AllocFromArenaHi, so the linker dropped it.",
     "BOTTOM EDGE: OS_Init (0x02058c84..0x02058cd0, src/OS_Init.cpp) is os_init.c, a separate one-function SDK file.",
-    "TOP EDGE: func_02059040 (0x02059040..0x020590fc) is not in pret's OS_arena.c. Above it, 0x020590fc..0x020593a8 aligns with pret's OS_alloc.c."
+    "TOP EDGE: OS_InitAlloc (0x02059040..0x020590fc) is not in pret's OS_arena.c. It begins os_alloc.c (arm9/OS_Alloc), whose other five functions align with pret's OS_alloc.c up to 0x020593a8."
   ],
   "sections": [
     {

@@ -3,7 +3,7 @@
 extern int (*data_020a9dec)(int);
 extern void func_0206a600(void);
 extern void Crash(void);
-extern u32 IPCSend(u32 a, u32 b, u32 c);
+extern u32 PXI_SendWordByFifo(u32 a, u32 b, u32 c);
 
 void func_0206a634(int unused, int arg) {
     if ((arg & 0x3f) == 0x11) {
@@ -24,7 +24,7 @@ void func_0206a600(void) {
     u32 r4 = 0;
     u32 r0;
     do {
-        r0 = IPCSend(r6, r5, r4);
+        r0 = PXI_SendWordByFifo(r6, r5, r4);
     } while (r0 != 0);
     Crash();
 }
