@@ -7,7 +7,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "One contiguous run of the Nitro SDK's os_interrupt.c, 0x02056d64..0x02057014: 9 functions. pret/pokediamond's arm9/lib/NitroSDK/src/OS_interrupt.c, compiled with its own pinned mwccarm 1.2/sp2p3, emits OS_SetIrqStackChecker 0x34, OS_ResetRequestIrqMask 0x34, OS_DisableIrqMask 0x48, OS_EnableIrqMask 0x38, OS_SetIrqMask 0x34, OSi_EnterTimerCallback 0x4c, OSi_EnterDmaCallback 0x4c, OS_GetIrqFunction 0x8c, OS_SetIrqFunction 0x90, OS_InitIrqTable 0x18; the run here has the last nine in that order: ClearInterrupts, DisableIRQs, EnableIRQs, SetIRQs, func_02056e4c, func_02056e98, GetIRQHandler and SetIRQHandler at pret's sizes, then func_02057000 (OS_InitIrqTable) at 0x14. OS_SetIrqStackChecker is absent because nothing in this game calls it.",
-    "TOP EDGE: func_02057014 at 0x02057014 is OS_UnLockCartridge, the bottom of OS_spinLock.c's run.",
+    "TOP EDGE: OS_UnLockCartridge at 0x02057014 opens os_spinLock.c (arm9/OS_SpinLock).",
     "BOTTOM EDGE: EmptyHandler (OS_IrqDummy) at 0x02056d60 ends os_irqTable.c (arm9/OS_IrqTable).",
     "Split from the former arm9/IRQ, which held both SDK files in one TU because its members share the IRQ:: namespace."
   ],
