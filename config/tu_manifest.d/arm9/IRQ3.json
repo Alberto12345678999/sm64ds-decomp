@@ -5,7 +5,7 @@
   "promoted_source": "src/IRQ3.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
-  "boundary_evidence": "Assembly-only compiler input 0x02059d08..0x02059d8c: the SDK os_system.c CPU-state primitives (OS_EnableIrq/DisableIrq/RestoreIrq, the IRQ+FIQ pair, OS_GetProcMode as ARMProcessorMode, OS_Halt as CP15::WaitForInterrupt). The adjacent ordinary C helpers were separated for host compilation (issue #3877). Bottom edge 0x02059d8c is func_02059d8c (OS_SpinWait, subs/bhs carry loop), an unenrolled asm hatch (notes/archive/func_02059d8c-asm-origin.md), followed by the register-clobbering zero-fill func_02059d98; both stay out. This boundary is a production packaging decision, not proof of the original Nintendo translation unit.",
+  "boundary_evidence": "Assembly-only compiler input 0x02059d08..0x02059d8c: the SDK os_system.c CPU-state primitives (OS_EnableIrq/DisableIrq/RestoreIrq, the IRQ+FIQ pair, OS_GetProcMode as ARMProcessorMode, OS_Halt as CP15::WaitForInterrupt). The adjacent ordinary C helpers were separated for host compilation (issue #3877). Bottom edge 0x02059d8c is OS_SpinWait (src/OS_SpinWait.c, subs/bhs carry loop), an asm hatch (notes/archive/func_02059d8c-asm-origin.md), followed by the register-clobbering zero-fill func_02059d98; both stay out. This boundary is a production packaging decision, not proof of the original Nintendo translation unit.",
   "sections": [
     {
       "name": ".text",

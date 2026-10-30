@@ -1,11 +1,13 @@
 //cpp
 
 extern "C" {
-void func_ov007_020c0288(unsigned short *p, int count, int val) {
+/* Sets the palette (bits 12-15) of count BG screen entries, keeping their
+ * tile and flip bits. */
+void func_ov007_020c0288(unsigned short *entries, int count, int palette) {
     int i;
     for (i = 0; i < count; i++) {
-        *p = (val << 12) | (*p & 0xfff);
-        p++;
+        *entries = (palette << 12) | (*entries & 0xfff);
+        entries++;
     }
 }
 }

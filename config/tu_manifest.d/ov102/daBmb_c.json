@@ -1033,7 +1033,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov102_0214e9c0' differs between the legacy file that used to hold func_ov102_0214ab1c and the one that held _ZN7daBmb_c13InitResourcesEv; kept the first, the other is commented out for review; resolved by discarding the generated preamble outright and hand-writing the TU under the declaration policy the file header states: ONE file-scope extern \"C\" region carrying only what the C++-named members need, and every other member keeping its own independently-recovered spellings at BLOCK scope inside its own body, so two members are allowed to disagree about one symbol. No TUBUILD CONFLICT marker survives in the source. 35/35 byte-match.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov102_0214e9c8' differs between the legacy file that used to hold func_ov102_0214bd20 and the one that held _ZN7daBmb_c13InitResourcesEv; kept the first, the other is commented out for review; resolved by discarding the generated preamble outright and hand-writing the TU under the declaration policy the file header states: ONE file-scope extern \"C\" region carrying only what the C++-named members need, and every other member keeping its own independently-recovered spellings at BLOCK scope inside its own body, so two members are allowed to disagree about one symbol. No TUBUILD CONFLICT marker survives in the source. 35/35 byte-match.",
     "FOLDED 2026-10-02: g_profile_BOMBHEI moved into this TU as BmbSpawnInfo (0x1c at ov102:0x0214e534). The profile fold forced the .data claim to span ZTS + ZTI + the two launch-speed tables + profile + ZTV (0x0214e4fc..0x0214e5d4, 0xd8), which pulled the class's own _ZTS/_ZTV from compiler-only deadstrip into licensed data and flipped production_mode to intact-object. 5 relocations rows added. tubuild verify 35/35 TEXT-VERIFIED. Copied from daObjKm2_Ami_Bou_c.",
-    "Static initializer folded: the walk and carry animation handles (ids 0x2b8/0x2b7) and the four-element Vector3 carry-offset table are real definitions in d_a_bmb.cpp, replacing the handwritten src/unnamed/ov102/__sinit_ov102_0214de70.cpp. mwcc emits __sinit_d_a_bmb.cpp (0x13c), its .ctor word and the six registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov102 .init, .ctor and .bss run in .text TU order; this initializer ends where d_a_shl's .init begins (0x0214dfac), its .bss 0x0214e9c0..0x0214ea48 sits between the previous TU's (ending 0x0214e9c0) and d_a_shl's (0x0214ea48), and the carry update in this TU is the only .text that reads the table. The initializer's element 1-3 pool words (0x0214df94, 0x0214df9c, 0x0214dfa4) are recorded as gBmbCarryOffsets + 0xc/0x18/0x24, as mwcc emits them; dsd names them by the interior labels data_ov102_0214ea24/30/3c, which stay in symbols.txt."
+    "Static initializer folded: the walk and carry animation handles (ids 0x2b8/0x2b7) and the four-element Vector3 carry-offset table are real definitions in d_a_bmb.cpp, replacing the handwritten src/unnamed/ov102/__sinit_ov102_0214de70.cpp. mwcc emits __sinit_d_a_bmb.cpp (0x13c), its .ctor word and the six registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov102 .init, .ctor and .bss run in .text TU order; this initializer ends where d_a_shl's .init begins (0x0214dfac), its .bss 0x0214e9c0..0x0214ea48 sits between the previous TU's (ending 0x0214e9c0) and d_a_shl's (0x0214ea48), and the carry update in this TU is the only .text that reads the table. The initializer's element 1-3 pool words (0x0214df94, 0x0214df9c, 0x0214dfa4) are recorded as gBmbCarryOffsets + 0xc/0x18/0x24, as mwcc emits them; dsd names them by the interior labels data_ov102_0214ea24/30/3c, which stay in symbols.txt.",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (61 sections, 300 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1369,32 +1370,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@507",
+      "from": "@506",
       "to": "data_ov102_0214e9d0",
       "evidence": "compiler temp mapped to 0x0214e9d0 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@508",
+      "from": "@507",
       "to": "data_ov102_0214e9dc",
       "evidence": "compiler temp mapped to 0x0214e9dc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@510",
+      "from": "@509",
       "to": "data_ov102_0214ea0c",
       "evidence": "compiler temp mapped to 0x0214ea0c by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@513",
+      "from": "@512",
       "to": "data_ov102_0214e9f4",
       "evidence": "compiler temp mapped to 0x0214e9f4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@516",
+      "from": "@515",
       "to": "data_ov102_0214ea00",
       "evidence": "compiler temp mapped to 0x0214ea00 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@519",
+      "from": "@518",
       "to": "data_ov102_0214e9e8",
       "evidence": "compiler temp mapped to 0x0214e9e8 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

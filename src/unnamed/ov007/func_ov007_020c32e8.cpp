@@ -1,30 +1,29 @@
 //cpp
+#include "GX.h"
+#include "Ov007Display.h"
 
-namespace GX {
-void LoadBGPltt(const void *p, unsigned int a, unsigned int b);
-void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
-}
+extern "C" {
 
-namespace GXS {
-void LoadBGPltt(const void *p, unsigned int a, unsigned int b);
-void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
-}
-
-extern "C" void func_ov007_020c32e8(char* c, int sel, unsigned int n, int off){
-    unsigned int a1 = n << 5;
-    unsigned int a2 = (unsigned int)((*(unsigned short*)(c+4) - off) << 1);
-    switch (sel) {
+/* Loads a palette record's colours into palette RAM at 0x20-byte row
+ * `row`: target 0/1 the main engine's OBJ/BG palette, 2/3 the sub
+ * engine's. `skip` moves the source on by bytes but shortens the copy by
+ * colours; every ov007 caller passes 0. */
+void func_ov007_020c32e8(Ov007Palette *pal, int target, unsigned int row, int skip) {
+    unsigned int offset = row << 5;
+    unsigned int size = (unsigned int)((pal->colorCount - skip) << 1);
+    switch (target) {
     case 0:
-        GX::LoadOBJPltt((char *)(*(void **)c) + off, a1, a2);
+        GX::LoadOBJPltt((const char *)pal->colors + skip, offset, size);
         break;
     case 1:
-        GX::LoadBGPltt((char *)(*(void **)c) + off, a1, a2);
+        GX::LoadBGPltt((const char *)pal->colors + skip, offset, size);
         break;
     case 2:
-        GXS::LoadOBJPltt((char *)(*(void **)c) + off, a1, a2);
+        GXS::LoadOBJPltt((const char *)pal->colors + skip, offset, size);
         break;
     case 3:
-        GXS::LoadBGPltt((char *)(*(void **)c) + off, a1, a2);
+        GXS::LoadBGPltt((const char *)pal->colors + skip, offset, size);
         break;
     }
+}
 }

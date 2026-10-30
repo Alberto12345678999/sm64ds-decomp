@@ -1,4 +1,7 @@
-extern char* data_ov007_0210342c;
-void func_ov007_020af580(void){
- *(short*)(*(char**)(data_ov007_0210342c+8)+2)=0xc;
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
+
+/* Sends states[1] to state 0xc. */
+void func_ov007_020af580(void) {
+    WORK->states[1]->requestedState = 0xc;
 }

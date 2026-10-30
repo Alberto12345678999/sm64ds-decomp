@@ -1,18 +1,15 @@
-extern void func_ov007_020c7804(void *p);
+#include "Ov007Spring.h"
 
-struct T {
-  int n0;     /* 0x0 */
-  int n4;     /* 0x4 */
-  void **a8;  /* 0x8 */
-  void **ac;  /* 0xc */
-};
+extern void func_ov007_020c7804(void *list);
 
-void func_ov007_020c72d0(struct T *c){
-  int i;
-  for(i = 0; i < c->n4; i++){
-    func_ov007_020c7804(c->a8[i]);
-  }
-  for(i = 0; i < c->n0; i++){
-    func_ov007_020c7804(c->ac[i]);
-  }
+/* Binds the links of every row list, then every column list
+ * (func_ov007_020c7804). */
+void func_ov007_020c72d0(Ov007Grid *grid) {
+    int i;
+    for (i = 0; i < grid->rows; i++) {
+        func_ov007_020c7804(grid->rowLists[i]);
+    }
+    for (i = 0; i < grid->columns; i++) {
+        func_ov007_020c7804(grid->columnLists[i]);
+    }
 }

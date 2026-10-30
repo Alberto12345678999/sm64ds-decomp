@@ -1,41 +1,41 @@
-extern int* data_ov007_0210342c;
-extern short* func_ov007_020b8f8c(void);
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
+#include "Ov007Item.h"
+
+/* Returns the picker scene's states[0] (unit020b8f50). */
+extern int func_ov007_020b8f8c(void);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b9640(void);
 
-void func_ov007_020af12c(void){
-    int* base = (int*)((int**)data_ov007_0210342c)[2];
-    int st = *(short*)base;
-    int x = base[3];
-    switch(st){
+/* Steps the picker alongside states[1]: in state 0 it starts the picker
+ * (state 1) and leaves once the picker reaches state 2; in state 1 it moves
+ * the picker to state 2 and, once the picker reaches state 3, sends item view
+ * 3's item to state 2. Then func_ov007_020b9640. */
+void func_ov007_020af12c(void) {
+    Ov007MenuState *s1 = WORK->states[1];
+    int state = s1->currentState;
+    int ticks = s1->stateTicks;
+    Ov007MenuState *picker;
+
+    switch (state) {
     case 0:
-        if(x==0){
-            short* r=func_ov007_020b8f8c();
-            r[1]=1;
+        if (ticks == 0) {
+            picker = (Ov007MenuState *)func_ov007_020b8f8c();
+            picker->requestedState = 1;
         }
-        {
-            short* r=func_ov007_020b8f8c();
-            if(r[0]==2){
-                short* o = (short*)((int**)data_ov007_0210342c)[2];
-                o[1]=1;
-            }
-        }
+        picker = (Ov007MenuState *)func_ov007_020b8f8c();
+        if (picker->currentState == 2)
+            WORK->states[1]->requestedState = 1;
         break;
     case 1:
-        if(x==0){
-            short* r=func_ov007_020b8f8c();
-            r[1]=2;
+        if (ticks == 0) {
+            picker = (Ov007MenuState *)func_ov007_020b8f8c();
+            picker->requestedState = 2;
             func_ov007_020c1d78(0);
         }
-        {
-            short* r=func_ov007_020b8f8c();
-            if(r[0]==3){
-                int* p = (int*)((int**)data_ov007_0210342c)[0x48];
-                int* q = (int*)p[0];
-                short* o = (short*)q[1];
-                o[1]=2;
-            }
-        }
+        picker = (Ov007MenuState *)func_ov007_020b8f8c();
+        if (picker->currentState == 3)
+            WORK->itemViews[3]->item->state->requestedState = 2;
         break;
     }
     func_ov007_020b9640();

@@ -1,0 +1,117 @@
+{
+  "id": "arm9/OS_Alarm",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Alarm.cpp",
+  "promoted_source": "src/engine/os/OS_Alarm.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_alarm.c, 0x02059824..0x02059cb4: 9 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_alarm.c defines, in this order, OSi_SetTimer, OS_InitAlarm, OS_IsAlarmAvailable, OS_CreateAlarm, OSi_InsertAlarm, OS_SetAlarm, OS_CancelAlarm, OSi_AlarmHandler (asm) and OSi_ArrangeTimer. All nine are here, each identified by body. Eight are at pret's sizes (SetTimer 0x9c, InitAlarm 0x58, IsAlarmAvailable 0x10, CreateAlarm 0x10, InsertAlarm 0x140, SetAlarm 0x78, CancelAlarm 0x98, AlarmHandler 0x10); OSi_ArrangeTimer is 0x11c (pret 0x118).",
+    "Order: mwccarm emits an asm function where it stands and defers the C bodies, which come out in reverse. OSi_AlarmHandler opens the run; the C bodies follow reversed, OSi_ArrangeTimer at 0x02059834 up to OSi_SetTimer at 0x02059c18.",
+    "BOTTOM EDGE: OS_InitTick (0x02059788..0x02059824) ends os_tick.c (arm9/OS_Tick).",
+    "TOP EDGE: OS_InitVAlarm (0x02059cb4, src/OS_InitVAlarm.cpp) is os_valarm.c."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02059824",
+      "end": "0x02059cb4"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OSi_AlarmHandler",
+      "address": "0x02059824",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059824.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OSi_ArrangeTimer",
+      "address": "0x02059834",
+      "size": "0x0000011c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059834.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_CancelAlarm",
+      "address": "0x02059950",
+      "size": "0x00000098",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059950.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OS_SetAlarm",
+      "address": "0x020599e8",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0205/func_020599e8.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "OSi_InsertAlarm",
+      "address": "0x02059a60",
+      "size": "0x00000140",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059a60.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "OS_CreateAlarm",
+      "address": "0x02059ba0",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059ba0.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "OS_IsAlarmAvailable",
+      "address": "0x02059bb0",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059bb0.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "OS_InitAlarm",
+      "address": "0x02059bc0",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059bc0.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "OSi_SetTimer",
+      "address": "0x02059c18",
+      "size": "0x0000009c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059c18.cpp",
+      "ordinal": 8
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/OS_Thread and arm9/OS_Arena: tu_map cannot segment arm9/main.",
+    "Every symbol was renamed from its func_ name to the SDK name in this change (symbols/actor_renames.tsv records the evidence). The callee OS_GetTick is in arm9/OS_Tick.",
+    "Text-only: OSi_UseAlarm (data_020a6440) and OSi_AlarmQueue (data_020a6444) stay externs. The file claims no data."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Alarm/OS_Alarm.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 9,
+    "functions_declared": 9,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

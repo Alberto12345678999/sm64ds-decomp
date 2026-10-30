@@ -21,25 +21,19 @@ extern void func_ov007_020af12c(void);
 extern void func_ov007_020aef78(void);
 extern void func_ov007_020af390(void);
 extern void func_ov007_020b0324(void);
-extern void func_ov007_020b44ec(int a);
-extern void func_ov007_020add3c(int c);
-extern void func_ov007_020ad660(int a);
-extern char *data_ov007_0210342c;
+extern void func_ov007_020b44ec(struct Ov007ItemView *view);
+extern void func_ov007_020add3c(struct Ov007ItemNode *self);
+extern void func_ov007_020ad660(struct Ov007LayerSlot *slot);
 
-typedef char
-    Ov007Work_chosenItemId_must_be_at_0x180[(int)&((Ov007Work *)0)->chosenItemId == 0x180 ? 1 : -1];
-
-#pragma opt_strength_reduction off
 void func_ov007_020aed98(void)
 {
-    Ov007Work *g = (Ov007Work *)data_ov007_0210342c;
+    Ov007Work *g = WORK;
     Ov007MenuState *r6 = g->states[0];
     Ov007MenuState *r5 = g->states[1];
     int i;
 
     for (i = 0; i < 0x18; i++) {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        func_ov007_020b46b0(gg->itemViews[i], gg->touch);
+        func_ov007_020b46b0(WORK->itemViews[i], WORK->touch);
     }
 
     func_ov007_020b7a78();
@@ -60,8 +54,7 @@ void func_ov007_020aed98(void)
     func_ov007_020c92d0((int)r5);
 
     if (r6->stateTicks == 0 || r5->stateTicks == 0) {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        func_ov007_020c2090((int)gg->pad);
+        func_ov007_020c2090((int)WORK->pad);
     }
 
     switch (r6->currentState) {
@@ -74,26 +67,17 @@ void func_ov007_020aed98(void)
     case 6: func_ov007_020b0324(); break;
     }
 
-    {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        func_ov007_020c92d0((int)gg->states[2]);
-    }
+    func_ov007_020c92d0((int)WORK->states[2]);
 
-    {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        gg->chosenItemId = -1;
-    }
+    WORK->chosenItemId = -1;
     for (i = 0; i < 0x18; i++) {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        func_ov007_020b44ec((int)gg->itemViews[i]);
+        func_ov007_020b44ec(WORK->itemViews[i]);
     }
     for (i = 0; i < 9; i++) {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        func_ov007_020add3c((int)gg->itemNodes[i]);
+        func_ov007_020add3c(WORK->itemNodes[i]);
     }
     for (i = 0; i < 8; i++) {
-        Ov007Work *gg = (Ov007Work *)data_ov007_0210342c;
-        func_ov007_020ad660((int)gg->layerSlots[i]);
+        func_ov007_020ad660(WORK->layerSlots[i]);
     }
 }
 }

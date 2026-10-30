@@ -1,27 +1,31 @@
+#include "Ov007StrokePath.h"
+
 extern void MultiCopy_Int(int *src, int *dst, int len);
-struct S;
-extern struct S *func_ov007_020c2c68(int a, int len, int b);
-extern void func_ov007_020c27b4(struct S *s);
-extern void func_ov007_020c26fc(struct S *s);
-struct S { int f0; int f4; char pad8[0x18]; int f20; int f24; int f28; int f2c; };
-struct S *func_ov007_020c2a04(struct S *src, int start, int end)
-{
-    struct S *d;
+extern int func_ov007_020c2c68(int a, int b, int cc);
+extern void func_ov007_020c27b4(Ov007StrokePath *path);
+extern void func_ov007_020c26fc(Ov007StrokePath *path);
+
+/* Copies points start .. end of src into a new path of the same
+ * representation and flags (func_ov007_020c2c68), then recomputes its
+ * segments and extrema. */
+Ov007StrokePath *func_ov007_020c2a04(Ov007StrokePath *src, int start, int end) {
+    Ov007StrokePath *d;
     int n;
     n = end - start + 1;
-    d = func_ov007_020c2c68(src->f0, n, src->f4);
-    *(short*)((char*)d + 8) = n;
-    switch (src->f0) {
-    case 0:
-        MultiCopy_Int((int*)(src->f24) + start, (int*)(d->f24), n << 2);
-        MultiCopy_Int((int*)(src->f28) + start, (int*)(d->f28), n << 2);
+    d = (Ov007StrokePath *)func_ov007_020c2c68(src->representation, n, src->flags);
+    d->pointCount = n;
+    switch (src->representation) {
+    case OV007_PATH_PLANAR:
+        MultiCopy_Int(src->xCoords + start, d->xCoords, n << 2);
+        MultiCopy_Int(src->yCoords + start, d->yCoords, n << 2);
         break;
     case 1:
-        MultiCopy_Int((int*)((char*)src->f2c + start * 0xc), (int*)(d->f2c), n * 0xc);
+        MultiCopy_Int((int *)((char *)src->pointStorage + start * 0xc), (int *)d->pointStorage,
+                      n * 0xc);
         break;
     }
-    if (src->f4 & 1) {
-        MultiCopy_Int((int*)(src->f20) + start, (int*)(d->f20), n << 2);
+    if (src->flags & OV007_PATH_HAS_PROGRESS) {
+        MultiCopy_Int(src->progressThresholds + start, d->progressThresholds, n << 2);
     }
     func_ov007_020c27b4(d);
     func_ov007_020c26fc(d);

@@ -1,20 +1,9 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "Ov007Pad.h"
 
-/* The 0x70-byte key record func_ov007_020c2304 allocates; names as in
- * func_ov007_020c20b8, only the slots read here. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-} Ov007Pad;
-
-extern char *data_ov007_0210342c;
 extern int data_ov007_020ccc20[];
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b0244(void);
@@ -29,15 +18,14 @@ extern void Crash(void);
 extern void func_ov007_020bdeb0(int idx);
 extern void func_ov007_020b7a44(void);
 
-typedef int (*pfn)(int);
 
 void func_ov007_020af84c(void)
 {
-    char *b = data_ov007_0210342c;
-    Ov007MenuState *s2 = ((Ov007Work *)b)->states[1];
+    Ov007Work *b = WORK;
+    Ov007MenuState *s2 = b->states[1];
     int state = s2->currentState;
     int r2var = s2->stateTicks;
-    unsigned char *base = *(unsigned char **)(*(char **)(b + 0x28)) + 0xb;
+    unsigned char *base = *(unsigned char **)b->settings + 0xb;
 
     switch (state) {
     case 7:
@@ -108,7 +96,7 @@ void func_ov007_020af84c(void)
             int r;
             if (func_ov007_020b79c8() == 0)
                 return;
-            r = (*(pfn *)(data_ov007_0210342c + 0x2c))(
+            r = WORK->callback(
                 ((int(*)[3])data_ov007_020ccc20)[WORK->selectedSlot][WORK->targetSlot]);
             func_ov007_020aec00();
             switch (r) {

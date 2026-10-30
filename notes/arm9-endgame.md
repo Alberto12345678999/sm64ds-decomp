@@ -300,10 +300,10 @@ reason this set reads as pending work. `func_0206a928` alone is 4,960 B.
 bx lr`). `func_020732e8`, `func_02073584` and `func_0207335c` start mid-frame, using `fp`
 without ever establishing it. These are shared exit stubs the symbol table split out.
 
-## Worked attempt: func_02057078 (bucket A, and why A is bucket A)
+## Worked attempt: func_02057078, now OS_ReleaseLockID (bucket A, and why A is bucket A)
 
 Recorded because it is the evidence that the primitives resist conversion, not just an
-assertion. It is the NitroSDK `OS_ReleaseLockID` sibling of `func_02057020`.
+assertion. It is the NitroSDK `OS_ReleaseLockID` sibling of `func_02057020`, now `OS_GetLockID`.
 
 ```arm
 ROM:  ldr r3,=tbl / cmp r0,#0x60 / addpl r3,r3,#4 / subpl r0,r0,#0x60

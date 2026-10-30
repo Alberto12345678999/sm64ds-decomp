@@ -132,7 +132,6 @@ void func_02011d38(void);
 void func_02012694(int a, void *p);
 void func_020393c4(void *p, int v);
 void func_020393d4(void *p, void *v);
-void func_020396d0(int *, int);
 int func_ov002_020dd8b8(void *c);
 
 /* Parameter names keep this TU's @NNN. */
@@ -345,7 +344,7 @@ int daBtn_c::InitResources()
         func_01ffb07c(&mMovingMeshCollider, sp);
     }
 
-    func_020396d0((int *)&mMovingMeshCollider, 0xb50);
+    mMovingMeshCollider.SetDepthDirMinDot(0xb50);
 
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 

@@ -247,7 +247,8 @@
     "func_ov100_021424c0 and func_ov100_02142b90 were C shards; they compile as C++ here, and func_ov100_02142b90's stack vector is a plain three-word struct so it carries no destructor.",
     "InitResources (complete=False in the old delinks) matches inside the TU: 0x38c for 0x38c, through the `(u32)param1 >> 4` cast lever its legacy source already carried.",
     "daIbl_c_classInit is written as `return new daIbl_c;`: the implicit constructor reproduces the loose file's fBase_c::operator new(0x3fc), dEnemyBase_c base constructor, vptr store and the five member constructors byte for byte.",
-    "Static initializer folded: the model handle (id 0x9c00) and the five-row kind-handler table are real definitions in d_a_ibl.cpp, replacing the handwritten src/unnamed/ov100/__sinit_ov100_021474e8.c. mwcc emits __sinit_d_a_ibl.cpp (0xbc), its .ctor word, the five PMF literals and the registration node itself; all are byte- and relocation-identical to retail. Ownership: ov100 .init, .ctor and .bss run in .text TU order; this initializer sits between d_a_btfly's (0x021473bc) and d_a_wanwan2's (0x021475a4), its .bss 0x02148668..0x021486a4 ends where wanwan2's begins, and the table's five literals name daIbl_c members that only Behavior dispatches. The same change licenses the TU's whole .data run 0x02147f18..0x02147ff8 (PMF literals, _ZTI/_ZTS, the new typed g_profile_IRONBALL and the vtable, whose 0x84-byte storage starts at 0x02147f74, two words ahead of the configured address point) and makes the TU intact-object."
+    "Static initializer folded: the model handle (id 0x9c00) and the five-row kind-handler table are real definitions in d_a_ibl.cpp, replacing the handwritten src/unnamed/ov100/__sinit_ov100_021474e8.c. mwcc emits __sinit_d_a_ibl.cpp (0xbc), its .ctor word, the five PMF literals and the registration node itself; all are byte- and relocation-identical to retail. Ownership: ov100 .init, .ctor and .bss run in .text TU order; this initializer sits between d_a_btfly's (0x021473bc) and d_a_wanwan2's (0x021475a4), its .bss 0x02148668..0x021486a4 ends where wanwan2's begins, and the table's five literals name daIbl_c members that only Behavior dispatches. The same change licenses the TU's whole .data run 0x02147f18..0x02147ff8 (PMF literals, _ZTI/_ZTS, the new typed g_profile_IRONBALL and the vtable, whose 0x84-byte storage starts at 0x02147f74, two words ahead of the configured address point) and makes the TU intact-object.",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (40 sections, 210 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -537,32 +538,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@518",
+      "from": "@517",
       "to": "data_ov100_02148670",
       "evidence": "compiler temp mapped to 0x02148670 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@520",
+      "from": "@519",
       "to": "data_ov100_02147f38",
       "evidence": "compiler temp mapped to 0x02147f38 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@522",
+      "from": "@521",
       "to": "data_ov100_02147f18",
       "evidence": "compiler temp mapped to 0x02147f18 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@524",
+      "from": "@523",
       "to": "data_ov100_02147f20",
       "evidence": "compiler temp mapped to 0x02147f20 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@526",
+      "from": "@525",
       "to": "data_ov100_02147f30",
       "evidence": "compiler temp mapped to 0x02147f30 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@528",
+      "from": "@527",
       "to": "data_ov100_02147f28",
       "evidence": "compiler temp mapped to 0x02147f28 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

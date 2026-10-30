@@ -42,7 +42,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "func_02037e14",
+      "symbol": "_ZNK4CLPS12IsCameraOnlyEv",
       "address": "0x02037e14",
       "size": "0x0000000c",
       "legacy_source": "src/func_02037e14.c",
@@ -56,7 +56,7 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_02037e2c",
+      "symbol": "_ZNK4CLPS19IsCameraPassThroughEv",
       "address": "0x02037e2c",
       "size": "0x0000000c",
       "legacy_source": "src/func_02037e2c.c",

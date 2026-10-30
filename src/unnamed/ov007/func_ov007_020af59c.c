@@ -1,10 +1,6 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
-
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
+#include "Ov007Settings.h"
 
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b0244(void);
@@ -17,19 +13,21 @@ extern int func_ov007_020b79c8(void);
 extern void func_ov007_020aec00(void);
 extern void Crash(void);
 
-typedef int (*pfn)(int);
-
-void func_ov007_020af59c(void)
-{
+/* states[1]'s erase states (func_ov007_020af390): 9 waits for a slot to
+ * be picked (an unused one opens message 3, a used one opens the two-way
+ * choice with message 0xc, func_ov007_020b43dc; answer 2 goes on, 3
+ * cancels), 10 erases it through the owner's command 8 + slot, re-sums the
+ * star totals (func_ov007_020aec00) and shows the outcome. */
+void func_ov007_020af59c(void) {
     Ov007Work *w = WORK;
     Ov007MenuState *menu = w->states[1];
     int state = menu->currentState;
-    int r2var = menu->stateTicks;
-    unsigned char *base = *(unsigned char **)w->settings + 0xb;
+    int ticks = menu->stateTicks;
+    unsigned char *fileUsed = w->settings->bootArgs->fileUsed;
 
     switch (state) {
     case 9:
-        if (r2var == 0) {
+        if (ticks == 0) {
             func_ov007_020c1d78(0);
             func_ov007_020b0244();
             WORK->states[2]->requestedState = 0xd;
@@ -39,7 +37,7 @@ void func_ov007_020af59c(void)
             int idx = WORK->selectedSlot;
             if (idx == -1)
                 return;
-            if (base[idx] == 0) {
+            if (fileUsed[idx] == 0) {
                 func_ov007_020b7d94(3);
                 WORK->selectedSlot = -1;
                 menu->stateWork = 1;
@@ -68,7 +66,7 @@ void func_ov007_020af59c(void)
         return;
 
     case 10:
-        if (r2var == 0) {
+        if (ticks == 0) {
             func_ov007_020b7d94(0xa);
             func_ov007_020c1d8c(0);
         }
@@ -77,7 +75,8 @@ void func_ov007_020af59c(void)
             int r;
             if (func_ov007_020b79c8() == 0)
                 return;
-            r = (*(pfn *)(data_ov007_0210342c + 0x2c))(WORK->selectedSlot + 8);
+            /* ids 8..10: the owner erases save file 0..2 (func_ov007_020cc600) */
+            r = WORK->callback(WORK->selectedSlot + 8);
             WORK->selectedSlot = -1;
             switch (r) {
             case 0:

@@ -223,19 +223,6 @@ extern int data_ov063_0211e1d0[];
 extern int data_0209b490[];
 extern u8 data_0209d660;
 extern short data_ov063_0211e7e0[];
-extern int data_ov063_0211edc0;
-extern struct Vec3 data_ov063_0211ee74;
-extern struct Vec3 data_ov063_0211ee80;
-extern struct Vec3 data_ov063_0211ee8c;
-extern void* data_ov063_0211ee20[3];
-extern void* data_ov063_0211edfc[3];
-extern void* data_ov063_0211ee08[3];
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern void *_ZN7Vector3D1Ev(void *object);
-/* __register_global_object is the compiler's own name for func_020731dc:
-   the initializer's registrations and the lazy ones below share the one
-   import, which the manifest aliases to the configured symbol. */
-extern void __register_global_object(void *object, void *destructor, void **node);
 extern void Vec3_Add(void * out, void * a, void * b);
 }
 
@@ -2879,28 +2866,12 @@ void daTrs_c::func_ov063_0211ab68() {
     Vec3 tmp;
     Vec3_16 rot;
     int i;
-    int *p;
 
-    if (!(data_ov063_0211edc0 & 1)) {
-        /* first vec: plain fields → r4=0, r3=y, early arg loads, batch stores */
-        data_ov063_0211ee74.x = 0;
-        data_ov063_0211ee74.y = 0x32000;
-        data_ov063_0211ee74.z = 0;
-        __register_global_object(&data_ov063_0211ee74, (void *)_ZN7Vector3D1Ev, (void **)&data_ov063_0211ee20);
-
-        p = (int *)&data_ov063_0211ee80;
-        p[0] = 0xd2000;
-        p[1] = 0x6e000;
-        p[2] = 0xd2000;
-        __register_global_object(&data_ov063_0211ee80, (void *)_ZN7Vector3D1Ev, (void **)&data_ov063_0211edfc);
-
-        p = (int *)&data_ov063_0211ee8c;
-        p[0] = -0xd2000;
-        p[1] = 0x46000;
-        p[2] = -0xd2000;
-        __register_global_object(&data_ov063_0211ee8c, (void *)_ZN7Vector3D1Ev, (void **)&data_ov063_0211ee08);
-        data_ov063_0211edc0 |= 1;
-    }
+    static Vector3 sSpawnOff[3] = {
+        Vector3(0, 0x32000, 0),
+        Vector3(0xd2000, 0x6e000, 0xd2000),
+        Vector3(-0xd2000, 0x46000, -0xd2000),
+    };
 
     if (NumStars() < 15) {
         this->MarkForDestruction();
@@ -2908,7 +2879,7 @@ void daTrs_c::func_ov063_0211ab68() {
     }
 
     for (i = 0; i < 3; i++) {
-        Vec3_Add(&tmp, (Vec3*)&this->mPosX, &(&data_ov063_0211ee74)[i]);
+        Vec3_Add(&tmp, (Vec3 *)&this->mPosX, &sSpawnOff[i]);
         pos.x = tmp.x;
         pos.y = tmp.y;
         pos.z = tmp.z;
@@ -3702,9 +3673,7 @@ extern "C" daTrs_c *daTrs_c_classInit_TERESA()
 /* File-scope objects in the order __sinit_ov063_0211e29c builds them: the
  * three model-file handles first, then the four animation-file handles. Each
  * definition emits one construct-and-register pair into .init plus a
- * registration cell in .bss; the lazy-init flag, the three cells
- * func_ov063_0211ab68 fills for the Vec3 globals, and the Vec3s themselves
- * are plain zero-init storage. */
+ * registration cell in .bss. */
 TrsModelFileResHandle data_ov063_0211edc4(ASSET_TERESA_BMD);
 TrsModelFileResHandle data_ov063_0211edec(ASSET_T_BASKET_BMD);
 TrsModelFileResHandle data_ov063_0211edf4(ASSET_BOSS_TERESA_BMD);
@@ -3712,11 +3681,3 @@ TrsAnimationResFileHandle data_ov063_0211eddc(ASSET_TERESA_WAIT_BCA);
 TrsAnimationResFileHandle data_ov063_0211ede4(ASSET_BOSS_TERESA_WAIT_BCA);
 TrsAnimationResFileHandle data_ov063_0211edd4(ASSET_BOSS_TERESA_FIRE_BCA);
 TrsAnimationResFileHandle data_ov063_0211edcc(ASSET_BOSS_TERESA_FIRE_ST_BCA);
-
-int data_ov063_0211edc0;
-void *data_ov063_0211edfc[3];
-void *data_ov063_0211ee08[3];
-void *data_ov063_0211ee20[3];
-Vec3 data_ov063_0211ee74;
-Vec3 data_ov063_0211ee80;
-Vec3 data_ov063_0211ee8c;

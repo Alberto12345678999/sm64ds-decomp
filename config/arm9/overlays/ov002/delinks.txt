@@ -195,6 +195,7 @@ src/game/player/Player.cpp:
     complete
     .text start:0x020bccfc end:0x020e6c0c
     .init start:0x021019d0 end:0x02106e40
+    .bss start:0x0210e14c end:0x0210f8d8
 
 src/game/player/d_a_ply.cpp:
     complete
@@ -292,8 +293,10 @@ src/game/actors/d_a_mugen_bgm.cpp:
 src/game/actors/d_a_demo.cpp:
     complete
     .text start:0x020f1f70 end:0x020f8858
-    .data start:0x0210b940 end:0x0210b958
-    .bss start:0x02110afc end:0x02110e24
+    .init start:0x02107370 end:0x02107f88
+    .ctor start:0x02108128 end:0x0210812c
+    .data start:0x0210b650 end:0x0210b958
+    .bss start:0x02110afc end:0x0211104c
 
 src/game/actors/d_a_f_pkn_ball.cpp:
     complete
@@ -302,6 +305,10 @@ src/game/actors/d_a_f_pkn_ball.cpp:
 src/game/actors/d_a_sound_obj.cpp:
     complete
     .text start:0x020f934c end:0x020f975c
+    .init start:0x02107f88 end:0x0210804c
+    .ctor start:0x0210812c end:0x02108130
+    .data start:0x0210c010 end:0x0210c048
+    .bss start:0x0211110c end:0x02111144
 
 src/ui/hud/d_map.cpp:
     complete
@@ -334,10 +341,4 @@ src/unnamed/ov002/__sinit_ov002_02100560.cpp:
     .init start:0x02100560 end:0x02100938
 
 
-src/unnamed/ov002/__sinit_ov002_02107370.cpp:
-    complete
-    .init start:0x02107370 end:0x02107f88
 
-src/unnamed/ov002/__sinit_ov002_02107f88.c:
-    complete
-    .init start:0x02107f88 end:0x0210804c

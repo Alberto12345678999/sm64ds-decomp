@@ -50,9 +50,8 @@
  *   - The .data member-pointer records keep their data_ov004_* names and
  *     are declared as dMgState_c::Callback; the comment on each extern names
  *     the member it points at.
- *   - Base (the scene) and FaderCallView (the fader) are TU-local views; each says
- *     why it retains a separate call shape. W2 preserves the two-word
- *     storage view of data_02086b58.
+ *   - Base (the scene) is a TU-local view and says why it retains a separate
+ *     call shape. W2 preserves the two-word storage view of data_02086b58.
  *   - mState doubles as the id passed to the scene's CanEndState and,
  *     through Mg_CallStartRound, to its StartRound. The `(void *)mState`
  *     spelling follows that helper's declaration.
@@ -151,21 +150,6 @@ struct Base {
     char pad[0xa4];
     s32 mCredits; /* 0x0a8 */
 };
-/* Call view of the installed dFdBrightness_c at data_0209f5bc.
-   The ROM sets r2 = 0 at each timing call here; the shared declarations take
-   only frames. Keep the extra-argument call shape without changing the
-   shared fader interface. The original purpose of r2 is unknown. */
-struct FaderCallView {
-    virtual void v0();
-    virtual void v1();
-    virtual void AdvanceFade();                       /* slot 2 */
-    virtual int SetBackwardTime(u32 frames, int arg); /* slot 3 */
-    virtual int SetForwardTime(u32 frames, int arg);  /* slot 4 */
-    virtual int IsAtStart();                          /* slot 5 */
-    virtual int IsAtEnd();                            /* slot 6 */
-    virtual int IsBetweenStartAndEnd();               /* slot 7 */
-};
-
 extern "C" {
 extern void FreeGfxSlotsById(int arg);
 extern int GetGameLanguage(void);
@@ -389,7 +373,7 @@ void dMgState_c::RoundClear_Enter() {
 void dMgState_c::RoundClear_Update() {
     Base *scene = gMgScene;
     if (data_0209f5bc->IsAtEnd()) {
-        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+        data_0209f5bc->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_RestoreMusic();
         Mg_StartMusic();
@@ -407,7 +391,7 @@ void dMgState_c::RoundClear_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+        data_0209f5bc->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -425,7 +409,7 @@ void dMgState_c::NextRound_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+        data_0209f5bc->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_CallStartRound(scene, (void *)mState);
         mTimer = 0;
@@ -437,7 +421,7 @@ void dMgState_c::NextRound_Update() {
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
             return;
-        ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+        data_0209f5bc->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -457,7 +441,7 @@ void dMgState_c::RoundBanner5_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+        data_0209f5bc->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_RestoreMusic();
         Mg_StartMusic();
@@ -470,7 +454,7 @@ void dMgState_c::RoundBanner5_Update() {
         if (mTimer != 0)
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
-            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+            data_0209f5bc->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -494,7 +478,7 @@ void dMgState_c ::RetryPrompt_Update() {
     dFdBrightness_c *fader;
     if (Mg_CheckBannerButton(0)) {
         fader = data_0209f5bc;
-        ((FaderCallView *)fader)->SetForwardTime(0x1e, 0);
+        fader->SetForwardTime(0x1e, 0);
         mBehavior = pmf_dMgState_c_UpdateRetryFadeOut;
         return;
     }
@@ -521,7 +505,7 @@ void dMgState_c::UpdateRetryFadeOut() {
     void *scene = gMgScene;
     if (scene == 0)
         return;
-    ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+    data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
     Mg_RestoreMusic();
     Mg_StartMusic();
@@ -764,7 +748,7 @@ void dMgState_c ::RetryPromptB_Update() {
     dFdBrightness_c *fader;
     if (Mg_CheckBannerButton(0)) {
         fader = data_0209f5bc;
-        ((FaderCallView *)fader)->SetForwardTime(0x1e, 0);
+        fader->SetForwardTime(0x1e, 0);
         mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_3;
         return;
     }
@@ -800,7 +784,7 @@ void dMgState_c::ScoreThenRound_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+        data_0209f5bc->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_RestoreMusic();
         Mg_StartMusic();
@@ -813,7 +797,7 @@ void dMgState_c::ScoreThenRound_Update() {
         if (mTimer != 0)
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
-            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+            data_0209f5bc->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -832,7 +816,7 @@ void dMgState_c::RetryPromptWideB_Enter() {
 void dMgState_c::UpdateRetryPrompt() {
     if (mTimer == 0) {
         if (Mg_CheckBannerButton(0) != 0) {
-            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+            data_0209f5bc->SetForwardTime(0x1e, 0);
             mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_2;
             return;
         }
@@ -870,7 +854,7 @@ void dMgState_c::UpdateFadeThenResume() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+        data_0209f5bc->SetBackwardTime(0x1e, 0);
         Mg_RestoreMusic();
         Mg_StartMusic();
         Mg_CallStartRound(scene, (void *)mState);
@@ -883,7 +867,7 @@ void dMgState_c::UpdateFadeThenResume() {
         if (mTimer != 0)
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
-            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+            data_0209f5bc->SetForwardTime(0x1e, 0);
     }
 }
 

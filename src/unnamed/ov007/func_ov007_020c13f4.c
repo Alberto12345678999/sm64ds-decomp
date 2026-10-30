@@ -1,8 +1,9 @@
-/* func_ov007_020c13f4 at 0x020c13f4 - thunk: Player::St_EndingFly_Main(*p) */
+#include "Ov007SpriteBank.h"
 
-extern int func_ov007_020c3d1c(int player);
+extern void func_ov007_020c3d1c(void *p);
 
-int func_ov007_020c13f4(int *p)
-{
-    return func_ov007_020c3d1c(*p);
+/* Frees a sprite-bank cell's OAM attribute list (func_ov007_020c121c's
+ * per-cell free). */
+void func_ov007_020c13f4(Ov007Cell *cell) {
+    func_ov007_020c3d1c(cell->oam);
 }

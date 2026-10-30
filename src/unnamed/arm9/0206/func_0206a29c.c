@@ -1,5 +1,5 @@
 #include "types.h"
-u16 func_02061960(void);
+u16 WM_GetAllowedChannel(void);
 
 typedef struct {
     char pad[4];
@@ -11,7 +11,7 @@ int func_0206a29c(Obj *self) {
     u16 v;
     u16 i;
     u16 cur;
-    mask = func_02061960();
+    mask = WM_GetAllowedChannel();
     if (mask == 0) return 0;
     cur = self->f4;
     i = 0;

@@ -1,28 +1,34 @@
+#include "Ov007Display.h"
+
 extern int func_ov007_020c3df4(int a, int b);
 extern void func_ov007_020c0354(int (*words)[2], unsigned count);
-extern int func_ov007_020c1068(void);
-extern int func_ov007_020c0604(int a, int b);
-int func_ov007_020b7594(int r0arg, int r1arg) {
-    int *p = (int *)func_ov007_020c3df4(0, 0x48);
-    p[4] = func_ov007_020c3df4(0, 0x400);
-    p[5] = func_ov007_020c3df4(0, 0x400);
-    func_ov007_020c0354((int(*)[2])p[4], 0x80);
-    func_ov007_020c0354((int(*)[2])p[5], 0x80);
-    p[0] = func_ov007_020c1068();
-    p[1] = func_ov007_020c1068();
-    p[2] = func_ov007_020c0604(1, r0arg);
-    p[3] = func_ov007_020c0604(2, r1arg);
-    p[6] = 0;
-    p[7] = 0;
-    p[8] = 0;
-    p[9] = 0;
-    p[10] = 0;
-    p[11] = 0;
-    p[14] = 0;
-    p[15] = 0;
-    p[16] = 0;
-    p[17] = 0;
-    p[12] = 0;
-    p[13] = 0;
-    return (int)p;
+extern Ov007OamList *func_ov007_020c1068(void);
+extern Ov007BgList *func_ov007_020c0604(int engines, int mask);
+
+/* Builds the display record: two OAM node lists, a BG layer list per
+ * engine (each with its own layer mask) and two cleared 128-entry OAM
+ * buffers; every table starts empty. */
+Ov007Display *func_ov007_020b7594(int maskMain, int maskSub) {
+    Ov007Display *d = (Ov007Display *)func_ov007_020c3df4(0, sizeof(Ov007Display));
+    d->oamMain = (void *)func_ov007_020c3df4(0, 0x400);
+    d->oamSub = (void *)func_ov007_020c3df4(0, 0x400);
+    func_ov007_020c0354((int(*)[2])d->oamMain, 0x80);
+    func_ov007_020c0354((int(*)[2])d->oamSub, 0x80);
+    d->oamListMain = func_ov007_020c1068();
+    d->oamListSub = func_ov007_020c1068();
+    d->bgListMain = func_ov007_020c0604(1, maskMain);
+    d->bgListSub = func_ov007_020c0604(2, maskSub);
+    d->transitionCount = 0;
+    d->transitions = 0;
+    d->characterCount = 0;
+    d->characters = 0;
+    d->paletteCount = 0;
+    d->palettes = 0;
+    d->spriteBankCount = 0;
+    d->spriteBanks = 0;
+    d->oamNodeCount = 0;
+    d->oamNodes = 0;
+    d->bgLayerCount = 0;
+    d->bgLayers = 0;
+    return d;
 }

@@ -20,7 +20,7 @@ src/minigames/d_mg3d_heyho_obj_adapter.cpp:
     .text start:0x020c4048 end:0x020c6f8c
     .init start:0x0212f4c4 end:0x0212f52c
     .ctor start:0x0213356c end:0x02133570
-    .bss start:0x02140330 end:0x02140358
+    .bss start:0x02140300 end:0x02140400
 
 src/minigames/d_mg_jump3d_mario.cpp:
     complete
@@ -39,6 +39,9 @@ src/minigames/unit020c8a30.cpp:
 src/minigames/d_mg_trmpln2_mario.cpp:
     complete
     .text start:0x020c8dd4 end:0x020cd744
+    .init start:0x0212f6b4 end:0x0212fc7c
+    .ctor start:0x02133578 end:0x0213357c
+    .bss start:0x0214053c end:0x02140808
 
 src/minigames/unit020cd744.cpp:
     complete
@@ -55,6 +58,9 @@ src/minigames/d_s_mg_amida.cpp:
 src/minigames/d_s_mg_bomroom.cpp:
     complete
     .text start:0x020d5a54 end:0x020d95a4
+    .init start:0x0212fd48 end:0x021300b0
+    .ctor start:0x02133580 end:0x02133584
+    .bss start:0x02141660 end:0x02141768
 
 src/minigames/d_s_mg_card.cpp:
     complete
@@ -266,14 +272,6 @@ src/minigames/d_s_mg_snowball.cpp:
 src/minigames/d_s_mg_flower.cpp:
     complete
     .text start:0x0212a554 end:0x0212b890
-
-src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp:
-    complete
-    .init start:0x0212f6b4 end:0x0212fc7c
-
-src/unnamed/ov006/__sinit_ov006_0212fd48.c:
-    complete
-    .init start:0x0212fd48 end:0x021300b0
 
 src/unnamed/ov006/__sinit_ov006_02130a04.c:
     complete

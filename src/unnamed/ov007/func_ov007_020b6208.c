@@ -4,13 +4,9 @@
  */
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
-extern char *data_ov007_0210342c;
 extern int func_ov007_020bdeb0(int a);
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 int func_ov007_020b6208(int code)
 {
@@ -70,7 +66,7 @@ int func_ov007_020b6208(int code)
         break;
     case 12: {
         Ov007Work *p0 = WORK;
-        if (*(unsigned char *)(*(char **)p0->settings + 9) != 0)
+        if (p0->settings->bootArgs->backlightOn != 0)
             r1 = 0x19;
         else
             r1 = 0x18;
@@ -78,7 +74,7 @@ int func_ov007_020b6208(int code)
     }
     case 13: {
         Ov007Work *p0 = WORK;
-        if (*(unsigned char *)(*(char **)p0->settings + 9) == 0)
+        if (p0->settings->bootArgs->backlightOn == 0)
             r1 = 0x19;
         else
             r1 = 0x18;

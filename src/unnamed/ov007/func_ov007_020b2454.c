@@ -2,18 +2,11 @@
 #include "nitro/fx/fx.h"
 #include "dExtModel_c.h"
 #include "Ov007Work.h"
+#include "Ov007Model.h"
 /* AddVec3 still defines its vector as its own struct Vec3;
    declared as defined, the call casts. */
 struct Vec3;
 extern void AddVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
- * func_ov007_020bc02c, only the slot read here. */
-typedef struct Ov007Model {
-    struct ModelComponents *model; /* 0x00 */
-} Ov007Model;
-
-extern void *data_ov007_0210342c;
 
 void func_ov007_020b2454(Vector3 *out, Vector3 *r1) {
     int w;
@@ -23,7 +16,7 @@ void func_ov007_020b2454(Vector3 *out, Vector3 *r1) {
     Vector3 b;
     Vector3 a;
 
-    m = (struct Ov007Work *)data_ov007_0210342c;
+    m = WORK;
     /* bone 0's transform */
     in = m->model->model->transforms;
     a.z = 0;

@@ -1,0 +1,104 @@
+{
+  "id": "arm9/CTRDG_Common",
+  "module": "arm9",
+  "source": "src/engine/ctrdg/CTRDG_Common.cpp",
+  "promoted_source": "src/engine/ctrdg/CTRDG_Common.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's ctrdg_common.c, 0x0206a318..0x0206a600: 7 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/CTRDG_common.c defines, in source order, CTRDGi_InitCommon, the CTRDG_IsAgbCartridge/IsOptionCartridge/GetAgb* family, CTRDG_IsPulledOut, CTRDG_IsExisting, CTRDGi_ChangeLatestAccessCycle, CTRDGi_RestoreAccessCycle, CTRDGi_LockByProcessor, CTRDGi_UnlockByProcessor, CTRDGi_SendtoPxi, then the copy/read/enable routines. Seven of them are here, each identified by body: CTRDGi_SendtoPxi 0x64, UnlockByProcessor 0x28, LockByProcessor 0x80, RestoreAccessCycle 0x34, ChangeLatestAccessCycle 0x48 and InitCommon 0x40 at pret's sizes, and CTRDG_IsExisting at 0x120 (0x11c in pret).",
+    "Order: all seven are C, and mwccarm emits deferred C bodies in reverse. The ROM run is exactly pret's source order reversed (SendtoPxi lowest, InitCommon highest), with the functions nothing in this game calls dropped by the linker.",
+    "BOTTOM EDGE: func_0206a29c (0x0206a29c..0x0206a318) scans a 16-bit channel mask from WM_GetAllowedChannel; it is not cartridge code.",
+    "TOP EDGE: func_0206a600.c (0x0206a600..0x0206a694) holds a PXI callback for the cartridge tag (0xd) and its send-then-Crash helper; func_0206a694 is the ack callback, func_0206a6d0 the module-info setup and CTRDG_Init (0x0206a88c) the init that installs them. pret's tree has no file for them (an older ctrdg.c), so they stay out."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0206a318",
+      "end": "0x0206a600"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "CTRDGi_SendtoPxi",
+      "address": "0x0206a318",
+      "size": "0x00000064",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a318.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "CTRDGi_UnlockByProcessor",
+      "address": "0x0206a37c",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a37c.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "CTRDGi_LockByProcessor",
+      "address": "0x0206a3a4",
+      "size": "0x00000080",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a3a4.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "CTRDGi_RestoreAccessCycle",
+      "address": "0x0206a424",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a424.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "CTRDGi_ChangeLatestAccessCycle",
+      "address": "0x0206a458",
+      "size": "0x00000048",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a458.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "CTRDG_IsExisting",
+      "address": "0x0206a4a0",
+      "size": "0x00000120",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a4a0.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "CTRDGi_InitCommon",
+      "address": "0x0206a5c0",
+      "size": "0x00000040",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a5c0.c",
+      "ordinal": 6
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/MI_Memory and arm9/OS_SpinLock: tu_map cannot segment arm9/main.",
+    "Every symbol was renamed from its func_ name to the SDK name in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only: CTRDGi_Work (data_020a9de0) stays an extern. The file claims no data.",
+    "The lock-info and access-cycle records stay int arrays: every caller declares them that way."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-CTRDG_Common/CTRDG_Common.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 7,
+    "functions_declared": 7,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

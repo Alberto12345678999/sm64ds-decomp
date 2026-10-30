@@ -1,10 +1,15 @@
-extern void* func_ov007_020c3df4(int a, int b);
+#include "Ov007Display.h"
 
-void func_ov007_020c3550(int a, int b, int c, int d){
-  char* p = (char*)func_ov007_020c3df4(0, 0xc);
-  *(int*)(p) = a;
-  *(unsigned char*)(p+8) = (unsigned char)b;
-  *(unsigned char*)(p+9) = (unsigned char)c;
-  *(int*)(p+4) = d;
-  *(unsigned char*)(p+0xa) = 0;
+extern int func_ov007_020c3df4(int heapName, void *size);
+
+/* Allocates a character record (the menu's alloc hook) and fills it. */
+Ov007CharRecord *func_ov007_020c3550(const void *tiles, int width, int height, int is8bpp) {
+    Ov007CharRecord *rec =
+        (Ov007CharRecord *)func_ov007_020c3df4(0, (void *)sizeof(Ov007CharRecord));
+    rec->tiles = tiles;
+    rec->width = width;
+    rec->height = height;
+    rec->is8bpp = is8bpp;
+    rec->reserved = 0;
+    return rec;
 }

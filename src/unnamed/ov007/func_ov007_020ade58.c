@@ -1,35 +1,17 @@
 #include "types.h"
 #include "Ov007Work.h"
-extern char *data_ov007_0210342c[];
-extern u8 data_ov007_020ccbc4[];
+#include "Ov007Display.h"
+#include "Ov007Item.h"
+extern Ov007ItemLayout data_ov007_020ccbc4[];
 extern u8 data_ov007_020ccb7d[];
 extern u8 data_ov007_020ccb7c[];
 
 extern int func_ov007_020c3df4(int a, int b);
-extern char *func_ov007_020aea6c(int a, void *b, void *c);
-extern void *func_ov007_020c11ac(int n);
-extern void func_ov007_020c10b0(void *a, void *b);
-extern void func_ov007_020c0af4(void *c, void *x);
-extern void Sprite_SetAnimation(void *c, int r1, int r2, int r3, int sp0);
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020ae070, only the slot this file reads. */
-typedef struct Ov007Item {
-    u16 id; /* 0x00: aea6c's first argument */
-} Ov007Item;
-
-/* The 0x44-byte OAM sprite node func_ov007_020c11ac allocates; names as in
- * func_ov007_020c10ec, only the slots this file touches. */
-typedef struct Ov007OamNode {
-    int x; /* 0x00: Q12 screen x; func_ov007_020c0b78 adds it to the parent's */
-    char pad_04[0x10];
-    unsigned char priority; /* 0x14: OAM priority, used when the caller passes none (> 3) */
-    char pad_15[3];
-    void **anims;            /* 0x18: animCount animations (func_ov007_020c11ac) */
-    unsigned char animCount; /* 0x1c: func_ov007_020c1180 frees anims only when nonzero */
-    char pad_1d[0x1b];
-    struct Ov007OamNode *head; /* 0x38: first child (func_ov007_020c10b0) */
-} Ov007OamNode;
+extern Ov007Item *func_ov007_020aea6c(int id, Ov007ItemLayout *layout, Ov007HitBox *hitBox);
+extern Ov007OamNode *func_ov007_020c11ac(int n);
+extern void func_ov007_020c10b0(Ov007OamNode *parent, Ov007OamNode *child);
+extern void func_ov007_020c0af4(Ov007OamList *list, Ov007OamNode *node);
+extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
 
 /* data_ov007_020ccb7c: one 8-byte row per item. data_ov007_020ccb7d is
  * the same table's animCount byte, read by its own symbol. */
@@ -42,46 +24,21 @@ typedef struct Ov007NodeSprites {
 
 typedef char Ov007NodeSprites_size_must_be_0x8[sizeof(Ov007NodeSprites) == 0x8 ? 1 : -1];
 
-/* The 8-byte record this function returns (names as in
- * func_ov007_020ae558); func_ov007_020b6d40 keeps nine of them in the
- * manager's itemNodes. */
-typedef struct Ov007ItemNode {
-    Ov007Item *item;    /* 0x00: func_ov007_020aea6c */
-    Ov007OamNode *node; /* 0x04: func_ov007_020c11ac */
-} Ov007ItemNode;
-
-/* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
- * allocates (as in func_ov007_020adc08); only the slots this file reads. */
-typedef struct Ov007Display {
-    /* 0x00/0x04: the OAM node lists (func_ov007_020c1068) that
-     * func_ov007_020bc9c8 draws into the main (+0x10) and sub (+0x14) OAM
-     * buffers; func_ov007_020c0af4 appends a node */
-    void *oamListMain;
-    void *oamListSub;
-    char pad_08[0x34];
-    /* 0x3c: the six func_ov007_020c9688 sprite banks func_ov007_020b6d40
-     * builds (count at +0x38, func_ov007_020b72fc); a bank's +0xc is its
-     * array of 0x10-byte animations */
-    char **spriteBanks;
-} Ov007Display;
-
-typedef char Ov007OamNode_head_must_be_at_0x38[(int)&((Ov007OamNode *)0)->head == 0x38 ? 1 : -1];
-typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -1];
-
-#pragma opt_strength_reduction off
-
-void *func_ov007_020ade58(int self)
-{
+/* Builds item node `index` (func_ov007_020b6d40 builds nine): the item, with
+ * its layout row from data_ov007_020ccbc4 and no hit box, and its OAM node
+ * with its animations. By item id the node goes on the display's sub OAM
+ * list (0, 1, 3-5; item 0 also gets a child node) or its main list (7, 8);
+ * the nodes of items 2 and 6 go on neither list. */
+Ov007ItemNode *func_ov007_020ade58(int index) {
     Ov007ItemNode *s = (Ov007ItemNode *)func_ov007_020c3df4(0, 8);
-    char *g = data_ov007_0210342c[0];
-    Ov007Display *r6 = ((Ov007Work *)g)->display;
+    Ov007Display *r6 = WORK->display;
     Ov007OamNode *r4;
-    char **sl;
+    Ov007SpriteBank **sl;
     int sb;
     int cnt;
 
-    s->item = (Ov007Item *)func_ov007_020aea6c(self, &data_ov007_020ccbc4[self * 0xa], 0);
-    r4 = (Ov007OamNode *)func_ov007_020c11ac(data_ov007_020ccb7d[self * 8]);
+    s->item = func_ov007_020aea6c(index, &data_ov007_020ccbc4[index], 0);
+    r4 = func_ov007_020c11ac(data_ov007_020ccb7d[index * 8]);
     s->node = r4;
 
     switch (s->item->id) {
@@ -128,12 +85,11 @@ void *func_ov007_020ade58(int self)
             if (state == 1 && sb >= 4) {
                 r7 = one;
             } else if (state == 0) {
-                r4->head->anims[sb] =
-                    (void *)(*(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
+                r4->head->anims[sb] = &sl[r7]->anims[entry->animIndices[sb]];
                 Sprite_SetAnimation(r4->head, zero, zero, zero, zero);
             }
 
-            r4->anims[sb] = (void *)(*(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
+            r4->anims[sb] = &sl[r7]->anims[entry->animIndices[sb]];
             sb++;
         } while (sb < r4->animCount);
     }

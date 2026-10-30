@@ -1,28 +1,59 @@
 //cpp
-/* arm9/SaveData2 -- the save-file manager's cart I/O pair, folded from two
- * legacy shards at .text 0x02042804..0x02042f68. SaveData::SaveDataToCart
- * writes a block with an 8-byte magic and a 16-bit rolling checksum to a
- * primary and a mirror copy; SaveData::ReadDataFromCart reads one back with
- * the same checks, falling back to the mirror. mwccarm emits .text in
- * reverse source order, so the definitions below run ROM-descending; the
- * roster reads ROM-ascending.
+/* arm9/SaveData2 -- the save-file manager's cart I/O, .text
+ * 0x02042804..0x02042fe4. SaveData::SaveDataToCart writes a block with an
+ * 8-byte magic and a 16-bit rolling checksum to a primary and a mirror copy;
+ * SaveData::ReadDataFromCart reads one back with the same checks, falling
+ * back to the mirror. func_02042f68 sets the backup device up and stores the
+ * magic both of them use. mwccarm emits .text in reverse source order, so
+ * the definitions below run ROM-descending; the roster reads ROM-ascending.
  *
- *   SaveDataToCart   0x02042c3c
  *   ReadDataFromCart 0x02042804
+ *   SaveDataToCart   0x02042c3c
+ *   func_02042f68    0x02042f68
  */
 #include "types.h"
 #include "decl_common.h"
 #include "SaveData.h"
+#include "nitro/card/card_common.h"
+#include "nitro/os/spinLock.h"
 
 extern "C" {
 int func_0203da3c(void);
-u32 func_0206045c(void);
-int func_02057020(void);
-void func_0205ff80(u16 a);
-void func_0205ff70(u16 a);
-void func_02057078(u16 a);
+u32 CARD_GetBackupTotalSize(void);
 int func_02060558(u32 addr, void* buf, u32 len, int d, int e, int f);
 int func_02060484(int a, int b, int c, int d, int e, int f);
+/* local extern: no include/ header declares the CARD backup setup. */
+void CARD_Init(void);
+void CARD_IdentifyBackup(int type);
+}
+
+/* func_02042f68(type, magic) at 0x02042f68 -- the cart I/O pair's setup.
+ *
+ * NitroSDK CARD_Init, then CARD_IdentifyBackup(type), then keep `magic` up to
+ * its NUL or 8 bytes, zero-padded, in data_020a4b40: the 8-byte magic
+ * SaveDataToCart writes with each block and ReadDataFromCart checks. Nothing
+ * else in arm9 or the overlays touches data_020a4b40. func_0201a054 calls
+ * it at boot with 0xd01 (CARD_BACKUP_TYPE_EEPROM_64KBITS: device 1, 2^13
+ * bytes) and "ds mario". It returns at once in link mode 2
+ * (func_0203da3c), the mode func_0203db64 gives a download-play child, but
+ * never does at that call site: data_020a0f04 is still 0 then.
+ */
+// @symbol func_02042f68
+extern "C" void func_02042f68(int type, unsigned char *magic) {
+    int i;
+    unsigned char *d;
+    if (func_0203da3c() == 2)
+        return;
+    CARD_Init();
+    CARD_IdentifyBackup(type);
+    func_0205a588(data_020a4b40, 0, 8);
+    d = data_020a4b40;
+    for (i = 0; i < 8; i++) {
+        unsigned char c = magic[i];
+        if (c == 0)
+            return;
+        *d++ = c;
+    }
 }
 
 /* SaveData::SaveDataToCart(char* data, u32 size, u32 fileID) at 0x02042c3c -- static.
@@ -50,7 +81,7 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
     if (func_0203da3c() == 2)
         return 1;
 
-    freeVal = (int)((u32)func_0206045c() >> 1);
+    freeVal = (int)((u32)CARD_GetBackupTotalSize() >> 1);
     need = (int)(fileID << 7);
     if ((u32)freeVal <= (u32)need)
         return 1;
@@ -79,11 +110,11 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
         }
     }
 
-    lockID = func_02057020();
+    lockID = OS_GetLockID();
     if (lockID == -3)
         return 1;
 
-    func_0205ff80((u16)lockID);
+    CARD_LockBackup((u16)lockID);
 
     retry = 0;
     v14 = 0;
@@ -96,14 +127,14 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
            func_02060484(dataOff, (int)data, (int)size, v18, v18, v18) != 1) {
         retry++;
         if (retry > 0) {
-            func_0205ff70((u16)lockID);
-            func_02057078((u16)lockID);
+            CARD_UnlockBackup((u16)lockID);
+            OS_ReleaseLockID((u16)lockID);
             return 1;
         }
     }
 
-    func_0205ff70((u16)lockID);
-    func_0205ff80((u16)lockID);
+    CARD_UnlockBackup((u16)lockID);
+    CARD_LockBackup((u16)lockID);
 
     retry2 = 0;
     newBase = freeVal + need;
@@ -117,14 +148,14 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
            func_02060484(dataOff2, (int)data, (int)size, v24, v24, v24) != 1) {
         retry2++;
         if (retry2 > 0) {
-            func_0205ff70((u16)lockID);
-            func_02057078((u16)lockID);
+            CARD_UnlockBackup((u16)lockID);
+            OS_ReleaseLockID((u16)lockID);
             return 1;
         }
     }
 
-    func_0205ff70((u16)lockID);
-    func_02057078((u16)lockID);
+    CARD_UnlockBackup((u16)lockID);
+    OS_ReleaseLockID((u16)lockID);
     return 0;
 }
 
@@ -162,16 +193,16 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
     crc = 0;
     if (func_0203da3c() == 2)
         return 1;
-    half = func_0206045c() >> 1;
+    half = CARD_GetBackupTotalSize() >> 1;
     off = slot << 7;
     if (half <= off)
         return 1;
     if (len > half - off - 10)
         return 1;
-    lock = func_02057020();
+    lock = OS_GetLockID();
     if (lock == -3)
         return 1;
-    func_0205ff80((u16)lock);
+    CARD_LockBackup((u16)lock);
     retry = 0;
     fb = 0;
     fc = 0;
@@ -185,7 +216,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
         if (retry > 0)
             break;
     }
-    func_0205ff70((u16)lock);
+    CARD_UnlockBackup((u16)lock);
     if (retry <= 0) {
         ok = 1;
         pd = data_020a4b40;
@@ -207,12 +238,12 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
                       ((u8)buf[j] & 0xFF);
             }
             if (sum == crc) {
-                func_02057078((u16)lock);
+                OS_ReleaseLockID((u16)lock);
                 return 0;
             }
         }
     }
-    func_0205ff80((u16)lock);
+    CARD_LockBackup((u16)lock);
     retry2 = 0;
     off2 = half + off;
     gb = 0;
@@ -225,13 +256,13 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
            func_02060558(b10, buf, len, gc, gc, gc) != 1) {
         retry2++;
         if (retry2 > 0) {
-            func_0205ff70((u16)lock);
-            func_02057078((u16)lock);
+            CARD_UnlockBackup((u16)lock);
+            OS_ReleaseLockID((u16)lock);
             return 1;
         }
     }
-    func_0205ff70((u16)lock);
-    func_02057078((u16)lock);
+    CARD_UnlockBackup((u16)lock);
+    OS_ReleaseLockID((u16)lock);
     pd = data_020a4b40;
     pm = magic;
     for (i = 0; i < 8; i++, pd++, pm++) {

@@ -1,8 +1,13 @@
-extern void* func_ov007_020c3df4(int a, int b);
-void func_ov007_020c13a4(char *c, int r1, short r2, short r3){
-  *(void**)(c) = func_ov007_020c3df4(0, r1*4);
-  *(void**)(c+4) = func_ov007_020c3df4(0, r1*2);
-  *(int*)(c+0xc) = r1;
-  *(short*)(c+8) = r2;
-  *(short*)(c+0xa) = r3;
+#include "Ov007SpriteBank.h"
+
+extern void *func_ov007_020c3df4(int a, int b);
+
+/* Allocates a cell animation's frame and duration tables for `frameCount`
+ * frames. */
+void func_ov007_020c13a4(Ov007CellAnim *anim, int frameCount, u16 offsetX, u16 offsetY) {
+    anim->frames = (Ov007Cell **)func_ov007_020c3df4(0, frameCount * 4);
+    anim->durations = (u16 *)func_ov007_020c3df4(0, frameCount * 2);
+    anim->frameCount = frameCount;
+    anim->offsetX = offsetX;
+    anim->offsetY = offsetY;
 }

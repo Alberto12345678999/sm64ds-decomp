@@ -16,7 +16,7 @@
  * What stays:
  * - func_020393d4: InitResources stores dBgW::UpdatePosWithTransform on
  *   mMeshCollider; dBgW.h has no setter.
- * - func_020393a4: Behavior pokes mMeshCollider with 0x100000 (no setter).
+ * - dBgW::SetClipRadius: Behavior sets the collider range to 0x100000.
  * - data_ov029_0211432c / 02114324 are this TU's BMD/KCL file handles;
  *   data_ov029_0211304c the CLPS block stays unowned overlay data.
  * - Behavior case 1 keeps the unsigned short* increment pointer
@@ -49,7 +49,6 @@ struct WcObj04CollisionFilePtr : SharedFilePtr {
 
 /* local extern: no shared header declares these. */
 extern "C" {
-void func_020393a4(void *p, int v);
 void func_020393d4(dBgW *bgw, void *fn);
 }
 
@@ -101,7 +100,7 @@ int daObjWc_Obj04_c::InitResources() {
 // @symbol _ZN15daObjWc_Obj04_c8BehaviorEv
 #pragma optimize_for_size on
 int daObjWc_Obj04_c::Behavior() {
-    func_020393a4(&mMeshCollider, 0x100000);
+    mMeshCollider.SetClipRadius(0x100000);
 
     switch (mState) {
     case 0:

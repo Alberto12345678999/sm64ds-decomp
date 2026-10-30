@@ -1,29 +1,31 @@
-struct S { void* f0; int* f4; void* f8; int* fc; };
-extern void* func_ov007_020c3df4(int a, int b);
-extern void MultiStore_Int(int val, int* dst, int len);
+#include "Ov007SpriteBank.h"
 
-struct S* func_ov007_020c12ac(int a, int b)
-{
-    struct S* s = (struct S*)func_ov007_020c3df4(0, 0x10);
-    s->f4 = (int*)func_ov007_020c3df4(0, a << 3);
-    s->fc = (int*)func_ov007_020c3df4(0, b << 4);
-    s->f0 = (void*)a;
-    s->f8 = (void*)b;
+extern void *func_ov007_020c3df4(int a, int b);
+extern void MultiStore_Int(int val, int *dst, int len);
+
+/* Allocates a sprite bank for `cellCount` cells and `animCount`
+ * animations, each table zeroed record by record. */
+Ov007SpriteBank *func_ov007_020c12ac(int cellCount, int animCount) {
+    Ov007SpriteBank *bank = (Ov007SpriteBank *)func_ov007_020c3df4(0, sizeof(Ov007SpriteBank));
+    bank->cells = (Ov007Cell *)func_ov007_020c3df4(0, cellCount * sizeof(Ov007Cell));
+    bank->anims = (Ov007CellAnim *)func_ov007_020c3df4(0, animCount * sizeof(Ov007CellAnim));
+    bank->cellCount = cellCount;
+    bank->animCount = animCount;
     {
         volatile int v1;
         int i;
-        for (i = 0; i < a; i++) {
+        for (i = 0; i < cellCount; i++) {
             v1 = 0;
-            MultiStore_Int(v1, (int*)((char*)s->f4 + i * 8), 8);
+            MultiStore_Int(v1, (int *)&bank->cells[i], sizeof(Ov007Cell));
         }
     }
     {
         volatile int v2;
         int j;
-        for (j = 0; j < b; j++) {
+        for (j = 0; j < animCount; j++) {
             v2 = 0;
-            MultiStore_Int(v2, (int*)((char*)s->fc + j * 16), 0x10);
+            MultiStore_Int(v2, (int *)&bank->anims[j], sizeof(Ov007CellAnim));
         }
     }
-    return s;
+    return bank;
 }

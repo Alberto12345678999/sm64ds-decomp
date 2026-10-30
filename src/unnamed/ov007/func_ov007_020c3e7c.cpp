@@ -1,17 +1,22 @@
 //cpp
-extern "C" {
-extern void func_ov007_020c40b4(void *c);
-extern int func_ov007_020c3d1c(void *p);
-extern int func_ov007_020c1180(char *c);
+#include "Ov007SpriteGroup.h"
 
-void func_ov007_020c3e7c(char *c){
-  int i;
-  for(i = 0; i < **(int**)c; i++){
-    func_ov007_020c40b4((*(void***)(c+8))[i]);
-  }
-  func_ov007_020c3d1c(*(void**)(c+8));
-  func_ov007_020c1180(*(char**)(c+4));
-  func_ov007_020c40b4(*(void**)(c+0xc));
-  func_ov007_020c3d1c(c);
+extern "C" {
+
+extern void func_ov007_020c40b4(Ov007SpriteItem *item);
+extern int func_ov007_020c3d1c(void *p);
+extern int func_ov007_020c1180(Ov007OamNode *node);
+
+/* Frees a sprite group: each item record and their table, the root node,
+ * the extra record and the group itself. */
+void func_ov007_020c3e7c(Ov007SpriteGroup *grp) {
+    int i;
+    for (i = 0; i < *grp->layout; i++) {
+        func_ov007_020c40b4(grp->items[i]);
+    }
+    func_ov007_020c3d1c(grp->items);
+    func_ov007_020c1180(grp->root);
+    func_ov007_020c40b4(grp->extra);
+    func_ov007_020c3d1c(grp);
 }
 }

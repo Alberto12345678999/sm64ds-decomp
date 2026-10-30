@@ -1,8 +1,19 @@
-extern int func_ov007_020c9214();
-/* c: an ov007 model record (animation tables); no class or header names it, so raw. */
-void func_ov007_020bc2e4(void* c, int i, int a2){
-  unsigned short** arr = *(unsigned short***)((char*)c+0x2c);
-  unsigned short* p = arr[i];
-  if(p==0) return;
-  func_ov007_020c9214(*(void**)((char*)c+0x30), i, 1, *p, a2, 0x1000);
+#include "Ov007Model.h"
+
+/* The BTP header word this file reads, as dExtAnmTexPat_c.h spells it: a
+ * partial C view of a tag that header defines only for C++. */
+struct BTP_File {
+    unsigned short numFrames; /* 0x00 */
+};
+
+/* Unprototyped, as in func_ov007_020bc3dc. */
+extern void func_ov007_020c9214();
+
+/* Starts texture-pattern animation i at startFrame, wrapping, at one frame
+ * per tick; does nothing when the table has no file for i. */
+void func_ov007_020bc2e4(Ov007Model *m, int i, int startFrame) {
+    struct BTP_File *btp = m->texSeqAnims[i];
+    if (btp == 0)
+        return;
+    func_ov007_020c9214(m->texSeqAnim, i, 1, btp->numFrames, startFrame, 0x1000);
 }

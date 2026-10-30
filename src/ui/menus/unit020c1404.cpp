@@ -82,23 +82,21 @@ extern u32 data_ov007_02104be4; /* end of the texture region */
 extern u32 data_ov007_02104be8; /* next free palette slot */
 
 extern void Crash(void);
-extern int func_02053ec0(void);
-extern int func_02053ed0(void);
 extern char *func_ov007_020c3df4(int a, int b);
 extern void func_ov007_020c3d1c(void *self);
 
-void func_ov007_020c15ec(char *p);
+void func_ov007_020c15ec(Ov007Texture *tex);
 void func_ov007_020c16dc(int fmt, int width, int height, int colorCount, u32 *texSize,
                          u32 *plttSize);
 
 // @symbol func_ov007_020c184c
 /* Resets both regions to start at 0: the texture region's end from the
- * texture VRAM banks func_02053ed0 reports (one 0x20000-byte bank per
- * bit), the palette region's end from the palette banks func_02053ec0
+ * texture VRAM banks GX::GetBankForTex reports (one 0x20000-byte bank per
+ * bit), the palette region's end from the palette banks GX::GetBankForTexPltt
  * reports. */
 void func_ov007_020c184c(void) {
-    int texBanks = func_02053ed0();
-    int plttBanks = func_02053ec0();
+    int texBanks = GX::GetBankForTex();
+    int plttBanks = GX::GetBankForTexPltt();
 
     data_ov007_02104bdc = 0;
     data_ov007_02104be4 = 0;
@@ -220,16 +218,14 @@ void func_ov007_020c16dc(int fmt, int width, int height, int colorCount, u32 *te
 // @symbol func_ov007_020c162c
 /* Allocates and fills a texture record for texels of format fmt at texSrc,
  * (8 << sizeS) by (8 << sizeT), with an optional palette of plttColorCount
- * colours at plttSrc. The record keeps the void * spelling its caller
- * func_ov007_020b2308 declares; `tex` is the typed view. */
-void *func_ov007_020c162c(void *fmt, int texSrc, int sizeS, int sizeT, int plttSrc,
-                          unsigned short plttColorCount) {
-    char *r6 = func_ov007_020c3df4(0, sizeof(Ov007Texture));
-    Ov007Texture *tex = (Ov007Texture *)r6;
+ * colours at plttSrc. */
+Ov007Texture *func_ov007_020c162c(int fmt, int texSrc, int sizeS, int sizeT, int plttSrc,
+                                  unsigned short plttColorCount) {
+    Ov007Texture *tex = (Ov007Texture *)func_ov007_020c3df4(0, sizeof(Ov007Texture));
     int width = 8 << sizeS;
     int height = 8 << sizeT;
-    func_ov007_020c15ec(r6);
-    tex->fmt = (u32)fmt;
+    func_ov007_020c15ec(tex);
+    tex->fmt = fmt;
     tex->texSrc = (const void *)texSrc;
     tex->sizeS = sizeS;
     tex->sizeT = sizeT;
@@ -239,8 +235,8 @@ void *func_ov007_020c162c(void *fmt, int texSrc, int sizeS, int sizeT, int plttS
         tex->flags |= 1;
     if (plttSrc != 0)
         tex->flags |= 2;
-    func_ov007_020c16dc((int)fmt, width, height, plttColorCount, &tex->texSize, &tex->plttSize);
-    return r6;
+    func_ov007_020c16dc(fmt, width, height, plttColorCount, &tex->texSize, &tex->plttSize);
+    return tex;
 }
 
 // @symbol func_ov007_020c1620
@@ -255,8 +251,7 @@ void func_ov007_020c1620(void *tex) {
 
 // @symbol func_ov007_020c15ec
 /* Clears a texture record. */
-void func_ov007_020c15ec(char *p) {
-    Ov007Texture *tex = (Ov007Texture *)p;
+void func_ov007_020c15ec(Ov007Texture *tex) {
     tex->flags = 0;
     tex->fmt = 0;
     tex->texSrc = 0;
@@ -309,11 +304,10 @@ void func_ov007_020c14d4(Ov007Texture *t) {
 }
 
 // @symbol func_ov007_020c14b8
-/* Loads a record's texels and palette into VRAM. t keeps the void *
- * spelling its caller func_ov007_020bd1c0 declares. */
-void func_ov007_020c14b8(void *t) {
-    func_ov007_020c1560((Ov007Texture *)t);
-    func_ov007_020c14d4((Ov007Texture *)t);
+/* Loads a record's texels and palette into VRAM. */
+void func_ov007_020c14b8(Ov007Texture *t) {
+    func_ov007_020c1560(t);
+    func_ov007_020c14d4(t);
 }
 
 // @symbol func_ov007_020c1448

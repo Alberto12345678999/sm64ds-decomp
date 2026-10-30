@@ -7,8 +7,8 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x02030fa8..0x02034a78, 35 function(s), gapless in config/arm9/delinks.txt.",
-    "VS TWIN: 0x02030fa8..0x02034a78 is the Message text code compiled a second time for the VS build. Masking relocated words, nine functions are word-identical to their single-player twins at the same relative order: func_0200f0bc->func_02030fa8, func_0201ab6c->func_02031154, func_0201adac->func_020313d8, Message::AddChar->Message::AddCharVS, func_0201b7cc->func_02031e00, Message::SetTextGlobals->Message::SetTextGlobalsVS, func_0201cfb8->func_02033a80, func_0201d590->func_02034098, Message_DrawCenteredLine->Message_DrawCenteredLineVS. The rest are VS-specific variants (other sizes) in the same order.",
-    "TOP EDGE: src/unnamed/arm9/0203/func_02030e4c.c (0x02030e4c..0x02030fa8) ends where the run begins; neither it nor any shard below it has a masked twin in the single-player text code, and func_02030fa8 (twin of func_0200f0bc) is the first. BOTTOM EDGE: src/game/stages/d_s_mb.cpp begins at 0x02034a78, a different class TU."
+    "VS TWIN: 0x02030fa8..0x02034a78 is the Message text code compiled a second time for the VS build. Masking relocated words, nine functions are word-identical to their single-player twins at the same relative order: GetLanguageIndex->GetLanguageIndexVS, Message::AddChoice->Message::AddChoiceVS, Message::AddCharPair->Message::AddCharPairVS, Message::AddChar->Message::AddCharVS, Message::LayoutLine->Message::LayoutLineVS, Message::SetTextGlobals->Message::SetTextGlobalsVS, func_0201cfb8->func_02033a80, Message_DrawLineBG2->Message_DrawLineBG2VS, Message_DrawCenteredLine->Message_DrawCenteredLineVS. The rest are VS-specific variants (other sizes) in the same order.",
+    "TOP EDGE: src/unnamed/arm9/0203/func_02030e4c.c (0x02030e4c..0x02030fa8) ends where the run begins; neither it nor any shard below it has a masked twin in the single-player text code, and GetLanguageIndexVS (twin of GetLanguageIndex) is the first. BOTTOM EDGE: src/game/stages/d_s_mb.cpp begins at 0x02034a78, a different class TU."
   ],
   "sections": [
     {
@@ -27,7 +27,7 @@
     "#pragma defer_codegen off gives source-order emission: src/Message3.cpp lists definitions ROM-ascending and the emitted section order is ROM-ascending. Deferred codegen was unusable because the four optimization-pragma functions (func_020326ac opt_common_subs, func_020331fc/func_02033e50 opt_strength_reduction, func_02033bb8 both) would read their offs last-wins at end of file.",
     "The address-named helpers and the named C helpers LoadFont3D and Message_DrawCenteredLineVS keep extern \"C\" linkage. AddCharVS is a static member like its single-player twin Message::AddChar. data_0209f4a4 is consumed through decl_common.h's s16[] spelling; func_020326ac reads it through a byte-stride pointer pun, so the (u8*) cast stays at the use site.",
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii keeps the literal-name spelling with scalar params (Fix12 wall).",
-    "The nine func_02030fa8..func_020319fc shards were folded in ROM order ahead of AddCharVS. func_02031028's glyph-table search keeps its inline predicate, now `bool`: an int-returning or open-coded compare swaps the two cmp operands."
+    "The nine 0x02030fa8..0x020319fc shards were folded in ROM order ahead of AddCharVS. func_02031028's glyph-table search keeps its inline predicate, now `bool`: an int-returning or open-coded compare swaps the two cmp operands."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -106,7 +106,7 @@
   },
   "functions": [
     {
-      "symbol": "func_02030fa8",
+      "symbol": "GetLanguageIndexVS",
       "address": "0x02030fa8",
       "size": "0x00000080",
       "legacy_source": "src/unnamed/arm9/0203/func_02030fa8.c",
@@ -120,7 +120,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_02031154",
+      "symbol": "_ZN7Message11AddChoiceVSEv",
       "address": "0x02031154",
       "size": "0x00000138",
       "legacy_source": "src/unnamed/arm9/0203/func_02031154.c",
@@ -134,7 +134,7 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_020313d8",
+      "symbol": "_ZN7Message13AddCharPairVSEv",
       "address": "0x020313d8",
       "size": "0x00000050",
       "legacy_source": "src/unnamed/arm9/0203/func_020313d8.c",
@@ -183,7 +183,7 @@
       "ordinal": 10
     },
     {
-      "symbol": "func_02031e00",
+      "symbol": "_ZN7Message12LayoutLineVSEv",
       "address": "0x02031e00",
       "size": "0x000003fc",
       "legacy_source": "src/unnamed/arm9/0203/func_02031e00.c",
@@ -295,7 +295,7 @@
       "ordinal": 26
     },
     {
-      "symbol": "func_02034098",
+      "symbol": "Message_DrawLineBG2VS",
       "address": "0x02034098",
       "size": "0x00000110",
       "legacy_source": "src/unnamed/arm9/0203/func_02034098.cpp",

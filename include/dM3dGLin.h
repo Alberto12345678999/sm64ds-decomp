@@ -5,8 +5,8 @@
  * 0x18 BYTES, two Vector3, pinned by matched code:
  *
  *   _ZN8dM3dGLin3SetERK7Vector3S2_   start = a; end = b   (both, word stores)
- *   func_ov002_020fea68              a[0..2] = b[0..2]    GetStart
- *   func_ov002_020fea4c              a[0..2] = b[3..5]    GetEnd
+ *   dM3dGLin::GetStart              a[0..2] = b[0..2]    GetStart
+ *   dM3dGLin::GetEnd              a[0..2] = b[3..5]    GetEnd
  *   _ZN8dM3dGLinD2Ev                 `bx lr'              the trivial base dtor
  *
  * NON-POLYMORPHIC: no vptr anywhere in those bodies, so despite appearing in
@@ -29,6 +29,9 @@ struct dM3dGLin {
 
 #ifdef __cplusplus
     ~dM3dGLin();
+    /* Inferred endpoint getters; Vector3 return supplies the hidden buffer. */
+    Vector3 GetStart() const;
+    Vector3 GetEnd() const;
     void Set(const Vector3 &start, const Vector3 &end);
 #endif
 };

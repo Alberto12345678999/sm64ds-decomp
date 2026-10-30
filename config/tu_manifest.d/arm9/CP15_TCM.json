@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "The DTCM half of the Nitro SDK's os_tcm.c, 0x020593a8..0x020593cc: OS_EnableDTCM (orr c1 bit 0x10000) and OS_GetDTCMAddress (c9,c1,0 masked to the base), in SDK source order, gapless in config/arm9/delinks.txt. The ITCM and Disable/Set variants are absent, as a dead-stripped link leaves them.",
     "TOP EDGE: 0x020593cc begins OS_EnableProtectionUnit, the first function of os_protectionUnit.c (arm9/CP15_ProtectionUnit).",
-    "BOTTOM EDGE: func_0205938c (0x0205938c..0x020593a8) and func_02059364 below it are ordinary C doubly-linked-list insert/unlink helpers with no CP15 access, not TCM code.",
+    "BOTTOM EDGE: DLAddFront (0x0205938c..0x020593a8) and DLExtract below it are os_alloc.c's doubly-linked-list helpers (arm9/OS_Alloc) with no CP15 access, not TCM code.",
     "Both members are pure mrc/mcr asm, so asm-policy assembly; no C helper sits in the run."
   ],
   "sections": [

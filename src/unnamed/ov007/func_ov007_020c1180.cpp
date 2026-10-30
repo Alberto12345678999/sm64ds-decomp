@@ -1,10 +1,15 @@
 //cpp
+#include "Ov007OamNode.h"
+
 extern "C" {
+
 extern int func_ov007_020c3d1c(void *p);
-int func_ov007_020c1180(char *c){
-  if(*(unsigned char*)(c+0x1c)){
-    func_ov007_020c3d1c(*(void**)(c+0x18));
-  }
-  return func_ov007_020c3d1c(c);
+
+/* Frees an OAM node and, when it has any, its animation table. */
+int func_ov007_020c1180(Ov007OamNode *node) {
+    if (node->animCount) {
+        func_ov007_020c3d1c(node->anims);
+    }
+    return func_ov007_020c3d1c(node);
 }
 }

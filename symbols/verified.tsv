@@ -1091,7 +1091,7 @@
 0x0205a548	Copy36Bytes	function
 0x0205a564	Copy48Bytes	function
 0x0205a754	DecompressLZ16	function
-0x0205b864	_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv	function
+0x0205b864	PXIi_HandlerRecvFifoNotEmpty	function
 0x0205b988	IPCSend	function
 0x0205e91c	ARMMathLoadState	function
 0x0205e988	ARMMathSaveState	function

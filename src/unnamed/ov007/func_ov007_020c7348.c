@@ -1,6 +1,9 @@
-void func_ov007_020c7348(int *r0){
-  r0[1]=0;
-  r0[0]=r0[1];
-  r0[3]=0;
-  r0[2]=r0[3];
+#include "Ov007Spring.h"
+
+/* Clears a grid. */
+void func_ov007_020c7348(Ov007Grid *grid) {
+    grid->rows = 0;
+    grid->columns = grid->rows;
+    grid->columnLists = 0;
+    grid->rowLists = grid->columnLists;
 }

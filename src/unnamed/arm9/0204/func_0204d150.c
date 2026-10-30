@@ -1,28 +1,47 @@
 #include "types.h"
-#pragma opt_strength_reduction off
-void func_0204d150(char *r0, char *r1, int r2)
-{
-  u8 *t = *((u8 **) (r1 + 0x10));
-  int i = 0;
-  int acc;
-  int count = t[8];
-  u8 width;
-  int new_var;
-  if (count <= (new_var = 0))
-  {
-    return;
-  }
-  width = t[9];
-  acc = 0;
-  do
-  {
-    if (r2 < (acc + width))
-    {
-      r0[0x42] = t[i];
-      return;
+#pragma opt_strength_reduction off /* required: without it the match fails */
+
+/* The particle definition's texture animation (SPL's SPLTexAnim): up to eight
+ * texture indices, each shown for `step` life-rate units. */
+struct TexAnim {
+    u8 textures[8]; /* 0x0 */
+    u8 frameCount;  /* 0x8 */
+    u8 step;        /* 0x9 */
+};
+
+/* The particle definition (func_0204a730's PtclDef; SPL's SPLResource). */
+struct PtclDef {
+    void *data;
+    void *scaleAnim;
+    void *colorAnim;
+    void *alphaAnim;
+    struct TexAnim *texAnim; /* 0x10 */
+};
+
+struct Particle {
+    char pad0[0x42];
+    u8 texture; /* 0x42 -- the index of the particle's current texture */
+};
+
+/* The texture animation callback (pret's SPL: SPLAnim_Texture): picks the
+ * frame whose span holds lifeRate. */
+void func_0204d150(struct Particle *ptcl, struct PtclDef *def, int lifeRate) {
+    struct TexAnim *anim = def->texAnim;
+    int i = 0;
+    int end;
+    int count = anim->frameCount;
+    u8 step;
+    if (count <= 0) {
+        return;
     }
-    i++;
-    acc += width;
-  }
-  while (i < t[8]);
+    step = anim->step;
+    end = 0;
+    do {
+        if (lifeRate < (end + step)) {
+            ptcl->texture = anim->textures[i];
+            return;
+        }
+        i++;
+        end += step;
+    } while (i < anim->frameCount);
 }

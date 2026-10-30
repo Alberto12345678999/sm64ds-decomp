@@ -14,6 +14,9 @@ struct Obj46 {
     struct Elem46 *elems;
 };
 
+/* dExtAnmTexSRT_c::Prepare's body (see dExtAnmTexSRT_c.h): give each of
+   the texture-SRT file's o->count 0x1c-byte entries the index of the BMD
+   material its name names (func_02046590). */
 void func_02046b64(const Table *tbl, struct Obj46 *o) {
     int i;
     for (i = 0; i < (int)o->count; i++) {

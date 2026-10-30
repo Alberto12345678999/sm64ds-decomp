@@ -2,50 +2,9 @@
 #include "Ov007MenuState.h"
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
-extern u8 data_ov007_0210342c[];
+#include "Ov007Item.h"
 
-/* The 10-byte layout row an item points at (names as in
- * func_ov007_020b5bf0); only the home position is read here. */
-typedef struct Ov007ItemLayout {
-    u16 kind;  /* 0x0 */
-    s16 homeX; /* 0x2 */
-    s16 homeY; /* 0x4 */
-} Ov007ItemLayout;
-
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020b5bf0 and func_ov007_020beeb0, only the slots this file
- * touches. */
-typedef struct Ov007Item {
-    u16 id; /* 0x00: func_ov007_020b4c04's index */
-    char pad_02[2];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    s32 posX;              /* 0x08: Q12 */
-    s32 posY;              /* 0x0c */
-    char pad_10[0x14];
-    Ov007ItemLayout *layout; /* 0x24 */
-} Ov007Item;
-
-/* The 0x1c record func_ov007_020b4c04 returns (names as in that file): this
- * function slides item from slideFrom to slideTo by slideT. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-    char pad_04[8];
-    s32 slideT;             /* 0x0c: slideTween output, 0..0x1000 */
-    Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c, bound to slideT */
-    s16 slideFromX;         /* 0x14 */
-    s16 slideFromY;         /* 0x16 */
-    s16 slideToX;           /* 0x18 */
-    s16 slideToY;           /* 0x1a */
-} Ov007ItemView;
-
-/* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
-
-/* The parameter keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is a local. */
-void func_ov007_020b5f64(char *self)
-{
-    Ov007ItemView *view = (Ov007ItemView *)self;
+void func_ov007_020b5f64(Ov007ItemView *view) {
     Ov007Item *p;
     Ov007Work *g;
     int slot;

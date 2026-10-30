@@ -1,8 +1,13 @@
 //cpp
+#include "Ov007SpriteBank.h"
+
 extern "C" {
-extern int func_ov007_020c3d1c(void *p);
-int func_ov007_020c1384(char *c){
-  func_ov007_020c3d1c(*(void**)(c));
-  return func_ov007_020c3d1c(*(void**)(c+4));
+
+extern void func_ov007_020c3d1c(void *p);
+
+/* Frees a cell animation's two tables. */
+void func_ov007_020c1384(Ov007CellAnim *anim) {
+    func_ov007_020c3d1c(anim->frames);
+    func_ov007_020c3d1c(anim->durations);
 }
 }

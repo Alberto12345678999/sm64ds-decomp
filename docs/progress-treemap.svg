@@ -17,11 +17,11 @@ matched: yes</title></rect><rect x="6.49" y="27.13" width="20.15" height="7.19" 
 module: arm9
 addr: 0x02004800
 size: 216 bytes
-matched: yes</title></rect><rect x="26.64" y="27.13" width="15.30" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020048d8
+matched: yes</title></rect><rect x="26.64" y="27.13" width="15.30" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MIi_UncompressBackward
 module: arm9
 addr: 0x020048d8
 size: 164 bytes
-matched: yes</title></rect><rect x="41.94" y="27.13" width="10.45" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200497c
+matched: yes</title></rect><rect x="41.94" y="27.13" width="10.45" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>do_autoload
 module: arm9
 addr: 0x0200497c
 size: 112 bytes
@@ -577,11 +577,11 @@ matched: yes</title></rect><rect x="96.27" y="90.80" width="9.05" height="7.11" 
 module: arm9
 addr: 0x0200d0ac
 size: 96 bytes
-matched: yes</title></rect><rect x="105.32" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d10c
+matched: yes</title></rect><rect x="105.32" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d10cEh
 module: arm9
 addr: 0x0200d10c
 size: 60 bytes
-matched: yes</title></rect><rect x="110.98" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d148
+matched: yes</title></rect><rect x="110.98" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d148Eh
 module: arm9
 addr: 0x0200d148
 size: 60 bytes
@@ -597,15 +597,15 @@ matched: yes</title></rect><rect x="152.84" y="90.80" width="23.01" height="7.11
 module: arm9
 addr: 0x0200d304
 size: 244 bytes
-matched: yes</title></rect><rect x="175.84" y="90.80" width="6.03" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d3f8
+matched: yes</title></rect><rect x="175.84" y="90.80" width="6.03" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d3f8EhPv
 module: arm9
 addr: 0x0200d3f8
 size: 64 bytes
-matched: yes</title></rect><rect x="181.88" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d438
+matched: yes</title></rect><rect x="181.88" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d438Eh
 module: arm9
 addr: 0x0200d438
 size: 60 bytes
-matched: yes</title></rect><rect x="187.53" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d474
+matched: yes</title></rect><rect x="187.53" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d474Eh
 module: arm9
 addr: 0x0200d474
 size: 60 bytes
@@ -613,59 +613,59 @@ matched: yes</title></rect><rect x="193.19" y="90.80" width="8.30" height="7.11"
 module: arm9
 addr: 0x0200d4b0
 size: 88 bytes
-matched: yes</title></rect><rect x="201.49" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d508
+matched: yes</title></rect><rect x="201.49" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d508Eh
 module: arm9
 addr: 0x0200d508
 size: 60 bytes
-matched: yes</title></rect><rect x="207.15" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d544
+matched: yes</title></rect><rect x="207.15" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d544Eh
 module: arm9
 addr: 0x0200d544
 size: 60 bytes
-matched: yes</title></rect><rect x="212.80" y="90.80" width="6.03" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d580
+matched: yes</title></rect><rect x="212.80" y="90.80" width="6.03" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d580Ei
 module: arm9
 addr: 0x0200d580
 size: 64 bytes
-matched: yes</title></rect><rect x="218.84" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d5c0
+matched: yes</title></rect><rect x="218.84" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d5c0Eh
 module: arm9
 addr: 0x0200d5c0
 size: 60 bytes
-matched: yes</title></rect><rect x="224.49" y="90.80" width="6.03" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d5fc
+matched: yes</title></rect><rect x="224.49" y="90.80" width="6.03" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d5fcEi
 module: arm9
 addr: 0x0200d5fc
 size: 64 bytes
-matched: yes</title></rect><rect x="230.53" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d63c
+matched: yes</title></rect><rect x="230.53" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d63cEh
 module: arm9
 addr: 0x0200d63c
 size: 60 bytes
-matched: yes</title></rect><rect x="236.19" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d678
+matched: yes</title></rect><rect x="236.19" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d678Eh
 module: arm9
 addr: 0x0200d678
 size: 60 bytes
-matched: yes</title></rect><rect x="241.84" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d6b4
+matched: yes</title></rect><rect x="241.84" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d6b4Eh
 module: arm9
 addr: 0x0200d6b4
 size: 60 bytes
-matched: yes</title></rect><rect x="247.50" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d6f0
+matched: yes</title></rect><rect x="247.50" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d6f0Eh
 module: arm9
 addr: 0x0200d6f0
 size: 60 bytes
-matched: yes</title></rect><rect x="253.16" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d72c
+matched: yes</title></rect><rect x="253.16" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d72cEh
 module: arm9
 addr: 0x0200d72c
 size: 60 bytes
-matched: yes</title></rect><rect x="258.81" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d768
+matched: yes</title></rect><rect x="258.81" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d768Eh
 module: arm9
 addr: 0x0200d768
 size: 60 bytes
-matched: yes</title></rect><rect x="264.47" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d7a4
+matched: yes</title></rect><rect x="264.47" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d7a4Eh
 module: arm9
 addr: 0x0200d7a4
 size: 60 bytes
-matched: yes</title></rect><rect x="270.13" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d7e0
+matched: yes</title></rect><rect x="270.13" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d7e0Ei
 module: arm9
 addr: 0x0200d7e0
 size: 60 bytes
-matched: yes</title></rect><rect x="275.79" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200d81c
+matched: yes</title></rect><rect x="275.79" y="90.80" width="5.66" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dCamera_c13func_0200d81cEi
 module: arm9
 addr: 0x0200d81c
 size: 60 bytes
@@ -789,7 +789,7 @@ matched: yes</title></rect><rect x="225.55" y="104.89" width="10.21" height="7.3
 module: arm9
 addr: 0x0200f04c
 size: 112 bytes
-matched: yes</title></rect><rect x="235.75" y="104.89" width="11.67" height="7.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200f0bc
+matched: yes</title></rect><rect x="235.75" y="104.89" width="11.67" height="7.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GetLanguageIndex
 module: arm9
 addr: 0x0200f0bc
 size: 128 bytes
@@ -1233,11 +1233,11 @@ matched: yes</title></rect><rect x="213.44" y="127.13" width="25.35" height="5.7
 module: arm9
 addr: 0x020116c4
 size: 216 bytes
-matched: yes</title></rect><rect x="238.79" y="127.13" width="24.41" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201179c
+matched: yes</title></rect><rect x="238.79" y="127.13" width="24.41" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11SndRegTable13func_0201179cEiiis
 module: arm9
 addr: 0x0201179c
 size: 208 bytes
-matched: yes</title></rect><rect x="263.21" y="127.13" width="23.47" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201186c
+matched: yes</title></rect><rect x="263.21" y="127.13" width="23.47" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11SndRegTable13func_0201186cEiis
 module: arm9
 addr: 0x0201186c
 size: 200 bytes
@@ -1809,7 +1809,7 @@ matched: yes</title></rect><rect x="158.57" y="152.89" width="3.72" height="8.67
 module: arm9
 addr: 0x0201470c
 size: 48 bytes
-matched: yes</title></rect><rect x="162.28" y="152.89" width="4.02" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201473c
+matched: yes</title></rect><rect x="162.28" y="152.89" width="4.02" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>nds_vprintf
 module: arm9
 addr: 0x0201473c
 size: 52 bytes
@@ -2437,7 +2437,7 @@ matched: yes</title></rect><rect x="269.64" y="177.14" width="2.88" height="3.73
 module: arm9
 addr: 0x020171b8
 size: 16 bytes
-matched: yes</title></rect><rect x="272.52" y="177.14" width="7.19" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dFdDummy_c14SetForwardTimeEj
+matched: yes</title></rect><rect x="272.52" y="177.14" width="7.19" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dFdDummy_c14SetForwardTimeEjj
 module: arm9
 addr: 0x020171c8
 size: 40 bytes
@@ -2521,7 +2521,7 @@ matched: yes</title></rect><rect x="94.59" y="180.87" width="1.91" height="7.04"
 module: arm9
 addr: 0x02017684
 size: 20 bytes
-matched: yes</title></rect><rect x="96.49" y="180.87" width="6.10" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dFdBrightness_c14SetForwardTimeEj
+matched: yes</title></rect><rect x="96.49" y="180.87" width="6.10" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dFdBrightness_c14SetForwardTimeEjj
 module: arm9
 addr: 0x02017698
 size: 64 bytes
@@ -2825,23 +2825,23 @@ matched: yes</title></rect><rect x="99.24" y="193.88" width="26.82" height="3.50
 module: arm9
 addr: 0x02018cbc
 size: 140 bytes
-matched: yes</title></rect><rect x="126.05" y="193.88" width="15.32" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02018d48
+matched: yes</title></rect><rect x="126.05" y="193.88" width="15.32" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>myFS_ReadFile
 module: arm9
 addr: 0x02018d48
 size: 80 bytes
-matched: yes</title></rect><rect x="141.37" y="193.88" width="8.43" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02018d98
+matched: yes</title></rect><rect x="141.37" y="193.88" width="8.43" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>myFS_OpenFile
 module: arm9
 addr: 0x02018d98
 size: 44 bytes
-matched: yes</title></rect><rect x="149.80" y="193.88" width="11.49" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02018dc4
+matched: yes</title></rect><rect x="149.80" y="193.88" width="11.49" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>myFS_OpenFileFast
 module: arm9
 addr: 0x02018dc4
 size: 60 bytes
-matched: yes</title></rect><rect x="161.29" y="193.88" width="11.49" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02018e00
+matched: yes</title></rect><rect x="161.29" y="193.88" width="11.49" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>myFS_OpenFileDirect
 module: arm9
 addr: 0x02018e00
 size: 60 bytes
-matched: yes</title></rect><rect x="172.79" y="193.88" width="8.43" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02018e3c
+matched: yes</title></rect><rect x="172.79" y="193.88" width="8.43" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>myFS_ConvertPathToFileID
 module: arm9
 addr: 0x02018e3c
 size: 44 bytes
@@ -2909,7 +2909,7 @@ matched: yes</title></rect><rect x="263.96" y="193.88" width="3.06" height="3.50
 module: arm9
 addr: 0x02019018
 size: 16 bytes
-matched: yes</title></rect><rect x="267.02" y="193.88" width="13.79" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02019028
+matched: yes</title></rect><rect x="267.02" y="193.88" width="13.79" height="3.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Disable3dEngines
 module: arm9
 addr: 0x02019028
 size: 72 bytes
@@ -3177,7 +3177,7 @@ matched: yes</title></rect><rect x="18.90" y="211.15" width="4.89" height="7.14"
 module: arm9
 addr: 0x0201ab38
 size: 52 bytes
-matched: yes</title></rect><rect x="23.79" y="211.15" width="29.31" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201ab6c
+matched: yes</title></rect><rect x="23.79" y="211.15" width="29.31" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message9AddChoiceEv
 module: arm9
 addr: 0x0201ab6c
 size: 312 bytes
@@ -3185,7 +3185,7 @@ matched: yes</title></rect><rect x="53.10" y="211.15" width="24.80" height="7.14
 module: arm9
 addr: 0x0201aca4
 size: 264 bytes
-matched: yes</title></rect><rect x="77.90" y="211.15" width="7.52" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201adac
+matched: yes</title></rect><rect x="77.90" y="211.15" width="7.52" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message11AddCharPairEv
 module: arm9
 addr: 0x0201adac
 size: 80 bytes
@@ -3209,7 +3209,7 @@ matched: yes</title></rect><rect x="301.50" y="211.15" width="19.92" height="7.1
 module: arm9
 addr: 0x0201b6f8
 size: 212 bytes
-matched: yes</title></rect><rect x="5.00" y="218.29" width="42.36" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201b7cc
+matched: yes</title></rect><rect x="5.00" y="218.29" width="42.36" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message10LayoutLineEv
 module: arm9
 addr: 0x0201b7cc
 size: 1020 bytes
@@ -3265,7 +3265,7 @@ matched: yes</title></rect><rect x="305.81" y="218.29" width="15.61" height="16.
 module: arm9
 addr: 0x0201d418
 size: 376 bytes
-matched: yes</title></rect><rect x="5.00" y="234.44" width="13.10" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201d590
+matched: yes</title></rect><rect x="5.00" y="234.44" width="13.10" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Message_DrawLineBG2
 module: arm9
 addr: 0x0201d590
 size: 272 bytes
@@ -3897,11 +3897,11 @@ matched: yes</title></rect><rect x="59.34" y="337.81" width="38.44" height="7.26
 module: arm9
 addr: 0x02029654
 size: 416 bytes
-matched: yes</title></rect><rect x="97.78" y="337.81" width="6.28" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14GraphCallback2Ev
+matched: yes</title></rect><rect x="97.78" y="337.81" width="6.28" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
 module: arm9
 addr: 0x020297f4
 size: 68 bytes
-matched: yes</title></rect><rect x="104.07" y="337.81" width="2.59" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14GraphCallback1Ev
+matched: yes</title></rect><rect x="104.07" y="337.81" width="2.59" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c15graphCallback_c14GraphCallback1Ev
 module: arm9
 addr: 0x02029838
 size: 28 bytes
@@ -4305,7 +4305,7 @@ matched: yes</title></rect><rect x="148.90" y="377.84" width="29.43" height="3.2
 module: arm9
 addr: 0x0202e088
 size: 144 bytes
-matched: yes</title></rect><rect x="178.34" y="377.84" width="8.18" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0202e118
+matched: yes</title></rect><rect x="178.34" y="377.84" width="8.18" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GetStageDebugName
 module: arm9
 addr: 0x0202e118
 size: 40 bytes
@@ -4453,7 +4453,7 @@ matched: yes</title></rect><rect x="31.12" y="389.98" width="27.88" height="9.14
 module: arm9
 addr: 0x0202f58c
 size: 380 bytes
-matched: yes</title></rect><rect x="59.01" y="389.98" width="39.92" height="9.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dWipe_c14SetForwardTimeEj
+matched: yes</title></rect><rect x="59.01" y="389.98" width="39.92" height="9.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dWipe_c14SetForwardTimeEjj
 module: arm9
 addr: 0x0202f708
 size: 544 bytes
@@ -4501,7 +4501,7 @@ matched: yes</title></rect><rect x="208.12" y="389.98" width="17.90" height="9.1
 module: arm9
 addr: 0x0202fef8
 size: 244 bytes
-matched: yes</title></rect><rect x="226.02" y="389.98" width="34.64" height="9.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0202ffec
+matched: yes</title></rect><rect x="226.02" y="389.98" width="34.64" height="9.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Quaternion_Multiply
 module: arm9
 addr: 0x0202ffec
 size: 472 bytes
@@ -4589,7 +4589,7 @@ matched: yes</title></rect><rect x="281.05" y="399.12" width="40.36" height="5.7
 module: arm9
 addr: 0x02030e4c
 size: 348 bytes
-matched: yes</title></rect><rect x="5.00" y="404.91" width="6.87" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02030fa8
+matched: yes</title></rect><rect x="5.00" y="404.91" width="6.87" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GetLanguageIndexVS
 module: arm9
 addr: 0x02030fa8
 size: 128 bytes
@@ -4597,7 +4597,7 @@ matched: yes</title></rect><rect x="11.87" y="404.91" width="16.11" height="12.4
 module: arm9
 addr: 0x02031028
 size: 300 bytes
-matched: yes</title></rect><rect x="27.98" y="404.91" width="16.76" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02031154
+matched: yes</title></rect><rect x="27.98" y="404.91" width="16.76" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message11AddChoiceVSEv
 module: arm9
 addr: 0x02031154
 size: 312 bytes
@@ -4605,7 +4605,7 @@ matched: yes</title></rect><rect x="44.74" y="404.91" width="17.83" height="12.4
 module: arm9
 addr: 0x0203128c
 size: 332 bytes
-matched: yes</title></rect><rect x="62.57" y="404.91" width="4.30" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020313d8
+matched: yes</title></rect><rect x="62.57" y="404.91" width="4.30" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message13AddCharPairVSEv
 module: arm9
 addr: 0x020313d8
 size: 80 bytes
@@ -4633,7 +4633,7 @@ matched: yes</title></rect><rect x="186.09" y="404.91" width="16.11" height="12.
 module: arm9
 addr: 0x02031cd4
 size: 300 bytes
-matched: yes</title></rect><rect x="202.20" y="404.91" width="54.78" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02031e00
+matched: yes</title></rect><rect x="202.20" y="404.91" width="54.78" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message12LayoutLineVSEv
 module: arm9
 addr: 0x02031e00
 size: 1020 bytes
@@ -4697,7 +4697,7 @@ matched: yes</title></rect><rect x="251.52" y="417.40" width="23.79" height="16.
 module: arm9
 addr: 0x02033e50
 size: 584 bytes
-matched: yes</title></rect><rect x="275.31" y="417.40" width="11.08" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034098
+matched: yes</title></rect><rect x="275.31" y="417.40" width="11.08" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Message_DrawLineBG2VS
 module: arm9
 addr: 0x02034098
 size: 272 bytes
@@ -4817,7 +4817,7 @@ matched: yes</title></rect><rect x="54.04" y="441.63" width="4.63" height="2.90"
 module: arm9
 addr: 0x02035428
 size: 20 bytes
-matched: yes</title></rect><rect x="58.66" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203543c
+matched: yes</title></rect><rect x="58.66" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh16IsDetectingToxicEv
 module: arm9
 addr: 0x0203543c
 size: 12 bytes
@@ -4825,15 +4825,15 @@ matched: yes</title></rect><rect x="61.44" y="441.63" width="4.63" height="2.90"
 module: arm9
 addr: 0x02035448
 size: 20 bytes
-matched: yes</title></rect><rect x="66.06" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203545c
+matched: yes</title></rect><rect x="66.06" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh12IsCameraModeEv
 module: arm9
 addr: 0x0203545c
 size: 12 bytes
-matched: yes</title></rect><rect x="68.84" y="441.63" width="4.63" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02035468
+matched: yes</title></rect><rect x="68.84" y="441.63" width="4.63" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5dBgCh16EnableCameraModeEv
 module: arm9
 addr: 0x02035468
 size: 20 bytes
-matched: yes</title></rect><rect x="73.46" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203547c
+matched: yes</title></rect><rect x="73.46" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh16IsDetectingWaterEv
 module: arm9
 addr: 0x0203547c
 size: 12 bytes
@@ -4845,7 +4845,7 @@ matched: yes</title></rect><rect x="80.87" y="441.63" width="4.63" height="2.90"
 module: arm9
 addr: 0x0203549c
 size: 20 bytes
-matched: yes</title></rect><rect x="85.49" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020354b0
+matched: yes</title></rect><rect x="85.49" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh19IsDetectingOrdinaryEv
 module: arm9
 addr: 0x020354b0
 size: 12 bytes
@@ -5105,7 +5105,7 @@ matched: yes</title></rect><rect x="319.10" y="444.53" width="2.32" height="15.0
 module: arm9
 addr: 0x02037430
 size: 52 bytes
-matched: yes</title></rect><rect x="5.00" y="459.58" width="5.34" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037464
+matched: yes</title></rect><rect x="5.00" y="459.58" width="5.34" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Gnd11ResetResultEv
 module: arm9
 addr: 0x02037464
 size: 40 bytes
@@ -5149,7 +5149,7 @@ matched: yes</title></rect><rect x="57.38" y="459.58" width="3.74" height="5.02"
 module: arm9
 addr: 0x020375ec
 size: 28 bytes
-matched: yes</title></rect><rect x="61.12" y="459.58" width="13.90" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin13func_02037608Ev
+matched: yes</title></rect><rect x="61.12" y="459.58" width="13.90" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin11ResetResultEv
 module: arm9
 addr: 0x02037608
 size: 104 bytes
@@ -5201,7 +5201,7 @@ matched: yes</title></rect><rect x="170.16" y="459.58" width="1.07" height="5.02
 module: arm9
 addr: 0x02037938
 size: 8 bytes
-matched: yes</title></rect><rect x="171.23" y="459.58" width="1.60" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037940Eh
+matched: yes</title></rect><rect x="171.23" y="459.58" width="1.60" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13SetQueryFlagsEh
 module: arm9
 addr: 0x02037940
 size: 12 bytes
@@ -5249,7 +5249,7 @@ matched: yes</title></rect><rect x="234.83" y="459.58" width="8.55" height="5.02
 module: arm9
 addr: 0x02037b1c
 size: 64 bytes
-matched: yes</title></rect><rect x="243.38" y="459.58" width="21.91" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037b5cEv
+matched: yes</title></rect><rect x="243.38" y="459.58" width="21.91" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr10ResetQueryEv
 module: arm9
 addr: 0x02037b5c
 size: 164 bytes
@@ -5297,7 +5297,7 @@ matched: yes</title></rect><rect x="39.26" y="464.60" width="22.17" height="1.33
 module: arm9
 addr: 0x02037de8
 size: 44 bytes
-matched: yes</title></rect><rect x="61.43" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037e14
+matched: yes</title></rect><rect x="61.43" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4CLPS12IsCameraOnlyEv
 module: arm9
 addr: 0x02037e14
 size: 12 bytes
@@ -5305,7 +5305,7 @@ matched: yes</title></rect><rect x="67.48" y="464.60" width="6.05" height="1.33"
 module: arm9
 addr: 0x02037e20
 size: 12 bytes
-matched: yes</title></rect><rect x="73.52" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037e2c
+matched: yes</title></rect><rect x="73.52" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4CLPS19IsCameraPassThroughEv
 module: arm9
 addr: 0x02037e2c
 size: 12 bytes
@@ -5549,31 +5549,31 @@ matched: yes</title></rect><rect x="168.93" y="475.61" width="32.40" height="1.4
 module: arm9
 addr: 0x02039348
 size: 68 bytes
-matched: yes</title></rect><rect x="201.33" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203938c
+matched: yes</title></rect><rect x="201.33" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW14GetClipOffsetYEv
 module: arm9
 addr: 0x0203938c
 size: 8 bytes
-matched: yes</title></rect><rect x="205.14" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02039394
+matched: yes</title></rect><rect x="205.14" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW14SetClipOffsetYEi
 module: arm9
 addr: 0x02039394
 size: 8 bytes
-matched: yes</title></rect><rect x="208.96" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203939c
+matched: yes</title></rect><rect x="208.96" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW13GetClipRadiusEv
 module: arm9
 addr: 0x0203939c
 size: 8 bytes
-matched: yes</title></rect><rect x="212.77" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393a4
+matched: yes</title></rect><rect x="212.77" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW13SetClipRadiusEi
 module: arm9
 addr: 0x020393a4
 size: 8 bytes
-matched: yes</title></rect><rect x="216.58" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393ac
+matched: yes</title></rect><rect x="216.58" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW16GetActorUniqueIDEv
 module: arm9
 addr: 0x020393ac
 size: 8 bytes
-matched: yes</title></rect><rect x="220.39" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393b4
+matched: yes</title></rect><rect x="220.39" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW8GetActorEv
 module: arm9
 addr: 0x020393b4
 size: 8 bytes
-matched: yes</title></rect><rect x="224.21" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393bc
+matched: yes</title></rect><rect x="224.21" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW18GetStoodOnCallbackEv
 module: arm9
 addr: 0x020393bc
 size: 8 bytes
@@ -5581,7 +5581,7 @@ matched: yes</title></rect><rect x="228.02" y="475.61" width="3.81" height="1.41
 module: arm9
 addr: 0x020393c4
 size: 8 bytes
-matched: yes</title></rect><rect x="231.83" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393cc
+matched: yes</title></rect><rect x="231.83" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW21GetBeforeClsnCallbackEv
 module: arm9
 addr: 0x020393cc
 size: 8 bytes
@@ -5593,15 +5593,15 @@ matched: yes</title></rect><rect x="239.46" y="475.61" width="9.53" height="1.41
 module: arm9
 addr: 0x020393dc
 size: 20 bytes
-matched: yes</title></rect><rect x="248.99" y="475.61" width="5.72" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393f0
+matched: yes</title></rect><rect x="248.99" y="475.61" width="5.72" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW14ClearSlotIndexEv
 module: arm9
 addr: 0x020393f0
 size: 12 bytes
-matched: yes</title></rect><rect x="254.70" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393fc
+matched: yes</title></rect><rect x="254.70" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW12SetSlotIndexEi
 module: arm9
 addr: 0x020393fc
 size: 8 bytes
-matched: yes</title></rect><rect x="258.52" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02039404
+matched: yes</title></rect><rect x="258.52" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW12GetSlotIndexEv
 module: arm9
 addr: 0x02039404
 size: 8 bytes
@@ -5637,7 +5637,7 @@ matched: yes</title></rect><rect x="5.00" y="477.02" width="43.40" height="5.75"
 module: arm9
 addr: 0x02039488
 size: 372 bytes
-matched: yes</title></rect><rect x="48.40" y="477.02" width="4.20" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020395fc
+matched: yes</title></rect><rect x="48.40" y="477.02" width="4.20" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW8SetActorEP8dActor_c
 module: arm9
 addr: 0x020395fc
 size: 36 bytes
@@ -5645,7 +5645,7 @@ matched: yes</title></rect><rect x="52.60" y="477.02" width="0.47" height="5.75"
 module: arm9
 addr: 0x02039620
 size: 4 bytes
-matched: yes</title></rect><rect x="53.07" y="477.02" width="6.07" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02039624
+matched: yes</title></rect><rect x="53.07" y="477.02" width="6.07" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW5ResetEv
 module: arm9
 addr: 0x02039624
 size: 52 bytes
@@ -5665,11 +5665,11 @@ matched: yes</title></rect><rect x="67.07" y="477.02" width="4.20" height="5.75"
 module: arm9
 addr: 0x0203969c
 size: 36 bytes
-matched: yes</title></rect><rect x="71.27" y="477.02" width="1.87" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020396c0
+matched: yes</title></rect><rect x="71.27" y="477.02" width="1.87" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dBgW_Kc21SetEdgeToleranceShiftEi
 module: arm9
 addr: 0x020396c0
 size: 16 bytes
-matched: yes</title></rect><rect x="73.14" y="477.02" width="0.93" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020396d0
+matched: yes</title></rect><rect x="73.14" y="477.02" width="0.93" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dBgW_Kc17SetDepthDirMinDotEi
 module: arm9
 addr: 0x020396d0
 size: 8 bytes
@@ -7297,7 +7297,7 @@ matched: yes</title></rect><rect x="182.87" y="568.60" width="2.50" height="4.30
 module: arm9
 addr: 0x020441bc
 size: 16 bytes
-matched: yes</title></rect><rect x="185.37" y="568.60" width="19.97" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020441cc
+matched: yes</title></rect><rect x="185.37" y="568.60" width="19.97" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ProcessTree5Thing13func_020441ccEv
 module: arm9
 addr: 0x020441cc
 size: 128 bytes
@@ -8145,11 +8145,11 @@ matched: yes</title></rect><rect x="101.53" y="664.65" width="4.54" height="6.50
 module: arm9
 addr: 0x0204f1e8
 size: 44 bytes
-matched: yes</title></rect><rect x="106.07" y="664.65" width="10.31" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f214
+matched: yes</title></rect><rect x="106.07" y="664.65" width="10.31" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN21HeapAllocator_204f46013func_0204f214Ei
 module: arm9
 addr: 0x0204f214
 size: 100 bytes
-matched: yes</title></rect><rect x="116.39" y="664.65" width="9.49" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f278
+matched: yes</title></rect><rect x="116.39" y="664.65" width="9.49" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12Elem_204f27813func_0204f278Ev
 module: arm9
 addr: 0x0204f278
 size: 92 bytes
@@ -8185,11 +8185,11 @@ matched: yes</title></rect><rect x="192.29" y="664.65" width="7.43" height="6.50
 module: arm9
 addr: 0x0204f558
 size: 72 bytes
-matched: yes</title></rect><rect x="199.72" y="664.65" width="9.90" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f5a0
+matched: yes</title></rect><rect x="199.72" y="664.65" width="9.90" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2E113func_0204f5a0Ei
 module: arm9
 addr: 0x0204f5a0
 size: 96 bytes
-matched: yes</title></rect><rect x="209.62" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f600
+matched: yes</title></rect><rect x="209.62" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2E113func_0204f600Eiii
 module: arm9
 addr: 0x0204f600
 size: 48 bytes
@@ -8209,47 +8209,47 @@ matched: yes</title></rect><rect x="239.32" y="664.65" width="2.89" height="6.50
 module: arm9
 addr: 0x0204f720
 size: 28 bytes
-matched: yes</title></rect><rect x="242.21" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f73c
+matched: yes</title></rect><rect x="242.21" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTempoRatio
 module: arm9
 addr: 0x0204f73c
 size: 48 bytes
-matched: yes</title></rect><rect x="247.16" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f76c
+matched: yes</title></rect><rect x="247.16" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackModSpeed
 module: arm9
 addr: 0x0204f76c
 size: 48 bytes
-matched: yes</title></rect><rect x="252.11" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f79c
+matched: yes</title></rect><rect x="252.11" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackModDepth
 module: arm9
 addr: 0x0204f79c
 size: 48 bytes
-matched: yes</title></rect><rect x="257.06" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7cc
+matched: yes</title></rect><rect x="257.06" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackPan
 module: arm9
 addr: 0x0204f7cc
 size: 48 bytes
-matched: yes</title></rect><rect x="262.01" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7fc
+matched: yes</title></rect><rect x="262.01" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackPitch
 module: arm9
 addr: 0x0204f7fc
 size: 48 bytes
-matched: yes</title></rect><rect x="266.96" y="664.65" width="6.60" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f82c
+matched: yes</title></rect><rect x="266.96" y="664.65" width="6.60" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackVolume
 module: arm9
 addr: 0x0204f82c
 size: 64 bytes
-matched: yes</title></rect><rect x="273.56" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f86c
+matched: yes</title></rect><rect x="273.56" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetTrackMute
 module: arm9
 addr: 0x0204f86c
 size: 48 bytes
-matched: yes</title></rect><rect x="278.51" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f89c
+matched: yes</title></rect><rect x="278.51" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetChannelPriority
 module: arm9
 addr: 0x0204f89c
 size: 48 bytes
-matched: yes</title></rect><rect x="283.47" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f8cc
+matched: yes</title></rect><rect x="283.47" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerMoveVolume
 module: arm9
 addr: 0x0204f8cc
 size: 72 bytes
-matched: yes</title></rect><rect x="290.89" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f914
+matched: yes</title></rect><rect x="290.89" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetInitialVolume
 module: arm9
 addr: 0x0204f914
 size: 16 bytes
-matched: yes</title></rect><rect x="292.54" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f924
+matched: yes</title></rect><rect x="292.54" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NNS_SndPlayerSetVolume
 module: arm9
 addr: 0x0204f924
 size: 16 bytes
@@ -8289,7 +8289,7 @@ matched: yes</title></rect><rect x="72.80" y="671.15" width="22.08" height="5.10
 module: arm9
 addr: 0x0204fc40
 size: 168 bytes
-matched: yes</title></rect><rect x="94.88" y="671.15" width="24.70" height="5.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204fce8
+matched: yes</title></rect><rect x="94.88" y="671.15" width="24.70" height="5.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN1C13func_0204fce8EPv
 module: arm9
 addr: 0x0204fce8
 size: 188 bytes
@@ -8329,7 +8329,7 @@ matched: yes</title></rect><rect x="206.31" y="671.15" width="14.19" height="5.1
 module: arm9
 addr: 0x02050038
 size: 108 bytes
-matched: yes</title></rect><rect x="220.50" y="671.15" width="36.27" height="5.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020500a4
+matched: yes</title></rect><rect x="220.50" y="671.15" width="36.27" height="5.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN1T13func_020500a4Ev
 module: arm9
 addr: 0x020500a4
 size: 276 bytes
@@ -8461,7 +8461,7 @@ matched: yes</title></rect><rect x="270.03" y="676.26" width="3.88" height="8.30
 module: arm9
 addr: 0x02051074
 size: 48 bytes
-matched: yes</title></rect><rect x="273.91" y="676.26" width="17.45" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020510a4
+matched: yes</title></rect><rect x="273.91" y="676.26" width="17.45" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9HeapOwner13func_020510a4Ei
 module: arm9
 addr: 0x020510a4
 size: 216 bytes
@@ -8473,7 +8473,7 @@ matched: yes</title></rect><rect x="298.47" y="676.26" width="9.05" height="8.30
 module: arm9
 addr: 0x020511d4
 size: 112 bytes
-matched: yes</title></rect><rect x="307.52" y="676.26" width="13.90" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051244
+matched: yes</title></rect><rect x="307.52" y="676.26" width="13.90" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9HeapOwner13func_02051244Ev
 module: arm9
 addr: 0x02051244
 size: 172 bytes
@@ -8633,7 +8633,7 @@ matched: yes</title></rect><rect x="9.91" y="894.57" width="7.32" height="2.93" 
 module: arm9
 addr: 0x020524c4
 size: 32 bytes
-matched: yes</title></rect><rect x="9.91" y="897.51" width="7.32" height="1.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020524e4
+matched: yes</title></rect><rect x="9.91" y="897.51" width="7.32" height="1.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MTX_Rot22_
 module: arm9
 addr: 0x020524e4
 size: 12 bytes
@@ -8645,11 +8645,11 @@ matched: yes</title></rect><rect x="9.91" y="901.90" width="7.32" height="5.50" 
 module: arm9
 addr: 0x02052514
 size: 60 bytes
-matched: yes</title></rect><rect x="9.91" y="907.40" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02052550
+matched: yes</title></rect><rect x="9.91" y="907.40" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MTX_RotX33_
 module: arm9
 addr: 0x02052550
 size: 28 bytes
-matched: yes</title></rect><rect x="9.91" y="909.97" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205256c
+matched: yes</title></rect><rect x="9.91" y="909.97" width="7.32" height="2.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MTX_RotY33_
 module: arm9
 addr: 0x0205256c
 size: 28 bytes
@@ -8849,71 +8849,71 @@ matched: yes</title></rect><rect x="17.23" y="820.10" width="5.12" height="11.00
 module: arm9
 addr: 0x02053e4c
 size: 84 bytes
-matched: yes</title></rect><rect x="17.23" y="831.10" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ea0
+matched: yes</title></rect><rect x="17.23" y="831.10" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX16GetBankForSubOBJEv
 module: arm9
 addr: 0x02053ea0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="833.19" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053eb0
+matched: yes</title></rect><rect x="17.23" y="833.19" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX15GetBankForSubBGEv
 module: arm9
 addr: 0x02053eb0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="835.28" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ec0
+matched: yes</title></rect><rect x="17.23" y="835.28" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17GetBankForTexPlttEv
 module: arm9
 addr: 0x02053ec0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="837.38" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ed0
+matched: yes</title></rect><rect x="17.23" y="837.38" width="5.12" height="2.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX13GetBankForTexEv
 module: arm9
 addr: 0x02053ed0
 size: 16 bytes
-matched: yes</title></rect><rect x="17.23" y="839.47" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053ee0
+matched: yes</title></rect><rect x="17.23" y="839.47" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX27DisableBankForSubOBJExtPlttEv
 module: arm9
 addr: 0x02053ee0
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="844.71" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f08
+matched: yes</title></rect><rect x="17.23" y="844.71" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX26DisableBankForSubBGExtPlttEv
 module: arm9
 addr: 0x02053f08
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="849.95" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f30
+matched: yes</title></rect><rect x="17.23" y="849.95" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX20DisableBankForSubOBJEv
 module: arm9
 addr: 0x02053f30
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="852.57" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f44
+matched: yes</title></rect><rect x="17.23" y="852.57" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX19DisableBankForSubBGEv
 module: arm9
 addr: 0x02053f44
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="855.18" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f58
+matched: yes</title></rect><rect x="17.23" y="855.18" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX18DisableBankForLCDCEv
 module: arm9
 addr: 0x02053f58
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="857.80" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f6c
+matched: yes</title></rect><rect x="17.23" y="857.80" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX18DisableBankForARM7Ev
 module: arm9
 addr: 0x02053f6c
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="860.42" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f80
+matched: yes</title></rect><rect x="17.23" y="860.42" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX24DisableBankForClearImageEv
 module: arm9
 addr: 0x02053f80
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="863.04" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053f94
+matched: yes</title></rect><rect x="17.23" y="863.04" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX21DisableBankForTexPlttEv
 module: arm9
 addr: 0x02053f94
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="865.66" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053fa8
+matched: yes</title></rect><rect x="17.23" y="865.66" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17DisableBankForTexEv
 module: arm9
 addr: 0x02053fa8
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="868.27" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053fbc
+matched: yes</title></rect><rect x="17.23" y="868.27" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX24DisableBankForOBJExtPlttEv
 module: arm9
 addr: 0x02053fbc
 size: 36 bytes
-matched: yes</title></rect><rect x="17.23" y="872.99" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053fe0
+matched: yes</title></rect><rect x="17.23" y="872.99" width="5.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX23DisableBankForBGExtPlttEv
 module: arm9
 addr: 0x02053fe0
 size: 36 bytes
-matched: yes</title></rect><rect x="17.23" y="877.70" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054004
+matched: yes</title></rect><rect x="17.23" y="877.70" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17DisableBankForOBJEv
 module: arm9
 addr: 0x02054004
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="880.32" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054018
+matched: yes</title></rect><rect x="17.23" y="880.32" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX16DisableBankForBGEv
 module: arm9
 addr: 0x02054018
 size: 20 bytes
@@ -8921,39 +8921,39 @@ matched: yes</title></rect><rect x="17.23" y="882.94" width="5.12" height="25.66
 module: arm9
 addr: 0x0205402c
 size: 196 bytes
-matched: yes</title></rect><rect x="17.23" y="908.60" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020540f0
+matched: yes</title></rect><rect x="17.23" y="908.60" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX25ResetBankForSubOBJExtPlttEv
 module: arm9
 addr: 0x020540f0
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="913.83" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054118
+matched: yes</title></rect><rect x="17.23" y="913.83" width="5.12" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX24ResetBankForSubBGExtPlttEv
 module: arm9
 addr: 0x02054118
 size: 40 bytes
-matched: yes</title></rect><rect x="17.23" y="919.07" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054140
+matched: yes</title></rect><rect x="17.23" y="919.07" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX18ResetBankForSubOBJEv
 module: arm9
 addr: 0x02054140
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="921.69" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054154
+matched: yes</title></rect><rect x="17.23" y="921.69" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX17ResetBankForSubBGEv
 module: arm9
 addr: 0x02054154
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="924.31" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054168
+matched: yes</title></rect><rect x="17.23" y="924.31" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX19ResetBankForTexPlttEv
 module: arm9
 addr: 0x02054168
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="926.92" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205417c
+matched: yes</title></rect><rect x="17.23" y="926.92" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX15ResetBankForTexEv
 module: arm9
 addr: 0x0205417c
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="929.54" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054190
+matched: yes</title></rect><rect x="17.23" y="929.54" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX15ResetBankForOBJEv
 module: arm9
 addr: 0x02054190
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="932.16" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020541a4
+matched: yes</title></rect><rect x="17.23" y="932.16" width="5.12" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2GX14ResetBankForBGEv
 module: arm9
 addr: 0x020541a4
 size: 20 bytes
-matched: yes</title></rect><rect x="17.23" y="934.78" width="5.12" height="7.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020541b8
+matched: yes</title></rect><rect x="17.23" y="934.78" width="5.12" height="7.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ResetVramBanks
 module: arm9
 addr: 0x020541b8
 size: 56 bytes
@@ -9369,11 +9369,11 @@ matched: yes</title></rect><rect x="163.41" y="705.20" width="6.94" height="5.03
 module: arm9
 addr: 0x02056e18
 size: 52 bytes
-matched: yes</title></rect><rect x="170.35" y="705.20" width="10.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02056e4c
+matched: yes</title></rect><rect x="170.35" y="705.20" width="10.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_EnterTimerCallback
 module: arm9
 addr: 0x02056e4c
 size: 76 bytes
-matched: yes</title></rect><rect x="180.49" y="705.20" width="10.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02056e98
+matched: yes</title></rect><rect x="180.49" y="705.20" width="10.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_EnterDmaCallback
 module: arm9
 addr: 0x02056e98
 size: 76 bytes
@@ -9385,83 +9385,83 @@ matched: yes</title></rect><rect x="209.32" y="705.20" width="19.22" height="5.0
 module: arm9
 addr: 0x02056f70
 size: 144 bytes
-matched: yes</title></rect><rect x="228.53" y="705.20" width="2.67" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057000
+matched: yes</title></rect><rect x="228.53" y="705.20" width="2.67" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitIrqTable
 module: arm9
 addr: 0x02057000
 size: 20 bytes
-matched: yes</title></rect><rect x="231.20" y="705.20" width="1.60" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057014
+matched: yes</title></rect><rect x="231.20" y="705.20" width="1.60" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnLockCartridge
 module: arm9
 addr: 0x02057014
 size: 12 bytes
-matched: yes</title></rect><rect x="232.80" y="705.20" width="11.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057020
+matched: yes</title></rect><rect x="232.80" y="705.20" width="11.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetLockID
 module: arm9
 addr: 0x02057020
 size: 88 bytes
-matched: yes</title></rect><rect x="244.55" y="705.20" width="6.41" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057078
+matched: yes</title></rect><rect x="244.55" y="705.20" width="6.41" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ReleaseLockID
 module: arm9
 addr: 0x02057078
 size: 48 bytes
-matched: yes</title></rect><rect x="250.95" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570a8
+matched: yes</title></rect><rect x="250.95" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_WaitByLoop
 module: arm9
 addr: 0x020570a8
 size: 16 bytes
-matched: yes</title></rect><rect x="253.09" y="705.20" width="1.07" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570b8
+matched: yes</title></rect><rect x="253.09" y="705.20" width="1.07" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ReadOwnerOfLockWord
 module: arm9
 addr: 0x020570b8
 size: 8 bytes
-matched: yes</title></rect><rect x="254.16" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570c0
+matched: yes</title></rect><rect x="254.16" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_FreeCardBus
 module: arm9
 addr: 0x020570c0
 size: 24 bytes
-matched: yes</title></rect><rect x="257.36" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570d8
+matched: yes</title></rect><rect x="257.36" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_AllocateCardBus
 module: arm9
 addr: 0x020570d8
 size: 24 bytes
-matched: yes</title></rect><rect x="260.56" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570f0
+matched: yes</title></rect><rect x="260.56" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockCard
 module: arm9
 addr: 0x020570f0
 size: 28 bytes
-matched: yes</title></rect><rect x="264.30" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205710c
+matched: yes</title></rect><rect x="264.30" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockCard
 module: arm9
 addr: 0x0205710c
 size: 28 bytes
-matched: yes</title></rect><rect x="268.04" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057128
+matched: yes</title></rect><rect x="268.04" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_FreeCartridgeBus
 module: arm9
 addr: 0x02057128
 size: 24 bytes
-matched: yes</title></rect><rect x="271.24" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057140
+matched: yes</title></rect><rect x="271.24" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_AllocateCartridgeBus
 module: arm9
 addr: 0x02057140
 size: 24 bytes
-matched: yes</title></rect><rect x="274.44" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057158
+matched: yes</title></rect><rect x="274.44" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockCartridge
 module: arm9
 addr: 0x02057158
 size: 32 bytes
-matched: yes</title></rect><rect x="278.71" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057178
+matched: yes</title></rect><rect x="278.71" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockCartridge
 module: arm9
 addr: 0x02057178
 size: 32 bytes
-matched: yes</title></rect><rect x="282.98" y="705.20" width="17.08" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057198
+matched: yes</title></rect><rect x="282.98" y="705.20" width="17.08" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoTryLockByWord
 module: arm9
 addr: 0x02057198
 size: 128 bytes
-matched: yes</title></rect><rect x="300.07" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057218
+matched: yes</title></rect><rect x="300.07" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockByWord
 module: arm9
 addr: 0x02057218
 size: 16 bytes
-matched: yes</title></rect><rect x="302.20" y="705.20" width="19.22" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057228
+matched: yes</title></rect><rect x="302.20" y="705.20" width="19.22" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoUnlockByWord
 module: arm9
 addr: 0x02057228
 size: 144 bytes
-matched: yes</title></rect><rect x="34.22" y="710.22" width="8.07" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020572b8
+matched: yes</title></rect><rect x="34.22" y="710.22" width="8.07" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockByWord
 module: arm9
 addr: 0x020572b8
 size: 16 bytes
-matched: yes</title></rect><rect x="34.22" y="711.55" width="8.07" height="7.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020572c8
+matched: yes</title></rect><rect x="34.22" y="711.55" width="8.07" height="7.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoLockByWord
 module: arm9
 addr: 0x020572c8
 size: 88 bytes
-matched: yes</title></rect><rect x="34.22" y="718.86" width="8.07" height="19.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057320
+matched: yes</title></rect><rect x="34.22" y="718.86" width="8.07" height="19.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitLock
 module: arm9
 addr: 0x02057320
 size: 240 bytes
@@ -9489,35 +9489,35 @@ matched: yes</title></rect><rect x="34.22" y="950.14" width="8.07" height="3.99"
 module: arm9
 addr: 0x02057e00
 size: 48 bytes
-matched: yes</title></rect><rect x="34.22" y="954.46" width="8.07" height="1.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057e34
+matched: yes</title></rect><rect x="34.22" y="954.46" width="8.07" height="1.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_IdleThreadProc
 module: arm9
 addr: 0x02057e34
 size: 20 bytes
-matched: yes</title></rect><rect x="34.22" y="956.12" width="8.07" height="4.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057e48
+matched: yes</title></rect><rect x="34.22" y="956.12" width="8.07" height="4.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetSwitchThreadCallback
 module: arm9
 addr: 0x02057e48
 size: 52 bytes
-matched: yes</title></rect><rect x="34.22" y="960.44" width="8.07" height="0.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057e7c
+matched: yes</title></rect><rect x="34.22" y="960.44" width="8.07" height="0.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetThreadPriority
 module: arm9
 addr: 0x02057e7c
 size: 8 bytes
-matched: yes</title></rect><rect x="34.22" y="961.11" width="8.07" height="14.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057e84
+matched: yes</title></rect><rect x="34.22" y="961.11" width="8.07" height="14.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetThreadPriority
 module: arm9
 addr: 0x02057e84
 size: 180 bytes
-matched: yes</title></rect><rect x="34.22" y="976.06" width="8.07" height="2.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057f38
+matched: yes</title></rect><rect x="34.22" y="976.06" width="8.07" height="2.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetThreadStackWarningOffset
 module: arm9
 addr: 0x02057f38
 size: 28 bytes
-matched: yes</title></rect><rect x="34.22" y="978.39" width="8.07" height="16.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057f54
+matched: yes</title></rect><rect x="34.22" y="978.39" width="8.07" height="16.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_RescheduleThread
 module: arm9
 addr: 0x02057f54
 size: 200 bytes
-matched: yes</title></rect><rect x="42.30" y="710.22" width="4.94" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205801c
+matched: yes</title></rect><rect x="42.30" y="710.22" width="4.94" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SelectThread
 module: arm9
 addr: 0x0205801c
 size: 44 bytes
-matched: yes</title></rect><rect x="47.24" y="710.22" width="5.83" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058048
+matched: yes</title></rect><rect x="47.24" y="710.22" width="5.83" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_WakeupThreadDirect
 module: arm9
 addr: 0x02058048
 size: 52 bytes
@@ -9529,35 +9529,35 @@ matched: yes</title></rect><rect x="66.08" y="710.22" width="11.67" height="5.98
 module: arm9
 addr: 0x020580f0
 size: 104 bytes
-matched: yes</title></rect><rect x="77.75" y="710.22" width="2.24" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058158
+matched: yes</title></rect><rect x="77.75" y="710.22" width="2.24" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_IsThreadTerminated
 module: arm9
 addr: 0x02058158
 size: 20 bytes
-matched: yes</title></rect><rect x="79.99" y="710.22" width="6.73" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205816c
+matched: yes</title></rect><rect x="79.99" y="710.22" width="6.73" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_JoinThread
 module: arm9
 addr: 0x0205816c
 size: 60 bytes
-matched: yes</title></rect><rect x="86.72" y="710.22" width="9.87" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020581a8
+matched: yes</title></rect><rect x="86.72" y="710.22" width="9.87" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ExitThread
 module: arm9
 addr: 0x020581a8
 size: 88 bytes
-matched: yes</title></rect><rect x="96.60" y="710.22" width="29.62" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058200
+matched: yes</title></rect><rect x="96.60" y="710.22" width="29.62" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_CreateThread
 module: arm9
 addr: 0x02058200
 size: 264 bytes
-matched: yes</title></rect><rect x="126.21" y="710.22" width="43.08" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058308
+matched: yes</title></rect><rect x="126.21" y="710.22" width="43.08" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitThread
 module: arm9
 addr: 0x02058308
 size: 384 bytes
-matched: yes</title></rect><rect x="169.29" y="710.22" width="8.08" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058488
+matched: yes</title></rect><rect x="169.29" y="710.22" width="8.08" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_RemoveThreadFromList
 module: arm9
 addr: 0x02058488
 size: 72 bytes
-matched: yes</title></rect><rect x="177.37" y="710.22" width="11.67" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020584d0
+matched: yes</title></rect><rect x="177.37" y="710.22" width="11.67" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_InsertThreadToList
 module: arm9
 addr: 0x020584d0
 size: 104 bytes
-matched: yes</title></rect><rect x="189.04" y="710.22" width="5.38" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058538
+matched: yes</title></rect><rect x="189.04" y="710.22" width="5.38" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_GetUnusedThreadId
 module: arm9
 addr: 0x02058538
 size: 48 bytes
@@ -9581,7 +9581,7 @@ matched: yes</title></rect><rect x="227.63" y="710.22" width="23.78" height="5.9
 module: arm9
 addr: 0x02058690
 size: 212 bytes
-matched: yes</title></rect><rect x="251.41" y="710.22" width="13.46" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058764
+matched: yes</title></rect><rect x="251.41" y="710.22" width="13.46" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetConsoleType
 module: arm9
 addr: 0x02058764
 size: 120 bytes
@@ -9589,15 +9589,15 @@ matched: yes</title></rect><rect x="264.88" y="710.22" width="0.90" height="5.98
 module: arm9
 addr: 0x020587dc
 size: 8 bytes
-matched: yes</title></rect><rect x="265.77" y="710.22" width="19.74" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020587e4
+matched: yes</title></rect><rect x="265.77" y="710.22" width="19.74" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ReceiveMessage
 module: arm9
 addr: 0x020587e4
 size: 176 bytes
-matched: yes</title></rect><rect x="285.52" y="710.22" width="19.30" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058894
+matched: yes</title></rect><rect x="285.52" y="710.22" width="19.30" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SendMessage
 module: arm9
 addr: 0x02058894
 size: 172 bytes
-matched: yes</title></rect><rect x="304.82" y="710.22" width="3.59" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058940
+matched: yes</title></rect><rect x="304.82" y="710.22" width="3.59" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitMessageQueue
 module: arm9
 addr: 0x02058940
 size: 32 bytes
@@ -9605,31 +9605,31 @@ matched: yes</title></rect><rect x="308.41" y="710.22" width="4.49" height="5.98
 module: arm9
 addr: 0x02058960
 size: 40 bytes
-matched: yes</title></rect><rect x="312.89" y="710.22" width="4.04" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058988
+matched: yes</title></rect><rect x="312.89" y="710.22" width="4.04" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DequeueItem
 module: arm9
 addr: 0x02058988
 size: 36 bytes
-matched: yes</title></rect><rect x="316.93" y="710.22" width="4.49" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020589ac
+matched: yes</title></rect><rect x="316.93" y="710.22" width="4.49" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_EnqueueTail
 module: arm9
 addr: 0x020589ac
 size: 40 bytes
-matched: yes</title></rect><rect x="42.30" y="716.20" width="3.28" height="22.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020589d4
+matched: yes</title></rect><rect x="42.30" y="716.20" width="3.28" height="22.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockMutex
 module: arm9
 addr: 0x020589d4
 size: 112 bytes
-matched: yes</title></rect><rect x="42.30" y="739.09" width="3.28" height="16.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058a44
+matched: yes</title></rect><rect x="42.30" y="739.09" width="3.28" height="16.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_UnlockAllMutex
 module: arm9
 addr: 0x02058a44
 size: 80 bytes
-matched: yes</title></rect><rect x="42.30" y="755.45" width="3.28" height="23.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058a94
+matched: yes</title></rect><rect x="42.30" y="755.45" width="3.28" height="23.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockMutex
 module: arm9
 addr: 0x02058a94
 size: 116 bytes
-matched: yes</title></rect><rect x="42.30" y="779.16" width="3.28" height="30.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058b08
+matched: yes</title></rect><rect x="42.30" y="779.16" width="3.28" height="30.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_LockMutex
 module: arm9
 addr: 0x02058b08
 size: 148 bytes
-matched: yes</title></rect><rect x="42.30" y="809.41" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058b9c
+matched: yes</title></rect><rect x="42.30" y="809.41" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitMutex
 module: arm9
 addr: 0x02058b9c
 size: 20 bytes
@@ -9661,19 +9661,19 @@ matched: yes</title></rect><rect x="42.30" y="851.10" width="3.28" height="5.72"
 module: arm9
 addr: 0x02058c68
 size: 28 bytes
-matched: yes</title></rect><rect x="42.30" y="856.83" width="3.28" height="15.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058c84
+matched: yes</title></rect><rect x="42.30" y="856.83" width="3.28" height="15.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_Init
 module: arm9
 addr: 0x02058c84
 size: 76 bytes
-matched: yes</title></rect><rect x="42.30" y="872.36" width="3.28" height="27.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058cd0
+matched: yes</title></rect><rect x="42.30" y="872.36" width="3.28" height="27.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_AllocFromArenaLo
 module: arm9
 addr: 0x02058cd0
 size: 136 bytes
-matched: yes</title></rect><rect x="42.30" y="900.16" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058d58
+matched: yes</title></rect><rect x="42.30" y="900.16" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetArenaLo
 module: arm9
 addr: 0x02058d58
 size: 20 bytes
-matched: yes</title></rect><rect x="42.30" y="904.25" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058d6c
+matched: yes</title></rect><rect x="42.30" y="904.25" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetArenaHi
 module: arm9
 addr: 0x02058d6c
 size: 20 bytes
@@ -9681,47 +9681,47 @@ matched: yes</title></rect><rect x="42.30" y="908.34" width="3.28" height="23.71
 module: arm9
 addr: 0x02058d80
 size: 116 bytes
-matched: yes</title></rect><rect x="42.30" y="932.05" width="3.28" height="35.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058df4
+matched: yes</title></rect><rect x="42.30" y="932.05" width="3.28" height="35.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetInitArenaHi
 module: arm9
 addr: 0x02058df4
 size: 172 bytes
-matched: yes</title></rect><rect x="42.30" y="967.20" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058ea0
+matched: yes</title></rect><rect x="42.30" y="967.20" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetArenaLo
 module: arm9
 addr: 0x02058ea0
 size: 20 bytes
-matched: yes</title></rect><rect x="42.30" y="971.29" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058eb4
+matched: yes</title></rect><rect x="42.30" y="971.29" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetArenaHi
 module: arm9
 addr: 0x02058eb4
 size: 20 bytes
-matched: yes</title></rect><rect x="42.30" y="975.38" width="3.28" height="19.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058ec8
+matched: yes</title></rect><rect x="42.30" y="975.38" width="3.28" height="19.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitArenaEx
 module: arm9
 addr: 0x02058ec8
 size: 96 bytes
-matched: yes</title></rect><rect x="45.58" y="716.20" width="33.35" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058f28
+matched: yes</title></rect><rect x="45.58" y="716.20" width="33.35" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitArena
 module: arm9
 addr: 0x02058f28
 size: 280 bytes
-matched: yes</title></rect><rect x="78.93" y="716.20" width="22.39" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059040
+matched: yes</title></rect><rect x="78.93" y="716.20" width="22.39" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitAlloc
 module: arm9
 addr: 0x02059040
 size: 188 bytes
-matched: yes</title></rect><rect x="101.32" y="716.20" width="13.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020590fc
+matched: yes</title></rect><rect x="101.32" y="716.20" width="13.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_FreeToHeap
 module: arm9
 addr: 0x020590fc
 size: 116 bytes
-matched: yes</title></rect><rect x="115.14" y="716.20" width="35.73" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059170
+matched: yes</title></rect><rect x="115.14" y="716.20" width="35.73" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_AllocFromHeap
 module: arm9
 addr: 0x02059170
 size: 300 bytes
-matched: yes</title></rect><rect x="150.87" y="716.20" width="23.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205929c
+matched: yes</title></rect><rect x="150.87" y="716.20" width="23.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DLInsert
 module: arm9
 addr: 0x0205929c
 size: 200 bytes
-matched: yes</title></rect><rect x="174.69" y="716.20" width="4.76" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059364
+matched: yes</title></rect><rect x="174.69" y="716.20" width="4.76" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DLExtract
 module: arm9
 addr: 0x02059364
 size: 40 bytes
-matched: yes</title></rect><rect x="179.45" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205938c
+matched: yes</title></rect><rect x="179.45" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DLAddFront
 module: arm9
 addr: 0x0205938c
 size: 28 bytes
@@ -9745,87 +9745,87 @@ matched: yes</title></rect><rect x="190.88" y="716.20" width="0.95" height="5.63
 module: arm9
 addr: 0x020593ec
 size: 8 bytes
-matched: yes</title></rect><rect x="191.84" y="716.20" width="13.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020593f4
+matched: yes</title></rect><rect x="191.84" y="716.20" width="13.82" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_ExceptionHandler
 module: arm9
 addr: 0x020593f4
 size: 116 bytes
-matched: yes</title></rect><rect x="205.65" y="716.20" width="2.38" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059468
+matched: yes</title></rect><rect x="205.65" y="716.20" width="2.38" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_GetAndDisplayContext
 module: arm9
 addr: 0x02059468
 size: 20 bytes
-matched: yes</title></rect><rect x="208.03" y="716.20" width="17.15" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205947c
+matched: yes</title></rect><rect x="208.03" y="716.20" width="17.15" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_SetExContext
 module: arm9
 addr: 0x0205947c
 size: 144 bytes
-matched: yes</title></rect><rect x="225.19" y="716.20" width="12.86" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205950c
+matched: yes</title></rect><rect x="225.19" y="716.20" width="12.86" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DisplayExContext
 module: arm9
 addr: 0x0205950c
 size: 108 bytes
-matched: yes</title></rect><rect x="238.05" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059578
+matched: yes</title></rect><rect x="238.05" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetUserExceptionHandler
 module: arm9
 addr: 0x02059578
 size: 28 bytes
-matched: yes</title></rect><rect x="241.38" y="716.20" width="17.15" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059594
+matched: yes</title></rect><rect x="241.38" y="716.20" width="17.15" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitException
 module: arm9
 addr: 0x02059594
 size: 144 bytes
-matched: yes</title></rect><rect x="258.53" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059624
+matched: yes</title></rect><rect x="258.53" y="716.20" width="3.33" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_SetTimerReserved
 module: arm9
 addr: 0x02059624
 size: 28 bytes
-matched: yes</title></rect><rect x="261.87" y="716.20" width="1.91" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059640
+matched: yes</title></rect><rect x="261.87" y="716.20" width="1.91" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetTickLo
 module: arm9
 addr: 0x02059640
 size: 16 bytes
-matched: yes</title></rect><rect x="263.77" y="716.20" width="20.96" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059650
+matched: yes</title></rect><rect x="263.77" y="716.20" width="20.96" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetTick
 module: arm9
 addr: 0x02059650
 size: 176 bytes
-matched: yes</title></rect><rect x="284.74" y="716.20" width="16.20" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059700
+matched: yes</title></rect><rect x="284.74" y="716.20" width="16.20" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_CountUpTick
 module: arm9
 addr: 0x02059700
 size: 136 bytes
-matched: yes</title></rect><rect x="300.93" y="716.20" width="18.58" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059788
+matched: yes</title></rect><rect x="300.93" y="716.20" width="18.58" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitTick
 module: arm9
 addr: 0x02059788
 size: 156 bytes
-matched: yes</title></rect><rect x="319.51" y="716.20" width="1.91" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059824
+matched: yes</title></rect><rect x="319.51" y="716.20" width="1.91" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_AlarmHandler
 module: arm9
 addr: 0x02059824
 size: 16 bytes
-matched: yes</title></rect><rect x="45.58" y="721.83" width="6.51" height="29.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059834
+matched: yes</title></rect><rect x="45.58" y="721.83" width="6.51" height="29.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_ArrangeTimer
 module: arm9
 addr: 0x02059834
 size: 284 bytes
-matched: yes</title></rect><rect x="45.58" y="751.09" width="6.51" height="15.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059950
+matched: yes</title></rect><rect x="45.58" y="751.09" width="6.51" height="15.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_CancelAlarm
 module: arm9
 addr: 0x02059950
 size: 152 bytes
-matched: yes</title></rect><rect x="45.58" y="766.74" width="6.51" height="12.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020599e8
+matched: yes</title></rect><rect x="45.58" y="766.74" width="6.51" height="12.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SetAlarm
 module: arm9
 addr: 0x020599e8
 size: 120 bytes
-matched: yes</title></rect><rect x="45.58" y="779.10" width="6.51" height="32.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059a60
+matched: yes</title></rect><rect x="45.58" y="779.10" width="6.51" height="32.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_InsertAlarm
 module: arm9
 addr: 0x02059a60
 size: 320 bytes
-matched: yes</title></rect><rect x="45.58" y="812.06" width="6.51" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059ba0
+matched: yes</title></rect><rect x="45.58" y="812.06" width="6.51" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_CreateAlarm
 module: arm9
 addr: 0x02059ba0
 size: 16 bytes
-matched: yes</title></rect><rect x="45.58" y="813.71" width="6.51" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059bb0
+matched: yes</title></rect><rect x="45.58" y="813.71" width="6.51" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_IsAlarmAvailable
 module: arm9
 addr: 0x02059bb0
 size: 16 bytes
-matched: yes</title></rect><rect x="45.58" y="815.36" width="6.51" height="9.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059bc0
+matched: yes</title></rect><rect x="45.58" y="815.36" width="6.51" height="9.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitAlarm
 module: arm9
 addr: 0x02059bc0
 size: 88 bytes
-matched: yes</title></rect><rect x="45.58" y="824.43" width="6.51" height="16.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059c18
+matched: yes</title></rect><rect x="45.58" y="824.43" width="6.51" height="16.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_SetTimer
 module: arm9
 addr: 0x02059c18
 size: 156 bytes
-matched: yes</title></rect><rect x="45.58" y="840.49" width="6.51" height="8.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059cb4
+matched: yes</title></rect><rect x="45.58" y="840.49" width="6.51" height="8.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitVAlarm
 module: arm9
 addr: 0x02059cb4
 size: 84 bytes
@@ -9857,7 +9857,7 @@ matched: yes</title></rect><rect x="45.58" y="861.51" width="6.51" height="1.24"
 module: arm9
 addr: 0x02059d80
 size: 12 bytes
-matched: yes</title></rect><rect x="45.58" y="862.74" width="6.51" height="1.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059d8c
+matched: yes</title></rect><rect x="45.58" y="862.74" width="6.51" height="1.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SpinWait
 module: arm9
 addr: 0x02059d8c
 size: 12 bytes
@@ -9865,19 +9865,19 @@ matched: yes</title></rect><rect x="45.58" y="863.98" width="6.51" height="6.18"
 module: arm9
 addr: 0x02059d98
 size: 60 bytes
-matched: yes</title></rect><rect x="45.58" y="870.16" width="6.51" height="4.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059dd4
+matched: yes</title></rect><rect x="45.58" y="870.16" width="6.51" height="4.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_SendToPxi
 module: arm9
 addr: 0x02059dd4
 size: 48 bytes
-matched: yes</title></rect><rect x="45.58" y="875.10" width="6.51" height="7.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059e04
+matched: yes</title></rect><rect x="45.58" y="875.10" width="6.51" height="7.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_CommonCallback
 module: arm9
 addr: 0x02059e04
 size: 68 bytes
-matched: yes</title></rect><rect x="45.58" y="882.11" width="6.51" height="10.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059e48
+matched: yes</title></rect><rect x="45.58" y="882.11" width="6.51" height="10.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitReset
 module: arm9
 addr: 0x02059e48
 size: 104 bytes
-matched: yes</title></rect><rect x="45.58" y="892.82" width="6.51" height="12.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059eb0
+matched: yes</title></rect><rect x="45.58" y="892.82" width="6.51" height="12.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetOwnerInfo
 module: arm9
 addr: 0x02059eb0
 size: 124 bytes
@@ -9885,7 +9885,7 @@ matched: yes</title></rect><rect x="45.58" y="905.59" width="6.51" height="2.88"
 module: arm9
 addr: 0x02059f2c
 size: 28 bytes
-matched: yes</title></rect><rect x="45.58" y="908.48" width="6.51" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059f48
+matched: yes</title></rect><rect x="45.58" y="908.48" width="6.51" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_SetWramBank
 module: arm9
 addr: 0x02059f48
 size: 16 bytes
@@ -9973,7 +9973,7 @@ matched: yes</title></rect><rect x="156.42" y="721.83" width="34.93" height="5.8
 module: arm9
 addr: 0x0205a61c
 size: 304 bytes
-matched: yes</title></rect><rect x="191.35" y="721.83" width="0.92" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a74c
+matched: yes</title></rect><rect x="191.35" y="721.83" width="0.92" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_SwapWord
 module: arm9
 addr: 0x0205a74c
 size: 8 bytes
@@ -9993,11 +9993,11 @@ matched: yes</title></rect><rect x="234.55" y="721.83" width="5.06" height="5.84
 module: arm9
 addr: 0x0205a8c4
 size: 44 bytes
-matched: yes</title></rect><rect x="239.61" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a8f0
+matched: yes</title></rect><rect x="239.61" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_SetTrackParam
 module: arm9
 addr: 0x0205a8f0
 size: 52 bytes
-matched: yes</title></rect><rect x="245.58" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a924
+matched: yes</title></rect><rect x="245.58" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_SetPlayerParam
 module: arm9
 addr: 0x0205a924
 size: 52 bytes
@@ -10033,7 +10033,7 @@ matched: yes</title></rect><rect x="293.84" y="721.83" width="5.06" height="5.84
 module: arm9
 addr: 0x0205aac8
 size: 44 bytes
-matched: yes</title></rect><rect x="298.90" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205aaf4
+matched: yes</title></rect><rect x="298.90" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetTrackMute
 module: arm9
 addr: 0x0205aaf4
 size: 52 bytes
@@ -10053,35 +10053,35 @@ matched: yes</title></rect><rect x="52.09" y="752.46" width="3.03" height="11.51
 module: arm9
 addr: 0x0205ac28
 size: 52 bytes
-matched: yes</title></rect><rect x="52.09" y="763.96" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ac5c
+matched: yes</title></rect><rect x="52.09" y="763.96" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetTrackModSpeed
 module: arm9
 addr: 0x0205ac5c
 size: 40 bytes
-matched: yes</title></rect><rect x="52.09" y="772.82" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ac84
+matched: yes</title></rect><rect x="52.09" y="772.82" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetTrackModDepth
 module: arm9
 addr: 0x0205ac84
 size: 40 bytes
-matched: yes</title></rect><rect x="52.09" y="781.67" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205acac
+matched: yes</title></rect><rect x="52.09" y="781.67" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetTrackPan
 module: arm9
 addr: 0x0205acac
 size: 40 bytes
-matched: yes</title></rect><rect x="52.09" y="790.52" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205acd4
+matched: yes</title></rect><rect x="52.09" y="790.52" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetTrackPitch
 module: arm9
 addr: 0x0205acd4
 size: 40 bytes
-matched: yes</title></rect><rect x="52.09" y="799.37" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205acfc
+matched: yes</title></rect><rect x="52.09" y="799.37" width="3.03" height="8.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetTrackVolume
 module: arm9
 addr: 0x0205acfc
 size: 40 bytes
-matched: yes</title></rect><rect x="52.09" y="808.22" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad24
+matched: yes</title></rect><rect x="52.09" y="808.22" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetPlayerChannelPriority
 module: arm9
 addr: 0x0205ad24
 size: 24 bytes
-matched: yes</title></rect><rect x="52.09" y="813.54" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad3c
+matched: yes</title></rect><rect x="52.09" y="813.54" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetPlayerVolume
 module: arm9
 addr: 0x0205ad3c
 size: 24 bytes
-matched: yes</title></rect><rect x="52.09" y="818.85" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad54
+matched: yes</title></rect><rect x="52.09" y="818.85" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetPlayerTempoRatio
 module: arm9
 addr: 0x0205ad54
 size: 24 bytes
@@ -10089,11 +10089,11 @@ matched: yes</title></rect><rect x="52.09" y="824.16" width="3.03" height="9.74"
 module: arm9
 addr: 0x0205ad6c
 size: 44 bytes
-matched: yes</title></rect><rect x="52.09" y="833.89" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad98
+matched: yes</title></rect><rect x="52.09" y="833.89" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_StopSeq
 module: arm9
 addr: 0x0205ad98
 size: 44 bytes
-matched: yes</title></rect><rect x="52.09" y="843.63" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205adc4
+matched: yes</title></rect><rect x="52.09" y="843.63" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_StartSeq
 module: arm9
 addr: 0x0205adc4
 size: 52 bytes
@@ -10201,75 +10201,75 @@ matched: yes</title></rect><rect x="245.33" y="727.67" width="21.32" height="6.4
 module: arm9
 addr: 0x0205b78c
 size: 204 bytes
-matched: yes</title></rect><rect x="266.66" y="727.67" width="1.25" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b858
+matched: yes</title></rect><rect x="266.66" y="727.67" width="1.25" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXI_Init
 module: arm9
 addr: 0x0205b858
 size: 12 bytes
-matched: yes</title></rect><rect x="267.91" y="727.67" width="30.52" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv
+matched: yes</title></rect><rect x="267.91" y="727.67" width="30.52" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXIi_HandlerRecvFifoNotEmpty
 module: arm9
 addr: 0x0205b864
 size: 292 bytes
-matched: yes</title></rect><rect x="298.43" y="727.67" width="18.81" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>IPCSend
+matched: yes</title></rect><rect x="298.43" y="727.67" width="18.81" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXI_SendWordByFifo
 module: arm9
 addr: 0x0205b988
 size: 180 bytes
-matched: yes</title></rect><rect x="317.24" y="727.67" width="4.18" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ba3c
+matched: yes</title></rect><rect x="317.24" y="727.67" width="4.18" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXI_IsCallbackReady
 module: arm9
 addr: 0x0205ba3c
 size: 40 bytes
-matched: yes</title></rect><rect x="55.12" y="734.09" width="7.57" height="10.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ba64
+matched: yes</title></rect><rect x="55.12" y="734.09" width="7.57" height="10.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXI_SetFifoRecvCallback
 module: arm9
 addr: 0x0205ba64
 size: 116 bytes
-matched: yes</title></rect><rect x="55.12" y="744.37" width="7.57" height="23.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bad8
+matched: yes</title></rect><rect x="55.12" y="744.37" width="7.57" height="23.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PXI_InitFifo
 module: arm9
 addr: 0x0205bad8
 size: 260 bytes
-matched: yes</title></rect><rect x="55.12" y="767.41" width="7.57" height="0.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bbdc
+matched: yes</title></rect><rect x="55.12" y="767.41" width="7.57" height="0.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_CloseFileCommand
 module: arm9
 addr: 0x0205bbdc
 size: 8 bytes
-matched: yes</title></rect><rect x="55.12" y="768.12" width="7.57" height="3.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bbe4
+matched: yes</title></rect><rect x="55.12" y="768.12" width="7.57" height="3.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_OpenFileDirectCommand
 module: arm9
 addr: 0x0205bbe4
 size: 40 bytes
-matched: yes</title></rect><rect x="55.12" y="771.67" width="7.57" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bc0c
+matched: yes</title></rect><rect x="55.12" y="771.67" width="7.57" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_OpenFileFastCommand
 module: arm9
 addr: 0x0205bc0c
 size: 124 bytes
-matched: yes</title></rect><rect x="55.12" y="782.66" width="7.57" height="85.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bc88
+matched: yes</title></rect><rect x="55.12" y="782.66" width="7.57" height="85.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_GetPathCommand
 module: arm9
 addr: 0x0205bc88
 size: 960 bytes
-matched: yes</title></rect><rect x="55.12" y="867.74" width="7.57" height="47.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c048
+matched: yes</title></rect><rect x="55.12" y="867.74" width="7.57" height="47.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_FindPathCommand
 module: arm9
 addr: 0x0205c048
 size: 540 bytes
-matched: yes</title></rect><rect x="55.12" y="915.59" width="7.57" height="24.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c264
+matched: yes</title></rect><rect x="55.12" y="915.59" width="7.57" height="24.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_ReadDirCommand
 module: arm9
 addr: 0x0205c264
 size: 276 bytes
-matched: yes</title></rect><rect x="55.12" y="940.05" width="7.57" height="13.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c378
+matched: yes</title></rect><rect x="55.12" y="940.05" width="7.57" height="13.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_SeekDirCommand
 module: arm9
 addr: 0x0205c378
 size: 152 bytes
-matched: yes</title></rect><rect x="55.12" y="953.52" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c410
+matched: yes</title></rect><rect x="55.12" y="953.52" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_WriteFileCommand
 module: arm9
 addr: 0x0205c410
 size: 56 bytes
-matched: yes</title></rect><rect x="55.12" y="958.49" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c448
+matched: yes</title></rect><rect x="55.12" y="958.49" width="7.57" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_ReadFileCommand
 module: arm9
 addr: 0x0205c448
 size: 56 bytes
-matched: yes</title></rect><rect x="55.12" y="963.45" width="7.57" height="8.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c480
+matched: yes</title></rect><rect x="55.12" y="963.45" width="7.57" height="8.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_StrNICmp
 module: arm9
 addr: 0x0205c480
 size: 100 bytes
-matched: yes</title></rect><rect x="55.12" y="972.31" width="7.57" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c4e4
+matched: yes</title></rect><rect x="55.12" y="972.31" width="7.57" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_SeekDirDirect
 module: arm9
 addr: 0x0205c4e4
 size: 68 bytes
-matched: yes</title></rect><rect x="55.12" y="978.34" width="7.57" height="16.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c528
+matched: yes</title></rect><rect x="55.12" y="978.34" width="7.57" height="16.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_ReadTable
 module: arm9
 addr: 0x0205c528
 size: 188 bytes
@@ -10281,11 +10281,11 @@ matched: yes</title></rect><rect x="93.15" y="734.09" width="4.35" height="9.25"
 module: arm9
 addr: 0x0205c788
 size: 60 bytes
-matched: yes</title></rect><rect x="97.50" y="734.09" width="2.32" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c7c4
+matched: yes</title></rect><rect x="97.50" y="734.09" width="2.32" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_SetArchiveProc
 module: arm9
 addr: 0x0205c7c4
 size: 32 bytes
-matched: yes</title></rect><rect x="99.82" y="734.09" width="9.28" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205c7e4
+matched: yes</title></rect><rect x="99.82" y="734.09" width="9.28" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_ResumeArchive
 module: arm9
 addr: 0x0205c7e4
 size: 128 bytes
@@ -10305,19 +10305,19 @@ matched: yes</title></rect><rect x="151.16" y="734.09" width="13.92" height="9.2
 module: arm9
 addr: 0x0205caa8
 size: 192 bytes
-matched: yes</title></rect><rect x="165.08" y="734.09" width="8.99" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205cb68
+matched: yes</title></rect><rect x="165.08" y="734.09" width="8.99" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_LoadArchive
 module: arm9
 addr: 0x0205cb68
 size: 124 bytes
-matched: yes</title></rect><rect x="174.07" y="734.09" width="11.31" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205cbe4
+matched: yes</title></rect><rect x="174.07" y="734.09" width="11.31" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_ReleaseArchiveName
 module: arm9
 addr: 0x0205cbe4
 size: 156 bytes
-matched: yes</title></rect><rect x="185.39" y="734.09" width="13.05" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205cc80
+matched: yes</title></rect><rect x="185.39" y="734.09" width="13.05" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_RegisterArchiveName
 module: arm9
 addr: 0x0205cc80
 size: 180 bytes
-matched: yes</title></rect><rect x="198.44" y="734.09" width="2.90" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205cd34
+matched: yes</title></rect><rect x="198.44" y="734.09" width="2.90" height="9.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_InitArchive
 module: arm9
 addr: 0x0205cd34
 size: 40 bytes
@@ -10405,7 +10405,7 @@ matched: yes</title></rect><rect x="62.69" y="952.65" width="2.22" height="42.35
 module: arm9
 addr: 0x0205d688
 size: 140 bytes
-matched: yes</title></rect><rect x="64.91" y="743.34" width="6.08" height="38.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d714
+matched: yes</title></rect><rect x="64.91" y="743.34" width="6.08" height="38.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_FindPath
 module: arm9
 addr: 0x0205d714
 size: 352 bytes
@@ -10413,7 +10413,7 @@ matched: yes</title></rect><rect x="64.91" y="782.19" width="6.08" height="4.42"
 module: arm9
 addr: 0x0205d874
 size: 40 bytes
-matched: yes</title></rect><rect x="64.91" y="786.61" width="6.08" height="6.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d89c
+matched: yes</title></rect><rect x="64.91" y="786.61" width="6.08" height="6.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_Init
 module: arm9
 addr: 0x0205d89c
 size: 60 bytes
@@ -10429,7 +10429,7 @@ matched: yes</title></rect><rect x="64.91" y="806.03" width="6.08" height="3.53"
 module: arm9
 addr: 0x0205d94c
 size: 32 bytes
-matched: yes</title></rect><rect x="64.91" y="809.57" width="6.08" height="32.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d96c
+matched: yes</title></rect><rect x="64.91" y="809.57" width="6.08" height="32.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_InitRom
 module: arm9
 addr: 0x0205d96c
 size: 296 bytes
@@ -10453,43 +10453,43 @@ matched: yes</title></rect><rect x="64.91" y="869.17" width="6.08" height="14.57
 module: arm9
 addr: 0x0205db88
 size: 132 bytes
-matched: yes</title></rect><rect x="64.91" y="883.74" width="6.08" height="9.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dc0c
+matched: yes</title></rect><rect x="64.91" y="883.74" width="6.08" height="9.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_UnloadOverlay
 module: arm9
 addr: 0x0205dc0c
 size: 84 bytes
-matched: yes</title></rect><rect x="64.91" y="893.01" width="6.08" height="3.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dc60
+matched: yes</title></rect><rect x="64.91" y="893.01" width="6.08" height="3.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_UnloadOverlayImage
 module: arm9
 addr: 0x0205dc60
 size: 28 bytes
-matched: yes</title></rect><rect x="64.91" y="896.10" width="6.08" height="31.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dc7c
+matched: yes</title></rect><rect x="64.91" y="896.10" width="6.08" height="31.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_EndOverlay
 module: arm9
 addr: 0x0205dc7c
 size: 288 bytes
-matched: yes</title></rect><rect x="64.91" y="927.89" width="6.08" height="28.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dd9c
+matched: yes</title></rect><rect x="64.91" y="927.89" width="6.08" height="28.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_StartOverlay
 module: arm9
 addr: 0x0205dd9c
 size: 256 bytes
-matched: yes</title></rect><rect x="64.91" y="956.15" width="6.08" height="18.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205de9c
+matched: yes</title></rect><rect x="64.91" y="956.15" width="6.08" height="18.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_CompareDigest
 module: arm9
 addr: 0x0205de9c
 size: 164 bytes
-matched: yes</title></rect><rect x="64.91" y="974.25" width="6.08" height="20.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205df40
+matched: yes</title></rect><rect x="64.91" y="974.25" width="6.08" height="20.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_LoadOverlayInfo
 module: arm9
 addr: 0x0205df40
 size: 188 bytes
-matched: yes</title></rect><rect x="70.99" y="743.34" width="9.93" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205dffc
+matched: yes</title></rect><rect x="70.99" y="743.34" width="9.93" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FSi_LoadOverlayInfoCore
 module: arm9
 addr: 0x0205dffc
 size: 140 bytes
-matched: yes</title></rect><rect x="80.91" y="743.34" width="2.84" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205e088
+matched: yes</title></rect><rect x="80.91" y="743.34" width="2.84" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_GetOverlayFileID
 module: arm9
 addr: 0x0205e088
 size: 40 bytes
-matched: yes</title></rect><rect x="83.75" y="743.34" width="4.82" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205e0b0
+matched: yes</title></rect><rect x="83.75" y="743.34" width="4.82" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_ClearOverlayImage
 module: arm9
 addr: 0x0205e0b0
 size: 68 bytes
-matched: yes</title></rect><rect x="88.57" y="743.34" width="28.08" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205e0f4
+matched: yes</title></rect><rect x="88.57" y="743.34" width="28.08" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DGT_Hash2CalcHmac
 module: arm9
 addr: 0x0205e0f4
 size: 396 bytes
@@ -10525,59 +10525,59 @@ matched: yes</title></rect><rect x="244.28" y="743.34" width="8.22" height="9.46
 module: arm9
 addr: 0x0205e988
 size: 116 bytes
-matched: yes</title></rect><rect x="252.50" y="743.34" width="1.42" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205e9fc
+matched: yes</title></rect><rect x="252.50" y="743.34" width="1.42" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_CheckError
 module: arm9
 addr: 0x0205e9fc
 size: 20 bytes
-matched: yes</title></rect><rect x="253.92" y="743.34" width="1.70" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ea10
+matched: yes</title></rect><rect x="253.92" y="743.34" width="1.70" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_WaitBusy
 module: arm9
 addr: 0x0205ea10
 size: 24 bytes
-matched: yes</title></rect><rect x="255.62" y="743.34" width="21.55" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ea28
+matched: yes</title></rect><rect x="255.62" y="743.34" width="21.55" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_GetCalibratedPoint
 module: arm9
 addr: 0x0205ea28
 size: 304 bytes
-matched: yes</title></rect><rect x="277.18" y="743.34" width="44.24" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205eb58
+matched: yes</title></rect><rect x="277.18" y="743.34" width="44.24" height="9.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_CalcCalibrateParam
 module: arm9
 addr: 0x0205eb58
 size: 624 bytes
-matched: yes</title></rect><rect x="70.99" y="752.80" width="3.70" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205edc8
+matched: yes</title></rect><rect x="70.99" y="752.80" width="3.70" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_GetLatestIndexInAuto
 module: arm9
 addr: 0x0205edc8
 size: 16 bytes
-matched: yes</title></rect><rect x="70.99" y="755.70" width="3.70" height="38.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205edd8
+matched: yes</title></rect><rect x="70.99" y="755.70" width="3.70" height="38.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_RequestSetStabilityAsync
 module: arm9
 addr: 0x0205edd8
 size: 212 bytes
-matched: yes</title></rect><rect x="70.99" y="794.13" width="3.70" height="50.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205eeac
+matched: yes</title></rect><rect x="70.99" y="794.13" width="3.70" height="50.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_RequestAutoSamplingStartAsync
 module: arm9
 addr: 0x0205eeac
 size: 276 bytes
-matched: yes</title></rect><rect x="70.99" y="844.17" width="3.70" height="5.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205efc0
+matched: yes</title></rect><rect x="70.99" y="844.17" width="3.70" height="5.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_WaitCalibratedResult
 module: arm9
 addr: 0x0205efc0
 size: 32 bytes
-matched: yes</title></rect><rect x="70.99" y="849.97" width="3.70" height="17.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205efe0
+matched: yes</title></rect><rect x="70.99" y="849.97" width="3.70" height="17.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_GetCalibratedResult
 module: arm9
 addr: 0x0205efe0
 size: 96 bytes
-matched: yes</title></rect><rect x="70.99" y="867.37" width="3.70" height="29.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f040
+matched: yes</title></rect><rect x="70.99" y="867.37" width="3.70" height="29.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_RequestSamplingAsync
 module: arm9
 addr: 0x0205f040
 size: 160 bytes
-matched: yes</title></rect><rect x="70.99" y="896.38" width="3.70" height="47.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f0e0
+matched: yes</title></rect><rect x="70.99" y="896.38" width="3.70" height="47.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_SetCalibrateParam
 module: arm9
 addr: 0x0205f0e0
 size: 260 bytes
-matched: yes</title></rect><rect x="70.99" y="943.51" width="3.70" height="25.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f1e4
+matched: yes</title></rect><rect x="70.99" y="943.51" width="3.70" height="25.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_GetUserInfo
 module: arm9
 addr: 0x0205f1e4
 size: 140 bytes
-matched: yes</title></rect><rect x="70.99" y="968.89" width="3.70" height="26.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f270
+matched: yes</title></rect><rect x="70.99" y="968.89" width="3.70" height="26.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TP_Init
 module: arm9
 addr: 0x0205f270
 size: 144 bytes
-matched: yes</title></rect><rect x="74.69" y="752.80" width="8.51" height="55.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f300
+matched: yes</title></rect><rect x="74.69" y="752.80" width="8.51" height="55.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TPi_TpCallback
 module: arm9
 addr: 0x0205f300
 size: 704 bytes
@@ -10657,7 +10657,7 @@ matched: yes</title></rect><rect x="74.69" y="954.32" width="8.51" height="18.61
 module: arm9
 addr: 0x0205fcfc
 size: 236 bytes
-matched: yes</title></rect><rect x="74.69" y="972.92" width="8.51" height="15.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205fde8
+matched: yes</title></rect><rect x="74.69" y="972.92" width="8.51" height="15.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PM_Init
 module: arm9
 addr: 0x0205fde8
 size: 196 bytes
@@ -10677,47 +10677,47 @@ matched: yes</title></rect><rect x="87.35" y="752.80" width="10.38" height="5.17
 module: arm9
 addr: 0x0205ff20
 size: 80 bytes
-matched: yes</title></rect><rect x="97.73" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ff70
+matched: yes</title></rect><rect x="97.73" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_UnlockBackup
 module: arm9
 addr: 0x0205ff70
 size: 16 bytes
-matched: yes</title></rect><rect x="99.81" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ff80
+matched: yes</title></rect><rect x="99.81" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_LockBackup
 module: arm9
 addr: 0x0205ff80
 size: 16 bytes
-matched: yes</title></rect><rect x="101.88" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ff90
+matched: yes</title></rect><rect x="101.88" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_UnlockRom
 module: arm9
 addr: 0x0205ff90
 size: 32 bytes
-matched: yes</title></rect><rect x="106.03" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ffb0
+matched: yes</title></rect><rect x="106.03" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_LockRom
 module: arm9
 addr: 0x0205ffb0
 size: 32 bytes
-matched: yes</title></rect><rect x="110.19" y="752.80" width="11.94" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ffd0
+matched: yes</title></rect><rect x="110.19" y="752.80" width="11.94" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_WaitAsync
 module: arm9
 addr: 0x0205ffd0
 size: 92 bytes
-matched: yes</title></rect><rect x="122.12" y="752.80" width="23.36" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206002c
+matched: yes</title></rect><rect x="122.12" y="752.80" width="23.36" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_InitCommon
 module: arm9
 addr: 0x0206002c
 size: 180 bytes
-matched: yes</title></rect><rect x="145.48" y="752.80" width="21.80" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020600e0
+matched: yes</title></rect><rect x="145.48" y="752.80" width="21.80" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_UnlockResource
 module: arm9
 addr: 0x020600e0
 size: 168 bytes
-matched: yes</title></rect><rect x="167.28" y="752.80" width="20.76" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060188
+matched: yes</title></rect><rect x="167.28" y="752.80" width="20.76" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_LockResource
 module: arm9
 addr: 0x02060188
 size: 160 bytes
-matched: yes</title></rect><rect x="188.04" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060228
+matched: yes</title></rect><rect x="188.04" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_SetTask
 module: arm9
 addr: 0x02060228
 size: 148 bytes
-matched: yes</title></rect><rect x="207.24" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020602bc
+matched: yes</title></rect><rect x="207.24" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_TaskThread
 module: arm9
 addr: 0x020602bc
 size: 84 bytes
-matched: yes</title></rect><rect x="218.14" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060310
+matched: yes</title></rect><rect x="218.14" y="752.80" width="10.90" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_OnFifoRecv
 module: arm9
 addr: 0x02060310
 size: 84 bytes
@@ -10729,15 +10729,15 @@ matched: yes</title></rect><rect x="235.78" y="752.80" width="6.23" height="5.17
 module: arm9
 addr: 0x02060398
 size: 48 bytes
-matched: yes</title></rect><rect x="242.01" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020603c8
+matched: yes</title></rect><rect x="242.01" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_IdentifyBackup
 module: arm9
 addr: 0x020603c8
 size: 148 bytes
-matched: yes</title></rect><rect x="261.21" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206045c
+matched: yes</title></rect><rect x="261.21" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_GetBackupTotalSize
 module: arm9
 addr: 0x0206045c
 size: 20 bytes
-matched: yes</title></rect><rect x="263.81" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060470
+matched: yes</title></rect><rect x="263.81" y="752.80" width="2.60" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_GetCurrentBackupType
 module: arm9
 addr: 0x02060470
 size: 20 bytes
@@ -10761,55 +10761,55 @@ matched: yes</title></rect><rect x="83.20" y="802.64" width="6.67" height="5.23"
 module: arm9
 addr: 0x020607e8
 size: 52 bytes
-matched: yes</title></rect><rect x="83.20" y="807.87" width="6.67" height="11.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206081c
+matched: yes</title></rect><rect x="83.20" y="807.87" width="6.67" height="11.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_EndTask
 module: arm9
 addr: 0x0206081c
 size: 116 bytes
-matched: yes</title></rect><rect x="83.20" y="819.54" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060890
+matched: yes</title></rect><rect x="83.20" y="819.54" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_Init
 module: arm9
 addr: 0x02060890
 size: 124 bytes
-matched: yes</title></rect><rect x="83.20" y="832.02" width="6.67" height="1.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206090c
+matched: yes</title></rect><rect x="83.20" y="832.02" width="6.67" height="1.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_WaitRomAsync
 module: arm9
 addr: 0x0206090c
 size: 12 bytes
-matched: yes</title></rect><rect x="83.20" y="833.22" width="6.67" height="28.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060918
+matched: yes</title></rect><rect x="83.20" y="833.22" width="6.67" height="28.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadRom
 module: arm9
 addr: 0x02060918
 size: 280 bytes
-matched: yes</title></rect><rect x="83.20" y="861.39" width="6.67" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060a30
+matched: yes</title></rect><rect x="83.20" y="861.39" width="6.67" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadRomSyncCore
 module: arm9
 addr: 0x02060a30
 size: 52 bytes
-matched: yes</title></rect><rect x="83.20" y="866.63" width="6.67" height="25.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060a64
+matched: yes</title></rect><rect x="83.20" y="866.63" width="6.67" height="25.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadCard
 module: arm9
 addr: 0x02060a64
 size: 256 bytes
-matched: yes</title></rect><rect x="83.20" y="892.38" width="6.67" height="33.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060b64
+matched: yes</title></rect><rect x="83.20" y="892.38" width="6.67" height="33.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_TryReadCardDma
 module: arm9
 addr: 0x02060b64
 size: 328 bytes
-matched: yes</title></rect><rect x="83.20" y="925.38" width="6.67" height="11.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060cac
+matched: yes</title></rect><rect x="83.20" y="925.38" width="6.67" height="11.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_OnReadCard
 module: arm9
 addr: 0x02060cac
 size: 112 bytes
-matched: yes</title></rect><rect x="83.20" y="936.65" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060d1c
+matched: yes</title></rect><rect x="83.20" y="936.65" width="6.67" height="12.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_SetCardDma
 module: arm9
 addr: 0x02060d1c
 size: 124 bytes
-matched: yes</title></rect><rect x="83.20" y="949.12" width="6.67" height="16.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060d98
+matched: yes</title></rect><rect x="83.20" y="949.12" width="6.67" height="16.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_SetRomOp
 module: arm9
 addr: 0x02060d98
 size: 160 bytes
-matched: yes</title></rect><rect x="83.20" y="965.22" width="6.67" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060e38
+matched: yes</title></rect><rect x="83.20" y="965.22" width="6.67" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadEnd
 module: arm9
 addr: 0x02060e38
 size: 132 bytes
-matched: yes</title></rect><rect x="83.20" y="978.50" width="6.67" height="16.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060ebc
+matched: yes</title></rect><rect x="83.20" y="978.50" width="6.67" height="16.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadFromCache
 module: arm9
 addr: 0x02060ebc
 size: 164 bytes
-matched: yes</title></rect><rect x="89.86" y="757.97" width="26.55" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060f60
+matched: yes</title></rect><rect x="89.86" y="757.97" width="26.55" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_Request
 module: arm9
 addr: 0x02060f60
 size: 332 bytes
@@ -10841,11 +10841,11 @@ matched: yes</title></rect><rect x="187.73" y="757.97" width="13.43" height="8.3
 module: arm9
 addr: 0x02061428
 size: 168 bytes
-matched: yes</title></rect><rect x="201.16" y="757.97" width="7.36" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020614d0
+matched: yes</title></rect><rect x="201.16" y="757.97" width="7.36" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WMi_CheckIdle
 module: arm9
 addr: 0x020614d0
 size: 92 bytes
-matched: yes</title></rect><rect x="208.52" y="757.97" width="2.24" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206152c
+matched: yes</title></rect><rect x="208.52" y="757.97" width="2.24" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WMi_CheckInitialized
 module: arm9
 addr: 0x0206152c
 size: 28 bytes
@@ -10865,7 +10865,7 @@ matched: yes</title></rect><rect x="234.75" y="757.97" width="9.27" height="8.39
 module: arm9
 addr: 0x02061674
 size: 116 bytes
-matched: yes</title></rect><rect x="244.02" y="757.97" width="37.10" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020616e8
+matched: yes</title></rect><rect x="244.02" y="757.97" width="37.10" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_Init
 module: arm9
 addr: 0x020616e8
 size: 464 bytes
@@ -10873,7 +10873,7 @@ matched: yes</title></rect><rect x="281.12" y="757.97" width="13.43" height="8.3
 module: arm9
 addr: 0x020618b8
 size: 168 bytes
-matched: yes</title></rect><rect x="294.55" y="757.97" width="6.08" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061960
+matched: yes</title></rect><rect x="294.55" y="757.97" width="6.08" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_GetAllowedChannel
 module: arm9
 addr: 0x02061960
 size: 76 bytes
@@ -10889,15 +10889,15 @@ matched: yes</title></rect><rect x="89.86" y="788.62" width="7.11" height="12.45
 module: arm9
 addr: 0x02061b9c
 size: 132 bytes
-matched: yes</title></rect><rect x="89.86" y="801.07" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061c20
+matched: yes</title></rect><rect x="89.86" y="801.07" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_ReadStatus
 module: arm9
 addr: 0x02061c20
 size: 104 bytes
-matched: yes</title></rect><rect x="89.86" y="810.88" width="7.11" height="8.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061c88
+matched: yes</title></rect><rect x="89.86" y="810.88" width="7.11" height="8.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetPortCallback
 module: arm9
 addr: 0x02061c88
 size: 92 bytes
-matched: yes</title></rect><rect x="89.86" y="819.56" width="7.11" height="7.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ce4
+matched: yes</title></rect><rect x="89.86" y="819.56" width="7.11" height="7.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetIndCallback
 module: arm9
 addr: 0x02061ce4
 size: 76 bytes
@@ -10913,7 +10913,7 @@ matched: yes</title></rect><rect x="89.86" y="867.85" width="7.11" height="23.39
 module: arm9
 addr: 0x02061ee4
 size: 248 bytes
-matched: yes</title></rect><rect x="89.86" y="891.24" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061fdc
+matched: yes</title></rect><rect x="89.86" y="891.24" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_StartParent
 module: arm9
 addr: 0x02061fdc
 size: 72 bytes
@@ -10925,31 +10925,31 @@ matched: yes</title></rect><rect x="89.86" y="911.24" width="7.11" height="24.90
 module: arm9
 addr: 0x020620b0
 size: 264 bytes
-matched: yes</title></rect><rect x="89.86" y="936.14" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020621b8
+matched: yes</title></rect><rect x="89.86" y="936.14" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_End
 module: arm9
 addr: 0x020621b8
 size: 72 bytes
-matched: yes</title></rect><rect x="89.86" y="942.93" width="7.11" height="6.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062200
+matched: yes</title></rect><rect x="89.86" y="942.93" width="7.11" height="6.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_Reset
 module: arm9
 addr: 0x02062200
 size: 64 bytes
-matched: yes</title></rect><rect x="89.86" y="948.97" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062240
+matched: yes</title></rect><rect x="89.86" y="948.97" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_Initialize
 module: arm9
 addr: 0x02062240
 size: 104 bytes
-matched: yes</title></rect><rect x="89.86" y="958.78" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020622a8
+matched: yes</title></rect><rect x="89.86" y="958.78" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_PowerOff
 module: arm9
 addr: 0x020622a8
 size: 72 bytes
-matched: yes</title></rect><rect x="89.86" y="965.57" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020622f0
+matched: yes</title></rect><rect x="89.86" y="965.57" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_PowerOn
 module: arm9
 addr: 0x020622f0
 size: 72 bytes
-matched: yes</title></rect><rect x="89.86" y="972.36" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062338
+matched: yes</title></rect><rect x="89.86" y="972.36" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_Disable
 module: arm9
 addr: 0x02062338
 size: 72 bytes
-matched: yes</title></rect><rect x="89.86" y="979.15" width="7.11" height="10.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062380
+matched: yes</title></rect><rect x="89.86" y="979.15" width="7.11" height="10.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_Enable
 module: arm9
 addr: 0x02062380
 size: 108 bytes
@@ -10973,7 +10973,7 @@ matched: yes</title></rect><rect x="166.89" y="766.36" width="6.10" height="7.48
 module: arm9
 addr: 0x02062734
 size: 68 bytes
-matched: yes</title></rect><rect x="172.99" y="766.36" width="10.04" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062778
+matched: yes</title></rect><rect x="172.99" y="766.36" width="10.04" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_GetSharedDataAddress
 module: arm9
 addr: 0x02062778
 size: 112 bytes
@@ -10997,7 +10997,7 @@ matched: yes</title></rect><rect x="301.34" y="766.36" width="20.08" height="7.4
 module: arm9
 addr: 0x02062d10
 size: 224 bytes
-matched: yes</title></rect><rect x="96.98" y="773.84" width="12.98" height="51.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062df0
+matched: yes</title></rect><rect x="96.98" y="773.84" width="12.98" height="51.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_StepDataSharing
 module: arm9
 addr: 0x02062df0
 size: 1004 bytes
@@ -11005,7 +11005,7 @@ matched: yes</title></rect><rect x="96.98" y="825.72" width="12.98" height="41.3
 module: arm9
 addr: 0x020631dc
 size: 800 bytes
-matched: yes</title></rect><rect x="96.98" y="867.06" width="12.98" height="6.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020634fc
+matched: yes</title></rect><rect x="96.98" y="867.06" width="12.98" height="6.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_MeasureChannel
 module: arm9
 addr: 0x020634fc
 size: 120 bytes
@@ -11561,31 +11561,31 @@ matched: yes</title></rect><rect x="316.80" y="812.86" width="4.62" height="18.0
 module: arm9
 addr: 0x0206a29c
 size: 124 bytes
-matched: yes</title></rect><rect x="141.56" y="830.88" width="6.34" height="10.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a318
+matched: yes</title></rect><rect x="141.56" y="830.88" width="6.34" height="10.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_SendtoPxi
 module: arm9
 addr: 0x0206a318
 size: 100 bytes
-matched: yes</title></rect><rect x="141.56" y="841.46" width="6.34" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a37c
+matched: yes</title></rect><rect x="141.56" y="841.46" width="6.34" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_UnlockByProcessor
 module: arm9
 addr: 0x0206a37c
 size: 40 bytes
-matched: yes</title></rect><rect x="141.56" y="845.69" width="6.34" height="13.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a3a4
+matched: yes</title></rect><rect x="141.56" y="845.69" width="6.34" height="13.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_LockByProcessor
 module: arm9
 addr: 0x0206a3a4
 size: 128 bytes
-matched: yes</title></rect><rect x="141.56" y="859.22" width="6.34" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a424
+matched: yes</title></rect><rect x="141.56" y="859.22" width="6.34" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_RestoreAccessCycle
 module: arm9
 addr: 0x0206a424
 size: 52 bytes
-matched: yes</title></rect><rect x="141.56" y="864.72" width="6.34" height="7.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a458
+matched: yes</title></rect><rect x="141.56" y="864.72" width="6.34" height="7.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_ChangeLatestAccessCycle
 module: arm9
 addr: 0x0206a458
 size: 72 bytes
-matched: yes</title></rect><rect x="141.56" y="872.34" width="6.34" height="30.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a4a0
+matched: yes</title></rect><rect x="141.56" y="872.34" width="6.34" height="30.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDG_IsExisting
 module: arm9
 addr: 0x0206a4a0
 size: 288 bytes
-matched: yes</title></rect><rect x="141.56" y="902.79" width="6.34" height="6.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a5c0
+matched: yes</title></rect><rect x="141.56" y="902.79" width="6.34" height="6.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_InitCommon
 module: arm9
 addr: 0x0206a5c0
 size: 64 bytes
@@ -11605,7 +11605,7 @@ matched: yes</title></rect><rect x="141.56" y="931.55" width="6.34" height="46.9
 module: arm9
 addr: 0x0206a6d0
 size: 444 bytes
-matched: yes</title></rect><rect x="141.56" y="978.50" width="6.34" height="16.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a88c
+matched: yes</title></rect><rect x="141.56" y="978.50" width="6.34" height="16.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDG_Init
 module: arm9
 addr: 0x0206a88c
 size: 156 bytes
@@ -12197,7 +12197,7 @@ matched: yes</title></rect><rect x="309.03" y="933.49" width="0.65" height="4.11
 module: arm9
 addr: 0x02074dc0
 size: 4 bytes
-matched: yes</title></rect><rect x="309.68" y="933.49" width="11.74" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc4
+matched: yes</title></rect><rect x="309.68" y="933.49" width="11.74" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_Timer.cpp
 module: arm9
 addr: 0x02074dc4
 size: 72 bytes
@@ -12413,7 +12413,7 @@ matched: yes</title></rect><rect x="331.42" y="802.79" width="12.70" height="10.
 module: itcm
 addr: 0x01ffd9d4
 size: 340 bytes
-matched: yes</title></rect><rect x="331.42" y="813.37" width="12.70" height="5.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffdb28
+matched: yes</title></rect><rect x="331.42" y="813.37" width="12.70" height="5.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoBoot
 module: itcm
 addr: 0x01ffdb28
 size: 176 bytes
@@ -12421,11 +12421,11 @@ matched: yes</title></rect><rect x="331.42" y="818.85" width="12.70" height="9.4
 module: itcm
 addr: 0x01ffdbd8
 size: 304 bytes
-matched: yes</title></rect><rect x="331.42" y="828.31" width="7.38" height="7.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffdd08
+matched: yes</title></rect><rect x="331.42" y="828.31" width="7.38" height="7.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_ReloadRomData
 module: itcm
 addr: 0x01ffdd08
 size: 144 bytes
-matched: yes</title></rect><rect x="338.79" y="828.31" width="5.33" height="7.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffdd98
+matched: yes</title></rect><rect x="338.79" y="828.31" width="5.33" height="7.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ResetSystem
 module: itcm
 addr: 0x01ffdd98
 size: 104 bytes
@@ -12437,7 +12437,7 @@ matched: yes</title></rect><rect x="331.42" y="841.20" width="6.11" height="4.66
 module: itcm
 addr: 0x01ffde50
 size: 72 bytes
-matched: yes</title></rect><rect x="337.53" y="836.03" width="6.59" height="9.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffde98
+matched: yes</title></rect><rect x="337.53" y="836.03" width="6.59" height="9.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_SendGXCommand
 module: itcm
 addr: 0x01ffde98
 size: 164 bytes
@@ -15417,7 +15417,7 @@ matched: yes</title></rect><rect x="584.97" y="375.77" width="2.12" height="15.0
 module: ov002
 addr: 0x020cedb0
 size: 48 bytes
-matched: yes</title></rect><rect x="587.09" y="375.77" width="18.57" height="15.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020cede0
+matched: yes</title></rect><rect x="587.09" y="375.77" width="18.57" height="15.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player19func_ov002_020cede0Ev
 module: ov002
 addr: 0x020cede0
 size: 420 bytes
@@ -16257,7 +16257,7 @@ matched: yes</title></rect><rect x="373.51" y="555.49" width="5.61" height="10.4
 module: ov002
 addr: 0x020de3d0
 size: 88 bytes
-matched: yes</title></rect><rect x="379.12" y="555.49" width="3.32" height="10.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020de428
+matched: yes</title></rect><rect x="379.12" y="555.49" width="3.32" height="10.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player19func_ov002_020de428Ev
 module: ov002
 addr: 0x020de428
 size: 52 bytes
@@ -16337,7 +16337,7 @@ matched: yes</title></rect><rect x="428.34" y="565.92" width="6.00" height="11.9
 module: ov002
 addr: 0x020df740
 size: 108 bytes
-matched: yes</title></rect><rect x="434.34" y="565.92" width="4.00" height="11.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020df7ac
+matched: yes</title></rect><rect x="434.34" y="565.92" width="4.00" height="11.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player19func_ov002_020df7acEv
 module: ov002
 addr: 0x020df7ac
 size: 72 bytes
@@ -16345,7 +16345,7 @@ matched: yes</title></rect><rect x="438.34" y="565.92" width="4.22" height="11.9
 module: ov002
 addr: 0x020df7f4
 size: 76 bytes
-matched: yes</title></rect><rect x="442.56" y="565.92" width="9.78" height="11.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020df840
+matched: yes</title></rect><rect x="442.56" y="565.92" width="9.78" height="11.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player19func_ov002_020df840EPvP7Vector3
 module: ov002
 addr: 0x020df840
 size: 176 bytes
@@ -17693,7 +17693,7 @@ matched: yes</title></rect><rect x="483.30" y="757.30" width="1.12" height="7.14
 module: ov002
 addr: 0x020f26d4
 size: 12 bytes
-matched: yes</title></rect><rect x="484.42" y="757.30" width="16.41" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f26e0
+matched: yes</title></rect><rect x="484.42" y="757.30" width="16.41" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDemo_c9StaffRoll19func_ov002_020f26e0Ev
 module: ov002
 addr: 0x020f26e0
 size: 176 bytes
@@ -17937,7 +17937,7 @@ matched: yes</title></rect><rect x="578.28" y="770.39" width="11.18" height="4.7
 module: ov002
 addr: 0x020f5ad4
 size: 80 bytes
-matched: yes</title></rect><rect x="589.46" y="770.39" width="12.30" height="4.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f5b24
+matched: yes</title></rect><rect x="589.46" y="770.39" width="12.30" height="4.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev
 module: ov002
 addr: 0x020f5b24
 size: 88 bytes
@@ -18497,11 +18497,11 @@ matched: yes</title></rect><rect x="453.76" y="964.05" width="7.40" height="21.2
 module: ov002
 addr: 0x020fe960
 size: 236 bytes
-matched: yes</title></rect><rect x="453.76" y="985.28" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020fea4c
+matched: yes</title></rect><rect x="453.76" y="985.28" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK8dM3dGLin6GetEndEv
 module: ov002
 addr: 0x020fea4c
 size: 28 bytes
-matched: yes</title></rect><rect x="453.76" y="987.80" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020fea68
+matched: yes</title></rect><rect x="453.76" y="987.80" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK8dM3dGLin8GetStartEv
 module: ov002
 addr: 0x020fea68
 size: 28 bytes
@@ -18653,11 +18653,11 @@ matched: yes</title></rect><rect x="505.03" y="982.96" width="5.97" height="12.0
 module: ov002
 addr: 0x02107304
 size: 108 bytes
-matched: yes</title></rect><rect x="511.00" y="970.93" width="85.60" height="24.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov002_02107370
+matched: yes</title></rect><rect x="511.00" y="970.93" width="85.60" height="24.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_a_demo.cpp
 module: ov002
 addr: 0x02107370
 size: 3096 bytes
-matched: yes</title></rect><rect x="596.60" y="970.93" width="9.07" height="14.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov002_02107f88
+matched: yes</title></rect><rect x="596.60" y="970.93" width="9.07" height="14.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_a_sound_obj.cpp
 module: ov002
 addr: 0x02107f88
 size: 196 bytes
@@ -27429,7 +27429,7 @@ matched: yes</title></rect><rect x="941.10" y="770.57" width="3.24" height="17.3
 module: ov006
 addr: 0x0212f660
 size: 84 bytes
-matched: yes</title></rect><rect x="944.34" y="684.72" width="17.57" height="56.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov006_0212f6b4
+matched: yes</title></rect><rect x="944.34" y="684.72" width="17.57" height="56.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_mg_trmpln2_mario.cpp
 module: ov006
 addr: 0x0212f6b4
 size: 1480 bytes
@@ -27437,7 +27437,7 @@ matched: yes</title></rect><rect x="944.34" y="741.03" width="17.57" height="7.7
 module: ov006
 addr: 0x0212fc7c
 size: 204 bytes
-matched: yes</title></rect><rect x="944.34" y="748.79" width="17.57" height="33.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov006_0212fd48
+matched: yes</title></rect><rect x="944.34" y="748.79" width="17.57" height="33.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_bomroom.cpp
 module: ov006
 addr: 0x0212fd48
 size: 872 bytes

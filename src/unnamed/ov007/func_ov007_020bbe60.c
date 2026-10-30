@@ -1,7 +1,7 @@
 #include "types.h"
+#include "Ov007Work.h"
 #include "nitro/fx/fx.h"
-extern void func_ov007_020c6784(void *self, int count, const int *p2, const void *p3,
-                                const void *p4, const int *const *p5, int mode);
+#include "Ov007Picker.h"
 
 /* Six portrait drawings, selected by a two-way selector and three-step cycle.
  * Plotting the byte coordinates produces Mario, Luigi and Yoshi portraits.
@@ -47,25 +47,39 @@ static const int *const *sPortraitStrokeProgressThresholds[6] = {
     data_ov007_020d80ec, data_ov007_020d8574, data_ov007_020d8724,
     data_ov007_020d7fac, data_ov007_020d83e4, data_ov007_020d8264};
 
-extern char *data_ov007_0210342c;
 extern char *data_ov007_02104ba0;
 
+/* data_ov007_02104ba0, the 0x4c-byte picker scene; names as in
+ * unit020b8f50, only the slots this file touches. */
+typedef struct Ov007PickerScene {
+    Ov007Picker *picker; /* 0x00: func_ov007_020c690c */
+    char pad_04[0x34];
+    int replayFrames; /* 0x38 */
+} Ov007PickerScene;
+
+#define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
+
+/* The per-figure stroke stages as a pointer: indexing through it, not
+ * through WORK->strokeStage, gives the ROM's base + 0xfc then [idx] form. */
+static inline u8 *StrokeStages(void) {
+    return WORK->strokeStage;
+}
+
+/* Loads figure idx's next portrait drawing (strokeStage[idx]: 0, 1, 2, then
+ * back to 0) into the picker, with a replay of 120 frames; figure 0's third
+ * drawing gets 1.5 times that. */
 void func_ov007_020bbe60(int idx) {
-    int drawing = idx * 3 + *(u8 *)(data_ov007_0210342c + idx + 0xfc);
-    func_ov007_020c6784(*(void **)data_ov007_02104ba0, sPortraitStrokeCounts[drawing],
+    int drawing = idx * 3 + StrokeStages()[idx];
+    func_ov007_020c6784(SCENE->picker, sPortraitStrokeCounts[drawing],
                         sPortraitStrokePointCounts[drawing], sPortraitStrokeXCoords[drawing],
                         sPortraitStrokeYCoords[drawing], sPortraitStrokeProgressThresholds[drawing],
                         1);
-    *(int *)(data_ov007_02104ba0 + 0x38) = 0x78;
-    if (idx == 0 && *(u8 *)(data_ov007_0210342c + idx + 0xfc) == 2) {
-        int *o = (int *)data_ov007_02104ba0;
-        int mid = FX_MUL((o[0x38 / 4] << 12), 0x1800);
-        o[0x38 / 4] = mid >> 12;
+    SCENE->replayFrames = 0x78;
+    if (idx == 0 && StrokeStages()[idx] == 2) {
+        int frames = FX_MUL(SCENE->replayFrames << 12, 0x1800);
+        SCENE->replayFrames = frames >> 12;
     }
-    ((u8 *)(data_ov007_0210342c + 0xfc))[idx]++;
-    {
-        u8 *p = (u8 *)(data_ov007_0210342c + 0xfc);
-        if (p[idx] >= 3)
-            p[idx] = 0;
-    }
+    StrokeStages()[idx]++;
+    if (StrokeStages()[idx] >= 3)
+        StrokeStages()[idx] = 0;
 }

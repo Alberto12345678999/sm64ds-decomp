@@ -133,7 +133,8 @@
     "The model and collision SharedFilePtrs are ov016 .bss rows named RockPillar_ModelFile / RockPillar_ClsnFile in symbols.txt (each shares its address with a data_ov016_ alias); they are data names, not the class name, and are left for a separate rename. The CLPS block data_ov016_02113cac is unnamed ov016 .data this TU does not own.",
     "STYLE ORACLE: src/game/actors/d_a_obj_fl_block.cpp / d_a_obj_fl_ring.cpp -- dBgActor_c leaves with the same inline-empty-destructor shape and the same deadstrip-data RTTI licensing.",
     "fold-lane-c-0929: folded the daObjKi_Hasira_c_classInit registry factory (0x02112ec4..0x02112ef4) into this already-promoted TU, widening the complete delinks.txt claim from 0x02112a00..0x02112ec4 to 0x02112a00..0x02112ef4. The loose one-function source hand-called fBase_c::operator new(808), dBgActor_c::dBgActor_c() and stored _ZTV16daObjKi_Hasira_c; daObjKi_Hasira_c declares no constructor of its own, so the compiler-synthesized default constructor emits exactly that sequence, and the factory is now written as the real `return new daObjKi_Hasira_c();`. No pragma in this TU, so emission is reverse of source order; the factory, being the highest ROM address in the run, is written at the very top of the file, ahead of InitResources.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (27 sections, 110 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -603,12 +604,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@713",
+      "from": "@712",
       "to": "@160",
       "evidence": "emitted destructor-registration node collides with ov002 @657; renumber to fleet-free name of the same length"
     },
     {
-      "from": "@714",
+      "from": "@713",
       "to": "@161",
       "evidence": "emitted destructor-registration node renumbered alongside @657 so both nodes leave the collision-prone emission range; @161 is unused everywhere and the same length"
     }

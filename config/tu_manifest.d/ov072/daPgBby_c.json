@@ -484,7 +484,8 @@
     "The state steps are already real daPgBby_c methods in the current header. Their address-based configured names remain; State is two native int(daPgBby_c::*)() members. The complete six-entry array ends at0x02122dcc; data_ov072_02122dc4 is an interior label, not a separate owner.",
     "Historical PR4038 boundary: RTTI/type name, profile and vtable were outside that native-handle/state slice. The data-pgbby-metadata1017 continuation now owns the exact184-byte metadata/profile band through0x02122b0c. The following20-byte unknown tail remains ROM-owned. Other duplicate policies, ABI/layout findings and descriptive naming limitations remain.",
     "Global rename correspondence is recorded in the owned experiment/handoff; existing address attribution and reserved global rename ledger remain unchanged.",
-    "data-pgbby-metadata1017 extends the existing .data ownership by184bytes: four native objects183bytes plus one type-name alignment byte. The class vtable is132bytes including its ABI preamble, not152bytes inferred from the next configured object. A boundary label at0x02122b0c preserves the unclaimed20-byte tail. Production source assignment does not prove the original TU filename. All prior emitted definitions and native initialization must remain exact."
+    "data-pgbby-metadata1017 extends the existing .data ownership by184bytes: four native objects183bytes plus one type-name alignment byte. The class vtable is132bytes including its ABI preamble, not152bytes inferred from the next configured object. A boundary label at0x02122b0c preserves the unclaimed20-byte tail. Production source assignment does not prove the original TU filename. All prior emitted definitions and native initialization must remain exact.",
+    "Collision property member calls replace local helper declarations. Reconciled 22 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (76 sections, 276 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -941,112 +942,112 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@917",
+      "from": "@916",
       "to": "data_ov072_02122a34",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@913",
+      "from": "@912",
       "to": "data_ov072_02122a44",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@915",
+      "from": "@914",
       "to": "data_ov072_02122a3c",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@927",
+      "from": "@926",
       "to": "data_ov072_02122a24",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@909",
+      "from": "@908",
       "to": "data_ov072_02122a4c",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@907",
+      "from": "@906",
       "to": "data_ov072_02122a14",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@911",
+      "from": "@910",
       "to": "data_ov072_02122a0c",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@925",
+      "from": "@924",
       "to": "data_ov072_021229f4",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@921",
+      "from": "@920",
       "to": "data_ov072_02122a04",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@919",
+      "from": "@918",
       "to": "data_ov072_02122a2c",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@905",
+      "from": "@904",
       "to": "data_ov072_021229fc",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@923",
+      "from": "@922",
       "to": "data_ov072_02122a1c",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@898",
+      "from": "@897",
       "to": "data_ov072_02122d00",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@899",
+      "from": "@898",
       "to": "data_ov072_02122d0c",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@900",
+      "from": "@899",
       "to": "data_ov072_02122d18",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@901",
+      "from": "@900",
       "to": "data_ov072_02122d24",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@902",
+      "from": "@901",
       "to": "data_ov072_02122d30",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@903",
+      "from": "@902",
       "to": "data_ov072_02122cc4",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@929",
+      "from": "@928",
       "to": "data_ov072_02122cd0",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@932",
+      "from": "@931",
       "to": "data_ov072_02122cdc",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@935",
+      "from": "@934",
       "to": "data_ov072_02122ce8",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@938",
+      "from": "@937",
       "to": "data_ov072_02122cf4",
       "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

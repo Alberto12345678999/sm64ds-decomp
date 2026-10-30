@@ -3,13 +3,8 @@
 
 extern void func_ov007_020c1d8c(int i);
 extern void RequestScreenFade(int a, int b, void* p);
-extern char data_ov007_0210342c[];
 extern char func_ov007_020b0520[];
 extern char func_ov007_020af580[];
-
-/* The extern keeps its char[] spelling; the typed view is reached through a
- * cast macro. */
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
 
 /* On entering states[1]'s current state it calls func_ov007_020c1d8c(0);
  * 0x1e ticks in, it fades out to func_ov007_020b0520 (no choice pending)
@@ -27,5 +22,5 @@ void func_ov007_020af4dc(void) {
     } else {
         RequestScreenFade(1, 0, func_ov007_020af580);
     }
-    (*(void (**)(int))(*(char **)data_ov007_0210342c + 0x2c))(0x13);
+    WORK->callback(0x13);
 }

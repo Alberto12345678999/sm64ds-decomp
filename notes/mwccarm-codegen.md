@@ -1497,7 +1497,7 @@ under our flags reproduces, but they DO match as an mwccarm inline-`asm` functio
 stays unmangled and any `bl SYM` inside is a wildcarded reloc, so the oracle accepts it. This
 converts a whole class of "unmatchable floor" into matched (found 2026-06-22 cracking arm9):
 ```c
-asm void func_02059824(void) { push {lr}; bl callee; pop {lr}; bx lr }
+asm void OSi_AlarmHandler(void) { push {lr}; bl callee; pop {lr}; bx lr }
 ```
 WHEN to reach for it (these read as HARD floor from C but are really hand-asm):
 - A `push {lr}`-only frame with NO `sub sp,#4` around a single/double `bl` (C always either
@@ -1650,8 +1650,10 @@ Everything else follows from that. Corollaries, each verified with minimal toys:
 
 **The one matched precedent, and why it is not available here.** A corpus scan of all of arm9
 for the ROM shape `cmp rX,#0; beq #8; <single mov>` finds exactly TWO sites: `func_02068398`
-and `func_0205c048` -- and c048 is MATCHED. Its source (src/unnamed/arm9/0205/func_0205c048.c) buys the branch
-with a genuinely 2-condition guard, giving the assignment block two predecessors:
+and `func_0205c048` (FSi_FindPathCommand) -- and c048 is MATCHED. Its source buys the branch
+with a genuinely 2-condition guard, giving the assignment block two predecessors. The shard
+spelled it with gotos, as below; src/engine/fs/FS_CommandDefault.cpp now spells the same guard
+`if (want_dir != 0 || find_dir != 0) want_dir = 1;`:
 ```c
 if (r8 != 0)      goto Lsep1;   /* pred 1: the goto      */
 if (spflag == 0)  goto Lskip1;
@@ -1853,7 +1855,7 @@ routinely falls to a *different* model's register rotation — always Fable-esca
    `func_ov006_02124088`. Also: `bad=1;` before `reject=0;` (declaration/assignment order)
    reproduced the ROM's `mov r3,#1` / `mov r1,#0` emission order — pair with `opt_propagation
    off` (6r) to stop that order from jump-threading a `==0` test into a `blo`. Cracked
-   `func_02060b64`.
+   `CARDi_TryReadCardDma`.
 
 ### Band economics (measured, 2026-07-21)
 `crackloop.py refine --max-div 25` structural drafts ≈ **70% Opus @71–75K/landed**. Widening to
@@ -1996,7 +1998,7 @@ Levers that landed:
   (`i = cnt-1; cnt = i; arr[i]();`), pinned str-before-ldr. Extends the 6-family volatile
   lever: the scheduler only serializes a pair when both ends are volatile.
   (NOTE: this function was matched concurrently upstream in #542 and was not banked here.)
-- **Read the callee's real width and arity** (`func_02059c18`, div 6->0). The callee returned
+- **Read the callee's real width and arity** (`OSi_SetTimer`, div 6->0). The callee returned
   a full `long long` (the `sbc` subtracts BOTH words) and took a third arg the ROM never
   materializes -- `mov r2,#0` is absent because r2 already held a CSE'd zero from an earlier
   `*(vu16*)0x4000106 = 0` store, which is exactly what kept r2 live and pushed another load
@@ -2015,6 +2017,17 @@ into a pool literal. The wildcarded byte oracle accepts it; the link gate reject
 (`WRONG-DEST reloc: data_020a8138 != config 0x020a813c`). If a merge like this is genuinely
 right, it is a CONFIG symbol-merge change, not a source spelling -- see the dsd symbol-split
 note in the session log.
+
+**RESOLVED (2026-10-30).** Both halves of that verdict have since been settled, and the
+WRONG-DEST half no longer reproduces. Destination resolution is addend-aware now
+(`reloc_audit.resolve_candidate`, `linkcheck.func_relocs_typed`): an `R_ARM_ABS32` against
+`data_020a8138` with a RELA addend of 4 resolves to 0x020a813c, which is exactly what
+`config/arm9/relocs.txt` records, so `match.py --strict-relocs` passes the merged spelling.
+The config half is NOT a fix: removing the `data_020a813c` row makes `dsd delink` fail
+(`No symbol found for relocation from 0x0205fbcc ... to 0x020a813c`), because dsd needs a
+symbol at every `relocs.txt` target and `relocs.txt` has no addend field. The row stays as an
+interior label; the source spells the access as `data_020a8138[i].reply` (#4521).
+Do not re-derive this as a wall; re-measure it.
 
 ## 7c. Third arm9 head cascade (2026-07-22, 7 matches) -- the head's deep tail still pays
 
@@ -2039,7 +2052,7 @@ New levers:
   movs; naming the invariant at only ONE of its three uses (inline at the other two) flipped
   the group order to the ROM's constants-first. Pairs with `opt_loop_invariants off`.
 - **`opt_loop_invariants off` fixes preheader EMISSION ORDER, not just hoisting**
-  (`func_02060f60`, div 2->0) -- it stopped LICM lifting a laundered base above the constant movs.
+  (`CARDi_Request`, div 2->0) -- it stopped LICM lifting a laundered base above the constant movs.
 - **`volatile` on a ring-buffer array pins an indexed store ahead of a wrap-check**
   (`func_0205b070`, div 11->0), after fixing tail store order with inline RMW instead of
   hoisted temps.
@@ -5000,7 +5013,7 @@ register forms:
 ```
 ldr r12,[pc,#0] ; bx r12   58 sites   <- compiler output; 56 have a src file, 0 NONMATCHING
 ldr r0, [pc,#0] ; bx lr     4 sites   <- not a veneer: returns a constant address
-ldr r1, [pc,#0] ; bx r1     1 site    <- func_02057014, the only one
+ldr r1, [pc,#0] ; bx r1     1 site    <- func_02057014 (OS_UnLockCartridge), the only one
 ```
 So the ip form is a solved shape (a one-line tail call in a plain `.c` file reproduces it;
 of the 56 banked sources, 33 are plain `.c` files that do exactly that and the other 23 are
@@ -5060,7 +5073,8 @@ the previous instruction. The ROM's compiler skips it and takes the next registe
 not been used yet.
 
 **Four sites, same delta -- the entire residue on `func_0205256c`, and three of the fourteen
-divergent words on `func_0205a588`.**
+divergent words on `func_0205a588`.** (`func_0205256c` is the SDK's MTX_RotY33_, src/MTX_RotY33_.c. pret/pokediamond's FX_mtx33.c has it as
+hand-written Thumb asm, so no compiler ever had to emit the ROM's register choice.)
 
 | site | dead register at that point | ROM picks | every build picks |
 |---|---|---|---|
@@ -8753,6 +8767,24 @@ compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's 
 limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
 with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
 
+**Heyho (dMg3DHeyhoObjAdapter_c, 2026-10-27).** Six separate function-local statics, not one
+array: `static Vector3 sHeyho_StartMotionFlyIn_Left256(-0x100000, 0, 0)` and the Right256,
+Regroup left/right, and React left/right twins (`+0x100000`). Declared where the hand-written
+guard blocks were, including after `Heyho_React`'s two early returns. Sizes stayed
+`Heyho_StartMotionFlyIn` `0x1a8`, `Heyho_StartMotionRegroup` `0x1a8`, `Heyho_React` `0x1d8`.
+The guards sit between this TU's own counters (`sHeyhoUnsettledCount`, `sJumpComboCount`,
+`sHeyhoScorePopups`, `sHeyhoLayout`, `sHeyhos`, `sHeyhoCount`). Node and storage then run
+through `data_ov006_021403b8` (3 ints) to `sJumpAdapters` (`char *[3]`). That whole window,
+`0x02140300..0x02140400`, is this TU's; `dMgJump3DMario` starts at `0x02140400`. Claim the
+span. Define the plain globals with no initializer. An initializer would grow the file-handle
+`__sinit`, which stayed `0x68` and still relocates to `@1287` / `@1288` (pins `@1336` /
+`@1337`). The six statics did not move those nodes. Map each `@NNN` from the function's pool
+relocation, not by adding a constant. `@167`, `@171`, `@225`, and `@229` were already defined
+in ov064, ov100, ov080, and ov070, so `defined_symbol_renames` sends them to the unused
+same-length `@174`, `@175`, `@235`, and `@236`. `@320` and `@324` were free and stay.
+`Heyho_CheckHitA` matched only as `((Obj **)sJumpAdapters)[i]`; a local `Obj **` was 4 bytes
+short.
+
 `unit020cd744` (TrmpItem) went the whole-TU way, because its nine function-local unit
 vectors' `.bss` is interleaved with file globals and ring-model handles.
 The file defines its globals, `TrmpLine sTrmpLines[4]` (mwcc emits the old
@@ -8894,8 +8926,13 @@ What each one needed beyond §6df:
 - KuppaScript's `gRunningKuppaScript`/`gSavedKuppaScript` (0x0209fc48/0x0209fc4c) sit in a
   second `.bss` run, apart from the rest of the file's state at 0x0209b270. One object
   cannot place its definitions in two runs, so they stay `extern` and unclaimed.
+  arm9 `.bss` follows `.text` TU order. The pair starts where d_wipe.cpp's scanline tables
+  end (`data_0209f648` + 0x600). Next comes the 0x0209fc50 run, read from 0x0203094c on.
+  Between those, only `func_0202fd2c` in d_view.cpp, which zeroes both words, touches them,
+  so they are that TU's `.bss` and not KuppaScript's. Its manifest is still text-only, with
+  RTTI externalized.
 - Three owners are unpromoted shard runs:
-  - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
+  - `__sinit_02074dc4` is folded into `src/Timer.cpp` (`__sinit_Timer.cpp`): RngSeed `data_0209d4b8` plus the Timer `data_0209d4c8`.
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
   - `__sinit_02074e44`: `data_0209e650`, next to `data_0209e64c` of the unpromoted
     0x0201fec8..0x02020820 run.

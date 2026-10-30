@@ -1,8 +1,8 @@
 // Host OS arena: the memory region SetupRootHeap carves the root heap from.
 //
-// On the DS, data_020a0ea4 is the OS globals object and the func_02058*
-// family are the arena accessors (get-low, get-high, align-allocate,
-// set-low). On host the arena is one big malloc'd block, initialized on
+// On the DS these are the Nitro SDK's arena accessors (OS_GetArenaLo,
+// OS_GetArenaHi, OS_SetArenaLo, OS_AllocFromArenaLo) and OS_InitAlloc,
+// which lays the OS heap descriptors out at the bottom of the arena. On host the arena is one big malloc'd block, initialized on
 // first use so the smoke needs no setup call.
 #include <stdlib.h>
 
@@ -39,21 +39,22 @@ extern "C" {
 // 32-bit value and a 64-bit parameter agreeing on a host they do not.
 u32 ROOT_HEAP_ARENA_ID;
 
-int func_02058ea0(u32) { arena_init(); return (int)(size_t)g_lo; }   /* arena lo */
-int func_02058eb4(u32) { arena_init(); return (int)(size_t)g_hi; }   /* arena hi */
+int OS_GetArenaLo(u32) { arena_init(); return (int)(size_t)g_lo; }   /* arena lo */
+int OS_GetArenaHi(u32) { arena_init(); return (int)(size_t)g_hi; }   /* arena hi */
 
-/* align `lo` up by `align`, bounded by hi -- mirrors OS_AllocFromArenaLo's
- * pre-alignment step as SetupRootHeap uses it */
-int func_02059040(u32, int lo, int hi, int align)
+/* On the DS, OS_InitAlloc puts the arena's OSHeapInfo and its last argument's
+ * worth of heap descriptors at lo and returns the 32-aligned memory after them.
+ * The host keeps no OS heaps, so it only rounds lo up by that argument. */
+int OS_InitAlloc(u32, int lo, int hi, int align)
 {
     (void)hi;
     return (lo + align - 1) & ~(align - 1);
 }
 
-void func_02058d58(u32, int newLo) { g_lo = (char *)(size_t)newLo; }  /* set lo */
+void OS_SetArenaLo(u32, int newLo) { g_lo = (char *)(size_t)newLo; }  /* set lo */
 
 /* carve `size` bytes aligned `align` from the low side */
-void *func_02058cd0(u32, int size, int align)
+void *OS_AllocFromArenaLo(u32, int size, int align)
 {
     arena_init();
     char *p = (char *)(((size_t)g_lo + align - 1) & ~(size_t)(align - 1));

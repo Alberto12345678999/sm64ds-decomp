@@ -55,6 +55,9 @@
 struct Sound {
     static void PlayBank2_2D(unsigned int);
 };
+
+void CopyToViewMat(const Matrix4x3 *);
+
 extern "C" {
 void MulVec3Mat4x3(void *, void *, void *);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *, short);
@@ -81,7 +84,6 @@ short Vec3_VertAngle(const void *, const void *);
 void Vec3_MulScalar(void *, void *, int);
 void Vec3_MulScalarInPlace(int *, int);
 void Vec3_Sub(void *, void *, void *);
-void _Z13CopyToViewMatPK9Matrix4x3(void *);
 void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
@@ -93,7 +95,7 @@ void func_02016a14(void *, int);
 void func_02016b24(void *, unsigned int);
 void func_02017ab4(void *);
 void *func_02017acc(void *, unsigned int);
-void func_0202ffec(void *, void *, void *);
+void Quaternion_Multiply(void *, void *, void *);
 void func_0203ccd4(void *, short);
 void func_0203cd80(void *, short);
 void Camera_ProjectToScreen16(char *r4, void *r1, short *r5);
@@ -103,10 +105,10 @@ void MascotWalker_StatePause(char *c);
 void MascotWalker_StartPause(int *t);
 void MascotWalker_StateWalk(char *c);
 void MascotWalker_StartNextPath(char *c);
-void MascotWalker_UpdateMatrix(char *thiz);
+void MascotWalker_UpdateMatrix(MascotWalker *walker);
 void MascotWalker_Draw(char *t);
 void MascotWalker_Update(void *c);
-void MascotWalker_Load(char *thiz);
+void MascotWalker_Load(MascotWalker *walker);
 void Camera_InitDealerView(void *self);
 void Dealer_ResetMatrices(char *c);
 void Dealer_StateWin(char *p);
@@ -128,7 +130,7 @@ int Dealer_IsIdle(int *r0);
 void Dealer_StateIdle(void);
 void Dealer_PlayIdle(char *c);
 void Dealer_Draw(void *self);
-void Dealer_Update(char *thiz);
+void Dealer_Update(Dealer *dealer);
 int Dealer_Load(char *c);
 void Camera_InitSlotsView(void *self);
 void Mascot_StopLooking(int *p);
@@ -675,7 +677,7 @@ void FallingPetal_Update(char *self) {
     Quaternion_FromVector3(&q0, &PETAL(self)->mAxis, &v3);
     Quaternion_SLerp(&q1, &q0, 0x200, &q1);
     Quaternion_Normalize(&q1);
-    func_0202ffec(PETAL(self)->mRot, &q1, PETAL(self)->mRot);
+    Quaternion_Multiply(PETAL(self)->mRot, &q1, PETAL(self)->mRot);
 }
 }
 }
@@ -1564,7 +1566,7 @@ int Dealer_Load(char *c) {
     ((BMD_Material *)ip)[0].flags &= ~1;
     ((BMD_Material *)ip)[5].flags &= ~1;
     ((BMD_Material *)ip)[4].flags |= 2;
-    MascotWalker_Load((char *)&DEALER(c)->mWalker);
+    MascotWalker_Load(&DEALER(c)->mWalker);
     DEALER(c)->mLampTimer = 0;
     DEALER(c)->mLampPattern = 1;
     DEALER(c)->mLightAngle = 0;
@@ -1583,23 +1585,22 @@ extern "C" {
 extern short data_ov006_0212b89c[];
 }
 
-extern "C" void Dealer_Update(char *thiz) {
-    char *c = thiz;
-    C *o = (C *)c;
-    if (*(int *)c != 0) {
+extern "C" void Dealer_Update(Dealer *dealer) {
+    C *o = (C *)dealer;
+    if (dealer->mState[0] != 0) {
         (o->*(o->pmf))();
     }
-    DEALER(c)->mModel.Advance();
-    if (ApproachLinear2(DEALER(c)->mLampTimer, 0, 1) != 0) {
-        short *p = &DEALER(c)->mLampPattern;
+    dealer->mModel.Advance();
+    if (ApproachLinear2(dealer->mLampTimer, 0, 1) != 0) {
+        short *p = &dealer->mLampPattern;
         *p = *p + 1;
-        if (DEALER(c)->mLampPattern > 7)
-            DEALER(c)->mLampPattern = 1;
-        DEALER(c)->mLampTimer = data_ov006_0212b89c[DEALER(c)->mLampPattern];
+        if (dealer->mLampPattern > 7)
+            dealer->mLampPattern = 1;
+        dealer->mLampTimer = data_ov006_0212b89c[dealer->mLampPattern];
     }
-    short *q = &DEALER(c)->mLightAngle;
+    short *q = &dealer->mLightAngle;
     *q = *q + 0x400;
-    MascotWalker_Update(&DEALER(c)->mWalker);
+    MascotWalker_Update(&dealer->mWalker);
 }
 }
 
@@ -2238,27 +2239,26 @@ extern "C" {
 extern Vector3_16 data_020a0edc;
 }
 
-extern "C" void MascotWalker_Load(char *thiz) {
-    char *c = thiz;
+extern "C" void MascotWalker_Load(MascotWalker *walker) {
     {
-        void *bmd = dExtSimpleModel_c::LoadFile(WALKER(c)->mModelFile);
-        WALKER(c)->mModel.SetFile((BMD_File *)bmd, 1, -1);
+        void *bmd = dExtSimpleModel_c::LoadFile(walker->mModelFile);
+        walker->mModel.SetFile((BMD_File *)bmd, 1, -1);
     }
-    dExtFrameCtrl_c::LoadFile(WALKER(c)->mWalkAnimFile);
-    dExtFrameCtrl_c::LoadFile(WALKER(c)->mPauseAnimFile);
-    WALKER(c)->mModel.SetAnim(*(BCA_File *)WALKER(c)->mPauseAnimFile.filePtr, 0, 0, 0x800, 0);
-    WALKER(c)->mModel.SetPolygonID(1);
-    WALKER(c)->mShadow.InitCylinder();
-    WALKER(c)->mScale.x = 0x1000;
-    WALKER(c)->mScale.y = 0x1000;
-    WALKER(c)->mScale.z = 0x1000;
-    WALKER(c)->mPos.x = data_020a0ebc.x;
-    WALKER(c)->mPos.y = data_020a0ebc.y;
-    WALKER(c)->mPos.z = data_020a0ebc.z;
-    WALKER(c)->mAngleX = data_020a0edc.x;
-    WALKER(c)->mAngleY = data_020a0edc.y;
-    WALKER(c)->mAngleZ = data_020a0edc.z;
-    MascotWalker_StartNextPath(c);
+    dExtFrameCtrl_c::LoadFile(walker->mWalkAnimFile);
+    dExtFrameCtrl_c::LoadFile(walker->mPauseAnimFile);
+    walker->mModel.SetAnim(*(BCA_File *)walker->mPauseAnimFile.filePtr, 0, 0, 0x800, 0);
+    walker->mModel.SetPolygonID(1);
+    walker->mShadow.InitCylinder();
+    walker->mScale.x = 0x1000;
+    walker->mScale.y = 0x1000;
+    walker->mScale.z = 0x1000;
+    walker->mPos.x = data_020a0ebc.x;
+    walker->mPos.y = data_020a0ebc.y;
+    walker->mPos.z = data_020a0ebc.z;
+    walker->mAngleX = data_020a0edc.x;
+    walker->mAngleY = data_020a0edc.y;
+    walker->mAngleZ = data_020a0edc.z;
+    MascotWalker_StartNextPath((char *)walker);
 }
 }
 
@@ -2332,7 +2332,7 @@ extern "C" void MascotWalker_Update(C *c) {
 namespace s020c07a0 {
 extern "C" {
 void MascotWalker_Draw(char *t) {
-    MascotWalker_UpdateMatrix(t);
+    MascotWalker_UpdateMatrix((MascotWalker *)t);
     (&WALKER(t)->mShadow)->InitModel(&WALKER(t)->mModel.mat4x3, 0x3c000, 0x14000, 0x3c000, 0xc);
     /* dExtSimpleModel_c's own render, called directly (0x02016b78), as Mascot_Draw does. */
     WALKER(t)->mModel.dExtSimpleModel_c::Render(0);
@@ -2348,17 +2348,16 @@ extern "C" {
 extern Matrix4x3 data_020a0e68;
 }
 
-extern "C" void MascotWalker_UpdateMatrix(char *thiz) {
-    char *c = thiz;
-    WALKER(c)->mModel.UpdateVerts();
+extern "C" void MascotWalker_UpdateMatrix(MascotWalker *walker) {
+    walker->mModel.UpdateVerts();
     /* Bone 6 takes the head angle. */
-    data_020a0e68 = WALKER(c)->mModel.data.transforms[6];
-    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, WALKER(c)->mHeadAngle);
-    WALKER(c)->mModel.data.transforms[6] = data_020a0e68;
-    Matrix4x3_FromTranslation((Matrix4x3 *)&data_020a0e68, WALKER(c)->mPos.x, WALKER(c)->mPos.y,
-                              WALKER(c)->mPos.z);
-    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, WALKER(c)->mAngleY);
-    WALKER(c)->mModel.mat4x3 = data_020a0e68;
+    data_020a0e68 = walker->mModel.data.transforms[6];
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, walker->mHeadAngle);
+    walker->mModel.data.transforms[6] = data_020a0e68;
+    Matrix4x3_FromTranslation((Matrix4x3 *)&data_020a0e68, walker->mPos.x, walker->mPos.y,
+                              walker->mPos.z);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, walker->mAngleY);
+    walker->mModel.mat4x3 = data_020a0e68;
 }
 }
 
@@ -2609,7 +2608,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
 
     G3i::LookAt_(&self->eye, &up, &self->target, true, (Matrix4x3 *)&self->viewMat);
 
-    _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
+    CopyToViewMat((const Matrix4x3 *)&self->viewMat);
 
     data_0209f43c.Func_020156DC(0x1555, self->angle, 0x1000, 0x1388000);
 }

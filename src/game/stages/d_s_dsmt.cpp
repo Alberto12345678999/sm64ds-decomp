@@ -42,22 +42,7 @@
 #include "decl_common.h"
 #include "Memory.h"
 #include "GX.h"
-
-/* One save file, the 0x44-byte unit SaveData::ReadFileData and
- * SaveData::EraseSaveFile move; include/SaveData.h only forward-declares
- * it. Layout as the save block's callers spell it. */
-struct FileSaveData {
-    u32 magic8000;
-    u32 flags1;
-    u32 flags2;
-    u32 minigameRabbits;
-    u32 cannonUnlocked;
-    u8 stars[30];
-    u8 coinRecords[15];
-    u8 currentCharacter;
-    u8 controllerMode;
-    u8 unk43;
-};
+#include "math/CalcLib.h"
 
 extern "C" {
 extern FileSaveData *data_0209b33c;
@@ -68,7 +53,11 @@ extern u8 data_0208ee3c[];
 extern int data_0209caa0[];
 extern u8 data_0209cae4[];
 extern u8 data_0209f1e0;
-extern void *data_0209d4a8;
+/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+   friends): the scene registers its own object here and clears it on the way
+   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
+   graphCallback_c (include/dGraph_c.h). */
+extern dGraph_c::callback_c *data_0209d4a8;
 extern int data_0208ee44;
 extern void *data_020a0ea0;
 /* Linker-defined overlay IDs: the address is the overlay number. */
@@ -80,12 +69,11 @@ void func_ov007_020cc0e4(FileSaveData *files);
 int func_ov007_020cc118(int musicId, unsigned int delayFrames);
 void func_ov007_020cc168(u32 saveSlot);
 int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4);
-void func_ov007_020b6eb4(void *callback);
+int func_ov007_020b6eb4(void);
 void func_0203cbc0(void *buffer);
 void Enable3dEngines();
 int GetSoundMode(void);
 int IsStarCollected(int course, int star);
-unsigned short DecIfAbove0_Short(unsigned short *p);
 void StartMinigameMenu(u8 returnToRecRoom);
 void SetSoundMode(int mode);
 void TurnBacklightOn(void);
@@ -379,7 +367,7 @@ int dScDSMT_c::graphCallback_c::GraphCallback0() {
 /* graphCallback_c slot 2: hand the callback object to the ov007 routine. */
 // @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev
 int dScDSMT_c::graphCallback_c::GraphCallback2() {
-    func_ov007_020b6eb4(this);
+    func_ov007_020b6eb4();
     return 0;
 }
 

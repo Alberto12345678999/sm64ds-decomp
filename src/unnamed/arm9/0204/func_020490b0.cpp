@@ -1,16 +1,20 @@
 //cpp
 #include "types.h"
+#include "nnsys/snd/player.h"
 extern "C" {
 extern s32 data_020a4c5c[];
 extern s32 data_020a4c4c[];
 extern u16 data_020a4c48[];
 extern s32 data_020a4c54[];
 
-void func_0204f86c(void *p, u16 idx, s32 val);
-void func_0204f82c(void *p, u16 idx, s32 val);
-
-void func_020490b0(void *c)
-{
+/* Step the two track-mask volume ramps func_020494cc set up: move each
+   current volume (data_020a4c5c) by its step (data_020a4c4c) toward its
+   target (data_020a4c54), stopping the ramp there, and send it through
+   NNS_SndPlayerSetTrackVolume in 0..127. The tracks are muted with
+   NNS_SndPlayerSetTrackMute when a falling ramp drops below 0 and unmuted
+   when a rising one leaves 0. func_020132d8 calls it every frame on
+   data_0209b4a0. */
+void func_020490b0(NNSSndHandle *c) {
     s32 t[4];
     s32 i;
     s32 a;
@@ -21,7 +25,7 @@ void func_020490b0(void *c)
     if (c == 0) {
         return;
     }
-    if (*(s32 *)c == 0) {
+    if (c->player == 0) {
         return;
     }
 
@@ -58,13 +62,12 @@ void func_020490b0(void *c)
             data_020a4c5c[i] = t[1];
         } else if (w < 0) {
             data_020a4c5c[i] = t[2];
-            func_0204f86c(c, data_020a4c48[i], 1);
+            NNS_SndPlayerSetTrackMute(c, data_020a4c48[i], 1);
         }
         if (flag != 0) {
-            func_0204f86c(c, data_020a4c48[i], t[3]);
+            NNS_SndPlayerSetTrackMute(c, data_020a4c48[i], t[3]);
         }
-        func_0204f82c(c, data_020a4c48[i], data_020a4c5c[i] >> 12);
+        NNS_SndPlayerSetTrackVolume(c, data_020a4c48[i], data_020a4c5c[i] >> 12);
     }
 }
-
 }

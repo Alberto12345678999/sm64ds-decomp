@@ -1,44 +1,28 @@
-extern int *data_ov007_0210342c;
-void func_ov007_020aec00(void)
-{
-  int *p28;
-  int zero;
-  int neg1;
-  int i;
-  int sum;
-  int k;
-  int *g;
-  int off;
-  unsigned char *arr;
-  unsigned char *e;
-  unsigned char *row;
-  i = 0;
-  g = data_ov007_0210342c;
-  off = i;
-  p28 = (int *) g[10];
-  zero = i;
-  neg1 = -1;
-  for (; i < 3; i++)
-  {
-    arr = (unsigned char *) (*p28);
-    sum = zero;
-    row = arr + i;
-    if (row[0xb] != 0)
-    {
-      k = zero;
-      e = arr + off;
-      while (k < 15)
-      {
-        sum += e[0x11];
-        sum += e[0x6b];
-        e++;
-        k++;
-      }
-      sum += row[0x98];
+#include "types.h"
+#include "Ov007Work.h"
+#include "Ov007Settings.h"
+
+/* Totals each save file's stars from the boot-args table: every course's
+ * stars plus level 0x1d's. */
+void func_ov007_020aec00(void) {
+    Ov007Settings *settings;
+    int i;
+    int sum;
+    int k;
+    i = 0;
+    settings = WORK->settings;
+    for (; i < 3; i++) {
+        Ov007BootArgs *s = settings->bootArgs;
+        sum = 0;
+        if (s->fileUsed[i] != 0) {
+            for (k = 0; k < 15; k++) {
+                sum += s->otherStars[i][k];
+                sum += s->firstStar[i][k];
+            }
+            sum += s->level1dStars[i];
+        } else {
+            sum = -1;
+        }
+        settings->starCounts[i] = sum;
     }
-    else
-      sum = neg1;
-    ((short *) (((char *) p28) + 4))[i] = (short) sum;
-    off += 15;
-  }
 }

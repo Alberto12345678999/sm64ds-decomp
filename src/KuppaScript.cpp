@@ -38,7 +38,8 @@
  * .data object at its retail address. The original order is not
  * recoverable. gRunningKuppaScript and gSavedKuppaScript are not here:
  * they sit in a second .bss run (0x0209fc48), apart from this file's
- * other state, and one object cannot place a definition in two runs.
+ * other state, and one object cannot place a definition in two runs. By
+ * link order that run is d_view.cpp's.
  *
  * The file is ROM-ascending under `#pragma defer_codegen off`, which also
  * keeps ProcessKuppaScript's opt_common_subs bracket to that one function.
@@ -4419,17 +4420,6 @@ u8 data_02088610[] = {7,
 
 dFdColor_c data_0209b294; /* GLOBAL_FADER */
 
-/* The fader's timing slots as the ROM calls them here: with a second word,
- * 0, that include/dFader_c.h does not declare and dFdBrightness_c's bodies
- * ignore. */
-struct FaderCallView {
-    virtual void v0();
-    virtual void v1();
-    virtual void AdvanceFade();                       /* slot 2 */
-    virtual int SetBackwardTime(u32 frames, int arg); /* slot 3 */
-    virtual int SetForwardTime(u32 frames, int arg);  /* slot 4 */
-};
-
 /* CURRENT_GAMEMODE is 2 while the castle-fall cutscene runs:
  * ContinueKuppaScriptIfNecessary stores 2 only when it resumes
  * FALL_IN_FRONT_OF_CASTLE_CUTSCENE, and EndKuppaScript clears it once no
@@ -4646,32 +4636,32 @@ void ProcessKuppaScript() {
                 dFdColor_c *f = &data_0209b294;
                 f->SetToStart();
                 f->color = 0x7fff;
-                ((FaderCallView *)f)->SetForwardTime(0xe, 0);
+                f->SetForwardTime(0xe, 0);
                 data_0209d4b0 = f;
             } else if (command == KS_WHITE_FADE_BACKWARD) {
                 dFdColor_c *f = &data_0209b294;
                 f->SetToEnd();
                 f->color = 0x7fff;
-                ((FaderCallView *)f)->SetBackwardTime(0x50, 0);
+                f->SetBackwardTime(0x50, 0);
                 data_0209d4b0 = f;
             } else if (command == KS_BLACK_FADE_FORWARD) {
                 dFdColor_c *f = &data_0209b294;
                 f->SetToStart();
                 f->color = 0;
-                ((FaderCallView *)f)->SetForwardTime(0x1e, 0);
+                f->SetForwardTime(0x1e, 0);
                 data_0209d4b0 = f;
             } else if (command == KS_BLACK_FADE_BACKWARD) {
                 dFdColor_c *f = &data_0209b294;
                 data_0209d45c = 0x10;
                 f->SetToEnd();
                 f->color = 0;
-                ((FaderCallView *)f)->SetBackwardTime(0x50, 0);
+                f->SetBackwardTime(0x50, 0);
                 data_0209d4b0 = f;
             } else if (command == KS_SCENE_FADE) {
                 dFdColor_c *f = &data_0209b294;
                 f->SetToEnd();
                 f->color = 0;
-                ((FaderCallView *)f)->SetForwardTime(0x1e, 0);
+                f->SetForwardTime(0x1e, 0);
                 dScene_c::SetFaders(f);
             } else if (command == KS_WATERFALL_SOUNDS) {
                 data_ov002_02110aec = 0;

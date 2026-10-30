@@ -1,24 +1,27 @@
 #include "types.h"
+#include "nnsys/snd/player.h"
 extern int data_020a4c5c[];
 extern int data_020a4c4c[];
 extern u16 data_020a4c48[];
 
-void func_0204f82c(void *a, int b, int c);
-void func_0204f86c(void *a, int b, int c);
-
-void func_0204921c(void *a, int mode)
-{
+/* For the three sequences that have them (0x3b, 0x3d, 0x3e), set the volume
+   (data_020a4c5c, 0..0x7f000) of two track masks (data_020a4c48) for `mode`,
+   and send each through NNS_SndPlayerSetTrackVolume; a track set to 0 also gets
+   NNS_SndPlayerSetTrackMute(a, mask, 1). func_02011dcc calls it with data_0208e438 after
+   func_02051fb4 succeeds on the handle at data_0209b4a0. func_020494cc sets
+   the matching targets and steps (data_020a4c54, data_020a4c4c). */
+void func_0204921c(NNSSndHandle *a, int mode) {
     int i;
     int id;
-    char *p;
+    NNSSndSeqPlayer *p;
 
     if (a == 0)
         return;
-    p = *(char **)a;
+    p = a->player;
     if (p == 0)
         return;
 
-    id = *(u16 *)(p + 0x38);
+    id = p->seqNo;
 
     if (mode == 0) {
         if (id != 0x3b)
@@ -90,8 +93,8 @@ void func_0204921c(void *a, int mode)
             data_020a4c5c[i] = 0;
         else if (data_020a4c5c[i] > 0x7f000)
             data_020a4c5c[i] = 0x7f000;
-        func_0204f82c(a, data_020a4c48[i], data_020a4c5c[i] >> 12);
+        NNS_SndPlayerSetTrackVolume(a, data_020a4c48[i], data_020a4c5c[i] >> 12);
         if (data_020a4c5c[i] == 0)
-            func_0204f86c(a, data_020a4c48[i], 1);
+            NNS_SndPlayerSetTrackMute(a, data_020a4c48[i], 1);
     }
 }

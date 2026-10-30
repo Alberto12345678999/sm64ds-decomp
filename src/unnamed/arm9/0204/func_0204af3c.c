@@ -57,6 +57,10 @@ struct Tex
     u16 height;
 };
 
+/* Bind a particle texture record: set its image and palette (texture
+   coordinates from the texcoord command, texGen 1), then load a texture
+   matrix that scales by its width and height. func_0204a5c8 binds the system's
+   texture with it, and each particle's own when the texture animates. */
 void func_0204af3c(struct Tex *self)
 {
     struct TexParam p = self->param;

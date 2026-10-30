@@ -2,31 +2,26 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern "C" {
 
 extern void func_ov007_020b2614(int a, int b, int c);
 
-struct Sub { char pad2[2]; s16 field2; int field4; char pad8[4]; int fieldc; };
-struct S {
-    char pad[8];
-    struct Sub* f8;
-    struct Sub* fc;
-    char pad10[0xdc];
-    int fec;
-    char padf0[8];
-    int ff8;
-};
-extern struct S* data_ov007_0210342c;
-
+/* Grows the model over states[1]'s ticks: at tick 0 it starts
+ * func_ov007_020b2614(0, 0, -1); over ticks 0..10 modelGrowth rises from 0
+ * to 0x17d0 (quadratic ease-in), over ticks 10..30 it eases back down to
+ * 0x1000, and after that states[1] goes to state 0. At tick 10 states[2] goes
+ * to state 3. Figure 1 holds the growth at 0x1000. */
 void func_ov007_020b1b74(void)
 {
-    int r4 = data_ov007_0210342c->f8->fieldc;
+    int r4 = WORK->states[1]->stateTicks;
     if (r4 == 0)
         func_ov007_020b2614(0, 0, -1);
 
     if (r4 == 0xa)
-        data_ov007_0210342c->fc->field2 = 3;
+        WORK->states[2]->requestedState = 3;
 
     if (r4 >= 0 && r4 <= 0xa) {
         int val;
@@ -38,7 +33,7 @@ void func_ov007_020b1b74(void)
         else
             val = cstd::div(r4 << 12, 0xa);
         sq = (int)(((long long)val * val) >> 12);
-        data_ov007_0210342c->ff8 = FX_MUL(sq, 0x17d0);
+        WORK->modelGrowth = FX_MUL(sq, 0x17d0);
     } else if (r4 <= 0x1e) {
         int val;
         int t;
@@ -51,12 +46,12 @@ void func_ov007_020b1b74(void)
             val = cstd::div((r4 - 0xa) << 12, 0x14);
         t = 0x1000 - val;
         sq = (int)(((long long)t * t) >> 12);
-        data_ov007_0210342c->ff8 = FX_MUL(sq, 0x7d0) + 0x1000;
+        WORK->modelGrowth = FX_MUL(sq, 0x7d0) + 0x1000;
     } else {
-        data_ov007_0210342c->f8->field2 = 0;
+        WORK->states[1]->requestedState = 0;
     }
 
-    if (data_ov007_0210342c->fec == 1)
-        data_ov007_0210342c->ff8 = 0x1000;
+    if (WORK->figureIndex == 1)
+        WORK->modelGrowth = 0x1000;
 }
 }

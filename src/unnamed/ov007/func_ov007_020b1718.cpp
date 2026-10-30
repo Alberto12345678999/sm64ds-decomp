@@ -5,6 +5,9 @@
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
 #include "cstd.h"
+#include "Ov007Camera.h"
+#include "Ov007Model.h"
+#include "Ov007Light.h"
 
 extern "C" {
 
@@ -32,68 +35,14 @@ typedef struct Vec3Words {
  * movge first and rotates the block's coloring.
  */
 
-/* The 0x2c-byte vector tween func_ov007_020c8f64 allocates: Ov007Tween's
- * prefix, then Vector3 from/to (func_ov007_020c8de0 blends them through
- * `out`). Only the from/to pair is spelled here. */
-typedef struct Ov007VecTween {
-    char pad_00[0x14];
-    Vector3 from; /* 0x14 */
-    Vector3 to;   /* 0x20 */
-} Ov007VecTween;
-
-/* The 0xd8-byte camera func_ov007_020c023c allocates. func_ov007_020b2160
- * passes +0x08/+0x20/+0x14 to G3i::LookAt_ as eye/up/target, and
- * func_ov007_020bffb8 places the eye `distance` from the target. Only the
- * slots this file touches are spelled. */
-typedef struct Ov007Camera {
-    char pad_00[0x14];
-    Vector3 target; /* 0x14 */
-    char pad_20[0xc];
-    int distance; /* 0x2c */
-    char pad_30[0xc];
-    Ov007VecTween *targetTween; /* 0x3c: func_ov007_020c023c binds it to target */
-    Ov007Tween *distanceTween;  /* 0x40: bound to distance */
-} Ov007Camera;
-
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
- * func_ov007_020bc02c, only the slots this file touches. */
-typedef struct Ov007AnimPlayer {
-    s32 state; /* 0x00: 0 playing; func_ov007_020c9110 sets 2 when a one-shot ends */
-    char pad_04[8];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
-    u16 frameCount; /* 0x12 */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; only the slot
- * this file reads. */
-typedef struct Ov007Model {
-    char pad_00[0x18];
-    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020b257c starts it */
-} Ov007Model;
-
-/* The 0x28-byte light func_ov007_020c241c allocates; func_ov007_020c232c
- * writes +0x22 to LIGHT_COLOR. Only that slot is spelled. */
-typedef struct Ov007Light {
-    char pad_00[0x22];
-    u16 color; /* 0x22 */
-} Ov007Light;
-
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020b257c(void);
-extern void func_ov007_020b2454(void* a, void* b);
+extern void func_ov007_020b2454(void *a, void *b);
 extern void func_ov007_020bce70(int a, int b);
 extern int func_ov007_020c3be0(int a, int b, int c);
 extern void func_ov007_020b2764(int a);
 
-extern char* data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
-void func_ov007_020b1718(void)
-{
+void func_ov007_020b1718(void) {
     Ov007Model *F = WORK->model;
     int r7val;
     int v;
@@ -106,9 +55,9 @@ void func_ov007_020b1718(void)
     if (v == 0)
         WORK->states[2]->requestedState = 2;
 
-    if (v == 0 && *(int*)(data_ov007_0210342c + 0xec) == 0)
+    if (v == 0 && WORK->figureIndex == 0)
         func_ov007_020bdeb0(0x1c);
-    else if (v == 0 && *(int*)(data_ov007_0210342c + 0xec) == 1)
+    else if (v == 0 && WORK->figureIndex == 1)
         func_ov007_020bdeb0(0x1d);
 
     mode = WORK->transitionMode;
@@ -122,8 +71,10 @@ void func_ov007_020b1718(void)
         r7val = (int)F18->frame - ((int)F18->frameCount - 0x12);
 
         if (v < 0xc) {
-            if (v <= 0) q = 0;
-            else if (v >= 0xc) q = 0x1000;
+            if (v <= 0)
+                q = 0;
+            else if (v >= 0xc)
+                q = 0x1000;
             else
                 q = cstd::div(v << 0xc, 0xc);
             r3 = q << 2;
@@ -168,8 +119,10 @@ void func_ov007_020b1718(void)
             func_ov007_020b2454(&m->targetTween->to, &m->distanceTween->to);
         }
 
-        if (v <= 0) q = 0;
-        else if (v >= 0x1e) q = 0x1000;
+        if (v <= 0)
+            q = 0;
+        else if (v >= 0x1e)
+            q = 0x1000;
         else
             q = cstd::div(v << 0xc, 0x1e);
 
@@ -198,7 +151,8 @@ void func_ov007_020b1718(void)
                                  (s64)q * m->distanceTween->to) >>
                                 12);
         }
-        if (v >= 0x28) flag = 1;
+        if (v >= 0x28)
+            flag = 1;
         break;
     }
     }
@@ -213,8 +167,10 @@ void func_ov007_020b1718(void)
         int qq;
         func_ov007_020bce70(2, 0xf);
         w = WORK->paletteState->stateTicks;
-        if (w <= 0) qq = 0;
-        else if (w >= 0xf) qq = 0x1000;
+        if (w <= 0)
+            qq = 0;
+        else if (w >= 0xf)
+            qq = 0x1000;
         else
             qq = cstd::div(w << 0xc, 0xf);
         WORK->lights[1]->color = func_ov007_020c3be0(qq, WORK->lights[1]->color, 0);
@@ -222,8 +178,10 @@ void func_ov007_020b1718(void)
 
     {
         int qq2;
-        if (v <= 0) qq2 = 0;
-        else if (v >= divisor) qq2 = 0x1000;
+        if (v <= 0)
+            qq2 = 0;
+        else if (v >= divisor)
+            qq2 = 0x1000;
         else
             qq2 = cstd::div(v << 0xc, divisor);
         func_ov007_020b2764(0x1000 - qq2);

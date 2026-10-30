@@ -1,12 +1,7 @@
-typedef enum { FALSE, TRUE } Bool;
+#include "Ov007Display.h"
+#include "Ov007BinFile.h"
 
-/* The 0x84-byte block index func_ov007_020c9a2c fills; names as there,
- * untyped here: only block 0's data is read. */
-typedef struct Ov007BinFile {
-    void *header;        /* 0x00 */
-    void *blocks[16];    /* 0x04 */
-    void *blockData[16]; /* 0x44 */
-} Ov007BinFile;
+typedef enum { FALSE, TRUE } Bool;
 
 /* Block 0 of a character file: a 0xc-byte header, then the tile data. Each
  * slot is read as a byte; func_ov007_020c3550 keeps them in the record
@@ -22,15 +17,12 @@ typedef struct Ov007CharBlock {
     char pad_09[3];
 } Ov007CharBlock;
 
-typedef char Ov007BinFile_size_must_be_0x84[sizeof(Ov007BinFile) == 0x84 ? 1 : -1];
 typedef char Ov007CharBlock_size_must_be_0xc[sizeof(Ov007CharBlock) == 0xc ? 1 : -1];
 
-extern void func_ov007_020c9a2c(void *buf, int x);
-extern void func_ov007_020c3550(int a, int b, int c, int d);
+extern Ov007CharRecord *func_ov007_020c3550(const void *tiles, int width, int height, int is8bpp);
 
 /* Builds the character record for file x: its tiles follow block 0's header. */
-int func_ov007_020c99d8(int x)
-{
+Ov007CharRecord *func_ov007_020c99d8(int x) {
     Ov007BinFile buf;
     Ov007CharBlock *ip;
     unsigned char a;
@@ -51,5 +43,5 @@ int func_ov007_020c99d8(int x)
     } else {
         d = TRUE;
     }
-    func_ov007_020c3550((int)(ip + 1), b, c, d);
+    return func_ov007_020c3550(ip + 1, b, c, d);
 }

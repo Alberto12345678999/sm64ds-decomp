@@ -5,9 +5,10 @@
 extern unsigned int func_02018a24(unsigned int handle);
 extern void func_020185c0(void *buf, int x);
 extern void func_020184e0(void *buf, int a, int b);
-void func_02018270(unsigned int handle, int a, int b){
-  char buf[0x44];
-  unsigned int r = func_02018a24(handle);
-  func_020185c0(buf, r);
-  func_020184e0(buf, a, b);
+/* Read up to b bytes of the asset handle's file into a (func_020184e0). */
+void func_02018270(unsigned int handle, int a, int b) {
+    char buf[0x44];
+    unsigned int r = func_02018a24(handle);
+    func_020185c0(buf, r);
+    func_020184e0(buf, a, b);
 }

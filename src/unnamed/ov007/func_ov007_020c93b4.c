@@ -1,8 +1,8 @@
-/* func_ov007_020c93b4 at 0x020c93b4 - thunk: func_020555a4(a + 4) */
+#include "Ov007PaletteBuf.h"
 
-extern int func_020555a4(int a);
+extern void func_020555a4(void *dst);
 
-int func_ov007_020c93b4(int a)
-{
-    return func_020555a4(a + 4);
+/* Hands the buffer's colours to func_020555a4 as the toon table. */
+void func_ov007_020c93b4(Ov007PaletteBuf *buf) {
+    func_020555a4(buf->colors);
 }

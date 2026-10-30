@@ -4,12 +4,11 @@
 #include "decl_common.h"
 /* recovered: shared common types */
 #include "common.h"
-#define AT(p,off) ((void*)(int)((char*)(p)+(off)))
+#define AT(p, off) ((void*)(int)((char*)(p)+(off)))
 
 #include "Ov007Sprite.h"
 
-int func_ov007_020c44e4(int count)
-{
+Ov007Sprite *func_ov007_020c44e4(int count) {
     Ov007Sprite *p = (Ov007Sprite *)func_ov007_020c3df4(0, 0x88);
     int i;
     u16 zs[3];
@@ -79,5 +78,5 @@ int func_ov007_020c44e4(int count)
         p->shadowOffset[2] = zs[2];
     }
     p->tilemap = 0;
-    return (int)p;
+    return p;
 }

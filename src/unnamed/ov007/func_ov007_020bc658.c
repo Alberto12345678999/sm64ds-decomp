@@ -1,15 +1,20 @@
-extern int func_ov007_020c92ac();
-extern void func_02046b64(int, int);
+#include "dExtModel_c.h"
+#include "Ov007Model.h"
 
-void func_ov007_020bc658(int *c, int *tbl, int count){
-  int i;
-  c[7]=count;
-  c[8]=(int)tbl;
-  c[9]=func_ov007_020c92ac();
-  for(i=0;i<count;i++){
-    int v=((int*)c[8])[i];
-    if(v!=0){
-      func_02046b64(*(int*)c[0], v);
+extern void *func_ov007_020c92ac(void);
+extern void func_02046b64(void *modelFile, void *file);
+
+/* Binds the model's texture-SRT animations: n BTA files, a fresh
+ * func_ov007_020c92ac player, and each nonzero file prepared against the
+ * model's BMD file. */
+void func_ov007_020bc658(Ov007Model *m, struct BTA_File **files, int n) {
+    int i;
+
+    m->numTexSrtAnims = n;
+    m->texSrtAnims = files;
+    m->texSrtAnim = func_ov007_020c92ac();
+    for (i = 0; i < n; i++) {
+        if (m->texSrtAnims[i])
+            func_02046b64(m->model->modelFile, m->texSrtAnims[i]);
     }
-  }
 }

@@ -2,113 +2,116 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "Ov007Mesh.h"
 
 extern "C" {
 
-typedef struct {
-    char pad[8];
-    Vector3 ****rows;
-} Grid;
+/* The ROM copies the template with one ldm/stm block. Under C++ a struct of
+ * six named ints copies word by word, a struct with an array member as one
+ * block, so the copy goes through this. */
+struct MeshParamsWords {
+    int w[6];
+};
 
-typedef struct { int v[6]; } Copy6;
-typedef struct {
-    Vector3 *buf0;
-    Grid *grid;
-    int *buf8;
-    Copy6 copy;
-    short s24; short s26;
-    int *buf28; int *buf2c; int *buf30; int *buf34;
-} Ctx;
 extern void *func_ov007_020c3df4(int a, int size);
-extern void *func_ov007_020c73f0(int a, int b, int c, int d);
-extern void *func_ov007_020c80a4(void);
-extern void func_ov007_020c72d0(void *g);
-extern void func_ov007_020c8010(void *node, void *a, void *b);
-extern void func_ov007_020cb3dc(void *ctx);
+extern Ov007Grid *func_ov007_020c73f0(int springMode, int columns, int rows, int pointMass);
+extern Ov007Link *func_ov007_020c80a4(void);
+extern void func_ov007_020c72d0(Ov007Grid *grid);
+extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
+extern void func_ov007_020cb3dc(Ov007Mesh *mesh);
 
-void *func_ov007_020cbbb0(int a0, int a1, int a2, int *a3)
-{
-    int d1, d2, t, c, e, a1m1, a0m1, j, i, k, i2;
-    Ctx *ctx;
+/* Builds a columns x rows mesh `width` wide, centred on the origin, every
+ * point at the template's rest z. Rows are cellHeight apart (width *
+ * sqrt(2) / 2 over the columns - 1 cells), odd rows shifted half a cell
+ * along x, and the border points are pinned. Each cell gets a link across
+ * its diagonal, which alternates with the row. The link pass reuses
+ * `columns` as the row's first cell index.
+ *
+ * The link table holds one Ov007Link * per cell but is allocated
+ * sizeof(Ov007Link) bytes per cell, six times what it uses. */
+Ov007Mesh *func_ov007_020cbbb0(int columns, int rows, int width, Ov007MeshParams *params) {
+    int cellWidth, cellHeight, t, halfWidth, halfHeight, cellRows, cellColumns, j, i, k, i2;
+    Ov007Mesh *mesh;
 
-    ctx = (Ctx *)func_ov007_020c3df4(0, 0x38);
-    a0m1 = a0 - 1;
-    d1 = (int)cstd::div(a2, a0m1);
-    t = FX_MUL(a2, 0x16a1);
-    d2 = (int)cstd::div(t / 2, a0m1);
+    mesh = (Ov007Mesh *)func_ov007_020c3df4(0, sizeof(Ov007Mesh));
+    cellColumns = columns - 1;
+    cellWidth = (int)cstd::div(width, cellColumns);
+    t = FX_MUL(width, 0x16a1);
+    cellHeight = (int)cstd::div(t / 2, cellColumns);
     {
-        int n = a0 - 1;
-        a0m1 = n;
+        int n = columns - 1;
+        cellColumns = n;
     }
-    c = (d1 * a0m1) / 2;
-    a1m1 = a1 - 1;
-    e = (d2 * a1m1) / 2;
-    ctx->buf0 = (Vector3 *)func_ov007_020c3df4(0, a0 * 12 * a1);
-    ctx->buf28 = (int *)func_ov007_020c3df4(0, a0m1 * 6 * a1m1 * 2);
-    ctx->buf2c = (int *)func_ov007_020c3df4(0, a0 * 6 * a1);
-    ctx->buf30 = (int *)func_ov007_020c3df4(0, a0 * 4);
-    ctx->buf34 = (int *)func_ov007_020c3df4(0, a0 * 4);
-    ctx->s24 = (short)d1;
-    ctx->s26 = (short)d2;
-    ctx->buf8 = (int *)func_ov007_020c3df4(0, a0m1 * 0x18 * a1m1);
-    ctx->grid = (Grid *)func_ov007_020c73f0(3, a0, a1, *a3);
+    halfWidth = (cellWidth * cellColumns) / 2;
+    cellRows = rows - 1;
+    halfHeight = (cellHeight * cellRows) / 2;
+    mesh->verts = (Vector3 *)func_ov007_020c3df4(0, columns * 12 * rows);
+    mesh->faceNormals = (Vector3_16 *)func_ov007_020c3df4(0, cellColumns * 6 * cellRows * 2);
+    mesh->vertexNormals = (Vector3_16 *)func_ov007_020c3df4(0, columns * 6 * rows);
+    mesh->texOffsetS = (int *)func_ov007_020c3df4(0, columns * 4);
+    mesh->texOffsetT = (int *)func_ov007_020c3df4(0, columns * 4);
+    mesh->cellWidth = (s16)cellWidth;
+    mesh->cellHeight = (s16)cellHeight;
+    mesh->cellLinks =
+        (Ov007Link **)func_ov007_020c3df4(0, cellColumns * sizeof(Ov007Link) * cellRows);
+    mesh->grid = func_ov007_020c73f0(3, columns, rows, params->pointMass);
 
-    for (i = 0; i < a1; i++) {
-        for (j = 0; j < a0; j++) {
-            Vector3 *elem = &ctx->buf0[i * a0 + j];
-            elem->x = j * d1 - c + ((i % 2 == 0) ? 0 : d1 / 2);
-            elem->y = d2 * (a1 - 1 - i) - e;
-            elem->z = a3[5];
-            *(Vector3 **)((*ctx->grid->rows[i])[j]) = elem;
-            if (j < a0m1 && i < a1m1) {
-                ctx->buf8[i * a0m1 + j] = (int)func_ov007_020c80a4();
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < columns; j++) {
+            Vector3 *elem = &mesh->verts[i * columns + j];
+            elem->x = j * cellWidth - halfWidth + ((i % 2 == 0) ? 0 : cellWidth / 2);
+            elem->y = cellHeight * (rows - 1 - i) - halfHeight;
+            elem->z = params->restZ;
+            mesh->grid->rowLists[i]->items[j]->target = elem;
+            if (j < cellColumns && i < cellRows) {
+                mesh->cellLinks[i * cellColumns + j] = func_ov007_020c80a4();
             }
-            if (j == 0 || j == a0 - 1 || i == 0 || i == a1 - 1) {
-                ((int *)(*ctx->grid->rows[i])[j])[8] |= 1;
+            if (j == 0 || j == columns - 1 || i == 0 || i == rows - 1) {
+                mesh->grid->rowLists[i]->items[j]->flags |= 1;
             }
         }
     }
 
-    func_ov007_020c72d0(ctx->grid);
+    func_ov007_020c72d0(mesh->grid);
 
     {
         i = 0;
-        if (a1m1 > 0) {
-            a0 = i;
+        if (cellRows > 0) {
+            columns = i;
             do {
                 j = 0;
-                if (a0m1 > 0) {
+                if (cellColumns > 0) {
                     do {
                         int i2mod = i % 2;
                         int t = i2mod;
                         int i2p1 = i + 1;
-                        int sum = j + a0;
+                        int sum = j + columns;
                         if (i2mod == 0) {
-                            Grid *g = ctx->grid;
-                            int *b8p = ctx->buf8;
-                            void *node = (void *)b8p[sum];
-                            void *ea = (*g->rows[i])[j + 1];
-                            void *eb = (*g->rows[i2p1])[j];
-                            func_ov007_020c8010(node, ea, eb);
+                            Ov007Grid *g = mesh->grid;
+                            Ov007Link **links = mesh->cellLinks;
+                            Ov007Link *link = links[sum];
+                            Ov007Follower *ea = g->rowLists[i]->items[j + 1];
+                            Ov007Follower *eb = g->rowLists[i2p1]->items[j];
+                            func_ov007_020c8010(link, ea, eb);
                         } else {
-                            Grid *g = ctx->grid;
-                            int *b8p = ctx->buf8;
-                            void *node = (void *)b8p[sum];
-                            void *ea = (*g->rows[i])[j];
-                            void *eb = (*g->rows[i2p1])[j + 1];
-                            func_ov007_020c8010(node, ea, eb);
+                            Ov007Grid *g = mesh->grid;
+                            Ov007Link **links = mesh->cellLinks;
+                            Ov007Link *link = links[sum];
+                            Ov007Follower *ea = g->rowLists[i]->items[j];
+                            Ov007Follower *eb = g->rowLists[i2p1]->items[j + 1];
+                            func_ov007_020c8010(link, ea, eb);
                         }
                         j++;
-                    } while (j < a0m1);
+                    } while (j < cellColumns);
                 }
                 i++;
-                a0 += a0m1;
-            } while (i < a1m1);
+                columns += cellColumns;
+            } while (i < cellRows);
         }
     }
 
-    ctx->copy = *(Copy6 *)a3;
-    func_ov007_020cb3dc(ctx);
-    return ctx;
+    *(MeshParamsWords *)&mesh->params = *(MeshParamsWords *)params;
+    func_ov007_020cb3dc(mesh);
+    return mesh;
 }
 }

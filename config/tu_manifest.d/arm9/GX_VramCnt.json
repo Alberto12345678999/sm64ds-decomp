@@ -9,6 +9,7 @@
     "One contiguous run of the Nitro SDK's VRAM bank control (gx_vramcnt.c), 0x02053e1c..0x02054d38: 41 functions, gapless in config/arm9/delinks.txt, each one reads or writes the VRAM state block at data_020a6088 or the VRAMCNT registers 0x04000240..0x04000249, except the size helper func_02053e4c, which turns a bank mask into bytes for its two getters.",
     "mwccarm emits .text in reverse source order, and the run reads as the SDK file top-down from the highest address: GX_VRAMCNT_SetLCDC_ (Vram__Map, 0x02054c80), the setters BG, OBJ, BGExtPltt, Tex, TexPltt, LCDC, SubBG, SubOBJ, SubBGExtPltt, SubOBJExtPltt, then resetBankForX_ (func_020541b8) and its wrappers, disableBankForX_ (DisableVramBanks) and its wrappers, the bank getters, and the size helper with its two callers at the bottom. Setters and wrappers the game never calls (OBJExtPltt, ClearImage, ARM7, ...) are absent, as a dead-stripped link leaves them.",
     "The disable wrappers name all thirteen u16 fields of the state block in the SDK's order (BG, OBJ, BGExtPltt, OBJExtPltt, Tex, TexPltt, ClearImage, ARM7, LCDC, SubBG, SubOBJ, SubBGExtPltt, SubOBJExtPltt at offsets 2, 4, 0xe, 0x10, 8, 0xa, 0xc, 6, 0, 0x12, 0x14, 0x16, 0x18); the ext-palette ones also clear DISPCNT bit 30/31 of the matching engine. That fixes the layout of the block every member uses.",
+    "The three functions at the bottom (func_02053e1c, func_02053e34, func_02053e4c) are not in pret/pokediamond's GX_vramcnt.c, which holds only what Pokemon links. They are gx_vramcnt.c's size getters: the NitroSDK reconstruction in RushRE/SonicRushAdventure-Decomp (lib/NitroSDK/src/gx/gx_vramctrl.c) ends the file, after the bank getters, with static GX_GetSizeOfX_ (the same nine-bank size ladder as func_02053e4c) and its GX_GetSizeOfBG .. GX_GetSizeOfARM7 wrappers. func_02053e34 is GX_GetSizeOfTex and func_02053e1c is GX_GetSizeOfTexPltt; the other wrappers are not in this ROM. Reverse emission puts the end of the file at the bottom, so the TU's bottom edge is the file edge.",
     "TOP EDGE: G2S::GetBG3CharPtr at 0x02054d38 is the first function of the promoted arm9/G2 TU (src/engine/gx/G2.cpp, the SDK's BG-control getters).",
     "BOTTOM EDGE: func_02053d9c (0x02053d9c..0x02053e1c) zeroes the thirteen state fields and the VRAMCNT A-I registers -- the SDK's GX_InitGXState, which lives with the state block in its own file (gx_state.c), not in gx_vramcnt.c. Below it, GX_Init (func_02053c40) calls it, then GX_HBlankIntr/GX_VBlankIntr, GX_DispOff, GX::DispOn, GX::SetGraphicsMode, GXS::SetGraphicsMode: gx.c, also reverse-ordered. Neither file is absorbed here.",
     "No data, bss or RTTI: the state block is defined by the file below, and nothing but the 41 functions emits."
@@ -43,119 +44,119 @@
       "ordinal": 2
     },
     {
-      "symbol": "func_02053ea0",
+      "symbol": "_ZN2GX16GetBankForSubOBJEv",
       "address": "0x02053ea0",
       "size": "0x00000010",
       "legacy_source": "src/unnamed/arm9/0205/func_02053ea0.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_02053eb0",
+      "symbol": "_ZN2GX15GetBankForSubBGEv",
       "address": "0x02053eb0",
       "size": "0x00000010",
       "legacy_source": "src/unnamed/arm9/0205/func_02053eb0.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_02053ec0",
+      "symbol": "_ZN2GX17GetBankForTexPlttEv",
       "address": "0x02053ec0",
       "size": "0x00000010",
       "legacy_source": "src/unnamed/arm9/0205/func_02053ec0.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_02053ed0",
+      "symbol": "_ZN2GX13GetBankForTexEv",
       "address": "0x02053ed0",
       "size": "0x00000010",
       "legacy_source": "src/unnamed/arm9/0205/func_02053ed0.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_02053ee0",
+      "symbol": "_ZN2GX27DisableBankForSubOBJExtPlttEv",
       "address": "0x02053ee0",
       "size": "0x00000028",
       "legacy_source": "src/unnamed/arm9/0205/func_02053ee0.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_02053f08",
+      "symbol": "_ZN2GX26DisableBankForSubBGExtPlttEv",
       "address": "0x02053f08",
       "size": "0x00000028",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f08.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_02053f30",
+      "symbol": "_ZN2GX20DisableBankForSubOBJEv",
       "address": "0x02053f30",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f30.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_02053f44",
+      "symbol": "_ZN2GX19DisableBankForSubBGEv",
       "address": "0x02053f44",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f44.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_02053f58",
+      "symbol": "_ZN2GX18DisableBankForLCDCEv",
       "address": "0x02053f58",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f58.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_02053f6c",
+      "symbol": "_ZN2GX18DisableBankForARM7Ev",
       "address": "0x02053f6c",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f6c.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_02053f80",
+      "symbol": "_ZN2GX24DisableBankForClearImageEv",
       "address": "0x02053f80",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f80.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_02053f94",
+      "symbol": "_ZN2GX21DisableBankForTexPlttEv",
       "address": "0x02053f94",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053f94.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_02053fa8",
+      "symbol": "_ZN2GX17DisableBankForTexEv",
       "address": "0x02053fa8",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02053fa8.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_02053fbc",
+      "symbol": "_ZN2GX24DisableBankForOBJExtPlttEv",
       "address": "0x02053fbc",
       "size": "0x00000024",
       "legacy_source": "src/unnamed/arm9/0205/func_02053fbc.c",
       "ordinal": 16
     },
     {
-      "symbol": "func_02053fe0",
+      "symbol": "_ZN2GX23DisableBankForBGExtPlttEv",
       "address": "0x02053fe0",
       "size": "0x00000024",
       "legacy_source": "src/unnamed/arm9/0205/func_02053fe0.c",
       "ordinal": 17
     },
     {
-      "symbol": "func_02054004",
+      "symbol": "_ZN2GX17DisableBankForOBJEv",
       "address": "0x02054004",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02054004.c",
       "ordinal": 18
     },
     {
-      "symbol": "func_02054018",
+      "symbol": "_ZN2GX16DisableBankForBGEv",
       "address": "0x02054018",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02054018.c",
@@ -169,63 +170,63 @@
       "ordinal": 20
     },
     {
-      "symbol": "func_020540f0",
+      "symbol": "_ZN2GX25ResetBankForSubOBJExtPlttEv",
       "address": "0x020540f0",
       "size": "0x00000028",
       "legacy_source": "src/unnamed/arm9/0205/func_020540f0.c",
       "ordinal": 21
     },
     {
-      "symbol": "func_02054118",
+      "symbol": "_ZN2GX24ResetBankForSubBGExtPlttEv",
       "address": "0x02054118",
       "size": "0x00000028",
       "legacy_source": "src/unnamed/arm9/0205/func_02054118.c",
       "ordinal": 22
     },
     {
-      "symbol": "func_02054140",
+      "symbol": "_ZN2GX18ResetBankForSubOBJEv",
       "address": "0x02054140",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02054140.c",
       "ordinal": 23
     },
     {
-      "symbol": "func_02054154",
+      "symbol": "_ZN2GX17ResetBankForSubBGEv",
       "address": "0x02054154",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02054154.c",
       "ordinal": 24
     },
     {
-      "symbol": "func_02054168",
+      "symbol": "_ZN2GX19ResetBankForTexPlttEv",
       "address": "0x02054168",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02054168.c",
       "ordinal": 25
     },
     {
-      "symbol": "func_0205417c",
+      "symbol": "_ZN2GX15ResetBankForTexEv",
       "address": "0x0205417c",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_0205417c.c",
       "ordinal": 26
     },
     {
-      "symbol": "func_02054190",
+      "symbol": "_ZN2GX15ResetBankForOBJEv",
       "address": "0x02054190",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_02054190.c",
       "ordinal": 27
     },
     {
-      "symbol": "func_020541a4",
+      "symbol": "_ZN2GX14ResetBankForBGEv",
       "address": "0x020541a4",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0205/func_020541a4.c",
       "ordinal": 28
     },
     {
-      "symbol": "func_020541b8",
+      "symbol": "ResetVramBanks",
       "address": "0x020541b8",
       "size": "0x00000038",
       "legacy_source": "src/unnamed/arm9/0205/func_020541b8.c",

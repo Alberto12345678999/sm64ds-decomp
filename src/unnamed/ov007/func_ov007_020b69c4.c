@@ -1,43 +1,32 @@
 #include "types.h"
+#include "Ov007MenuState.h"
 #include "Ov007Work.h"
-extern u8 *data_ov007_0210342c;
-
-/* The extern keeps the tree's u8 * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
+#include "Ov007PaletteBuf.h"
 
 extern void *func_ov007_020c9388(int initialState);
-extern void *func_ov007_020c946c(void *r5);
+extern Ov007PaletteBuf *func_ov007_020c946c(const void *source);
 
-#pragma opt_strength_reduction off
-void func_ov007_020b69c4(void)
-{
+/* Resets the figure slots and the per-figure stroke stages, then builds the
+ * palette state and the three palette buffers: buffer 0 reloads from buffer
+ * 2's colours and buffer 1 from buffer 0's. */
+void func_ov007_020b69c4(void) {
     int i;
-    int arg;
 
     WORK->model = 0;
     WORK->figure = 0;
     WORK->altFigure = 0;
-    *(int *)(data_ov007_0210342c + 0xf0) = 0;
-    *(int *)(data_ov007_0210342c + 0xec) = *(int *)(data_ov007_0210342c + 0xf0);
+    WORK->figureIndex = WORK->nextFigureIndex = 0;
 
-    i = 0;
-    do {
-        (data_ov007_0210342c + i)[0xfc] = (u8)0;
-        i++;
-    } while (i < 2);
+    for (i = 0; i < 2; i++) {
+        WORK->strokeStage[i] = 0;
+    }
 
-    WORK->paletteState = (struct Ov007MenuState *)func_ov007_020c9388(0);
+    WORK->paletteState = (Ov007MenuState *)func_ov007_020c9388(0);
 
-    arg = 0;
-    i = 0;
-    do {
-        *(void **)(data_ov007_0210342c + (i << 2) + 0x44) = func_ov007_020c946c((void *)arg);
-        i++;
-    } while (i < 3);
+    for (i = 0; i < 3; i++) {
+        WORK->paletteBufs[i] = func_ov007_020c946c(0);
+    }
 
-    *(int **)(*(int ***)(data_ov007_0210342c + 0x44)) =
-        (int *)((char *)*(int **)(data_ov007_0210342c + 0x4c) + 4);
-    *(int **)(*(int ***)(data_ov007_0210342c + 0x48)) =
-        (int *)((char *)*(int **)(data_ov007_0210342c + 0x44) + 4);
+    WORK->paletteBufs[0]->source = WORK->paletteBufs[2]->colors;
+    WORK->paletteBufs[1]->source = WORK->paletteBufs[0]->colors;
 }

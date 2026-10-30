@@ -95,7 +95,8 @@
     "Cleanup: factory is return new daObjWcObj06_c(). The two deadstrip D2 rows are the same homeless base-object helpers ov016/daObjKi_Ita_c already licenses.",
     "4/4 MATCH, all three checks clean. Same reconciliations as the Square twin.",
     "THE NAMING BOUNDARY IS CLOSED. The class was coined `FloatOnWaterPlatformWdwRectangle`; tools/class_rename.py moved it to the cartridge's own spelling, so the configured function symbols and the retail RTTI now agree. MEASURED in extracted/overlays/overlay_0029.bin (ov029 base 0x021111a0, the `.text start:` on line 1 of config/arm9/overlays/ov029/delinks.txt): _ZTS14daObjWcObj06_c at 0x02113f0c is the byte string \"14daObjWcObj06_c\", and _ZTI14daObjWcObj06_c at 0x02113ef4 reads [0x0209a764, 0x02113f0c, 0x02108fb4] -- _ZTVN3abi20__si_class_type_infoE, that typeinfo name, and _ZTI17daObjFloatBoard_c, so the cartridge states the direct base too. This TU therefore does claim its class RTTI, type name and vtable as retail data: all three are `deadstrip-data` rows in compiler_only_output with canonical module and address, and romdata_check word-compares them against the ROM.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to its own stock control. The recorded verification.linkcheck.rom.sha256 is the fleet-canonical US-dump hash every intact entry shares, per #3691."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to its own stock control. The recorded verification.linkcheck.rom.sha256 is the fleet-canonical US-dump hash every intact entry shares, per #3691.",
+    "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (26 sections, 96 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -480,12 +481,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@425",
+      "from": "@424",
       "to": "@82",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @435 to @433. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @82."
     },
     {
-      "from": "@426",
+      "from": "@425",
       "to": "@83",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @436 to @434. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @83."
     }

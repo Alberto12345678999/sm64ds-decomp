@@ -9,11 +9,6 @@
  */
 
 // leftovers:
-// - The transition calls pass a second word to fader slots 3/4, but the
-//   shared fader classes declare only the frame count, so the calls go
-//   through the local FaderVTable/FaderObject view above; typing the second
-//   word on the shared class needs the fader-family contract reconstructed
-//   first (callers: Before/AfterCleanupResources in this TU).
 // - dScStage_c::SetVramBanks and GX::DisableAllBanks sit between the scene
 //   graphics methods in this span; co-residence is inferred from the
 //   contiguous run, not from an object map.
@@ -35,46 +30,18 @@ void SetGraphicsMode(int a);
 
 struct Matrix2x2 { int m[4]; };
 
-/* The transition calls pass a second word to fader slots 3/4, whereas the
- * shared class currently declares only the frame count. Preserve this local
- * ABI view until the fader-family contract is reconstructed. Direct calls to
- * dFdBrightness_c below use its existing native one-argument methods.
- */
-struct FaderVTable {
-    void (*D1)(void *);
-    void (*D0)(void *);
-    void (*AdvanceFade)(void *);
-    void (*SetBackwardTime)(void *, u32, u32);
-    void (*SetForwardTime)(void *, u32, u32);
-    int  (*IsAtStart)(void *);
-    int  (*IsAtEnd)(void *);
-};
-struct FaderObject { FaderVTable *vt; };
-
 namespace GX { void DisableAllBanks(); }
 
 extern "C" {
+/* src/engine/gx/GX_Init.cpp names these three in comments but they keep their
+   address symbols: the H-blank and V-blank interrupt enables (each returns the
+   previous bit) and the MASTER_BRIGHT writer (negative darkens). */
 extern int  func_02053c10(int enable);
 extern int  func_02053be0(int enable);
 
 extern void func_02053a90(u16* out, int v);
 
 extern Matrix2x2 data_02092668;
-
-extern u16 func_02053f58(void);
-extern u16 func_02054018(void);
-extern u16 func_02054004(void);
-extern u16 func_02053f6c(void);
-extern u16 func_02053fa8(void);
-extern u16 func_02053f94(void);
-extern u16 func_02053f80(void);
-extern u16 func_02053fe0(void);
-extern u16 func_02053fbc(void);
-extern u16 func_02053f44(void);
-extern u16 func_02053f30(void);
-extern u16 func_02053f08(void);
-extern u16 func_02053ee0(void);
-
 
 extern void func_0205583c(void);
 
@@ -225,11 +192,21 @@ void dScene_c::ResetHardwareRegisters()
 
 namespace GX {
 // @symbol _ZN2GX15DisableAllBanksEv
-void DisableAllBanks(){
- func_02053f58(); func_02054018(); func_02054004(); func_02053f6c();
- func_02053fa8(); func_02053f94(); func_02053f80(); func_02053fe0();
- func_02053fbc(); func_02053f44(); func_02053f30(); func_02053f08();
- func_02053ee0();
+/* Hand every VRAM user's banks back to the LCDC, in the SDK's own order. */
+void DisableAllBanks() {
+    DisableBankForLCDC();
+    DisableBankForBG();
+    DisableBankForOBJ();
+    DisableBankForARM7();
+    DisableBankForTex();
+    DisableBankForTexPltt();
+    DisableBankForClearImage();
+    DisableBankForBGExtPltt();
+    DisableBankForOBJExtPltt();
+    DisableBankForSubBG();
+    DisableBankForSubOBJ();
+    DisableBankForSubBGExtPltt();
+    DisableBankForSubOBJExtPltt();
 }
 }
 
@@ -315,11 +292,11 @@ int dScene_c::BeforeBehavior()
         } else {
             if (data_0209f1e4 == 0) {
                 data_0209f5d0.currInterp = 0;
-                data_0209f5d0.dFdBrightness_c::SetForwardTime(0x10);
+                data_0209f5d0.dFdBrightness_c::SetForwardTime(0x10, 0);
                 data_0209f1e4 = &data_0209f5d0;
             } else if (data_0209f5d0.dFdBrightness_c::IsAtEnd()) {
                 StartSceneFade(1, 0, 0);
-                ((FaderObject *)&data_0209f5e8)->vt->SetForwardTime((FaderObject *)&data_0209f5e8, 0, 0);
+                data_0209f5e8.SetForwardTime(0, 0);
                 MarkForDestruction();
             }
             return 0;
@@ -327,9 +304,9 @@ int dScene_c::BeforeBehavior()
     }
 
     if (data_02092664 != 0x187) {
-        if (((FaderObject *)data_0209f5bc)->vt->IsAtStart(data_0209f5bc) != 0) {
-            ((FaderObject *)data_0209f5bc)->vt->SetForwardTime(data_0209f5bc, 0x1e, 0);
-        } else if (((FaderObject *)data_0209f5bc)->vt->IsAtEnd(data_0209f5bc) != 0) {
+        if (data_0209f5bc->IsAtStart() != 0) {
+            data_0209f5bc->SetForwardTime(0x1e, 0);
+        } else if (data_0209f5bc->IsAtEnd() != 0) {
             MarkForDestruction();
         }
         return 1;
@@ -342,8 +319,8 @@ int dScene_c::BeforeBehavior()
         }
         return 0;
     } else {
-        if (((FaderObject *)data_0209f5bc)->vt->IsAtEnd(data_0209f5bc) != 0) {
-            ((FaderObject *)data_0209f5bc)->vt->SetBackwardTime(data_0209f5bc, 0x1e, 0);
+        if (data_0209f5bc->IsAtEnd() != 0) {
+            data_0209f5bc->SetBackwardTime(0x1e, 0);
         }
         return 1;
     }

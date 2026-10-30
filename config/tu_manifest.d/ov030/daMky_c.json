@@ -16,6 +16,26 @@
       "name": ".text",
       "start": "0x02111688",
       "end": "0x02114690"
+    },
+    {
+      "name": ".init",
+      "start": "0x02114924",
+      "end": "0x02114dd0"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02114dd8",
+      "end": "0x02114ddc"
+    },
+    {
+      "name": ".data",
+      "start": "0x02115ac8",
+      "end": "0x02115b78"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02115cd0",
+      "end": "0x02115ebc"
     }
   ],
   "functions": [
@@ -342,8 +362,1790 @@
       "ordinal": 45
     }
   ],
-  "data": [],
-  "bss": [],
+  "init": [
+    {
+      "symbol": "__sinit_d_a_mky.cpp",
+      "address": "0x02114924",
+      "size": "0x4ac",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer, byte-identical to retail __sinit_ov030_02114924"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_d_a_mky.cpp",
+      "address": "0x02114dd8",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "ctor-table word pointing at __sinit_d_a_mky.cpp"
+    }
+  ],
+  "data": [
+    {
+      "symbol": "@2101",
+      "address": "0x02115ac8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState8Ev"
+    },
+    {
+      "symbol": "@2103",
+      "address": "0x02115ad0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02112578Ev"
+    },
+    {
+      "symbol": "@2087",
+      "address": "0x02115ad8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02113324Ev"
+    },
+    {
+      "symbol": "@2093",
+      "address": "0x02115ae0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState6Ev"
+    },
+    {
+      "symbol": "@2097",
+      "address": "0x02115ae8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState7Ev"
+    },
+    {
+      "symbol": "@1169",
+      "address": "0x02115af0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState1Ev"
+    },
+    {
+      "symbol": "@2109",
+      "address": "0x02115af8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c12EnterState10Ev"
+    },
+    {
+      "symbol": "@2077",
+      "address": "0x02115b00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState2Ev"
+    },
+    {
+      "symbol": "@2105",
+      "address": "0x02115b08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState9Ev"
+    },
+    {
+      "symbol": "@2085",
+      "address": "0x02115b10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState4Ev"
+    },
+    {
+      "symbol": "@2083",
+      "address": "0x02115b18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_021136b0Ev"
+    },
+    {
+      "symbol": "@2091",
+      "address": "0x02115b20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02113094Ev"
+    },
+    {
+      "symbol": "@2095",
+      "address": "0x02115b28",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02112da0Ev"
+    },
+    {
+      "symbol": "@2099",
+      "address": "0x02115b30",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02112a84Ev"
+    },
+    {
+      "symbol": "@2111",
+      "address": "0x02115b38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_021122b0Ev"
+    },
+    {
+      "symbol": "@2079",
+      "address": "0x02115b40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02113b38Ev"
+    },
+    {
+      "symbol": "@2081",
+      "address": "0x02115b48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState3Ev"
+    },
+    {
+      "symbol": "@2075",
+      "address": "0x02115b50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02113d20Ev"
+    },
+    {
+      "symbol": "@2089",
+      "address": "0x02115b58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState5Ev"
+    },
+    {
+      "symbol": "@1163",
+      "address": "0x02115b60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02113ff0Ev"
+    },
+    {
+      "symbol": "@1161",
+      "address": "0x02115b68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState0Ev"
+    },
+    {
+      "symbol": "@2107",
+      "address": "0x02115b70",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02112400Ev"
+    }
+  ],
+  "bss": [
+    {
+      "symbol": "gMonkeyWait2AnimationFile",
+      "address": "0x02115cd0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyWait4AnimationFile",
+      "address": "0x02115cd8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyHoldAnimationFile",
+      "address": "0x02115ce0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyRunStAnimationFile",
+      "address": "0x02115ce8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "data_ov030_02115cf0",
+      "address": "0x02115cf0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyWait3AnimationFile",
+      "address": "0x02115cf8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "data_ov030_02115d00",
+      "address": "0x02115d00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyJumpStAnimationFile",
+      "address": "0x02115d08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyJumpEdAnimationFile",
+      "address": "0x02115d10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyRunAnimationFile",
+      "address": "0x02115d18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "gMonkeyRunEdAnimationFile",
+      "address": "0x02115d20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "file handle constructed by __sinit_d_a_mky.cpp"
+    },
+    {
+      "symbol": "@2057",
+      "address": "0x02115d28",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2058",
+      "address": "0x02115d34",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2059",
+      "address": "0x02115d40",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2135",
+      "address": "0x02115d4c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2134",
+      "address": "0x02115d58",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2060",
+      "address": "0x02115d64",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1144",
+      "address": "0x02115d70",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2136",
+      "address": "0x02115d7c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1146",
+      "address": "0x02115d88",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1148",
+      "address": "0x02115d94",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@2137",
+      "address": "0x02115da0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1150",
+      "address": "0x02115dac",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1152",
+      "address": "0x02115db8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1154",
+      "address": "0x02115dc4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "@1159",
+      "address": "0x02115dd0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "registration node for one file-scope object with a destructor"
+    },
+    {
+      "symbol": "data_ov030_02115ddc",
+      "address": "0x02115ddc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "carry offset; registered with ~Vector3"
+    },
+    {
+      "symbol": "data_ov030_02115de8",
+      "address": "0x02115de8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "carry offset; registered with ~Vector3"
+    },
+    {
+      "symbol": "data_ov030_02115df4",
+      "address": "0x02115df4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "carry offset; registered with ~Vector3"
+    },
+    {
+      "symbol": "data_ov030_02115e00",
+      "address": "0x02115e00",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "carry offset; registered with ~Vector3"
+    },
+    {
+      "symbol": "data_ov030_02115e0c",
+      "address": "0x02115e0c",
+      "size": "0xb0",
+      "binding": "STB_GLOBAL",
+      "evidence": "eleven {enter, update} state pairs filled by __sinit_d_a_mky.cpp"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x02114934",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017acc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114944",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114950",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114960",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x0211496c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0211497c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114988",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114998",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149a4",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149b4",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149c0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149d0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149dc",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149ec",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021149f8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a08",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a14",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a24",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a30",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a40",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a4c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114a5c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114c44",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114c6c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114c98",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cc0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cd0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115d00",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d00"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cd8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_02017ab4",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017ab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cdc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2057",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d28"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114ce0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyHoldAnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ce0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114ce8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "SharedFilePtr_Destruct_Anim",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017984"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2058",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d34"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cf0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyJumpStAnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d08"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cf8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2059",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d40"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114cfc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyJumpEdAnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d10"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2060",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d64"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyRunStAnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ce8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1144",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d70"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d0c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyRunAnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d18"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d14",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1146",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d88"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d18",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyRunEdAnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d20"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d20",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1148",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d94"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d24",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115cf0",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115cf0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1150",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115dac"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyWait2AnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115cd0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1152",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115db8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyWait3AnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115cf8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1154",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115dc4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gMonkeyWait4AnimationFile",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115cd8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d4c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1159",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115dd0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115e0c",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115e0c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d54",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1161",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b68"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d58",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1163",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b60"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d5c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1169",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115af0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2075",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b50"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2077",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b00"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2079",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b40"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d6c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2081",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b48"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2083",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b18"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d74",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2085",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b10"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2087",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ad8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d7c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2089",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b58"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d80",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2091",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b20"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d84",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2093",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ae0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d88",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2095",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b28"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d8c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2097",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ae8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2099",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b30"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2101",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ac8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2103",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ad0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114d9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2105",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b08"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114da0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2107",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b70"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114da4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2109",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115af8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114da8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2111",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115b38"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114dac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115ddc",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115ddc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114db0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7Vector3D1Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x020072c0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114db4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2134",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d58"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114db8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115de8",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115de8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114dbc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2135",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d4c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114dc0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115df4",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115df4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114dc4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2136",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115d7c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114dc8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov030_02115e00",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115e00"
+    },
+    {
+      "section": ".init",
+      "source": "0x02114dcc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@2137",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02115da0"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02114dd8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_d_a_mky.cpp",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02114924"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115ac8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState8Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112a14"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115ad0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02112578Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112578"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115ad8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02113324Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113324"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115ae0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState6Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112ff8"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115ae8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState7Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112c14"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115af0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState1Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113fd8"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115af8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c12EnterState10Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x021123a4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState2Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113be8"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState9Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112560"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b10",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState4Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x0211360c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b18",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_021136b0Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x021136b0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b20",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02113094Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113094"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02112da0Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112da0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02112a84Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112a84"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_021122b0Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x021122b0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02113b38Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113b38"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState3Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113a80"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02113d20Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113d20"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b58",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState5Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x021132d4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02113ff0Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02113ff0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c11EnterState0Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02114124"
+    },
+    {
+      "section": ".data",
+      "source": "0x02115b70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7daMky_c19func_ov030_02112400Ev",
+      "addend": 0,
+      "target_module": "ov030",
+      "target_address": "0x02112400"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN15MkyModelFilePtrC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "model handle construction in the retail initializer is func_02017acc"
+    },
+    {
+      "symbol": "_ZN15MkyModelFilePtrD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "model handle destruction registered by the retail initializer is func_02017ab4"
+    },
+    {
+      "symbol": "_ZN14MkyAnimFilePtrC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "animation handle construction in the retail initializer is SharedFilePtr::Construct"
+    },
+    {
+      "symbol": "_ZN14MkyAnimFilePtrD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "animation handle destruction registered by the retail initializer is SharedFilePtr_Destruct_Anim"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "mwcc __register_global_object is the retail call to func_020731dc"
+    },
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "canonical_symbol": "func_02017a9c",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017a9c",
+      "evidence": "deadstrip externalises this TU's unreferenced vague ~Vector3, and the leftover import still occupies the name. Nothing references it. Parking that import on func_02017a9c, which this object does not already import, frees _ZN7Vector3D1Ev for the carry-offset registration."
+    },
+    {
+      "symbol": "_ZN6MkyOffD1Ev",
+      "canonical_symbol": "_ZN7Vector3D1Ev",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "evidence": "the four carry offsets register one shared destructor, and the cartridge's target is ~Vector3. MkyOff exists so the last three offsets store y before z; Vector3(x, y, z) does not."
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@2061",
+      "to": "@1144",
+      "evidence": "mwcc emits @2061; that name is already used in another module, so it is renamed to the unused same-length @1144"
+    },
+    {
+      "from": "@2062",
+      "to": "@1146",
+      "evidence": "mwcc emits @2062; that name is already used in another module, so it is renamed to the unused same-length @1146"
+    },
+    {
+      "from": "@2063",
+      "to": "@1148",
+      "evidence": "mwcc emits @2063; that name is already used in another module, so it is renamed to the unused same-length @1148"
+    },
+    {
+      "from": "@2064",
+      "to": "@1150",
+      "evidence": "mwcc emits @2064; that name is already used in another module, so it is renamed to the unused same-length @1150"
+    },
+    {
+      "from": "@2065",
+      "to": "@1152",
+      "evidence": "mwcc emits @2065; that name is already used in another module, so it is renamed to the unused same-length @1152"
+    },
+    {
+      "from": "@2066",
+      "to": "@1154",
+      "evidence": "mwcc emits @2066; that name is already used in another module, so it is renamed to the unused same-length @1154"
+    },
+    {
+      "from": "@2067",
+      "to": "@1159",
+      "evidence": "mwcc emits @2067; that name is already used in another module, so it is renamed to the unused same-length @1159"
+    },
+    {
+      "from": "@2069",
+      "to": "@1161",
+      "evidence": "mwcc emits @2069; that name is already used in another module, so it is renamed to the unused same-length @1161"
+    },
+    {
+      "from": "@2071",
+      "to": "@1163",
+      "evidence": "mwcc emits @2071; that name is already used in another module, so it is renamed to the unused same-length @1163"
+    },
+    {
+      "from": "@2073",
+      "to": "@1169",
+      "evidence": "mwcc emits @2073; that name is already used in another module, so it is renamed to the unused same-length @1169"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_d_a_mky.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a global at this address"
+    },
+    {
+      "symbol": ".p__sinit_d_a_mky.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table slot local; DSD exposes it globally"
+    },
+    {
+      "symbol": "@1161",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@1163",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@1169",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2075",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2077",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2079",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2081",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2083",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2085",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2087",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2089",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2091",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2093",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2095",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2097",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2099",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2101",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2103",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2105",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2107",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2109",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2111",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
+    },
+    {
+      "symbol": "@2057",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2058",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2059",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2060",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1144",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1146",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1148",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1150",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1152",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1154",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@1159",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2134",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2135",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2136",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    },
+    {
+      "symbol": "@2137",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination"
+    }
+  ],
   "notes": [
     "Generated by tools/tubuild.py create. See the file's own header comment for what was and was not reconciled, and notes/translation-unit-reconstruction-plan.md section 7.3 for what this generator does and does not attempt to resolve automatically.",
     "tubuild create warning: RAW: src/func_ov030_02111dd0.cpp (func_ov030_02111dd0) did not split (the definition is inside the extern \"C\" block opened on line 4, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
@@ -474,7 +2276,10 @@
     "STAGE 3b, why those eleven and not more. Member-ness is ROM-proven for 22 of the 35 free functions: they are the targets of the 22 pointer-to-member records at 0x02115ac8. A number is ROM-proven for eleven of those 22. Each of the eleven writes exactly one immediate to the state word at +0x3b4, and across all 44 functions the values are 0,1,2,...,10 -- none repeated, none missing -- while 0x02115e0c holds exactly 11 descriptors of 0x10 bytes. Eleven handlers, eleven descriptors, eleven consecutive ids is a bijection. func_ov030_021141a8(this, N) stores &data_ov030_02115e0c[N] at +0x3a4 and calls func_ov030_02114170, which invokes pp[0]; 021141a8 never touches +0x3b4 itself, so the body that wrote N is descriptor N's pp[0]. The other eleven records write no state id, which is the 11 x (entry, tick) split the 0x10 descriptor predicts -- but the ARRAY ORDER does not pair them (2i, 2i+1): records 4 and 5 are both entry handlers. Which tick belongs to which entry is still unproven and no name here asserts it.",
     "STAGE 3b, which wall stops the other 24. NOT codegen and NOT scope -- both were measured absent before any of this was written. Probe 1 converted three declaration-free members and probe 2 a declaration-carrying one, forcing its declarations to file scope above three members that redeclare the same symbol with a different return type; all four still byte-matched, and the eleven real conversions then landed 44/44 at the first compile that got past a type error. The wall is NAMING. Eleven of the 24 are pointer-to-member targets whose member-ness is proven but which the ROM neither names nor numbers; the other thirteen are not proven members at all. A coined name with no evidence behind it is worth less than the address, so they stay free functions.",
     "STAGE 3b, the cost of converting members that are NOT at the end of the file. A C++-named member cannot carry a linkage specification, so its declarations must sit at file scope above it -- and because this TU is laid out ROM-ascending, the eleven EnterState* members are scattered among the free functions and their region has to go at the TOP. That puts 12 canonical function declarations in view of all 24 free functions below, several of which recovered the same symbol differently at block scope. Measured: mwccarm 2004/b56 accepts that for FUNCTIONS (a block-scope redeclaration inherits the visible C linkage, and with -gccext,on the differing spellings do not collide) and rejects it outright for DATA -- hoisting gMonkeyHoldAnimationFile / _02115d08 / _02115d18 / data_02082214 gave `identifier 'gMonkeyRunAnimationFile' redeclared; was declared as 'int[]', now declared as 'void *[]'`, the same wall that keeps decl_common.h out. Data does not need hoisting: a global-scope variable is not mangled, so an `extern int gMonkeyHoldAnimationFile[];` written at block scope inside a C++-named member still resolves to the plain symbol. Every member kept its own data declarations. Two call sites were retyped to the canonical function spelling (EnterState4's SetAnim second argument, EnterState3's SetAnim receiver and file argument); both pass the same value in the same register and cost nothing.",
-    "STAGE 3b, the member rename must land WITH the promotion, and that is measured rather than quoted. The eleven renames were written into config/arm9/overlays/ov030/symbols.txt while the shards were still unpromoted, and the linkcheck BASELINE control -- which builds the tree with no TU substitution -- went from green to `modules NOT byte-exact: ['ov030']` with 11 `Symbol '_ZN7daMky_c11EnterStateNEv' ... not found in linked binary / Possible name: func_ov030_XXXXXXXX` errors. The 22 pointer-to-member records at 0x02115ac8 are unowned .data that dsd resolves by NAME, so a half-landed rename links them as 0x00000000. symbols.txt, the TU and this manifest therefore move in one commit."
+    "STAGE 3b, the member rename must land WITH the promotion, and that is measured rather than quoted. The eleven renames were written into config/arm9/overlays/ov030/symbols.txt while the shards were still unpromoted, and the linkcheck BASELINE control -- which builds the tree with no TU substitution -- went from green to `modules NOT byte-exact: ['ov030']` with 11 `Symbol '_ZN7daMky_c11EnterStateNEv' ... not found in linked binary / Possible name: func_ov030_XXXXXXXX` errors. The 22 pointer-to-member records at 0x02115ac8 are unowned .data that dsd resolves by NAME, so a half-landed rename links them as 0x00000000. symbols.txt, the TU and this manifest therefore move in one commit.",
+    "Collision property member calls replace local helper declarations. Reconciled 1 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (59 sections, 432 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md.",
+    "Folded __sinit_ov030_02114924 into this TU. mwcc emits __sinit_d_a_mky.cpp. @2061-@2067 and @2069, @2071, @2073 clash with ov074 and are renamed to unused same-length names. The carry offsets are MkyOff, not Vector3(x, y, z): the member ctor stores z ahead of y when the magnitudes match, and the cartridge does not. ~MkyOff is aliased to ~Vector3 after the unreferenced vague ~Vector3 import is parked on func_02017a9c.",
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded fleet rom.sha256 stays d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8."
   ],
   "compiler_only_output": [
     {
@@ -553,7 +2358,7 @@
       "reason": "Vague-linkage Vector3 destructor. Vector3 carries a user-declared ~Vector3() (include/types.h) and this TU odr-uses several as function locals -- three in func_ov030_02111734 alone. One row however many objects: the emitted symbol is the single vague copy. arm9 owns the kept copy at 0x020072c0, four bytes of bx lr."
     },
     {
-      "symbol": "_ZN7daMky_c22Bundle$1006d_a_mky_cppD1Ev",
+      "symbol": "_ZN7daMky_c22Bundle$1005d_a_mky_cppD1Ev",
       "disposition": "deadstrip",
       "reason": "The genuine shared dClipper header and native call renumber the same unreferenced four-byte Bundle destructor from945 to963. Complete seven-TU allocated payload/symbol/typed-relocation comparison preserves its body and attributes. It has no configured ROM home; admit only this exact compiler-local symbol. The native ground-query header/call now renumbers that same unreferenced four-byte destructor from963 to962. Complete-object payload, symbol attributes/order and typed-relocation comparison admits only this measured compiler-local rename; it adds no ROM home, alias or broader suppression. The file-local predicate inlines above it then move it to 981. Retiring the local five-named-parameter dExtAnmModel_c::SetAnim extern for the real member call frees five numbers and moves it to 976. Including the shared Sound.h for Sound::PlaySub, in place of a local namespace declaration, moves it from 964 to 974; the compiled object differs from the previous one only in that symbol name. Routing the scratch-matrix calls through math/MtxStack.h's inline statics, with by-reference transM/XYZrotM overloads, moves it to 1031. Taking the scalar/vector helpers from math/CalcLib.h and cstd::fdiv from cstd.h, with unnamed parameters in place of the named local declarations (ApproachLinear stays local), moves it to 1018. Taking the dBgCh_Actr update veneers from dBgCh_Actr.h, in place of the local declarations, moves it to 1016. Typing func_0203567c and func_02037f44 in dBgCh_Actr.h and dBgPi.h, in place of the local int declarations, moves it to 1014. Taking the Sound wrappers func_0201267c and func_02012790 from Sound.h, in place of the named local declarations, moves it to 1011. Batch 5 of the Fix12 rename (notes/mwccarm-codegen.md 6az) deletes this TU's named-parameter DropShadowRadHeight extern ahead of the Bundle class, so the compiler now numbers it 1005, not 1011."
     },
@@ -635,6 +2440,410 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov030-daMky_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": true,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02111688",
+        "end": "0x02114690",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02111688",
+          "end": "0x02114690",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02114924",
+          "end": "0x02114dd0",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02114dd8",
+          "end": "0x02114ddc",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x02115ac8",
+          "end": "0x02115b78",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02115cd0",
+          "end": "0x02115ebc",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 101
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              186
+            ],
+            "desired": [
+              186
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              184
+            ],
+            "desired": [
+              184
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              117,
+              119,
+              121,
+              123,
+              125,
+              127,
+              129,
+              131,
+              133,
+              135,
+              137,
+              139,
+              141,
+              143,
+              145,
+              147,
+              149,
+              151,
+              153,
+              155,
+              157,
+              159
+            ],
+            "desired": [
+              149,
+              151,
+              135,
+              141,
+              145,
+              121,
+              157,
+              125,
+              153,
+              133,
+              131,
+              139,
+              143,
+              147,
+              159,
+              127,
+              129,
+              123,
+              137,
+              119,
+              117,
+              155
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              161,
+              162,
+              163,
+              164,
+              165,
+              166,
+              167,
+              168,
+              169
+            ],
+            "desired": [
+              112,
+              116,
+              98,
+              104,
+              110,
+              114,
+              96,
+              100,
+              102,
+              106,
+              108,
+              95,
+              97,
+              99,
+              164,
+              162,
+              101,
+              103,
+              166,
+              105,
+              107,
+              168,
+              109,
+              111,
+              113,
+              115,
+              163,
+              165,
+              167,
+              169,
+              161
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                117,
+                119,
+                121,
+                123,
+                125,
+                127,
+                129,
+                131,
+                133,
+                135,
+                137,
+                139,
+                141,
+                143,
+                145,
+                147,
+                149,
+                151,
+                153,
+                155,
+                157,
+                159
+              ],
+              "desired": [
+                149,
+                151,
+                135,
+                141,
+                145,
+                121,
+                157,
+                125,
+                153,
+                133,
+                131,
+                139,
+                143,
+                147,
+                159,
+                127,
+                129,
+                123,
+                137,
+                119,
+                117,
+                155
+              ],
+              "slots": [
+                117,
+                119,
+                121,
+                123,
+                125,
+                127,
+                129,
+                131,
+                133,
+                135,
+                137,
+                139,
+                141,
+                143,
+                145,
+                147,
+                149,
+                151,
+                153,
+                155,
+                157,
+                159
+              ]
+            },
+            {
+              "section": ".bss",
+              "original": [
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                161,
+                162,
+                163,
+                164,
+                165,
+                166,
+                167,
+                168,
+                169
+              ],
+              "desired": [
+                112,
+                116,
+                98,
+                104,
+                110,
+                114,
+                96,
+                100,
+                102,
+                106,
+                108,
+                95,
+                97,
+                99,
+                164,
+                162,
+                101,
+                103,
+                166,
+                105,
+                107,
+                168,
+                109,
+                111,
+                113,
+                115,
+                163,
+                165,
+                167,
+                169,
+                161
+              ],
+              "slots": [
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                161,
+                162,
+                163,
+                164,
+                165,
+                166,
+                167,
+                168,
+                169
+              ]
+            }
+          ],
+          "symbolIndices": 53,
+          "sectionLinks": 0,
+          "sectionInfos": 22,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [],
+      "symbolCheckBaselineErrors": [],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
-  }
+  },
+  "production_mode": "intact-object"
 }

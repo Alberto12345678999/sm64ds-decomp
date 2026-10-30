@@ -14,9 +14,8 @@
  *                  the object for func_020071e0's Vector3 locals
  *
  * The emitted Vector3 destructor ends the object, so func_020072c4 starts
- * the next one. Not part of src/engine/view/d_camera.cpp
- * (0x020073a0..0x0200e494): func_020072c4 lies between, and this object
- * is built with defer_codegen off while that one is not.
+ * the next one, src/engine/view/d_camera.cpp (0x020072c4..0x0200e494).
+ * This object is built with defer_codegen off and that one is not.
  *
  * defer_codegen off emits the functions in source order: D1, D0, a homeless
  * D2, then the helpers. Retail _ZTV9dCamera_c stays at 0x02086f84; this TU's

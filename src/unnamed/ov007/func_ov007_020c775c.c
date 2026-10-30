@@ -1,46 +1,31 @@
 // @symbol func_ov007_020c775c
-/* recovered: shared common types */
-#include "common.h"
-struct E {
-    struct Vector3 **p0;   // 0x0
-    struct Vector3 **p1;   // 0x4
-    int len;            // 0x8
-    struct Vector3 v;      // 0xc
-};
+#include "Ov007Spring.h"
 
-struct T {
-    char pad4[4];
-    int f4;             // 0x4
-    struct E **arr;     // 0x8
-    int fc;             // 0xc
-    int f10;            // 0x10
-};
+extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
+extern int LenVec3(Vector3 *v);
 
-extern void SubVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int LenVec3(struct Vector3 *v);
-
-void func_ov007_020c775c(struct T *t)
-{
+/* Re-measures each link of the list between its followers' targets. */
+void func_ov007_020c775c(Ov007PointList *list) {
     int n;
     int cnt;
     int i;
 
-    n = t->f4;
+    n = list->count;
     if (n <= 1) {
         cnt = 0;
     } else {
-        cnt = n - ((t->fc & 2) ? 0 : 1);
+        cnt = n - ((list->flags & 2) ? 0 : 1);
     }
 
-    switch (t->f10) {
+    switch (list->springMode) {
     case 0:
     case 1:
     case 2:
     case 3:
         for (i = 0; i < cnt; i++) {
-            struct E *e = t->arr[i];
-            SubVec3(*e->p0, *e->p1, &e->v);
-            e->len = LenVec3(&e->v);
+            Ov007Link *e = list->links[i];
+            SubVec3(e->from->target, e->to->target, &e->dir);
+            e->length = LenVec3(&e->dir);
         }
         break;
     }

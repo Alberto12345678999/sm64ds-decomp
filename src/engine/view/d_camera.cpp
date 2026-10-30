@@ -1,6 +1,6 @@
 //cpp
 /* dCamera_c, the main camera, with its states and script ops.
- * arm9 .text 0x020073a0..0x0200e494.
+ * arm9 .text 0x020072c4..0x0200e494.
  *
  * _ZTS9dCamera_c is at 0x02086e6c, _ZTI9dCamera_c at 0x02086ee4,
  * _ZTV9dCamera_c at 0x02086f84. ChangeState's mangling names the
@@ -8,7 +8,7 @@
  * (src/engine/view/d_camera_dtor.cpp), outside this run.
  *
  * Below 0x0200bec4 sit the follow modes, states and script ops
- * (func_020073a0..func_0200bb28). They share this file's .data block
+ * (func_020072c4..func_0200bb28). They share this file's .data block
  * (0x02086bc0..0x0208747c: the script-op member-function constants, the
  * mode records and the offset triples) and the controller records at
  * 0x0209f498 with func_0200bec4 and up.
@@ -21,12 +21,11 @@
  *   cplusplus-off regions.
  * - Vec3 remains the POD scratch triple in the older handlers. Native
  *   collision results use Vector3 and its empty destructor.
- * - The state records in the 0x0209b008 table stay int. These bodies
- *   only take their address.
+ * - The 0x0209b008 state table is nineteen dCamera_c::State records
+ *   defined at the bottom of this file. These bodies only take their
+ *   address.
  * - CleanupResources keeps both null checks. The second is the
  *   inlined deleting destructor.
- * - func_020072c4, the script op just below func_020073a0, stays a shard:
- *   it reads no data, so nothing but call order ties it to this run.
  * - The controller records at 0x0209f498 are read through the separate
  *   data_0209f49c..data_0209f4ae symbols with (char *) stride arithmetic.
  */
@@ -53,25 +52,26 @@ struct System {
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
-/* dCamera_c's state objects are 0x10-byte records in the 0x0209b008 table; every
-   use here is by address, so `int` gives the linker the symbol while the
-   structures stay opaque. */
-extern int data_0209b018;
-extern int data_0209b028;
-extern int data_0209b038;
-extern int data_0209b048;
-extern int data_0209b058;
-extern int data_0209b068;
-extern int data_0209b078;
-extern int data_0209b088;
-extern int data_0209b098;
-extern int data_0209b0a8;
-extern int data_0209b0b8;
-extern int data_0209b0d8;
-extern int data_0209b0f8;
-extern int data_0209b108;
-extern int data_0209b118;
-extern int data_0209b128;
+/* Defined at the bottom of this file; every use here only takes the address. */
+extern dCamera_c::State data_0209b008;
+extern dCamera_c::State data_0209b018;
+extern dCamera_c::State data_0209b028;
+extern dCamera_c::State data_0209b038;
+extern dCamera_c::State data_0209b048;
+extern dCamera_c::State data_0209b058;
+extern dCamera_c::State data_0209b068;
+extern dCamera_c::State data_0209b078;
+extern dCamera_c::State data_0209b088;
+extern dCamera_c::State data_0209b098;
+extern dCamera_c::State data_0209b0a8;
+extern dCamera_c::State data_0209b0b8;
+extern dCamera_c::State data_0209b0c8;
+extern dCamera_c::State data_0209b0d8;
+extern dCamera_c::State data_0209b0e8;
+extern dCamera_c::State data_0209b0f8;
+extern dCamera_c::State data_0209b108;
+extern dCamera_c::State data_0209b118;
+extern dCamera_c::State data_0209b128;
 extern Matrix4x3 data_0209b41c;
 extern unsigned int data_0209b454;
 
@@ -264,30 +264,29 @@ extern "C" dCamera_c *dCamera_c_classInit()
 // @symbol _ZN9dCamera_c13InitResourcesEv
 int dCamera_c::InitResources()
 {
-    dCamera_c *thiz = this;
     u32 i;
     for (i = 0; i < data_0209f1f8; i = (u8)(i + 1)) {
         CamViewObj *v = (CamViewObj *)GetViewObj(i);
         if (v->type == 7) {
             s32 *p;
             s16 x, y, z;
-            thiz->mFixedViewPos = ::operator new(0xc);
+            this->mFixedViewPos = ::operator new(0xc);
             x = v->x; z = v->z; y = v->y;
-            p = (s32 *)thiz->mFixedViewPos;
+            p = (s32 *)this->mFixedViewPos;
             p[0] = x << 0xc;
             p[1] = y << 0xc;
             p[2] = z << 0xc;
         }
     }
-    thiz->mFovBlend = 0;
-    thiz->mTargetPlayer = (dActor_c *)data_0209f394[data_0209f250];
-    ChangeArea(thiz->mTargetPlayer->mAreaId);
-    thiz->mFramedActor = 0;
-    thiz->mFocusActor = 0;
+    this->mFovBlend = 0;
+    this->mTargetPlayer = (dActor_c *)data_0209f394[data_0209f250];
+    ChangeArea(this->mTargetPlayer->mAreaId);
+    this->mFramedActor = 0;
+    this->mFocusActor = 0;
     ChangeState((State *)&data_0209b008);
-    func_0200cf40((char *)thiz);
+    func_0200cf40((char *)this);
     if (StartWithFarCamera() != 0)
-        func_0200d0ac((int)thiz, data_0209f250);
+        func_0200d0ac((int)this, data_0209f250);
     return this->Render();
 }
 
@@ -628,113 +627,108 @@ void func_0200d858(void *self, const struct Vector3 *offset)
     AddVec3(&cam->lookAt, offset, &cam->lookAt);
     AddVec3(&cam->pos, offset, &cam->pos);
 }
+}
 
-// @symbol func_0200d81c
-void func_0200d81c(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d81cEi
+void dCamera_c::func_0200d81c(int playerID) {
     if (playerID != (int)data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b008);
+    ChangeState((dCamera_c::State *)&data_0209b008);
 }
 
-// @symbol func_0200d7e0
-void func_0200d7e0(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d7e0Ei
+void dCamera_c::func_0200d7e0(int playerID) {
     if (playerID != (int)data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b098);
+    ChangeState((dCamera_c::State *)&data_0209b098);
 }
 
-// @symbol func_0200d7a4
-void func_0200d7a4(void *thiz, u8 playerID) {
+// @symbol _ZN9dCamera_c13func_0200d7a4Eh
+void dCamera_c::func_0200d7a4(u8 playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b108);
+    ChangeState((dCamera_c::State *)&data_0209b108);
 }
 
-// @symbol func_0200d768
-void func_0200d768(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d768Eh
+void dCamera_c::func_0200d768(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b018);
+    ChangeState((dCamera_c::State *)&data_0209b018);
 }
 
-// @symbol func_0200d72c
-void func_0200d72c(void *thiz, unsigned char playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d72cEh
+void dCamera_c::func_0200d72c(unsigned char playerID) {
     if (playerID == *(unsigned char *)&data_0209f250)
-        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b028);
+        ChangeState((dCamera_c::State *)&data_0209b028);
 }
 
-// @symbol func_0200d6f0
-void func_0200d6f0(void *thiz, unsigned char playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d6f0Eh
+void dCamera_c::func_0200d6f0(unsigned char playerID) {
     if (playerID == *(unsigned char *)&data_0209f250)
     {
-        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b038);
+        ChangeState((dCamera_c::State *)&data_0209b038);
     }
 }
 
-// @symbol func_0200d6b4
-void func_0200d6b4(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d6b4Eh
+void dCamera_c::func_0200d6b4(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b048);
+    ChangeState((dCamera_c::State *)&data_0209b048);
 }
 
-// @symbol func_0200d678
-void func_0200d678(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d678Eh
+void dCamera_c::func_0200d678(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b058);
+    ChangeState((dCamera_c::State *)&data_0209b058);
 }
 
-// @symbol func_0200d63c
-void func_0200d63c(void *thiz, unsigned char playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d63cEh
+void dCamera_c::func_0200d63c(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b068);
+    ChangeState((dCamera_c::State *)&data_0209b068);
 }
 
-// @symbol func_0200d5fc
-void func_0200d5fc(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d5fcEi
+void dCamera_c::func_0200d5fc(int playerID) {
     if (playerID == data_0209f250) {
-        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
-        func_0200cb58(thiz, 5);
+        ChangeState((dCamera_c::State *)&data_0209b078);
+        func_0200cb58(this, 5);
     }
 }
 
-// @symbol func_0200d5c0
-void func_0200d5c0(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d5c0Eh
+void dCamera_c::func_0200d5c0(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
+    ChangeState((dCamera_c::State *)&data_0209b078);
 }
 
-// @symbol func_0200d580
-void func_0200d580(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d580Ei
+void dCamera_c::func_0200d580(int playerID) {
     if (playerID != data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
-    func_0200cb58(thiz, 8);
+    ChangeState((dCamera_c::State *)&data_0209b078);
+    func_0200cb58(this, 8);
 }
 
-// @symbol func_0200d544
-void func_0200d544(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d544Eh
+void dCamera_c::func_0200d544(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b088);
+    ChangeState((dCamera_c::State *)&data_0209b088);
 }
 
-// @symbol func_0200d508
-void func_0200d508(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d508Eh
+void dCamera_c::func_0200d508(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0a8);
+    ChangeState((dCamera_c::State *)&data_0209b0a8);
 }
+extern "C" {
 
 // @symbol func_0200d4b0
 void func_0200d4b0(char* self, unsigned int playerID, int arg2)
@@ -750,30 +744,29 @@ void func_0200d4b0(char* self, unsigned int playerID, int arg2)
         RunStarCameraScript(arg2);
     }
 }
-
-// @symbol func_0200d474
-void func_0200d474(void *thiz, unsigned char playerID) {
-    if (playerID != *(unsigned char *)&data_0209f250)
-        return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0b8);
 }
 
-// @symbol func_0200d438
-void func_0200d438(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d474Eh
+void dCamera_c::func_0200d474(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0c8);
+    ChangeState((dCamera_c::State *)&data_0209b0b8);
 }
 
-// @symbol func_0200d3f8
-void func_0200d3f8(void *thiz, unsigned char playerID, void *ptr)
-{
+// @symbol _ZN9dCamera_c13func_0200d438Eh
+void dCamera_c::func_0200d438(unsigned char playerID) {
+    if (playerID != *(unsigned char *)&data_0209f250)
+        return;
+    ChangeState((dCamera_c::State *)&data_0209b0c8);
+}
+
+// @symbol _ZN9dCamera_c13func_0200d3f8EhPv
+void dCamera_c::func_0200d3f8(unsigned char playerID, void *ptr) {
     unsigned char tmp = *(unsigned char *)&data_0209f250;
     if (playerID != tmp)
         return;
-    ((struct dCamera_c *)thiz)->mLookTarget = (s32 *)ptr;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0d8);
-}
+    mLookTarget = (s32 *)ptr;
+    ChangeState((dCamera_c::State *)&data_0209b0d8);
 }
 
 // @symbol _ZN9dCamera_c14GoBehindPlayerEj
@@ -872,21 +865,21 @@ void dCamera_c::LookAtExit(dActor_c &actor)
     mFlags |= 0x10;
 }
 
+// @symbol _ZN9dCamera_c13func_0200d148Eh
+void dCamera_c::func_0200d148(unsigned char playerID) {
+    if (playerID != *(unsigned char *)&data_0209f250)
+        return;
+    ChangeState((dCamera_c::State *)&data_0209b118);
+}
+
+// @symbol _ZN9dCamera_c13func_0200d10cEh
+void dCamera_c::func_0200d10c(unsigned char playerID) {
+    if (playerID != *(unsigned char *)&data_0209f250)
+        return;
+    ChangeState((dCamera_c::State *)&data_0209b128);
+}
+
 extern "C" {
-// @symbol func_0200d148
-void func_0200d148(void *thiz, unsigned char playerID) {
-    if (playerID != *(unsigned char *)&data_0209f250)
-        return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b118);
-}
-
-// @symbol func_0200d10c
-void func_0200d10c(void *thiz, unsigned char playerID) {
-    if (playerID != *(unsigned char *)&data_0209f250)
-        return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b128);
-}
-
 // @symbol func_0200d0ac
 int func_0200d0ac(int a, unsigned int b) {
     if (b == data_0209f250) {
@@ -1603,7 +1596,6 @@ extern long long func_0203cf94(int *a, int *b);
 extern void func_ov002_020effb8(Vector3 *out, s32 t, Vector3 *p0, Vector3 *p1, Vector3 *p2,
                                 Vector3 *p3);
 extern int func_ov002_020ca270(char *player);
-extern void func_02035468(char *query);
 extern void FUN_02029ab0(void);
 extern int Sound_PlayIfNotActive(int handle, int bank, int id, int arg);
 extern void func_020070e8(dCamera_c *cam, int distTarget, int distStep, short vertTarget,
@@ -3513,7 +3505,7 @@ void func_020089d8(dCamera_c *cam) {
 // @symbol func_0200897c
 /* Prepare a collision query for the camera. It always stops ignoring
  * vanish surfaces, then starts again if the target is a vanished Player,
- * and finally runs func_02035468 on the query.
+ * and finally enables camera mode on the query.
  *
  * Codegen note: the (actorID == 0xbf) test is held in an enum-typed boolean.
  * Under -O4 -enum int this materializes the comparison as a full 32-bit 0/1
@@ -3531,7 +3523,7 @@ void func_0200897c(void *self, void *arg) {
     if (isType && owner->mIsVanish != 0) {
         ((dBgCh *)arg)->StartIgnoringVanishSurfaces();
     }
-    func_02035468((char *)arg);
+    ((dBgCh *)arg)->EnableCameraMode();
 }
 }
 
@@ -4216,4 +4208,56 @@ int func_020073a0(dCamera_c *cam) {
     ApproachLinear(cam->savedPos.z, -0xc8000, 0x6aaa);
     return 1;
 }
+
+// @symbol func_020072c4
+/* Script op: ramp mRampSpeed up to 0xf000 and ease savedLookAt and savedPos
+   onto fixed targets, paced by it. Its member-function constant is
+   data_02086ca8. Defined last, so it lands at the run's low edge. */
+int func_020072c4(dCamera_c *cam) {
+    ApproachLinear(cam->mRampSpeed, 0xf000, 0x199);
+    ApproachLinear(cam->savedLookAt.x, 0x7d0000, cam->mRampSpeed);
+    ApproachLinear(cam->savedLookAt.y, 0x4b0000, cam->mRampSpeed / 10);
+    ApproachLinear(cam->savedLookAt.z, 0x3e8000, cam->mRampSpeed / 10);
+    ApproachLinear(cam->savedPos.x, 0, cam->mRampSpeed);
+    ApproachLinear(cam->savedPos.y, 0x4b0000, cam->mRampSpeed >> 1);
+    ApproachLinear(cam->savedPos.z, 0x3e8000, cam->mRampSpeed * 10 / 15);
+    return 1;
 }
+}
+
+/* Nineteen camera states, definition order is retail __sinit order. Each
+   record is two CamPmf (enter at +0, execute at +8), plain-copied from the
+   .data member-function constants. mwcc emits __sinit_d_camera.cpp from
+   these, which was the handwritten __sinit_02073a24. */
+struct dCamera_c::State {
+    CamPmf enter;
+    CamPmf exec;
+};
+
+extern CamPmf data_02086d28, data_02086c28, data_02086da8, data_02086c30, data_02086c48,
+    data_02086c40, data_02086c98, data_02086c58, data_02086c68, data_02086bf8, data_02086d58,
+    data_02086d48, data_02086c70, data_02086bf0, data_02086db8, data_02086d30, data_02086c10,
+    data_02086d90, data_02086be8, data_02086be0, data_02086d10, data_02086c00, data_02086c08,
+    data_02086bc8, data_02086c18, data_02086db0, data_02086bd0, data_02086e40, data_02086ce0,
+    data_02086e28, data_02086e18, data_02086e10, data_02086e00, data_02086df8, data_02086de8,
+    data_02086de0, data_02086dd0, data_02086dc8;
+
+dCamera_c::State data_0209b008 = {data_02086d28, data_02086c28};
+dCamera_c::State data_0209b018 = {data_02086da8, data_02086c30};
+dCamera_c::State data_0209b028 = {data_02086c48, data_02086c40};
+dCamera_c::State data_0209b038 = {data_02086c98, data_02086c58};
+dCamera_c::State data_0209b048 = {data_02086c68, data_02086bf8};
+dCamera_c::State data_0209b058 = {data_02086d58, data_02086d48};
+dCamera_c::State data_0209b068 = {data_02086c70, data_02086bf0};
+dCamera_c::State data_0209b078 = {data_02086db8, data_02086d30};
+dCamera_c::State data_0209b088 = {data_02086c10, data_02086d90};
+dCamera_c::State data_0209b098 = {data_02086be8, data_02086be0};
+dCamera_c::State data_0209b0a8 = {data_02086d10, data_02086c00};
+dCamera_c::State data_0209b0b8 = {data_02086c08, data_02086bc8};
+dCamera_c::State data_0209b0c8 = {data_02086c18, data_02086db0};
+dCamera_c::State data_0209b0d8 = {data_02086bd0, data_02086e40};
+dCamera_c::State data_0209b0e8 = {data_02086ce0, data_02086e28};
+dCamera_c::State data_0209b0f8 = {data_02086e18, data_02086e10};
+dCamera_c::State data_0209b108 = {data_02086e00, data_02086df8};
+dCamera_c::State data_0209b118 = {data_02086de8, data_02086de0};
+dCamera_c::State data_0209b128 = {data_02086dd0, data_02086dc8};

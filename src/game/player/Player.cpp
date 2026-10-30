@@ -26,7 +26,8 @@
  *   6az). Keep them identical: 16 spellings of one symbol is how a wrong
  *   return type or argument order hides.
  * - func_020731dc is __register_global_object. The relocation rows name the
- *   retail symbol.
+ *   retail symbol. Five function-local Vector3 offsets are real statics;
+ *   mwcc emits their guards, stores and ~Vector3() registration.
  * - The static initializer is still written out by hand. Its objects keep
  *   their ROM-owned .bss homes, so it constructs each handle in place and
  *   registers its destructor with __register_global_object, as the
@@ -4271,9 +4272,7 @@ int Player::func_ov002_020c4188()
     extern int data_0209b454;
     extern short data_ov002_020ff26c[];
     extern unsigned char data_0209d660;
-    extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern void func_0201f32c(int arg0);
-    extern void func_0200d81c(void*, int playerID);
     extern void func_ov002_020e444c(void*);
     int* p;
 
@@ -4290,7 +4289,7 @@ int Player::func_ov002_020c4188()
             goto case1;
         }
         if (mEventId < 7) {
-            func_0200d3f8(p, mPlayerNo, 0);
+            ((::dCamera_c *)p)->func_0200d3f8(mPlayerNo, 0);
         } else {
             ((dCamera_c *)p)->SetFlag_3();
         }
@@ -4327,7 +4326,7 @@ int Player::func_ov002_020c4188()
         if (mEventId >= 7) {
             ((dCamera_c *)p)->mFlags &= ~8;
         }
-        func_0200d81c(p, mPlayerNo);
+        ((::dCamera_c *)p)->func_0200d81c(mPlayerNo);
         if (mEventId == 6) {
             daSoundObj_c *obj = (daSoundObj_c *)mAttachedActor;
             if (obj->mSoundID == 0x2a) {
@@ -4401,15 +4400,9 @@ int Player::func_ov002_020c44c4()
     extern int data_0209caa0[];
     extern s8 data_0209f2f8;
     extern u8 data_0209f264;
-    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
-    extern void *_ZN7Vector3D1Ev(void *object);
-    extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern void func_02012694(unsigned int id, const Vector3 *v);
     extern int SublevelToLevel(int);
-    extern u32 data_ov002_0210e14c;
-    extern Vector3 data_ov002_0210f3b0;
-    extern void*data_ov002_0210f350;
     extern void func_ov100_02145070(int);
     extern int func_ov100_02145014(void);
     Vector3 pos;
@@ -4445,14 +4438,9 @@ cont:
     case 2:
         if ((data_0209caa0[2] & 0x200) == 0) {
             data_0209caa0[2] |= 0x200;
-            if ((data_ov002_0210e14c & 1) == 0) {
-                data_ov002_0210f3b0.x = 0;
-                data_ov002_0210f3b0.y = 0x96000;
-                data_ov002_0210f3b0.z = 0x64000;
-                func_020731dc(&data_ov002_0210f3b0, (void *)_ZN7Vector3D1Ev, &data_ov002_0210f350);
-                data_ov002_0210e14c |= 1;
-            }
-            Vec3_RotateYAndTranslate((int*)&pos, &this->mPosX, this->mAngleY, (int*)&data_ov002_0210f3b0);
+            /* First entry constructs it: guard, three stores, ~Vector3() registration. */
+            static Vector3 sLevelIntroOff(0, 0x96000, 0x64000);
+            Vec3_RotateYAndTranslate((int *)&pos, &this->mPosX, this->mAngleY, &sLevelIntroOff);
             this->ShowMessage(*this, 0x177, &pos, 2, 2);
             func_ov100_02145070(0x1e);
             func_ov100_02145014();
@@ -4575,8 +4563,6 @@ int Player::St_Talk_Main()
 {
     extern int PlayerChangeMusicVolumeHold(u32 vol, int t);
     extern void func_0201f32c(s16 a);
-    extern void func_0200d3f8(void*, u8 playerID, void*);
-    extern void func_0200d81c(void*, u8 playerID);
     extern void Player_AdvanceAnims(void*);
     extern int data_0209b454;
     extern char* data_0209f318;
@@ -4585,7 +4571,6 @@ int Player::St_Talk_Main()
     extern Player::State data_ov002_02110514;
     extern Player::State data_ov002_0211013c;
     extern void func_0201fc88(s16);
-    extern void func_0200d7a4(void*, u8);
     extern int func_ov100_02144fcc(void);
     if (mRestoreMusicVolume != 0) {
         if (Sound::ChangeMusicVolume(0x7f, 0x7222) != 0)
@@ -4620,10 +4605,10 @@ int Player::St_Talk_Main()
             char* cam = data_0209f318;
             switch ((mStateArg >> 2) & 3) {
             case 0:
-                func_0200d3f8(cam, mPlayerNo, &mStateTargetX);
+                ((::dCamera_c *)cam)->func_0200d3f8(mPlayerNo, &mStateTargetX);
                 break;
             case 1:
-                func_0200d7a4(cam, mPlayerNo);
+                ((::dCamera_c *)cam)->func_0200d7a4(mPlayerNo);
                 break;
             }
         }
@@ -4657,7 +4642,7 @@ int Player::St_Talk_Main()
             mStateWork = 0;
             mPrevAngleY = mAngleY;
             char* cam = data_0209f318;
-            func_0200d81c(cam, mPlayerNo);
+            ((::dCamera_c *)cam)->func_0200d81c(mPlayerNo);
             ((dCamera_c *)cam)->mFlags &= ~8;
             mHeadRotMode = 4;
         }
@@ -4722,7 +4707,6 @@ int Player::St_Talk_Init()
 extern "C" {
 int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos, unsigned char d, unsigned char e)
 {
-    extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3 *in, int angle, const Vector3 *src);
     extern Player::State data_ov002_0211046c;
     extern Player::State data_ov002_0211013c;
@@ -4733,11 +4717,6 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
     extern Player::State data_ov002_021104e4;
     extern Player::State data_ov002_02110514;
     extern Player::State data_ov002_0211022c;
-    extern int data_ov002_0210e15c;
-    extern int data_ov002_0210f224[3];
-    extern int data_ov002_0210f1ac;
-    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
-    extern void *_ZN7Vector3D1Ev(void *object);
     extern void *data_0209f318;
     fBase_c *actor = &actor_;
     int r7;
@@ -4773,16 +4752,10 @@ finish:
     mStateArg = d & 3;
     *(u8 *)(((long long)(&mStateArg))) |= (e & 3) << 2;
 
-    if (!(data_ov002_0210e15c & 1)) {
-        data_ov002_0210f224[0] = 0;
-        data_ov002_0210f224[1] = 0x64000;
-        data_ov002_0210f224[2] = 0x64000;
-        func_020731dc(data_ov002_0210f224, (void *)_ZN7Vector3D1Ev, &data_ov002_0210f1ac);
-        data_ov002_0210e15c |= 1;
-    }
+    /* First entry constructs it: guard, three stores, ~Vector3() registration. */
+    static Vector3 sTalkOff(0, 0x64000, 0x64000);
 
-    Vec3_RotateYAndTranslate((Vector3 *)(&mStateTargetX), &mPos, mAngleY,
-                             (Vector3 *)data_ov002_0210f224);
+    Vec3_RotateYAndTranslate((Vector3 *)(&mStateTargetX), &mPos, mAngleY, &sTalkOff);
 
     if (pos) {
         *(Vector3 *)(&mStateTargetX) = *pos;
@@ -6609,7 +6582,6 @@ void Player::func_ov002_020c7ff8()
 {
     extern void *data_0209f318;
     extern void func_0200d4b0(void*, u8 playerID, int x);
-    extern void func_0200d508(void*, u8 playerID);
     u8 s = mNoCtrlKind;
     void *g = data_0209f318;
     if (s == 0 || s == 1 || s == 0x11) {
@@ -6617,7 +6589,7 @@ void Player::func_ov002_020c7ff8()
     } else if (s == 3) {
         func_0200d4b0(g, mPlayerNo, 5);
     } else {
-        func_0200d508(g, mPlayerNo);
+        ((::dCamera_c *)g)->func_0200d508(mPlayerNo);
     }
     if (mIsUnderwater != 0) {
         this->SetAnim(0xac, 0x40000000, 0x1000, 0);
@@ -6969,21 +6941,11 @@ int Player::func_ov002_020c897c()
 // @symbol _ZN6Player19func_ov002_020c8a4cEv
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
-/* extern "C": this is the ROM symbol's own name. A bare `extern` in a //cpp file
-   makes the compiler mangle it AGAIN, into _Z15_ZN7Vector3D1Evv, which exists
-   nowhere -- and the byte gate cannot see it, because relocated words are
-   wildcarded. Only check_references does. */
 extern "C" {
 int Player::func_ov002_020c8a4c() {
     extern short Vec3_HorzAngle(const Vector3*, const Vector3*);
-    extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3*, int, const Vector3*);
-    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
-    extern void *_ZN7Vector3D1Ev(void *object);
     extern int func_02053274(const Vector3*, const Vector3*);
-    extern int data_ov002_0210e150;
-    extern int data_ov002_0210f8cc[3];
-    extern int data_ov002_0210f89c;
     int spd = this->mHorzSpeed >> 3;
     if (spd < 0x400) spd = 0x400;
     this->SetAnim(0x48, 0, spd, 0);
@@ -6992,15 +6954,10 @@ int Player::func_ov002_020c8a4c() {
     if (func_02053274(&mPos, (Vector3 *)&mStateTargetX) < 0xa000) {
         if (mStateArg == 0) {
             mStateArg = 1;
-            if (!(data_ov002_0210e150 & 1)) {
-                data_ov002_0210f8cc[0] = 0;
-                data_ov002_0210f8cc[1] = 0;
-                data_ov002_0210f8cc[2] = 0x12c000;
-                func_020731dc(data_ov002_0210f8cc, (void*)_ZN7Vector3D1Ev, &data_ov002_0210f89c);
-                data_ov002_0210e150 |= 1;
-            }
+            /* First entry constructs it: guard, three stores, ~Vector3() registration. */
+            static Vector3 sAnchorOff(0, 0, 0x12c000);
             Vec3_RotateYAndTranslate((Vector3 *)&mStateTargetX, (Vector3 *)&mStateAnchorX,
-                                     mAngleXSpeed, (Vector3 *)data_ov002_0210f8cc);
+                                     mAngleXSpeed, &sAnchorOff);
         } else {
             func_ov002_020ca108();
         }
@@ -7024,13 +6981,7 @@ int Player::func_ov002_020c8b54()
 extern "C" {
 int Player::func_ov002_020c8b78() {
     extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
-    extern void func_020731dc(void*, void*, void*);
-    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
-    extern void *_ZN7Vector3D1Ev(void *object);
     extern void Vec3_RotateYAndTranslate(void*, void*, int, void*);
-    extern int data_ov002_0210e154;
-    extern int data_ov002_0210f824[];
-    extern char data_ov002_0210f7f4[];
     Vector3 v;
     Sound::ChangeMusicVolume(0x14, 0x15666);
     {
@@ -7041,14 +6992,9 @@ int Player::func_ov002_020c8b78() {
             func_02012790(0x3a);
     }
     if (FinishedAnim() != 0) {
-        if (!(data_ov002_0210e154 & 1)) {
-            data_ov002_0210f824[0] = 0;
-            data_ov002_0210f824[1] = 0x96000;
-            data_ov002_0210f824[2] = 0x64000;
-            func_020731dc(data_ov002_0210f824, (void *)_ZN7Vector3D1Ev, data_ov002_0210f7f4);
-            data_ov002_0210e154 |= 1;
-        }
-        Vec3_RotateYAndTranslate(&v, &mPos, this->mAngleY, data_ov002_0210f824);
+        /* First entry constructs it: guard, three stores, ~Vector3() registration. */
+        static Vector3 sDoorMsgOff(0, 0x96000, 0x64000);
+        Vec3_RotateYAndTranslate(&v, &mPos, this->mAngleY, &sDoorMsgOff);
         mRestoreMusicVolume = 1;
         {
             u16 *fl = &this->mStateFlags;
@@ -7304,7 +7250,6 @@ int Player::func_ov002_020c9288(){
 extern "C" {
 int Player::func_ov002_020c92fc()
 {
-    extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern int data_0209b454;
     extern unsigned char data_0209f2d8;
     extern int data_0209caa0[];
@@ -7340,7 +7285,7 @@ int Player::func_ov002_020c92fc()
                     mHatCharacter == 0 && mPrevCharacter == 3) {
                     mStateStep = 0xa;
                     mStatePhase = 0;
-                    func_0200d3f8(data_0209f318, mPlayerNo, 0);
+                    ((::dCamera_c *)data_0209f318)->func_0200d3f8(mPlayerNo, 0);
                     return 0;
                 }
             }
@@ -7531,7 +7476,6 @@ void Player::func_ov002_020c9840(){
 // @symbol _ZN6Player19func_ov002_020c98a4Ev
 extern "C" {
 void Player::func_ov002_020c98a4(){
-    extern void func_0200d148(void*, unsigned char);
     extern void* data_0209f318[];
   mHasNoCap=0;
   mStateStep=0x18;
@@ -7540,7 +7484,7 @@ void Player::func_ov002_020c98a4(){
   this->mHorzSpeed=0;
   this->mVertSpeed=0;
   mStateArg=0;
-  func_0200d148(data_0209f318[0], mPlayerNo);
+  ((::dCamera_c *)data_0209f318[0])->func_0200d148(mPlayerNo);
 }
 }
 
@@ -8011,8 +7955,7 @@ int Player::Unk_020ca488() {
  *
  * Only from the walking, waiting or crouching states. Takes control, records
  * the door position in mStateAnchor and derives the approach point in
- * mStateTarget from it, and turns the player to face the door. The one-shot
- * guarded by bit 0 of data_ov002_0210e164 registers the offset vector once.
+ * mStateTarget from it, and turns the player to face the door.
  */
 extern "C" {
 int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
@@ -8020,12 +7963,6 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110154;
     extern Player::State data_ov002_0211043c;
-    extern int data_ov002_0210e164;
-    extern int data_ov002_0210f344[3];
-    extern int data_ov002_0210f308;
-    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
-    extern void *_ZN7Vector3D1Ev(void *object);
-    extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern short Vec3_HorzAngle(const void *v0, const void *v1);
     int *pos = (int *)&pos_;
@@ -8036,15 +7973,9 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
             mStateAnchorZ = pos[2];
             mAngleXSpeed = kind;
             mStateArg = 0;
-            if (!(data_ov002_0210e164 & 1)) {
-                data_ov002_0210f344[0] = 0;
-                data_ov002_0210f344[1] = 0;
-                data_ov002_0210f344[2] = 0x64000;
-                func_020731dc(data_ov002_0210f344, (void *)_ZN7Vector3D1Ev, (void **)&data_ov002_0210f308);
-                data_ov002_0210e164 |= 1;
-            }
-            Vec3_RotateYAndTranslate(&mStateTargetX, &mStateAnchorX, mAngleXSpeed,
-                                     data_ov002_0210f344);
+            /* First entry constructs it: guard, three stores, ~Vector3() registration. */
+            static Vector3 sStarDoorOff(0, 0, 0x64000);
+            Vec3_RotateYAndTranslate(&mStateTargetX, &mStateAnchorX, mAngleXSpeed, &sStarDoorOff);
             mAngleY = Vec3_HorzAngle(pos, &mPosX) + 0x8000;
             return 1;
         }
@@ -8448,7 +8379,6 @@ extern "C" {
 int Player::St_CameraZoom_Init()
 {
     extern int func_0200d064(void*, int playerID);
-    extern void func_0200d7e0(void*, int playerID);
     extern struct CameraRaw* data_0209f318;
     extern unsigned char data_0209f28c;
   *(int*)((char*)&mHorzSpeed)=0;
@@ -8456,7 +8386,7 @@ int Player::St_CameraZoom_Init()
   struct CameraRaw* cam = data_0209f318;
   int pid = *(unsigned char*)((char*)&mPlayerNo);
   func_0200d064(cam, pid);
-  func_0200d7e0(cam, *(unsigned char*)((char*)&mPlayerNo));
+  ((::dCamera_c *)cam)->func_0200d7e0(*(unsigned char *)((char *)&mPlayerNo));
   this->SetAnim(0x47, 0, 0x1000, 0);
   data_0209f28c=0;
   return 1;
@@ -8594,14 +8524,13 @@ int Player::St_Headstand_Main()
 extern "C" {
 int Player::St_Headstand_Init()
 {
-    extern void func_0200d580(void*, int playerID);
     extern struct CameraRaw *data_0209f318;
     this->SetAnim(0x1e, 0x40000000, 0x1000, 0);
     *(unsigned char *)((char *)&mStateStep) = 2;
     *(int *)((char *)&mVertAccel) = 0;
     *(int *)((char *)&mHorzSpeed) = 0;
     *(int *)((char *)&mVertSpeed) = 0;
-    func_0200d580(data_0209f318, *(unsigned char *)((char *)&mPlayerNo));
+    ((::dCamera_c *)data_0209f318)->func_0200d580(*(unsigned char *)((char *)&mPlayerNo));
     *(unsigned char *)((char *)&mHideShadow) = 1;
     return 1;
 }
@@ -8727,8 +8656,6 @@ int Player::St_Climb_Cleanup()
 extern "C" {
 int Player::St_Climb_Main() {
     extern void Vec3_RotateYAndTranslate(void*, void*, s16 angle, void*);
-    extern void func_0200d5c0(void*, u8 playerID);
-    extern void func_0200d5fc(void*, s32 playerID);
     extern void ApproachAngle(void*, s16 target, s32 divisor, s32 band, s32 maxStep);
     extern int func_ov002_020cb354(void*);
     extern s16 GetAngleToCamera(u8 i);
@@ -8770,13 +8697,13 @@ int Player::St_Climb_Main() {
     {
         void* cam = data_0209f318;
         if (mClimbClsn->flags & 0x1000000) {
-            func_0200d5c0(cam, mPlayerNo);
+            ((::dCamera_c *)cam)->func_0200d5c0(mPlayerNo);
         } else {
             s32 v = FX_MUL(mClimbClsn->height, 0xb33);
             if (v <= mAttachOffsetY) {
-                func_0200d5c0(cam, mPlayerNo);
+                ((::dCamera_c *)cam)->func_0200d5c0(mPlayerNo);
             } else {
-                func_0200d5fc(cam, mPlayerNo);
+                ((::dCamera_c *)cam)->func_0200d5fc(mPlayerNo);
             }
         }
     }
@@ -9882,7 +9809,6 @@ void func_ov002_020cd71c(char *self)
 extern "C" {
 int Player::St_Swim_Main()
 {
-    extern int func_ov002_020cede0(void*);
     extern int func_ov002_020cec2c(void*);
     extern void func_ov002_020cd71c(void*);
     extern void func_ov002_020cd550(void*);
@@ -9931,7 +9857,7 @@ int Player::St_Swim_Main()
         func_ov002_020c5dec(8);
         return 1;
     }
-    if (func_ov002_020cede0(this) == 0) {
+    if (this->func_ov002_020cede0() == 0) {
         mIsUnderwater = 0;
         this->ChangeState(data_ov002_021101b4);
         return 1;
@@ -10248,7 +10174,6 @@ int Player::St_Swim_Init()
 {
     extern void Player_ReleaseHeldActor(void*);
     extern int data_0209f318[];
-    extern void func_0200d768(void*, unsigned char);
   Player_ReleaseHeldActor(((char*)this));
   Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
   this->SetAnim(0xa7, 0x40000000, 0x1000, 0);
@@ -10256,7 +10181,7 @@ int Player::St_Swim_Init()
   mVertAccel=0;
   mTerminalVelocity=-0xc000;
   mIsUnderwater=1;
-  func_0200d768(*(void**)data_0209f318,mPlayerNo);
+  ((::dCamera_c *)*(void **)data_0209f318)->func_0200d768(mPlayerNo);
   mPrevVertSpeed=mVertSpeed;
   mHorzSpeed=0;
   mVertSpeed=0;
@@ -10486,19 +10411,17 @@ void func_ov002_020ceb7c(struct CameraRaw *c)
     Player *self = (Player *)c;
     extern struct CameraRaw *data_0209f318;
     extern int data_0209f32c;
-    extern void func_0200d768(void*, unsigned char playerID);
-    extern void func_0200d72c(void*, unsigned char playerID);
     struct CameraRaw *g = data_0209f318;
 
     if (self->mStateWork & 2) {
         if (data_0209f32c - 0x50000 - self->mPosY >= 0x64000)
             return;
-        func_0200d768(g, self->mPlayerNo);
+        ((::dCamera_c *)g)->func_0200d768(self->mPlayerNo);
         *LAUNDER_U8(&self->mStateWork) ^= 2;
     } else {
         if (data_0209f32c - 0x50000 - self->mPosY <= 0x12c000)
             return;
-        func_0200d72c(g, self->mPlayerNo);
+        ((::dCamera_c *)g)->func_0200d72c(self->mPlayerNo);
         *LAUNDER_U8(&self->mStateWork) |= 2;
     }
 }
@@ -10579,17 +10502,16 @@ Fix12i func_ov002_020cedb0(Player *c, Fix12i a) {
 }
 }
 
-// @symbol func_ov002_020cede0
+// @symbol _ZN6Player19func_ov002_020cede0Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-int func_ov002_020cede0(void *thiz_) {
+int Player::func_ov002_020cede0() {
     extern int SurfaceInfo_TestFlag0x20(void *);
     extern int data_0209f32c;
     extern signed char data_0209f2f8;
-    extern int func_ov002_020cede0(void *);
     extern int data_0209212c;
-    char *thiz = (char *)thiz_;
+    char *thiz = (char *)this;
     Player *p = (Player *)thiz;
     Vector3 v;
     int y = p->mPosY;
@@ -17498,13 +17420,12 @@ extern "C" {
 int Player::St_GrabBowserTail_Init()
 {
     extern int* data_0209f318;
-    extern void func_0200d10c(void*, unsigned char);
     this->SetAnim(0x81, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     mAngleYSpeed = 0;
     mStateWork = 0;
     mStateArg = 0;
-    func_0200d10c((void *)data_0209f318, mPlayerNo);
+    ((::dCamera_c *)data_0209f318)->func_0200d10c(mPlayerNo);
     return 1;
 }
 }
@@ -18937,11 +18858,10 @@ extern "C" {
 int Player::St_ButtSlide_Init() {
     struct dCamera_c;
     extern struct dCamera_c *data_0209f318;
-    extern void func_0200d544(struct dCamera_c * thiz, unsigned char playerID);
     this->SetAnim(0x41, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     if (mSlideType) {
-        func_0200d544(data_0209f318, mPlayerNo);
+        ((::dCamera_c *)data_0209f318)->func_0200d544(mPlayerNo);
     }
     mStatePhase = 0;
     mStateArg = mSlideType;
@@ -19167,11 +19087,10 @@ extern "C" {
 int Player::St_StomachSlide_Init() {
     struct dCamera_c;
     extern struct dCamera_c *data_0209f318;
-    extern void func_0200d544(struct dCamera_c * thiz, unsigned char playerID);
     this->SetAnim(0x40, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     if (mSlideType) {
-        func_0200d544(data_0209f318, mPlayerNo);
+        ((::dCamera_c *)data_0209f318)->func_0200d544(mPlayerNo);
     }
     mStateWork = 0;
     mStatePhase = 0;
@@ -19805,14 +19724,13 @@ extern "C" {
 int Player::St_TornadoSpin_Init() {
     extern int Player_ReleaseHeldActor(void *);
     extern int data_0209f318[];
-    extern void func_0200d6b4(void *, unsigned char);
     Player_ReleaseHeldActor(((char *)this));
     this->SetAnim(0x5f, 0, 0x1000, 0);
     mVertSpeed = 0;
     mVertAccel = 0;
     mIsAirborne = 1;
     mLandSoundPlayed = 0;
-    func_0200d6b4(*(void **)data_0209f318, mPlayerNo);
+    ((::dCamera_c *)*(void **)data_0209f318)->func_0200d6b4(mPlayerNo);
     mAttachOffsetY = mPosY - ((dActor_c *)mAttachedActor)->mPosY;
     Sound::PlayCharVoice(mCharacter, 0x26, mCamSpacePos);
     return 1;
@@ -19868,22 +19786,14 @@ void func_ov002_020de3d0(int a0, short* r1, short* r2){
 }
 }
 
-// @symbol func_ov002_020de428
-/* recovered: shared common types */
-struct dActor_ce428 {
-    char pad74[0x74];
-    Vector3 vec; /* 0x74 */
-    char pad[0x70c - 0x80];
-    unsigned char flag; /* 0x70c */
-};
-extern "C" {
-void func_ov002_020de428(struct dActor_ce428 *thiz)
-{
-    if (thiz->flag)
+// @symbol _ZN6Player19func_ov002_020de428Ev
+/* 0x74 is mCamSpacePos and 0x70c is mStateArg; St_Balloon_Main counts the
+ * latter down and calls this on a bounce. */
+void Player::func_ov002_020de428() {
+    if (mStateArg)
         return;
-    Sound::PlayBank0(0xbd, thiz->vec);
-    thiz->flag = 0x1e;
-}
+    Sound::PlayBank0(0xbd, mCamSpacePos);
+    mStateArg = 0x1e;
 }
 
 // @symbol _ZN6Player15St_Balloon_MainEv
@@ -19902,7 +19812,6 @@ s32 Player::St_Balloon_Main()
     extern void func_ov002_020de968(void *);
     extern s16 atan2_hold_Player_4(s32, s32);
     extern int AngleDiff(s32, s16);
-    extern void func_ov002_020de428(void *);
     extern void ApproachAngle(void *, s16, s16, s16, s32);
     extern s32 func_ov002_020bf224(void *, s32, s32);
     extern void func_ov002_020de3d0(void *, s16 *, s16 *);
@@ -19954,7 +19863,7 @@ s32 Player::St_Balloon_Main()
         s16 ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         s16 diff = AngleDiff(ang, mPrevAngleY);
         if ((s32)diff > 0x4000) {
-            func_ov002_020de428(this);
+            this->func_ov002_020de428();
             mPrevAngleY = (s16)((ang * 2 + 0x8000) - mPrevAngleY);
             mHorzSpeed = FX_MUL(mHorzSpeed, 0x1400);
             if (mHorzSpeed > 0x14000)
@@ -19976,14 +19885,14 @@ s32 Player::St_Balloon_Main()
         s32 g = mPrevVertSpeed;
         if (g < 0) {
             mVertSpeed = -FX_MUL(g, 0x2800);
-            func_ov002_020de428(this);
+            this->func_ov002_020de428();
         }
     } else if (mode & 4) {
         s32 g = mPrevVertSpeed;
         if (g > 0) {
             mVertSpeed = -(s32)((((long long)g << 14) + 0x800) >> 12);
             mStateWaitTimer = 0x1e;
-            func_ov002_020de428(this);
+            this->func_ov002_020de428();
         }
     }
 
@@ -20013,7 +19922,6 @@ int Player::St_Balloon_Init() {
     extern int Player_ReleaseHeldActor(void *);
     extern int data_0209f318[];
     extern int data_ov002_0210e750[];
-    extern void func_0200d63c(void *, unsigned char);
     Player_ReleaseHeldActor(((char *)this));
     mIsInAirState = 1;
     mIsFallScreaming = 0;
@@ -20023,7 +19931,7 @@ int Player::St_Balloon_Init() {
         mVertSpeed = -0x10000;
     mHorzSpeed = 0;
     mModelOffsetY = 0x64000;
-    func_0200d63c((void *)data_0209f318[0], mPlayerNo);
+    ((::dCamera_c *)data_0209f318[0])->func_0200d63c(mPlayerNo);
     mAngleYSpeed = 0x100;
     mAngleXSpeed = 0x100;
     mPrevVertSpeed = mVertSpeed;
@@ -20148,13 +20056,12 @@ int Player::St_WindCarry_Init()
 {
     extern int func_ov002_020da9d4(void*);
     extern int data_0209f318[];
-    extern void func_0200d63c(void*, unsigned char);
   func_ov002_020da9d4(((char*)this));
   this->SetAnim(0x4a, 0x40000000, 0x1000, 0);
   mVertSpeed=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
-  func_0200d63c((void*)data_0209f318[0], mPlayerNo);
+  ((::dCamera_c *)data_0209f318[0])->func_0200d63c(mPlayerNo);
   return 1;
 }
 }
@@ -20251,7 +20158,6 @@ extern "C" {
 int Player::St_Cannon_Main()
 {
     extern short GetAngleToCamera(int i);
-    extern void func_0200d6f0(void* thiz, u8 pid);
     extern void func_02012694(u32 id, void* v);
     extern int atan2_hold_Player_3(int a, int b);
     extern void Player_AdvanceAnims(void* c);
@@ -20280,7 +20186,7 @@ int Player::St_Cannon_Main()
         mOpacity = 0x1f;
         mIsBodyClsnEnabled = 1;
         *(int*)((char*)&mdCcAcPos_c.flags) |= 0x20;
-        func_0200d6f0(p, mPlayerNo);
+        ((::dCamera_c *)p)->func_0200d6f0(mPlayerNo);
         func_02012694(0x14f, &mCamSpacePos);
         Sound::PlayBank0(0xb9, mCamSpacePos);
         Sound::PlayCharVoice(mCharacter, 0xc, mCamSpacePos);
@@ -20382,13 +20288,12 @@ int Player::IsBeingShotOutOfCannon()
 // @symbol func_ov002_020df300
 extern "C" {
 int func_ov002_020df300(char* p) {
-    extern void func_0200d438(int a, unsigned char b);
     extern int data_0209f318;
     Player *player = (Player *)p;
     if (player->mStateStep)
         return 0;
     player->mStateStep = 1;
-    func_0200d438(data_0209f318, player->mPlayerNo);
+    ((::dCamera_c *)data_0209f318)->func_0200d438(player->mPlayerNo);
     return 1;
 }
 }
@@ -20402,7 +20307,6 @@ extern "C" {
 extern "C" int func_ov002_020df34c(Player* self) {
     struct dCamera_c {};
     extern int func_ov002_020e0478(void* c);
-    extern void func_0200d474(dCamera_c* thiz, unsigned char playerID);
     extern Player::State data_ov002_0210ffec;
     extern Player::State data_ov002_021102d4;
     extern dCamera_c* data_0209f318;
@@ -20413,7 +20317,7 @@ extern "C" int func_ov002_020df34c(Player* self) {
     }
     p[0x6e3] = 0;
     self->ChangeState(data_ov002_021102d4);
-    func_0200d474(data_0209f318, p[0x6d8]);
+    ((::dCamera_c *)data_0209f318)->func_0200d474(p[0x6d8]);
     return 1;
 }
 }
@@ -20435,7 +20339,6 @@ int Player::St_Owl_Main()
 {
     extern int ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
     extern void func_0201f32c(int a);
-    extern void func_0200d3f8(void* thiz, unsigned char playerID, void* ptr);
     extern void Player_DisableInteraction(char* c);
     extern void Player_AdvanceAnims(void* c);
     extern unsigned char data_0209f49c[];
@@ -20444,7 +20347,6 @@ int Player::St_Owl_Main()
     extern short data_02082214[];
     extern char* data_0209f318;
     extern unsigned char data_0209d660;
-    extern void func_0200d6b4(void*, unsigned char);
     unsigned char st;
 
     mPeakY = mPosY;
@@ -20498,7 +20400,7 @@ int Player::St_Owl_Main()
             if (mAttachOffsetY - 0xed8000 > mPosY) {
                 mOwlFarCamera = 1;
                 func_0201f32c(0xa3);
-                func_0200d3f8(data_0209f318, mPlayerNo, 0);
+                ((::dCamera_c *)data_0209f318)->func_0200d3f8(mPlayerNo, 0);
                 mVertAccel = 0;
                 Player_DisableInteraction(((char*)this));
                 mStateStep = 2;
@@ -20517,7 +20419,7 @@ int Player::St_Owl_Main()
         mVertSpeed = mHorzSpeed;
         if (data_0209d660 == 0) {
             mStateStep = 3;
-            func_0200d6b4(data_0209f318, mPlayerNo);
+            ((::dCamera_c *)data_0209f318)->func_0200d6b4(mPlayerNo);
         }
         break;
 
@@ -20547,27 +20449,26 @@ extern "C" {
 int Player::St_Owl_Init()
 {
     extern int data_0209f318[];
-    extern void func_0200d6b4(void*, unsigned char);
   mTerminalVelocity=-0x4b000;
   mVertAccel=0;
   mStateStep=0;
   mHorzSpeed=0;
   this->SetAnim(0x5b, 0x40000000, 0x1000, 0);
-  func_0200d6b4((void*)data_0209f318[0], mPlayerNo);
+  ((::dCamera_c *)data_0209f318[0])->func_0200d6b4(mPlayerNo);
   StartStateMusic(0x2f);
   return 1;
 }
 }
 
-// @symbol func_ov002_020df7ac
+// @symbol _ZN6Player19func_ov002_020df7acEv
 extern "C" {
-int func_ov002_020df7ac(Player *thiz) {
+int Player::func_ov002_020df7ac() {
     extern Player::State data_ov002_02110244;
     extern Player::State data_ov002_021101b4;
-    if (thiz->IsState(data_ov002_02110244) == 0)
+    if (this->IsState(data_ov002_02110244) == 0)
         return 0;
-    thiz->St_Owl_Cleanup();
-    thiz->ChangeState(data_ov002_021101b4);
+    this->St_Owl_Cleanup();
+    this->ChangeState(data_ov002_021101b4);
     return 1;
 }
 }
@@ -20582,24 +20483,24 @@ int func_ov002_020df7f4(Player *player) {
 }
 }
 
-// @symbol func_ov002_020df840
+// @symbol _ZN6Player19func_ov002_020df840EPvP7Vector3
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-int func_ov002_020df840(Player *thiz, void *arg1, Vector3 *arg2) {
+int Player::func_ov002_020df840(void *arg1, Vector3 *arg2) {
     extern u16 data_0209f49c[];
     extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern Player::State data_ov002_02110244;
-    if (thiz->mIsMega != 0 || thiz->mIsBalloon != 0)
+    if (this->mIsMega != 0 || this->mIsBalloon != 0)
         return 0;
     if ((*(u16*)((char*)data_0209f49c + gActivePlayerSlot * 0x18) & 2) == 0)
         return 0;
-    if (thiz->mHeldObj != 0)
+    if (this->mHeldObj != 0)
         return 0;
-    thiz->ChangeState(data_ov002_02110244);
-    thiz->mHeldObj = (int)arg1;
-    thiz->mAttachOffsetY = arg2->y;
-    thiz->mAngleYSpeed = Vec3_HorzAngle(&thiz->mPos, arg2);
+    this->ChangeState(data_ov002_02110244);
+    this->mHeldObj = (int)arg1;
+    this->mAttachOffsetY = arg2->y;
+    this->mAngleYSpeed = Vec3_HorzAngle(&this->mPos, arg2);
     return 1;
 }
 }
@@ -20911,7 +20812,6 @@ extern "C" {
 int Player::St_Fly_Init() {
     extern int data_0209f318[];
     extern void Player_ReleaseHeldActor(char *);
-    extern void func_0200d6f0(void *, unsigned char);
     mAngleXSpeed = 0;
     mAngleYSpeed = 0;
     mPrevAngleX = 0;
@@ -20926,7 +20826,7 @@ int Player::St_Fly_Init() {
         mVertAccel = 0;
         this->SetAnim(0x49, 0, 0x1000, 0);
     }
-    func_0200d6f0((void *)data_0209f318[0], mPlayerNo);
+    ((::dCamera_c *)data_0209f318[0])->func_0200d6f0(mPlayerNo);
     return 1;
 }
 }
@@ -21501,7 +21401,6 @@ int Player::St_Spin_Init()
     struct dCamera_c;
     extern int* data_0209f318;
     extern void func_ov002_020e25f0(void* c, int i);
-    extern void func_0200d678(dCamera_c* thiz, unsigned char pid);
   mJumpedFromQuicksand = 0;
   mIsInAirState = 1;
   mIsFallScreaming = 0;
@@ -21519,7 +21418,7 @@ int Player::St_Spin_Init()
   int** cam_ptr_ptr = &data_0209f318;
   *p = old | 0x20;
   unsigned char pid = mPlayerNo;
-  func_0200d678((dCamera_c*)*cam_ptr_ptr, pid);
+  ((::dCamera_c *)*cam_ptr_ptr)->func_0200d678(pid);
   return 1;
 }
 }
@@ -22689,7 +22588,6 @@ bool Player::IsState(Player::State &state)
 extern "C" {
 int Player::ChangeState(Player::State &state) {
     extern void func_ov002_020d4540(void *p);
-    extern void func_0200d81c(void *thiz, int playerID);
     extern void *data_0209f318;
     extern Player::State data_ov002_0211022c;
     extern Player::State data_ov002_0211013c;
@@ -22783,7 +22681,7 @@ int Player::ChangeState(Player::State &state) {
     func_ov002_020e6780((char *)this);
 
     if (data_0209f318 != 0) {
-        func_0200d81c(data_0209f318, mPlayerNo);
+        ((::dCamera_c *)data_0209f318)->func_0200d81c(mPlayerNo);
     }
 
     {
@@ -24970,6 +24868,632 @@ int *func_ov002_020e6bb0(void *model) {
 /* Static initializer __sinit_ov002_021019d0, placed in .init by define_section.
  * Still written by hand: the objects it builds keep their ROM-owned .bss
  * homes, so a compiler-emitted initializer has nothing to define. */
+/* Zero-filled .bss owned by this TU (0x0210e14c..0x0210f8d8).
+ * Outside .init: the section pragma would place these objects in .init.
+ * No constructor and no initializer, so __sinit_ov002_021019d0 stays put. */
+extern "C" {
+int data_ov002_0210e160;
+SharedFilePtr data_ov002_0210e168;
+SharedFilePtr data_ov002_0210e170;
+SharedFilePtr data_ov002_0210e178;
+SharedFilePtr data_ov002_0210e180;
+SharedFilePtr data_ov002_0210e188;
+SharedFilePtr data_ov002_0210e190;
+SharedFilePtr data_ov002_0210e198;
+SharedFilePtr data_ov002_0210e1a0;
+SharedFilePtr data_ov002_0210e1a8;
+SharedFilePtr data_ov002_0210e1b0;
+SharedFilePtr data_ov002_0210e1b8;
+SharedFilePtr data_ov002_0210e1c0;
+SharedFilePtr data_ov002_0210e1c8;
+SharedFilePtr data_ov002_0210e1d0;
+SharedFilePtr data_ov002_0210e1d8;
+SharedFilePtr data_ov002_0210e1e0;
+SharedFilePtr data_ov002_0210e1e8;
+SharedFilePtr data_ov002_0210e1f0;
+SharedFilePtr data_ov002_0210e1f8;
+SharedFilePtr data_ov002_0210e200;
+SharedFilePtr data_ov002_0210e208;
+SharedFilePtr data_ov002_0210e210;
+SharedFilePtr data_ov002_0210e218;
+SharedFilePtr data_ov002_0210e220;
+SharedFilePtr data_ov002_0210e228;
+SharedFilePtr data_ov002_0210e230;
+SharedFilePtr data_ov002_0210e238;
+SharedFilePtr data_ov002_0210e240;
+SharedFilePtr data_ov002_0210e248;
+SharedFilePtr data_ov002_0210e250;
+SharedFilePtr data_ov002_0210e258;
+SharedFilePtr data_ov002_0210e260;
+SharedFilePtr data_ov002_0210e268;
+SharedFilePtr data_ov002_0210e270;
+SharedFilePtr data_ov002_0210e278;
+SharedFilePtr data_ov002_0210e280;
+SharedFilePtr data_ov002_0210e288;
+SharedFilePtr data_ov002_0210e290;
+SharedFilePtr data_ov002_0210e298;
+SharedFilePtr data_ov002_0210e2a0;
+SharedFilePtr data_ov002_0210e2a8;
+SharedFilePtr data_ov002_0210e2b0;
+SharedFilePtr data_ov002_0210e2b8;
+SharedFilePtr data_ov002_0210e2c0;
+SharedFilePtr data_ov002_0210e2c8;
+SharedFilePtr data_ov002_0210e2d0;
+SharedFilePtr data_ov002_0210e2d8;
+SharedFilePtr data_ov002_0210e2e0;
+SharedFilePtr data_ov002_0210e2e8;
+SharedFilePtr data_ov002_0210e2f0;
+SharedFilePtr data_ov002_0210e2f8;
+SharedFilePtr data_ov002_0210e300;
+SharedFilePtr data_ov002_0210e308;
+SharedFilePtr data_ov002_0210e310;
+SharedFilePtr data_ov002_0210e318;
+SharedFilePtr data_ov002_0210e320;
+SharedFilePtr data_ov002_0210e328;
+SharedFilePtr data_ov002_0210e330;
+SharedFilePtr data_ov002_0210e338;
+SharedFilePtr data_ov002_0210e340;
+SharedFilePtr data_ov002_0210e348;
+SharedFilePtr data_ov002_0210e350;
+SharedFilePtr data_ov002_0210e358;
+SharedFilePtr data_ov002_0210e360;
+SharedFilePtr data_ov002_0210e368;
+SharedFilePtr data_ov002_0210e370;
+SharedFilePtr data_ov002_0210e378;
+SharedFilePtr data_ov002_0210e380;
+SharedFilePtr data_ov002_0210e388;
+SharedFilePtr data_ov002_0210e390;
+SharedFilePtr data_ov002_0210e398;
+SharedFilePtr data_ov002_0210e3a0;
+SharedFilePtr data_ov002_0210e3a8;
+SharedFilePtr data_ov002_0210e3b0;
+SharedFilePtr data_ov002_0210e3b8;
+SharedFilePtr data_ov002_0210e3c0;
+SharedFilePtr data_ov002_0210e3c8;
+SharedFilePtr data_ov002_0210e3d0;
+SharedFilePtr data_ov002_0210e3d8;
+SharedFilePtr data_ov002_0210e3e0;
+SharedFilePtr data_ov002_0210e3e8;
+SharedFilePtr data_ov002_0210e3f0;
+SharedFilePtr data_ov002_0210e3f8;
+SharedFilePtr data_ov002_0210e400;
+SharedFilePtr data_ov002_0210e408;
+SharedFilePtr data_ov002_0210e410;
+SharedFilePtr data_ov002_0210e418;
+SharedFilePtr data_ov002_0210e420;
+SharedFilePtr data_ov002_0210e428;
+SharedFilePtr data_ov002_0210e430;
+SharedFilePtr data_ov002_0210e438;
+SharedFilePtr data_ov002_0210e440;
+SharedFilePtr data_ov002_0210e448;
+SharedFilePtr data_ov002_0210e450;
+SharedFilePtr data_ov002_0210e458;
+SharedFilePtr data_ov002_0210e460;
+SharedFilePtr data_ov002_0210e468;
+SharedFilePtr data_ov002_0210e470;
+SharedFilePtr data_ov002_0210e478;
+SharedFilePtr data_ov002_0210e480;
+SharedFilePtr data_ov002_0210e488;
+SharedFilePtr data_ov002_0210e490;
+SharedFilePtr data_ov002_0210e498;
+SharedFilePtr data_ov002_0210e4a0;
+SharedFilePtr data_ov002_0210e4a8;
+SharedFilePtr data_ov002_0210e4b0;
+SharedFilePtr data_ov002_0210e4b8;
+SharedFilePtr data_ov002_0210e4c0;
+SharedFilePtr data_ov002_0210e4c8;
+SharedFilePtr data_ov002_0210e4d0;
+SharedFilePtr data_ov002_0210e4d8;
+SharedFilePtr data_ov002_0210e4e0;
+SharedFilePtr data_ov002_0210e4e8;
+SharedFilePtr data_ov002_0210e4f0;
+SharedFilePtr data_ov002_0210e4f8;
+SharedFilePtr data_ov002_0210e500;
+SharedFilePtr data_ov002_0210e508;
+SharedFilePtr data_ov002_0210e510;
+SharedFilePtr data_ov002_0210e518;
+SharedFilePtr data_ov002_0210e520;
+SharedFilePtr data_ov002_0210e528;
+SharedFilePtr data_ov002_0210e530;
+SharedFilePtr data_ov002_0210e538;
+SharedFilePtr data_ov002_0210e540;
+SharedFilePtr data_ov002_0210e548;
+SharedFilePtr data_ov002_0210e550;
+SharedFilePtr data_ov002_0210e558;
+SharedFilePtr data_ov002_0210e560;
+SharedFilePtr data_ov002_0210e568;
+SharedFilePtr data_ov002_0210e570;
+SharedFilePtr data_ov002_0210e578;
+SharedFilePtr data_ov002_0210e580;
+SharedFilePtr data_ov002_0210e588;
+SharedFilePtr data_ov002_0210e590;
+SharedFilePtr data_ov002_0210e598;
+SharedFilePtr data_ov002_0210e5a0;
+SharedFilePtr data_ov002_0210e5a8;
+SharedFilePtr data_ov002_0210e5b0;
+SharedFilePtr data_ov002_0210e5b8;
+SharedFilePtr data_ov002_0210e5c0;
+SharedFilePtr data_ov002_0210e5c8;
+SharedFilePtr data_ov002_0210e5d0;
+SharedFilePtr data_ov002_0210e5d8;
+SharedFilePtr data_ov002_0210e5e0;
+SharedFilePtr data_ov002_0210e5e8;
+SharedFilePtr data_ov002_0210e5f0;
+SharedFilePtr data_ov002_0210e5f8;
+SharedFilePtr data_ov002_0210e600;
+SharedFilePtr data_ov002_0210e608;
+SharedFilePtr data_ov002_0210e610;
+SharedFilePtr data_ov002_0210e618;
+SharedFilePtr data_ov002_0210e620;
+SharedFilePtr data_ov002_0210e628;
+SharedFilePtr data_ov002_0210e630;
+SharedFilePtr data_ov002_0210e638;
+SharedFilePtr data_ov002_0210e640;
+SharedFilePtr data_ov002_0210e648;
+SharedFilePtr data_ov002_0210e650;
+SharedFilePtr data_ov002_0210e658;
+SharedFilePtr data_ov002_0210e660;
+SharedFilePtr data_ov002_0210e668;
+SharedFilePtr data_ov002_0210e670;
+SharedFilePtr data_ov002_0210e678;
+SharedFilePtr data_ov002_0210e680;
+SharedFilePtr data_ov002_0210e688;
+SharedFilePtr data_ov002_0210e690;
+SharedFilePtr data_ov002_0210e698;
+SharedFilePtr data_ov002_0210e6a0;
+SharedFilePtr data_ov002_0210e6a8;
+SharedFilePtr data_ov002_0210e6b0;
+SharedFilePtr data_ov002_0210e6b8;
+SharedFilePtr data_ov002_0210e6c0;
+SharedFilePtr data_ov002_0210e6c8;
+SharedFilePtr data_ov002_0210e6d0;
+SharedFilePtr data_ov002_0210e6d8;
+SharedFilePtr data_ov002_0210e6e0;
+SharedFilePtr data_ov002_0210e6e8;
+SharedFilePtr data_ov002_0210e6f0;
+SharedFilePtr data_ov002_0210e6f8;
+SharedFilePtr data_ov002_0210e700;
+SharedFilePtr data_ov002_0210e708;
+SharedFilePtr data_ov002_0210e710;
+SharedFilePtr data_ov002_0210e718;
+SharedFilePtr data_ov002_0210e720;
+SharedFilePtr data_ov002_0210e728;
+SharedFilePtr data_ov002_0210e730;
+SharedFilePtr data_ov002_0210e738;
+SharedFilePtr data_ov002_0210e740;
+SharedFilePtr data_ov002_0210e748;
+SharedFilePtr data_ov002_0210e750;
+SharedFilePtr data_ov002_0210e758;
+SharedFilePtr data_ov002_0210e760;
+SharedFilePtr data_ov002_0210e768;
+SharedFilePtr data_ov002_0210e770;
+SharedFilePtr data_ov002_0210e778;
+SharedFilePtr data_ov002_0210e780;
+SharedFilePtr data_ov002_0210e788;
+SharedFilePtr data_ov002_0210e790;
+SharedFilePtr data_ov002_0210e798;
+SharedFilePtr data_ov002_0210e7a0;
+SharedFilePtr data_ov002_0210e7a8;
+SharedFilePtr data_ov002_0210e7b0;
+SharedFilePtr data_ov002_0210e7c0;
+SharedFilePtr data_ov002_0210e7c8;
+SharedFilePtr data_ov002_0210e7d0;
+SharedFilePtr data_ov002_0210e7d8;
+SharedFilePtr data_ov002_0210e7e0;
+SharedFilePtr data_ov002_0210e7e8;
+SharedFilePtr data_ov002_0210e7f0;
+SharedFilePtr data_ov002_0210e7f8;
+SharedFilePtr data_ov002_0210e800;
+SharedFilePtr data_ov002_0210e808;
+SharedFilePtr data_ov002_0210e810;
+SharedFilePtr data_ov002_0210e818;
+SharedFilePtr data_ov002_0210e820;
+SharedFilePtr data_ov002_0210e828;
+SharedFilePtr data_ov002_0210e830;
+SharedFilePtr data_ov002_0210e838;
+SharedFilePtr data_ov002_0210e840;
+SharedFilePtr data_ov002_0210e848;
+SharedFilePtr data_ov002_0210e850;
+SharedFilePtr data_ov002_0210e858;
+SharedFilePtr data_ov002_0210e860;
+SharedFilePtr data_ov002_0210e868;
+SharedFilePtr data_ov002_0210e870;
+SharedFilePtr data_ov002_0210e878;
+SharedFilePtr data_ov002_0210e880;
+SharedFilePtr data_ov002_0210e888;
+SharedFilePtr data_ov002_0210e890;
+SharedFilePtr data_ov002_0210e898;
+SharedFilePtr data_ov002_0210e8a0;
+SharedFilePtr data_ov002_0210e8a8;
+SharedFilePtr data_ov002_0210e8b0;
+SharedFilePtr data_ov002_0210e8b8;
+SharedFilePtr data_ov002_0210e8c0;
+SharedFilePtr data_ov002_0210e8c8;
+SharedFilePtr data_ov002_0210e8d0;
+SharedFilePtr data_ov002_0210e8d8;
+SharedFilePtr data_ov002_0210e8e0;
+SharedFilePtr data_ov002_0210e8e8;
+SharedFilePtr data_ov002_0210e8f0;
+SharedFilePtr data_ov002_0210e8f8;
+SharedFilePtr data_ov002_0210e900;
+SharedFilePtr data_ov002_0210e908;
+SharedFilePtr data_ov002_0210e910;
+SharedFilePtr data_ov002_0210e918;
+SharedFilePtr data_ov002_0210e920;
+SharedFilePtr data_ov002_0210e928;
+SharedFilePtr data_ov002_0210e930;
+SharedFilePtr data_ov002_0210e938;
+SharedFilePtr data_ov002_0210e940;
+SharedFilePtr data_ov002_0210e948;
+SharedFilePtr data_ov002_0210e950;
+SharedFilePtr data_ov002_0210e958;
+SharedFilePtr data_ov002_0210e960;
+SharedFilePtr data_ov002_0210e968;
+SharedFilePtr data_ov002_0210e970;
+SharedFilePtr data_ov002_0210e978;
+SharedFilePtr data_ov002_0210e980;
+SharedFilePtr data_ov002_0210e988;
+SharedFilePtr data_ov002_0210e990;
+SharedFilePtr data_ov002_0210e998;
+SharedFilePtr data_ov002_0210e9a0;
+SharedFilePtr data_ov002_0210e9a8;
+SharedFilePtr data_ov002_0210e9b0;
+SharedFilePtr data_ov002_0210e9b8;
+SharedFilePtr data_ov002_0210e9c0;
+SharedFilePtr data_ov002_0210e9c8;
+SharedFilePtr data_ov002_0210e9d0;
+SharedFilePtr data_ov002_0210e9d8;
+SharedFilePtr data_ov002_0210e9e0;
+SharedFilePtr data_ov002_0210e9e8;
+SharedFilePtr data_ov002_0210e9f0;
+SharedFilePtr data_ov002_0210e9f8;
+SharedFilePtr data_ov002_0210ea00;
+SharedFilePtr data_ov002_0210ea08;
+SharedFilePtr data_ov002_0210ea10;
+SharedFilePtr data_ov002_0210ea18;
+SharedFilePtr data_ov002_0210ea20;
+SharedFilePtr data_ov002_0210ea28;
+SharedFilePtr data_ov002_0210ea30;
+SharedFilePtr data_ov002_0210ea38;
+SharedFilePtr data_ov002_0210ea40;
+SharedFilePtr data_ov002_0210ea48;
+SharedFilePtr data_ov002_0210ea50;
+SharedFilePtr data_ov002_0210ea58;
+SharedFilePtr data_ov002_0210ea60;
+SharedFilePtr data_ov002_0210ea68;
+SharedFilePtr data_ov002_0210ea70;
+SharedFilePtr data_ov002_0210ea78;
+SharedFilePtr data_ov002_0210ea80;
+SharedFilePtr data_ov002_0210ea88;
+SharedFilePtr data_ov002_0210ea90;
+SharedFilePtr data_ov002_0210ea98;
+SharedFilePtr data_ov002_0210eaa0;
+SharedFilePtr data_ov002_0210eaa8;
+SharedFilePtr data_ov002_0210eab0;
+SharedFilePtr data_ov002_0210eab8;
+SharedFilePtr data_ov002_0210eac0;
+SharedFilePtr data_ov002_0210eac8;
+SharedFilePtr data_ov002_0210ead0;
+SharedFilePtr data_ov002_0210ead8;
+SharedFilePtr data_ov002_0210eae0;
+SharedFilePtr data_ov002_0210eae8;
+SharedFilePtr data_ov002_0210eaf0;
+SharedFilePtr data_ov002_0210eaf8;
+SharedFilePtr data_ov002_0210eb00;
+SharedFilePtr data_ov002_0210eb08;
+SharedFilePtr data_ov002_0210eb10;
+SharedFilePtr data_ov002_0210eb18;
+SharedFilePtr data_ov002_0210eb20;
+SharedFilePtr data_ov002_0210eb28;
+SharedFilePtr data_ov002_0210eb30;
+SharedFilePtr data_ov002_0210eb38;
+SharedFilePtr data_ov002_0210eb40;
+SharedFilePtr data_ov002_0210eb48;
+SharedFilePtr data_ov002_0210eb50;
+SharedFilePtr data_ov002_0210eb58;
+SharedFilePtr data_ov002_0210eb60;
+SharedFilePtr data_ov002_0210eb68;
+SharedFilePtr data_ov002_0210eb70;
+SharedFilePtr data_ov002_0210eb78;
+SharedFilePtr data_ov002_0210eb80;
+SharedFilePtr data_ov002_0210eb88;
+SharedFilePtr data_ov002_0210eb90;
+SharedFilePtr data_ov002_0210eb98;
+SharedFilePtr data_ov002_0210eba0;
+SharedFilePtr data_ov002_0210eba8;
+SharedFilePtr data_ov002_0210ebb0;
+SharedFilePtr data_ov002_0210ebb8;
+SharedFilePtr data_ov002_0210ebc0;
+SharedFilePtr data_ov002_0210ebc8;
+SharedFilePtr data_ov002_0210ebd0;
+SharedFilePtr data_ov002_0210ebd8;
+SharedFilePtr data_ov002_0210ebe0;
+SharedFilePtr data_ov002_0210ebe8;
+SharedFilePtr data_ov002_0210ebf0;
+SharedFilePtr data_ov002_0210ebf8;
+SharedFilePtr data_ov002_0210ec00;
+SharedFilePtr data_ov002_0210ec08;
+SharedFilePtr data_ov002_0210ec10;
+SharedFilePtr data_ov002_0210ec18;
+SharedFilePtr data_ov002_0210ec20;
+SharedFilePtr data_ov002_0210ec28;
+SharedFilePtr data_ov002_0210ec30;
+SharedFilePtr data_ov002_0210ec38;
+SharedFilePtr data_ov002_0210ec40;
+SharedFilePtr data_ov002_0210ec48;
+SharedFilePtr data_ov002_0210ec50;
+SharedFilePtr data_ov002_0210ec58;
+SharedFilePtr data_ov002_0210ec60;
+SharedFilePtr data_ov002_0210ec68;
+SharedFilePtr data_ov002_0210ec70;
+SharedFilePtr data_ov002_0210ec78;
+SharedFilePtr data_ov002_0210ec80;
+SharedFilePtr data_ov002_0210ec88;
+SharedFilePtr data_ov002_0210ec90;
+SharedFilePtr data_ov002_0210ec98;
+SharedFilePtr data_ov002_0210eca0;
+SharedFilePtr data_ov002_0210eca8;
+SharedFilePtr data_ov002_0210ecb0;
+SharedFilePtr data_ov002_0210ecb8;
+SharedFilePtr data_ov002_0210ecc0;
+SharedFilePtr data_ov002_0210ecc8;
+SharedFilePtr data_ov002_0210ecd0;
+SharedFilePtr data_ov002_0210ecd8;
+SharedFilePtr data_ov002_0210ece0;
+SharedFilePtr data_ov002_0210ece8;
+SharedFilePtr data_ov002_0210ecf0;
+SharedFilePtr data_ov002_0210ecf8;
+SharedFilePtr data_ov002_0210ed00;
+SharedFilePtr data_ov002_0210ed08;
+SharedFilePtr data_ov002_0210ed10;
+SharedFilePtr data_ov002_0210ed18;
+SharedFilePtr data_ov002_0210ed20;
+SharedFilePtr data_ov002_0210ed28;
+SharedFilePtr data_ov002_0210ed30;
+SharedFilePtr data_ov002_0210ed38;
+SharedFilePtr data_ov002_0210ed40;
+SharedFilePtr data_ov002_0210ed48;
+SharedFilePtr data_ov002_0210ed50;
+SharedFilePtr data_ov002_0210ed58;
+SharedFilePtr data_ov002_0210ed60;
+void *data_ov002_0210ed68[3];
+void *data_ov002_0210ed74[3];
+void *data_ov002_0210ed80[3];
+void *data_ov002_0210ed8c[3];
+void *data_ov002_0210ed98[3];
+void *data_ov002_0210eda4[3];
+void *data_ov002_0210edb0[3];
+void *data_ov002_0210edbc[3];
+void *data_ov002_0210edc8[3];
+void *data_ov002_0210edd4[3];
+void *data_ov002_0210ede0[3];
+void *data_ov002_0210edec[3];
+void *data_ov002_0210edf8[3];
+void *data_ov002_0210ee04[3];
+void *data_ov002_0210ee10[3];
+void *data_ov002_0210ee1c[3];
+void *data_ov002_0210ee28[3];
+void *data_ov002_0210ee34[3];
+void *data_ov002_0210ee40[3];
+void *data_ov002_0210ee4c[3];
+void *data_ov002_0210ee58[3];
+void *data_ov002_0210ee64[3];
+void *data_ov002_0210ee70[3];
+void *data_ov002_0210ee7c[3];
+void *data_ov002_0210ee88[3];
+void *data_ov002_0210ee94[3];
+void *data_ov002_0210eea0[3];
+void *data_ov002_0210eeac[3];
+void *data_ov002_0210eeb8[3];
+void *data_ov002_0210eec4[3];
+void *data_ov002_0210eed0[3];
+void *data_ov002_0210eedc[3];
+void *data_ov002_0210eee8[3];
+void *data_ov002_0210eef4[3];
+void *data_ov002_0210ef00[3];
+void *data_ov002_0210ef0c[3];
+void *data_ov002_0210ef18[3];
+void *data_ov002_0210ef24[3];
+void *data_ov002_0210ef30[3];
+void *data_ov002_0210ef3c[3];
+void *data_ov002_0210ef48[3];
+void *data_ov002_0210ef54[3];
+void *data_ov002_0210ef60[3];
+void *data_ov002_0210ef6c[3];
+void *data_ov002_0210ef78[3];
+void *data_ov002_0210ef84[3];
+void *data_ov002_0210ef90[3];
+void *data_ov002_0210ef9c[3];
+void *data_ov002_0210efa8[3];
+void *data_ov002_0210efb4[3];
+void *data_ov002_0210efc0[3];
+void *data_ov002_0210efcc[3];
+void *data_ov002_0210efd8[3];
+void *data_ov002_0210efe4[3];
+void *data_ov002_0210eff0[3];
+void *data_ov002_0210effc[3];
+void *data_ov002_0210f008[3];
+void *data_ov002_0210f014[3];
+void *data_ov002_0210f020[3];
+void *data_ov002_0210f02c[3];
+void *data_ov002_0210f038[3];
+void *data_ov002_0210f044[3];
+void *data_ov002_0210f050[3];
+void *data_ov002_0210f05c[3];
+void *data_ov002_0210f068[3];
+void *data_ov002_0210f074[3];
+void *data_ov002_0210f080[3];
+void *data_ov002_0210f08c[3];
+void *data_ov002_0210f098[3];
+void *data_ov002_0210f0a4[3];
+void *data_ov002_0210f0b0[3];
+void *data_ov002_0210f0bc[3];
+void *data_ov002_0210f0c8[3];
+void *data_ov002_0210f0d4[3];
+void *data_ov002_0210f0e0[3];
+void *data_ov002_0210f0ec[3];
+void *data_ov002_0210f0f8[3];
+void *data_ov002_0210f104[3];
+void *data_ov002_0210f110[3];
+void *data_ov002_0210f11c[3];
+void *data_ov002_0210f128[3];
+void *data_ov002_0210f134[3];
+void *data_ov002_0210f140[3];
+void *data_ov002_0210f14c[3];
+void *data_ov002_0210f158[3];
+void *data_ov002_0210f164[3];
+void *data_ov002_0210f170[3];
+void *data_ov002_0210f17c[3];
+void *data_ov002_0210f188[3];
+void *data_ov002_0210f194[3];
+void *data_ov002_0210f1a0[3];
+void *data_ov002_0210f1b8[3];
+void *data_ov002_0210f1c4[3];
+void *data_ov002_0210f1d0[3];
+void *data_ov002_0210f1dc[3];
+void *data_ov002_0210f1e8[3];
+void *data_ov002_0210f1f4[3];
+void *data_ov002_0210f200[3];
+void *data_ov002_0210f20c[3];
+void *data_ov002_0210f218[3];
+void *data_ov002_0210f230[3];
+void *data_ov002_0210f23c[3];
+void *data_ov002_0210f248[3];
+void *data_ov002_0210f254[3];
+void *data_ov002_0210f260[3];
+void *data_ov002_0210f26c[3];
+void *data_ov002_0210f278[3];
+void *data_ov002_0210f284[3];
+void *data_ov002_0210f290[3];
+void *data_ov002_0210f29c[3];
+void *data_ov002_0210f2a8[3];
+void *data_ov002_0210f2b4[3];
+void *data_ov002_0210f2c0[3];
+void *data_ov002_0210f2cc[3];
+void *data_ov002_0210f2d8[3];
+void *data_ov002_0210f2e4[3];
+void *data_ov002_0210f2f0[3];
+void *data_ov002_0210f2fc[3];
+void *data_ov002_0210f314[3];
+void *data_ov002_0210f320[3];
+void *data_ov002_0210f32c[3];
+void *data_ov002_0210f338[3];
+void *data_ov002_0210f35c[3];
+void *data_ov002_0210f368[3];
+void *data_ov002_0210f374[3];
+void *data_ov002_0210f380[3];
+void *data_ov002_0210f38c[3];
+void *data_ov002_0210f398[3];
+void *data_ov002_0210f3a4[3];
+void *data_ov002_0210f3bc[3];
+void *data_ov002_0210f3c8[3];
+void *data_ov002_0210f3d4[3];
+void *data_ov002_0210f3e0[3];
+void *data_ov002_0210f3ec[3];
+void *data_ov002_0210f3f8[3];
+void *data_ov002_0210f404[3];
+void *data_ov002_0210f410[3];
+void *data_ov002_0210f41c[3];
+void *data_ov002_0210f428[3];
+void *data_ov002_0210f434[3];
+void *data_ov002_0210f440[3];
+void *data_ov002_0210f44c[3];
+void *data_ov002_0210f458[3];
+void *data_ov002_0210f464[3];
+void *data_ov002_0210f470[3];
+void *data_ov002_0210f47c[3];
+void *data_ov002_0210f488[3];
+void *data_ov002_0210f494[3];
+void *data_ov002_0210f4a0[3];
+void *data_ov002_0210f4ac[3];
+void *data_ov002_0210f4b8[3];
+void *data_ov002_0210f4c4[3];
+void *data_ov002_0210f4d0[3];
+void *data_ov002_0210f4dc[3];
+void *data_ov002_0210f4e8[3];
+void *data_ov002_0210f4f4[3];
+void *data_ov002_0210f500[3];
+void *data_ov002_0210f50c[3];
+void *data_ov002_0210f518[3];
+void *data_ov002_0210f524[3];
+void *data_ov002_0210f530[3];
+void *data_ov002_0210f53c[3];
+void *data_ov002_0210f548[3];
+void *data_ov002_0210f554[3];
+void *data_ov002_0210f560[3];
+void *data_ov002_0210f56c[3];
+void *data_ov002_0210f578[3];
+void *data_ov002_0210f584[3];
+void *data_ov002_0210f590[3];
+void *data_ov002_0210f59c[3];
+void *data_ov002_0210f5a8[3];
+void *data_ov002_0210f5b4[3];
+void *data_ov002_0210f5c0[3];
+void *data_ov002_0210f5cc[3];
+void *data_ov002_0210f5d8[3];
+void *data_ov002_0210f5e4[3];
+void *data_ov002_0210f5f0[3];
+void *data_ov002_0210f5fc[3];
+void *data_ov002_0210f608[3];
+void *data_ov002_0210f614[3];
+void *data_ov002_0210f620[3];
+void *data_ov002_0210f62c[3];
+void *data_ov002_0210f638[3];
+void *data_ov002_0210f644[3];
+void *data_ov002_0210f650[3];
+void *data_ov002_0210f65c[3];
+void *data_ov002_0210f668[3];
+void *data_ov002_0210f674[3];
+void *data_ov002_0210f680[3];
+void *data_ov002_0210f68c[3];
+void *data_ov002_0210f698[3];
+void *data_ov002_0210f6a4[3];
+void *data_ov002_0210f6b0[3];
+void *data_ov002_0210f6bc[3];
+void *data_ov002_0210f6c8[3];
+void *data_ov002_0210f6d4[3];
+void *data_ov002_0210f6e0[3];
+void *data_ov002_0210f6ec[3];
+void *data_ov002_0210f6f8[3];
+void *data_ov002_0210f704[3];
+void *data_ov002_0210f710[3];
+void *data_ov002_0210f71c[3];
+void *data_ov002_0210f728[3];
+void *data_ov002_0210f734[3];
+void *data_ov002_0210f740[3];
+void *data_ov002_0210f74c[3];
+void *data_ov002_0210f758[3];
+void *data_ov002_0210f764[3];
+void *data_ov002_0210f770[3];
+void *data_ov002_0210f77c[3];
+void *data_ov002_0210f788[3];
+void *data_ov002_0210f794[3];
+void *data_ov002_0210f7a0[3];
+void *data_ov002_0210f7ac[3];
+void *data_ov002_0210f7b8[3];
+void *data_ov002_0210f7c4[3];
+void *data_ov002_0210f7d0[3];
+void *data_ov002_0210f7dc[3];
+void *data_ov002_0210f7e8[3];
+void *data_ov002_0210f800[3];
+void *data_ov002_0210f80c[3];
+void *data_ov002_0210f818[3];
+void *data_ov002_0210f830[3];
+void *data_ov002_0210f83c[3];
+void *data_ov002_0210f848[3];
+void *data_ov002_0210f854[3];
+void *data_ov002_0210f860[3];
+void *data_ov002_0210f86c[3];
+void *data_ov002_0210f878[3];
+void *data_ov002_0210f884[3];
+void *data_ov002_0210f890[3];
+void *data_ov002_0210f8a8[3];
+void *data_ov002_0210f8b4[3];
+void *data_ov002_0210f8c0[3];
+unsigned int data_ov002_0210e158;
+int data_ov002_0210e7b8[2];
+}
+
 #pragma define_section initsec ".init" ".init" ".init" far_absolute RX
 #pragma section initsec begin
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -25181,6 +25705,7 @@ enum sinit_ov002_021019d0_AssetId {
 extern "C" {
 void func_0203b9b4(int *p, int v);
 /* __register_global_object */
+#define func_020731dc __register_global_object
 void func_020731dc(void *object, void *destructor, void **node);
 void *func_02017acc(void *self, unsigned int fileID);
 int func_02017ab4(int self);
@@ -25191,628 +25716,10 @@ void func_0201973c(void);
 unsigned short *func_ov002_020e6ad4(unsigned short *);
 
 /* The random-number seed RandomIntInternal draws from. */
-extern int data_ov002_0210e160;
 
 /* Model, animation and texture-sequence file handles, by address. */
-extern SharedFilePtr data_ov002_0210e168;
-extern SharedFilePtr data_ov002_0210e170;
-extern SharedFilePtr data_ov002_0210e178;
-extern SharedFilePtr data_ov002_0210e180;
-extern SharedFilePtr data_ov002_0210e188;
-extern SharedFilePtr data_ov002_0210e190;
-extern SharedFilePtr data_ov002_0210e198;
-extern SharedFilePtr data_ov002_0210e1a0;
-extern SharedFilePtr data_ov002_0210e1a8;
-extern SharedFilePtr data_ov002_0210e1b0;
-extern SharedFilePtr data_ov002_0210e1b8;
-extern SharedFilePtr data_ov002_0210e1c0;
-extern SharedFilePtr data_ov002_0210e1c8;
-extern SharedFilePtr data_ov002_0210e1d0;
-extern SharedFilePtr data_ov002_0210e1d8;
-extern SharedFilePtr data_ov002_0210e1e0;
-extern SharedFilePtr data_ov002_0210e1e8;
-extern SharedFilePtr data_ov002_0210e1f0;
-extern SharedFilePtr data_ov002_0210e1f8;
-extern SharedFilePtr data_ov002_0210e200;
-extern SharedFilePtr data_ov002_0210e208;
-extern SharedFilePtr data_ov002_0210e210;
-extern SharedFilePtr data_ov002_0210e218;
-extern SharedFilePtr data_ov002_0210e220;
-extern SharedFilePtr data_ov002_0210e228;
-extern SharedFilePtr data_ov002_0210e230;
-extern SharedFilePtr data_ov002_0210e238;
-extern SharedFilePtr data_ov002_0210e240;
-extern SharedFilePtr data_ov002_0210e248;
-extern SharedFilePtr data_ov002_0210e250;
-extern SharedFilePtr data_ov002_0210e258;
-extern SharedFilePtr data_ov002_0210e260;
-extern SharedFilePtr data_ov002_0210e268;
-extern SharedFilePtr data_ov002_0210e270;
-extern SharedFilePtr data_ov002_0210e278;
-extern SharedFilePtr data_ov002_0210e280;
-extern SharedFilePtr data_ov002_0210e288;
-extern SharedFilePtr data_ov002_0210e290;
-extern SharedFilePtr data_ov002_0210e298;
-extern SharedFilePtr data_ov002_0210e2a0;
-extern SharedFilePtr data_ov002_0210e2a8;
-extern SharedFilePtr data_ov002_0210e2b0;
-extern SharedFilePtr data_ov002_0210e2b8;
-extern SharedFilePtr data_ov002_0210e2c0;
-extern SharedFilePtr data_ov002_0210e2c8;
-extern SharedFilePtr data_ov002_0210e2d0;
-extern SharedFilePtr data_ov002_0210e2d8;
-extern SharedFilePtr data_ov002_0210e2e0;
-extern SharedFilePtr data_ov002_0210e2e8;
-extern SharedFilePtr data_ov002_0210e2f0;
-extern SharedFilePtr data_ov002_0210e2f8;
-extern SharedFilePtr data_ov002_0210e300;
-extern SharedFilePtr data_ov002_0210e308;
-extern SharedFilePtr data_ov002_0210e310;
-extern SharedFilePtr data_ov002_0210e318;
-extern SharedFilePtr data_ov002_0210e320;
-extern SharedFilePtr data_ov002_0210e328;
-extern SharedFilePtr data_ov002_0210e330;
-extern SharedFilePtr data_ov002_0210e338;
-extern SharedFilePtr data_ov002_0210e340;
-extern SharedFilePtr data_ov002_0210e348;
-extern SharedFilePtr data_ov002_0210e350;
-extern SharedFilePtr data_ov002_0210e358;
-extern SharedFilePtr data_ov002_0210e360;
-extern SharedFilePtr data_ov002_0210e368;
-extern SharedFilePtr data_ov002_0210e370;
-extern SharedFilePtr data_ov002_0210e378;
-extern SharedFilePtr data_ov002_0210e380;
-extern SharedFilePtr data_ov002_0210e388;
-extern SharedFilePtr data_ov002_0210e390;
-extern SharedFilePtr data_ov002_0210e398;
-extern SharedFilePtr data_ov002_0210e3a0;
-extern SharedFilePtr data_ov002_0210e3a8;
-extern SharedFilePtr data_ov002_0210e3b0;
-extern SharedFilePtr data_ov002_0210e3b8;
-extern SharedFilePtr data_ov002_0210e3c0;
-extern SharedFilePtr data_ov002_0210e3c8;
-extern SharedFilePtr data_ov002_0210e3d0;
-extern SharedFilePtr data_ov002_0210e3d8;
-extern SharedFilePtr data_ov002_0210e3e0;
-extern SharedFilePtr data_ov002_0210e3e8;
-extern SharedFilePtr data_ov002_0210e3f0;
-extern SharedFilePtr data_ov002_0210e3f8;
-extern SharedFilePtr data_ov002_0210e400;
-extern SharedFilePtr data_ov002_0210e408;
-extern SharedFilePtr data_ov002_0210e410;
-extern SharedFilePtr data_ov002_0210e418;
-extern SharedFilePtr data_ov002_0210e420;
-extern SharedFilePtr data_ov002_0210e428;
-extern SharedFilePtr data_ov002_0210e430;
-extern SharedFilePtr data_ov002_0210e438;
-extern SharedFilePtr data_ov002_0210e440;
-extern SharedFilePtr data_ov002_0210e448;
-extern SharedFilePtr data_ov002_0210e450;
-extern SharedFilePtr data_ov002_0210e458;
-extern SharedFilePtr data_ov002_0210e460;
-extern SharedFilePtr data_ov002_0210e468;
-extern SharedFilePtr data_ov002_0210e470;
-extern SharedFilePtr data_ov002_0210e478;
-extern SharedFilePtr data_ov002_0210e480;
-extern SharedFilePtr data_ov002_0210e488;
-extern SharedFilePtr data_ov002_0210e490;
-extern SharedFilePtr data_ov002_0210e498;
-extern SharedFilePtr data_ov002_0210e4a0;
-extern SharedFilePtr data_ov002_0210e4a8;
-extern SharedFilePtr data_ov002_0210e4b0;
-extern SharedFilePtr data_ov002_0210e4b8;
-extern SharedFilePtr data_ov002_0210e4c0;
-extern SharedFilePtr data_ov002_0210e4c8;
-extern SharedFilePtr data_ov002_0210e4d0;
-extern SharedFilePtr data_ov002_0210e4d8;
-extern SharedFilePtr data_ov002_0210e4e0;
-extern SharedFilePtr data_ov002_0210e4e8;
-extern SharedFilePtr data_ov002_0210e4f0;
-extern SharedFilePtr data_ov002_0210e4f8;
-extern SharedFilePtr data_ov002_0210e500;
-extern SharedFilePtr data_ov002_0210e508;
-extern SharedFilePtr data_ov002_0210e510;
-extern SharedFilePtr data_ov002_0210e518;
-extern SharedFilePtr data_ov002_0210e520;
-extern SharedFilePtr data_ov002_0210e528;
-extern SharedFilePtr data_ov002_0210e530;
-extern SharedFilePtr data_ov002_0210e538;
-extern SharedFilePtr data_ov002_0210e540;
-extern SharedFilePtr data_ov002_0210e548;
-extern SharedFilePtr data_ov002_0210e550;
-extern SharedFilePtr data_ov002_0210e558;
-extern SharedFilePtr data_ov002_0210e560;
-extern SharedFilePtr data_ov002_0210e568;
-extern SharedFilePtr data_ov002_0210e570;
-extern SharedFilePtr data_ov002_0210e578;
-extern SharedFilePtr data_ov002_0210e580;
-extern SharedFilePtr data_ov002_0210e588;
-extern SharedFilePtr data_ov002_0210e590;
-extern SharedFilePtr data_ov002_0210e598;
-extern SharedFilePtr data_ov002_0210e5a0;
-extern SharedFilePtr data_ov002_0210e5a8;
-extern SharedFilePtr data_ov002_0210e5b0;
-extern SharedFilePtr data_ov002_0210e5b8;
-extern SharedFilePtr data_ov002_0210e5c0;
-extern SharedFilePtr data_ov002_0210e5c8;
-extern SharedFilePtr data_ov002_0210e5d0;
-extern SharedFilePtr data_ov002_0210e5d8;
-extern SharedFilePtr data_ov002_0210e5e0;
-extern SharedFilePtr data_ov002_0210e5e8;
-extern SharedFilePtr data_ov002_0210e5f0;
-extern SharedFilePtr data_ov002_0210e5f8;
-extern SharedFilePtr data_ov002_0210e600;
-extern SharedFilePtr data_ov002_0210e608;
-extern SharedFilePtr data_ov002_0210e610;
-extern SharedFilePtr data_ov002_0210e618;
-extern SharedFilePtr data_ov002_0210e620;
-extern SharedFilePtr data_ov002_0210e628;
-extern SharedFilePtr data_ov002_0210e630;
-extern SharedFilePtr data_ov002_0210e638;
-extern SharedFilePtr data_ov002_0210e640;
-extern SharedFilePtr data_ov002_0210e648;
-extern SharedFilePtr data_ov002_0210e650;
-extern SharedFilePtr data_ov002_0210e658;
-extern SharedFilePtr data_ov002_0210e660;
-extern SharedFilePtr data_ov002_0210e668;
-extern SharedFilePtr data_ov002_0210e670;
-extern SharedFilePtr data_ov002_0210e678;
-extern SharedFilePtr data_ov002_0210e680;
-extern SharedFilePtr data_ov002_0210e688;
-extern SharedFilePtr data_ov002_0210e690;
-extern SharedFilePtr data_ov002_0210e698;
-extern SharedFilePtr data_ov002_0210e6a0;
-extern SharedFilePtr data_ov002_0210e6a8;
-extern SharedFilePtr data_ov002_0210e6b0;
-extern SharedFilePtr data_ov002_0210e6b8;
-extern SharedFilePtr data_ov002_0210e6c0;
-extern SharedFilePtr data_ov002_0210e6c8;
-extern SharedFilePtr data_ov002_0210e6d0;
-extern SharedFilePtr data_ov002_0210e6d8;
-extern SharedFilePtr data_ov002_0210e6e0;
-extern SharedFilePtr data_ov002_0210e6e8;
-extern SharedFilePtr data_ov002_0210e6f0;
-extern SharedFilePtr data_ov002_0210e6f8;
-extern SharedFilePtr data_ov002_0210e700;
-extern SharedFilePtr data_ov002_0210e708;
-extern SharedFilePtr data_ov002_0210e710;
-extern SharedFilePtr data_ov002_0210e718;
-extern SharedFilePtr data_ov002_0210e720;
-extern SharedFilePtr data_ov002_0210e728;
-extern SharedFilePtr data_ov002_0210e730;
-extern SharedFilePtr data_ov002_0210e738;
-extern SharedFilePtr data_ov002_0210e740;
-extern SharedFilePtr data_ov002_0210e748;
-extern SharedFilePtr data_ov002_0210e750;
-extern SharedFilePtr data_ov002_0210e758;
-extern SharedFilePtr data_ov002_0210e760;
-extern SharedFilePtr data_ov002_0210e768;
-extern SharedFilePtr data_ov002_0210e770;
-extern SharedFilePtr data_ov002_0210e778;
-extern SharedFilePtr data_ov002_0210e780;
-extern SharedFilePtr data_ov002_0210e788;
-extern SharedFilePtr data_ov002_0210e790;
-extern SharedFilePtr data_ov002_0210e798;
-extern SharedFilePtr data_ov002_0210e7a0;
-extern SharedFilePtr data_ov002_0210e7a8;
-extern SharedFilePtr data_ov002_0210e7b0;
-extern SharedFilePtr data_ov002_0210e7c0;
-extern SharedFilePtr data_ov002_0210e7c8;
-extern SharedFilePtr data_ov002_0210e7d0;
-extern SharedFilePtr data_ov002_0210e7d8;
-extern SharedFilePtr data_ov002_0210e7e0;
-extern SharedFilePtr data_ov002_0210e7e8;
-extern SharedFilePtr data_ov002_0210e7f0;
-extern SharedFilePtr data_ov002_0210e7f8;
-extern SharedFilePtr data_ov002_0210e800;
-extern SharedFilePtr data_ov002_0210e808;
-extern SharedFilePtr data_ov002_0210e810;
-extern SharedFilePtr data_ov002_0210e818;
-extern SharedFilePtr data_ov002_0210e820;
-extern SharedFilePtr data_ov002_0210e828;
-extern SharedFilePtr data_ov002_0210e830;
-extern SharedFilePtr data_ov002_0210e838;
-extern SharedFilePtr data_ov002_0210e840;
-extern SharedFilePtr data_ov002_0210e848;
-extern SharedFilePtr data_ov002_0210e850;
-extern SharedFilePtr data_ov002_0210e858;
-extern SharedFilePtr data_ov002_0210e860;
-extern SharedFilePtr data_ov002_0210e868;
-extern SharedFilePtr data_ov002_0210e870;
-extern SharedFilePtr data_ov002_0210e878;
-extern SharedFilePtr data_ov002_0210e880;
-extern SharedFilePtr data_ov002_0210e888;
-extern SharedFilePtr data_ov002_0210e890;
-extern SharedFilePtr data_ov002_0210e898;
-extern SharedFilePtr data_ov002_0210e8a0;
-extern SharedFilePtr data_ov002_0210e8a8;
-extern SharedFilePtr data_ov002_0210e8b0;
-extern SharedFilePtr data_ov002_0210e8b8;
-extern SharedFilePtr data_ov002_0210e8c0;
-extern SharedFilePtr data_ov002_0210e8c8;
-extern SharedFilePtr data_ov002_0210e8d0;
-extern SharedFilePtr data_ov002_0210e8d8;
-extern SharedFilePtr data_ov002_0210e8e0;
-extern SharedFilePtr data_ov002_0210e8e8;
-extern SharedFilePtr data_ov002_0210e8f0;
-extern SharedFilePtr data_ov002_0210e8f8;
-extern SharedFilePtr data_ov002_0210e900;
-extern SharedFilePtr data_ov002_0210e908;
-extern SharedFilePtr data_ov002_0210e910;
-extern SharedFilePtr data_ov002_0210e918;
-extern SharedFilePtr data_ov002_0210e920;
-extern SharedFilePtr data_ov002_0210e928;
-extern SharedFilePtr data_ov002_0210e930;
-extern SharedFilePtr data_ov002_0210e938;
-extern SharedFilePtr data_ov002_0210e940;
-extern SharedFilePtr data_ov002_0210e948;
-extern SharedFilePtr data_ov002_0210e950;
-extern SharedFilePtr data_ov002_0210e958;
-extern SharedFilePtr data_ov002_0210e960;
-extern SharedFilePtr data_ov002_0210e968;
-extern SharedFilePtr data_ov002_0210e970;
-extern SharedFilePtr data_ov002_0210e978;
-extern SharedFilePtr data_ov002_0210e980;
-extern SharedFilePtr data_ov002_0210e988;
-extern SharedFilePtr data_ov002_0210e990;
-extern SharedFilePtr data_ov002_0210e998;
-extern SharedFilePtr data_ov002_0210e9a0;
-extern SharedFilePtr data_ov002_0210e9a8;
-extern SharedFilePtr data_ov002_0210e9b0;
-extern SharedFilePtr data_ov002_0210e9b8;
-extern SharedFilePtr data_ov002_0210e9c0;
-extern SharedFilePtr data_ov002_0210e9c8;
-extern SharedFilePtr data_ov002_0210e9d0;
-extern SharedFilePtr data_ov002_0210e9d8;
-extern SharedFilePtr data_ov002_0210e9e0;
-extern SharedFilePtr data_ov002_0210e9e8;
-extern SharedFilePtr data_ov002_0210e9f0;
-extern SharedFilePtr data_ov002_0210e9f8;
-extern SharedFilePtr data_ov002_0210ea00;
-extern SharedFilePtr data_ov002_0210ea08;
-extern SharedFilePtr data_ov002_0210ea10;
-extern SharedFilePtr data_ov002_0210ea18;
-extern SharedFilePtr data_ov002_0210ea20;
-extern SharedFilePtr data_ov002_0210ea28;
-extern SharedFilePtr data_ov002_0210ea30;
-extern SharedFilePtr data_ov002_0210ea38;
-extern SharedFilePtr data_ov002_0210ea40;
-extern SharedFilePtr data_ov002_0210ea48;
-extern SharedFilePtr data_ov002_0210ea50;
-extern SharedFilePtr data_ov002_0210ea58;
-extern SharedFilePtr data_ov002_0210ea60;
-extern SharedFilePtr data_ov002_0210ea68;
-extern SharedFilePtr data_ov002_0210ea70;
-extern SharedFilePtr data_ov002_0210ea78;
-extern SharedFilePtr data_ov002_0210ea80;
-extern SharedFilePtr data_ov002_0210ea88;
-extern SharedFilePtr data_ov002_0210ea90;
-extern SharedFilePtr data_ov002_0210ea98;
-extern SharedFilePtr data_ov002_0210eaa0;
-extern SharedFilePtr data_ov002_0210eaa8;
-extern SharedFilePtr data_ov002_0210eab0;
-extern SharedFilePtr data_ov002_0210eab8;
-extern SharedFilePtr data_ov002_0210eac0;
-extern SharedFilePtr data_ov002_0210eac8;
-extern SharedFilePtr data_ov002_0210ead0;
-extern SharedFilePtr data_ov002_0210ead8;
-extern SharedFilePtr data_ov002_0210eae0;
-extern SharedFilePtr data_ov002_0210eae8;
-extern SharedFilePtr data_ov002_0210eaf0;
-extern SharedFilePtr data_ov002_0210eaf8;
-extern SharedFilePtr data_ov002_0210eb00;
-extern SharedFilePtr data_ov002_0210eb08;
-extern SharedFilePtr data_ov002_0210eb10;
-extern SharedFilePtr data_ov002_0210eb18;
-extern SharedFilePtr data_ov002_0210eb20;
-extern SharedFilePtr data_ov002_0210eb28;
-extern SharedFilePtr data_ov002_0210eb30;
-extern SharedFilePtr data_ov002_0210eb38;
-extern SharedFilePtr data_ov002_0210eb40;
-extern SharedFilePtr data_ov002_0210eb48;
-extern SharedFilePtr data_ov002_0210eb50;
-extern SharedFilePtr data_ov002_0210eb58;
-extern SharedFilePtr data_ov002_0210eb60;
-extern SharedFilePtr data_ov002_0210eb68;
-extern SharedFilePtr data_ov002_0210eb70;
-extern SharedFilePtr data_ov002_0210eb78;
-extern SharedFilePtr data_ov002_0210eb80;
-extern SharedFilePtr data_ov002_0210eb88;
-extern SharedFilePtr data_ov002_0210eb90;
-extern SharedFilePtr data_ov002_0210eb98;
-extern SharedFilePtr data_ov002_0210eba0;
-extern SharedFilePtr data_ov002_0210eba8;
-extern SharedFilePtr data_ov002_0210ebb0;
-extern SharedFilePtr data_ov002_0210ebb8;
-extern SharedFilePtr data_ov002_0210ebc0;
-extern SharedFilePtr data_ov002_0210ebc8;
-extern SharedFilePtr data_ov002_0210ebd0;
-extern SharedFilePtr data_ov002_0210ebd8;
-extern SharedFilePtr data_ov002_0210ebe0;
-extern SharedFilePtr data_ov002_0210ebe8;
-extern SharedFilePtr data_ov002_0210ebf0;
-extern SharedFilePtr data_ov002_0210ebf8;
-extern SharedFilePtr data_ov002_0210ec00;
-extern SharedFilePtr data_ov002_0210ec08;
-extern SharedFilePtr data_ov002_0210ec10;
-extern SharedFilePtr data_ov002_0210ec18;
-extern SharedFilePtr data_ov002_0210ec20;
-extern SharedFilePtr data_ov002_0210ec28;
-extern SharedFilePtr data_ov002_0210ec30;
-extern SharedFilePtr data_ov002_0210ec38;
-extern SharedFilePtr data_ov002_0210ec40;
-extern SharedFilePtr data_ov002_0210ec48;
-extern SharedFilePtr data_ov002_0210ec50;
-extern SharedFilePtr data_ov002_0210ec58;
-extern SharedFilePtr data_ov002_0210ec60;
-extern SharedFilePtr data_ov002_0210ec68;
-extern SharedFilePtr data_ov002_0210ec70;
-extern SharedFilePtr data_ov002_0210ec78;
-extern SharedFilePtr data_ov002_0210ec80;
-extern SharedFilePtr data_ov002_0210ec88;
-extern SharedFilePtr data_ov002_0210ec90;
-extern SharedFilePtr data_ov002_0210ec98;
-extern SharedFilePtr data_ov002_0210eca0;
-extern SharedFilePtr data_ov002_0210eca8;
-extern SharedFilePtr data_ov002_0210ecb0;
-extern SharedFilePtr data_ov002_0210ecb8;
-extern SharedFilePtr data_ov002_0210ecc0;
-extern SharedFilePtr data_ov002_0210ecc8;
-extern SharedFilePtr data_ov002_0210ecd0;
-extern SharedFilePtr data_ov002_0210ecd8;
-extern SharedFilePtr data_ov002_0210ece0;
-extern SharedFilePtr data_ov002_0210ece8;
-extern SharedFilePtr data_ov002_0210ecf0;
-extern SharedFilePtr data_ov002_0210ecf8;
-extern SharedFilePtr data_ov002_0210ed00;
-extern SharedFilePtr data_ov002_0210ed08;
-extern SharedFilePtr data_ov002_0210ed10;
-extern SharedFilePtr data_ov002_0210ed18;
-extern SharedFilePtr data_ov002_0210ed20;
-extern SharedFilePtr data_ov002_0210ed28;
-extern SharedFilePtr data_ov002_0210ed30;
-extern SharedFilePtr data_ov002_0210ed38;
-extern SharedFilePtr data_ov002_0210ed40;
-extern SharedFilePtr data_ov002_0210ed48;
-extern SharedFilePtr data_ov002_0210ed50;
-extern SharedFilePtr data_ov002_0210ed58;
-extern SharedFilePtr data_ov002_0210ed60;
 
 /* __register_global_object chain nodes, one per handle. */
-extern void *data_ov002_0210ed68[3];
-extern void *data_ov002_0210ed74[3];
-extern void *data_ov002_0210ed80[3];
-extern void *data_ov002_0210ed8c[3];
-extern void *data_ov002_0210ed98[3];
-extern void *data_ov002_0210eda4[3];
-extern void *data_ov002_0210edb0[3];
-extern void *data_ov002_0210edbc[3];
-extern void *data_ov002_0210edc8[3];
-extern void *data_ov002_0210edd4[3];
-extern void *data_ov002_0210ede0[3];
-extern void *data_ov002_0210edec[3];
-extern void *data_ov002_0210edf8[3];
-extern void *data_ov002_0210ee04[3];
-extern void *data_ov002_0210ee10[3];
-extern void *data_ov002_0210ee1c[3];
-extern void *data_ov002_0210ee28[3];
-extern void *data_ov002_0210ee34[3];
-extern void *data_ov002_0210ee40[3];
-extern void *data_ov002_0210ee4c[3];
-extern void *data_ov002_0210ee58[3];
-extern void *data_ov002_0210ee64[3];
-extern void *data_ov002_0210ee70[3];
-extern void *data_ov002_0210ee7c[3];
-extern void *data_ov002_0210ee88[3];
-extern void *data_ov002_0210ee94[3];
-extern void *data_ov002_0210eea0[3];
-extern void *data_ov002_0210eeac[3];
-extern void *data_ov002_0210eeb8[3];
-extern void *data_ov002_0210eec4[3];
-extern void *data_ov002_0210eed0[3];
-extern void *data_ov002_0210eedc[3];
-extern void *data_ov002_0210eee8[3];
-extern void *data_ov002_0210eef4[3];
-extern void *data_ov002_0210ef00[3];
-extern void *data_ov002_0210ef0c[3];
-extern void *data_ov002_0210ef18[3];
-extern void *data_ov002_0210ef24[3];
-extern void *data_ov002_0210ef30[3];
-extern void *data_ov002_0210ef3c[3];
-extern void *data_ov002_0210ef48[3];
-extern void *data_ov002_0210ef54[3];
-extern void *data_ov002_0210ef60[3];
-extern void *data_ov002_0210ef6c[3];
-extern void *data_ov002_0210ef78[3];
-extern void *data_ov002_0210ef84[3];
-extern void *data_ov002_0210ef90[3];
-extern void *data_ov002_0210ef9c[3];
-extern void *data_ov002_0210efa8[3];
-extern void *data_ov002_0210efb4[3];
-extern void *data_ov002_0210efc0[3];
-extern void *data_ov002_0210efcc[3];
-extern void *data_ov002_0210efd8[3];
-extern void *data_ov002_0210efe4[3];
-extern void *data_ov002_0210eff0[3];
-extern void *data_ov002_0210effc[3];
-extern void *data_ov002_0210f008[3];
-extern void *data_ov002_0210f014[3];
-extern void *data_ov002_0210f020[3];
-extern void *data_ov002_0210f02c[3];
-extern void *data_ov002_0210f038[3];
-extern void *data_ov002_0210f044[3];
-extern void *data_ov002_0210f050[3];
-extern void *data_ov002_0210f05c[3];
-extern void *data_ov002_0210f068[3];
-extern void *data_ov002_0210f074[3];
-extern void *data_ov002_0210f080[3];
-extern void *data_ov002_0210f08c[3];
-extern void *data_ov002_0210f098[3];
-extern void *data_ov002_0210f0a4[3];
-extern void *data_ov002_0210f0b0[3];
-extern void *data_ov002_0210f0bc[3];
-extern void *data_ov002_0210f0c8[3];
-extern void *data_ov002_0210f0d4[3];
-extern void *data_ov002_0210f0e0[3];
-extern void *data_ov002_0210f0ec[3];
-extern void *data_ov002_0210f0f8[3];
-extern void *data_ov002_0210f104[3];
-extern void *data_ov002_0210f110[3];
-extern void *data_ov002_0210f11c[3];
-extern void *data_ov002_0210f128[3];
-extern void *data_ov002_0210f134[3];
-extern void *data_ov002_0210f140[3];
-extern void *data_ov002_0210f14c[3];
-extern void *data_ov002_0210f158[3];
-extern void *data_ov002_0210f164[3];
-extern void *data_ov002_0210f170[3];
-extern void *data_ov002_0210f17c[3];
-extern void *data_ov002_0210f188[3];
-extern void *data_ov002_0210f194[3];
-extern void *data_ov002_0210f1a0[3];
-extern void *data_ov002_0210f1b8[3];
-extern void *data_ov002_0210f1c4[3];
-extern void *data_ov002_0210f1d0[3];
-extern void *data_ov002_0210f1dc[3];
-extern void *data_ov002_0210f1e8[3];
-extern void *data_ov002_0210f1f4[3];
-extern void *data_ov002_0210f200[3];
-extern void *data_ov002_0210f20c[3];
-extern void *data_ov002_0210f218[3];
-extern void *data_ov002_0210f230[3];
-extern void *data_ov002_0210f23c[3];
-extern void *data_ov002_0210f248[3];
-extern void *data_ov002_0210f254[3];
-extern void *data_ov002_0210f260[3];
-extern void *data_ov002_0210f26c[3];
-extern void *data_ov002_0210f278[3];
-extern void *data_ov002_0210f284[3];
-extern void *data_ov002_0210f290[3];
-extern void *data_ov002_0210f29c[3];
-extern void *data_ov002_0210f2a8[3];
-extern void *data_ov002_0210f2b4[3];
-extern void *data_ov002_0210f2c0[3];
-extern void *data_ov002_0210f2cc[3];
-extern void *data_ov002_0210f2d8[3];
-extern void *data_ov002_0210f2e4[3];
-extern void *data_ov002_0210f2f0[3];
-extern void *data_ov002_0210f2fc[3];
-extern void *data_ov002_0210f314[3];
-extern void *data_ov002_0210f320[3];
-extern void *data_ov002_0210f32c[3];
-extern void *data_ov002_0210f338[3];
-extern void *data_ov002_0210f35c[3];
-extern void *data_ov002_0210f368[3];
-extern void *data_ov002_0210f374[3];
-extern void *data_ov002_0210f380[3];
-extern void *data_ov002_0210f38c[3];
-extern void *data_ov002_0210f398[3];
-extern void *data_ov002_0210f3a4[3];
-extern void *data_ov002_0210f3bc[3];
-extern void *data_ov002_0210f3c8[3];
-extern void *data_ov002_0210f3d4[3];
-extern void *data_ov002_0210f3e0[3];
-extern void *data_ov002_0210f3ec[3];
-extern void *data_ov002_0210f3f8[3];
-extern void *data_ov002_0210f404[3];
-extern void *data_ov002_0210f410[3];
-extern void *data_ov002_0210f41c[3];
-extern void *data_ov002_0210f428[3];
-extern void *data_ov002_0210f434[3];
-extern void *data_ov002_0210f440[3];
-extern void *data_ov002_0210f44c[3];
-extern void *data_ov002_0210f458[3];
-extern void *data_ov002_0210f464[3];
-extern void *data_ov002_0210f470[3];
-extern void *data_ov002_0210f47c[3];
-extern void *data_ov002_0210f488[3];
-extern void *data_ov002_0210f494[3];
-extern void *data_ov002_0210f4a0[3];
-extern void *data_ov002_0210f4ac[3];
-extern void *data_ov002_0210f4b8[3];
-extern void *data_ov002_0210f4c4[3];
-extern void *data_ov002_0210f4d0[3];
-extern void *data_ov002_0210f4dc[3];
-extern void *data_ov002_0210f4e8[3];
-extern void *data_ov002_0210f4f4[3];
-extern void *data_ov002_0210f500[3];
-extern void *data_ov002_0210f50c[3];
-extern void *data_ov002_0210f518[3];
-extern void *data_ov002_0210f524[3];
-extern void *data_ov002_0210f530[3];
-extern void *data_ov002_0210f53c[3];
-extern void *data_ov002_0210f548[3];
-extern void *data_ov002_0210f554[3];
-extern void *data_ov002_0210f560[3];
-extern void *data_ov002_0210f56c[3];
-extern void *data_ov002_0210f578[3];
-extern void *data_ov002_0210f584[3];
-extern void *data_ov002_0210f590[3];
-extern void *data_ov002_0210f59c[3];
-extern void *data_ov002_0210f5a8[3];
-extern void *data_ov002_0210f5b4[3];
-extern void *data_ov002_0210f5c0[3];
-extern void *data_ov002_0210f5cc[3];
-extern void *data_ov002_0210f5d8[3];
-extern void *data_ov002_0210f5e4[3];
-extern void *data_ov002_0210f5f0[3];
-extern void *data_ov002_0210f5fc[3];
-extern void *data_ov002_0210f608[3];
-extern void *data_ov002_0210f614[3];
-extern void *data_ov002_0210f620[3];
-extern void *data_ov002_0210f62c[3];
-extern void *data_ov002_0210f638[3];
-extern void *data_ov002_0210f644[3];
-extern void *data_ov002_0210f650[3];
-extern void *data_ov002_0210f65c[3];
-extern void *data_ov002_0210f668[3];
-extern void *data_ov002_0210f674[3];
-extern void *data_ov002_0210f680[3];
-extern void *data_ov002_0210f68c[3];
-extern void *data_ov002_0210f698[3];
-extern void *data_ov002_0210f6a4[3];
-extern void *data_ov002_0210f6b0[3];
-extern void *data_ov002_0210f6bc[3];
-extern void *data_ov002_0210f6c8[3];
-extern void *data_ov002_0210f6d4[3];
-extern void *data_ov002_0210f6e0[3];
-extern void *data_ov002_0210f6ec[3];
-extern void *data_ov002_0210f6f8[3];
-extern void *data_ov002_0210f704[3];
-extern void *data_ov002_0210f710[3];
-extern void *data_ov002_0210f71c[3];
-extern void *data_ov002_0210f728[3];
-extern void *data_ov002_0210f734[3];
-extern void *data_ov002_0210f740[3];
-extern void *data_ov002_0210f74c[3];
-extern void *data_ov002_0210f758[3];
-extern void *data_ov002_0210f764[3];
-extern void *data_ov002_0210f770[3];
-extern void *data_ov002_0210f77c[3];
-extern void *data_ov002_0210f788[3];
-extern void *data_ov002_0210f794[3];
-extern void *data_ov002_0210f7a0[3];
-extern void *data_ov002_0210f7ac[3];
-extern void *data_ov002_0210f7b8[3];
-extern void *data_ov002_0210f7c4[3];
-extern void *data_ov002_0210f7d0[3];
-extern void *data_ov002_0210f7dc[3];
-extern void *data_ov002_0210f7e8[3];
-extern void *data_ov002_0210f800[3];
-extern void *data_ov002_0210f80c[3];
-extern void *data_ov002_0210f818[3];
-extern void *data_ov002_0210f830[3];
-extern void *data_ov002_0210f83c[3];
-extern void *data_ov002_0210f848[3];
-extern void *data_ov002_0210f854[3];
-extern void *data_ov002_0210f860[3];
-extern void *data_ov002_0210f86c[3];
-extern void *data_ov002_0210f878[3];
-extern void *data_ov002_0210f884[3];
-extern void *data_ov002_0210f890[3];
-extern void *data_ov002_0210f8a8[3];
-extern void *data_ov002_0210f8b4[3];
-extern void *data_ov002_0210f8c0[3];
 extern void *data_ov002_0210f8d8[3];
 extern void *data_ov002_0210f8e4[3];
 extern void *data_ov002_0210f8f0[3];
@@ -26268,8 +26175,7 @@ extern void (Player::*data_ov002_0211075c[7])();
 /* The two 32-entry palette ramps func_ov002_020e69c0 and func_ov002_020e6a78 work on. */
 extern unsigned short data_ov002_02110804[];
 
-void __sinit_ov002_021019d0(void)
-{
+void __sinit_ov002_021019d0(void) {
     func_0203b9b4(&data_ov002_0210e160, 0x4d2);
     func_020731dc(&data_ov002_0210e160, (void *)func_0201973c, data_ov002_0210f9b0);
     func_02017acc(&data_ov002_0210e6f8, ASSET_B_MARIO_ALL_BMD);
@@ -27305,6 +27211,7 @@ void __sinit_ov002_021019d0(void)
     data_ov002_0211075c[5] = data_ov002_0210a404;
     data_ov002_0211075c[6] = data_ov002_0210a3f4;
 }
+#undef func_020731dc
 }
 
 #pragma section initsec end

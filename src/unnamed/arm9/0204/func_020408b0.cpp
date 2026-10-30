@@ -3,8 +3,22 @@
 
 extern "C" {
 
+/* NitroSDK WMBssDesc, cut to the two fields read here (the layout as a
+   pokeheartgold fork's wm_internal.h spells it). Two other views share
+   the layout: func_020672d0.c, which fills this one and splits ggid and
+   the ssid into halfwords the way this SDK writes them, and WmWork.h's
+   opaque 0xc0-byte WmBssDesc. They stay apart because their field types
+   differ, and the types choose the load and store widths. */
+typedef struct WMBssDesc {
+    unsigned char pad_00[0x36];
+    unsigned short channel; /* 0x36 */
+    unsigned char pad_38[0x10];
+    unsigned short tgid; /* 0x48 -- gameInfo.tgid */
+} WMBssDesc;
+
+/* MB_ReadMultiBootParentBssDesc */
 extern void func_020672d0(void *thiz, int a1, int a2, int a3, int a4);
-extern void func_020616e8(void *p, int a1);
+extern void WM_Init(void *p, int a1);
 
 extern unsigned short data_020a0f14;
 extern int data_020a0f94;
@@ -23,8 +37,10 @@ extern int data_020a0f64;
 extern void *data_020a0f68;
 extern char data_020a1064[];
 
-void func_020408b0(unsigned short arg)
-{
+/* Allocate the link's buffers. On a download-play child (the halfword at
+   0x27ffc40 is 2), rebuild the parent's WMBssDesc into data_020a0f54, keep its
+   channel in data_020a0f28 (and at data_020a1064 +0x30) and step its tgid. */
+void func_020408b0(unsigned short arg) {
     int b;
     data_020a0f14 = arg;
     data_020a0f94 = 0;
@@ -36,12 +52,11 @@ void func_020408b0(unsigned short arg)
     data_020a0f54 = Memory::Allocate(0xc0, 0x20);
     b = (*(volatile unsigned short *)0x27ffc40 == 2);
     if (b != 0) {
-        char *p;
+        WMBssDesc *desc;
         func_020672d0(data_020a0f54, 0x200, 0x20, 0, 1);
-        p = (char *)data_020a0f54;
-        data_020a0f28 = *(unsigned short *)(p + 0x36);
-        p += 0x48;
-        ++*(unsigned short *)(int)(p);
+        desc = (WMBssDesc *)data_020a0f54;
+        data_020a0f28 = desc->channel;
+        ++desc->tgid;
     }
     data_020a0f74 = Memory::Allocate(0x420, 0x20);
     data_020a0f80 = Memory::Allocate(0x100, 0x20);
@@ -50,6 +65,6 @@ void func_020408b0(unsigned short arg)
     data_020a0f64 = 0x480;
     data_020a0f68 = Memory::Allocate(0x480, 0x20);
     *(unsigned short *)(data_020a1064 + 0x30) = data_020a0f28;
-    func_020616e8(data_020a0f4c, 1);
+    WM_Init(data_020a0f4c, 1);
 }
 }

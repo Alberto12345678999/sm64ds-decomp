@@ -1,7 +1,13 @@
 //cpp
+#include "Ov007Sprite.h"
+
 extern "C" {
-int func_ov007_020bfe4c(int,int,int,int,void*);
-void func_ov007_020c4388(char* r0,int r1){
-  func_ov007_020bfe4c(r1,*(int*)(r0+4),*(int*)(r0+8),*(int*)(r0+0x10),r0+0x14);
+
+void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, Vector3 *out);
+
+/* Places a sprite in the world: unprojects its screen position at its depth
+ * through the camera into pos. */
+void func_ov007_020c4388(Ov007Sprite *sprite, Ov007Camera *camera) {
+    func_ov007_020bfe4c(camera, sprite->screenX, sprite->screenY, sprite->depth, &sprite->pos);
 }
 }

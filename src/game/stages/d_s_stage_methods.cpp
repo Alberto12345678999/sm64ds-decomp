@@ -48,6 +48,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "types.h"
 #include "G2.h"
 #include "dFdBrightness_c.h"
+#include "dFdColor_c.h"
 #include "dScStage_c.h"
 #include "Timer.h"
 #include "decl_common.h"
@@ -79,21 +80,21 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "GX.h"
 #include "cstd.h"
 #include "daMugenBGM_c.h"
+#include "math/CalcLib.h"
+#include "dGraph_c.h"
+#include "dClipper.h"
 
 struct OamAttr;
 struct Matrix2x2 {
     int m[4];
 };
 
-// Partial view of the graph callback object, not the playable scene.
-struct StageGraphCallbackView {
-    void *vtable;
-    Matrix2x2 matrix;
-    s32 originX;
-    s32 originY;
-    s32 targetX;
-    s32 targetY;
-};
+/* Definition order is the static-init order. The callback's implicit
+   constructor stores the base vptr, then this vtable, and leaves the matrix
+   and affine words zero. dClipper's virtual destructor is what makes mwcc
+   register it; the callback has none. */
+dScStage_c::graphCallback_c data_0209f3c4;
+dClipper data_0209f43c;
 
 /* TU-local overlay of the per-controller input records at data_0209f498,
  * 0x18 apart. CheckInput fills them from the pad and the touch screen each
@@ -132,6 +133,8 @@ int IsButtonInputValid(void);
 int SublevelToLevel(int lv);
 int GetOwnerLanguage(void);
 void GiveLives(int n);
+/* local extern: the plain ROM Deallocate at 0x02018144, not Memory::Deallocate;
+   only decl_common.h's catch-all declares it, and that is not a header home. */
 void Deallocate(void *ptr);
 void SetBg2Offset(int x, int y);
 void SetBg3Offset(int x, int y);
@@ -139,7 +142,7 @@ void SetBg1Offset(int x, int y);
 void SetSubBg0Offset(int x, int y);
 void SetSubBg1Offset(int x, int y);
 int func_02029408(void);
-int LoadFile(int handle);
+void *LoadFile(int handle);
 void SetControllerMode(unsigned char m);
 unsigned int LoadCompressedFileAt(unsigned short id, void *dst);
 int GetSoundMode(void);
@@ -246,14 +249,6 @@ extern void *data_ov001_020acb68[];
 struct MinimapDesc {
     u32 w[4];
 };
-/* data_0209f3c4 is the stage's graph callback object (InitResources hands
-   it to data_0209d4a8). Its last four words are StageGraphCallbackView's
-   BG3 affine origin and target, which GraphCallback2 passes to SetBGyAffine
-   and UpdateMinimap sets. */
-struct MinimapState {
-    char _pad[0x14];
-    volatile u32 originX, originY, targetX, targetY;
-};
 /* SetNextLevel's return table: level, return level, entrance. */
 struct LevelReturnEntry {
     s8 level;
@@ -326,7 +321,11 @@ extern u16 *data_0209214c[];
 extern s32 data_02092208[];
 extern u8 data_0209caa0[];
 extern s32 data_0209cef0;
-extern void *data_0209d4a8;
+/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+   friends): the scene registers its own object here and clears it on the way
+   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
+   graphCallback_c (include/dGraph_c.h). */
+extern dGraph_c::callback_c *data_0209d4a8;
 extern s32 data_0209e650;
 extern u8 data_0209f1f4;
 extern u8 data_0209f1f8;
@@ -367,15 +366,18 @@ extern short *data_0209f348;
 extern void *data_0209f354;
 extern unsigned char data_0209f370[];
 extern unsigned char data_0209f37c[];
-extern void *data_0209f394[];
-extern void *data_0209f3a4[];
-extern MinimapState data_0209f3c4;
+/* These fill the .bss between the dClipper registration node (0x0209f388),
+   the graph callback (0x0209f3c4, 0x24 bytes) and dClipper (0x0209f43c).
+   data_0209f3e8 runs through 0x0209f43c so data_0209f40c and STAR_MARKERS
+   stay interior labels, not a second object at the same address. */
+void *data_0209f394[4];
+void *data_0209f3a4[8];
 extern MinimapDesc data_0209f3c8;
-extern int data_0209f3e8[];
+int data_0209f3e8[21];
 extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
 extern dFdBrightness_c *data_0209f5bc;
-extern unsigned short data_0209f5e8;
+extern dFdColor_c data_0209f5e8;
 extern int gRunningKuppaScript;
 extern u8 data_0209fcc8;
 extern PadData data_020a0e58[];
@@ -454,7 +456,7 @@ int IsLevelTinyHugeIslandOutside(int level);
 int IsLevelInsideCastle(int level);
 int GetSoundGroupID(int group, int sub);
 void func_0202deac(int levelID);
-s32 GetLevelPart(s32 level);
+s8 GetLevelPart(s32 level);
 
 /* Defined elsewhere. */
 void OpenCannonInLevel(s8 levelID);
@@ -642,7 +644,7 @@ void dScStage_c::LC_Render() {
         return;
 
     {
-        void *p = (void *)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
+        void *p = LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
         GX::LoadOBJPltt((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)), 0x1c0,
                         0x10);
         Deallocate(p);
@@ -2735,36 +2737,33 @@ int IsButtonInputValid(void) {
 }
 }
 
-// @symbol _ZN10dScStage_c14GraphCallback2Ev
-/* The callback object GraphCallback2 reads through `this`: vptr at +0 (never
-   touched as data), a fixed-point 2x2 matrix at +0x4 that the object's
-   static-init constructor at 0x02074edc seeds with 0x1000 (1.0), and the four
-   affine words after it (StageGraphCallbackView). */
-
-/* Nullary, and a member: vtable slot 2 of dScStage_c::graphCallback_c (RTTI
-   si-child of dGraph_c::callback_c). Every dispatcher -- func_02018ec0,
-   func_02018efc -- calls it as `ldr r1,[r0]; ldr r1,[r1,#8]; blx r1` with
-   r0 = the callback object and r1 never set as an argument. Sets the BG3
-   affine transform from the object's matrix. */
-s32 dScStage_c::GraphCallback2() {
-    StageGraphCallbackView *callback = (StageGraphCallbackView *)this;
-    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, &callback->matrix, callback->originX,
-                      callback->originY, callback->targetX, callback->targetY);
+// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
+/* Vtable slot 2. Every dispatcher calls it as `ldr r1,[r0]; ldr r1,[r1,#8];
+   blx r1` with r0 = the callback object. The matrix at +0x4 stays zero until
+   UpdateMinimap; the static initializer does not seed it. */
+int dScStage_c::graphCallback_c::GraphCallback2() {
+    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, (Matrix2x2 *)matrix, originX,
+                      originY, targetX, targetY);
     return 1;
 }
 
-// @symbol _ZN10dScStage_c14GraphCallback1Ev
+// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback1Ev
 /* Vtable slot 1 of dScStage_c::graphCallback_c: render every particle. */
-int dScStage_c::GraphCallback1() {
+int dScStage_c::graphCallback_c::GraphCallback1() {
     Particle::RenderAll();
     return 1;
 }
 
 // @symbol UpdateMinimap
-/* Copy a 16-byte descriptor into data_0209f3c8 and store the four scalar
-   params into data_0209f3c4 (+0x14..+0x20). */
+/* Copy a 16-byte descriptor into the callback object's matrix (+0x4) and store
+   the four affine params after it. The object is one 0x24-byte object; the
+   symbols.txt row data_0209f3c8 at the matrix stays only because dsd needs a
+   symbol at every relocs.txt target, and the copy's pool word points there.
+   The MinimapDesc cast stays because the ROM's copy is
+   a single ldm/stm block move and a struct copy of four named fields
+   scalarizes. */
 extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
-    *(MinimapDesc *)(((long long)(int)&data_0209f3c8)) = *desc;
+    *(MinimapDesc *)(((long long)(int)data_0209f3c4.matrix)) = *desc;
     data_0209f3c4.originX = a;
     data_0209f3c4.originY = b;
     data_0209f3c4.targetX = c;
@@ -3282,7 +3281,7 @@ extern "C" void func_0202a850(int a, int b) {
 // @symbol InitControllerMode
 /* The per-controller records at data_0209f498 are 0x18 apart; the mode byte
    is their +0x16, data_0209f4ae. The save file keeps the active player's
-   copy at data_0209caa0+0x42. */
+   copy at data_0209caa0+0x42 (FileSaveData::controllerMode, include/SaveData.h). */
 extern "C" void InitControllerMode(int idx, u8 val) {
     data_0209f4ae[idx * 0x18] = val;
     if (idx == gActivePlayerSlot)
@@ -3427,7 +3426,7 @@ extern "C" void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 
 
     if (data_02092110 < 0) {
         dScene_c::SetAndStopColorFader();
-        *(unsigned short *)((char *)&data_0209f5e8 + 0xc) = 0;
+        data_0209f5e8.color = 0;
     }
     data_02092110 = levelID;
     data_0209f268 = entranceID;
@@ -4180,7 +4179,7 @@ int dScStage_c::Behavior() {
             MaskOff(data_0209b454, 0) == 0) {
             u8 st = data_0209f2d8;
             int b1 = (st == 1);
-            if ((b1 && data_0209fc68 == 0) || (((SaveData *)data_0209caa0)->flags2 & 0x80)) {
+            if ((b1 && data_0209fc68 == 0) || (((FileSaveData *)data_0209caa0)->flags2 & 0x80)) {
                 int b2 = (st == 2);
                 if (b2 == 0) {
                     int b3 = (gRunningKuppaScript != 0);
@@ -4224,7 +4223,6 @@ int dScStage_c::Behavior() {
 #define TOUCH_DATA ((TouchInfo *)gTouchHeld)
 
 extern "C" {
-u8 DecIfAbove0_Byte(u8 *p);
 s16 atan2_hold_d_s_stage_methods_1(int y, int x);
 }
 
@@ -4233,7 +4231,7 @@ void dScStage_c::CheckInput() {
     int isVsMode = (mode == 1);
     if (isVsMode == false) {
         int modeIsTwo = (mode == 2);
-        if (modeIsTwo != false || !(((SaveData *)data_0209caa0)->flags2 & 0x80) ||
+        if (modeIsTwo != false || !(((FileSaveData *)data_0209caa0)->flags2 & 0x80) ||
             (data_0209d660 == 0 && (int)(gRunningKuppaScript != 0) != false)) {
             {
                 CamInput *control = (CamInput *)data_0209f498;
@@ -4731,7 +4729,7 @@ int dScStage_c::InitResources() {
         *bg1Control = *bg1Control & ~0x40;
         data_0209d454 = 0x18;
         data_0209f204 = 0;
-        data_0209d4a8 = (void *)&data_0209f3c4;
+        data_0209d4a8 = (dGraph_c::callback_c *)&data_0209f3c4;
         data_0209b454 = 0;
         func_02039218();
         ResetKuppaScript();
@@ -4842,7 +4840,8 @@ int dScStage_c::InitResources() {
                 if (!IsLevelInsideCastle(data_0209f2f8) || !IsLevelInsideCastle(previousSublevel)) {
                     if (!IsLevelTinyHugeIslandOutside(data_0209f2f8) ||
                         !IsLevelTinyHugeIslandOutside(previousSublevel)) {
-                        if (data_0209f2f8 != 2 || (((SaveData *)data_0209caa0)->flags2 & 0x200)) {
+                        if (data_0209f2f8 != 2 ||
+                            (((FileSaveData *)data_0209caa0)->flags2 & 0x200)) {
                             Sound::LoadAndSetMusic_Layer1(data_0207576a[data_0209f2f8 * 3]);
                             u8 localPlayer = data_0209f250;
                             if (((u8 *)data_0209f394[localPlayer])[0x6ff] != 0) {
@@ -4973,7 +4972,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         LoadFont3D();
     }
 
-    if ((int)(data_0209f2d8 == 0) != 0 && (((SaveData *)data_0209caa0)->flags2 & 0x80) == 0 &&
+    if ((int)(data_0209f2d8 == 0) != 0 && (((FileSaveData *)data_0209caa0)->flags2 & 0x80) == 0 &&
         (int)(gRunningKuppaScript != 0) == 0) {
         BG0CNT_SUB &= ~3;
         BG0CNT_SUB &= ~0x40;

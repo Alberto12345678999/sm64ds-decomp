@@ -1,55 +1,34 @@
+#include "types.h"
+#include "Ov007StrokePath.h"
+#include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
-extern int func_ov007_020c25fc(void *a, int b, int c, int d, int e, int f);
-extern void func_ov007_020bfe4c(void *a, int b, int c, int d, int e);
-struct G
-{
-  char p8[8];
-  int f8;
-  int fc;
-  int f10;
-};
-struct B
-{
-  char p8[8];
-  unsigned short f8;
-  char p[0x16];
-  int *f20;
-  int *f24;
-  int *f28;
-};
-struct T
-{
-  char p10[0x10];
-  int f10;
-  int f14;
-  char p18[4];
-  struct G *f1c;
-  struct B *f20;
-  int f24;
-  char pad[0x80];
-  char *fa8;
-};
-int func_ov007_020c65bc(struct T *t, int a1, int a2, int a3)
-{
-  int ret = 0;
-  struct B *b = t->f20;
-  if (t->f14 < t->f10)
-  {
-    int m = b->f8 - 1;
-    struct G *g = t->f1c;
-    if (func_ov007_020c25fc(b, a1 << 12, a2 << 12, g->f8, g->fc, g->f10) != 0)
-    {
-      int idx = m + 1;
-      int *p = (int *)(((int)t + 0x14));
-      b->f20[idx] = a3;
-      *p = *p + 1;
-      func_ov007_020bfe4c(t->fa8, b->f24[idx], b->f28[idx], -(*((int *) (t->fa8 + 0x2c))), t->f24 + (idx * 0xc));
-      ret = 1;
+extern int func_ov007_020c25fc(Ov007StrokePath *path, int x, int y, int minLen, int maxLen,
+                               int minTurn);
+extern void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, Vector3 *out);
+
+/* Appends screen point (x, y), in pixels, to the stroke being drawn. When
+ * func_ov007_020c25fc takes it, the point gets `progress` as its progress
+ * threshold and is unprojected through the camera, at the camera's
+ * distance, into pathPoints. Returns 1 if the point was added, 0 if it was
+ * refused and 2 once maxPoints is reached. */
+int func_ov007_020c65bc(Ov007Picker *p, int x, int y, int progress) {
+    int ret = 0;
+    Ov007StrokePath *path = p->path;
+    if (p->totalPoints < p->maxPoints) {
+        int last = path->pointCount - 1;
+        Ov007PickerParams *params = p->params;
+        if (func_ov007_020c25fc(path, x << 12, y << 12, params->minLen, params->maxLen,
+                                params->minTurn) != 0) {
+            int idx = last + 1;
+            path->progressThresholds[idx] = progress;
+            p->totalPoints++;
+            func_ov007_020bfe4c(p->camera, path->xCoords[idx], path->yCoords[idx],
+                                -p->camera->distance, &p->pathPoints[idx]);
+            ret = 1;
+        }
+    } else {
+        ret = 2;
     }
-  }
-  else
-  {
-    ret = 2;
-  }
-  return ret;
+    return ret;
 }

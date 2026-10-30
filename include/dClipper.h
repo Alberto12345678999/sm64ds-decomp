@@ -25,10 +25,8 @@ struct dClipper {
 #ifdef __cplusplus
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration.
        Vtable _ZTV8dClipper lives at 0x0208e730 (named in symbols.txt). The lone
-       instance, data_0209f43c in bss, is constructed explicitly by
-       __sinit_02074e84 -- which carries its own extern declaration of the
-       constructor and never includes this header, so promoting the class does
-       not touch that translation unit. */
+       instance, data_0209f43c in bss, is a file-scope object of
+       d_s_stage_methods.cpp; this header stays POD-planed and adds no method. */
 #else
     u8  pad_000[0x4];       /* 0x00 - the vtable, written out for C */
 #endif

@@ -74,7 +74,6 @@ extern u8 gTouchX[];
 // local extern: see above.
 extern u8 gTouchY[];
 extern u16 sBomroomSpawnDelays[];
-extern int sBomroomRoundEndTable[];
 extern int LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
 
@@ -2051,10 +2050,12 @@ void dScMgBomroom_c::Round_StateGameOver() {
  * this-adjust whose low bit marks a virtual call), then the three
  * per-frame passes. */
 
+typedef void (dScMgBomroom_c::*PMFv)();
+extern "C" PMFv sBomroomRoundEndTable[];
 void dScMgBomroom_c::Round_StateEnd() {
     unsigned char * c = (unsigned char *)this;
     int idx = mSubState;
-    int *e = &sBomroomRoundEndTable[idx * 2];
+    int *e = (int *)&sBomroomRoundEndTable[idx];
     int off = e[1];
     void *obj = c + (off >> 1);
     void (*f)(void *);
@@ -2264,3 +2265,82 @@ extern "C" void *dScMgBomroom_c_classInit()
 {
     return new dScMgBomroom_c;
 }
+
+/* The seven state tables. mwcc emits __sinit_d_s_mg_bomroom.cpp from these
+ * definitions: each entry is one pointer-to-member, copied from the ROM
+ * pmf_dScMgBomroom_c_* constants in retail order. Round and round-end take
+ * no argument; the other five take the slot. */
+extern PMFv pmf_dScMgBomroom_c_Round_StateSetup;
+extern PMFv pmf_dScMgBomroom_c_Round_StateStart;
+extern PMFv pmf_dScMgBomroom_c_Round_StatePlay;
+extern PMFv pmf_dScMgBomroom_c_Round_StateEnd;
+extern PMFv pmf_dScMgBomroom_c_Round_StateGameOver;
+extern PMFv pmf_dScMgBomroom_c_RoundEnd_StartMarch;
+extern PMFv pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp;
+extern PMFv pmf_dScMgBomroom_c_RoundEnd_Tally;
+extern PMFv pmf_dScMgBomroom_c_RoundEnd_Finish;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateWaiting;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateWalk;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateHeld;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateChainDelay;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateExploding;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateInPen;
+extern PMF pmf_dScMgBomroom_c_Bomb_StateMarch;
+extern PMF pmf_dScMgBomroom_c_BombMarch_ToGate;
+extern PMF pmf_dScMgBomroom_c_BombMarch_Exit;
+extern PMF pmf_dScMgBomroom_c_BombMarch_Offscreen;
+extern PMF pmf_dScMgBomroom_c_BombMarch_ToLine;
+extern PMF pmf_dScMgBomroom_c_BombMarch_LinedUp;
+extern PMF pmf_dScMgBomroom_c_HatchPanel_StateIdle;
+extern PMF pmf_dScMgBomroom_c_HatchPanel_StateAnimate;
+extern PMF pmf_dScMgBomroom_c_HatchPanel_StateHeld;
+extern PMF pmf_dScMgBomroom_c_HatchPanel_StateRevert;
+extern PMF pmf_dScMgBomroom_c_PenGate_StateShut;
+extern PMF pmf_dScMgBomroom_c_PenGate_StateOpening;
+extern PMF pmf_dScMgBomroom_c_PenGate_StateHold;
+extern PMF pmf_dScMgBomroom_c_PenGate_StateClosing;
+extern PMF pmf_dScMgBomroom_c_TopDoor_StateShut;
+extern PMF pmf_dScMgBomroom_c_TopDoor_StateOpening;
+extern PMF pmf_dScMgBomroom_c_TopDoor_StateOpen;
+extern PMF pmf_dScMgBomroom_c_TopDoor_StateClosing;
+
+extern "C" PMFv sBomroomRoundStateTable[5] = {
+    pmf_dScMgBomroom_c_Round_StateSetup,    pmf_dScMgBomroom_c_Round_StateStart,
+    pmf_dScMgBomroom_c_Round_StatePlay,     pmf_dScMgBomroom_c_Round_StateEnd,
+    pmf_dScMgBomroom_c_Round_StateGameOver,
+};
+extern "C" PMFv sBomroomRoundEndTable[4] = {
+    pmf_dScMgBomroom_c_RoundEnd_StartMarch,
+    pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp,
+    pmf_dScMgBomroom_c_RoundEnd_Tally,
+    pmf_dScMgBomroom_c_RoundEnd_Finish,
+};
+PMF sBomroomBombStateTable[7] = {
+    pmf_dScMgBomroom_c_Bomb_StateWaiting,   pmf_dScMgBomroom_c_Bomb_StateWalk,
+    pmf_dScMgBomroom_c_Bomb_StateHeld,      pmf_dScMgBomroom_c_Bomb_StateChainDelay,
+    pmf_dScMgBomroom_c_Bomb_StateExploding, pmf_dScMgBomroom_c_Bomb_StateInPen,
+    pmf_dScMgBomroom_c_Bomb_StateMarch,
+};
+extern "C" PMFEntry sBomroomBombMarchTable[5] = {
+    {pmf_dScMgBomroom_c_BombMarch_ToGate},    {pmf_dScMgBomroom_c_BombMarch_Exit},
+    {pmf_dScMgBomroom_c_BombMarch_Offscreen}, {pmf_dScMgBomroom_c_BombMarch_ToLine},
+    {pmf_dScMgBomroom_c_BombMarch_LinedUp},
+};
+extern "C" PMF sBomroomHatchPanelStateTable[4] = {
+    pmf_dScMgBomroom_c_HatchPanel_StateIdle,
+    pmf_dScMgBomroom_c_HatchPanel_StateAnimate,
+    pmf_dScMgBomroom_c_HatchPanel_StateHeld,
+    pmf_dScMgBomroom_c_HatchPanel_StateRevert,
+};
+extern "C" PMF sBomroomPenGateStateTable[4] = {
+    pmf_dScMgBomroom_c_PenGate_StateShut,
+    pmf_dScMgBomroom_c_PenGate_StateOpening,
+    pmf_dScMgBomroom_c_PenGate_StateHold,
+    pmf_dScMgBomroom_c_PenGate_StateClosing,
+};
+extern "C" PMFEntry sBomroomTopDoorStateTable[4] = {
+    {pmf_dScMgBomroom_c_TopDoor_StateShut},
+    {pmf_dScMgBomroom_c_TopDoor_StateOpening},
+    {pmf_dScMgBomroom_c_TopDoor_StateOpen},
+    {pmf_dScMgBomroom_c_TopDoor_StateClosing},
+};

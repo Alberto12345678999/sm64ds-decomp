@@ -26,11 +26,11 @@
  * files and are not claimed here.
  */
 #include "IRQ.h"
+#include "nitro/os/thread.h" /* data_020a6134, the thread scheduler head */
 
 extern "C" {
 extern IRQ::Handler data_02099fe4[]; /* one handler per IE bit */
 extern short data_023c0000[];        /* DTCM: interrupts threads wait on */
-extern int data_020a6134[];          /* the thread scheduler head */
 struct ARMMathState;                 /* divider/sqrt unit state */
 void ARMMathSaveState(ARMMathState *state);
 void ARMMathLoadState(const ARMMathState *state);

@@ -1,21 +1,23 @@
-/* func_ov007_020af1f4 at 0x020af1f4 */
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
-extern char *data_ov007_0210342c;
 extern int func_ov007_020c1d8c(int a);
 
-int func_ov007_020af1f4(void)
-{
-    char *r1 = data_ov007_0210342c;
-    char *r2 = *(char **)(r1 + 0xc);
+/* Sends states[2] to state 4 unless it is in state 7 with no transition
+ * mode, then sets states[1]'s current state to 1 when states[0] came from
+ * state 1, to 0 otherwise. */
+int func_ov007_020af1f4(void) {
+    Ov007Work *w = WORK;
+    Ov007MenuState *s2 = w->states[2];
 
-    if (*(short *)r2 != 7 || *(int *)(r1 + 0x20) != 0)
-        *(short *)(r2 + 2) = 4;
+    if (s2->currentState != 7 || w->transitionMode != 0)
+        s2->requestedState = 4;
 
-    r1 = data_ov007_0210342c;
-    if (*(short *)(*(char **)(r1 + 4) + 0xa) != 1)
-        *(short *)(*(char **)(r1 + 8)) = 0;
+    w = WORK;
+    if (w->states[0]->previousState != 1)
+        w->states[1]->currentState = 0;
     else
-        *(short *)(*(char **)(r1 + 8)) = 1;
+        w->states[1]->currentState = 1;
 
     return func_ov007_020c1d8c(0);
 }

@@ -1,3 +1,8 @@
+#include "Ov007Display.h"
+
+/* The menu's free hook and the per-record frees; the long-branch veneers
+ * (func_ov007_020c105c, 020c05f8, 020c8b04, 020c3544, 020c338c, 020c0a9c)
+ * all tail-call func_ov007_020c3d1c. */
 extern void func_ov007_020c3d1c(void *p);
 extern void func_ov007_020c105c(void *p);
 extern void func_ov007_020c05f8(void *p);
@@ -5,62 +10,70 @@ extern void func_ov007_020c8b04(void *p);
 extern void func_ov007_020c3544(void *p);
 extern void func_ov007_020c338c(void *p);
 extern void func_ov007_020c121c(void *p);
-extern void func_ov007_020c1180(void *p);
+extern int func_ov007_020c1180(Ov007OamNode *node);
 extern void func_ov007_020c0a9c(void *p);
 
-void func_ov007_020b73b4(int *self)
-{
+/* Frees the display record and everything its tables hold. One untyped
+ * `arr` walks all six tables: a typed local per table compiles to different
+ * register choices in six words. */
+void func_ov007_020b73b4(Ov007Display *d) {
     void **arr;
     int i;
 
-    func_ov007_020c3d1c((void *)self[4]);
-    func_ov007_020c3d1c((void *)self[5]);
-    func_ov007_020c105c((void *)self[0]);
-    func_ov007_020c105c((void *)self[1]);
-    func_ov007_020c05f8((void *)self[2]);
-    func_ov007_020c05f8((void *)self[3]);
+    func_ov007_020c3d1c(d->oamMain);
+    func_ov007_020c3d1c(d->oamSub);
+    func_ov007_020c105c(d->oamListMain);
+    func_ov007_020c105c(d->oamListSub);
+    func_ov007_020c05f8(d->bgListMain);
+    func_ov007_020c05f8(d->bgListSub);
 
-    if (self[6] > 0) {
-        arr = (void **)self[7];
-        for (i = 0; i < self[6]; i++)
-            if (arr[i]) func_ov007_020c8b04(arr[i]);
+    if (d->transitionCount > 0) {
+        arr = (void **)d->transitions;
+        for (i = 0; i < d->transitionCount; i++)
+            if (arr[i])
+                func_ov007_020c8b04(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[8] > 0) {
-        arr = (void **)self[9];
-        for (i = 0; i < self[8]; i++)
-            if (arr[i]) func_ov007_020c3544(arr[i]);
+    if (d->characterCount > 0) {
+        arr = (void **)d->characters;
+        for (i = 0; i < d->characterCount; i++)
+            if (arr[i])
+                func_ov007_020c3544(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[10] > 0) {
-        arr = (void **)self[11];
-        for (i = 0; i < self[10]; i++)
-            if (arr[i]) func_ov007_020c338c(arr[i]);
+    if (d->paletteCount > 0) {
+        arr = (void **)d->palettes;
+        for (i = 0; i < d->paletteCount; i++)
+            if (arr[i])
+                func_ov007_020c338c(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[14] > 0) {
-        arr = (void **)self[15];
-        for (i = 0; i < self[14]; i++)
-            if (arr[i]) func_ov007_020c121c(arr[i]);
+    if (d->spriteBankCount > 0) {
+        arr = (void **)d->spriteBanks;
+        for (i = 0; i < d->spriteBankCount; i++)
+            if (arr[i])
+                func_ov007_020c121c(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[16] > 0) {
-        arr = (void **)self[17];
-        for (i = 0; i < self[16]; i++)
-            if (arr[i]) func_ov007_020c1180(arr[i]);
+    if (d->oamNodeCount > 0) {
+        arr = (void **)d->oamNodes;
+        for (i = 0; i < d->oamNodeCount; i++)
+            if (arr[i])
+                func_ov007_020c1180(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    if (self[12] > 0) {
-        arr = (void **)self[13];
-        for (i = 0; i < self[12]; i++)
-            if (arr[i]) func_ov007_020c0a9c(arr[i]);
+    if (d->bgLayerCount > 0) {
+        arr = (void **)d->bgLayers;
+        for (i = 0; i < d->bgLayerCount; i++)
+            if (arr[i])
+                func_ov007_020c0a9c(arr[i]);
         func_ov007_020c3d1c(arr);
     }
 
-    func_ov007_020c3d1c((void *)self);
+    func_ov007_020c3d1c(d);
 }

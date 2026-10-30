@@ -50,8 +50,8 @@ struct System {
 #include "Sound.h"
 #include "G3X.h"
 #include "math/Approach.h"
+#include "BMD_File.h"
 
-struct BMD_File;
 struct BTP_File;
 
 namespace cstd {
@@ -325,24 +325,24 @@ void UnknownVsPlayer::func_ov075_02114390() {
  * random frame. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_021143e4Ev
 void UnknownVsPlayer::func_ov075_021143e4() {
-    void *textureFile;
+    BTP_File *textureFile;
     if (data_ov075_0211d380 < 0) {
         data_ov075_0211d380 =
             data_ov075_0211b524[((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 6];
     }
     if (data_0209b2f0[mPlayerNo] != 0) {
         mModel.SetAnim(*(BCA_File *)data_ov075_0211d3ac.filePtr, 0, 0, 0x1000, 0);
-        textureFile = (void *)data_ov075_0211d40c.filePtr;
+        textureFile = (BTP_File *)data_ov075_0211d40c.filePtr;
         mMoveState = MOVE_WAIT_FOR_POSE_SOUND;
     } else {
         mModel.SetAnim(*(BCA_File *)((data_ov075_0211c688[data_ov075_0211d380 & 3])[1]), 0, 0,
                        0x1000, 0);
-        textureFile = (void *)data_ov075_0211d3dc.filePtr;
+        textureFile = (BTP_File *)data_ov075_0211d3dc.filePtr;
         mMoveState = MOVE_POSE_PARTICLES;
         data_ov075_0211d380 >>= 2;
     }
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *(BTP_File *)textureFile);
-    mTextureSequence.SetFile(*(BTP_File *)textureFile, 0, 0x1000, 0);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *textureFile);
+    mTextureSequence.SetFile(*textureFile, 0, 0x1000, 0);
     {
         unsigned int randomValue = (unsigned int)RandomIntInternal(&data_0209e650);
         int frameCount = mModel.GetFrameCount();
@@ -594,7 +594,7 @@ void UnknownVsPlayer::func_ov075_02114b60() {
  * the body's matrix and is drawn with the texture sequence applied. */
 void UnknownVsPlayer::func_ov075_02114be4() {
     BMD_File *file;
-    char *mat;
+    BMD_Material *mat;
 
     func_020167a4(&mModel);
     func_ov075_02114b60();
@@ -604,10 +604,10 @@ void UnknownVsPlayer::func_ov075_02114be4() {
         ModelComponents *components = (ModelComponents *)LAUNDER(&mModel.data);
         unsigned int materialIndex;
         file = components->modelFile;
-        mat = (char *)components->materials;
+        mat = components->materials;
         for (materialIndex = 0; materialIndex < file->numMaterials; materialIndex++) {
-            *(int *)(mat + 0x20) = mMaterialColor;
-            mat += sizeof(BMD_Material);
+            mat->texImageParam = mMaterialColor;
+            mat++;
         }
         mModel.dExtSimpleModel_c::Render(0);
         dExtAnmModel_c *animation = &mAnimation;
@@ -620,10 +620,10 @@ void UnknownVsPlayer::func_ov075_02114be4() {
         ModelComponents *components = (ModelComponents *)LAUNDER(&mAnimation.data);
         unsigned int materialIndex;
         file = components->modelFile;
-        mat = (char *)components->materials;
+        mat = components->materials;
         for (materialIndex = 0; materialIndex < file->numMaterials; materialIndex++) {
-            *(int *)(mat + 0x20) = mMaterialColor;
-            mat += sizeof(BMD_Material);
+            mat->texImageParam = mMaterialColor;
+            mat++;
         }
     }
 
@@ -653,25 +653,25 @@ void UnknownVsPlayer::func_ov075_02114cd8() {
  * frame, the shadow and the start position. Kinds 0 and 2 start idle; the
  * others start in movement state 7. */
 int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playerNo, int x) {
-    void *textureFile;
+    BTP_File *textureFile;
 
     mModel.SetFile((BMD_File *)data_ov075_0211d404.filePtr, 1, 1);
-    mMaterialColor = *(int *)((char *)mModel.data.materials + 0x20) + (playerNo << 1);
+    mMaterialColor = mModel.data.materials->texImageParam + (playerNo << 1);
     mAnimation.SetFile((BMD_File *)data_ov075_0211d3c4.filePtr, 1, 1);
-    mAnimation.SetAnim((BCA_File *)((void *)data_ov075_0211d414.filePtr), 0, 0x1000, 0);
+    mAnimation.SetAnim((BCA_File *)data_ov075_0211d414.filePtr, 0, 0x1000, 0);
 
     if (kind == 0 || kind == 2) {
         mModel.SetAnim(*(BCA_File *)(data_ov075_0211c678[playerNo][1]), 0, 0, 0x1000, 0);
-        textureFile = (void *)data_ov075_0211d40c.filePtr;
+        textureFile = (BTP_File *)data_ov075_0211d40c.filePtr;
         mMoveState = MOVE_IDLE;
     } else {
         mModel.SetAnim(*(BCA_File *)data_ov075_0211d3ac.filePtr, 0, 0, 0x1000, 0);
-        textureFile = (void *)data_ov075_0211d40c.filePtr;
+        textureFile = (BTP_File *)data_ov075_0211d40c.filePtr;
         mMoveState = MOVE_CHOOSE_POSE;
     }
 
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *(BTP_File *)textureFile);
-    mTextureSequence.SetFile(*(BTP_File *)textureFile, 0, 0x1000, 0);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *textureFile);
+    mTextureSequence.SetFile(*textureFile, 0, 0x1000, 0);
 
     {
         unsigned randomValue = (unsigned)RandomIntInternal(&data_0209e650);
@@ -998,7 +998,7 @@ int dEntObj_c::InitResources() {
 
     if (param1 != 1) {
         mAnmModel.SetFile((BMD_File *)data_ov075_0211d3bc.filePtr, 1, -1);
-        mAnmModel.SetAnim((BCA_File *)((void *)data_ov075_0211d3e4.filePtr), 0, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov075_0211d3e4.filePtr, 0, 0x1000, 0);
     }
 
     mMesh.Init((Vector3 *)&data_ov075_0211c654, 0);

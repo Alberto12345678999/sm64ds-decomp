@@ -2,145 +2,103 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "Ov007MenuState.h"
+#include "Ov007Touch.h"
+#include "Ov007Work.h"
+#include "Ov007Item.h"
+#include "Ov007LayerSlot.h"
+#include "Ov007Pad.h"
+#include "Ov007Figure.h"
 
 extern "C" {
 
-typedef struct SubC {
-    int unk0;
-    char pad4[8];
-    volatile s16 unkC;
-    char padE[2];
-    u16 unk10;
-    u16 unk12;
-    int unk14;
-} SubC;
+/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
+ * func_ov007_020bc02c and func_ov007_020b1718, only the slots this file
+ * touches. */
+typedef struct Ov007AnimPlayer {
+    s32 state; /* 0x00: 0 playing; func_ov007_020c9110 sets 2 when a one-shot ends */
+    char pad_04[8];
+    /* 0x0c: index into the owner's animation table; -1 none. volatile:
+     * the ROM re-reads it for each test below */
+    volatile s16 anim;
+    char pad_0e[2];
+    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
+    u16 frameCount; /* 0x12 */
+    s32 framePos;   /* 0x14: Q12; func_ov007_020c9110 advances it */
+} Ov007AnimPlayer;
 
-typedef struct Elem {
-    char pad0[0x18];
-    SubC *unk18;
-    char pad1C[0x24];
-    int unk40;
-    int unk44;
-    int unk48;
-} Elem;
-
-typedef struct Sub100 {
-    char pad0[4];
-    Elem *unk4;
-    char pad8[0x10];
-    void *unk18;
-} Sub100;
-
-typedef struct Sub8 {
-    char pad0[2];
-    u16 unk2;
-    char pad4[8];
-    int unkC;
-} Sub8;
-
-typedef struct Sub54 {
-    u16 unk0;
-    u16 unk2;
-} Sub54;
-
-typedef struct Sub50 {
-    char pad0[0xC];
-    u16 unkC;
-    char padE[6];
-    u16 unk14;
-} Sub50;
-
-typedef struct SubX {
-    char pad0[2];
-    u16 unk2;
-} SubX;
-
-typedef struct SubW {
-    char pad0[4];
-    SubX *unk4;
-} SubW;
-
-typedef struct SubV {
-    SubW *unk0;
-} SubV;
-
-typedef struct SubE0 {
-    char pad0[4];
-    int unk4;
-} SubE0;
-
-typedef struct Game {
-    char pad0[8];
-    Sub8 *unk8;
-    char padC[0x44];
-    Sub50 *unk50;
-    Sub54 *unk54;
-    char pad58[0x6C];
-    SubV *unkC4;
-    char padC8[0x18];
-    SubE0 *unkE0;
-    char padE4[0x1C];
-    Sub100 *unk100;
-} Game;
-
-extern Game *data_ov007_0210342c;
+/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
+ * func_ov007_020bc02c and func_ov007_020bc434, only the slots this file
+ * touches. */
+typedef struct Ov007Model {
+    char pad_00[0x18];
+    Ov007AnimPlayer *boneAnim; /* 0x18 */
+    char pad_1c[0x24];
+    Vector3 scale; /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
+} Ov007Model;
 
 extern int func_ov007_020aebac(void);
 extern void RequestScreenFade(int, int, int);
-extern void func_ov007_020b1fa4(int);
-extern void func_ov007_020b0da0(void);
-extern void func_ov007_020be980(Sub100 *, int, int);
-extern int func_ov007_020be964(Sub100 *);
-extern void func_ov007_020c0638(int, int, int, int);
+extern void func_ov007_020b1fa4(int preset);
+extern void func_ov007_020b0da0(Ov007Figure *figure);
+extern void func_ov007_020be980(Ov007Figure *fig, int anim, int a2);
+extern int func_ov007_020be964(Ov007Figure *fig);
+extern void func_ov007_020c0638(void *layer, int x, int y, unsigned short tile);
 extern void func_ov007_020b797c(void);
-extern void func_ov007_020bdeb0(int);
-extern void func_ov007_020bde70(int, int);
+extern void func_ov007_020bdeb0(int idx);
+extern void func_ov007_020bde70(int idx, int arg);
 extern void func_ov007_020b131c(void);
 
-void func_ov007_020b0a20(void)
-{
-    Elem *e;
-    int mode;
-    int flag6;
-    int flag5;
-    int result;
-    Game *g;
+/* states[1]'s state 11 (func_ov007_020b0548), the figure's opening
+ * animation. On its first tick it requests screen fade 4, applies camera
+ * preset 4, installs func_ov007_020b0da0 as the figure's hook and starts
+ * animation 1; with no save file in use the figure's scale follows the
+ * animation's frames 0x10..0x14. Once save files exist, a new button press
+ * or stylus tap from tick 4 skips to the end. 0x1f frames before the end it
+ * requests fade 3, 6 before it hands over to state 10. */
+void func_ov007_020b0a20(void) {
+    Ov007Model *model;
+    int ticks;
+    int done;
+    int startFade;
+    int noSaveFiles;
+    Ov007Work *g;
 
-    flag6 = 0;
-    flag5 = 0;
-    g = data_ov007_0210342c;
-    e = g->unk100->unk4;
-    mode = g->unk8->unkC;
-    result = func_ov007_020aebac();
+    done = 0;
+    startFade = 0;
+    g = WORK;
+    model = g->figure->model;
+    ticks = g->states[1]->stateTicks;
+    noSaveFiles = func_ov007_020aebac();
 
-    if (mode == 0) {
+    if (ticks == 0) {
         RequestScreenFade(4, 6, 0);
         func_ov007_020b1fa4(4);
-        data_ov007_0210342c->unk100->unk18 = (void *)func_ov007_020b0da0;
-        func_ov007_020be980(data_ov007_0210342c->unk100, 1, 0);
-        func_ov007_020be964(data_ov007_0210342c->unk100);
-        func_ov007_020c0638(data_ov007_0210342c->unkE0->unk4, 0, 0, 0);
+        WORK->figure->update = func_ov007_020b0da0;
+        func_ov007_020be980(WORK->figure, 1, 0);
+        func_ov007_020be964(WORK->figure);
+        func_ov007_020c0638(WORK->layerSlots[6]->layer, 0, 0, 0);
         func_ov007_020b797c();
-        e->unk48 = (func_ov007_020aebac() == 0) ? 0xDAC : 0x1770;
-        e->unk44 = e->unk48;
-        e->unk40 = e->unk44;
+        model->scale.z = (func_ov007_020aebac() == 0) ? 0xDAC : 0x1770;
+        model->scale.y = model->scale.z;
+        model->scale.x = model->scale.y;
     }
-    if (mode == 1) {
-        if (result != 0) {
+    if (ticks == 1) {
+        if (noSaveFiles != 0) {
             func_ov007_020bdeb0(0x32);
-            data_ov007_0210342c->unkC4->unk0->unk4->unk2 = 0;
+            WORK->itemNodes[8]->item->state->requestedState = 0;
         } else {
             func_ov007_020bdeb0(0x33);
         }
     }
-    if (mode == 0x1E) {
+    if (ticks == 0x1E) {
         RequestScreenFade(7, 0x18, 0);
     }
-    if (data_ov007_0210342c->unk100->unk18 == 0) {
-        if (e->unk18->unk0 != 0) {
-            func_ov007_020be980(data_ov007_0210342c->unk100, 1, 0);
-        } else if (result != 0) {
-            int v = e->unk18->unk10;
+    if (WORK->figure->update == 0) {
+        if (model->boneAnim->state != 0) {
+            func_ov007_020be980(WORK->figure, 1, 0);
+        } else if (noSaveFiles != 0) {
+            int v = model->boneAnim->frame;
             if (v <= 0x10) {
                 v = 0;
             } else if (v >= 0x14) {
@@ -148,43 +106,44 @@ void func_ov007_020b0a20(void)
             } else {
                 v = cstd::div((v - 0x10) << 12, 4);
             }
-            e->unk48 = 0x1770 - FX_MUL(v, 0x9C4);
-            e->unk44 = e->unk48;
-            e->unk40 = e->unk44;
+            model->scale.z = 0x1770 - FX_MUL(v, 0x9C4);
+            model->scale.y = model->scale.z;
+            model->scale.x = model->scale.y;
         }
     }
-    if (e->unk18->unkC != -1 && e->unk18->unk10 == e->unk18->unk12 - 0x1F) {
-        flag5 = 1;
-    } else if (e->unk18->unkC != -1 && e->unk18->unk10 == e->unk18->unk12 - 6) {
-        flag6 = 1;
+    if (model->boneAnim->anim != -1 &&
+        model->boneAnim->frame == model->boneAnim->frameCount - 0x1F) {
+        startFade = 1;
+    } else if (model->boneAnim->anim != -1 &&
+               model->boneAnim->frame == model->boneAnim->frameCount - 6) {
+        done = 1;
     }
-    if (((data_ov007_0210342c->unk54->unk0 & ~data_ov007_0210342c->unk54->unk2) ||
-         (data_ov007_0210342c->unk50->unkC != 0 && data_ov007_0210342c->unk50->unk14 == 0)) &&
-        mode >= 4 && result == 0 &&
-        e->unk18->unkC != -1 && e->unk18->unk10 <= e->unk18->unk12 - 0x1F)
-    {
-        flag6 = 1;
-        flag5 = 1;
-        if (result != 0) {
+    if (((WORK->pad->keys & ~WORK->pad->prevKeys) ||
+         (WORK->touch->cur.touch != 0 && WORK->touch->prev.touch == 0)) &&
+        ticks >= 4 && noSaveFiles == 0 && model->boneAnim->anim != -1 &&
+        model->boneAnim->frame <= model->boneAnim->frameCount - 0x1F) {
+        done = 1;
+        startFade = 1;
+        if (noSaveFiles != 0) {
             func_ov007_020bde70(0x32, 0x1E);
         } else {
             func_ov007_020bde70(0x33, 0x1E);
         }
-        func_ov007_020be964(data_ov007_0210342c->unk100);
-        e->unk18->unk14 = (e->unk18->unk12 - 1) << 12;
+        func_ov007_020be964(WORK->figure);
+        model->boneAnim->framePos = (model->boneAnim->frameCount - 1) << 12;
     }
-    if (flag5 != 0) {
+    if (startFade != 0) {
         RequestScreenFade(3, 0xA, 0);
     }
-    if (flag6 == 0) {
+    if (done == 0) {
         return;
     }
     func_ov007_020b131c();
-    data_ov007_0210342c->unk8->unk2 = 0xA;
-    data_ov007_0210342c->unk100->unk18 = 0;
-    e->unk48 = 0x1000;
-    e->unk44 = e->unk48;
-    e->unk40 = e->unk44;
-    data_ov007_0210342c->unkC4->unk0->unk4->unk2 = 1;
+    WORK->states[1]->requestedState = 0xA;
+    WORK->figure->update = 0;
+    model->scale.z = 0x1000;
+    model->scale.y = model->scale.z;
+    model->scale.x = model->scale.y;
+    WORK->itemNodes[8]->item->state->requestedState = 1;
 }
 }

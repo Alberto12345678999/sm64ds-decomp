@@ -1,35 +1,54 @@
-struct Obj { int pad[2]; int f8; int fc; };
-struct Tbl { struct Obj *o[8]; };
-extern char data_ov007_0210342c[];
+#include "Ov007Work.h"
+#include "Ov007Display.h"
 
-void func_ov007_020bca40(int sel){
-  struct Tbl *t = *(struct Tbl **)(*(char **)(*(char **)data_ov007_0210342c + 0x74) + 0x34);
-  struct Obj *o;
-  switch (sel) {
-  case 0:
-    o = t->o[0]; o->fc = 0; o->f8 = o->fc;
-    o = t->o[1]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[2]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[3]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[4]; o->fc = 0; o->f8 = o->fc;
-    o = t->o[5]; o->fc = 0; o->f8 = o->fc;
-    o = t->o[6]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[7]; o->fc = 1; o->f8 = o->fc;
-    break;
-  case 1:
-    o = t->o[1]; o->fc = 0; o->f8 = o->fc;
-    break;
-  case 2:
-    o = t->o[0]; o->fc = 1; o->f8 = o->fc;
-    break;
-  case 3:
-    o = t->o[2]; o->fc = 0; o->f8 = o->fc;
-    o = t->o[3]; o->fc = 0; o->f8 = o->fc;
-    o = t->o[4]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[5]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[6]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[7]; o->fc = 1; o->f8 = o->fc;
-    o = t->o[1]; o->fc = 0; o->f8 = o->fc;
-    break;
-  }
+/* Shows (1) or hides (0) a set of the eight BG layers, marking each for
+ * upload: 0 sets the full layout, 1 hides layer 1, 2 shows layer 0, 3 hides
+ * layers 1-3 and shows 4-7. */
+void func_ov007_020bca40(int sel) {
+    Ov007BgLayer **layers = WORK->display->bgLayers;
+    Ov007BgLayer *l;
+    switch (sel) {
+    case 0:
+        l = layers[0];
+        l->visible = l->dirty = 0;
+        l = layers[1];
+        l->visible = l->dirty = 1;
+        l = layers[2];
+        l->visible = l->dirty = 1;
+        l = layers[3];
+        l->visible = l->dirty = 1;
+        l = layers[4];
+        l->visible = l->dirty = 0;
+        l = layers[5];
+        l->visible = l->dirty = 0;
+        l = layers[6];
+        l->visible = l->dirty = 1;
+        l = layers[7];
+        l->visible = l->dirty = 1;
+        break;
+    case 1:
+        l = layers[1];
+        l->visible = l->dirty = 0;
+        break;
+    case 2:
+        l = layers[0];
+        l->visible = l->dirty = 1;
+        break;
+    case 3:
+        l = layers[2];
+        l->visible = l->dirty = 0;
+        l = layers[3];
+        l->visible = l->dirty = 0;
+        l = layers[4];
+        l->visible = l->dirty = 1;
+        l = layers[5];
+        l->visible = l->dirty = 1;
+        l = layers[6];
+        l->visible = l->dirty = 1;
+        l = layers[7];
+        l->visible = l->dirty = 1;
+        l = layers[1];
+        l->visible = l->dirty = 0;
+        break;
+    }
 }

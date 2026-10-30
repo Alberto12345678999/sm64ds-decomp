@@ -324,7 +324,8 @@
     "PROMOTED AND ENROLLED 2026-08-30. config/arm9/overlays/ov002/delinks.txt now licenses the whole 0x020bc8f4..0x020bccfc run to src/game/actors/d_a_obj_cannon_shutter.cpp; the eight legacy per-function sources are deleted. MEASURED: python tools/rombuild.py -j 16 reports 106/106 exact, 0 mismatching of 11,088 reproducing functions, with the same invocation on origin/main @ ec8fe22d6 also 106/106. python tools/romdata_check.py over this TU and daObjFl_Fall_Block_c reports 9 VERIFIED / 7 PARTIAL / 0 DIFFERS.",
     "ONE ABI SEAM CANNOT BE WRITTEN AS A MEMBER CALL, and it is measured, not assumed. InitResources reaches dBgW_KcMbg::SetFile, whose third parameter is a by-value Fix12<int> -- a bare aggregate with no constructor (include/math/Fix12.h), so materialising one costs stack traffic the ROM does not spend. Written as mMeshCollider.SetFile(...), build/final_link.o.xMAP showed '020BCC20 000000B8 .text daObjCannonShutter_c::InitResources()' against the cartridge's 0xAC. Those 12 bytes pushed daObjCannonShutter_c_classInit to 0x020BCCD8 (ROM 0x020BCCCC) and overflowed this entry's own range end 0x020BCCFC; because ov002 is the overlay every later overlay loads behind, ov002 growing shifted 69 modules and module fidelity fell to 20/106. The call keeps the mangled spelling for that reason and that reason only. Same wall for dBgActor_c::IsClsnInRangeOnScreen(Fix12<int>, Fix12<int>), which src/game/actors/d_a_obj_pushblock.cpp already spells mangled for the identical cause.",
     "Leftover cleanup folded daObjCannonShutter_c_classInit as return new daObjCannonShutter_c(); leaf operator new(unsigned long) forwards _ZN7fBase_cnwEj. The factory instantiates the class and mwcc re-emits _ZN10dBgActor_cD2Ev as a compiler-only helper; licensed as deadstrip.",
-    "The TU owns its two resource handles outright: CannonShutterModelFilePtr data_ov002_0210e12c(0x45f) and CannonShutterClsnFilePtr data_ov002_0210e124(0x460) are defined at file end in retail initializer order, so mwcc emits __sinit_d_a_obj_cannon_shutter.cpp itself; the handwritten src/unnamed/ov002/__sinit_ov002_02101968.c is retired."
+    "The TU owns its two resource handles outright: CannonShutterModelFilePtr data_ov002_0210e12c(0x45f) and CannonShutterClsnFilePtr data_ov002_0210e124(0x460) are defined at file end in retail initializer order, so mwcc emits __sinit_d_a_obj_cannon_shutter.cpp itself; the handwritten src/unnamed/ov002/__sinit_ov002_02101968.c is retired.",
+    "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (28 sections, 114 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -664,12 +665,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@722",
+      "from": "@721",
       "to": "@651",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Deleting the leaf operator new from daObjCannonShutter_c.h moved the emission from @665 to @659 (same entity: section 21, symbol index 22) | registration nodes renumber after the MtxStack.h include and the deleted named-parameter declaration; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@723",
+      "from": "@722",
       "to": "@652",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Deleting the leaf operator new from daObjCannonShutter_c.h moved the emission from @666 to @660 (same entity: section 14, symbol index 21) | registration nodes renumber after the MtxStack.h include and the deleted named-parameter declaration; re-keyed by __sinit relocation site order"
     }

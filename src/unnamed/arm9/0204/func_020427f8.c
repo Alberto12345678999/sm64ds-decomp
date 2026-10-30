@@ -1,8 +1,8 @@
-/* func_020427f8 @ 0x20427f8 (arm9) -- tail-call veneer to func_02059788 (0x2059788).
+/* func_020427f8 @ 0x20427f8 (arm9) -- tail-call veneer to OS_InitTick (0x2059788).
  * ldr ip, [pc]; bx ip; .word 0x2059788
  */
-extern void func_02059788(void);
+extern void OS_InitTick(void);
 
 void func_020427f8(void) {
-    func_02059788();
+    OS_InitTick();
 }

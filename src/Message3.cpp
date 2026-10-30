@@ -5,11 +5,9 @@
  * This is the single-player Message text code built a second time for the VS
  * mode, against its own globals. With relocations masked, nine functions here
  * are word-identical to their single-player twins, in the same order:
- * func_02030fa8 (func_0200f0bc), func_02031154 (func_0201ab6c), func_020313d8
- * (func_0201adac), AddCharVS (Message::AddChar), func_02031e00
- * (func_0201b7cc), SetTextGlobalsVS (Message::SetTextGlobals), func_02033a80
- * (func_0201cfb8), func_02034098 (func_0201d590) and Message_DrawCenteredLineVS
- * (Message_DrawCenteredLine). The other functions are VS variants of other
+ * GetLanguageIndexVS, AddChoiceVS, AddCharPairVS, AddCharVS, LayoutLineVS,
+ * SetTextGlobalsVS, func_02033a80 (func_0201cfb8), Message_DrawLineBG2VS and
+ * Message_DrawCenteredLineVS. The other functions are VS variants of other
  * sizes. Twins take the single-player name plus `VS` where that name exists.
  *
  * leftovers:
@@ -127,7 +125,6 @@ struct OAM {
 };
 
 void func_02031cd4(void *arg);
-void func_02031e00(void);
 int func_020321fc(void);
 void func_020326ac(void);
 void func_02032f54(void);
@@ -140,7 +137,7 @@ void func_020338b0(int a, int b, short c, int d);
 void func_02033a80(int arg0);
 void func_02033bb8(int param0);
 void func_02033e50(int p0, int p1);
-void func_02034098(void);
+void Message_DrawLineBG2VS(void);
 void func_020345b0(int arg0);
 void LoadFont3D(void);
 }
@@ -172,8 +169,8 @@ inline bool CharDiffers(u16 a, u16 b) {
     return a != b;
 }
 
-// @symbol func_02030fa8
-extern "C" s32 func_02030fa8(void) {
+// @symbol GetLanguageIndexVS
+extern "C" s32 GetLanguageIndexVS(void) {
     s32 lang = GetOwnerLanguage();
     switch (lang) {
     case 2:
@@ -231,8 +228,8 @@ extern "C" void func_02031028(int arg) {
     } while (i < n);
 }
 
-// @symbol func_02031154
-extern "C" void func_02031154(void) {
+// @symbol _ZN7Message11AddChoiceVSEv
+void Message::AddChoiceVS() {
     struct S {
         u8 b[8];
     };
@@ -247,21 +244,21 @@ extern "C" void func_02031154(void) {
         idx = data_0209fcd0;
         data_0209fcd0 = idx + 1;
         data_0209fcf4[idx] = data_0209fcd8;
-        Message::AddCharVS(0x4d);
+        AddCharVS(0x4d);
         data_0209fca4 = 1;
         break;
     case 2:
         idx = data_0209fcd0;
         data_0209fcd0 = idx + 1;
         data_0209fcf4[idx] = data_0209fcbc;
-        Message::AddCharVS(0x4d);
+        AddCharVS(0x4d);
         data_0209fca4 = 2;
         break;
     case 3:
         idx = data_0209fcd0;
         data_0209fcd0 = idx + 1;
         data_0209fcf4[idx] = data_0209fcbc;
-        Message::AddCharVS(0x4d);
+        AddCharVS(0x4d);
         data_0209fca4 = 3;
         break;
     }
@@ -318,12 +315,12 @@ extern "C" void func_0203128c(void) {
     }
 }
 
-// @symbol func_020313d8
-extern "C" void func_020313d8(void) {
+// @symbol _ZN7Message13AddCharPairVSEv
+void Message::AddCharPairVS() {
     struct MsgTextChar *state = (struct MsgTextChar *)data_0209fd0c;
     u16 idx = state->indexLo | (state->indexHi << 8);
-    Message::AddCharVS(data_02092810[idx]);
-    Message::AddCharVS((data_02092810[idx] + 1) & 0xff);
+    AddCharVS(data_02092810[idx]);
+    AddCharVS((data_02092810[idx] + 1) & 0xff);
 }
 
 // @symbol func_02031428
@@ -672,8 +669,8 @@ extern "C" void func_02031cd4(void *arg) {
     }
 }
 
-// @symbol func_02031e00
-extern "C" void func_02031e00(void) {
+// @symbol _ZN7Message12LayoutLineVSEv
+void Message::LayoutLineVS() {
     int flag;
     u8 *p;
     u8 op;
@@ -781,7 +778,7 @@ extern "C" void func_02031e00(void) {
                 return;
             }
         default:
-            Message::AddCharVS(op);
+            AddCharVS(op);
             data_0209fd0c++;
             flag = 1;
             break;
@@ -895,7 +892,7 @@ extern "C" void func_020326ac(void) {
         break;
     case 1: {
         data_0209fc7c = 0;
-        func_02031e00();
+        Message::LayoutLineVS();
         return;
     }
     case 2: {
@@ -912,7 +909,7 @@ extern "C" void func_020326ac(void) {
         }
         data_0209fcc8 = 1;
         data_0209fc7c = 0;
-        func_02031e00();
+        Message::LayoutLineVS();
         return;
     }
     case 4: {
@@ -1177,7 +1174,7 @@ extern "C" void func_02032f9c(int a) {
     data_0209fc88 = 0;
     old94 = data_0209fc94;
     data_0209fc94 = 0;
-    func_02031e00();
+    Message::LayoutLineVS();
 
     data_0209fc88 = data_0209fc88 + data_0209fc7c;
     func_020319fc((u8)((data_0209fc88 + 7) >> 3));
@@ -1547,7 +1544,7 @@ extern "C" void func_02033bb8(int param0) {
         MultiStore16(sv, (char *)sp2, 0x800);
     }
 
-    func_02034098();
+    Message_DrawLineBG2VS();
     n = data_0209fc88;
     m = (n + 7) / 8;
     scr = (short *)((char *)G2::GetBG2ScrPtr() + 0x40 + (16 - m / 2) * 2);
@@ -1564,7 +1561,7 @@ extern "C" void func_02033bb8(int param0) {
     func_02033e50(0xa9, 0x70);
 
     data_0209fce8++;
-    func_02034098();
+    Message_DrawLineBG2VS();
     n = data_0209fc88;
     m = (n + 7) / 8;
     {
@@ -1588,7 +1585,7 @@ extern "C" void func_02033bb8(int param0) {
     func_02033e50(0x149, 0x70);
 
     data_0209fce8++;
-    func_02034098();
+    Message_DrawLineBG2VS();
     n = data_0209fc88;
     m = (n + 7) / 8;
     {
@@ -1657,7 +1654,7 @@ extern "C" void func_02033e50(int p0, int p1) {
                     } while (i < n);
                 }
             }
-            func_02031e00();
+            Message::LayoutLineVS();
             func_020319fc(n);
             data_0209fcb0 = 1;
             data_0209fc78 = data_0209fc78 + n;
@@ -1686,7 +1683,7 @@ extern "C" void func_02033e50(int p0, int p1) {
                     } while (i < n);
                 }
             }
-            func_02031e00();
+            Message::LayoutLineVS();
             func_020319fc(n);
             data_0209fcb0 = 1;
             data_0209fc78 = data_0209fc78 + n;
@@ -1697,8 +1694,8 @@ extern "C" void func_02033e50(int p0, int p1) {
 }
 #pragma pop
 
-// @symbol func_02034098
-extern "C" void func_02034098(void) {
+// @symbol Message_DrawLineBG2VS
+extern "C" void Message_DrawLineBG2VS(void) {
     volatile int li;
     int n;
     int idx = data_0209fce8;

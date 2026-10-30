@@ -1,22 +1,14 @@
-/* func_ov007_020c27b4 at 0x020c27b4
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov007).
- */
-extern void func_ov007_020c2d44(void *a, int i);
+#include "Ov007StrokePath.h"
 
-struct S {
-    int state;          // +0
-    int pad;            // +4
-    unsigned short count; // +8
-};
+extern void func_ov007_020c2d44(Ov007StrokePath *path, int n);
 
-void func_ov007_020c27b4(struct S *s)
-{
+/* Recomputes every segment of a planar path (func_ov007_020c2d44). */
+void func_ov007_020c27b4(Ov007StrokePath *path) {
     int i;
-    switch (s->state) {
-    case 0:
-        for (i = 0; i < s->count; i++)
-            func_ov007_020c2d44(s, i);
+    switch (path->representation) {
+    case OV007_PATH_PLANAR:
+        for (i = 0; i < path->pointCount; i++)
+            func_ov007_020c2d44(path, i);
         break;
     case 1:
         break;

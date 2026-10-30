@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "contiguous linker run: 0x0200e494..0x0200f0bc, 19 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
     "BOTTOM EDGE: src/engine/view/d_camera.cpp ends at 0x0200e494 with dCamera_c_classInit (0x0200e444..0x0200e494), the class factory that closes that TU; its own manifest (arm9/dCamera_c) already names the helpers at 0x0200e494 as a different data table with no camera receiver. The seven functions 0x0200e494..0x0200e748 are not camera code: RunDemoCommand (e494) and RunPlayerCommand (e5ac) are called only from ProcessKuppaScript (bl at 0x0200ed84 for command >= 0x12, bl at 0x0200ed68 for command <= 3) and take the command record plus its first/last frame; SpawnDemoActor/FindDemoActor (e4e4/e55c) walk the 16-word actor-ID table data_0209b2a4 that EndKuppaScript and ResetKuppaScript also clear; SpawnScriptPlayer/FindScriptPlayer (e5fc/e6d8) walk the 4-word data_0209b284 that EndKuppaScript and ResetKuppaScript clear; ReadUnalignedSignedInt (e728) is the signed twin of ReadUnalignedInt (byte-identical body) and opens the four unaligned script-argument readers.",
-    "TOP EDGE: func_0200f0bc (0x0200f0bc) maps GetOwnerLanguage to a localized-asset index for func_0200f13c/func_0200f220 and the d_s_entry/d_s_mb scenes. It touches no script state, so ResetKuppaScript (0x0200f04c..0x0200f0bc) is the last function of this file.",
+    "TOP EDGE: GetLanguageIndex (0x0200f0bc) maps GetOwnerLanguage to a localized-asset index for func_0200f13c/func_0200f220 and the d_s_entry/d_s_mb scenes. It touches no script state, so ResetKuppaScript (0x0200f04c..0x0200f0bc) is the last function of this file.",
     "STATE: every function here reads or writes the script state at data_0209fc48 (running script), data_0209fc4c (saved script), data_0209b274 (frame), data_0209b270 (spawned-player count), data_0209b284 (player IDs) or data_0209b2a4 (cutscene-actor IDs), or is called only by a function that does (ReadUnaligned*, the Find/Spawn helpers). StartIntroCutscene, StartEndingCutscene and RunStarCameraScript are the script entry points that bracket RunKuppaScript.",
     "INITIALIZER AND DATA: __sinit_02073e6c (.init 0x02073e6c..0x02074d90, .ctor word 0x02086b64) is this file's static initializer. It stores, byte by byte, the addresses that the scripts this file runs hold in their records (INTRO_CUTSCENE data_020890a0, FALL_IN_FRONT_OF_CASTLE_CUTSCENE data_02089608, the staff roll data_02088fb8, the ending flight data_02088610, data_02087c00 and 33 more), then constructs the dFdColor_c fader data_0209b294 that the fade commands drive and registers its destructor on node 0x0209b278. The .data run 0x0208751c..0x0208a0e0 is those scripts, the 55 camera paths and point lists their camera records name, and the six-entry star-camera table data_020876e4 RunStarCameraScript indexes; every object in it is referenced only from inside the run or by this file. The .bss run 0x0209b270..0x0209b2e4 is the player count, frame counter, node, player-ID table, fader and demo-actor-ID table, in that order.",
     "NOT CLAIMED: gRunningKuppaScript and gSavedKuppaScript (0x0209fc48/0x0209fc4c). They are this file's state but sit in a second .bss run, apart from 0x0209b270..0x0209b2e4, and one object cannot place a definition in two runs, so they stay extern."
@@ -1312,7 +1312,8 @@
     "No ROM RTTI names this code; KuppaScript is the tree's established name for it (RunKuppaScript, EndKuppaScript, ProcessKuppaScript, ...), so the file takes that coined name per AGENTS.md. Every function keeps C linkage: C sources bind FindDemoActor, FindScriptPlayer, ReadUnaligned*, and the rest are declared extern \"C\" by their C++ callers.",
     "ROM-ascending under `#pragma defer_codegen off`; the opt_common_subs off bracket ProcessKuppaScript needs binds to that function only.",
     "Pointer bytes: a script is a u8 array whose records hold unaligned addresses, spelled KS_PTR(p) = (u32)&p & 0xff, ((u32)&p >> 8) & 0xff, ... Those bytes are zero in .data and stored by the initializer, in definition order, so the 38 patched scripts are defined in retail's store order and the fader after them. The & 0xff masks are load-bearing: (u8) casts instead give an initializer 0x5c bytes short.",
-    "False relocations: dsd had read 11 words of script bytes (frame numbers and arguments) inside 0x0208751c..0x0208a0e0 as pointers; they are dropped from config/arm9/relocs.txt."
+    "False relocations: dsd had read 11 words of script bytes (frame numbers and arguments) inside 0x0208751c..0x0208a0e0 as pointers; they are dropped from config/arm9/relocs.txt.",
+    "Collision property member calls replace local helper declarations. Reconciled 1 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (182 sections, 272 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -2302,7 +2303,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@557",
+      "from": "@556",
       "to": "@259",
       "evidence": "the compiler emits @557, which ov064 already defines as a global, so the pin is the unused @259"
     }

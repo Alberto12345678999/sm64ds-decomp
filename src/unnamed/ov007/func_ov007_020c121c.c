@@ -1,17 +1,21 @@
-extern void func_ov007_020c13f4(char* p);
-extern void func_ov007_020c3d1c(void* p);
-extern int func_ov007_020c1384(char* c);
+#include "Ov007SpriteBank.h"
 
-void func_ov007_020c121c(char* c) {
+extern void func_ov007_020c13f4(Ov007Cell *cell);
+extern void func_ov007_020c3d1c(void *p);
+extern void func_ov007_020c1384(Ov007CellAnim *anim);
+
+/* Frees a sprite bank: each cell's OAM list (func_ov007_020c13f4), each
+ * animation's tables (func_ov007_020c1384), both tables and the bank. */
+void func_ov007_020c121c(Ov007SpriteBank *bank) {
     int i;
     int j;
-    for (i = 0; i < *(int*)c; i++) {
-        func_ov007_020c13f4(*(char**)(c + 4) + i * 8);
+    for (i = 0; i < bank->cellCount; i++) {
+        func_ov007_020c13f4(&bank->cells[i]);
     }
-    func_ov007_020c3d1c(*(void**)(c + 4));
-    for (j = 0; j < *(int*)(c + 8); j++) {
-        func_ov007_020c1384(*(char**)(c + 0xc) + j * 0x10);
+    func_ov007_020c3d1c(bank->cells);
+    for (j = 0; j < bank->animCount; j++) {
+        func_ov007_020c1384(&bank->anims[j]);
     }
-    func_ov007_020c3d1c(*(void**)(c + 0xc));
-    func_ov007_020c3d1c(c);
+    func_ov007_020c3d1c(bank->anims);
+    func_ov007_020c3d1c(bank);
 }

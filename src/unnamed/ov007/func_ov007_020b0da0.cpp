@@ -4,6 +4,8 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "cstd.h"
+#include "Ov007Item.h"
+#include "Ov007Model.h"
 
 extern "C" {
 
@@ -20,38 +22,10 @@ typedef struct Vec3Words {
 #include "common.h"
 #include "nitro/fx/fx.h"
 #include "Ov007Work.h"
+#include "Ov007Figure.h"
 extern short data_02082214[];
 
-extern void Matrix4x3_LoadIdentity(void* mat);
-
-/* Reconstructed layouts and names, not recovered class identity; only the
- * slots this file touches.
- *
- * Ov007Model is the 0xa0-byte model record func_ov007_020bc6d4 allocates
- * (names as in func_ov007_020bc47c). */
-typedef struct Ov007Model {
-    struct ModelComponents *model; /* 0x00 */
-    char pad_04[0x90];
-    int visible; /* 0x94: func_ov007_020bbff0 renders only while it is nonzero */
-} Ov007Model;
-
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * medium-confidence name. */
-typedef struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-    char pad_08[0x10];
-    /* 0x18: the per-frame hook; func_ov007_020b0a20 installs this function
-     * there and waits for it to read 0 again */
-    void *update;
-} Ov007Figure;
-
-typedef char Ov007Model_size_must_be_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
-typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
-
-/* The extern keeps decl_common.h's void * spelling; the typed view is
- * reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
+extern void Matrix4x3_LoadIdentity(void *mat);
 
 /* stateWork bits, by what this file does with them; medium confidence */
 #define OV007_FIGURE_SWAY 1    /* rock the model and bob it (periods 160 and 40 ticks) */
@@ -63,16 +37,14 @@ typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1]
  * 0x40..0x80) after tick 4 marks it touched and plays sound 0x34. While it
  * sways it rocks about z and bobs in y, clearing the hook at a rest once
  * touched; while it rises it lifts quadratically to 30 units and clears the
- * hook at the top. The offset lands in bone 0's translation. arg0 keeps the
- * void * spelling of the definition; `figure` is the typed view. */
+ * hook at the top. The offset lands in bone 0's translation. */
 #pragma opt_common_subs off
-void func_ov007_020b0da0(void* arg0) {
-    Ov007Figure *figure = (Ov007Figure *)arg0;
+void func_ov007_020b0da0(Ov007Figure *figure) {
     Ov007Model *obj = figure->model;
     Ov007MenuState *st = WORK->states[1];
     int counter = st->stateTicks;
     Matrix4x3 *mat = obj->model->transforms;
-    void* ret = func_ov007_020aebac();
+    void *ret = func_ov007_020aebac();
 
     if (counter == 1) {
         obj->visible = 1;
@@ -101,11 +73,7 @@ void func_ov007_020b0da0(void* arg0) {
                         *pflag |= OV007_FIGURE_TOUCHED;
                         data_ov007_02103340 = counter;
                         func_ov007_020bdeb0(0x34);
-                        {
-                            char *t0 = *(char **)WORK->itemNodes[8];
-                            char *t1 = *(char **)(t0 + 4);
-                            *(short *)(t1 + 2) = 4;
-                        }
+                        WORK->itemNodes[8]->item->state->requestedState = 4;
                     }
                 }
             }

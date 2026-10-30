@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern int func_0206152c(void);
+extern int WMi_CheckInitialized(void);
 extern unsigned int *data_020a89ac;
 
 int WM_CheckStateEx(int count, ...)
@@ -12,7 +12,7 @@ int WM_CheckStateEx(int count, ...)
     int r;
     int *p;
     u16 target;
-    r = func_0206152c();
+    r = WMi_CheckInitialized();
     if (r != 0)
         return r;
     CP15::InvalidateDataCache(data_020a89ac[1], 2);

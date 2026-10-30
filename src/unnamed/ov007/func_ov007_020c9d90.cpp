@@ -1,79 +1,57 @@
 //cpp
-// func_ov007_020c9d90 at 0x020c9d90 (ov007)
 #include "types.h"
 #include "cstd.h"
+#include "Ov007Swing.h"
 
 extern "C" {
 
-typedef struct Obj { int f0; int f4; int f8; } Obj;
-typedef struct Cell { Obj* obj; } Cell;
-typedef struct Row { Cell** cells; } Row;
-typedef struct Grid { int w; int h; Row** rows; } Grid;
-
-typedef struct Ctx {
-    Vector3 *arr;   // 0x00
-    Grid* grid;     // 0x04
-    int pad08[6];   // 0x08
-    int f20;        // 0x20
-} Ctx;
-
-typedef struct Self {
-    Ctx* ctx;       // 0x00
-    int pad04;      // 0x04
-    int f8;         // 0x08
-    Vector3 vC;     // 0x0c
-    int pad18[2];   // 0x18
-    Vector3 v20[2]; // 0x20
-    Vector3 v38[2]; // 0x38
-    int f50[2];     // 0x50
-    int f58[2];     // 0x58
-    int f60[2];     // 0x60
-    int f68[2];     // 0x68
-} Self;
-
 extern int func_ov007_020c30ac(Vector3 *arr, int count, Vector3 *target, int arg4, int *out);
-extern void func_ov007_020c8010(int a, int b, Cell* c);
+extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
 
-void func_ov007_020c9d90(Self* self, Ctx* ctx)
-{
+/* Binds the swing to mesh: meshPoint is the mesh point nearest the anchor,
+ * and each side point is linked to the mesh point nearest it. Each link is
+ * bound with that mesh point held at restZ, so its rest offset is taken
+ * against the flat mesh. The row of point index a is taken as a / rows,
+ * not a / columns, as the ROM has it. */
+void func_ov007_020c9d90(Ov007Swing *self, Ov007Mesh *mesh) {
     int count;
     int i;
     int a;
     int b;
-    int m;
-    int d;
-    Grid* g;
-    Cell* cell;
-    Obj* obj;
-    int old;
+    int column;
+    int row;
+    Ov007Grid *grid;
+    Ov007Follower *point;
+    Vector3 *pos;
+    int oldZ;
 
-    count = ctx->grid->w * ctx->grid->h;
-    self->ctx = ctx;
-    self->f8 = func_ov007_020c30ac(ctx->arr, count, &self->vC, -1, 0);
+    count = mesh->grid->columns * mesh->grid->rows;
+    self->mesh = mesh;
+    self->meshPoint = func_ov007_020c30ac(mesh->verts, count, &self->anchor, -1, 0);
 
     for (i = 0; i < 2; i++) {
-        a = func_ov007_020c30ac(ctx->arr, count, &self->v20[i], -1, 0);
-        b = func_ov007_020c30ac(ctx->arr, count, &self->v38[i], -1, 0);
+        a = func_ov007_020c30ac(mesh->verts, count, &self->xPointPos[i], -1, 0);
+        b = func_ov007_020c30ac(mesh->verts, count, &self->yPointPos[i], -1, 0);
 
-        g = ctx->grid;
-        m = cstd::mod(a, g->w);
-        d = cstd::div(a, g->h);
-        cell = g->rows[d]->cells[m];
-        obj = cell->obj;
-        old = obj->f8;
-        obj->f8 = ctx->f20;
-        func_ov007_020c8010(self->f60[i], self->f50[i], cell);
-        cell->obj->f8 = old;
+        grid = mesh->grid;
+        column = cstd::mod(a, grid->columns);
+        row = cstd::div(a, grid->rows);
+        point = grid->rowLists[row]->items[column];
+        pos = point->target;
+        oldZ = pos->z;
+        pos->z = mesh->params.restZ;
+        func_ov007_020c8010(self->xLinks[i], self->xPoints[i], point);
+        point->target->z = oldZ;
 
-        g = ctx->grid;
-        m = cstd::mod(b, g->w);
-        d = cstd::div(b, g->h);
-        cell = g->rows[d]->cells[m];
-        obj = cell->obj;
-        old = obj->f8;
-        obj->f8 = ctx->f20;
-        func_ov007_020c8010(self->f68[i], self->f58[i], cell);
-        cell->obj->f8 = old;
+        grid = mesh->grid;
+        column = cstd::mod(b, grid->columns);
+        row = cstd::div(b, grid->rows);
+        point = grid->rowLists[row]->items[column];
+        pos = point->target;
+        oldZ = pos->z;
+        pos->z = mesh->params.restZ;
+        func_ov007_020c8010(self->yLinks[i], self->yPoints[i], point);
+        point->target->z = oldZ;
     }
 }
 }

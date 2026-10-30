@@ -1,18 +1,13 @@
 #include "Ov007Sprite.h"
-extern void func_ov007_020c42f8(char *self);
-extern void func_ov007_020c4684(void *a, int b, int c, int d, int e, void *f);
-struct Vec3s
-{
-  short x;
-  short y;
-  short z;
+struct Vec3s {
+    short x;
+    short y;
+    short z;
 };
 /* Draws the sprite, then, when drawFlags & 4, a second black pass scaled
  * by shadowScaleX/Y and shifted by shadowOffset, its alpha lowered by
  * shadowAlphaDrop (medium-confidence "shadow", as Ov007Sprite.h says). */
-void func_ov007_020c421c(char *r4)
-{
-    Ov007Sprite *s = (Ov007Sprite *)r4;
+void func_ov007_020c421c(Ov007Sprite *s) {
     struct Vec3s v;
     int shadowAlpha;
     int scaleY;
@@ -21,8 +16,8 @@ void func_ov007_020c421c(char *r4)
     v.y = v.z;
     v.x = v.y;
     *((volatile int *)0x4000444) = 0; /* MTX_PUSH */
-    func_ov007_020c42f8(r4);
-    func_ov007_020c4684(r4, s->color, (s->alpha >> 12) & 0xff, s->polygonId, s->drawFlags, &v);
+    func_ov007_020c42f8(s);
+    func_ov007_020c4684(s, s->color, (s->alpha >> 12) & 0xff, s->polygonId, s->drawFlags, &v.x);
     if (s->drawFlags & 4) {
         scaleY = s->shadowScaleY;
         scaleX = s->shadowScaleX;
@@ -33,7 +28,7 @@ void func_ov007_020c421c(char *r4)
         *((volatile int *)0x400046c) = scaleX; /* MTX_SCALE */
         *((volatile int *)0x400046c) = scaleY;
         *((volatile int *)0x400046c) = 0x1000;
-        func_ov007_020c4684(r4, 0, shadowAlpha & 0xff, s->shadowPolygonId, 0, s->shadowOffset);
+        func_ov007_020c4684(s, 0, shadowAlpha & 0xff, s->shadowPolygonId, 0, s->shadowOffset);
     }
     *((volatile int *)0x4000448) = 1; /* MTX_POP */
 }

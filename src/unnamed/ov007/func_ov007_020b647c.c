@@ -1,10 +1,11 @@
-extern int data_ov007_0210342c[];
-void func_ov007_020b647c(int r0,int r1,short r2){
-  if(r0==r1) return;
-  int base=data_ov007_0210342c[0];
-  int a=base+(r1<<2);
-  int t=*(int*)(a+0x114);
-  t=*(int*)t;
-  t=*(int*)(t+4);
-  *(short*)(t+2)=r2;
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
+#include "Ov007Item.h"
+
+/* Sends item view `index`'s item to `state`, unless `index` is the item `id`
+ * itself (unit020b413c passes the tapped item's id). */
+void func_ov007_020b647c(int id, int index, short state) {
+    if (id == index)
+        return;
+    WORK->itemViews[index]->item->state->requestedState = state;
 }

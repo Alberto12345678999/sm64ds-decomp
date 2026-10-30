@@ -55,6 +55,7 @@
 #include "types.h"
 #include "GX.h"
 #include "Ov007Sprite.h"
+#include "Ov007Settings.h"
 
 #pragma opt_loop_invariants off
 
@@ -129,11 +130,6 @@ extern void func_ov007_020c0308(unsigned short *dst, int b, int c);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020c1d8c(int i);
 extern int func_ov007_020c3598(int value, int count, s8 *digits, int base);
-extern void func_ov007_020c421c(char *sprite);
-extern void func_ov007_020c4388(char *sprite, char *camera);
-extern void func_ov007_020c43bc(char *sprite, char *camera);
-extern int func_ov007_020c44c4(char *sprite);
-extern int func_ov007_020c44e4(int n);
 extern int func_ov007_020c94a0(int unused, unsigned int messageIndex);
 extern void func_ov007_020c94e4(void);
 /* local extern: the definition (unit020c94a0.cpp) takes two parameters;
@@ -400,10 +396,10 @@ void func_ov007_020b88c0(void) {
     data_ov007_0210346c->width = (s16)(data_ov007_02103460->width - 2);
     data_ov007_0210346c->height = (s16)(data_ov007_02103460->height - 2);
 
-    func_ov007_020c43bc((char *)data_ov007_0210346c, (char *)data_ov007_02103470);
-    func_ov007_020c4388((char *)data_ov007_0210346c, (char *)data_ov007_02103470);
-    func_ov007_020c43bc((char *)data_ov007_02103460, (char *)data_ov007_02103470);
-    func_ov007_020c4388((char *)data_ov007_02103460, (char *)data_ov007_02103470);
+    func_ov007_020c43bc(data_ov007_0210346c, data_ov007_02103470);
+    func_ov007_020c4388(data_ov007_0210346c, data_ov007_02103470);
+    func_ov007_020c43bc(data_ov007_02103460, data_ov007_02103470);
+    func_ov007_020c4388(data_ov007_02103460, data_ov007_02103470);
 }
 
 /* Starts the window for message kind `kind` in state `state` and clears
@@ -431,13 +427,13 @@ void func_ov007_020b883c(void) {
  * the window to closed. */
 void func_ov007_020b8714(int camera, int texture, int language) {
     if (data_ov007_0210346c == 0 && data_ov007_02103460 == 0) {
-        data_ov007_0210346c = (Ov007Sprite *)func_ov007_020c44e4(1);
+        data_ov007_0210346c = func_ov007_020c44e4(1);
         data_ov007_0210346c->depth = 0xffffec04;
         data_ov007_0210346c->alpha = 0x18000;
         data_ov007_0210346c->drawFlags |= 1;
         data_ov007_0210346c->polygonId = 0x1d;
         data_ov007_0210346c->polygonAttr = 0x800;
-        data_ov007_02103460 = (Ov007Sprite *)func_ov007_020c44e4(1);
+        data_ov007_02103460 = func_ov007_020c44e4(1);
         data_ov007_02103460->depth = 0xffffec04;
         data_ov007_02103460->polygonId = 0x1e;
         data_ov007_02103460->texColor0 = 1;
@@ -467,11 +463,11 @@ void func_ov007_020b8690(void) {
     }
     func_ov007_020c94e4();
     if (data_ov007_0210346c != 0) {
-        func_ov007_020c44c4((char *)data_ov007_0210346c);
+        func_ov007_020c44c4(data_ov007_0210346c);
         data_ov007_0210346c = 0;
     }
     if (data_ov007_02103460 != 0) {
-        func_ov007_020c44c4((char *)data_ov007_02103460);
+        func_ov007_020c44c4(data_ov007_02103460);
         data_ov007_02103460 = 0;
     }
 }
@@ -673,9 +669,9 @@ void func_ov007_020b8070(int n) {
 }
 
 /* Draws the file-select header into plane 0 from the boot arguments: the
- * message for bootArgs[8], then messages 0x1f51 and 0x1f52 in colours 0xb
- * and 0xc, swapped when bootArgs[9] is clear. */
-void func_ov007_020b7eec(u8 *bootArgs) {
+ * message for soundModeItem, then messages 0x1f51 and 0x1f52 in colours 0xb
+ * and 0xc, swapped when backlightOn is clear. */
+void func_ov007_020b7eec(Ov007BootArgs *bootArgs) {
     int r;
     func_ov007_020c0308(data_ov007_02103998, 0x18, 0xf);
     func_ov007_020c0308(data_ov007_02104598, 0x18, 0xf);
@@ -686,12 +682,12 @@ void func_ov007_020b7eec(u8 *bootArgs) {
     data_ov007_02102dd8 = 0xb;
     data_ov007_02103464 = 0xac;
     data_ov007_02103468 = 4;
-    r = func_ov007_020b8ec0(data_ov007_020d7a50[bootArgs[8]]);
+    r = func_ov007_020b8ec0(data_ov007_020d7a50[bootArgs->soundModeItem]);
     r = func_ov007_020c94a0(0, (unsigned int)r);
     func_ov007_020b8b80(0, (u8 *)r, 0);
     data_ov007_02103464 = 0x8c;
     data_ov007_02103468 = 0xa;
-    if (bootArgs[9] != 0) {
+    if (bootArgs->backlightOn != 0) {
         data_ov007_02102dd8 = 0xb;
     } else {
         data_ov007_02102dd8 = 0xc;
@@ -866,8 +862,8 @@ int func_ov007_020b7a34(void) {
 
 /* Draws the window: the fill, then the frame. */
 void func_ov007_020b7a00(void) {
-    func_ov007_020c421c((char *)data_ov007_0210346c);
-    func_ov007_020c421c((char *)data_ov007_02103460);
+    func_ov007_020c421c(data_ov007_0210346c);
+    func_ov007_020c421c(data_ov007_02103460);
 }
 
 int func_ov007_020b79e4(void) {

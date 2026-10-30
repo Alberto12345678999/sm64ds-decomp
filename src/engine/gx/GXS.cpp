@@ -1,9 +1,10 @@
-/* GXS -- sub-screen VRAM upload helpers (Nitro SDK namespace, not a class).
- * Owns .text 0x02055dec..0x02056870: the VRAM load family -- BG character and
+/* GXS -- 2D VRAM uploads (the Nitro SDK's gx_load2d.c).
+ * Owns .text 0x02055dec..0x020568cc: the VRAM load family -- BG character and
  * screen loads, the OBJ/OAM/palette loads, and the extended-palette banked
- * upload family (EndLoadOBJExtPltt .. BeginLoadBGExtPltt). The GX:: members
- * inside this stretch (LoadBG1Char, LoadBG0Char, LoadOBJ, LoadOBJPltt) are
- * defined here too: GX/GXS are one original file pair.
+ * upload family (EndLoadOBJExtPltt .. BeginLoadBGExtPltt). The file holds
+ * both engines' loaders, so the GX:: members inside this stretch (LoadBGPltt,
+ * LoadOBJPltt, LoadOBJ, LoadBG0Char, LoadBG1Char) are defined here too. The
+ * 3D uploads above 0x020568cc are gx_load3d.c (src/engine/gx/GX.cpp).
  */
 // leftovers: opt_propagation off is file-global for LoadOBJ and
 // func_020565b4 (constant VRAM destinations 0x6400000/0x6600000); every other
@@ -47,8 +48,6 @@ extern u32 data_020a60a4;  // BG ext-palette bank saved by BeginLoadBG, restored
 extern u32 data_020a60a8;  // OBJ ext-palette bank saved by BeginLoadOBJ, restored by EndLoadOBJ
 
 extern "C" {
-extern u16 func_020540f0(void);
-extern u16 func_02054118(void);
 extern void func_02059fa8(int ch);
 extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
 // local extern: u8 channel per the definition inserts a narrowing op at the call
@@ -60,6 +59,21 @@ extern void MultiCopy_Int(int *src, int *dst, int len);
 extern int func_02054d88(void);
 extern void *func_02054ea8(void);
 extern void *func_02054efc(void);
+}
+
+namespace GX {
+
+// Loads BG palette data to main-screen (GX) palette VRAM at 0x05000000.
+// @symbol _ZN2GX10LoadBGPlttEPKvjj
+void LoadBGPltt(const void *src, unsigned int offset, unsigned int size) {
+    int channel = data_02099fd0;
+    if (channel != -1) {
+        DMASyncHalfTransfer(channel, src, (void *)((char *)0x05000000 + offset), size);
+    } else {
+        MultiCopyHalf(src, (void *)((char *)0x05000000 + offset), size);
+    }
+}
+
 }
 
 namespace GXS {
@@ -386,9 +400,9 @@ namespace GXS {
 
 // @symbol _ZN3GXS18BeginLoadBGExtPlttEv
 // Clears the sub-engine BG ext-palette enable bit and unmaps the bank back to
-// LCDC (func_02054118); the result is held for EndLoadBGExtPltt.
+// LCDC (GX::ResetBankForSubBGExtPltt); the result is held for EndLoadBGExtPltt.
 void BeginLoadBGExtPltt() {
-    data_020a60a4 = func_02054118();
+    data_020a60a4 = GX::ResetBankForSubBGExtPltt();
 }
 
 // @symbol _ZN3GXS13LoadBGExtPlttEPKvjj
@@ -412,10 +426,10 @@ void EndLoadBGExtPltt() {
 }
 
 // @symbol _ZN3GXS19BeginLoadOBJExtPlttEv
-// The OBJ counterpart (func_020540f0); the result is held for
+// The OBJ counterpart (GX::ResetBankForSubOBJExtPltt); the result is held for
 // EndLoadOBJExtPltt.
 void BeginLoadOBJExtPltt() {
-    data_020a60a8 = func_020540f0();
+    data_020a60a8 = GX::ResetBankForSubOBJExtPltt();
 }
 
 // @symbol _ZN3GXS14LoadOBJExtPlttEPKvjj

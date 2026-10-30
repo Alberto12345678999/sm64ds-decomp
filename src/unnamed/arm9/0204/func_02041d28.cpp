@@ -7,48 +7,39 @@ extern "C" {
 extern int func_020658c0(void *node, int a1, void *a2, int a3, int arg5, unsigned short arg6);
 extern void func_02041b24(FileShareParentArea *area, FileShareNode *node);
 
-extern int data_020a1fc0;
+extern char data_020a1fc0[];
 extern int data_02082158;
 
-struct R6 {
-    char p0[0x58];
-    int f58;
-    int f5c;
-    char p60[0x80 - 0x60];
-    int f80;
-    int f84;
-    int f88;
-    char p8c[0xc0 - 0x8c];
-    int fc0;
-};
-
-struct R7 { int f0; int f4; };
-
-void func_02041d28(char *r7, struct R6 *r6)
-{
+/* A node has finished loading (func_02042254). The children that asked for it
+   while it was loading become owed a reply. If no child holds it yet, it is
+   registered with func_020658c0 (with the first page as data when the region
+   fits in 0x400 bytes) and moved to the ready list by func_02041b24. Each
+   waiting child then takes a reference and gets the node's file id in its
+   reply slot. Only while FILE_SHARE_WORK->mState is set. */
+void func_02041d28(char *r7, FileShareNode *node) {
     unsigned int saved = IRQ::Disable();
     int mask;
 
-    if ((&data_020a1fc0)[3] != 0) {
+    if (FILE_SHARE_WORK->mState != 0) {
         int bit;
-        int *q = (int *)(((int)r7 + 0x270c));
-        mask = r6->f84;
-        r6->f84 = 0;
+        int *q = &((FileShareParentArea *)r7)->mReplyPending;
+        mask = node->mWaitingChildren;
+        node->mWaitingChildren = 0;
         *q |= mask;
-        if (r6->f80 <= 0) {
-            unsigned int diff = r6->f5c - r6->f58;
-            int a1 = r6->f88;
-            func_020658c0((char *)r6 + 4, a1, &data_02082158,
-                          (diff <= 0x400) ? (int)&r6->fc0 : 0, diff, 0);
-            func_02041b24((FileShareParentArea *)r7, (FileShareNode *)r6);
+        if (node->mRefCount <= 0) {
+            unsigned int diff = FILE_SHARE_EXTENT(node)->bottom - FILE_SHARE_EXTENT(node)->top;
+            int a1 = node->mFileId;
+            func_020658c0(node->mRegion, a1, &data_02082158,
+                          (diff <= 0x400) ? (int)node->mPages[0] : 0, diff, 0);
+            func_02041b24((FileShareParentArea *)r7, node);
         }
         for (bit = 0;; bit++) {
             if ((1 << bit) > mask) {
                 break;
             }
             if ((1 << bit) & mask) {
-                r6->f80++;
-                ((struct R7 *)r7)->f4 = r6->f88;
+                node->mRefCount++;
+                ((FileShareMsg *)r7)->mFileId = node->mFileId;
             }
             r7 += 0xc;
         }

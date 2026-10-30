@@ -1,18 +1,27 @@
 //cpp
-/* IRQ VBlank setup. func_0201a4e4 arms the handler; VBlankHandler counts
- * frames and wakes the two waiters.
+/* IRQ VBlank setup and the two VBlank waits. func_0201a4e4 arms the
+ * handler; VBlankHandler counts frames and wakes the two thread queues;
+ * func_0201a4d0 and func_0201a4bc are the threads' side, sleeping on them.
+ *
+ * - data_0209d4fc is woken on every VBlank: func_0201a4d0 sleeps on it.
+ * - data_0209d500 is woken every data_0208ee44 VBlanks while data_0209d4f0
+ *   is up: func_0201a4bc, the main loop's frame wait, sleeps on it.
+ *
+ * Edges: the two queues are referenced by these four functions and nothing
+ * else in arm9. func_0201a490 before the run calls a hook on another
+ * object; func_0201a5cc after it installs the scene's actor create hooks.
  *
  * leftovers:
- * - Source order is VBlankHandler then func_0201a4e4. Deferred codegen emits
- *   .text backwards, which is the ROM order. Do not reorder.
- * - data_0209d4fc and data_0209d500 are halfwords. OS_WakeupThread takes int *,
- *   so the handler casts their addresses. A word type turns the setup stores
- *   into str.
+ * - Deferred codegen emits .text backwards, so the file is written highest
+ *   address first and comes out in ROM order. Do not reorder.
+ * - The queues are OSThreadQueue halfwords (nitro/os/thread.h); a word type
+ *   turns the setup stores into str.
  * - The globals keep their linker names. Nothing in this file recovers one.
  */
 
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 extern int data_0209d514;
@@ -21,7 +30,6 @@ extern u8 data_0209d4f0;
 extern u16 data_0209d500;
 extern u16 data_0209d4fc;
 extern char data_023c0000[];
-extern void OS_WakeupThread(int *p);
 extern void func_02019144(void);
 extern void func_02019100(void);
 extern u8 data_0209d4dc;
@@ -31,22 +39,19 @@ extern u8 data_0209d4dc;
 // @symbol _ZN3IRQ13VBlankHandlerEv
 namespace IRQ {
 
-void VBlankHandler(void)
-{
-  int *waiter;
-  data_0209d514 = data_0209d514 + 1;
-  if ((data_0209d514 >= data_0208ee44) && (data_0209d4f0 != 0))
-  {
-    OS_WakeupThread((int *)&data_0209d500);
-    data_0209d514 = 0;
-    func_02019144();
-  }
-  waiter = (int *)&data_0209d4fc;
-  OS_WakeupThread(waiter);
-  *(int *)(((int)data_023c0000 + 0x3ff8)) |= 1;
-  func_02019100();
+void VBlankHandler(void) {
+    u16 *waiter;
+    data_0209d514 = data_0209d514 + 1;
+    if ((data_0209d514 >= data_0208ee44) && (data_0209d4f0 != 0)) {
+        OS_WakeupThread(&data_0209d500);
+        data_0209d514 = 0;
+        func_02019144();
+    }
+    waiter = &data_0209d4fc;
+    OS_WakeupThread(waiter);
+    *(int *)(((int)data_023c0000 + 0x3ff8)) |= 1;
+    func_02019100();
 }
-
 }
 
 // 0x0201a4e4 (0x50)
@@ -57,4 +62,19 @@ extern "C" void func_0201a4e4(void)
     data_0209d500 = 0;
     IRQ::SetIRQHandler(1, IRQ::VBlankHandler);
     data_0209d4dc = 1;
+}
+
+// 0x0201a4d0 (0x14)
+// @symbol func_0201a4d0
+/* Sleep until the next VBlank. */
+extern "C" void func_0201a4d0(void) {
+    OS_SleepThread(&data_0209d4fc);
+}
+
+// 0x0201a4bc (0x14)
+// @symbol func_0201a4bc
+/* The main loops' frame wait (func_020197b8 and func_020199a4 raise
+ * data_0209d4f0 around it). */
+extern "C" void func_0201a4bc(void) {
+    OS_SleepThread(&data_0209d500);
 }

@@ -67,11 +67,11 @@ extern "C" {
     extern u32   ROOT_HEAP_ARENA_ID;            /* 0x020a0ea4 */
     extern Heap* data_020a0e9c;                 /* the root heap; unnamed */
 
-    int   func_02058ea0(u32 arena);             /* arena lo */
-    int   func_02058eb4(u32 arena);             /* arena hi */
-    int   func_02059040(u32 arena, int lo, int hi, int align);
-    int   func_02058d58(u32 arena, int lo);     /* publish the new lo */
-    void* func_02058cd0(u32 arena, int size, int align);
+    int OS_GetArenaLo(u32 arena);
+    int OS_GetArenaHi(u32 arena);
+    int OS_InitAlloc(u32 arena, int lo, int hi, int maxHeaps);
+    int OS_SetArenaLo(u32 arena, int lo);
+    void *OS_AllocFromArenaLo(u32 arena, int size, int align);
 }
 
 /* The global allocation entry points, highest addresses first. Every class
@@ -172,20 +172,21 @@ namespace mHeap {
  * into it to select OS_ARENA_MAIN, and it is passed by value as the first
  * argument to each OS entry point.
  *
- * The five OS entry points are still func_* . They live outside this class and
- * naming them is not this file's claim to make. */
+ * OS_InitAlloc's last argument is a heap count, not an alignment: it reserves
+ * descriptors for four OS heaps at lo and returns the 32-aligned memory after
+ * them (src/engine/os/OS_Alloc.cpp). */
 Heap_t* Heap_t::SetupRootHeap()
 {
-    int lo = func_02058ea0(ROOT_HEAP_ARENA_ID);
-    int hi = func_02058eb4(ROOT_HEAP_ARENA_ID);
+    int lo = OS_GetArenaLo(ROOT_HEAP_ARENA_ID);
+    int hi = OS_GetArenaHi(ROOT_HEAP_ARENA_ID);
 
-    lo = func_02059040(ROOT_HEAP_ARENA_ID, lo, hi, 4);
-    func_02058d58(ROOT_HEAP_ARENA_ID, lo);
+    lo = OS_InitAlloc(ROOT_HEAP_ARENA_ID, lo, hi, 4);
+    OS_SetArenaLo(ROOT_HEAP_ARENA_ID, lo);
 
-    int top = func_02058eb4(ROOT_HEAP_ARENA_ID);
+    int top = OS_GetArenaHi(ROOT_HEAP_ARENA_ID);
     int sz = top - ((lo + 0x1f) & ~0x1f);
 
-    void* mem = func_02058cd0(ROOT_HEAP_ARENA_ID, sz, 0x20);
+    void *mem = OS_AllocFromArenaLo(ROOT_HEAP_ARENA_ID, sz, 0x20);
     /* The failure return stays last. The ROM branches (`beq') to a tail block
        holding its own `mov r0,#0 / pop / bx'; an early `if (mem == 0) return 0;'
        is predicated in place instead (`moveq/popeq/bxeq'), four bytes short. */

@@ -1,5 +1,7 @@
 extern signed char data_0209fc64[];
 
+/* The slot whose rank (data_0209fc64) is val, or -1. dScEntry_c uses it to
+   map a player to its seat for the palette and score tables. */
 int func_02030958(int val)
 {
     signed char i = 0;

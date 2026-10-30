@@ -1,19 +1,20 @@
-/* func_02018474 at 0x02018474
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
- */
-struct V2 { int x, y; };
+/* NitroSDK's FSFileID: the archive and the file id inside it. */
+struct FSFileID {
+    int arc, file_id;
+};
 
 extern void FS_InitFile(int *s);
-extern int func_02018dc4(int buf, struct V2 ab);
+extern int myFS_OpenFileFast(int buf, struct FSFileID ab);
 extern void Crash(void);
 extern int func_020184e0(int *buf, unsigned int c, unsigned int d);
 
-int func_02018474(int a, int b, int c, int d, ...)
-{
+/* Open the file whose FSFileID arrives as a and b (func_02018434 passes the
+   struct by value), crash if it will not open, and read up to d bytes of it
+   into c (func_020184e0). */
+int func_02018474(int a, int b, int c, int d, ...) {
     int buf[0x11];
     FS_InitFile(buf);
-    if (func_02018dc4((int)buf, *(struct V2 *)&a) == 0) {
+    if (myFS_OpenFileFast((int)buf, *(struct FSFileID *)&a) == 0) {
         Crash();
         return 0;
     }

@@ -7,6 +7,10 @@ extern int func_0203daac(void);
 extern void func_0201a9fc(char *c);
 extern unsigned char func_0201a96c(char *self, unsigned char newVal);
 
+/* The link step, once the link is started (data_0209e64c): run
+   func_0203df40 with the watchdog (data_0209d574) held, take the player
+   count (func_0203daac) into data_0208f274 and restart the watchdog's
+   count. The main loop (func_020197b8) runs it every frame. */
 void func_0201ffcc(void)
 {
     unsigned char saved;

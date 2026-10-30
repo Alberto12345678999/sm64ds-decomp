@@ -6,17 +6,10 @@
 
 extern "C" {
 
-typedef struct {
-    u32 kind : 4;
-    u32 chan : 4;
-    u32 flag : 24;
-    u32 word4;
-    u8 byte8;
-} Cmd;
-
 /* The FSFile a child read is for (FileShareWork.mReadRequest, set by
  * func_02041a00). This ROM's FSFile has its prop union at 0x1c and its arg
- * union at 0x2c (see func_0205c264.c); names follow the SDK's FSFile. */
+ * union at 0x2c (see src/engine/fs/FS_CommandDefault.cpp); names follow the
+ * SDK's FSFile. */
 typedef struct FSFile {
     char pad_00[8];
     void *arc; /* 0x08 -- FS_NotifyArchiveAsyncEnd (func_0205cd5c) takes it */
@@ -97,30 +90,30 @@ void func_02040f30(void *arg0) {
             u32 w4;
             int c;
             w4 = child->mReadRegion;
-            Cmd cmd;
-            cmd.kind = 2;
-            cmd.flag = 1;
+            FileShareMsg cmd;
+            cmd.mKind = 2;
+            cmd.mFlag = 1;
             c = FILE_SHARE_WORK->mParentPacketSize;
-            cmd.word4 = w4;
-            cmd.chan = (u8)(c >> 8);
-            cmd.byte8 = (u8)c;
+            cmd.mFileId = w4;
+            cmd.mPacketSizeHigh = (u8)(c >> 8);
+            cmd.mPacketSizeLow = (u8)c;
             func_020656d4((u16)1, &cmd, 9, (u32)func_02042160);
         }
         return;
 
     case 0xc: {
-        Cmd *m;
+        FileShareMsg *m;
         if (cmdp->event != 0xa) {
             return;
         }
-        m = (Cmd *)cmdp->u.user_data.data;
-        switch (m->kind) {
+        m = (FileShareMsg *)cmdp->u.user_data.data;
+        switch (m->mKind) {
         case 1:
-            if (m->flag == 0) {
+            if (m->mFlag == 0) {
                 func_020657d0((u16)1, (void *)func_02040f30);
                 return;
             }
-            child->mReadRegion = m->word4;
+            child->mReadRegion = m->mFileId;
             child->mRecvBufTable[idx] = ((FSFile *)FILE_SHARE_WORK->mReadRequest)->dst;
             func_02065730((u16)1, child->mReadRegion, (const void *)child->mRecvBufTable,
                           ((FSFile *)FILE_SHARE_WORK->mReadRequest)->len,
