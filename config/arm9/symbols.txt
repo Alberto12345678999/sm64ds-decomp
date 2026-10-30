@@ -4826,6 +4826,7 @@ data_0209f388 kind:bss addr:0x0209f388
 data_0209f394 kind:bss addr:0x0209f394
 data_0209f3a4 kind:bss addr:0x0209f3a4
 data_0209f3c4 kind:bss addr:0x0209f3c4
+data_0209f3c8 kind:bss addr:0x0209f3c8
 data_0209f3e8 kind:bss addr:0x0209f3e8
 data_0209f40c kind:bss addr:0x0209f40c
 STAR_MARKERS kind:bss addr:0x0209f40c

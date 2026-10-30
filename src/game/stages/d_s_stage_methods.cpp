@@ -2747,9 +2747,10 @@ int dScStage_c::graphCallback_c::GraphCallback1() {
 
 // @symbol UpdateMinimap
 /* Copy a 16-byte descriptor into the callback object's matrix (+0x4) and store
-   the four affine params after it. The matrix used to carry its own symbol row,
-   data_0209f3c8, which split the 0x24-byte object into a 4-byte head and its
-   tail; it is one object. The MinimapDesc cast stays because the ROM's copy is
+   the four affine params after it. The object is one 0x24-byte object; the
+   symbols.txt row data_0209f3c8 at the matrix stays only because dsd needs a
+   symbol at every relocs.txt target, and the copy's pool word points there.
+   The MinimapDesc cast stays because the ROM's copy is
    a single ldm/stm block move and a struct copy of four named fields
    scalarizes. */
 extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
