@@ -1,5 +1,5 @@
 #include "types.h"
-extern int func_0206152c(void);
+extern int WMi_CheckInitialized(void);
 extern int WM_CheckStateEx(int a, int b);
 extern void func_0206116c(void);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
@@ -10,7 +10,7 @@ extern u16 data_020a89a8;
 int func_02061674(void)
 {
     int r;
-    if (func_0206152c() != 0)
+    if (WMi_CheckInitialized() != 0)
         return 3;
     r = WM_CheckStateEx(1, 0);
     if (r != 0)

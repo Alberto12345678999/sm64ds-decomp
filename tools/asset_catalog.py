@@ -194,14 +194,14 @@ def catalogs_from_rom(path: pathlib.Path) -> tuple[list[Asset], list[AssetHandle
 # The DS cartridge header's four NitroFS words, at their fixed header offsets.
 # See GBATEK "DS Cartridge Header": 0x40 fnt_offset, 0x44 fnt_size,
 # 0x48 fat_offset, 0x4c fat_size.  The ROM mirrors the header into main RAM at
-# 0x027FFE00 and the game's FS_Init (0x0205d96c) reads the same four words as
+# 0x027FFE00 and the game's FSi_InitRom (0x0205d96c) reads the same four words as
 # *(int*)0x027FFE40 / *(int*)0x027FFE48.
 ROM_HEADER_FNT = 0x40
 ROM_HEADER_FAT = 0x48
 # And the overlay half of the same header, at 0x50 arm9_ovt_offset, 0x54
 # arm9_ovt_size, 0x58 arm7_ovt_offset, 0x5c arm7_ovt_size.  The ROM mirrors
 # these two pairs at 0x027FFE50 and 0x027FFE58, which is where
-# src/unnamed/arm9/0201/func_02018c00.c, src/unnamed/arm9/0205/func_0205df40.c and src/unnamed/arm9/0204/func_020424c0.cpp read them
+# src/unnamed/arm9/0201/func_02018c00.c, src/FS_LoadOverlayInfo.c and src/unnamed/arm9/0204/func_020424c0.cpp read them
 # when the overlay table has not been cached in RAM.  Unlike the FNT and FAT
 # pair a ZERO PAIR IS LEGAL and means "this processor has no overlays": SM64DS
 # has 103 ARM9 overlays and no ARM7 overlay at all, so 0x58 really does read
@@ -229,7 +229,7 @@ def write_nitrofs_tables(directory: pathlib.Path, rom: pathlib.Path) -> dict:
 
     THE OVERLAY HALF is here for the mirror rather than for the walker.  The
     DS copies the whole cartridge header to 0x027FFE00, and the ROM's overlay
-    reader (src/unnamed/arm9/0201/func_02018c00.c, src/unnamed/arm9/0205/func_0205df40.c) reads the ARM9 pair at
+    reader (src/unnamed/arm9/0201/func_02018c00.c, src/FS_LoadOverlayInfo.c) reads the ARM9 pair at
     0x027FFE50 and the ARM7 pair at 0x027FFE58 whenever the overlay table has
     not been cached into RAM by src/unnamed/arm9/0204/func_020423dc.c -- which, in single-cart
     play, it never is.  The port's HAL writes those two pairs into the mirror

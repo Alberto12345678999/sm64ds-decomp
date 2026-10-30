@@ -1,5 +1,5 @@
 extern int func_0205c864(void *s);
-extern void func_0205c7e4(void *s);
+extern void FS_ResumeArchive(void *s);
 
 typedef struct S {
     char pad10[0x10];
@@ -31,7 +31,8 @@ int func_0205c91c(S *s)
             s->f28 = s->f34;
             s->f44 = s->f3c;
         }
-        if (ret != 0) func_0205c7e4(s);
+        if (ret != 0)
+            FS_ResumeArchive(s);
     }
     return r;
 }
