@@ -42,15 +42,9 @@
 #include "Ov007Swing.h"
 #include "Ov007Camera.h"
 #include "Ov007Item.h"
+#include "Ov007Light.h"
 
 extern "C" {
-
-/* The 0x28-byte light func_ov007_020c241c allocates; func_ov007_020c232c
- * writes +0x22 to LIGHT_COLOR. Only that slot is spelled. */
-typedef struct Ov007Light {
-    char pad_00[0x22];
-    u16 color; /* 0x22 */
-} Ov007Light;
 
 /* data_ov007_02104bd4: the 0x30-byte record func_ov007_020bf428 allocates
  * and fills; medium-confidence name. The slot names follow their builders. */

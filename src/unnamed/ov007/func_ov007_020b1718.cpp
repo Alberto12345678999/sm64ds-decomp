@@ -7,6 +7,7 @@
 #include "cstd.h"
 #include "Ov007Camera.h"
 #include "Ov007Model.h"
+#include "Ov007Light.h"
 
 extern "C" {
 
@@ -33,13 +34,6 @@ typedef struct Vec3Words {
  * the predicated flag write); assigning them after the block instead lands the
  * movge first and rotates the block's coloring.
  */
-
-/* The 0x28-byte light func_ov007_020c241c allocates; func_ov007_020c232c
- * writes +0x22 to LIGHT_COLOR. Only that slot is spelled. */
-typedef struct Ov007Light {
-    char pad_00[0x22];
-    u16 color; /* 0x22 */
-} Ov007Light;
 
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020b257c(void);
