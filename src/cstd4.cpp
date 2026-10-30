@@ -61,7 +61,8 @@ extern void (*data_020a9ec8)(void);
    inlined atexit_funcs_access critical region (data_020a9ed8 is
    __atexit_funcs, data_020a9ed0 __atexit_curr_func), call __console_exit
    (data_020a9ec8) once, fflush(NULL) (func_0206e06c), then leave through
-   func_02071784, the _ExitProcess veneer. */
+   func_02071784, which has the place and shape of MSL's _ExitProcess (a
+   tail call to the SYS_EXIT semihosting call func_0207199c). */
 void __exit(int status)
 {
     if (OS_TryLockMutex(&data_020aa020) == 0) {
@@ -124,7 +125,7 @@ int raise(int sig);
 extern int data_020a9ed4;
 
 /* MSL abort: raise(SIGABRT), which is 1 here; set __aborting so exit skips
-   the static destructors; then exit(EXIT_FAILURE). */
+   the static destructors and __stdio_exit; then exit(EXIT_FAILURE). */
 // @symbol abort
 void abort(void) {
     raise(1);
@@ -277,8 +278,9 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 /* MSL __flush_all's shape over the three console FILEs of the __files table
    at data_0209a330 (0x4c bytes each): flush (func_0206e06c, fflush's place)
    every FILE whose file_kind, bits 7..9 of the mode word at +4, is not
-   closed, and return -1 if any flush fails. Spirit Tracks' __flush_all is
-   0x64 bytes against this 0x70, so the address name stays. */
+   closed, and return -1 if any flush fails. Spirit Tracks' __flush_all
+   (ansi_files.c) has this body statement for statement, and fflush(NULL)
+   (func_0206e06c) calls it as MSL's does; the rename is a follow-up. */
 extern char data_0209a330[];
 typedef struct S6e06c S6e06c;
 int func_0206e06c(S6e06c *p);
