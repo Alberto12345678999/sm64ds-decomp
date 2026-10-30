@@ -4,6 +4,9 @@ extern u8 data_0209fc5c[];
 extern s8 data_0209fc64[];
 extern u8 data_0209fc50;
 
+/* Session state 1's per-frame handler (data_020927ec[1]): seat the
+   players the parent posts (func_0203d890) in order, as func_020308d0
+   does for a local game. */
 void func_02030dac(void)
 {
     int n = func_0203d890();

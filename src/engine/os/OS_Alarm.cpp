@@ -12,9 +12,6 @@
  * Alarms sit in one queue sorted by fire tick. Timer 1 counts down to the
  * head alarm; its IRQ runs OSi_ArrangeTimer, which fires every alarm that is
  * due and re-queues the periodic ones.
- *
- * leftovers: OS_GetTick keeps its address name, func_02059650 (see
- * src/engine/os/OS_Tick.cpp).
  */
 #include "types.h"
 #include "IRQ.h"
@@ -45,7 +42,7 @@ typedef struct OSiAlarmQueue {
     OSAlarm *tail;
 } OSiAlarmQueue;
 
-extern long long func_02059650(void); /* OS_GetTick */
+extern long long OS_GetTick(void);
 extern void OSi_SetTimerReserved(int timerNum);
 extern void OSi_EnterTimerCallback(u32 idx, u32 handler, u32 arg);
 extern void Crash(void); /* OS_Terminate */
@@ -63,7 +60,7 @@ void OSi_SetTimer(OSAlarm *alarm) {
     long long tick;
     long long delta;
     u16 timerCount;
-    tick = func_02059650();
+    tick = OS_GetTick();
     REG_TM1CNT_H = 0;
     delta = alarm->fire - tick;
     OSi_EnterTimerCallback(1, (u32)OSi_AlarmHandler, 0);
@@ -105,7 +102,7 @@ void OSi_InsertAlarm(OSAlarm *alarm, u64 fire) {
     OSAlarm *next;
 
     if (alarm->period != 0) {
-        u64 tick = func_02059650();
+        u64 tick = OS_GetTick();
         fire = alarm->start;
         if (fire < tick)
             fire = fire + ((tick - fire) / alarm->period + 1) * alarm->period;
@@ -155,7 +152,7 @@ void OS_SetAlarm(OSAlarm *alarm, long long tick, OSAlarmHandler handler, void *a
     alarm->period = 0;
     alarm->handler = handler;
     alarm->arg = arg;
-    OSi_InsertAlarm(alarm, func_02059650() + tick);
+    OSi_InsertAlarm(alarm, OS_GetTick() + tick);
     IRQ::Restore(saved);
 }
 
@@ -204,7 +201,7 @@ void OSi_ArrangeTimer(void) {
     IRQ::DisableIRQs(OS_IE_TIMER1);
     /* OS_SetIrqCheckFlag: HW_INTR_CHECK_BUF, DTCM + 0x3ff8. */
     *(int *)((int)data_023c0000 + 0x3ff8) |= OS_IE_TIMER1;
-    tick = func_02059650();
+    tick = OS_GetTick();
     alarm = data_020a6444.head;
     if (alarm == 0)
         return;

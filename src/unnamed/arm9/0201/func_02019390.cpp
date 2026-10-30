@@ -17,6 +17,12 @@ typedef struct Obj {
 
 extern Obj* data_0209d4a8;
 
+/* The main loop's frame start (func_020197b8, step 2). The scene's
+   GraphCallback0 (data_0209d4a8) returning 0 skips OAM::Reset, the
+   matrix-stack reset (func_0200f4b4, while the 3D engines are on), the
+   empty func_0200f468 and the stage wipe (func_02018ec0); the soft-reset
+   fader (func_0202345c) and the scene fader (func_02018efc) step either
+   way. */
 void func_02019390(void)
 {
     Obj* o = data_0209d4a8;

@@ -7,7 +7,7 @@ extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(int, int);
 extern void _ZN4CP1516DrainWriteBufferEv(void);
 extern int func_02061c88(int a, int b, int c);
 extern void Crash(void);
-extern void func_0205d89c(int x);
+extern void FS_Init(int x);
 extern void FS_InitFile(int *s);
 extern void func_020652fc(int a, int b, int c);
 extern void func_020424c0(void);
@@ -53,7 +53,7 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
         data_020a0f88 = 0;
         if (func_02061c88((u16)a1, (int)func_020417d0, 0) != 0)
             Crash();
-        func_0205d89c(-1);
+        FS_Init(-1);
 
         if (G->mIsParent != 0) {
             {

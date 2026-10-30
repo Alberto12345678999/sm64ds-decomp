@@ -61,7 +61,7 @@
   "notes": [
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the `main` module is unsegmentable, so there is no create candidate id.",
     "Timer is a leaf utility struct (s64 mTime at 0x0, u8 mIsRunning at 0x8): no vtable, no RTTI. Its C1 ctor func_0201964c is absorbed from its .c shard under the address name -- extern \"C\" keeps the emitted symbol; Timer::Timer() would rename it. compiler_only_output is empty.",
-    "func_02059650 (the IRQ-guarded 64-bit tick reader, REG_TM0CNT_L + data_020a6438) stays extern from decl_common.h -- it is its own TU, not a Timer member.",
+    "OS_GetTick (the IRQ-guarded 64-bit tick reader, REG_TM0CNT_L + data_020a6438) stays extern from decl_common.h -- it is its own TU, not a Timer member.",
     "#pragma defer_codegen off makes mwccarm emit .text in source order; the ROM's order is ascending (GetTime, StopTimer, StartTimer, ResetTimer) and so is the file's."
   ],
   "verification": {

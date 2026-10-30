@@ -3,6 +3,10 @@ extern void CpuCopy8(int a, void *b, int n);
 extern char data_020a0fb8[];
 extern int data_020a0f70;
 
+/* The parent state callback func_0203e20c installs (func_020672a4). On
+   state 2 for child a0 (0..3) it keeps 6 bytes from +0xa of the state's
+   record in data_020a0fb8; on state 12 it raises data_020a0f70, which
+   func_0203e20c waits on. The other states are ignored. */
 void func_0203e9a8(u32 a0, int sel, int a2)
 {
     switch (sel) {

@@ -4,7 +4,7 @@
  * the whole file to ram_address (myFS_ReadFile), then pass the target
  * processor, RAM address, ROM offset and RAM size to func_0206d32c.
  *
- * FSFile follows func_0205bc88.c's view (prop.file at 0x1c), padded to
+ * FSFile follows src/engine/fs/FS_CommandDefault.cpp's view (prop.file at 0x1c), padded to
  * the SDK's 0x48. */
 typedef struct FSFileProp {
     unsigned own_id; /* 0x00 */
@@ -27,7 +27,7 @@ typedef struct Pair {
 } Pair;
 
 extern void FS_InitFile(void *s);
-extern void func_0205e088(Pair *dst, void *src);
+extern void FS_GetOverlayFileID(Pair *dst, void *src);
 extern int myFS_OpenFileFast(void *a, Pair bc);
 extern void func_0205e0b0(void *info);
 extern int myFS_ReadFile(void *a, int b, int c);
@@ -39,7 +39,7 @@ int func_02018b64(FSOverlayInfo *ovi) {
     Pair v;
 
     FS_InitFile(&file);
-    func_0205e088(&v, ovi);
+    FS_GetOverlayFileID(&v, ovi);
     if (myFS_OpenFileFast(&file, v) == 0)
         return 0;
 

@@ -18,7 +18,7 @@
 
 extern "C" {
 int func_0203da3c(void);
-u32 func_0206045c(void);
+u32 CARD_GetBackupTotalSize(void);
 int func_02060558(u32 addr, void* buf, u32 len, int d, int e, int f);
 int func_02060484(int a, int b, int c, int d, int e, int f);
 }
@@ -48,7 +48,7 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
     if (func_0203da3c() == 2)
         return 1;
 
-    freeVal = (int)((u32)func_0206045c() >> 1);
+    freeVal = (int)((u32)CARD_GetBackupTotalSize() >> 1);
     need = (int)(fileID << 7);
     if ((u32)freeVal <= (u32)need)
         return 1;
@@ -160,7 +160,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
     crc = 0;
     if (func_0203da3c() == 2)
         return 1;
-    half = func_0206045c() >> 1;
+    half = CARD_GetBackupTotalSize() >> 1;
     off = slot << 7;
     if (half <= off)
         return 1;

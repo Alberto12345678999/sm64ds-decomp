@@ -37,6 +37,13 @@ extern short data_0209d488;
 
 void func_02055454(int v);
 
+/* The VBlank IRQ's display commit (IRQ2.cpp). The scene's GraphCallback2
+   (data_0209d4a8) can skip it by returning 0. Otherwise flush and load
+   OAM, put the layer enables (DISPCNT bits 8-12) from data_0209d45c on
+   the main screen and data_0209d454 on the sub screen, and write both
+   screens' BG scroll registers from their shadow words. With BG0 in 3D
+   mode (DISPCNT bit 3) its horizontal offset goes through
+   G3X_SetHOffset (func_02055454) instead. */
 void func_02019144(void)
 {
     UnkObj *p = data_0209d4a8;

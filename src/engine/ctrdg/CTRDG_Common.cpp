@@ -24,8 +24,8 @@ extern "C" {
 
 // local extern: no header declares these yet.
 extern void CpuSet(void *src, void *dst, u32 ctrl); // SVC_CpuClear
-extern int IPCSend(u32 tag, u32 data, u32 reply);   // PXI_SendWordByFifo
-extern void WaitByLoop(int count);                  // SVC_WaitByLoop
+extern int PXI_SendWordByFifo(u32 tag, u32 data, u32 reply);
+extern void WaitByLoop(int count); // SVC_WaitByLoop
 
 extern CTRDGWork data_020a9de0; /* CTRDGi_Work */
 
@@ -107,7 +107,7 @@ void CTRDGi_UnlockByProcessor(u16 lockID, int *info) {
 
 // @symbol CTRDGi_SendtoPxi
 void CTRDGi_SendtoPxi(u32 data) {
-    while (IPCSend(0xd, data, 0) != 0)
+    while (PXI_SendWordByFifo(0xd, data, 0) != 0)
         WaitByLoop(1);
 }
 }
