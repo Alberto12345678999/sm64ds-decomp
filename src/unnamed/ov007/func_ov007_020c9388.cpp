@@ -3,8 +3,6 @@
 
 extern "C" {
 
-/* The generic allocation bridge still has its legacy integer/pointer ABI
- * declaration. Its second word is a byte count; the returned word is a pointer. */
 extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c934c(char *record, int initialState);
 
