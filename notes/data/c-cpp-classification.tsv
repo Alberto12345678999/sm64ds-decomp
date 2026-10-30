@@ -5297,10 +5297,6 @@ src/unnamed/ov007/func_ov007_020b2454.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020b257c.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020b2614.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020b2728.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020b2764.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020b283c.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020b2998.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020b2bd4.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020b2cf0.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020b2e64.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020b3f20.c	WEAK-refs-only	ov007				1		None		-
@@ -5366,11 +5362,6 @@ src/unnamed/ov007/func_ov007_020bda8c.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bdbcc.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020be0dc.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020be8b8.c	WEAK-refs-only	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020be964.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020be980.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020be9ac.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020beaa0.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020beb80.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bed60.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020beeb0.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bf690.c	WEAK-refs-only	ov007				1		None		-

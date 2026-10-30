@@ -1,6 +1,9 @@
 #include "types.h"
 #include "Ov007Work.h"
-extern char *data_ov007_0210342c[];
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 extern u8 data_ov007_020ccbc4[];
 extern u8 data_ov007_020ccb7d[];
 extern u8 data_ov007_020ccb7c[];
@@ -68,13 +71,11 @@ typedef struct Ov007Display {
 typedef char Ov007OamNode_head_must_be_at_0x38[(int)&((Ov007OamNode *)0)->head == 0x38 ? 1 : -1];
 typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -1];
 
-#pragma opt_strength_reduction off
 
 void *func_ov007_020ade58(int self)
 {
     Ov007ItemNode *s = (Ov007ItemNode *)func_ov007_020c3df4(0, 8);
-    char *g = data_ov007_0210342c[0];
-    Ov007Display *r6 = ((Ov007Work *)g)->display;
+    Ov007Display *r6 = WORK->display;
     Ov007OamNode *r4;
     char **sl;
     int sb;

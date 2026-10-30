@@ -2,7 +2,7 @@
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
 extern void func_ov007_020c0638(int a, int b, int c, int d);
-extern char* data_ov007_0210342c;
+extern char *data_ov007_0210342c;
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020ae070, only the slot this file touches. */
@@ -27,20 +27,18 @@ typedef struct Ov007LayerSlot {
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */
-#define G ((char*)data_ov007_0210342c)
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Resets the slot choice: requests state 5 on slot items 14..16, clears
  * selectedSlot/targetSlot, parks both tweens with their outputs at
  * 0x20000/0x30000, and scrolls layers 6 and 7 back to the origin. */
-void func_ov007_020b0244(void)
-{
+void func_ov007_020b0244(void) {
     WORK->itemViews[14]->item->state->requestedState = 5;
     WORK->itemViews[15]->item->state->requestedState = 5;
     WORK->itemViews[16]->item->state->requestedState = 5;
     WORK->targetSlot = -1;
     WORK->selectedSlot = WORK->targetSlot;
-    *(int*)(G + 0x60) = 0;
+    WORK->pad_060 = 0;
     WORK->tweenOut[0] = 0x20000;
     WORK->tweenOut[1] = 0x30000;
     WORK->tweens[0]->state = 0;

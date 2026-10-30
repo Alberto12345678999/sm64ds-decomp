@@ -7,7 +7,10 @@ extern int func_ov007_020b84e8(void);
 extern void func_ov007_020c0384(int c, void* x);
 extern int func_ov007_020b84f4(void);
 extern void func_ov007_020c02d8(int r0, int r1, unsigned short r2);
-extern int* data_ov007_0210342c;
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* The 0x38-byte BG layer record func_ov007_020c0aa8 allocates; only the two
  * screen buffers this file sets. func_ov007_020c076c uploads `screen` to the
@@ -47,8 +50,7 @@ int func_ov007_020adc08(int type, char* obj) {
     int r5 = func_ov007_020c3df4(0, 0xc);
     Ov007LayerSlot *slot = (Ov007LayerSlot *)r5;
     Ov007BgLayer *layer = (Ov007BgLayer *)obj;
-    int* g = data_ov007_0210342c;
-    Ov007Display *display = ((Ov007Work *)g)->display;
+    Ov007Display *display = WORK->display;
     slot->kind = (char)type;
     slot->layer = layer;
     slot->state = func_ov007_020c9388(0);

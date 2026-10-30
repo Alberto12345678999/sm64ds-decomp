@@ -1,17 +1,28 @@
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
+
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
 extern void func_ov007_020af34c(void);
-extern void* data_ov007_0210342c;
-void func_ov007_020b1604(void){
-  char* r2 = (char*)data_ov007_0210342c;
-  int r1 = *(int*)(r2+0x10);
-  if(r1==9){
-    *(int*)(r2+0x14)=0;
-    *(int*)((char*)data_ov007_0210342c+0x10)=0;
-    func_ov007_020af34c();
-    return;
-  }
-  if(r1==8){
-    *(short*)(*(char**)(r2+4)+2)=6;
-  } else {
-    *(short*)(*(char**)(r2+8)+2)=7;
-  }
+
+/* The screen-fade callback func_ov007_020b155c installs. Pending choice 9
+ * clears the choice and runs func_ov007_020af34c; choice 8 sends states[0]
+ * to state 6, any other states[1] to state 7. */
+void func_ov007_020b1604(void) {
+    Ov007Work *w = WORK;
+    int choice = w->pendingChoice;
+    if (choice == 9) {
+        w->choiceReady = 0;
+        WORK->pendingChoice = 0;
+        func_ov007_020af34c();
+        return;
+    }
+    if (choice == 8) {
+        w->states[0]->requestedState = 6;
+    } else {
+        w->states[1]->requestedState = 7;
+    }
 }
