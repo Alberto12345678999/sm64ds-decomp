@@ -3,8 +3,8 @@
 
 /*
  * The touch panel, under the NitroSDK's own names. The bodies are SPI_tp.c,
- * still one function per file (src/TP_*.c, src/TP_*.cpp and
- * src/TPi_TpCallback.c).
+ * still one function per file under src/, each named for its TP_ function
+ * (TP_Init.c, TP_GetCalibratedPoint.c, ..., TPi_TpCallback.c).
  *
  * Member names are coined from how the sibling functions use them; the
  * cartridge carries none. Nothing here is a recovered spelling.
