@@ -1040,15 +1040,7 @@
       "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
     }
   ],
-  "undefined_symbol_aliases": [
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated function-local static registration in ResetScene; retail ResetScene calls func_020731dc with sUnitY, ~Vector3() and the registration node"
-    }
-  ],
+  "undefined_symbol_aliases": [],
   "defined_symbol_renames": [
     {
       "from": "@2733",

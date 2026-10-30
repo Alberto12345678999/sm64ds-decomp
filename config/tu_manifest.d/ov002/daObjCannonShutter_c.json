@@ -183,7 +183,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -203,7 +203,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -306,13 +306,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination and the collision SharedFilePtr family identity"
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "compiler-generated static initialization call shape and two direct retail references in this initializer"
     }
   ],
   "notes": [
