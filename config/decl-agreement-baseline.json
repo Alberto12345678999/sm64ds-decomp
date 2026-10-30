@@ -740,33 +740,6 @@
       ],
       "src/IsPlayerWarping.c": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020028.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020200b8.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020200e0.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020124.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020168.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020201f0.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020254.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_020202dc.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_02020364.c": [
-        "return:int"
       ]
     },
     "GetViewObj": {
@@ -5650,9 +5623,6 @@
       "src/minigames/d_s_mg_pachinko.cpp": [
         "param:#8 void *",
         "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_0202048c.cpp": [
-        "return:int"
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi": {
@@ -5702,10 +5672,6 @@
       ],
       "src/ui/hud/d_map.cpp": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0202/func_0202048c.cpp": [
-        "param:#1 int",
-        "return:int"
       ]
     },
     "_ZN3OAM7NUMBERSE": {
@@ -5722,9 +5688,6 @@
         "return:int"
       ],
       "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/func_0202048c.cpp": [
         "return:int"
       ]
     },
@@ -18509,12 +18472,6 @@
     },
     "func_0203db3c": {
       "src/WarpPlayer.c": [
-        "param:#2 unsigned char"
-      ],
-      "src/unnamed/arm9/0202/func_020200e0.c": [
-        "param:#2 unsigned char"
-      ],
-      "src/unnamed/arm9/0202/func_02020124.c": [
         "param:#2 unsigned char"
       ]
     },
