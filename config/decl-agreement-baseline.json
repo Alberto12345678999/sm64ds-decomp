@@ -10727,29 +10727,6 @@
         "return:unsigned int"
       ]
     },
-    "data_020a80cc": {
-      "src/TP_CheckError.c": [
-        "return:unsigned char []"
-      ],
-      "src/TP_WaitBusy.c": [
-        "return:unsigned char []"
-      ],
-      "src/TP_GetCalibratedPoint.c": [
-        "return:unsigned short []"
-      ],
-      "src/TP_GetLatestIndexInAuto.c": [
-        "return:unsigned short []"
-      ],
-      "src/TP_RequestSamplingAsync.cpp": [
-        "return:G_t"
-      ],
-      "src/TP_SetCalibrateParam.cpp": [
-        "return:Glob"
-      ],
-      "src/TP_Init.c": [
-        "return:char []"
-      ]
-    },
     "data_020a8108": {
       "src/unnamed/arm9/0205/func_0205fcfc.c": [
         "return:int"
