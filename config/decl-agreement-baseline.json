@@ -22634,7 +22634,7 @@
       ]
     },
     "func_0206e3dc": {
-      "src/unnamed/arm9/0201/func_0201473c.c": [
+      "src/nds_vprintf.c": [
         "param:#2 int",
         "return:int"
       ]
@@ -25888,7 +25888,7 @@
       ]
     },
     "nds_print": {
-      "src/unnamed/arm9/0201/func_0201473c.c": [
+      "src/nds_vprintf.c": [
         "param:#2 char *"
       ],
       "src/ShowCrashScreen.cpp": [

@@ -1568,7 +1568,7 @@ src/func_02013e64.c	PURE-C	arm9				1		None		-
 src/func_02013edc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02013f28.c	PURE-C	arm9				1		None		-
 src/func_02013f4c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0201/func_0201473c.c	PURE-C	arm9				1		None		-
+src/nds_vprintf.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_020147bc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02014a20.c	P2-vtable-only	arm9	dCcAcPos_c	dCcAcPos_c	vtable dCcAcPos_c slot 3 @0x2014a20	1		False		no-header:dCcAcPos_c
 src/func_02014f44.c	PURE-C	arm9				1		None		-

@@ -11410,7 +11410,7 @@
     "src/ShowCrashScreen.c",
     "src/nds_printt.c",
     "src/nds_printf.c",
-    "src/unnamed/arm9/0201/func_0201473c.c",
+    "src/nds_vprintf.c",
     "src/nds_print.c",
     "src/unnamed/arm9/0201/func_020147bc.c",
     "src/_ZN19CylinderClsnWithPos4InitERK7Vector35Fix12IiES4_jj.c",
