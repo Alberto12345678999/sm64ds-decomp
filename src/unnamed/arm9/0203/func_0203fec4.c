@@ -4,23 +4,40 @@ extern unsigned short data_020a0f24;
 extern int Wireless_Reset(void);
 extern int func_0203faa8(void);
 
-void func_0203fec4(unsigned short *p)
-{
+/* Leading fields of NitroSDK's WMStartConnectCallback (as func_020690b0.c
+   spells them). */
+typedef struct {
+    unsigned short apiid;    /* 0x0 */
+    unsigned short errcode;  /* 0x2: 0 is WM_ERRCODE_SUCCESS */
+    unsigned short wlCmdID;  /* 0x4 */
+    unsigned short wlResult; /* 0x6 */
+    unsigned short state;    /* 0x8: WM_STATECODE_* */
+    unsigned short aid;      /* 0xa: the AID the parent assigned */
+} WmStartConnectCallback;
+
+/* The callback func_0203fb5c hands WM_StartConnect (func_02061e38). An
+   error clears data_020a0f5c and resets the link (Wireless_Reset). On
+   success it resets when data_020a0f5c is 0 or 3, returns when it is
+   anything but 4, and at 4 follows the state:
+     CONNECTED (7): keep the AID in data_020a0f24 (func_02040704 returns
+       it); unless data_020a0f94 is 4, start MP (func_0203faa8 returns 1
+       when WM_StartMP is accepted) and clear data_020a0f5c and reset if not.
+     DISCONNECTED (9): clear data_020a0f5c; reset unless data_020a0f94 is 2.
+     CONNECT_START (6), BEACON_LOST (8): nothing.
+     anything else: clear data_020a0f5c and reset. */
+void func_0203fec4(WmStartConnectCallback *p) {
     int g;
-    if (p[1] == 0)
-    {
+    if (p->errcode == 0) {
         g = data_020a0f5c;
-        switch (g)
-        {
+        switch (g) {
         case 0:
         case 3:
             Wireless_Reset();
             return;
         case 4:
-            switch (p[4])
-            {
+            switch (p->state) {
             case 7:
-                data_020a0f24 = p[5];
+                data_020a0f24 = p->aid;
                 if (data_020a0f94 == 4)
                     return;
                 if (func_0203faa8() != 0)
@@ -46,9 +63,7 @@ void func_0203fec4(unsigned short *p)
         default:
             return;
         }
-    }
-    else
-    {
+    } else {
         data_020a0f5c = 0;
         Wireless_Reset();
     }
