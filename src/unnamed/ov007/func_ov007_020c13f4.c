@@ -1,8 +1,9 @@
-/* Frees a sprite-bank cell's OAM attribute list, the cell's first word
- * (func_ov007_020c121c's per-cell free). */
+#include "Ov007SpriteBank.h"
 
-extern int func_ov007_020c3d1c(int p);
+extern void func_ov007_020c3d1c(void *p);
 
-int func_ov007_020c13f4(int *cell) {
-    return func_ov007_020c3d1c(*cell);
+/* Frees a sprite-bank cell's OAM attribute list (func_ov007_020c121c's
+ * per-cell free). */
+void func_ov007_020c13f4(Ov007Cell *cell) {
+    func_ov007_020c3d1c(cell->oam);
 }

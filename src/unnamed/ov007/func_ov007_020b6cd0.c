@@ -1,8 +1,8 @@
 #include "Ov007Work.h"
 
-extern void func_ov007_020ade14(void *node);
+extern void func_ov007_020ade14(struct Ov007ItemNode *node);
 extern void func_ov007_020adbc8(void *slot);
-extern void func_ov007_020b73b4(void *display);
+extern void func_ov007_020b73b4(struct Ov007Display *d);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */

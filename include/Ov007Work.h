@@ -53,7 +53,7 @@ typedef struct Ov007Work {
     /* func_ov007_020b69c4 allocates them with func_ov007_020c946c and chains
      * them; func_ov007_020bce70 blends palettes through them;
      * func_ov007_020b65e0 releases them with func_ov007_020c9460 */
-    void *paletteBufs[3]; /* 0x044 */
+    struct Ov007PaletteBuf *paletteBufs[3]; /* 0x044 */
     /* func_ov007_020c2068's 0x44-byte touch-panel record, updated by
      * func_ov007_020c1db0 */
     struct Ov007Touch *touch; /* 0x050 */

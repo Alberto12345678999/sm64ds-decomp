@@ -379,7 +379,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov094-daOwl_c/daOwl_c.o (gitignored)",
+    "object": "build/tu/ov094-daOwl_c/d_a_owl.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 23,
     "functions_declared": 23,
@@ -439,12 +439,13 @@
         "_ZTS7fBase_c",
         "_ZTS8dActor_c",
         "_ZTV7daOwl_c"
-      ]
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 14 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -1391,72 +1392,72 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@905",
+      "from": "@901",
       "to": "@915",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@906",
+      "from": "@902",
       "to": "@916",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@907",
+      "from": "@903",
       "to": "@917",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@908",
+      "from": "@904",
       "to": "@918",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@912",
+      "from": "@908",
       "to": "@922",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@914",
+      "from": "@910",
       "to": "@924",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@918",
+      "from": "@914",
       "to": "@928",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@920",
+      "from": "@916",
       "to": "@210",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@924",
+      "from": "@920",
       "to": "@934",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@926",
+      "from": "@922",
       "to": "@936",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@930",
+      "from": "@926",
       "to": "@900",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@932",
+      "from": "@928",
       "to": "@903",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@936",
+      "from": "@932",
       "to": "@902",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@938",
+      "from": "@934",
       "to": "@901",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     }

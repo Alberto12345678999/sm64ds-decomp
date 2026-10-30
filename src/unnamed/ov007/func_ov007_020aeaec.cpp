@@ -1,16 +1,22 @@
 //cpp
 #include "cstd.h"
+#include "Ov007Item.h"
 
 extern "C" {
 
-int func_ov007_020aeaec(char* c, int flag, int lo, int hi){
-  int v = *(int*)(*(int*)(c+4)+0xc);
-  int r;
-  if(v<=lo) r=0;
-  else if(v>=hi) r=0x1000;
-  else
-      r = cstd::div((v - lo) << 0xc, hi - lo);
-  if(flag) r=0x1000-r;
-  return r;
+/* How far the item's current state has run between ticks lo and hi, as Q12
+ * (0 at or before lo, 0x1000 at or after hi); flag reverses it. */
+int func_ov007_020aeaec(Ov007Item *item, int flag, int lo, int hi) {
+    int ticks = item->state->stateTicks;
+    int r;
+    if (ticks <= lo)
+        r = 0;
+    else if (ticks >= hi)
+        r = 0x1000;
+    else
+        r = cstd::div((ticks - lo) << 0xc, hi - lo);
+    if (flag)
+        r = 0x1000 - r;
+    return r;
 }
 }

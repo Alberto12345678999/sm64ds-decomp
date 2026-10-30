@@ -70,7 +70,7 @@ void Camera_InitDealerView(void* c);
 void Dealer_StartShuffle(char *t, int unused, short a2, void *a3);
 int  Dealer_IsIdle(void* t);
 void Dealer_Draw(void* t);
-void Dealer_Update(void* t);
+void Dealer_Update(Dealer *t);
 int  Dealer_Load(void* t);
 
 }
@@ -264,7 +264,7 @@ s32 dScMgMCarlo2_c::Behavior()
         break;
     }
 
-    Dealer_Update(raw + 0x4f38);
+    Dealer_Update((Dealer *)(raw + 0x4f38));
     dScMgMCarlo2_c::UpdateBoard();
     return 1;
 }

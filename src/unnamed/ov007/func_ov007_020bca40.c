@@ -1,12 +1,5 @@
 #include "Ov007Work.h"
-#include "Ov007BgLayer.h"
-
-/* The manager's +0x74 display record; only its BG layer table, as in
- * func_ov007_020af434. */
-typedef struct Ov007Display {
-    char pad_00[0x34];
-    Ov007BgLayer **bgLayers; /* 0x34: eight BG layers */
-} Ov007Display;
+#include "Ov007Display.h"
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
