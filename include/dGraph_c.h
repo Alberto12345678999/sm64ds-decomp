@@ -13,13 +13,16 @@
  *
  * The four methods below fill that vtable's four slots (slots 0..3, in
  * address-descending order 0x02018eb8..0x02018ea0), and they are VIRTUAL in
- * the ROM: the dispatchers at func_02018ec0/func_02018efc/0x02019144 poll a
- * registered object pointer and call `ldr r1,[r0]; ldr r1,[r1,#slot*4];
- * blx r1` with r0 = the object -- vptr dispatch, r1 never set as an
- * argument, so every slot is nullary. An earlier reading ("a table of plain
- * function addresses, therefore static") is falsified by the RTTI header on
- * that table and by the base-then-derived vptr store pairs in the derived
- * classes' constructors (e.g. 0x02074edc).
+ * the ROM: the dispatchers poll the registered object pointer data_0209d4a8
+ * (slot 0 func_02019390, slot 1 func_02019404, slot 2 func_02019144, slot 3
+ * func_02019100) and call `ldr r1,[r0]; ldr r1,[r1,#slot*4]; blx r1` with
+ * r0 = the object -- vptr dispatch, r1 never set as an argument, so every
+ * slot is nullary. func_02018ec0 and func_02018efc have the same shape but
+ * call slot 2 (AdvanceFade) of the stage wipe and scene faders
+ * (data_0209d4b0, data_0209d4ac), not of this class. An earlier reading
+ * ("a table of plain function addresses, therefore static") is falsified by
+ * the RTTI header on that table and by the base-then-derived vptr store
+ * pairs in the derived classes' constructors (e.g. 0x02074edc).
  *
  * The declarations are virtual so derived callback types retain all four
  * inherited slots when they override only one hook.
