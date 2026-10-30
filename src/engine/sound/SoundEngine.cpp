@@ -22,6 +22,7 @@
 #include "Heap.h"
 #include "cstd.h"
 #include "CP15.h"
+#include "nnsys/snd/player.h"
 
 namespace IRQ {
     /* Defined at 0x02059d1c/0x02059d30 (the IRQ TU); namespace-scope externs
@@ -39,11 +40,9 @@ struct HeapAllocator_204f400;
 struct HeapAllocator_204f460;
 struct HeapAllocator_204f504;
 struct HeapAllocator_205212c;
-struct MsgQueue;
 struct Node_204f63c;
 struct Obj_2050fd4;
 struct Obj_205212c;
-struct S58940;
 struct S_204f720;
 
 typedef short s16;
@@ -51,6 +50,8 @@ typedef void (*Fn)(void *a, int b, int c, int d);
 typedef struct HeapOwner {
     HeapAllocator     *heap;
     NestedHeapIterator iter;
+    void func_02051244();
+    void func_020510a4(int);
 } HeapOwner;
 typedef struct AllocNode {
     u32 unk0;
@@ -213,15 +214,16 @@ struct D {
 struct Q { int f0, f4, f8, fc, f10; };
 struct T {
     int f0, f4;
-    int f8;                 
-    int fc;                 
-    int f10;                
-    int f14;                
-    int f18;                
+    int f8;
+    int fc;
+    int f10;
+    int f14;
+    int f18;
     int f1c, f20, f24, f28;
-    int f2c;                
-    void (*f30)(int, int, int, int, int);   
-    int f34;                
+    int f2c;
+    void (*f30)(int, int, int, int, int);
+    int f34;
+    void func_020500a4();
 };
 struct Inner {
     char pad8[8];
@@ -253,6 +255,7 @@ struct C {
     /* 0x2c */ int f2c;     /* first argument to func_0205ac28 / func_0205abb8 */
     /* 0x30 */ int chanCount;
     /* 0x34 */ unsigned char chans[1]; /* chanCount channel numbers */
+    void func_0204fce8(void *);
 };
 struct E
 {
@@ -280,6 +283,8 @@ struct E1 {
     /* 0x40 */ unsigned char unk40; /* 0..0x7f, indexes data_02086384 */
     /* 0x41 */ unsigned char unk41; /* 0..0x7f, indexes data_02086384 */
     /* 0x42 */ unsigned char pad_42[2];
+    int func_0204f600(int, int, int);
+    void func_0204f5a0(int);
 };
 struct E2 {
     unsigned char a[0xc];
@@ -367,24 +372,26 @@ struct Node_204f63c { unsigned short f0[4]; unsigned int f10[2]; unsigned int f1
 struct HeapAllocator_204f504 {
     int unk0;
     int unk4;
-    void* unk8;  
-    void* unkc;  
+    void *unk8;
+    void *unkc;
 };
 struct HeapAllocator_204f460 {
     char pad[0x04];
-    NestedHeapIterator* owner;  
-    char pad2[0x35];             
-    unsigned char sortKey;       
+    NestedHeapIterator *owner;
+    char pad2[0x35];
+    unsigned char sortKey;
+    void func_0204f214(int);
 };
 struct HeapAllocator_204f400 {
     char pad[0x3d];
-    unsigned char sortKey; 
+    unsigned char sortKey;
 };
 struct Elem_204f278 {
     /* 0x00 */ char pad_00[8];
     /* 0x08 */ int *heap;       /* func_0205130c's heap, freed by func_020512f0 */
     /* 0x0c */ int *owner;      /* claimant; its word 2 points back here */
     /* 0x10 */ int playerIndex; /* data_020a4d6c slot whose list holds this */
+    void func_0204f278();
 };
 typedef struct Node Node;
 
@@ -422,7 +429,7 @@ extern struct E data_020a5578[];
 extern int data_020a55f8;
 extern int data_020a55fc;
 extern int data_020a5600;
-extern int data_020a5614;
+extern void *data_020a5614[]; /* the message array of data_020a5600 */
 extern struct D data_020a5634;
 extern int data_020a5684;
 extern struct Q data_020a5718[];
@@ -436,9 +443,9 @@ extern void OS_WakeupThreadDirect(void *thread);
 /* local extern: as above */
 extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack,
                             unsigned int stackSize, unsigned int prio);
-extern int func_020587e4(struct MsgQueue *self, u32 *msg, int flags);
-extern int func_02058894(struct Q *q, int val, int flag);
-extern void func_02058940(struct S58940 *s, int v1, int v2);
+extern int OS_ReceiveMessage(void *mq, void **msg, int flags);
+extern int OS_SendMessage(void *mq, void *msg, int flags);
+extern void OS_InitMessageQueue(void *mq, void **msgArray, int msgCount);
 extern void func_0205a82c(void);
 extern void func_0205a958(void *a, int b, int c, int d);
 extern void func_0205a98c(void *a, int b);
@@ -500,8 +507,7 @@ extern int func_0204f138(unsigned int mask);
 extern void func_0204f15c(void *node);
 extern int func_0204f194(unsigned int a);
 extern void func_0204f1e8(void);
-extern void func_0204f214(HeapAllocator_204f460 *thiz, int b);
-extern void func_0204f278(Elem_204f278 *thiz);
+extern void _ZN12Elem_204f27813func_0204f278Ev(Elem_204f278 *); /* local extern: PMF -> int */
 extern void func_0204f2d4(HeapObj* obj);
 extern char* func_0204f364(int key);
 extern void func_0204f3e0(unsigned char *c);
@@ -510,23 +516,11 @@ extern void func_0204f460(NestedHeapIterator* self, HeapAllocator_204f460* node)
 extern void func_0204f4bc(struct E1 *obj);
 extern void* func_0204f504(int index, void* unk);
 extern void func_0204f558(struct E1 *self, int val);
-extern void func_0204f5a0(u8 *thiz, int arg1);
-extern int func_0204f600(struct E1 *thiz, int seqData, int seqOffset, int bank);
+extern void _ZN2E113func_0204f5a0Ei(struct E1 *, int); /* local extern: PMF -> int */
 extern void func_0204f630(void);
 extern void *func_0204f63c(void **p, int idx, int r7);
 extern void func_0204f6f8(struct Inner83 **o, short a, short b);
 extern void func_0204f720(struct S_204f720 **pp, short v);
-extern void func_0204f73c(char **c, int b);
-extern void func_0204f76c(char **c, int b, int d);
-extern void func_0204f79c(char **c, int b, int d);
-extern void func_0204f7cc(char **c, int b, int d);
-extern void func_0204f7fc(char **c, int b, int d);
-extern void func_0204f82c(void** obj, int b, int idx);
-extern void func_0204f86c(char **c, int b, int d);
-extern void func_0204f89c(char **c, int b);
-extern void func_0204f8cc(char **c, int a, int b);
-extern void func_0204f914(void **p, unsigned char v);
-extern void func_0204f924(void **p, unsigned char v);
 extern void func_0204f934(int **p);
 extern void func_0204f94c(int *p);
 extern void func_0204f958(int idx, int val);
@@ -535,7 +529,6 @@ extern int func_0204fa2c(int *p, int fade);
 extern int func_0204fa3c(int owner, void *b, u32 c);
 extern void func_0204fafc(void);
 extern void func_0204fc40(void);
-extern void func_0204fce8(struct C *thiz, void *arg);
 extern void func_0204fda4(struct C *c);
 extern void func_0204fde8(struct C *obj);
 extern void func_0204fe5c(char *obj, int arg1);
@@ -545,7 +538,7 @@ extern void func_0204ff9c(struct Obj0 *o);
 extern void func_0204ffcc(char *self);
 extern void func_02050008(struct Obj1 *o);
 extern void func_02050038(void);
-extern void func_020500a4(struct T *thiz);
+extern void _ZN1T13func_020500a4Ev(struct T *); /* local extern: PMF -> int */
 extern void func_020501b8(void);
 extern void func_02050258(void);
 extern void func_020502b8(void);
@@ -576,10 +569,8 @@ extern s32 func_02050fd4(struct Obj_2050fd4 *self);
 extern s32 func_02051024(struct SolidHeapWithIter* self, void* allocator);
 extern int func_02051064(int a);
 extern u32 func_02051074(SolidHeapAllocator **pHeap);
-extern void func_020510a4(HeapOwner *thiz, int n);
 extern s32 func_0205117c(struct SolidHeapWithIter* self);
 extern void *func_020511d4(HeapOwner *owner, u32 elemSize, u32 param2, u32 param3, u32 param4);
-extern void func_02051244(HeapOwner *thiz);
 extern void func_020512f0(int *p);
 extern void *func_0205130c(unsigned int addr, unsigned int size);
 extern void func_020513a8(char *a, int b, int c, int d);
@@ -914,10 +905,9 @@ extern "C" int func_02051bd0(void **p, int a1, unsigned int a2, int a3, struct A
         if (np == 0) { ((void(*)(int r7))func_0204f630)(r7); return 0; }
     }
 
-    ((int (*)(int thiz, int p1, int p2, int p3))func_0204f600)(
-        r7, (int)((char *)np + ((struct P5 *)np)->off18), 0, r5);
-    func_0204f914(p, a4->b6);
-    ((void(*)(void **c, unsigned char v))func_0204f89c)(p, a4->b7);
+    ((struct E1 *)r7)->func_0204f600((int)((char *)np + ((struct P5 *)np)->off18), 0, r5);
+    NNS_SndPlayerSetInitialVolume((NNSSndHandle *)p, a4->b6);
+    NNS_SndPlayerSetChannelPriority((NNSSndHandle *)p, a4->b7);
     ((void(*)(void *pp, int v))func_0204f720)(p, a5);
     return 1;
 }
@@ -960,9 +950,9 @@ extern "C" int func_02051a98(void *p0, void *p1, unsigned int p2, void *p3,
             ((void(*)(void *base, int index, void *arg))func_0205b78c)(r5, i, node);
         }
     }
-    ((void(*)(void *thiz, void *p, int v, void *node))func_0204f600)(r6, (char *)p5 + p5->off18, p4->f0, r5);
-    ((void(*)(void *p, unsigned char v))func_0204f914)(p0, p4->f6);
-    ((void(*)(void *p, unsigned char v))func_0204f89c)(p0, p4->f7);
+    ((struct E1 *)r6)->func_0204f600((int)((char *)p5 + p5->off18), p4->f0, (int)r5);
+    NNS_SndPlayerSetInitialVolume((NNSSndHandle *)p0, p4->f6);
+    NNS_SndPlayerSetChannelPriority((NNSSndHandle *)p0, p4->f7);
     ((void(*)(void *o, int a, int b))func_0204f6f8)(p0, p6, p7);
     return 1;
 }
@@ -992,7 +982,7 @@ extern "C" void *func_02051a28(int index, void *unk)
 {
     void *p = ((void *(*)(int index, void *unk))func_0204f504)(index, unk);
     if (p) {
-        ((void(*)(void *p))func_02051244)(p);
+        ((HeapOwner *)p)->func_02051244();
     }
     return p;
 }
@@ -1246,15 +1236,15 @@ extern "C" void *func_0205130c(unsigned int addr, unsigned int size)
 
 // @symbol func_020512f0
 extern "C" void func_020512f0(int *p) {
-    ((void(*)(void *p))func_02051244)(p);
+    ((HeapOwner *)p)->func_02051244();
     ((void(*)(void *p))func_0204ebb8)((void*)*p);
 }
 
-// @symbol func_02051244
-extern "C" void func_02051244(HeapOwner *thiz) {
+// @symbol _ZN9HeapOwner13func_02051244Ev
+void HeapOwner::func_02051244() {
     struct Node *r7;
     struct Node *r6;
-    r7 = (struct Node *)(thiz->iter.Previous(0));
+    r7 = (struct Node *)(this->iter.Previous(0));
     if (r7 == 0) goto end;
     do {
         r6 = (struct Node*)(((NestedHeapIterator*)(r7))->Previous(0));
@@ -1264,13 +1254,13 @@ extern "C" void func_02051244(HeapOwner *thiz) {
             }
             r6 = (struct Node*)(((NestedHeapIterator*)(r7))->Previous((HeapAllocator*)(r6)));
         }
-        thiz->iter.Remove((HeapAllocator *)(r7));
-        r7 = (struct Node *)(thiz->iter.Previous(0));
+        this->iter.Remove((HeapAllocator *)(r7));
+        r7 = (struct Node *)(this->iter.Previous(0));
     } while (r7 != 0);
 end:
-    ((SolidHeapAllocator *)(thiz->heap))->Reset(3);
+    ((SolidHeapAllocator *)(this->heap))->Reset(3);
     func_02050fb0();
-    ((void(*)(void *thiz))func_02050fd4)(thiz);
+    ((void (*)(void *thiz))func_02050fd4)(this);
 }
 
 // @symbol func_020511d4
@@ -1308,19 +1298,19 @@ extern "C" s32 func_0205117c(struct SolidHeapWithIter* self)
     return ~0;
 }
 
-// @symbol func_020510a4
-extern "C" void func_020510a4(HeapOwner *thiz, int n) {
+// @symbol _ZN9HeapOwner13func_020510a4Ei
+void HeapOwner::func_020510a4(int n) {
     struct Node *a;
     struct Node *first;
 
     a = 0;
     if (n == 0) {
-        func_02051244(thiz);
+        this->func_02051244();
         return;
     }
-    if (n < thiz->iter.mCount) {
+    if (n < this->iter.mCount) {
         do {
-            first = (struct Node *)(thiz->iter.Previous(0));
+            first = (struct Node *)(this->iter.Previous(0));
             a = (struct Node*)(((NestedHeapIterator*)(first))->Previous((HeapAllocator*)(a)));
             while (a != 0) {
                 if (a->fc != 0) {
@@ -1328,13 +1318,13 @@ extern "C" void func_020510a4(HeapOwner *thiz, int n) {
                 }
                 a = (struct Node*)(((NestedHeapIterator*)(first))->Previous((HeapAllocator*)(a)));
             }
-            thiz->iter.Remove((HeapAllocator *)(first));
-        } while (n < thiz->iter.mCount);
+            this->iter.Remove((HeapAllocator *)(first));
+        } while (n < this->iter.mCount);
     }
-    ((SolidHeapAllocator *)(thiz->heap))->LoadState(n);
+    ((SolidHeapAllocator *)(this->heap))->LoadState(n);
     func_02050fb0();
-    ((SolidHeapAllocator *)(thiz->heap))->SaveState(thiz->iter.mCount);
-    ((void(*)(void *thiz))func_02050fd4)(thiz);
+    ((SolidHeapAllocator *)(this->heap))->SaveState(this->iter.mCount);
+    ((void (*)(void *thiz))func_02050fd4)(this);
 }
 
 // @symbol func_02051074
@@ -1672,7 +1662,7 @@ extern "C" void func_020506fc(int arg)
     if (data_020a55fc != 0)
         return;
     data_020a55f8 = 0;
-    ((void(*)(int *s, int *v1, int v2))func_02058940)(&data_020a5600, &data_020a5614, 8);
+    OS_InitMessageQueue(&data_020a5600, data_020a5614, 8);
     OS_CreateThread(&data_020a5684, (void *)func_02050038, 0, &data_020a5bb8, 0x400, arg);
     data_020a55fc = 1;
     OS_WakeupThreadDirect(&data_020a5684);
@@ -1743,7 +1733,8 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
         ((void(*)(int a, int b, int c, int d, int e, u32 f, int g, int h, int i, int j))func_0205aa10)(3, fmt1, c, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p12);
         ((void(*)(int a, int b, int c, u32 d, int e, int f, int g))func_0205ab6c)(1, fmt2, c, qlen, pp8, p6, p7);
         if (handle >= 0) {
-            ((void(*)(int a, int b, int c, int d, void *e))func_0205ab28)(handle, total + chunk, total, (int)func_020500a4, g);
+            ((void (*)(int a, int b, int c, int d, void *e))func_0205ab28)(
+                handle, total + chunk, total, (int)_ZN1T13func_020500a4Ev, g);
         }
         if (a == 1) {
             ((void(*)(int a, int b, int c, int d))func_0205a958)(3, 3, 1, 1);
@@ -1784,7 +1775,8 @@ extern "C" void func_020502b8(void)
         void *x = func_0205afb4();
         ((void(*)(int a))func_0205b070)(1);
         ((void(*)(unsigned int c))func_0205afe0)((unsigned int)x);
-        while (((int(*)(void *a, int b, int c))func_020587e4)(&data_020a5600, 0, 0) != 0) {}
+        while (OS_ReceiveMessage(&data_020a5600, 0, 0) != 0) {
+        }
     }
     if (d->f24 != 0) func_0204f11c(d->f24);
     if (d->f1c != 0) func_0204f15c((void *)d->f1c);
@@ -1836,33 +1828,33 @@ extern "C" void func_020501b8(void)
     }
 }
 
-// @symbol func_020500a4
-extern "C" void func_020500a4(struct T *thiz)
-{
-    int quot = thiz->f14 / thiz->f2c;
-    int prod = quot * thiz->f18;
-    int e6 = thiz->fc + prod;
-    int e5 = thiz->f10 + prod;
+// @symbol _ZN1T13func_020500a4Ev
+void T::func_020500a4() {
+    int quot = this->f14 / this->f2c;
+    int prod = quot * this->f18;
+    int e6 = this->fc + prod;
+    int e5 = this->f10 + prod;
 
     if (data_020a55fc != 0) {
         struct Q *slot = &data_020a5718[data_020a55f8];
-        slot->f0 = (int)thiz;
+        slot->f0 = (int)this;
         slot->f4 = quot;
         slot->f8 = prod;
         slot->fc = e6;
         slot->f10 = e5;
-        ((void(*)(void *a, void *slot, int c))func_02058894)(&data_020a5600, slot, 0);
+        OS_SendMessage(&data_020a5600, slot, 0);
         data_020a55f8 = data_020a55f8 + 1;
         if (data_020a55f8 >= 8) data_020a55f8 = 0;
     } else {
         CP15::InvalidateDataCache(e6, quot);
         CP15::InvalidateDataCache(e5, quot);
-        thiz->f30(e6, e5, quot, thiz->f8, thiz->f34);
+        this->f30(e6, e5, quot, this->f8, this->f34);
     }
     {
-        int *pf18 = (int *)((int)&thiz->f18);
+        int *pf18 = (int *)((int)&this->f18);
         *pf18 = *pf18 + 1;
-        if (thiz->f18 >= thiz->f2c) thiz->f18 = 0;
+        if (this->f18 >= this->f2c)
+            this->f18 = 0;
     }
 }
 
@@ -1872,7 +1864,7 @@ extern "C" void func_02050038(void)
     struct Outer *r;
     void *out;
     for (;;) {
-        ((void(*)(void *a, void **out, int c))func_020587e4)(&data_020a5600, &out, 1);
+        OS_ReceiveMessage(&data_020a5600, &out, 1);
         r = (struct Outer *)out;
         ((void (*)(unsigned int a, unsigned int b))CP15::InvalidateDataCache)((unsigned int)r->hc,
                                                                               (unsigned int)r->h4);
@@ -1922,7 +1914,7 @@ extern "C" void func_0204fed0(struct C *c) {
     if (((c->fc << 30) >> 31) == 0) return;
     while (c->f20 != 0) {
         unsigned int saved = IRQ::Disable();
-        ((int(*)(void *c, int b))func_0204fce8)(c, 1);
+        c->func_0204fce8((void *)1);
         IRQ::Restore(saved);
     }
     ((void(*)(int a, int b, int c, int d))func_0205ac28)(c->f2c, 0, 1 << c->f28, 0);
@@ -1971,24 +1963,24 @@ extern "C" void func_0204fda4(struct C *c) {
     *p &= ~2;
 }
 
-// @symbol func_0204fce8
-extern "C" void func_0204fce8(struct C *thiz, void *arg) {
+// @symbol _ZN1C13func_0204fce8EPv
+void C::func_0204fce8(void *arg) {
     int new_var;
     int i;
     int *pcount;
     int q =
-        ((int (*)(unsigned int a, unsigned int b))__aeabi_uidiv)(thiz->bufSize, thiz->blockCount);
-    int scaled = q * thiz->f20;
-    for (i = 0; i < thiz->chanCount; i++) {
-        new_var = ((LL *)data_020a5578)[thiz->chans[i]].lo;
+        ((int (*)(unsigned int a, unsigned int b))__aeabi_uidiv)(this->bufSize, this->blockCount);
+    int scaled = q * this->f20;
+    for (i = 0; i < this->chanCount; i++) {
+        new_var = ((LL *)data_020a5578)[this->chans[i]].lo;
         data_020a5538[i] = new_var + scaled;
     }
 
-    thiz->callback(arg, thiz->chanCount, data_020a5538, q, thiz->unk8, thiz->unk1c);
-    pcount = &thiz->f20;
+    this->callback(arg, this->chanCount, data_020a5538, q, this->unk8, this->unk1c);
+    pcount = &this->f20;
     (*pcount)++;
-    if (thiz->f20 >= thiz->blockCount) {
-        thiz->f20 = 0;
+    if (this->f20 >= this->blockCount) {
+        this->f20 = 0;
     }
 }
 
@@ -2069,7 +2061,8 @@ extern "C" int func_0204fa3c(int owner, void *b, u32 c)
 {
     char *r4;
     void *res;
-    r4 = (char *)((void *(*)(void *a, u32 elemSize, u32 p2, u32 p3, u32 p4))func_020511d4)(b, c + 0x14, (u32)func_0204f278, 0, 0);
+    r4 = (char *)((void *(*)(void *a, u32 elemSize, u32 p2, u32 p3, u32 p4))func_020511d4)(
+        b, c + 0x14, (u32)_ZN12Elem_204f27813func_0204f278Ev, 0, 0);
     if (!r4) return 0;
     ((Elem_204f278 *)r4)->owner = 0;
     ((Elem_204f278 *)r4)->playerIndex = owner;
@@ -2084,7 +2077,7 @@ extern "C" int func_0204fa3c(int owner, void *b, u32 c)
 // @symbol func_0204fa2c
 extern "C" int func_0204fa2c(int *p, int fade)
 {
-    return ((int(*)(u8 *thiz, int fade))func_0204f5a0)((u8 *)*p, fade);
+    return ((int (*)(u8 *thiz, int fade))_ZN2E113func_0204f5a0Ei)((u8 *)*p, fade);
 }
 
 // @symbol func_0204f9c4
@@ -2094,7 +2087,7 @@ extern "C" void func_0204f9c4(int idx, int arg1) {
     u8 *thiz = &((u8*)data_020a4d6c)[idx * 0x1c];
     for (i = 0; i < 16; i++, p++) {
         if (p->active != 0 && p->ptr == thiz) {
-            func_0204f5a0((u8 *)p, arg1);
+            ((struct E1 *)p)->func_0204f5a0(arg1);
         }
     }
 }
@@ -2128,55 +2121,119 @@ extern "C" void func_0204f934(int **p) {
     }
 }
 
-// @symbol func_0204f924
-extern "C" void func_0204f924(void **p, unsigned char v) {
-    unsigned char *o = (unsigned char *)*p;
-    if (o) o[0x41] = v;
+/* NitroSystem's NNS_SndPlayerSetVolume: if the handle holds a player, set
+   its extVolume. This and the setters after it run in reverse snd_player.c
+   source order, the order the Sonic Rush Adventure decomp lists them in;
+   the handle and player types are nnsys/snd/player.h's. */
+// @symbol NNS_SndPlayerSetVolume
+extern "C" void NNS_SndPlayerSetVolume(NNSSndHandle *handle, int volume) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        player->extVolume = (u8)volume;
 }
 
-// @symbol func_0204f914
-extern "C" void func_0204f914(void **p, unsigned char v) {
-    unsigned char *o = (unsigned char *)*p;
-    if (o)
-        ((struct E1 *)o)->unk40 = v;
+/* NitroSystem's NNS_SndPlayerSetInitialVolume: if the handle holds a
+   player, set its initVolume. */
+// @symbol NNS_SndPlayerSetInitialVolume
+extern "C" void NNS_SndPlayerSetInitialVolume(NNSSndHandle *handle, int volume) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        player->initVolume = (u8)volume;
 }
 
-// @symbol func_0204f8cc
-extern "C" void func_0204f8cc(char **c, int a, int b) {
-    char *p = *c;
-    if (p == 0) return;
-    if (((struct E1 *)p)->f2c == 2)
+/* NitroSystem's NNS_SndPlayerMoveVolume: unless the player is fading out
+   (status 2), fade its volume to targetVolume over `frames` frames
+   (func_02052494, NNSi_SndFaderSet by shape, works in 8.8 fixed point). */
+// @symbol NNS_SndPlayerMoveVolume
+extern "C" void NNS_SndPlayerMoveVolume(NNSSndHandle *handle, int targetVolume, int frames) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player == 0)
         return;
-    ((void (*)(void *o, int a, int b))func_02052494)(&((struct E1 *)p)->fade, a << 8, b);
+    if (player->status == 2)
+        return;
+    ((void (*)(void *o, int a, int b))func_02052494)(&player->fader, targetVolume << 8, frames);
 }
 
-// @symbol func_0204f89c
-extern "C" void func_0204f89c(char **c, int b) { unsigned char *p = (unsigned char *)*c; if (p) func_0205ad24(p[0x3c], b); }
-
-// @symbol func_0204f86c
-extern "C" void func_0204f86c(char **c, int b, int d) { unsigned char *p = (unsigned char *)*c; if (p) ((void(*)(int, int, int))func_0205aaf4)(p[0x3c], b, d); }
-
-// @symbol func_0204f82c
-extern "C" void func_0204f82c(void** obj, int b, int idx) {
-    unsigned char* p = (unsigned char*)*obj;
-    if (p == 0) return;
-    func_0205acfc(p[0x3c], b, data_02086384[idx]);
+/* NitroSystem's NNS_SndPlayerSetChannelPriority: SND_SetPlayerChannelPriority
+   (func_0205ad24) on the player number. */
+// @symbol NNS_SndPlayerSetChannelPriority
+extern "C" void NNS_SndPlayerSetChannelPriority(NNSSndHandle *handle, int priority) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        func_0205ad24(player->playerNo, priority);
 }
 
-// @symbol func_0204f7fc
-extern "C" void func_0204f7fc(char **c, int b, int d) { unsigned char *p = (unsigned char *)*c; if (p) ((void(*)(int, int, int))func_0205acd4)(p[0x3c], b, d); }
+/* NitroSystem's NNS_SndPlayerSetTrackMute: if the handle holds a player,
+   mute (flag 1) or unmute the tracks in trackBitMask through
+   SND_SetTrackMute (func_0205aaf4) on its player number. */
+// @symbol NNS_SndPlayerSetTrackMute
+extern "C" void NNS_SndPlayerSetTrackMute(NNSSndHandle *handle, int trackBitMask, int flag) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        ((void (*)(int, int, int))func_0205aaf4)(player->playerNo, trackBitMask, flag);
+}
 
-// @symbol func_0204f7cc
-extern "C" void func_0204f7cc(char **c, int b, int d) { unsigned char *p = (unsigned char *)*c; if (p) ((void(*)(int, int, int))func_0205acac)(p[0x3c], b, d); }
+/* NitroSystem's NNS_SndPlayerSetTrackVolume: if the handle holds a player,
+   set the tracks in trackBitMask to volume (0..127) through
+   SND_SetTrackVolume (func_0205acfc), converted by SND_CalcDecibel, which
+   is the SNDi_DecibelTable lookup data_02086384[volume]. */
+// @symbol NNS_SndPlayerSetTrackVolume
+extern "C" void NNS_SndPlayerSetTrackVolume(NNSSndHandle *handle, int trackBitMask, int volume) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player == 0)
+        return;
+    func_0205acfc(player->playerNo, trackBitMask, data_02086384[volume]);
+}
 
-// @symbol func_0204f79c
-extern "C" void func_0204f79c(char **c, int b, int d) { unsigned char *p = (unsigned char *)*c; if (p) ((void(*)(int, int, int))func_0205ac84)(p[0x3c], b, d); }
+/* NitroSystem's NNS_SndPlayerSetTrackPitch: SND_SetTrackPitch
+   (func_0205acd4, SNDTrack.ext_pitch at 0xc) on the player number. The
+   track setters below take the same shape; each SND_ callee is one
+   SNDi_SetTrackParam (func_0205a8f0) write at the SNDTrack offset named. */
+// @symbol NNS_SndPlayerSetTrackPitch
+extern "C" void NNS_SndPlayerSetTrackPitch(NNSSndHandle *handle, int trackBitMask, int pitch) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        ((void (*)(int, int, int))func_0205acd4)(player->playerNo, trackBitMask, pitch);
+}
 
-// @symbol func_0204f76c
-extern "C" void func_0204f76c(char **c, int b, int d) { unsigned char *p = (unsigned char *)*c; if (p) ((void(*)(int, int, int))func_0205ac5c)(p[0x3c], b, d); }
+/* NitroSystem's NNS_SndPlayerSetTrackPan: SND_SetTrackPan (func_0205acac,
+   SNDTrack.ext_pan at 9). */
+// @symbol NNS_SndPlayerSetTrackPan
+extern "C" void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, int trackBitMask, int pan) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        ((void (*)(int, int, int))func_0205acac)(player->playerNo, trackBitMask, pan);
+}
 
-// @symbol func_0204f73c
-extern "C" void func_0204f73c(char **c, int b) { unsigned char *p = (unsigned char *)*c; if (p) func_0205ad54(p[0x3c], b); }
+/* NitroSystem's NNS_SndPlayerSetTrackModDepth: SND_SetTrackModDepth
+   (func_0205ac84, SNDTrack.mod.depth at 0x1a). The source puts
+   NNS_SndPlayerSetTrackPanRange between this and the pan setter; it is
+   absent here (the two are adjacent), presumably dead-stripped. */
+// @symbol NNS_SndPlayerSetTrackModDepth
+extern "C" void NNS_SndPlayerSetTrackModDepth(NNSSndHandle *handle, int trackBitMask, int depth) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        ((void (*)(int, int, int))func_0205ac84)(player->playerNo, trackBitMask, depth);
+}
+
+/* NitroSystem's NNS_SndPlayerSetTrackModSpeed: SND_SetTrackModSpeed
+   (func_0205ac5c, SNDTrack.mod.speed at 0x19). */
+// @symbol NNS_SndPlayerSetTrackModSpeed
+extern "C" void NNS_SndPlayerSetTrackModSpeed(NNSSndHandle *handle, int trackBitMask, int speed) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        ((void (*)(int, int, int))func_0205ac5c)(player->playerNo, trackBitMask, speed);
+}
+
+/* NitroSystem's NNS_SndPlayerSetTempoRatio: SND_SetPlayerTempoRatio
+   (func_0205ad54, an SNDi_SetPlayerParam write of SNDPlayer.tempo_ratio at
+   0x1a). */
+// @symbol NNS_SndPlayerSetTempoRatio
+extern "C" void NNS_SndPlayerSetTempoRatio(NNSSndHandle *handle, int ratio) {
+    NNSSndSeqPlayer *player = handle->player;
+    if (player)
+        func_0205ad54(player->playerNo, ratio);
+}
 
 // @symbol func_0204f720
 extern "C" void func_0204f720(struct S_204f720 **pp, short v) {
@@ -2223,29 +2280,28 @@ extern "C" void func_0204f630(void) {
     ((void(*)(void))func_0204f2d4)();
 }
 
-// @symbol func_0204f600
-extern "C" int func_0204f600(struct E1 *thiz, int seqData, int seqOffset, int bank) {
-    func_0205adc4((void *)thiz->f3c, seqData, seqOffset, bank);
-    ((void(*)(void *thiz))func_0204f4bc)(thiz);
-    thiz->cmdTag = func_0205afb4();
-    thiz->f2c = 1;
+// @symbol _ZN2E113func_0204f600Eiii
+int E1::func_0204f600(int seqData, int seqOffset, int bank) {
+    func_0205adc4((void *)this->f3c, seqData, seqOffset, bank);
+    ((void (*)(void *thiz))func_0204f4bc)(this);
+    this->cmdTag = func_0205afb4();
+    this->f2c = 1;
     return 1;
 }
 
-// @symbol func_0204f5a0
-extern "C" void func_0204f5a0(u8 *thiz, int arg1)
-{
-    struct E1 *e = (struct E1 *)thiz;
-    if (thiz == 0)
+// @symbol _ZN2E113func_0204f5a0Ei
+void E1::func_0204f5a0(int arg1) {
+    struct E1 *e = (struct E1 *)this;
+    if (this == 0)
         return;
     if (e->f2c == 0)
         return;
     if (arg1 == 0) {
-        ((void(*)(void *c))func_0204f3e0)(thiz);
+        ((void (*)(void *c))func_0204f3e0)(this);
         return;
     }
     func_02052494(&e->fade, 0, arg1);
-    ((void(*)(void *o, int a))func_0204f214)(thiz, 0);
+    ((HeapAllocator_204f460 *)this)->func_0204f214(0);
     e->f2c = 2;
 }
 
@@ -2360,33 +2416,33 @@ extern "C" void func_0204f2d4(HeapObj* obj) {
     obj->state = 0;
 }
 
-// @symbol func_0204f278
-extern "C" void func_0204f278(Elem_204f278 *thiz) {
-    int *p = thiz->heap;
+// @symbol _ZN12Elem_204f27813func_0204f278Ev
+void Elem_204f278::func_0204f278() {
+    int *p = this->heap;
     if (p == 0) return;
     func_020512f0(p);
-    int *q = thiz->owner;
+    int *q = this->owner;
     if (q != 0) {
         q[2] = 0;
         return;
     }
-    int idx = thiz->playerIndex;
-    data_020a4d6c[idx].mLists[1].Remove((HeapAllocator *)(thiz));
+    int idx = this->playerIndex;
+    data_020a4d6c[idx].mLists[1].Remove((HeapAllocator *)(this));
 }
 
-// @symbol func_0204f214
-extern "C" void func_0204f214(HeapAllocator_204f460 *thiz, int b) {
-    void *node = thiz->owner;
+// @symbol _ZN21HeapAllocator_204f46013func_0204f214Ei
+void HeapAllocator_204f460::func_0204f214(int b) {
+    void *node = this->owner;
     if (node != 0) {
-        ((NestedHeapIterator*)(node))->Remove((HeapAllocator*)(thiz));
-        thiz->owner = 0;
+        ((NestedHeapIterator *)(node))->Remove((HeapAllocator *)(this));
+        this->owner = 0;
     }
-    ((NestedHeapIterator*)(((char*)&data_020a4d60)))->Remove((HeapAllocator*)(thiz));
-    thiz->sortKey = (unsigned char)b;
+    ((NestedHeapIterator *)(((char *)&data_020a4d60)))->Remove((HeapAllocator *)(this));
+    this->sortKey = (unsigned char)b;
     if (node != 0) {
-        ((void(*)(void* node, void* self))func_0204f460)(node, thiz);
+        ((void (*)(void *node, void *self))func_0204f460)(node, this);
     }
-    ((void(*)(void* self))func_0204f400)(thiz);
+    ((void (*)(void *self))func_0204f400)(this);
 }
 
 // @symbol func_0204f1e8

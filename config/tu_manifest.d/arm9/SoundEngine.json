@@ -130,14 +130,14 @@
       "ordinal": 15
     },
     {
-      "symbol": "func_0204f214",
+      "symbol": "_ZN21HeapAllocator_204f46013func_0204f214Ei",
       "address": "0x0204f214",
       "legacy_source": "src/func_0204f214.cpp",
       "size": "0x00000064",
       "ordinal": 16
     },
     {
-      "symbol": "func_0204f278",
+      "symbol": "_ZN12Elem_204f27813func_0204f278Ev",
       "address": "0x0204f278",
       "legacy_source": "src/func_0204f278.cpp",
       "size": "0x0000005c",
@@ -200,14 +200,14 @@
       "ordinal": 25
     },
     {
-      "symbol": "func_0204f5a0",
+      "symbol": "_ZN2E113func_0204f5a0Ei",
       "address": "0x0204f5a0",
       "legacy_source": "src/func_0204f5a0.c",
       "size": "0x00000060",
       "ordinal": 26
     },
     {
-      "symbol": "func_0204f600",
+      "symbol": "_ZN2E113func_0204f600Eiii",
       "address": "0x0204f600",
       "legacy_source": "src/func_0204f600.c",
       "size": "0x00000030",
@@ -242,77 +242,77 @@
       "ordinal": 31
     },
     {
-      "symbol": "func_0204f73c",
+      "symbol": "NNS_SndPlayerSetTempoRatio",
       "address": "0x0204f73c",
       "legacy_source": "src/func_0204f73c.c",
       "size": "0x00000030",
       "ordinal": 32
     },
     {
-      "symbol": "func_0204f76c",
+      "symbol": "NNS_SndPlayerSetTrackModSpeed",
       "address": "0x0204f76c",
       "legacy_source": "src/func_0204f76c.c",
       "size": "0x00000030",
       "ordinal": 33
     },
     {
-      "symbol": "func_0204f79c",
+      "symbol": "NNS_SndPlayerSetTrackModDepth",
       "address": "0x0204f79c",
       "legacy_source": "src/func_0204f79c.c",
       "size": "0x00000030",
       "ordinal": 34
     },
     {
-      "symbol": "func_0204f7cc",
+      "symbol": "NNS_SndPlayerSetTrackPan",
       "address": "0x0204f7cc",
       "legacy_source": "src/func_0204f7cc.c",
       "size": "0x00000030",
       "ordinal": 35
     },
     {
-      "symbol": "func_0204f7fc",
+      "symbol": "NNS_SndPlayerSetTrackPitch",
       "address": "0x0204f7fc",
       "legacy_source": "src/func_0204f7fc.c",
       "size": "0x00000030",
       "ordinal": 36
     },
     {
-      "symbol": "func_0204f82c",
+      "symbol": "NNS_SndPlayerSetTrackVolume",
       "address": "0x0204f82c",
       "legacy_source": "src/func_0204f82c.c",
       "size": "0x00000040",
       "ordinal": 37
     },
     {
-      "symbol": "func_0204f86c",
+      "symbol": "NNS_SndPlayerSetTrackMute",
       "address": "0x0204f86c",
       "legacy_source": "src/func_0204f86c.c",
       "size": "0x00000030",
       "ordinal": 38
     },
     {
-      "symbol": "func_0204f89c",
+      "symbol": "NNS_SndPlayerSetChannelPriority",
       "address": "0x0204f89c",
       "legacy_source": "src/func_0204f89c.c",
       "size": "0x00000030",
       "ordinal": 39
     },
     {
-      "symbol": "func_0204f8cc",
+      "symbol": "NNS_SndPlayerMoveVolume",
       "address": "0x0204f8cc",
       "legacy_source": "src/func_0204f8cc.c",
       "size": "0x00000048",
       "ordinal": 40
     },
     {
-      "symbol": "func_0204f914",
+      "symbol": "NNS_SndPlayerSetInitialVolume",
       "address": "0x0204f914",
       "legacy_source": "src/func_0204f914.c",
       "size": "0x00000010",
       "ordinal": 41
     },
     {
-      "symbol": "func_0204f924",
+      "symbol": "NNS_SndPlayerSetVolume",
       "address": "0x0204f924",
       "legacy_source": "src/func_0204f924.c",
       "size": "0x00000010",
@@ -382,7 +382,7 @@
       "ordinal": 51
     },
     {
-      "symbol": "func_0204fce8",
+      "symbol": "_ZN1C13func_0204fce8EPv",
       "address": "0x0204fce8",
       "legacy_source": "src/func_0204fce8.c",
       "size": "0x000000bc",
@@ -452,7 +452,7 @@
       "ordinal": 61
     },
     {
-      "symbol": "func_020500a4",
+      "symbol": "_ZN1T13func_020500a4Ev",
       "address": "0x020500a4",
       "legacy_source": "src/func_020500a4.c",
       "size": "0x00000114",
@@ -683,7 +683,7 @@
       "ordinal": 94
     },
     {
-      "symbol": "func_020510a4",
+      "symbol": "_ZN9HeapOwner13func_020510a4Ei",
       "address": "0x020510a4",
       "legacy_source": "src/func_020510a4.c",
       "size": "0x000000d8",
@@ -704,7 +704,7 @@
       "ordinal": 97
     },
     {
-      "symbol": "func_02051244",
+      "symbol": "_ZN9HeapOwner13func_02051244Ev",
       "address": "0x02051244",
       "legacy_source": "src/func_02051244.c",
       "size": "0x000000ac",

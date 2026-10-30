@@ -89,7 +89,7 @@
   "compiler_only_output": [],
   "notes": [
     "Hand-assembled, following arm9/OS_Thread and arm9/OS_Arena: tu_map cannot segment arm9/main.",
-    "Every symbol was renamed from its func_ name to the SDK name in this change (symbols/actor_renames.tsv records the evidence). The callee OS_GetTick keeps its address name, func_02059650 (see arm9/OS_Tick).",
+    "Every symbol was renamed from its func_ name to the SDK name in this change (symbols/actor_renames.tsv records the evidence). The callee OS_GetTick is in arm9/OS_Tick.",
     "Text-only: OSi_UseAlarm (data_020a6440) and OSi_AlarmQueue (data_020a6444) stay externs. The file claims no data."
   ],
   "verification": {

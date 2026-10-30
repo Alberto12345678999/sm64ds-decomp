@@ -114,7 +114,7 @@
       "ordinal": 11
     },
     {
-      "symbol": "func_ov002_020f26e0",
+      "symbol": "_ZN8daDemo_c9StaffRoll19func_ov002_020f26e0Ev",
       "address": "0x020f26e0",
       "size": "0x000000b0",
       "legacy_source": "src/func_ov002_020f26e0.c",
@@ -541,7 +541,7 @@
       "ordinal": 72
     },
     {
-      "symbol": "func_ov002_020f5b24",
+      "symbol": "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev",
       "address": "0x020f5b24",
       "size": "0x00000058",
       "legacy_source": "src/func_ov002_020f5b24.c",
@@ -1757,37 +1757,48 @@
         "_ZN8daDemo_cD2Ev",
         "_ZN8daDemo_c10anmModel_cD2Ev",
         "_ZN8daDemo_c13simpleModel_cD2Ev",
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN7Vector3C1Ev",
+        "_ZN8daDemo_c7param_cC1Ev",
+        "_ZN8daDemo_c7param_cD2Ev"
       ],
       "deadstripped": [
+        "_ZN7Vector3C1Ev",
         "_ZN7Vector3D1Ev",
         "_ZN8daDemo_c10anmModel_cD2Ev",
         "_ZN8daDemo_c13simpleModel_cD2Ev",
+        "_ZN8daDemo_c7param_cC1Ev",
+        "_ZN8daDemo_c7param_cD2Ev",
         "_ZN8daDemo_cD2Ev"
       ],
       "droppedSections": [
-        9,
-        10,
-        196,
-        197,
-        198,
-        205,
-        206,
+        79,
+        80,
         266,
         267,
-        271,
-        272,
-        273,
-        274,
+        268,
         275,
         276,
-        277,
-        278,
-        279,
-        280,
-        281,
-        282,
-        283
+        283,
+        284,
+        285,
+        349,
+        350,
+        353,
+        354,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        364,
+        365,
+        366,
+        367,
+        368,
+        369,
+        370
       ],
       "data": [
         "_ZTV8daDemo_c",
@@ -1811,7 +1822,17 @@
         "_ZTVN8daDemo_c10anmModel_cE",
         "_ZTVN8daDemo_c13simpleModel_cE"
       ],
-      "canonicalDuplicates": []
+      "canonicalDuplicates": [
+        {
+          "symbol": "_ZN7Vector3C1Ev",
+          "canonicalSymbol": "func_0203d384",
+          "module": "arm9",
+          "address": "0x0203d384",
+          "size": 4,
+          "bodySha256": "379bec29dccd0a93c94826144d7ef6e42fab64ef195a3b8313a16926f66f388f",
+          "relocations": 0
+        }
+      ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -2463,62 +2484,62 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "_ZGVsLookTarget$3569",
+      "from": "_ZGVsLookTarget$3568",
       "to": "_ZGVsLookTarget$3570",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "@3572",
+      "from": "@3571",
       "to": "@3573",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "sLookTarget$3569",
+      "from": "sLookTarget$3568",
       "to": "sLookTarget$3570",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "_ZGVsViewStart$3745",
+      "from": "_ZGVsViewStart$3744",
       "to": "_ZGVsViewStart$3746",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "@3748",
+      "from": "@3747",
       "to": "@3749",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "sViewStart$3745",
+      "from": "sViewStart$3744",
       "to": "sViewStart$3746",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "_ZGVsViewEnd$3749",
+      "from": "_ZGVsViewEnd$3748",
       "to": "_ZGVsViewEnd$3750",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "@3752",
+      "from": "@3751",
       "to": "@3753",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "sViewEnd$3749",
+      "from": "sViewEnd$3748",
       "to": "sViewEnd$3750",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "_ZGVsViewIdle$3753",
+      "from": "_ZGVsViewIdle$3752",
       "to": "_ZGVsViewIdle$3754",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "@3756",
+      "from": "@3755",
       "to": "@3757",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     },
     {
-      "from": "sViewIdle$3753",
+      "from": "sViewIdle$3752",
       "to": "sViewIdle$3754",
       "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     }

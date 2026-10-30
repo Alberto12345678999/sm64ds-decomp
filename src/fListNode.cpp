@@ -61,9 +61,8 @@ struct Thing {
     PMF callback; // 4
 
     Thing(PMF &p) { callback = p; head = 0; }
+    void *func_020441cc();
 };
-
-extern "C" void *func_020441cc(Thing *thiz);
 }
 
 /* The five process-list heads func_02044120 walks. The tree sentinel is three
@@ -105,7 +104,7 @@ extern "C" void func_02044120(void) {
     data_02099f24 = 5;
     func_02043fdc(&data_020a4b98);
     data_02099f24 = 1;
-    ProcessTree::func_020441cc(&data_020a4b6c);
+    data_020a4b6c.func_020441cc();
     data_02099f24 = 0;
 }
 
@@ -121,15 +120,15 @@ extern "C" void *func_0203b394(Node *n);
 
 /* Walk a tree list, calling the descriptor's callback on each owner.
  * Unlike func_02043fdc, it does not set data_020a4b68. */
-// @symbol func_020441cc
-extern "C" void *func_020441cc(Thing *thiz) {
+// @symbol _ZN11ProcessTree5Thing13func_020441ccEv
+void *Thing::func_020441cc() {
     Node *node;
-    if (thiz->callback == 0)
+    if (this->callback == 0)
         return (void *)1;
-    node = thiz->head;
+    node = this->head;
     while (node) {
         Node *next = (Node *)func_0203b394(node);
-        (node->obj->*thiz->callback)();
+        (node->obj->*this->callback)();
         node = next;
     }
     return (void *)1;

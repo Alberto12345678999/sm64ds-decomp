@@ -250,6 +250,9 @@ struct daDemo_c : dActor_c {
            fly-off. */
         u8 holdOrbit;  /* 0x514 */
         u8 pad_515[3]; /* 0x515 */
+
+        void func_ov002_020f26e0();
+        void func_ov002_020f5b24();
     };
 
     u8 pad_0d0[4];          /* 0x0d0 */

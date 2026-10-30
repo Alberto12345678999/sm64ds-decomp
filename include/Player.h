@@ -1204,6 +1204,10 @@ struct Player : dActor_c {
     void func_ov002_020c9d68();
     void func_ov002_020c9e18();
     void func_ov002_020ca108();
+    int func_ov002_020cede0();
+    void func_ov002_020de428();
+    int func_ov002_020df7ac();
+    int func_ov002_020df840(void *, Vector3 *);
 };
 
 /* Hold both claims with the compiler rather than a comment. State's 0x18 is

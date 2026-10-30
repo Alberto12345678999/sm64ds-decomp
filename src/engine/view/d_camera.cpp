@@ -264,30 +264,29 @@ extern "C" dCamera_c *dCamera_c_classInit()
 // @symbol _ZN9dCamera_c13InitResourcesEv
 int dCamera_c::InitResources()
 {
-    dCamera_c *thiz = this;
     u32 i;
     for (i = 0; i < data_0209f1f8; i = (u8)(i + 1)) {
         CamViewObj *v = (CamViewObj *)GetViewObj(i);
         if (v->type == 7) {
             s32 *p;
             s16 x, y, z;
-            thiz->mFixedViewPos = ::operator new(0xc);
+            this->mFixedViewPos = ::operator new(0xc);
             x = v->x; z = v->z; y = v->y;
-            p = (s32 *)thiz->mFixedViewPos;
+            p = (s32 *)this->mFixedViewPos;
             p[0] = x << 0xc;
             p[1] = y << 0xc;
             p[2] = z << 0xc;
         }
     }
-    thiz->mFovBlend = 0;
-    thiz->mTargetPlayer = (dActor_c *)data_0209f394[data_0209f250];
-    ChangeArea(thiz->mTargetPlayer->mAreaId);
-    thiz->mFramedActor = 0;
-    thiz->mFocusActor = 0;
+    this->mFovBlend = 0;
+    this->mTargetPlayer = (dActor_c *)data_0209f394[data_0209f250];
+    ChangeArea(this->mTargetPlayer->mAreaId);
+    this->mFramedActor = 0;
+    this->mFocusActor = 0;
     ChangeState((State *)&data_0209b008);
-    func_0200cf40((char *)thiz);
+    func_0200cf40((char *)this);
     if (StartWithFarCamera() != 0)
-        func_0200d0ac((int)thiz, data_0209f250);
+        func_0200d0ac((int)this, data_0209f250);
     return this->Render();
 }
 
@@ -628,113 +627,108 @@ void func_0200d858(void *self, const struct Vector3 *offset)
     AddVec3(&cam->lookAt, offset, &cam->lookAt);
     AddVec3(&cam->pos, offset, &cam->pos);
 }
+}
 
-// @symbol func_0200d81c
-void func_0200d81c(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d81cEi
+void dCamera_c::func_0200d81c(int playerID) {
     if (playerID != (int)data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b008);
+    ChangeState((dCamera_c::State *)&data_0209b008);
 }
 
-// @symbol func_0200d7e0
-void func_0200d7e0(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d7e0Ei
+void dCamera_c::func_0200d7e0(int playerID) {
     if (playerID != (int)data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b098);
+    ChangeState((dCamera_c::State *)&data_0209b098);
 }
 
-// @symbol func_0200d7a4
-void func_0200d7a4(void *thiz, u8 playerID) {
+// @symbol _ZN9dCamera_c13func_0200d7a4Eh
+void dCamera_c::func_0200d7a4(u8 playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b108);
+    ChangeState((dCamera_c::State *)&data_0209b108);
 }
 
-// @symbol func_0200d768
-void func_0200d768(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d768Eh
+void dCamera_c::func_0200d768(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b018);
+    ChangeState((dCamera_c::State *)&data_0209b018);
 }
 
-// @symbol func_0200d72c
-void func_0200d72c(void *thiz, unsigned char playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d72cEh
+void dCamera_c::func_0200d72c(unsigned char playerID) {
     if (playerID == *(unsigned char *)&data_0209f250)
-        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b028);
+        ChangeState((dCamera_c::State *)&data_0209b028);
 }
 
-// @symbol func_0200d6f0
-void func_0200d6f0(void *thiz, unsigned char playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d6f0Eh
+void dCamera_c::func_0200d6f0(unsigned char playerID) {
     if (playerID == *(unsigned char *)&data_0209f250)
     {
-        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b038);
+        ChangeState((dCamera_c::State *)&data_0209b038);
     }
 }
 
-// @symbol func_0200d6b4
-void func_0200d6b4(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d6b4Eh
+void dCamera_c::func_0200d6b4(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b048);
+    ChangeState((dCamera_c::State *)&data_0209b048);
 }
 
-// @symbol func_0200d678
-void func_0200d678(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d678Eh
+void dCamera_c::func_0200d678(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b058);
+    ChangeState((dCamera_c::State *)&data_0209b058);
 }
 
-// @symbol func_0200d63c
-void func_0200d63c(void *thiz, unsigned char playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d63cEh
+void dCamera_c::func_0200d63c(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b068);
+    ChangeState((dCamera_c::State *)&data_0209b068);
 }
 
-// @symbol func_0200d5fc
-void func_0200d5fc(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d5fcEi
+void dCamera_c::func_0200d5fc(int playerID) {
     if (playerID == data_0209f250) {
-        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
-        func_0200cb58(thiz, 5);
+        ChangeState((dCamera_c::State *)&data_0209b078);
+        func_0200cb58(this, 5);
     }
 }
 
-// @symbol func_0200d5c0
-void func_0200d5c0(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d5c0Eh
+void dCamera_c::func_0200d5c0(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
+    ChangeState((dCamera_c::State *)&data_0209b078);
 }
 
-// @symbol func_0200d580
-void func_0200d580(void *thiz, int playerID)
-{
+// @symbol _ZN9dCamera_c13func_0200d580Ei
+void dCamera_c::func_0200d580(int playerID) {
     if (playerID != data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
-    func_0200cb58(thiz, 8);
+    ChangeState((dCamera_c::State *)&data_0209b078);
+    func_0200cb58(this, 8);
 }
 
-// @symbol func_0200d544
-void func_0200d544(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d544Eh
+void dCamera_c::func_0200d544(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b088);
+    ChangeState((dCamera_c::State *)&data_0209b088);
 }
 
-// @symbol func_0200d508
-void func_0200d508(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d508Eh
+void dCamera_c::func_0200d508(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0a8);
+    ChangeState((dCamera_c::State *)&data_0209b0a8);
 }
+extern "C" {
 
 // @symbol func_0200d4b0
 void func_0200d4b0(char* self, unsigned int playerID, int arg2)
@@ -750,30 +744,29 @@ void func_0200d4b0(char* self, unsigned int playerID, int arg2)
         RunStarCameraScript(arg2);
     }
 }
-
-// @symbol func_0200d474
-void func_0200d474(void *thiz, unsigned char playerID) {
-    if (playerID != *(unsigned char *)&data_0209f250)
-        return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0b8);
 }
 
-// @symbol func_0200d438
-void func_0200d438(void *thiz, unsigned char playerID) {
+// @symbol _ZN9dCamera_c13func_0200d474Eh
+void dCamera_c::func_0200d474(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0c8);
+    ChangeState((dCamera_c::State *)&data_0209b0b8);
 }
 
-// @symbol func_0200d3f8
-void func_0200d3f8(void *thiz, unsigned char playerID, void *ptr)
-{
+// @symbol _ZN9dCamera_c13func_0200d438Eh
+void dCamera_c::func_0200d438(unsigned char playerID) {
+    if (playerID != *(unsigned char *)&data_0209f250)
+        return;
+    ChangeState((dCamera_c::State *)&data_0209b0c8);
+}
+
+// @symbol _ZN9dCamera_c13func_0200d3f8EhPv
+void dCamera_c::func_0200d3f8(unsigned char playerID, void *ptr) {
     unsigned char tmp = *(unsigned char *)&data_0209f250;
     if (playerID != tmp)
         return;
-    ((struct dCamera_c *)thiz)->mLookTarget = (s32 *)ptr;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0d8);
-}
+    mLookTarget = (s32 *)ptr;
+    ChangeState((dCamera_c::State *)&data_0209b0d8);
 }
 
 // @symbol _ZN9dCamera_c14GoBehindPlayerEj
@@ -872,21 +865,21 @@ void dCamera_c::LookAtExit(dActor_c &actor)
     mFlags |= 0x10;
 }
 
+// @symbol _ZN9dCamera_c13func_0200d148Eh
+void dCamera_c::func_0200d148(unsigned char playerID) {
+    if (playerID != *(unsigned char *)&data_0209f250)
+        return;
+    ChangeState((dCamera_c::State *)&data_0209b118);
+}
+
+// @symbol _ZN9dCamera_c13func_0200d10cEh
+void dCamera_c::func_0200d10c(unsigned char playerID) {
+    if (playerID != *(unsigned char *)&data_0209f250)
+        return;
+    ChangeState((dCamera_c::State *)&data_0209b128);
+}
+
 extern "C" {
-// @symbol func_0200d148
-void func_0200d148(void *thiz, unsigned char playerID) {
-    if (playerID != *(unsigned char *)&data_0209f250)
-        return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b118);
-}
-
-// @symbol func_0200d10c
-void func_0200d10c(void *thiz, unsigned char playerID) {
-    if (playerID != *(unsigned char *)&data_0209f250)
-        return;
-    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b128);
-}
-
 // @symbol func_0200d0ac
 int func_0200d0ac(int a, unsigned int b) {
     if (b == data_0209f250) {

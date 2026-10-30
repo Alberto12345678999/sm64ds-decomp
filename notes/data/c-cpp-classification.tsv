@@ -1754,7 +1754,7 @@ src/func_020233d4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_020233f0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_020233f4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_02023408.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0202/func_0202345c.cpp	PURE-C	arm9				1		None		-
+src/unnamed/arm9/0202/func_0202345c.cpp	CPP	arm9				1		None		-
 src/unnamed/arm9/0202/func_02023498.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_02023544.c	PURE-C	arm9				1		None		-
 src/d_s_boot.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
@@ -2400,10 +2400,10 @@ src/func_02052438.c	PURE-C	arm9				1		None		-
 src/func_02052458.c	PURE-C	arm9				1		None		-
 src/func_02052494.c	PURE-C	arm9				1		None		-
 src/func_020524c4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020524e4.c	PURE-C					0		None		not-in-delinks
+src/MTX_Rot22_.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/0205/func_02052514.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_02052550.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/0205/func_0205256c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
+src/MTX_RotX33_.c	PURE-C					0		None		not-in-delinks
+src/MTX_RotY33_.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_020527e8.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02052800.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0205/func_02052820.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
@@ -2546,10 +2546,10 @@ src/unnamed/arm9/0205/func_02059bc0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059c18.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059cb4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_02059dd4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059e04.c	PURE-C	arm9				1		None		-
+src/OSi_SendToPxi.c	PURE-C	arm9				1		None		-
+src/OSi_CommonCallback.c	PURE-C	arm9				1		None		-
 src/OS_InitReset.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059eb0.c	PURE-C	arm9				1		None		-
+src/OS_GetOwnerInfo.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f2c.c	PURE-C	arm9				1		None		-
 src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059f58.c	WEAK-refs-only	arm9				1		None		-
@@ -2659,24 +2659,24 @@ src/unnamed/arm9/0205/func_0205d5e8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d644.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d688.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d714.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d89c.c	PURE-C	arm9				1		None		-
+src/FS_Init.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d8d8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d920.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205d94c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205d96c.c	PURE-C	arm9				1		None		-
+src/FSi_InitRom.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205da94.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205db24.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205db2c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205db78.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205db88.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205dc0c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205dc60.c	PURE-C	arm9				1		None		-
+src/FS_UnloadOverlay.c	PURE-C	arm9				1		None		-
+src/FS_UnloadOverlayImage.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205dc7c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205dd9c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205de9c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205df40.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205dffc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205e088.c	PURE-C	arm9				1		None		-
+src/FS_GetOverlayFileID.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205e0b0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205e0f4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205e280.c	PURE-C	arm9				1		None		-
@@ -2724,24 +2724,24 @@ src/unnamed/arm9/0205/func_0205ffd0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206002c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_020600e0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060188.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060310.c	PURE-C	arm9				1		None		-
+src/CARDi_OnFifoRecv.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060364.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060398.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_0206045c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060470.c	PURE-C	arm9				1		None		-
+src/CARD_GetBackupTotalSize.c	PURE-C	arm9				1		None		-
+src/CARD_GetCurrentBackupType.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060484.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206071c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_020607e8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206081c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060890.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060918.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060a64.c	PURE-C	arm9				1		None		-
+src/CARDi_ReadCard.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060b64.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060cac.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060d1c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060d98.c	PURE-C	arm9				1		None		-
+src/CARDi_SetCardDma.c	PURE-C	arm9				1		None		-
+src/CARDi_SetRomOp.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02060e38.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02060ebc.c	PURE-C	arm9				1		None		-
+src/CARDi_ReadFromCache.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020610fc.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0206/func_02061138.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206116c.c	PURE-C	arm9				1		None		-

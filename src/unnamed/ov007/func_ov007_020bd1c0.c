@@ -1,22 +1,12 @@
 #include "types.h"
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
-typedef struct { int a, b, c; } S12;
-
-/* One of the overlay's two lights (func_ov007_020c241c, Work lights[0/1]);
- * color as in func_ov007_020b1718, only the slots this file writes. */
-typedef struct Ov007Light {
-    char pad_00[0x10];
-    /* 0x10, medium confidence: the point the light shines from;
-     * func_ov007_020c2390 aims it along +0x04 - +0x10 */
-    S12 source;
-    char pad_1c[6];
-    u16 color; /* 0x22: func_ov007_020c241c seeds 0x7fff */
-} Ov007Light;
+#include "Ov007Light.h"
 
 extern char* data_ov007_0210342c;
-extern S12 data_ov007_020d7c34[];
-extern S12 data_ov007_020d7c28;
+/* The lights' source points: lights[0] per menu, lights[1] in menu 0. */
+extern Vector3 data_ov007_020d7c34[];
+extern Vector3 data_ov007_020d7c28;
 
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */

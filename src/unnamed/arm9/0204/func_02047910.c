@@ -9,6 +9,11 @@ struct Vec3
 extern int LenVec3(struct Vec3 *v);
 extern void NormalizeVec3(struct Vec3 *dst, struct Vec3 *src);
 
+/* Blend the 4x3 matrix m0 toward m1 by t into dst. The Y and X rows lerp
+   in direction and in length separately and are renormalized; the Z row
+   is rebuilt as (y x z) x y, perpendicular to Y, at its lerped length;
+   the translation lerps. A degenerate row returns early, with dst only
+   partly written. func_0204531c blends each bone matrix with it in place. */
 void func_02047910(int *m0, int *m1, int *dst, int t)
 {
   struct Vec3 va;

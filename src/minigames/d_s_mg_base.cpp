@@ -44,6 +44,7 @@
 #include "Memory.h"
 #include "cstd.h"
 #include "math/Approach.h"
+#include "nitro/hw/registers.h"
 
 #pragma defer_codegen off
 
@@ -1534,7 +1535,7 @@ void dScMgBase_c::RestoreScreenFromMenu() {
 
     *(u32*)0x4000000 &= ~0x1f00;
     *(u32*)0x4001000 &= ~0x1f00;
-    *(u16*)0x4000304 = (mSavedScreenSwap << 15) | (*(u16*)0x4000304 & ~0x8000);
+    REG_POWCNT1 = (mSavedScreenSwap << 15) | (REG_POWCNT1 & ~0x8000);
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0xe000) | ((u32)data_0209d460 << 13);
     *(u32*)0x4001000 = (*(u32*)0x4001000 & ~0xe000) | ((u32)data_0209d458 << 13);
 
@@ -1646,12 +1647,12 @@ int dScMgBase_c::SaveScreenForMenu() {
     if (GetDisplayMode() != 0)
         Disable3dEngines();
 
-    mSavedScreenSwap = (*(volatile u16 *)0x4000304 & 0x8000) >> 15;
+    mSavedScreenSwap = (REG_POWCNT1 & 0x8000) >> 15;
 
     mSavedMainBgBits = data_0209d45c;
     mSavedSubBgBits = data_0209d454;
 
-    *(volatile u16 *)0x4000304 |= 0x8000;
+    REG_POWCNT1 |= 0x8000;
     data_0209d45c = 0;
     data_0209d454 = 0;
 
@@ -3647,7 +3648,7 @@ void dScMgBase_c::InitEngines() {
     GX::SetGraphicsMode(1, 0, 0);
     GXS::SetGraphicsMode(0);
     *(vu32 *)0x4001000u &= 0xffcfffefu;
-    *(vu16 *)0x4000304u |= 0x8000u;
+    REG_POWCNT1 |= 0x8000u;
     Mg_DisableAllBanks();
     Mg_ResetBgOffsets();
     *(vu32 *)0x4000000u &= ~0x7000000u;

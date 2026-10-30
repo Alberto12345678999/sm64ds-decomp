@@ -1,10 +1,5 @@
 #include "types.h"
-
-/* func_ov007_020c946c's 0x44-byte palette buffer. */
-typedef struct Ov007PaletteBuf {
-    const void *source; /* 0x00 */
-    u16 colors[0x20];   /* 0x04 */
-} Ov007PaletteBuf;
+#include "Ov007PaletteBuf.h"
 
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 

@@ -786,14 +786,14 @@
       "ordinal": 141
     },
     {
-      "symbol": "func_0200d10c",
+      "symbol": "_ZN9dCamera_c13func_0200d10cEh",
       "address": "0x0200d10c",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d10c.c",
       "ordinal": 142
     },
     {
-      "symbol": "func_0200d148",
+      "symbol": "_ZN9dCamera_c13func_0200d148Eh",
       "address": "0x0200d148",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d148.c",
@@ -821,21 +821,21 @@
       "ordinal": 146
     },
     {
-      "symbol": "func_0200d3f8",
+      "symbol": "_ZN9dCamera_c13func_0200d3f8EhPv",
       "address": "0x0200d3f8",
       "size": "0x00000040",
       "legacy_source": "src/func_0200d3f8.c",
       "ordinal": 147
     },
     {
-      "symbol": "func_0200d438",
+      "symbol": "_ZN9dCamera_c13func_0200d438Eh",
       "address": "0x0200d438",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d438.c",
       "ordinal": 148
     },
     {
-      "symbol": "func_0200d474",
+      "symbol": "_ZN9dCamera_c13func_0200d474Eh",
       "address": "0x0200d474",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d474.c",
@@ -849,98 +849,98 @@
       "ordinal": 150
     },
     {
-      "symbol": "func_0200d508",
+      "symbol": "_ZN9dCamera_c13func_0200d508Eh",
       "address": "0x0200d508",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d508.c",
       "ordinal": 151
     },
     {
-      "symbol": "func_0200d544",
+      "symbol": "_ZN9dCamera_c13func_0200d544Eh",
       "address": "0x0200d544",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d544.c",
       "ordinal": 152
     },
     {
-      "symbol": "func_0200d580",
+      "symbol": "_ZN9dCamera_c13func_0200d580Ei",
       "address": "0x0200d580",
       "size": "0x00000040",
       "legacy_source": "src/func_0200d580.c",
       "ordinal": 153
     },
     {
-      "symbol": "func_0200d5c0",
+      "symbol": "_ZN9dCamera_c13func_0200d5c0Eh",
       "address": "0x0200d5c0",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d5c0.c",
       "ordinal": 154
     },
     {
-      "symbol": "func_0200d5fc",
+      "symbol": "_ZN9dCamera_c13func_0200d5fcEi",
       "address": "0x0200d5fc",
       "size": "0x00000040",
       "legacy_source": "src/func_0200d5fc.c",
       "ordinal": 155
     },
     {
-      "symbol": "func_0200d63c",
+      "symbol": "_ZN9dCamera_c13func_0200d63cEh",
       "address": "0x0200d63c",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d63c.c",
       "ordinal": 156
     },
     {
-      "symbol": "func_0200d678",
+      "symbol": "_ZN9dCamera_c13func_0200d678Eh",
       "address": "0x0200d678",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d678.c",
       "ordinal": 157
     },
     {
-      "symbol": "func_0200d6b4",
+      "symbol": "_ZN9dCamera_c13func_0200d6b4Eh",
       "address": "0x0200d6b4",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d6b4.c",
       "ordinal": 158
     },
     {
-      "symbol": "func_0200d6f0",
+      "symbol": "_ZN9dCamera_c13func_0200d6f0Eh",
       "address": "0x0200d6f0",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d6f0.c",
       "ordinal": 159
     },
     {
-      "symbol": "func_0200d72c",
+      "symbol": "_ZN9dCamera_c13func_0200d72cEh",
       "address": "0x0200d72c",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d72c.c",
       "ordinal": 160
     },
     {
-      "symbol": "func_0200d768",
+      "symbol": "_ZN9dCamera_c13func_0200d768Eh",
       "address": "0x0200d768",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d768.c",
       "ordinal": 161
     },
     {
-      "symbol": "func_0200d7a4",
+      "symbol": "_ZN9dCamera_c13func_0200d7a4Eh",
       "address": "0x0200d7a4",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d7a4.c",
       "ordinal": 162
     },
     {
-      "symbol": "func_0200d7e0",
+      "symbol": "_ZN9dCamera_c13func_0200d7e0Ei",
       "address": "0x0200d7e0",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d7e0.c",
       "ordinal": 163
     },
     {
-      "symbol": "func_0200d81c",
+      "symbol": "_ZN9dCamera_c13func_0200d81cEi",
       "address": "0x0200d81c",
       "size": "0x0000003c",
       "legacy_source": "src/func_0200d81c.c",

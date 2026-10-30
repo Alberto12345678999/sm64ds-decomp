@@ -1,42 +1,11 @@
 #include "types.h"
-
-/* The 0x70-byte pad record func_ov007_020c2304 allocates and
- * func_ov007_020c22a0 clears; names as in func_ov007_020b2e64 and
- * func_ov007_020b3360. The buttons run up, down, right, left, A, B, START,
- * SELECT, L, R, X, Y. */
-typedef struct Ov007Pad {
-    u16 keys;     /* 0x00: held this frame */
-    u16 prevKeys; /* 0x02: held last frame */
-    /* 0x04: frames each button has been held, 1 on the press frame; 0 while
-     * it is up */
-    u32 heldFrames[12];
-    /* 0x34: frames each button has been up, 1 on the release frame; 0 while
-     * it is held */
-    u32 releasedFrames[12];
-    /* 0x64: bit 0 makes this function read no keys until every key is
-     * released, then clears it */
-    int inputLock;
-    /* 0x68..0x6d: this frame's d-pad x (right 1, left -1), d-pad y (up 1,
-     * down -1) and shoulder (L 1, R -1), each beside last frame's */
-    s8 dirX;
-    s8 prevDirX;
-    s8 dirY;
-    s8 prevDirY;
-    s8 shoulder;
-    s8 prevShoulder;
-    char pad_6e[2];
-} Ov007Pad;
-
-typedef char Ov007Pad_size_must_be_0x70[sizeof(Ov007Pad) == 0x70 ? 1 : -1];
+#include "Ov007Pad.h"
 
 #pragma opt_strength_reduction off
 /* Reads the keys (KEYINPUT and the ARM7's X/Y, or *src when given) into the
  * pad, honours inputLock, sets the three axes and steps each button's held
- * and released frame counts. p keeps its u16 * spelling; `pad` is the typed
- * view. */
-void func_ov007_020c20b8(u16 *p, u16 *src)
-{
-    Ov007Pad *pad = (Ov007Pad *)p;
+ * and released frame counts. */
+void func_ov007_020c20b8(Ov007Pad *pad, u16 *src) {
     int flags[13];
     int i;
     u16 keys;

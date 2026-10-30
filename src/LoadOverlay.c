@@ -1,8 +1,8 @@
 #include "types.h"
-void func_02018c00(void *dst, int a, int id);
+#include "nitro/fs/overlay.h"
 int func_0203d7b8(void);
 struct Pair;
-void func_0205e088(struct Pair *dst, char *src);
+void FS_GetOverlayFileID(struct Pair *dst, char *src);
 void Crash(void);
 void FS_LoadOverlay(int a, int id);
 /* A loaded-overlay slot (see func_02017e60.c): the overlay id, 0xffffffff
@@ -17,25 +17,7 @@ struct Pair {
     int a;
     int b;
 };
-/* NitroSDK FSOverlayInfo: FS_LoadOverlayInfo (func_02018c00) copies the
-   0x20-byte table header and stores the target processor at +0x20;
-   func_0205e088 reads header.file_id (+0x18). */
-typedef struct FSOverlayInfoHeader {
-    u32 id;
-    u8 *ram_address;
-    u32 ram_size;
-    u32 bss_size;
-    void *sinit_init;
-    void *sinit_init_end;
-    u32 file_id;
-    u32 compressed : 24;
-    u32 flag : 8;
-} FSOverlayInfoHeader;
-typedef struct FSOverlayInfo {
-    FSOverlayInfoHeader header;
-    u32 target;
-} FSOverlayInfo;
-typedef char FSOverlayInfo_size_must_be_0x24[sizeof(FSOverlayInfo) == 0x24 ? 1 : -1];
+/* FS_GetOverlayFileID reads the FSOverlayInfo's header.file_id (+0x18). */
 void LoadOverlay(int id) {
     u32 start;
     struct OverlaySlot *slot;
@@ -49,7 +31,7 @@ void LoadOverlay(int id) {
     if (func_0203d7b8() != 0) {
         return;
     }
-    func_0205e088(&pair, (char *)(&info));
+    FS_GetOverlayFileID(&pair, (char *)(&info));
     slot = 0;
     total = info.header.ram_size + info.header.bss_size;
     start = (u32)info.header.ram_address;

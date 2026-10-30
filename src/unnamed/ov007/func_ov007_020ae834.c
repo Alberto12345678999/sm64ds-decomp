@@ -1,11 +1,12 @@
 #include "types.h"
 // @symbol func_ov007_020ae834
 #include "Ov007MenuState.h"
+#include "Ov007Item.h"
 /* Per-frame state step for a menu item. Before ticking the item's state
  * (func_ov007_020c92d0) it retires requests: request 3 while idle or request
  * 4 while in state 1 becomes -1, request 7 in state 1 becomes 3. On the frame
  * a state is entered (stateTicks == 0) the wiggle timer is cleared and the
- * state drives the item: 0 flags it ready; 1 resets fade to 0x1000 and
+ * state drives the item: 0 shows it; 1 resets fade to 0x1000 and
  * slideOut to 0 and re-seeds the position through func_ov007_020ae810; 3/4/7
  * ease slideOut toward the end chosen by the state (3 opens) over 15 frames,
  * feed its square to func_ov007_020aeb34, and request 0 when fully closed, or
@@ -19,30 +20,12 @@
  * one OR so the request-0 store is emitted once; the function is void.
  */
 
-/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
- * func_ov007_020b5bf0 and func_ov007_020beeb0, only the slots this file
- * touches. */
-typedef struct Ov007Item {
-    char pad_00[4];
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
-    char pad_08[8];
-    s32 fade;        /* 0x10: Q12; eased here in states 5/6 */
-    s32 slideOut;    /* 0x14: Q12; eased here in states 3/4/7 */
-    s32 wiggleTimer; /* 0x18: counted down here */
-    char pad_1c[4];
-    s32 ready; /* 0x20: set once the state settles, cleared on reset */
-} Ov007Item;
-
 extern void func_ov007_020c92d0(void *s);
-extern int func_ov007_020aeaec(char *c, int flag, int lo, int hi);
-extern void func_ov007_020ae810(char *c);
-extern void func_ov007_020aeb34(char *c, int t);
+extern int func_ov007_020aeaec(Ov007Item *item, int flag, int lo, int hi);
+extern void func_ov007_020ae810(Ov007Item *item);
+extern void func_ov007_020aeb34(Ov007Item *item, int t);
 
-/* The parameter keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is a local. */
-void func_ov007_020ae834(char *c)
-{
-    Ov007Item *item = (Ov007Item *)c;
+void func_ov007_020ae834(Ov007Item *item) {
     Ov007MenuState *s = item->state;
     int state;
     int ticks;
@@ -65,14 +48,14 @@ void func_ov007_020ae834(char *c)
     switch (st) {
     case 0:
         if (ticks == 0)
-            item->ready = 1;
+            item->visible = 1;
         break;
     case 1:
         if (ticks == 0) {
             item->fade = 0x1000;
             item->slideOut = 0;
-            item->ready = 0;
-            func_ov007_020ae810(c);
+            item->visible = 0;
+            func_ov007_020ae810(item);
         }
         break;
     case 2:
@@ -82,11 +65,11 @@ void func_ov007_020ae834(char *c)
     case 7:
         flag = (st == 3) ? 1 : 0;
         if (ticks == 0)
-            item->ready = 1;
-        item->slideOut = func_ov007_020aeaec(c, flag, 0, 0xf);
+            item->visible = 1;
+        item->slideOut = func_ov007_020aeaec(item, flag, 0, 0xf);
         {
             int t = item->slideOut;
-            func_ov007_020aeb34(c, (int)(((long long)t * t) >> 12));
+            func_ov007_020aeb34(item, (int)(((long long)t * t) >> 12));
         }
         if (flag && item->slideOut == 0) {
             item->state->requestedState = 0;
@@ -103,14 +86,14 @@ void func_ov007_020ae834(char *c)
     case 6:
         flag = (st == 5) ? 1 : 0;
         if (ticks == 0)
-            item->ready = 1;
+            item->visible = 1;
         if (item->fade == 0)
             item->wiggleTimer = 0;
         if ((flag && item->fade == 0x1000) || (!flag && item->fade == 0)) {
             item->state->requestedState = 0;
             break;
         }
-        item->fade = func_ov007_020aeaec(c, (flag == 0) ? 1 : 0, 0, 0x14);
+        item->fade = func_ov007_020aeaec(item, (flag == 0) ? 1 : 0, 0, 0x14);
         break;
     }
 
