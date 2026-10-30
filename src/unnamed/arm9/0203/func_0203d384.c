@@ -28,6 +28,7 @@ void func_0203d388(int *p, int angle) {
     p[1] = FX_MUL(c, x) + FX_MUL(s, z);
 }
 
-/* Vector3's empty constructor, which Player.cpp and daDpLift_c pass to
-   __cxa_vec_ctor (see Vector2.h). */
+/* Vector3's empty constructor. daDpLift_c passes it to __cxa_vec_ctor
+   and Player.cpp to func_02073470 (__cxa_vec_new's argument shape: count,
+   size, padding, ctor, dtor); see Vector2.h. */
 void func_0203d384(void) {}

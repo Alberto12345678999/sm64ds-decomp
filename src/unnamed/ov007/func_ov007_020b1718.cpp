@@ -6,6 +6,8 @@
 #include "Ov007Work.h"
 #include "cstd.h"
 #include "Ov007Camera.h"
+#include "Ov007Model.h"
+#include "Ov007Light.h"
 
 extern "C" {
 
@@ -32,31 +34,6 @@ typedef struct Vec3Words {
  * the predicated flag write); assigning them after the block instead lands the
  * movge first and rotates the block's coloring.
  */
-
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
- * func_ov007_020bc02c, only the slots this file touches. */
-typedef struct Ov007AnimPlayer {
-    s32 state; /* 0x00: 0 playing; func_ov007_020c9110 sets 2 when a one-shot ends */
-    char pad_04[8];
-    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
-    char pad_0e[2];
-    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
-    u16 frameCount; /* 0x12 */
-} Ov007AnimPlayer;
-
-/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; only the slot
- * this file reads. */
-typedef struct Ov007Model {
-    char pad_00[0x18];
-    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020b257c starts it */
-} Ov007Model;
-
-/* The 0x28-byte light func_ov007_020c241c allocates; func_ov007_020c232c
- * writes +0x22 to LIGHT_COLOR. Only that slot is spelled. */
-typedef struct Ov007Light {
-    char pad_00[0x22];
-    u16 color; /* 0x22 */
-} Ov007Light;
 
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020b257c(void);

@@ -483,17 +483,17 @@ void *func_02048720(Vector3 *v, int kind, int id) {
 }
 
 // @symbol func_020485f0
-void func_020485f0(int *thiz, Vector3 *a) {
+void func_020485f0(SoundHandle **slot, Vector3 *a) {
     int r5 = a->x >> 12;
     unsigned int x;
     u16 r4;
     int v;
-    if (thiz == 0)
+    if (slot == 0)
         return;
-    if (thiz[0] == 0)
+    if (slot[0] == 0)
         return;
     x = func_02049018(a);
-    r4 = ((SoundHandle *)thiz[0])->id;
+    r4 = ((SoundHandle *)slot[0])->id;
     if (r4 == 0x81) {
         if (x > 0x4b0)
             v = 0;
@@ -509,27 +509,27 @@ void func_020485f0(int *thiz, Vector3 *a) {
         else
             v = (int)(0x8bc - x) * 0x7f / 1236;
     }
-    NNS_SndPlayerSetVolume(thiz, v);
+    NNS_SndPlayerSetVolume(slot, v);
     r5 = r5 >> 4;
     if (r5 > 0x3f)
         r5 = 0x3f;
     else if (r5 < -0x40)
         r5 = -0x40;
     if (r4 == 0x103) {
-        NNS_SndPlayerSetTrackPan(thiz, 1, r5);
+        NNS_SndPlayerSetTrackPan(slot, 1, r5);
     } else {
-        NNS_SndPlayerSetTrackPan(thiz, data_02099fa4, r5);
+        NNS_SndPlayerSetTrackPan(slot, data_02099fa4, r5);
     }
 }
 
 // @symbol func_02048528
-void func_02048528(int *thiz, Vector3 *a) {
+void func_02048528(SoundHandle **slot, Vector3 *a) {
     int r4 = a->x >> 12;
     unsigned int x;
     int v;
-    if (thiz == 0)
+    if (slot == 0)
         return;
-    if (thiz[0] == 0)
+    if (slot[0] == 0)
         return;
     x = func_02049018(a);
     if (x >= 0x1f4) {
@@ -539,12 +539,12 @@ void func_02048528(int *thiz, Vector3 *a) {
     } else {
         v = (int)(0x1f4 - x) * 0x61 / 0x1e0 + 0x1e;
     }
-    NNS_SndPlayerSetVolume(thiz, v);
+    NNS_SndPlayerSetVolume(slot, v);
     r4 = r4 >> 2;
     if (r4 > 0x3f)
         r4 = 0x3f;
     else if (r4 < -0x40)
         r4 = -0x40;
-    NNS_SndPlayerSetTrackPan(thiz, data_02099fa4, r4);
+    NNS_SndPlayerSetTrackPan(slot, data_02099fa4, r4);
 }
 }

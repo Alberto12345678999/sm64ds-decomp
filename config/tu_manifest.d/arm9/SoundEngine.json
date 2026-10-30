@@ -130,14 +130,14 @@
       "ordinal": 15
     },
     {
-      "symbol": "func_0204f214",
+      "symbol": "_ZN21HeapAllocator_204f46013func_0204f214Ei",
       "address": "0x0204f214",
       "legacy_source": "src/func_0204f214.cpp",
       "size": "0x00000064",
       "ordinal": 16
     },
     {
-      "symbol": "func_0204f278",
+      "symbol": "_ZN12Elem_204f27813func_0204f278Ev",
       "address": "0x0204f278",
       "legacy_source": "src/func_0204f278.cpp",
       "size": "0x0000005c",
@@ -200,14 +200,14 @@
       "ordinal": 25
     },
     {
-      "symbol": "func_0204f5a0",
+      "symbol": "_ZN2E113func_0204f5a0Ei",
       "address": "0x0204f5a0",
       "legacy_source": "src/func_0204f5a0.c",
       "size": "0x00000060",
       "ordinal": 26
     },
     {
-      "symbol": "func_0204f600",
+      "symbol": "_ZN2E113func_0204f600Eiii",
       "address": "0x0204f600",
       "legacy_source": "src/func_0204f600.c",
       "size": "0x00000030",
@@ -382,7 +382,7 @@
       "ordinal": 51
     },
     {
-      "symbol": "func_0204fce8",
+      "symbol": "_ZN1C13func_0204fce8EPv",
       "address": "0x0204fce8",
       "legacy_source": "src/func_0204fce8.c",
       "size": "0x000000bc",
@@ -452,7 +452,7 @@
       "ordinal": 61
     },
     {
-      "symbol": "func_020500a4",
+      "symbol": "_ZN1T13func_020500a4Ev",
       "address": "0x020500a4",
       "legacy_source": "src/func_020500a4.c",
       "size": "0x00000114",
@@ -683,7 +683,7 @@
       "ordinal": 94
     },
     {
-      "symbol": "func_020510a4",
+      "symbol": "_ZN9HeapOwner13func_020510a4Ei",
       "address": "0x020510a4",
       "legacy_source": "src/func_020510a4.c",
       "size": "0x000000d8",
@@ -704,7 +704,7 @@
       "ordinal": 97
     },
     {
-      "symbol": "func_02051244",
+      "symbol": "_ZN9HeapOwner13func_02051244Ev",
       "address": "0x02051244",
       "legacy_source": "src/func_02051244.c",
       "size": "0x000000ac",

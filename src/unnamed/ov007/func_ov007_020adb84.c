@@ -1,11 +1,6 @@
 #include "Ov007Work.h"
 #include "Ov007BgLayer.h"
-
-/* func_ov007_020adc08's 0xc-byte layer slot; names as in that file. */
-typedef struct Ov007LayerSlot {
-    int state;           /* 0x00 */
-    Ov007BgLayer *layer; /* 0x04 */
-} Ov007LayerSlot;
+#include "Ov007LayerSlot.h"
 
 extern void func_ov007_020c02d8(void *screen, int rows, unsigned short tile);
 extern int func_ov007_020c1d78(int i);

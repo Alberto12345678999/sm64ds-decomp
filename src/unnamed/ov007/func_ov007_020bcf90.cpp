@@ -12,7 +12,7 @@ extern char *data_ov007_0210342c;
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
-extern void func_ov007_020c93b4(int a);
+extern void func_ov007_020c93b4(struct Ov007PaletteBuf *buf);
 extern void func_020557b4(void);
 extern void func_02055624(void);
 extern void func_ov007_020b2160(int a);
@@ -23,8 +23,8 @@ extern int func_ov007_020b7a34(void);
 extern void func_ov007_020b7a00(void);
 extern void func_ov007_020b4464(void *view, int camera);
 extern void func_ov007_020b2cf0(void);
-extern void func_ov007_020c2390(void *light);
-extern void func_ov007_020c232c(void *light);
+extern void func_ov007_020c2390(struct Ov007Light *light);
+extern void func_ov007_020c232c(struct Ov007Light *light);
 extern void func_ov007_020b91b4(void);
 extern void func_ov007_020bee14(void);
 extern void func_ov007_020b7658(void *viewMatrix, int b);
@@ -48,7 +48,7 @@ void func_ov007_020bcf90(void) {
     if (s0->currentState != 0 && (s0->currentState != 1 || s1->currentState != 0)) {
         drawModel = 0;
     }
-    func_ov007_020c93b4((int)WORK->paletteBufs[0]);
+    func_ov007_020c93b4(WORK->paletteBufs[0]);
     func_020557b4();
     func_02055624();
     G3X::SetClearColor(0x7fff, 0, 0x7fff, 0x3f, true);
