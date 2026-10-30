@@ -9,7 +9,6 @@ extern "C" {
 
 int PXI_SendWordByFifo(int cmd, int a, int b);
 
-extern TPWork data_020a80cc;
 
 void TP_RequestSamplingAsync(void) {
     unsigned int saved = IRQ::Disable();

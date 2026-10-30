@@ -16,7 +16,6 @@ typedef union {
     u16 h[2];
 } TPU;
 
-extern TPWork data_020a80cc;
 
 extern void Crash(void);
 
