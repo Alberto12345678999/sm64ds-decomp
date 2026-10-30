@@ -5585,7 +5585,7 @@
       "src/unnamed/arm9/0206/func_020671b4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020672a4.cpp": [
+      "src/MB_CommSetParentStateCallback.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02067928.cpp": [
@@ -10847,13 +10847,10 @@
       "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02067138.c": [
-        "return:int *"
-      ],
       "src/unnamed/arm9/0206/func_02067250.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_020672a4.cpp": [
+      "src/MB_CommSetParentStateCallback.cpp": [
         "return:SomeObj *"
       ],
       "src/unnamed/arm9/0206/func_02067604.c": [
@@ -20451,11 +20448,6 @@
       ]
     },
     "func_0206703c": {
-      "src/unnamed/arm9/0203/func_0203e20c.cpp": [
-        "param:#1 unsigned short"
-      ]
-    },
-    "func_02067138": {
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "param:#1 unsigned short"
       ]

@@ -11427,7 +11427,7 @@
     },
     "arm9:0x02067138": {
       "author": "tangosdev",
-      "name": "func_02067138"
+      "name": "MB_CommIsBootable"
     },
     "arm9:0x02067194": {
       "author": "tangosdev",
@@ -11443,7 +11443,7 @@
     },
     "arm9:0x020672a4": {
       "author": "tangosdev",
-      "name": "func_020672a4"
+      "name": "MB_CommSetParentStateCallback"
     },
     "arm9:0x020672d0": {
       "author": "tangosdev",

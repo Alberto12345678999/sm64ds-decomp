@@ -93,12 +93,12 @@ typedef struct MbParentWork {
     /* 0x14a8 -- the game id the child asked for; matched against its file's
      * mGameRegistry +0x14 */
     u32 mChildGameId[15];
-    /* 0x14e4 -- NitroSDK parent_callback: func_020672a4 stores it,
-     * func_02066fb0 calls it with (child, state, arg) when it is set, and
-     * func_02068ae8 saves it across its clear of the work */
+    /* 0x14e4 -- NitroSDK parent_callback: MB_CommSetParentStateCallback
+     * stores it, func_02066fb0 calls it with (child, state, arg) when it is
+     * set, and func_02068ae8 saves it across its clear of the work */
     u32 mParentCallback;
     /* 0x14e8 -- per-child state: func_02066fec sets it, func_02067250
-     * returns it */
+     * returns it, and MB_CommIsBootable tests it for 7 (send complete) */
     s32 mChildState[15];
     /* 0x1524 -- registered files: func_02067928 refuses a 17th and counts
      * each one; zero means nothing to send */

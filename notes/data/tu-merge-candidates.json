@@ -13714,7 +13714,7 @@
     "src/unnamed/arm9/0206/func_02066fb0.c",
     "src/unnamed/arm9/0206/func_02066fec.c",
     "src/unnamed/arm9/0206/func_0206703c.cpp",
-    "src/unnamed/arm9/0206/func_02067138.c",
+    "src/MB_CommIsBootable.c",
     "src/unnamed/arm9/0206/func_02067194.c",
     "src/unnamed/arm9/0206/func_020671b4.c",
     "src/unnamed/arm9/0206/func_02067250.c",

@@ -2864,7 +2864,7 @@ src/unnamed/arm9/0206/func_0206655c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02066a94.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02066fb0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02066fec.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02067138.c	PURE-C	arm9				1		None		-
+src/MB_CommIsBootable.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067194.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020671b4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067250.c	PURE-C	arm9				1		None		-
