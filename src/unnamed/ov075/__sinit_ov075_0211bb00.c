@@ -4,8 +4,9 @@
  * (data_ov075_0211d5c0..), and fills the step sets (enter, behavior, render)
  * that dScEntry_c::SetSteps installs. d_s_entry.cpp's func_ov075_02115e8c
  * passes a pair's two halfwords to func_ov001_020ab5b0: data_ov075_0211d948
- * indexed by icon type, and data_ov075_0211d72c, d740 and d754 by language. The steps are copied from the
- * compiler's pointer-to-member literals, so those keep their address names.
+ * indexed by icon type, and data_ov075_0211d72c, d740 and d754 by language.
+ * The steps are copied from the compiler's pointer-to-member literals, so
+ * those keep their address names.
  * Blocker: compiler-emitting it needs dScEntry_c's unit joined into one intact
  * object; it is split between intact d_s_entry.cpp and text-only
  * d_s_entry_methods.cpp, and neither owns the .bss step sets. */
@@ -169,8 +170,9 @@ void __sinit_ov075_0211bb00(void) {
 
     _ZN10dScEntry_c15graphCallback_cC1Ev(data_ov075_0211d71c);
 
-    /* The (short *) on each pair below is load-bearing: with plain array
-       decay mwccarm schedules every pair's stores differently. */
+    /* The no-op (short *) on each `p = ...` pair below is load-bearing:
+       without it, or writing those pairs through the array directly,
+       mwccarm schedules the stores differently. */
     data_ov075_0211d948[0] = 0x80;
     data_ov075_0211d948[1] = 0x10;
     func_020731dc(data_ov075_0211d948, (void *)NoOpDestructor, data_ov075_0211d5fc);

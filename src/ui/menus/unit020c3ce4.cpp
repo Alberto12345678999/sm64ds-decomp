@@ -83,11 +83,11 @@ void func_ov007_020c3e1c(int v) {
 
 // @symbol func_ov007_020c3df4
 /* The hook is typed as its default, func_ov007_020c3e64 (size in, block
- * out). This function keeps the (int, void *) -> int spelling its callers
- * were matched against, so the size and the block are converted here; the
- * bytes are the same either way. */
-int func_ov007_020c3df4(int a, void *b) {
-    return (int)data_ov007_02103258((unsigned int)b);
+ * out). This definition keeps its (int, void *) -> int spelling because
+ * its callers' externs disagree on it (most say void *(int, int)), so the
+ * size and the block are converted here; the bytes are the same. */
+int func_ov007_020c3df4(int heapName, void *size) {
+    return (int)data_ov007_02103258((unsigned int)size);
 }
 
 // @symbol func_ov007_020c3d40
