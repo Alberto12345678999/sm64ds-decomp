@@ -22,8 +22,6 @@ extern char *data_ov007_0210342c;
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Teardown of the data_ov007_0210342c manager. */
-#pragma opt_strength_reduction off
-#pragma opt_common_subs off
 void func_ov007_020b65e0(void)
 {
     int i;
@@ -92,9 +90,9 @@ void func_ov007_020b65e0(void)
     }
 
     for (i = 0; i < 3; i++) {
-        if (*(int *)(data_ov007_0210342c + i * 4 + 0x44) != 0) {
-            func_ov007_020c9460(*(int *)(data_ov007_0210342c + i * 4 + 0x44));
-            *(int *)(data_ov007_0210342c + i * 4 + 0x44) = 0;
+        if (WORK->paletteBufs[i] != 0) {
+            func_ov007_020c9460((int)WORK->paletteBufs[i]);
+            WORK->paletteBufs[i] = 0;
         }
     }
 

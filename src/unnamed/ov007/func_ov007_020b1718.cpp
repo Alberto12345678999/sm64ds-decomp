@@ -106,9 +106,9 @@ void func_ov007_020b1718(void)
     if (v == 0)
         WORK->states[2]->requestedState = 2;
 
-    if (v == 0 && *(int*)(data_ov007_0210342c + 0xec) == 0)
+    if (v == 0 && WORK->figureIndex == 0)
         func_ov007_020bdeb0(0x1c);
-    else if (v == 0 && *(int*)(data_ov007_0210342c + 0xec) == 1)
+    else if (v == 0 && WORK->figureIndex == 1)
         func_ov007_020bdeb0(0x1d);
 
     mode = WORK->transitionMode;

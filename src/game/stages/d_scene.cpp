@@ -9,14 +9,6 @@
  */
 
 // leftovers:
-// - Fader slot 4 only. The scene's three SetForwardTime calls pass a second
-//   word; include/dFader_c.h declares that slot `SetForwardTime(u32 frames)`
-//   while its sibling slot 3 is already `SetBackwardTime(u32 frames, u32)`, so
-//   the one-argument spelling is the odd one out in the family. Correcting it
-//   renames _ZN15dFdBrightness_c14SetForwardTimeEj (and dFdDummy_c's and
-//   dWipe_c's) to the ...Ejj form, a tree-wide symbol rename rather than a
-//   local edit, so the narrow FaderVTable view below stays until that lands.
-//   Every other slot this file touches is a real virtual call on the class.
 // - dScStage_c::SetVramBanks and GX::DisableAllBanks sit between the scene
 //   graphics methods in this span; co-residence is inferred from the
 //   contiguous run, not from an object map.
@@ -37,20 +29,6 @@ void SetGraphicsMode(int a);
 }
 
 struct Matrix2x2 { int m[4]; };
-
-/* dFdBrightness_c's vtable as far as slot 4, so the two-argument
- * SetForwardTime the scene emits has something to call. Slots 0..3 are named
- * only to place slot 4; nothing here dispatches through them. See the slot-4
- * leftover at the top of the file.
- */
-struct FaderVTable {
-    void (*slot0_D1)(void *);
-    void (*slot1_D0)(void *);
-    void (*slot2_AdvanceFade)(void *);
-    void (*slot3_SetBackwardTime)(void *, u32, u32);
-    void (*SetForwardTime)(void *, u32, u32);
-};
-struct FaderObject { FaderVTable *vt; };
 
 namespace GX { void DisableAllBanks(); }
 
@@ -314,11 +292,11 @@ int dScene_c::BeforeBehavior()
         } else {
             if (data_0209f1e4 == 0) {
                 data_0209f5d0.currInterp = 0;
-                data_0209f5d0.dFdBrightness_c::SetForwardTime(0x10);
+                data_0209f5d0.dFdBrightness_c::SetForwardTime(0x10, 0);
                 data_0209f1e4 = &data_0209f5d0;
             } else if (data_0209f5d0.dFdBrightness_c::IsAtEnd()) {
                 StartSceneFade(1, 0, 0);
-                ((FaderObject *)&data_0209f5e8)->vt->SetForwardTime((FaderObject *)&data_0209f5e8, 0, 0);
+                data_0209f5e8.SetForwardTime(0, 0);
                 MarkForDestruction();
             }
             return 0;
@@ -327,7 +305,7 @@ int dScene_c::BeforeBehavior()
 
     if (data_02092664 != 0x187) {
         if (data_0209f5bc->IsAtStart() != 0) {
-            ((FaderObject *)data_0209f5bc)->vt->SetForwardTime(data_0209f5bc, 0x1e, 0);
+            data_0209f5bc->SetForwardTime(0x1e, 0);
         } else if (data_0209f5bc->IsAtEnd() != 0) {
             MarkForDestruction();
         }

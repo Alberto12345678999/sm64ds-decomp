@@ -2437,7 +2437,7 @@ matched: yes</title></rect><rect x="269.64" y="177.14" width="2.88" height="3.73
 module: arm9
 addr: 0x020171b8
 size: 16 bytes
-matched: yes</title></rect><rect x="272.52" y="177.14" width="7.19" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dFdDummy_c14SetForwardTimeEj
+matched: yes</title></rect><rect x="272.52" y="177.14" width="7.19" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dFdDummy_c14SetForwardTimeEjj
 module: arm9
 addr: 0x020171c8
 size: 40 bytes
@@ -2521,7 +2521,7 @@ matched: yes</title></rect><rect x="94.59" y="180.87" width="1.91" height="7.04"
 module: arm9
 addr: 0x02017684
 size: 20 bytes
-matched: yes</title></rect><rect x="96.49" y="180.87" width="6.10" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dFdBrightness_c14SetForwardTimeEj
+matched: yes</title></rect><rect x="96.49" y="180.87" width="6.10" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dFdBrightness_c14SetForwardTimeEjj
 module: arm9
 addr: 0x02017698
 size: 64 bytes
@@ -4453,7 +4453,7 @@ matched: yes</title></rect><rect x="31.12" y="389.98" width="27.88" height="9.14
 module: arm9
 addr: 0x0202f58c
 size: 380 bytes
-matched: yes</title></rect><rect x="59.01" y="389.98" width="39.92" height="9.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dWipe_c14SetForwardTimeEj
+matched: yes</title></rect><rect x="59.01" y="389.98" width="39.92" height="9.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dWipe_c14SetForwardTimeEjj
 module: arm9
 addr: 0x0202f708
 size: 544 bytes
@@ -9389,79 +9389,79 @@ matched: yes</title></rect><rect x="228.53" y="705.20" width="2.67" height="5.03
 module: arm9
 addr: 0x02057000
 size: 20 bytes
-matched: yes</title></rect><rect x="231.20" y="705.20" width="1.60" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057014
+matched: yes</title></rect><rect x="231.20" y="705.20" width="1.60" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnLockCartridge
 module: arm9
 addr: 0x02057014
 size: 12 bytes
-matched: yes</title></rect><rect x="232.80" y="705.20" width="11.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057020
+matched: yes</title></rect><rect x="232.80" y="705.20" width="11.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetLockID
 module: arm9
 addr: 0x02057020
 size: 88 bytes
-matched: yes</title></rect><rect x="244.55" y="705.20" width="6.41" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057078
+matched: yes</title></rect><rect x="244.55" y="705.20" width="6.41" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ReleaseLockID
 module: arm9
 addr: 0x02057078
 size: 48 bytes
-matched: yes</title></rect><rect x="250.95" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570a8
+matched: yes</title></rect><rect x="250.95" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_WaitByLoop
 module: arm9
 addr: 0x020570a8
 size: 16 bytes
-matched: yes</title></rect><rect x="253.09" y="705.20" width="1.07" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570b8
+matched: yes</title></rect><rect x="253.09" y="705.20" width="1.07" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_ReadOwnerOfLockWord
 module: arm9
 addr: 0x020570b8
 size: 8 bytes
-matched: yes</title></rect><rect x="254.16" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570c0
+matched: yes</title></rect><rect x="254.16" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_FreeCardBus
 module: arm9
 addr: 0x020570c0
 size: 24 bytes
-matched: yes</title></rect><rect x="257.36" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570d8
+matched: yes</title></rect><rect x="257.36" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_AllocateCardBus
 module: arm9
 addr: 0x020570d8
 size: 24 bytes
-matched: yes</title></rect><rect x="260.56" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020570f0
+matched: yes</title></rect><rect x="260.56" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockCard
 module: arm9
 addr: 0x020570f0
 size: 28 bytes
-matched: yes</title></rect><rect x="264.30" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205710c
+matched: yes</title></rect><rect x="264.30" y="705.20" width="3.74" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockCard
 module: arm9
 addr: 0x0205710c
 size: 28 bytes
-matched: yes</title></rect><rect x="268.04" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057128
+matched: yes</title></rect><rect x="268.04" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_FreeCartridgeBus
 module: arm9
 addr: 0x02057128
 size: 24 bytes
-matched: yes</title></rect><rect x="271.24" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057140
+matched: yes</title></rect><rect x="271.24" y="705.20" width="3.20" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_AllocateCartridgeBus
 module: arm9
 addr: 0x02057140
 size: 24 bytes
-matched: yes</title></rect><rect x="274.44" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057158
+matched: yes</title></rect><rect x="274.44" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockCartridge
 module: arm9
 addr: 0x02057158
 size: 32 bytes
-matched: yes</title></rect><rect x="278.71" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057178
+matched: yes</title></rect><rect x="278.71" y="705.20" width="4.27" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockCartridge
 module: arm9
 addr: 0x02057178
 size: 32 bytes
-matched: yes</title></rect><rect x="282.98" y="705.20" width="17.08" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057198
+matched: yes</title></rect><rect x="282.98" y="705.20" width="17.08" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoTryLockByWord
 module: arm9
 addr: 0x02057198
 size: 128 bytes
-matched: yes</title></rect><rect x="300.07" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057218
+matched: yes</title></rect><rect x="300.07" y="705.20" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_UnlockByWord
 module: arm9
 addr: 0x02057218
 size: 16 bytes
-matched: yes</title></rect><rect x="302.20" y="705.20" width="19.22" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057228
+matched: yes</title></rect><rect x="302.20" y="705.20" width="19.22" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoUnlockByWord
 module: arm9
 addr: 0x02057228
 size: 144 bytes
-matched: yes</title></rect><rect x="34.22" y="710.22" width="8.07" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020572b8
+matched: yes</title></rect><rect x="34.22" y="710.22" width="8.07" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_TryLockByWord
 module: arm9
 addr: 0x020572b8
 size: 16 bytes
-matched: yes</title></rect><rect x="34.22" y="711.55" width="8.07" height="7.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020572c8
+matched: yes</title></rect><rect x="34.22" y="711.55" width="8.07" height="7.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_DoLockByWord
 module: arm9
 addr: 0x020572c8
 size: 88 bytes
-matched: yes</title></rect><rect x="34.22" y="718.86" width="8.07" height="19.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057320
+matched: yes</title></rect><rect x="34.22" y="718.86" width="8.07" height="19.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_InitLock
 module: arm9
 addr: 0x02057320
 size: 240 bytes
@@ -9857,7 +9857,7 @@ matched: yes</title></rect><rect x="45.58" y="861.51" width="6.51" height="1.24"
 module: arm9
 addr: 0x02059d80
 size: 12 bytes
-matched: yes</title></rect><rect x="45.58" y="862.74" width="6.51" height="1.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059d8c
+matched: yes</title></rect><rect x="45.58" y="862.74" width="6.51" height="1.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SpinWait
 module: arm9
 addr: 0x02059d8c
 size: 12 bytes
@@ -9973,7 +9973,7 @@ matched: yes</title></rect><rect x="156.42" y="721.83" width="34.93" height="5.8
 module: arm9
 addr: 0x0205a61c
 size: 304 bytes
-matched: yes</title></rect><rect x="191.35" y="721.83" width="0.92" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a74c
+matched: yes</title></rect><rect x="191.35" y="721.83" width="0.92" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_SwapWord
 module: arm9
 addr: 0x0205a74c
 size: 8 bytes
@@ -10677,39 +10677,39 @@ matched: yes</title></rect><rect x="87.35" y="752.80" width="10.38" height="5.17
 module: arm9
 addr: 0x0205ff20
 size: 80 bytes
-matched: yes</title></rect><rect x="97.73" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ff70
+matched: yes</title></rect><rect x="97.73" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_UnlockBackup
 module: arm9
 addr: 0x0205ff70
 size: 16 bytes
-matched: yes</title></rect><rect x="99.81" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ff80
+matched: yes</title></rect><rect x="99.81" y="752.80" width="2.08" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_LockBackup
 module: arm9
 addr: 0x0205ff80
 size: 16 bytes
-matched: yes</title></rect><rect x="101.88" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ff90
+matched: yes</title></rect><rect x="101.88" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_UnlockRom
 module: arm9
 addr: 0x0205ff90
 size: 32 bytes
-matched: yes</title></rect><rect x="106.03" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ffb0
+matched: yes</title></rect><rect x="106.03" y="752.80" width="4.15" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_LockRom
 module: arm9
 addr: 0x0205ffb0
 size: 32 bytes
-matched: yes</title></rect><rect x="110.19" y="752.80" width="11.94" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ffd0
+matched: yes</title></rect><rect x="110.19" y="752.80" width="11.94" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_WaitAsync
 module: arm9
 addr: 0x0205ffd0
 size: 92 bytes
-matched: yes</title></rect><rect x="122.12" y="752.80" width="23.36" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206002c
+matched: yes</title></rect><rect x="122.12" y="752.80" width="23.36" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_InitCommon
 module: arm9
 addr: 0x0206002c
 size: 180 bytes
-matched: yes</title></rect><rect x="145.48" y="752.80" width="21.80" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020600e0
+matched: yes</title></rect><rect x="145.48" y="752.80" width="21.80" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_UnlockResource
 module: arm9
 addr: 0x020600e0
 size: 168 bytes
-matched: yes</title></rect><rect x="167.28" y="752.80" width="20.76" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060188
+matched: yes</title></rect><rect x="167.28" y="752.80" width="20.76" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_LockResource
 module: arm9
 addr: 0x02060188
 size: 160 bytes
-matched: yes</title></rect><rect x="188.04" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060228
+matched: yes</title></rect><rect x="188.04" y="752.80" width="19.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_SetTask
 module: arm9
 addr: 0x02060228
 size: 148 bytes
@@ -10769,15 +10769,15 @@ matched: yes</title></rect><rect x="83.20" y="819.54" width="6.67" height="12.48
 module: arm9
 addr: 0x02060890
 size: 124 bytes
-matched: yes</title></rect><rect x="83.20" y="832.02" width="6.67" height="1.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206090c
+matched: yes</title></rect><rect x="83.20" y="832.02" width="6.67" height="1.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARD_WaitRomAsync
 module: arm9
 addr: 0x0206090c
 size: 12 bytes
-matched: yes</title></rect><rect x="83.20" y="833.22" width="6.67" height="28.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060918
+matched: yes</title></rect><rect x="83.20" y="833.22" width="6.67" height="28.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadRom
 module: arm9
 addr: 0x02060918
 size: 280 bytes
-matched: yes</title></rect><rect x="83.20" y="861.39" width="6.67" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060a30
+matched: yes</title></rect><rect x="83.20" y="861.39" width="6.67" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CARDi_ReadRomSyncCore
 module: arm9
 addr: 0x02060a30
 size: 52 bytes
@@ -11561,31 +11561,31 @@ matched: yes</title></rect><rect x="316.80" y="812.86" width="4.62" height="18.0
 module: arm9
 addr: 0x0206a29c
 size: 124 bytes
-matched: yes</title></rect><rect x="141.56" y="830.88" width="6.34" height="10.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a318
+matched: yes</title></rect><rect x="141.56" y="830.88" width="6.34" height="10.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_SendtoPxi
 module: arm9
 addr: 0x0206a318
 size: 100 bytes
-matched: yes</title></rect><rect x="141.56" y="841.46" width="6.34" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a37c
+matched: yes</title></rect><rect x="141.56" y="841.46" width="6.34" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_UnlockByProcessor
 module: arm9
 addr: 0x0206a37c
 size: 40 bytes
-matched: yes</title></rect><rect x="141.56" y="845.69" width="6.34" height="13.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a3a4
+matched: yes</title></rect><rect x="141.56" y="845.69" width="6.34" height="13.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_LockByProcessor
 module: arm9
 addr: 0x0206a3a4
 size: 128 bytes
-matched: yes</title></rect><rect x="141.56" y="859.22" width="6.34" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a424
+matched: yes</title></rect><rect x="141.56" y="859.22" width="6.34" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_RestoreAccessCycle
 module: arm9
 addr: 0x0206a424
 size: 52 bytes
-matched: yes</title></rect><rect x="141.56" y="864.72" width="6.34" height="7.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a458
+matched: yes</title></rect><rect x="141.56" y="864.72" width="6.34" height="7.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_ChangeLatestAccessCycle
 module: arm9
 addr: 0x0206a458
 size: 72 bytes
-matched: yes</title></rect><rect x="141.56" y="872.34" width="6.34" height="30.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a4a0
+matched: yes</title></rect><rect x="141.56" y="872.34" width="6.34" height="30.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDG_IsExisting
 module: arm9
 addr: 0x0206a4a0
 size: 288 bytes
-matched: yes</title></rect><rect x="141.56" y="902.79" width="6.34" height="6.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a5c0
+matched: yes</title></rect><rect x="141.56" y="902.79" width="6.34" height="6.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_InitCommon
 module: arm9
 addr: 0x0206a5c0
 size: 64 bytes

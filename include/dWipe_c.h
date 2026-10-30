@@ -50,7 +50,7 @@ struct dWipe_c : dFdColor_c {
     /* Slot 3. `extra` is forwarded and not read; the colour-fade body
        ignores it too. Callers pass 0. */
     virtual int SetBackwardTime(u32 frames, u32); /* slot 3 */
-    virtual int  SetForwardTime(u32 frames);     /* slot 4 */
+    virtual int SetForwardTime(u32 frames, u32);  /* slot 4 */
     virtual int  IsAtStart();                    /* slot 5 */
     virtual int  IsAtEnd();                      /* slot 6 */
     virtual int  IsBetweenStartAndEnd();         /* slot 7 */

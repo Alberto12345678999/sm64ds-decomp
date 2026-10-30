@@ -5,24 +5,30 @@
  * that added zero tools/ files. `tools/gen_header.py --report` exists now and
  * emits a differential; it writes nothing to include/.
  *
- * class SaveData: 12 matched functions, 3 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen.
+ * SaveData: the save-file manager. 18 of its 20 methods are defined in
+ * src/engine/save/SaveData.cpp, beside the free functions folded with them;
+ * the two cart I/O methods are in src/engine/save/SaveData2.cpp. FileSaveData
+ * is the 0x44-byte save-file record those methods move. Offsets/widths are
+ * observed, not guessed.
  *
  * SaveData is NOT polymorphic -- it has no RTTI record and no vtable -- so the
  * key-function rule (runbook section 7) does not apply and its methods can be
- * migrated to real C++ freely. Most are STATIC: the ROM functions take no `this`
- * and read the single global instance at 0x0209caa0 directly. */
+ * migrated to real C++ freely. They are all STATIC: the ROM functions take no
+ * `this` and read the single save block at 0x0209caa0 directly. SaveData
+ * carries no data of its own; the record type is FileSaveData, the name the
+ * ROM's mangled signatures give it (`EP12FileSaveData`). */
 #ifndef SAVEDATA_H
 #define SAVEDATA_H
 #include "types.h"
 
 /* fwd */
-struct FileSaveData;
 struct MinigameSaveData;
-struct fsd_;
-struct mg_;
-struct SaveData {
+
+/* One save file: 0x44 bytes, the unit ReadFileData/SaveFile/EraseSaveFile
+   move to and from cart slots 0..2. The live copy is the first 0x44 bytes of
+   the save block at 0x0209caa0, and the file-select scene (d_s_dsmt.cpp)
+   keeps three of them while copying files. */
+struct FileSaveData {
     /* 0x000 -- "8000" as four ASCII bytes, written by SetDefaultValues
        (0x30303038 little-endian). The file-format magic. */
     u32 magic8000;
@@ -37,17 +43,28 @@ struct SaveData {
        loads it as an int. The u8 was the marker the generator emitted, not
        the width. */
     s32 flags2;
-    /* 0x00c -- minigame unlock bits, (a << 2) | b for 28 minigames; set by
-       func_02013868, ANDed with the minigame block's unlock word on load. */
-    u32 minigameUnlocks;
+    /* 0x00c -- one bit per minigame rabbit caught, bit (rabbit << 2) | b.
+       daMip_c tests it with func_02013890(mRabbitId, player->param1), where
+       b < 0 asks for all four; func_02013868 sets it and unlocks the minigame
+       bit of the same index in MinigameSaveData. ReadFileData ANDs it with
+       that unlock word when a file is loaded. */
+    u32 minigameRabbits;
     /* 0x010 -- one bit per course whose cannon is open (OpenCannon). */
     u32 cannonFlags;
-    /* 0x014 -- star bits per course (data_0209cab4 in the live block), then
-       the coin records from 0x032 (data_0209cad2). */
-    u8 pad_014[0x2d];
-    u8  mCharacter;            /* 0x041 -- current character */
-    u8  unk_042;            /* 0x042 */
+    /* 0x014 -- star bits, one byte per course (data_0209cab4 in the live
+       block). */
+    u8 stars[30];
+    /* 0x032 -- coin records, one byte per main course (data_0209cad2). */
+    u8 coinRecords[15];
+    u8 mCharacter; /* 0x041 -- current character */
+    /* 0x042 -- the active player's controller mode: SetDefaultValues clears
+       it, and InitControllerMode/SetControllerMode (d_s_stage_methods.cpp)
+       keep it in step with the per-controller record. */
+    u8 controllerMode;
+};
+
 #ifdef __cplusplus
+struct SaveData {
     /* methods */
 
     /* Static, like the rest: both ROM bodies take one pointer in r0 and never a
@@ -88,7 +105,7 @@ struct SaveData {
     static u32 EraseAllSaveData();
     static int SaveMinigames(MinigameSaveData* data);
     static int ReadMinigameData(MinigameSaveData* dest);
-#endif
 };
+#endif
 
 #endif

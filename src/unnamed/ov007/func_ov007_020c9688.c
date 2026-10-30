@@ -1,20 +1,23 @@
 // @symbol func_ov007_020c9688
-// recovered: ov007 scene table builder, ov007 0x020c9688 (768 bytes).
 /* func_ov007_020c9688 -- ov007 0x020c9688, 0x300 bytes.
  *
- * Builds the packed runtime tables for one scene description. The context
- * filled in by func_ov007_020c9a2c carries two counted lists; the allocation
- * made by func_ov007_020c12ac carries the two output arrays.
+ * Builds a sprite bank from a sprite file (func_ov007_020b6d40 builds six
+ * into the display record's spriteBanks). The block index
+ * func_ov007_020c9a2c fills carries two counted lists; the bank
+ * func_ov007_020c12ac allocates carries the two output tables.
  *
- * The first pass walks list A. Each list-A header word gives the number of
- * 0x14-byte records that follow it; a 6-byte output slot is allocated per
- * record and each record is folded into three halfwords -- a 32-bit key
- * (fields 0x6/0x7/0x8/0xc/0xd, plus 0x0, 0x2, 0x5, 0x9, 0xa and, unless
- * field 0x9 is 3, 0xb) and a 16-bit tail (fields 0x10, 0xe, 0xf).
+ * The first pass walks list A, the cells. Each cell's header word gives
+ * the number of 0x14-byte OAM records that follow it; each record is
+ * packed into the three OAM attribute halfwords: attr0/attr1 from the
+ * x/y halfwords and the affine, mode, mosaic, colour-mode, shape, size and
+ * flip bytes (the affine index only for affine entries, the colour-mode bit
+ * not for mode 3, bitmap OBJs), attr2 from the tile (0x10), priority (0xe)
+ * and palette (0xf).
  *
- * The second pass walks list B. Each 0xc-byte group header gives a member
- * count at +8; func_ov007_020c13a4 sizes the group, then every 0x18-byte
- * member contributes an entry pointer (index at +0) and a value (+2).
+ * The second pass walks list B, the cell animations. Each 0xc-byte header
+ * gives a frame count at +8; func_ov007_020c13a4 sizes the animation, then
+ * every 0x18-byte frame contributes a cell (index at +0) and a duration
+ * (+2).
  *
  * ONE SPELLING IS LOAD BEARING, measured against the ROM on 2004/b56:
  * THE SECOND PASS WALKS WITH `p`, THE SAME CURSOR THE FIRST PASS USED.
@@ -48,24 +51,29 @@ typedef struct RecA {
     u16 f12;
 } RecA;
 
-typedef struct Entry {
-    u16 *data;
+/* One 8-byte cell: `count` OAM entries, each packed into three attribute
+ * halfwords (attr0..attr2). */
+typedef struct Ov007Cell {
+    u16 *oam;
     u32 count;
-} Entry;
+} Ov007Cell;
 
-typedef struct Group {
-    Entry **arr;
-    u16 *vals;
+/* One 0x10-byte cell animation (func_ov007_020c13a4 sizes it): a cell and
+ * a duration per frame, as func_ov007_020c0d70 steps through them. */
+typedef struct Ov007CellAnim {
+    Ov007Cell **frames;
+    u16 *durations;
     u32 f8;
-    u32 fC;
-} Group;
+    u32 frameCount;
+} Ov007CellAnim;
 
-typedef struct Res {
-    u32 f0;
-    u8 *entries;
-    u32 f8;
-    u8 *groups;
-} Res;
+/* The 0x10-byte sprite bank func_ov007_020c12ac allocates. */
+typedef struct Ov007SpriteBank {
+    u32 cellCount;
+    u8 *cells;
+    u32 animCount;
+    u8 *anims;
+} Ov007SpriteBank;
 
 typedef struct Ctx {
     u8 pad[0x44];
@@ -84,8 +92,8 @@ typedef struct GroupHdr {
 } GroupHdr;
 
 typedef struct GroupMember {
-    u16 entry; /* 0x00: index into Res::entries */
-    u16 value; /* 0x02: copied into Group::vals */
+    u16 entry; /* 0x00: index into the bank's cells */
+    u16 value; /* 0x02: the frame's duration */
     u8 pad_04[0x14];
 } GroupMember;
 
@@ -99,13 +107,12 @@ typedef struct Packed {
 } Packed;
 
 extern void func_ov007_020c9a2c(Ctx *ctx, int a);
-extern Res *func_ov007_020c12ac(u32 a, u32 b);
+extern Ov007SpriteBank *func_ov007_020c12ac(u32 a, u32 b);
 extern void *func_ov007_020c3df4(int a, u32 b);
 extern void func_ov007_020c13a4(void *c, int r1, short r2, short r3);
 
-Res *func_ov007_020c9688(int arg)
-{
-    Res *s;
+Ov007SpriteBank *func_ov007_020c9688(int arg) {
+    Ov007SpriteBank *s;
     u32 i;
     u32 nA;
     u32 nB;
@@ -124,13 +131,13 @@ Res *func_ov007_020c9688(int arg)
 
     p = (u8 *)ctx.listA + 4;
     for (i = 0; i < nA; i++) {
-        Entry *e;
+        Ov007Cell *e;
         u8 *base;
         cnt = *p;
         p = p + 4;
-        base = s->entries;
-        e = (Entry *)(base + i * 8);
-        e->data = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
+        base = s->cells;
+        e = (Ov007Cell *)(base + i * 8);
+        e->oam = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
         e->count = cnt;
         for (j = 0; j < cnt; j++) {
             s16 h0;
@@ -160,40 +167,45 @@ Res *func_ov007_020c9688(int arg)
             h0 = r->f0;
             if (key == 0x100 || key == 0x300) {
                 if (b9 == 3) {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | (b5 << 25) | (b9 << 10) | (bA << 12))) | ((h0 & 0x1ff) << 16));
+                    tmp.val = key | ((hi | ((h2 & 0xff) | (b5 << 25) | (b9 << 10) | (bA << 12))) |
+                                     ((h0 & 0x1ff) << 16));
                 } else {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | ((b5 << 25) | (bB << 13)) | (b9 << 10) | (bA << 12))) | ((h0 & 0x1ff) << 16));
+                    tmp.val = key | ((hi | ((h2 & 0xff) | ((b5 << 25) | (bB << 13)) | (b9 << 10) |
+                                            (bA << 12))) |
+                                     ((h0 & 0x1ff) << 16));
                 }
             } else {
                 if (b9 == 3) {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | (b9 << 10) | (bA << 12))) | ((h0 & 0x1ff) << 16));
+                    tmp.val = key | ((hi | ((h2 & 0xff) | (b9 << 10) | (bA << 12))) |
+                                     ((h0 & 0x1ff) << 16));
                 } else {
-                    tmp.val = key | ((hi | ((h2 & 0xff) | (bB << 13) | (b9 << 10) | (bA << 12))) | ((h0 & 0x1ff) << 16));
+                    tmp.val = key | ((hi | ((h2 & 0xff) | (bB << 13) | (b9 << 10) | (bA << 12))) |
+                                     ((h0 & 0x1ff) << 16));
                 }
             }
             tmp.ext = h10 | (bE << 10) | (bF << 12);
-            *(u16 *)((u8 *)e->data + j * 6) = ((u16 *)&tmp)[0];
-            *(u16 *)((u8 *)e->data + j * 6 + 2) = ((u16 *)&tmp)[1];
-            *(u16 *)((u8 *)e->data + j * 6 + 4) = ((u16 *)&tmp)[2];
+            *(u16 *)((u8 *)e->oam + j * 6) = ((u16 *)&tmp)[0];
+            *(u16 *)((u8 *)e->oam + j * 6 + 2) = ((u16 *)&tmp)[1];
+            *(u16 *)((u8 *)e->oam + j * 6 + 4) = ((u16 *)&tmp)[2];
         }
     }
 
     {
         u32 k;
-        Group *g;
+        Ov007CellAnim *g;
         u32 m;
         u32 c2;
         p = (u8 *)ctx.listB + 4;
         for (k = 0; k < nB; k++) {
             c2 = ((GroupHdr *)p)->count;
-            g = (Group *)(s->groups + k * sizeof(Group));
+            g = (Ov007CellAnim *)(s->anims + k * sizeof(Ov007CellAnim));
             p = p + sizeof(GroupHdr);
             func_ov007_020c13a4(g, c2, 0, 0);
             for (m = 0; m < c2; m++) {
                 GroupMember *q0 = (GroupMember *)p;
                 p = p + sizeof(GroupMember);
-                g->arr[m] = (Entry *)((Entry *)s->entries + q0->entry);
-                g->vals[m] = q0->value;
+                g->frames[m] = (Ov007Cell *)((Ov007Cell *)s->cells + q0->entry);
+                g->durations[m] = q0->value;
             }
         }
     }

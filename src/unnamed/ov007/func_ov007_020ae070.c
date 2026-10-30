@@ -1,8 +1,7 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
-extern u8 data_ov007_0210342c[];
-extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
+extern void Sprite_SetAnimation(void *node, int animIndex, int mode, int rev, int frame);
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020b5bf0, only the slots this file reads. */
@@ -24,27 +23,29 @@ typedef struct Ov007ItemNode {
 typedef char
     Ov007Work_selectedSlot_must_be_at_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
 
-/* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* func_ov007_020add3c calls this while the item is in state 3. On that
  * state's first tick, item 1 sets its node's animation to follow the mode
  * states[2] is in. self keeps the callers' char * spelling; `icon` is the
  * typed view. */
-void func_ov007_020ae070(char *self)
-{
+void func_ov007_020ae070(char *self) {
     Ov007ItemNode *icon = (Ov007ItemNode *)self;
-    Ov007Item *p = icon->item;
-    u16 id = p->id;
-    int ip2 = p->state->stateTicks;
+    Ov007Item *item = icon->item;
+    u16 id = item->id;
+    int ticks = item->state->stateTicks;
     Ov007Work *g = WORK;
-    short idx = g->states[2]->currentState;
+    short mode = g->states[2]->currentState;
 
     if (id != 1)
         return;
-    if (ip2 != 0) return;
+    if (ticks != 0)
+        return;
 
-    switch (idx) {
+    switch (mode) {
     case 3:
         Sprite_SetAnimation(icon->node, 0, 0, 0, 0);
         break;

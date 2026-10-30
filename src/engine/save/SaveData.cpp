@@ -18,6 +18,9 @@
  * bits) around NumGlowingRabbitsFound. mwccarm emits .text in reverse source order, so the
  * definitions below run ROM-descending; the roster reads ROM-ascending.
  *
+ *   func_02013568..func_02013638 -- minigame record tables, seen and unlock bits.
+ *   SetCoinRecordIfHigher..func_02013944 -- coin and star records, cannons,
+ *     minigame rabbits, character intros, the rabbit-count bit.
  *   NumGlowingRabbitsFound -- rabbit bits 20..27 of the flags word.
  *   func_020139b8..func_02013a88 -- cap-flag clear/set/test helpers.
  *   PlayerLoseCap..CanPlayerHaveCap -- cap-loss flags on the live block.
@@ -25,11 +28,10 @@
  *   func_02013c84 -- block copy + character record / SaveFile forwarder.
  *   EraseSaveFile..EraseAllSaveData -- slot and whole-block resets.
  *   func_02013e64 -- zero the save block.
- *   func_02013568..func_02013638 -- minigame record tables, seen and unlock bits.
  *
  * Every method is static: the ROM bodies take no `this` and reach the single
  * save block at 0x0209caa0 directly. The TU declares it once as a SaveBlock
- * object: the current file (SaveData, 0x44 bytes), the minigame block
+ * object: the current file (FileSaveData, 0x44 bytes), the minigame block
  * (MinigameSaveData, 0x2e4 bytes, cart slot 3) and the active-file byte at
  * 0x328. The declaration form matters to the bytes: on an `int[]` view
  * mwccarm keeps the block address in one register across func_02013598's
@@ -44,16 +46,19 @@
 /* The minigame block: 0x2e4 bytes at block + 0x44, saved to cart slot 3. */
 struct MinigameSaveData {
     u32 magic5000; /* 0x00 (block 0x44) -- "5000", written by SetDefaultValuesMg */
-    u32 unlocked;  /* 0x04 (block 0x48) -- unlocked minigames, one bit each */
-    u32 seenLo;    /* 0x08 (block 0x4c) -- menu "seen" bits for minigames 0..0x1b */
-    u8 seenHi;     /* 0x0c (block 0x50) -- the same for minigames 0x1c.. */
+    /* 0x04 (block 0x48) -- unlocked minigames, one bit each in bits 0..0x1b
+       (func_0201361c). Bit 31 is not a minigame: dScMiniGm_c's init
+       (d_s_mini_gm.cpp) sets it once it has written the default records. */
+    u32 unlocked;
+    u32 seenLo; /* 0x08 (block 0x4c) -- menu "seen" bits for minigames 0..0x1b */
+    u8 seenHi;  /* 0x0c (block 0x50) -- the same for minigames 0x1c.. */
     u8 pad_00d[0x2e4 - 0xd];
 };
 
 /* The live save block at 0x0209caa0: the current file, the minigame block and
    the active-file byte; func_02013e64 clears all 0x32c bytes. */
 struct SaveBlock {
-    SaveData file;       /* 0x000 */
+    FileSaveData file;   /* 0x000 */
     MinigameSaveData mg; /* 0x044 */
     u8 activeFile;       /* 0x328 */
 };
@@ -91,31 +96,29 @@ u32 SaveData::EraseAllSaveData() {
 
 // @symbol _ZN8SaveData16SetDefaultValuesEP12FileSaveData
 void SaveData::SetDefaultValues(FileSaveData *fsd_) {
-    SaveData *file = (SaveData *)fsd_;
-    func_0205a588(file, 0, 0x44);
-    file->magic8000 = 0x30303038;
-    file->mCharacter = 3;
-    file->flags2 |= 8;
-    *(unsigned char *)((char *)fsd_ + 0x42) = 0;
+    func_0205a588(fsd_, 0, 0x44);
+    fsd_->magic8000 = 0x30303038;
+    fsd_->mCharacter = 3;
+    fsd_->flags2 |= 8;
+    fsd_->controllerMode = 0;
 }
 
 // @symbol _ZN8SaveData12ReadFileDataEjP12FileSaveData
 int SaveData::ReadFileData(u32 fileID, FileSaveData *dest) {
-    char *buf = (char *)dest;
-    s32 result = SaveData::ReadDataFromCart(buf, 0x44, fileID);
+    s32 result = SaveData::ReadDataFromCart((char *)dest, 0x44, fileID);
     if (result) {
-        SaveData::SetDefaultValues((FileSaveData *)buf);
+        SaveData::SetDefaultValues(dest);
         if (result == 2)
             return 1;
         return 0;
     }
-    ((SaveData *)buf)->minigameUnlocks &= data_0209caa0.mg.unlocked;
+    dest->minigameRabbits &= data_0209caa0.mg.unlocked;
     return 1;
 }
 
 // @symbol _ZN8SaveData8SaveFileEjP12FileSaveData
 int SaveData::SaveFile(u32 fileID, FileSaveData *data) {
-    ((SaveData *)data)->flags1 |= 1;
+    data->flags1 |= 1;
     if (SaveData::SaveDataToCart((char *)data, 0x44, fileID) == 0)
         return 1;
     return 0;
@@ -166,7 +169,7 @@ int SaveData::SaveMinigames(MinigameSaveData *data) {
 
 // @symbol _ZN8SaveData15SaveCurrentFileEv
 int SaveData::SaveCurrentFile() {
-    if (!SaveData::SaveFile(data_0209caa0.activeFile, (FileSaveData *)&data_0209caa0.file))
+    if (!SaveData::SaveFile(data_0209caa0.activeFile, &data_0209caa0.file))
         return 0;
     return SaveData::SaveMinigames(&data_0209caa0.mg);
 }
@@ -262,7 +265,7 @@ void SaveData::SetCharacterIntro(s32 character) {
 extern "C" int func_020138dc(void) {
     int count = 0;
     int i;
-    int f = data_0209caa0.file.minigameUnlocks;
+    int f = data_0209caa0.file.minigameRabbits;
     for (i = 0; i < 0x1c; i++) {
         if (f & (1 << i))
             count++;
@@ -273,11 +276,11 @@ extern "C" int func_020138dc(void) {
 // @symbol func_02013890
 extern "C" int func_02013890(int a, int b) {
     if (b < 0) {
-        int f = data_0209caa0.file.minigameUnlocks;
+        int f = data_0209caa0.file.minigameRabbits;
         int m = 0xf << (a * 4);
         return (f & m) == m;
     } else {
-        int f = data_0209caa0.file.minigameUnlocks;
+        int f = data_0209caa0.file.minigameRabbits;
         return f & (1 << (b | (a << 2)));
     }
 }
@@ -285,7 +288,7 @@ extern "C" int func_02013890(int a, int b) {
 // @symbol func_02013868
 extern "C" void func_02013868(int a, int b) {
     int idx = (a << 2) | b;
-    data_0209caa0.file.minigameUnlocks |= 1 << idx;
+    data_0209caa0.file.minigameRabbits |= 1 << idx;
     func_0201361c(idx);
 }
 
@@ -387,7 +390,7 @@ void SaveData::SetCoinRecordIfHigher(int courseID, u8 coins) {
 
 /* The minigame block's helpers, at the bottom of the TU's span. mg.unlocked
  * holds the unlocked-minigame bits: func_02013868 sets bit (a << 2) | b there
- * and in the file's minigameUnlocks. mg.seenLo/seenHi are the minigame
+ * and in the file's minigameRabbits. mg.seenLo/seenHi are the minigame
  * menu's seen bits (ov005 MiniGm_IsNew reads "not seen", MiniGm_ClearNew sets
  * one). The record tables at block + 0x54, five words each, are what
  * src/minigames/d_s_mg_base.cpp reads and writes. */

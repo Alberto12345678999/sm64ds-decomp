@@ -1,23 +1,33 @@
-extern void RequestScreenFade(int a, int b, void* p);
-extern void func_ov007_020c1d8c(int i);
-extern char data_ov007_0210342c[];
-extern char func_ov007_020b1604[];
+#include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
+extern void RequestScreenFade(int a, int b, void *p);
+extern void func_ov007_020c1d8c(int i);
+extern char *data_ov007_0210342c;
+extern char func_ov007_020b1604[];
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
+/* On the first tick of states[1]'s state, fades out to func_ov007_020b1604:
+ * fade 2 for pending choices 0xa and 0xb, fade 1 otherwise. Unless the
+ * choice is 8 it also passes 0x13 to the work block's callback. */
 void func_ov007_020b155c(void) {
-  char* g = *(char**)data_ov007_0210342c;
-  if (*(int*)(*(char**)(g+8) + 0xc) != 0) return;
-  {
-    int v = *(int*)(g+0x10);
-    if (v == 8) {
-      RequestScreenFade(1, 0, func_ov007_020b1604);
-    } else {
-      if ((unsigned int)(v - 0xa) <= 1) {
-        RequestScreenFade(2, 0, func_ov007_020b1604);
-      } else {
-        RequestScreenFade(1, 0, func_ov007_020b1604);
-      }
-      (*(void(**)(int))(*(char**)data_ov007_0210342c + 0x2c))(0x13);
+    Ov007Work *w = WORK;
+    if (w->states[1]->stateTicks != 0)
+        return;
+    {
+        int choice = w->pendingChoice;
+        if (choice == 8) {
+            RequestScreenFade(1, 0, func_ov007_020b1604);
+        } else {
+            if (choice == 0xa || choice == 0xb) {
+                RequestScreenFade(2, 0, func_ov007_020b1604);
+            } else {
+                RequestScreenFade(1, 0, func_ov007_020b1604);
+            }
+            WORK->callback(0x13);
+        }
     }
-  }
-  func_ov007_020c1d8c(0);
+    func_ov007_020c1d8c(0);
 }

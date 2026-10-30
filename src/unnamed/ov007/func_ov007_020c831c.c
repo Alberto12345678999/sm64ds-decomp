@@ -1,23 +1,34 @@
-typedef short s16;
-typedef int s32;
+/* The 0x24-byte follower record func_ov007_020c844c allocates; names as in
+ * func_ov007_020c83fc, which resets it. */
+typedef struct Ov007Follower {
+    int *target;     /* 0x00: the Q12 position each step moves */
+    int velocity[3]; /* 0x04: added to target[] every step, >> shift */
+    int force[3];    /* 0x10: accumulated per frame, cleared at the end of each step */
+    short invMass;   /* 0x1c: Q12; 0x1000 takes the direct path */
+    unsigned short pad_1e;
+    int flags; /* 0x20: bit 0 skips the step (target held) */
+} Ov007Follower;
+
+/* out = b + s * a, per component in Q12. */
 extern void func_02053320(int s, int *a, int *b, int *out);
-struct S { s32 *p; s32 v4; s32 v8; s32 vc; s32 v10; s32 v14; s32 v18; s16 s1c; s16 pad1e; s32 v20; };
-void func_ov007_020c831c(struct S *s, int shift, int r2arg)
-{
-    if ((s->v20 & 1) == 0) {
-        func_02053320(-shift, &s->v4, &s->v10, &s->v10);
-        if (s->s1c == 0x1000) {
-            s->v4 = s->v10 >> r2arg;
-            s->v8 = s->v14 >> r2arg;
-            s->vc = s->v18 >> r2arg;
+
+/* One damped Euler step in x, y and z, the 3D form of func_ov007_020c81a0;
+ * here the direct path replaces velocity with the damped force. */
+void func_ov007_020c831c(Ov007Follower *f, int damping, int shift) {
+    if ((f->flags & 1) == 0) {
+        func_02053320(-damping, f->velocity, f->force, f->force);
+        if (f->invMass == 0x1000) {
+            f->velocity[0] = f->force[0] >> shift;
+            f->velocity[1] = f->force[1] >> shift;
+            f->velocity[2] = f->force[2] >> shift;
         } else {
-            func_02053320(s->s1c >> r2arg, &s->v10, &s->v4, &s->v4);
+            func_02053320(f->invMass >> shift, f->force, f->velocity, f->velocity);
         }
-        *s->p += s->v4 >> r2arg;
-        *(int *)(((unsigned long long)((int)s->p + 4))) += s->v8 >> r2arg;
-        *(int *)(((unsigned long long)((int)s->p + 8))) += s->vc >> r2arg;
+        f->target[0] += f->velocity[0] >> shift;
+        f->target[1] += f->velocity[1] >> shift;
+        f->target[2] += f->velocity[2] >> shift;
     }
-    s->v18 = 0;
-    s->v14 = s->v18;
-    s->v10 = s->v14;
+    f->force[2] = 0;
+    f->force[1] = f->force[2];
+    f->force[0] = f->force[1];
 }
