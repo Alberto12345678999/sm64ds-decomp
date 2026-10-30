@@ -9202,14 +9202,6 @@
         "return:int []"
       ]
     },
-    "data_0208eb54": {
-      "src/unnamed/arm9/0201/func_020186c0.c": [
-        "return:unsigned char"
-      ],
-      "src/unnamed/arm9/0201/func_02018770.c": [
-        "return:signed char"
-      ]
-    },
     "data_0208ee14": {
       "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:char"
@@ -10000,7 +9992,7 @@
       "src/minigames/d_s_mg_single3d_base.cpp": [
         "return:void * *"
       ],
-      "src/unnamed/arm9/0201/func_02019440.c": [
+      "src/unnamed/arm9/0201/func_02019440.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_02019144.cpp": [
@@ -10014,7 +10006,7 @@
       "src/unnamed/arm9/0201/func_02018ec0.c": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0201/func_02019440.c": [
+      "src/unnamed/arm9/0201/func_02019440.cpp": [
         "return:int"
       ]
     },
@@ -10885,11 +10877,6 @@
     "data_020a0e9c": {
       "src/engine/heap/Heap.cpp": [
         "return:Heap *"
-      ]
-    },
-    "data_020a0ea0": {
-      "src/LoadArchive.c": [
-        "return:int"
       ]
     },
     "data_020a0ebc": {
@@ -18803,23 +18790,6 @@
         "return:void"
       ]
     },
-    "func_02018908": {
-      "src/UnloadArchive.c": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/UnloadArchives.c": [
-        "param:#1 int",
-        "param:#2 int"
-      ]
-    },
-    "func_02018934": {
-      "src/LoadArchive.c": [
-        "param:#1 int",
-        "param:#3 int",
-        "return:int"
-      ]
-    },
     "func_02018a40": {
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "param:#2 int"
@@ -18859,11 +18829,6 @@
       "src/unnamed/arm9/0201/func_02018934.cpp": [
         "param:#1 int *",
         "param:#2 void *"
-      ]
-    },
-    "myFS_OpenFile": {
-      "src/unnamed/arm9/0201/func_02018934.cpp": [
-        "param:#2 int"
       ]
     },
     "myFS_OpenFileFast": {

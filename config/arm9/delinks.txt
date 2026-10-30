@@ -433,7 +433,7 @@ src/unnamed/arm9/0201/func_02019404.c:
     complete
     .text start:0x02019404 end:0x02019440
 
-src/unnamed/arm9/0201/func_02019440.c:
+src/unnamed/arm9/0201/func_02019440.cpp:
     complete
     .text start:0x02019440 end:0x02019510
 
