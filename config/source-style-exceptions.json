@@ -94,7 +94,7 @@
       "rule": "handspelled-member",
       "match": "_ZN9dFdWipe_cD1Ev",
       "count": 3,
-      "reason": "The fader-array helpers pass dFdWipe_c's destructor by address to the array new/delete helpers (func_02073244/func_02073470); C++ cannot take a destructor's address, so the symbol is declared by its mangled name (local extern).",
+      "reason": "The fader-array helpers pass dFdWipe_c's destructor by address to the array new/delete helpers (__cxa_vec_delete/func_02073470); C++ cannot take a destructor's address, so the symbol is declared by its mangled name (local extern).",
       "evidence": "CleanupResources and InitResources array helpers; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
     },
     {

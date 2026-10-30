@@ -92,12 +92,12 @@ typedef void (*FP0206dbf8)(void);
 
 extern int data_020a9ed4;
 extern FP0206dbf8 data_020a9ecc;
-void func_02072f3c(void);
+void __destroy_global_chain(void);
 
 // @symbol func_0206dbf8
 int func_0206dbf8(int a) {
     if (data_020a9ed4 == 0) {
-        func_02072f3c();
+        __destroy_global_chain();
         if (data_020a9ecc != 0) {
             data_020a9ecc();
             data_020a9ecc = 0;

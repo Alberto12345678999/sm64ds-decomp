@@ -5,8 +5,7 @@ extern unsigned char func_02071988(void);
    buf through func_02071988, the ARM semihosting SYS_READC call (swi
    0x123456, r0 = 7). A CR or LF ends the read and *pcount becomes the count
    including it. Returns 0. */
-int func_020719ec(int unused, unsigned char *buf, unsigned int *pcount)
-{
+int __read_console(int unused, unsigned char *buf, unsigned int *pcount) {
     unsigned int i;
     unsigned int n = *pcount;
     i = 0;

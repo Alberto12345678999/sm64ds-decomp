@@ -4150,15 +4150,15 @@ src/unnamed/arm9/0207/func_0207199c.c:
     complete
     .text start:0x0207199c end:0x020719ac
 
-src/unnamed/arm9/0207/func_020719ac.c:
+src/__close_console.c:
     complete
     .text start:0x020719ac end:0x020719b4
 
-src/unnamed/arm9/0207/func_020719b4.c:
+src/__write_console.c:
     complete
     .text start:0x020719b4 end:0x020719ec
 
-src/unnamed/arm9/0207/func_020719ec.c:
+src/__read_console.c:
     complete
     .text start:0x020719ec end:0x02071a50
 
@@ -4218,15 +4218,15 @@ src/unnamed/arm9/0207/func_02072ed0.c:
     complete
     .text start:0x02072ed0 end:0x02072f3c
 
-src/unnamed/arm9/0207/func_02072f3c.c:
+src/__destroy_global_chain.c:
     complete
     .text start:0x02072f3c end:0x02072f94
 
-src/unnamed/arm9/0207/func_02072f94.c:
+src/__call_static_initializers.c:
     complete
     .text start:0x02072f94 end:0x02072fcc
 
-src/unnamed/arm9/0207/func_02072fcc.c:
+src/__throw_catch_compare.c:
     complete
     .text start:0x02072fcc end:0x020731dc
 
@@ -4250,7 +4250,7 @@ src/unnamed/arm9/0207/func_02073238.c:
     complete
     .text start:0x02073238 end:0x02073244
 
-src/unnamed/arm9/0207/func_02073244.c:
+src/__cxa_vec_delete.c:
     complete
     .text start:0x02073244 end:0x0207328c
 

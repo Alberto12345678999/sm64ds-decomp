@@ -3017,9 +3017,9 @@ src/unnamed/arm9/0207/func_02071910.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071974.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071988.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207199c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020719ac.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020719b4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_020719ec.c	PURE-C	arm9				1		None		-
+src/__close_console.c	PURE-C	arm9				1		None		-
+src/__write_console.c	PURE-C	arm9				1		None		-
+src/__read_console.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071a50.c	PURE-C	arm9				1		None		-
 src/func_02071ba0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02071be8.c	PURE-C	arm9				1		None		-
@@ -3033,15 +3033,15 @@ src/unnamed/arm9/0207/func_020729f4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02072d90.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02072dac.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02072ed0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02072f3c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02072f94.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02072fcc.c	PURE-C	arm9				1		None		-
+src/__destroy_global_chain.c	PURE-C	arm9				1		None		-
+src/__call_static_initializers.c	PURE-C	arm9				1		None		-
+src/__throw_catch_compare.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_020731dc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_020731fc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02073220.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207322c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02073238.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0207/func_02073244.c	PURE-C	arm9				1		None		-
+src/__cxa_vec_delete.c	PURE-C	arm9				1		None		-
 src/func_020732e8.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02073300.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_0207335c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks

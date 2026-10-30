@@ -7344,3 +7344,10 @@ arm9	0x0206f820	func_0206f820	longlong2str	MSL printf.c, reverse source order (P
 arm9	0x0206fb08	func_0206fb08	long2str	MSL printf.c, reverse source order (Petari decomp's printf.c); body: 32-bit base 8/10/16 digits backwards, sign, zero fill, # prefix
 arm9	0x0206fd6c	func_0206fd6c	parse_format	MSL printf.c, reverse source order (Petari decomp's printf.c); body: flags, width, precision, length modifier and conversion char
 arm9	0x0206e4a4	func_0206e4a4	__pformatter	MSL printf.c, reverse source order (Petari decomp's printf.c); body: %-walk via parse_format, argument fetch per length modifier, the long/float/hex helpers, fill and justification
+arm9	0x02072f3c	func_02072f3c	__destroy_global_chain	Metrowerks runtime global_destructor_chain.c, as in the Advance Wars DS decomp; body: pop each registered node, call its destructor with -1; exit calls it
+arm9	0x02072f94	func_02072f94	__call_static_initializers	Metrowerks runtime, as in the Advance Wars DS decomp; body: run the null-ended static-initializer table; pret's NitroSDK crt0 calls it by this name at the same point of the entry code
+arm9	0x020719ec	func_020719ec	__read_console	MSL console_io.c, as in the Advance Wars DS decomp; body: semihosting read until CR or LF; the read_proc of the three console FILEs at 0x0209a36c
+arm9	0x020719b4	func_020719b4	__write_console	MSL console_io.c, as in the Advance Wars DS decomp; body: semihosting write per byte; the write_proc of the three console FILEs at 0x0209a36c
+arm9	0x020719ac	func_020719ac	__close_console	MSL console_io.c; body: return 0; the close_proc beside __read_console and __write_console in all three console FILEs at 0x0209a36c
+arm9	0x02072fcc	func_02072fcc	__throw_catch_compare	Metrowerks runtime NMWException, as in the Wind Waker decomp's NMWException.cp; body: catch-type string match, K for const where PowerPC has C
+arm9	0x02073244	func_02073244	__cxa_vec_delete	the compiler's name: mwccarm 2004/b56 compiles delete[] of a class with a destructor to __cxa_vec_delete(p, size, 8, dtor), byte-identical to the explicit call; body is the Itanium ABI's

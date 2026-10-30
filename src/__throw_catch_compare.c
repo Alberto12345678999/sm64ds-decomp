@@ -12,7 +12,7 @@ static inline int IsQualifiedPtr(unsigned char ca, unsigned char *p) {
     return ((ca == 'P') || (ca == 'R')) && (ca == (*p));
 }
 
-int func_02072fcc(unsigned char *a, unsigned char *b, int *out) {
+int __throw_catch_compare(unsigned char *a, unsigned char *b, int *out) {
     unsigned char *p = b;
     unsigned char *q;
     unsigned char ca;

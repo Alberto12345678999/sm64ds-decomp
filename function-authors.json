@@ -12091,15 +12091,15 @@
     },
     "arm9:0x020719ac": {
       "author": "tangosdev",
-      "name": "func_020719ac"
+      "name": "__close_console"
     },
     "arm9:0x020719b4": {
       "author": "tangosdev",
-      "name": "func_020719b4"
+      "name": "__write_console"
     },
     "arm9:0x020719ec": {
       "author": "tangosdev",
-      "name": "func_020719ec"
+      "name": "__read_console"
     },
     "arm9:0x02071a50": {
       "author": "tangosdev",
@@ -12159,15 +12159,15 @@
     },
     "arm9:0x02072f3c": {
       "author": "tangosdev",
-      "name": "func_02072f3c"
+      "name": "__destroy_global_chain"
     },
     "arm9:0x02072f94": {
       "author": "tangosdev",
-      "name": "func_02072f94"
+      "name": "__call_static_initializers"
     },
     "arm9:0x02072fcc": {
       "author": "tangosdev",
-      "name": "func_02072fcc"
+      "name": "__throw_catch_compare"
     },
     "arm9:0x020731dc": {
       "author": "tangosdev",
@@ -12191,7 +12191,7 @@
     },
     "arm9:0x02073244": {
       "author": "tangosdev",
-      "name": "func_02073244"
+      "name": "__cxa_vec_delete"
     },
     "arm9:0x0207328c": {
       "author": "tangosdev",

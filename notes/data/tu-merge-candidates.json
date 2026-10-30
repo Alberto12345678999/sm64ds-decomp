@@ -13844,9 +13844,9 @@
     "src/fabs.c",
     "src/__num2dec.c",
     "src/unnamed/arm9/0207/func_02071784.c",
-    "src/unnamed/arm9/0207/func_02072f3c.c",
+    "src/__destroy_global_chain.c",
     "src/unnamed/arm9/0207/func_02073238.c",
-    "src/unnamed/arm9/0207/func_02073244.c"
+    "src/__cxa_vec_delete.c"
    ],
    "ext_mix": {
     ".cpp": 777,
@@ -14030,9 +14030,9 @@
     "src/unnamed/arm9/0207/func_02071974.c",
     "src/unnamed/arm9/0207/func_02071988.c",
     "src/unnamed/arm9/0207/func_0207199c.c",
-    "src/unnamed/arm9/0207/func_020719ac.c",
-    "src/unnamed/arm9/0207/func_020719b4.c",
-    "src/unnamed/arm9/0207/func_020719ec.c",
+    "src/__close_console.c",
+    "src/__write_console.c",
+    "src/__read_console.c",
     "src/unnamed/arm9/0207/func_02071a50.c",
     "src/ReadSignedVarInt.c",
     "src/func_02071ba0.c",
@@ -14101,8 +14101,8 @@
    "n_functions_map": 6,
    "n_files": 6,
    "files": [
-    "src/unnamed/arm9/0207/func_02072f94.c",
-    "src/unnamed/arm9/0207/func_02072fcc.c",
+    "src/__call_static_initializers.c",
+    "src/__throw_catch_compare.c",
     "src/unnamed/arm9/0207/func_020731dc.c",
     "src/unnamed/arm9/0207/func_020731fc.c",
     "src/unnamed/arm9/0207/func_02073220.c",

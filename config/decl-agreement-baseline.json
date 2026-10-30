@@ -21593,7 +21593,7 @@
       ]
     },
     "func_02071988": {
-      "src/unnamed/arm9/0207/func_020719ec.c": [
+      "src/__read_console.c": [
         "return:unsigned char"
       ]
     },
@@ -21650,7 +21650,7 @@
         "param:#1 void *"
       ]
     },
-    "func_02072fcc": {
+    "__throw_catch_compare": {
       "src/unnamed/arm9/0207/func_02071d3c.c": [
         "param:#1 int",
         "param:#2 int",
@@ -21709,14 +21709,14 @@
         "return:int"
       ]
     },
-    "func_02073244": {
+    "__cxa_vec_delete": {
       "include/decl_common.h": [
         "param:#1 void *",
         "param:#4 void (*)(void *)"
       ]
     },
     "func_02073300": {
-      "src/unnamed/arm9/0207/func_02073244.c": [
+      "src/__cxa_vec_delete.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",

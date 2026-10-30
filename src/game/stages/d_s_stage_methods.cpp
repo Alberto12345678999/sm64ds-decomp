@@ -4468,7 +4468,7 @@ extern "C" {
 void EndKuppaScript(void);
 void UnloadArchive(int);
 // local extern: the fader array's destructor is passed by address to
-// func_02073244 here and to func_02073470 in InitResources, which member
+// __cxa_vec_delete here and to func_02073470 in InitResources, which member
 // syntax cannot express.
 void _ZN9dFdWipe_cD1Ev(void *thiz);
 }
@@ -4521,7 +4521,7 @@ int dScStage_c::CleanupResources() {
     data_0209f314 = 0;
     dScene_c::SetAndStopColorFader();
     data_0209d4b0 = 0;
-    func_02073244(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
+    __cxa_vec_delete(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
     data_0209f324 = 0;
     CleanCommonModelDataArr();
     mMeshCollider.Disable();
