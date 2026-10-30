@@ -6,12 +6,10 @@ extern int func_ov007_020c8f58();
 extern int func_ov007_020c9080();
 extern void func_ov007_020c3d1c(void *p);
 
-/* Frees a camera and its three tweens. r4 keeps the tree's char * spelling;
- * `cam` is the typed view. */
-void func_ov007_020c020c(char *r4) {
-    Ov007Camera *cam = (Ov007Camera *)r4;
+/* Frees a camera and its three tweens. */
+void func_ov007_020c020c(Ov007Camera *cam) {
     func_ov007_020c8f58(cam->eyeTween);
     func_ov007_020c8f58(cam->targetTween);
     func_ov007_020c9080(cam->distanceTween);
-    func_ov007_020c3d1c(r4);
+    func_ov007_020c3d1c(cam);
 }

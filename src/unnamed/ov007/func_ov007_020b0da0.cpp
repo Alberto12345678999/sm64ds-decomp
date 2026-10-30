@@ -27,10 +27,6 @@ extern short data_02082214[];
 
 extern void Matrix4x3_LoadIdentity(void *mat);
 
-/* The extern keeps decl_common.h's void * spelling; the typed view is
- * reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* stateWork bits, by what this file does with them; medium confidence */
 #define OV007_FIGURE_SWAY 1    /* rock the model and bob it (periods 160 and 40 ticks) */
 #define OV007_FIGURE_TOUCHED 2 /* a touch landed in the box below; stop at the next rest */

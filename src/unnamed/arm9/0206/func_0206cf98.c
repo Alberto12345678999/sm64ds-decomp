@@ -40,7 +40,7 @@ extern void func_0206d8c4(struct Arr *s, u32 index);
 extern void _ZN4cstd8__assertEPKcS1_S1_i(const char *, const char *, const char *, int);
 
 /* isdoverlay.c (the debugger's overlay table, named by the assert strings):
-   remove [nVMA, nVMA + size) from table type (0 or 1; func_0205dc7c passes
+   remove [nVMA, nVMA + size) from table type (0 or 1; FS_EndOverlay passes
    its overlay's target processor). An entry inside the range is deleted, an
    entry crossing either end is split or trimmed. Interrupts are off and the
    table's lock word is held for the edit. Returns 0 for a bad type. */

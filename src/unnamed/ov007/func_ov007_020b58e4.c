@@ -3,13 +3,10 @@
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
 #include "Ov007Item.h"
-extern u8 data_ov007_0210342c[];
 
 typedef char Ov007Work_transitionMode_must_be_at_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20
                                                           ? 1
                                                           : -1];
-
-#define WORK (*(Ov007Work **)data_ov007_0210342c)
 
 /* Load-bearing: reading view->item in place instead of through this inline
  * costs 19 mismatches at 2004/b56. */

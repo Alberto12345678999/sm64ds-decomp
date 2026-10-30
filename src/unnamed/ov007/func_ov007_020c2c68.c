@@ -1,7 +1,7 @@
 #include "Ov007StrokePath.h"
 
 extern int func_ov007_020c3df4(int a, int b);
-extern void func_ov007_020c29b4(char* c);
+extern void func_ov007_020c29b4(Ov007StrokePath *path);
 extern void func_ov007_020c28ac(void* c);
 
 /* Allocates a stroke path of representation a with room for b points:
@@ -12,7 +12,7 @@ int func_ov007_020c2c68(int a, int b, int cc)
 {
     char* p = (char*)func_ov007_020c3df4(0, 0x30);
     Ov007StrokePath *path = (Ov007StrokePath *)p;
-    func_ov007_020c29b4(p);
+    func_ov007_020c29b4(path);
     path->representation = a;
     path->flags = cc;
     path->capacity = b;

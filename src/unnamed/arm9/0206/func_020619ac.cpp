@@ -5,7 +5,7 @@
 extern "C" {
 
 extern int WM_GetSystemWork(void);
-extern int func_0206152c(void);
+extern int WMi_CheckInitialized(void);
 
 char* func_020619ac(char* a, unsigned int idx)
 {
@@ -14,7 +14,8 @@ char* func_020619ac(char* a, unsigned int idx)
     char* local[16];
     int i;
     h = WM_GetSystemWork();
-    if (func_0206152c() != 0) return 0;
+    if (WMi_CheckInitialized() != 0)
+        return 0;
     if (idx < 1 || idx > 0xf)
         return 0;
     CP15::InvalidateDataCache((u32) * (char **)(h + 4) + 0x17e, 2);

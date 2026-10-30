@@ -3,11 +3,7 @@
 
 extern void RequestScreenFade(int a, int b, void *p);
 extern void func_ov007_020c1d8c(int i);
-extern char *data_ov007_0210342c;
 extern char func_ov007_020b1604[];
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* On the first tick of states[1]'s state, fades out to func_ov007_020b1604:
  * fade 2 for pending choices 0xa and 0xb, fade 1 otherwise. Unless the

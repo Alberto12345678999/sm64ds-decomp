@@ -13,7 +13,7 @@
 struct Ov007Camera;
 
 /* The 0x20-byte picker parameters, data_ov007_020d7b60
- * (func_ov007_020ba9bc passes it to func_ov007_020c690c). */
+ * (func_ov007_020b9880 passes it to func_ov007_020c690c). */
 typedef struct Ov007PickerParams {
     int pointMass; /* 0x00: Q12, each group's points (func_ov007_020c798c) */
     int damping;   /* 0x04: func_ov007_020c81a0's damping for every point */
@@ -112,6 +112,38 @@ typedef struct Ov007Picker {
 #ifndef SM64DS_PLATFORM_PC
 typedef char Ov007Picker_size_must_be_0xd0[sizeof(Ov007Picker) == 0xd0 ? 1 : -1];
 typedef char Ov007Picker_camera_must_be_at_0xa8[(int)&((Ov007Picker *)0)->camera == 0xa8 ? 1 : -1];
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+struct Ov007Camera;
+
+void func_ov007_020c4dfc(Ov007Picker *picker, int half, int a2, int a3);
+int func_ov007_020c5854(Ov007Picker *picker, Vector3 *target, int pull, int snapRadius, int reach,
+                        int scale);
+void func_ov007_020c5948(Ov007Picker *picker, Vector3 *src);
+void func_ov007_020c5fc8(Ov007Picker *picker, int idx, int t);
+void func_ov007_020c6174(Ov007Picker *picker, int idx, int flag);
+void func_ov007_020c62cc(Ov007Picker *picker, int flag);
+void func_ov007_020c6314(Ov007Picker *picker, int idx, int flag);
+void func_ov007_020c64c4(Ov007Picker *picker, int flag);
+int func_ov007_020c6550(Ov007Picker *picker);
+int func_ov007_020c65bc(Ov007Picker *picker, int x, int y, int progress);
+void func_ov007_020c6684(Ov007Picker *picker);
+void func_ov007_020c6724(Ov007Picker *picker, int flag);
+void func_ov007_020c6d20(Ov007Picker *picker, int idx);
+void func_ov007_020c6d90(Ov007Picker *picker, int idx);
+void func_ov007_020c6e68(Ov007Picker *picker, int idx);
+void func_ov007_020c6784(Ov007Picker *picker, int count, const int *pointCounts,
+                         const void *xCoords, const void *yCoords,
+                         const int *const *progressThresholds, int mode);
+Ov007Picker *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity,
+                                 struct Ov007Camera *camera, void *params, void *springConstants);
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

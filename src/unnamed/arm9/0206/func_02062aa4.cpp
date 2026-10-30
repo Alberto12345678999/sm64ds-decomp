@@ -9,12 +9,12 @@ extern "C" int WM_GetSystemWork(void);
 extern "C" void MultiCopyHalf(const void *src, void *dst, u32 count);
 
 /* NitroSDK data sharing, the child's port receive callback: WM_StartDataSharing
- * (func_020631dc) registers it with WM_SetPortCallback (func_02061c88) when this
+ * (func_020631dc) registers it with WM_SetPortCallback when this
  * station is not the parent (status->aid != 0). On PORT_RECV (state 0x15) it
  * copies the parent's whole data set into ds[writeIndex], records its sequence
  * number and steps writeIndex; CONNECTED (7) and DISCONNECTED (9) are ignored.
  * A failed receive (errcode != 0) puts the sharing into state 3, the error
- * state WM_StepDataSharing (func_02062df0) reports. */
+ * state WM_StepDataSharing reports. */
 
 /* NitroSDK WMPortRecvCallback, the leading fields: the offsets agree with every
  * port receive callback in this cluster (func_02062bdc, func_020417d0). */

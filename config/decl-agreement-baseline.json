@@ -312,7 +312,7 @@
       "src/unnamed/arm9/0205/func_0205d2dc.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205df40.c": [
+      "src/FS_LoadOverlayInfo.c": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_0206062c.cpp": [
@@ -490,7 +490,7 @@
       ]
     },
     "DMASyncFillTransfer": {
-      "src/unnamed/arm9/0206/func_020616e8.cpp": [
+      "src/WM_Init.cpp": [
         "param:#1 int",
         "param:#3 int",
         "param:#4 int"
@@ -716,7 +716,7 @@
         "param:#1 int *",
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205dffc.c": [
+      "src/FSi_LoadOverlayInfoCore.c": [
         "param:#1 void *",
         "param:#2 void *"
       ],
@@ -818,12 +818,12 @@
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:IPCStatus"
       ],
-      "src/unnamed/arm9/0205/func_0205edd8.cpp": [
+      "src/TP_RequestSetStabilityAsync.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0205/func_0205f040.cpp": [
+      "src/TP_RequestSamplingAsync.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
@@ -1592,7 +1592,7 @@
       "src/unnamed/arm9/0206/func_02062aa4.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02062df0.cpp": [
+      "src/WM_StepDataSharing.cpp": [
         "param:#3 unsigned int"
       ],
       "src/MBi_MakeGameInfo.c": [
@@ -2624,9 +2624,6 @@
       "src/unnamed/arm9/0205/func_0205a8c4.c": [
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0205/func_0205a924.c": [
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0205/func_0205a958.c": [
         "param:#2 void *"
       ],
@@ -2653,19 +2650,10 @@
       "src/unnamed/arm9/0205/func_0205aac8.c": [
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0205/func_0205aaf4.c": [
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0205/func_0205ac28.c": [
         "param:#2 void *"
       ],
       "src/unnamed/arm9/0205/func_0205ad6c.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad98.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205adc4.c": [
         "param:#2 void *"
       ]
     },
@@ -3799,25 +3787,7 @@
       "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_02061fdc.c": [
-        "param:#2 int"
-      ],
       "src/unnamed/arm9/0206/func_020620b0.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0206/func_020621b8.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0206/func_020622a8.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0206/func_020622f0.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0206/func_02062338.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0206/func_02062380.c": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
@@ -3825,25 +3795,22 @@
       ],
       "src/unnamed/arm9/0206/func_020625fc.cpp": [
         "arity:3"
-      ],
-      "src/unnamed/arm9/0206/func_020634fc.c": [
-        "param:#2 int"
       ]
     },
     "WM_GetSystemWork": {
       "src/unnamed/arm9/0206/func_020618b8.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061960.cpp": [
+      "src/WM_GetAllowedChannel.cpp": [
         "return:void *"
       ],
       "src/unnamed/arm9/0206/func_02061b9c.cpp": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02061c88.cpp": [
+      "src/WM_SetPortCallback.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0206/func_02061ce4.cpp": [
+      "src/WM_SetIndCallback.cpp": [
         "return:void *"
       ],
       "src/unnamed/arm9/0206/func_02061e38.cpp": [
@@ -3852,10 +3819,10 @@
       "src/unnamed/arm9/0206/func_02061ee4.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0206/func_02062240.c": [
+      "src/WM_Initialize.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02062380.c": [
+      "src/WM_Enable.c": [
         "return:int *"
       ],
       "src/unnamed/arm9/0206/func_02062428.cpp": [
@@ -3867,7 +3834,7 @@
       "src/unnamed/arm9/0206/func_02062d10.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_020634fc.c": [
+      "src/WM_MeasureChannel.c": [
         "return:int *"
       ]
     },
@@ -3883,34 +3850,10 @@
       "src/unnamed/arm9/0206/func_02061ee4.cpp": [
         "arity:2"
       ],
-      "src/unnamed/arm9/0206/func_02061fdc.c": [
-        "arity:2"
-      ],
       "src/unnamed/arm9/0206/func_020620b0.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0206/func_020621b8.c": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_02062200.c": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_02062240.c": [
-        "arity:5"
-      ],
-      "src/unnamed/arm9/0206/func_020622a8.c": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_020622f0.c": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_02062338.c": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_02062380.c": [
-        "arity:5"
       ],
       "src/unnamed/arm9/0206/func_02062428.cpp": [
         "arity:9"
@@ -3922,9 +3865,6 @@
       ],
       "src/unnamed/arm9/0206/func_020625fc.cpp": [
         "arity:12"
-      ],
-      "src/unnamed/arm9/0206/func_020634fc.c": [
-        "arity:2"
       ],
       "src/unnamed/arm9/0206/func_02063574.c": [
         "arity:5"
@@ -5493,10 +5433,10 @@
       "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02061c88.cpp": [
+      "src/WM_SetPortCallback.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02061ce4.cpp": [
+      "src/WM_SetIndCallback.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02065170.cpp": [
@@ -5575,7 +5515,7 @@
       "src/unnamed/arm9/0205/func_0205c5e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c7e4.cpp": [
+      "src/FS_ResumeArchive.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205c864.cpp": [
@@ -5584,10 +5524,10 @@
       "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cbe4.cpp": [
+      "src/FS_ReleaseArchiveName.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
+      "src/FS_RegisterArchiveName.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
@@ -5605,20 +5545,20 @@
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205eb58.cpp": [
+      "src/TP_CalcCalibrateParam.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205f0e0.cpp": [
+      "src/TP_SetCalibrateParam.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02061c88.cpp": [
+      "src/WM_SetPortCallback.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02061ce4.cpp": [
+      "src/WM_SetIndCallback.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -9121,321 +9061,6 @@
         "return:int"
       ]
     },
-    "data_ov002_02110b10": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b18": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b20": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b28": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b30": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b38": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b40": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b48": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b58": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b60": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b68": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b80": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b88": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b90": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110ba0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110ba8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bb0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bb8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bc0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bc8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bd0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bd8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110be0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110be8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bf0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110bf8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c00": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c08": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c10": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c2c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c38": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c44": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c50": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c5c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c68": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c74": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c80": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c8c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110c98": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110ca4": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cb0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cbc": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cc8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cd4": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110ce0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cec": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110cf8": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d04": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d10": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d1c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d28": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d40": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d4c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d58": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d64": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d70": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d7c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d88": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110d94": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110da0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110dc4": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov002_02110dd0": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:void * []"
-      ]
-    },
     "func_020383e4": {
       "include/dBgCh_Actr.h": [
         "param:#1 struct dBgCh_Actr *"
@@ -9462,10 +9087,9 @@
         "param:#3 struct Node *"
       ]
     },
-    "func_0205de9c": {
+    "FSi_CompareDigest": {
       "src/unnamed/arm9/0205/func_0205db88.cpp": [
         "param:#1 Obj *",
-        "param:#2 void *",
         "param:#3 void *",
         "return:unsigned int"
       ]
@@ -9482,7 +9106,7 @@
       ]
     },
     "func_0206cf98": {
-      "src/unnamed/arm9/0205/func_0205dc7c.cpp": [
+      "src/FS_EndOverlay.cpp": [
         "return:void"
       ]
     },
@@ -9817,6 +9441,45 @@
       ]
     },
     "data_0209d4b8": {
+      "include/decl_common.h": [
+        "return:int"
+      ],
+      "src/minigames/d_mg3d_esp_anim_set.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_coin.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_flower.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_memory.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_memory2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_pachinko.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_pachinko2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "return:int"
+      ],
       "src/unnamed/arm9/0201/func_020196cc.c": [
         "return:int []"
       ]
@@ -9848,11 +9511,26 @@
       ]
     },
     "data_0209d574": {
-      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
-        "return:int []"
+      "src/engine/sound/Sound.cpp": [
+        "return:char []"
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "return:int"
+      ],
+      "src/unnamed/arm9/0201/func_020199a4.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201a054.cpp": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201fec8.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201ffcc.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
+        "return:int []"
       ]
     },
     "data_0209d65c": {
@@ -11039,16 +10717,6 @@
         "return:void *"
       ]
     },
-    "data_020a8048": {
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
-        "return:Node *"
-      ]
-    },
-    "data_020a804c": {
-      "src/unnamed/arm9/0205/func_0205cbe4.cpp": [
-        "return:Mgr"
-      ]
-    },
     "data_020a805c": {
       "src/unnamed/arm9/0205/func_0205da94.c": [
         "return:unsigned int"
@@ -11060,25 +10728,25 @@
       ]
     },
     "data_020a80cc": {
-      "src/unnamed/arm9/0205/func_0205e9fc.c": [
+      "src/TP_CheckError.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/arm9/0205/func_0205ea10.c": [
+      "src/TP_WaitBusy.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/arm9/0205/func_0205ea28.c": [
+      "src/TP_GetCalibratedPoint.c": [
         "return:unsigned short []"
       ],
-      "src/unnamed/arm9/0205/func_0205edc8.c": [
+      "src/TP_GetLatestIndexInAuto.c": [
         "return:unsigned short []"
       ],
-      "src/unnamed/arm9/0205/func_0205f040.cpp": [
+      "src/TP_RequestSamplingAsync.cpp": [
         "return:G_t"
       ],
-      "src/unnamed/arm9/0205/func_0205f0e0.cpp": [
+      "src/TP_SetCalibrateParam.cpp": [
         "return:Glob"
       ],
-      "src/unnamed/arm9/0205/func_0205f270.c": [
+      "src/TP_Init.c": [
         "return:char []"
       ]
     },
@@ -11108,13 +10776,8 @@
       "src/unnamed/arm9/0206/func_02061674.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020616e8.cpp": [
+      "src/WM_Init.cpp": [
         "return:int *"
-      ]
-    },
-    "data_020a89b0": {
-      "src/unnamed/arm9/0206/func_020616e8.cpp": [
-        "return:int"
       ]
     },
     "data_020a94c4": {
@@ -12321,82 +11984,9 @@
         "return:int []"
       ]
     },
-    "data_ov002_02110b50": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b70": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov002_02110b78": {
       "include/decl_common.h": [
         "return:char"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110b98": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110c18": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov002_02110e24": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e4c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e64": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e7c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110e9c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110ebc": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110eec": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110f34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
-      ]
-    },
-    "data_ov002_02110f9c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
-        "return:PmfWords []"
       ]
     },
     "data_ov002_0211117c": {
@@ -12661,10 +12251,8 @@
     },
     "sTrmp3DFallSpeed": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:int"
+        "return:int",
+        "return:int []"
       ]
     },
     "sTrmpAnimRollJumpEnd": {
@@ -12744,6 +12332,9 @@
     "sTrmp2RiseSpeedMax": {
       "include/decl_common.h": [
         "return:int []"
+      ],
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int"
       ]
     },
     "sTrmp2FallSpeed": {
@@ -12751,6 +12342,7 @@
         "return:int []"
       ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int",
         "return:int []"
       ]
     },
@@ -12770,16 +12362,6 @@
         "return:int",
         "return:void *",
         "return:void * []"
-      ]
-    },
-    "sTrmpMarioModelFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:int []"
-      ]
-    },
-    "sTrmpGoalSlots": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:Vector3"
       ]
     },
     "sTrmpItems": {
@@ -13024,35 +12606,6 @@
         "return:void * []"
       ]
     },
-    "data_ov007_0210342c": {
-      "include/decl_common.h": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ad660.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020ae2d0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020aec94.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2454.c": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2728.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b58e4.c": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b5bf0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b5f64.c": [
-        "return:unsigned char []"
-      ]
-    },
     "data_ov007_02103448": {
       "src/ui/menus/unit020b7658.cpp": [
         "return:void *"
@@ -13076,28 +12629,6 @@
     "data_ov007_02104bbc": {
       "src/ui/menus/unit020bd9e4.cpp": [
         "return:char *"
-      ]
-    },
-    "data_ov007_02104bdc": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int []",
-        "return:int"
-      ]
-    },
-    "data_ov007_02104be0": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_02104be4": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_02104be8": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "return:int []",
-        "return:int"
       ]
     },
     "data_ov007_02104c14": {
@@ -16083,7 +15614,7 @@
       ]
     },
     "MIi_UncompressBackward": {
-      "src/unnamed/arm9/0205/func_0205dd9c.c": [
+      "src/FS_StartOverlay.c": [
         "arity:1"
       ]
     },
@@ -16606,10 +16137,6 @@
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "kind:data"
       ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
         "arity:0",
         "return:void"
@@ -16620,10 +16147,6 @@
     },
     "func_02017a24": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "param:#2 int",
         "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
@@ -18321,13 +17844,19 @@
         "param:#2 int",
         "return:void"
       ],
+      "src/unnamed/arm9/0201/func_0201a9ec.c": [
+        "param:#2 unsigned char",
+        "return:unsigned char"
+      ],
       "src/unnamed/arm9/0201/func_0201fec8.c": [
         "param:#1 char *",
         "param:#2 int",
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_0201ffcc.c": [
-        "param:#1 char *"
+        "param:#1 char *",
+        "param:#2 unsigned char",
+        "return:unsigned char"
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "param:#1 int *",
@@ -19949,7 +19478,7 @@
         "param:#2 void *",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020616e8.cpp": [
+      "src/WM_Init.cpp": [
         "param:#2 void *"
       ],
       "src/engine/sound/SoundEngine.cpp": [
@@ -19957,7 +19486,7 @@
       ]
     },
     "OS_InitMessageQueue": {
-      "src/unnamed/arm9/0206/func_020616e8.cpp": [
+      "src/WM_Init.cpp": [
         "param:#2 int *"
       ],
       "src/engine/sound/SoundEngine.cpp": [
@@ -20060,13 +19589,13 @@
       "src/unnamed/arm9/0204/func_02042f68.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205cd34.c": [
+      "src/FS_InitArchive.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205dd9c.c": [
+      "src/FS_StartOverlay.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205e0b0.cpp": [
+      "src/FS_ClearOverlayImage.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02061e38.cpp": [
@@ -20096,44 +19625,6 @@
     },
     "func_0205a8c4": {
       "src/unnamed/arm9/0204/func_02049c48.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_0205a8f0": {
-      "src/unnamed/arm9/0205/func_0205ac5c.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205ac84.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205acac.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205acd4.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205acfc.c": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:int"
-      ]
-    },
-    "func_0205a924": {
-      "src/unnamed/arm9/0205/func_0205ad24.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad3c.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad54.c": [
         "param:#1 int"
       ]
     },
@@ -20184,12 +19675,12 @@
         "param:#1 Node *"
       ]
     },
-    "func_0205c7c4": {
+    "FS_SetArchiveProc": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#2 void *"
       ]
     },
-    "func_0205c7e4": {
+    "FS_ResumeArchive": {
       "src/unnamed/arm9/0205/func_0205c91c.c": [
         "return:void"
       ]
@@ -20211,7 +19702,7 @@
         "return:void"
       ]
     },
-    "func_0205cb68": {
+    "FS_LoadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#7 void *",
         "param:#8 void *",
@@ -20226,8 +19717,8 @@
       "src/unnamed/arm9/0205/func_0205d568.c": [
         "arity:4"
       ],
-      "src/unnamed/arm9/0205/func_0205d714.c": [
-        "param:#1 Out *"
+      "src/FSi_FindPath.c": [
+        "param:#1 FSFile *"
       ]
     },
     "func_0205cf5c": {
@@ -20268,12 +19759,12 @@
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
+      "src/FS_RegisterArchiveName.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0205/func_0205d714.c": [
+      "src/FSi_FindPath.c": [
         "param:#1 char *",
-        "return:Obj *"
+        "return:FSArchive *"
       ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
@@ -20289,19 +19780,19 @@
       ]
     },
     "func_0205d2b0": {
-      "src/unnamed/arm9/0205/func_0205cb68.c": [
+      "src/FS_LoadArchive.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0205d2dc": {
-      "src/unnamed/arm9/0205/func_0205cb68.c": [
+      "src/FS_LoadArchive.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_0205d304": {
-      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
+      "src/FS_RegisterArchiveName.cpp": [
         "param:#2 void *",
         "return:void *"
       ]
@@ -20340,7 +19831,7 @@
         "return:void"
       ]
     },
-    "func_0205d714": {
+    "FSi_FindPath": {
       "src/unnamed/arm9/0205/func_0205d644.c": [
         "param:#2 const char *",
         "param:#3 void *"
@@ -20393,8 +19884,8 @@
         "return:void"
       ]
     },
-    "func_0205dffc": {
-      "src/unnamed/arm9/0205/func_0205df40.c": [
+    "FSi_LoadOverlayInfoCore": {
+      "src/FS_LoadOverlayInfo.c": [
         "param:#4 void *"
       ]
     },
@@ -20405,24 +19896,14 @@
       ]
     },
     "func_0205e6e4": {
-      "src/unnamed/arm9/0205/func_0205e0f4.c": [
+      "src/DGT_Hash2CalcHmac.c": [
         "param:#1 unsigned int *",
         "param:#2 const unsigned char *",
         "return:void"
       ]
     },
-    "func_0205ea28": {
-      "src/unnamed/arm9/0203/func_0203b9bc.c": [
-        "param:#1 Col *",
-        "param:#2 Col *"
-      ],
-      "src/unnamed/arm9/0205/func_0205efe0.c": [
-        "param:#1 H4 *",
-        "param:#2 H4 *"
-      ]
-    },
-    "func_0205eb58": {
-      "src/unnamed/arm9/0205/func_0205f1e4.c": [
+    "TP_CalcCalibrateParam": {
+      "src/TP_GetUserInfo.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
@@ -20435,7 +19916,7 @@
         "return:int"
       ]
     },
-    "func_0205eeac": {
+    "TP_RequestAutoSamplingStartAsync": {
       "src/unnamed/arm9/0203/func_0203bbc0.c": [
         "param:#1 int",
         "param:#2 int",
@@ -20443,19 +19924,14 @@
         "param:#4 int"
       ]
     },
-    "func_0205efe0": {
-      "src/unnamed/arm9/0205/func_0205efc0.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f1e4": {
+    "TP_GetUserInfo": {
       "src/unnamed/arm9/0203/func_0203bbc0.c": [
         "param:#1 void *",
         "return:void"
       ]
     },
-    "func_0205f300": {
-      "src/unnamed/arm9/0205/func_0205f270.c": [
+    "TPi_TpCallback": {
+      "src/TP_Init.c": [
         "arity:0"
       ]
     },
@@ -20595,17 +20071,12 @@
       ]
     },
     "func_02061188": {
-      "src/unnamed/arm9/0206/func_020616e8.cpp": [
+      "src/WM_Init.cpp": [
         "arity:0"
       ]
     },
-    "func_020614d0": {
-      "src/unnamed/arm9/0206/func_02062200.c": [
-        "arity:1"
-      ]
-    },
-    "func_020616e8": {
-      "src/unnamed/arm9/0206/func_02062240.c": [
+    "WM_Init": {
+      "src/WM_Initialize.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0204/func_020408b0.cpp": [
@@ -20624,12 +20095,12 @@
         "return:int"
       ]
     },
-    "func_02061c88": {
+    "WM_SetPortCallback": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
         "param:#2 void *"
       ]
     },
-    "func_02061ce4": {
+    "WM_SetIndCallback": {
       "src/unnamed/arm9/0203/func_0203fc38.c": [
         "param:#1 void *"
       ],
@@ -20652,7 +20123,7 @@
         "param:#1 void *"
       ]
     },
-    "func_02061fdc": {
+    "WM_StartParent": {
       "src/unnamed/arm9/0203/func_0203fb98.c": [
         "param:#1 void *"
       ],
@@ -20674,7 +20145,7 @@
         "param:#1 void *"
       ]
     },
-    "func_020621b8": {
+    "WM_End": {
       "src/unnamed/arm9/0203/func_0203f6b4.c": [
         "param:#1 void *"
       ],
@@ -20685,27 +20156,27 @@
         "param:#1 void *"
       ]
     },
-    "func_02062200": {
+    "WM_Reset": {
       "src/Wireless_Reset.c": [
         "param:#1 void *"
       ]
     },
-    "func_020622a8": {
+    "WM_PowerOff": {
       "src/unnamed/arm9/0203/func_0203fc74.c": [
         "param:#1 void *"
       ]
     },
-    "func_020622f0": {
+    "WM_PowerOn": {
       "src/unnamed/arm9/0203/func_0203fcb0.c": [
         "param:#1 void *"
       ]
     },
-    "func_02062338": {
+    "WM_Disable": {
       "src/unnamed/arm9/0203/func_0203fcec.c": [
         "param:#1 void *"
       ]
     },
-    "func_02062380": {
+    "WM_Enable": {
       "src/unnamed/arm9/0203/func_0203fd28.c": [
         "param:#1 void *"
       ]
@@ -20717,7 +20188,7 @@
       "src/unnamed/arm9/0206/func_020627e8.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02062df0.cpp": [
+      "src/WM_StepDataSharing.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_020631dc.cpp": [
@@ -20763,7 +20234,7 @@
         "return:void *"
       ]
     },
-    "func_02062778": {
+    "WM_GetSharedDataAddress": {
       "src/unnamed/arm9/0204/func_0204068c.c": [
         "param:#1 int",
         "param:#2 int",
@@ -20775,7 +20246,7 @@
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02062df0.cpp": [
+      "src/WM_StepDataSharing.cpp": [
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ]
@@ -20790,14 +20261,14 @@
         "arity:0"
       ]
     },
-    "func_02062df0": {
+    "WM_StepDataSharing": {
       "src/unnamed/arm9/0204/func_020406b4.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ]
     },
-    "func_020634fc": {
+    "WM_MeasureChannel": {
       "src/unnamed/arm9/0203/func_0203f818.c": [
         "param:#1 void *"
       ]
@@ -22929,11 +22400,6 @@
         "param:#5 int"
       ]
     },
-    "func_ov007_020c16dc": {
-      "src/ui/menus/unit020c1404.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "func_ov007_020c184c": {
       "src/unnamed/ov007/func_ov007_020c1814.c": [
         "return:int"
@@ -23055,10 +22521,6 @@
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c1180.cpp": [
-        "return:int"
-      ],
-      "src/ui/menus/unit020c1404.cpp": [
-        "arity:0",
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c2018.c": [
@@ -23268,47 +22730,6 @@
         "return:void *"
       ]
     },
-    "func_ov007_020c421c": {
-      "src/unnamed/ov007/func_ov007_020b2728.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c4388": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#2 char *"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#2 void *"
-      ]
-    },
-    "func_ov007_020c43bc": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#2 int"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#1 char *",
-        "param:#2 char *"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#2 int"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c41dc.c": [
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020c44c4": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c44e4": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:void *"
-      ]
-    },
     "func_ov007_020c4e98": {
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#6 int"
@@ -23326,34 +22747,6 @@
     },
     "func_ov007_020c55bc": {
       "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020c5854": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c5948": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#2 int *"
-      ]
-    },
-    "func_ov007_020c6174": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020c6684": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c6d90": {
-      "src/unnamed/ov007/func_ov007_020c6724.c": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c6d20.c": [
         "param:#1 char *"
       ]
     },
@@ -23456,15 +22849,6 @@
     "func_ov007_020c951c": {
       "src/ui/menus/unit020b797c.cpp": [
         "arity:3"
-      ]
-    },
-    "func_ov007_020c9a2c": {
-      "src/unnamed/ov007/func_ov007_020c95fc.c": [
-        "param:#1 Ctx *",
-        "param:#2 void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c9688.c": [
-        "param:#1 Ctx *"
       ]
     },
     "func_ov007_020ca86c": {
@@ -23918,6 +23302,11 @@
         "param:#3 int",
         "param:#4 int",
         "param:#5 int"
+      ]
+    },
+    "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev": {
+      "src/game/actors/d_a_demo.cpp": [
+        "arity:0"
       ]
     }
   },

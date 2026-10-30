@@ -10075,11 +10075,11 @@
     },
     "arm9:0x0205a8f0": {
       "author": "tangosdev",
-      "name": "func_0205a8f0"
+      "name": "SNDi_SetTrackParam"
     },
     "arm9:0x0205a924": {
       "author": "tangosdev",
-      "name": "func_0205a924"
+      "name": "SNDi_SetPlayerParam"
     },
     "arm9:0x0205a958": {
       "author": "tangosdev",
@@ -10115,7 +10115,7 @@
     },
     "arm9:0x0205aaf4": {
       "author": "tangosdev",
-      "name": "func_0205aaf4"
+      "name": "SND_SetTrackMute"
     },
     "arm9:0x0205ab28": {
       "author": "tangosdev",
@@ -10135,35 +10135,35 @@
     },
     "arm9:0x0205ac5c": {
       "author": "tangosdev",
-      "name": "func_0205ac5c"
+      "name": "SND_SetTrackModSpeed"
     },
     "arm9:0x0205ac84": {
       "author": "tangosdev",
-      "name": "func_0205ac84"
+      "name": "SND_SetTrackModDepth"
     },
     "arm9:0x0205acac": {
       "author": "tangosdev",
-      "name": "func_0205acac"
+      "name": "SND_SetTrackPan"
     },
     "arm9:0x0205acd4": {
       "author": "tangosdev",
-      "name": "func_0205acd4"
+      "name": "SND_SetTrackPitch"
     },
     "arm9:0x0205acfc": {
       "author": "tangosdev",
-      "name": "func_0205acfc"
+      "name": "SND_SetTrackVolume"
     },
     "arm9:0x0205ad24": {
       "author": "tangosdev",
-      "name": "func_0205ad24"
+      "name": "SND_SetPlayerChannelPriority"
     },
     "arm9:0x0205ad3c": {
       "author": "ruspecial",
-      "name": "func_0205ad3c"
+      "name": "SND_SetPlayerVolume"
     },
     "arm9:0x0205ad54": {
       "author": "ruspecial",
-      "name": "func_0205ad54"
+      "name": "SND_SetPlayerTempoRatio"
     },
     "arm9:0x0205ad6c": {
       "author": "tangosdev",
@@ -10171,11 +10171,11 @@
     },
     "arm9:0x0205ad98": {
       "author": "tangosdev",
-      "name": "func_0205ad98"
+      "name": "SND_StopSeq"
     },
     "arm9:0x0205adc4": {
       "author": "tangosdev",
-      "name": "func_0205adc4"
+      "name": "SND_StartSeq"
     },
     "arm9:0x0205adf8": {
       "author": "tangosdev",
@@ -10363,11 +10363,11 @@
     },
     "arm9:0x0205c7c4": {
       "author": "tangosdev",
-      "name": "func_0205c7c4"
+      "name": "FS_SetArchiveProc"
     },
     "arm9:0x0205c7e4": {
       "author": "tangosdev",
-      "name": "func_0205c7e4"
+      "name": "FS_ResumeArchive"
     },
     "arm9:0x0205c864": {
       "author": "tangosdev",
@@ -10387,19 +10387,19 @@
     },
     "arm9:0x0205cb68": {
       "author": "ruspecial",
-      "name": "func_0205cb68"
+      "name": "FS_LoadArchive"
     },
     "arm9:0x0205cbe4": {
       "author": "tangosdev",
-      "name": "func_0205cbe4"
+      "name": "FS_ReleaseArchiveName"
     },
     "arm9:0x0205cc80": {
       "author": "tangosdev",
-      "name": "func_0205cc80"
+      "name": "FS_RegisterArchiveName"
     },
     "arm9:0x0205cd34": {
       "author": "tangosdev",
-      "name": "func_0205cd34"
+      "name": "FS_InitArchive"
     },
     "arm9:0x0205cd5c": {
       "author": "tangosdev",
@@ -10487,7 +10487,7 @@
     },
     "arm9:0x0205d714": {
       "author": "tangosdev",
-      "name": "func_0205d714"
+      "name": "FSi_FindPath"
     },
     "arm9:0x0205d874": {
       "author": "tangosdev",
@@ -10543,23 +10543,23 @@
     },
     "arm9:0x0205dc7c": {
       "author": "ruspecial",
-      "name": "func_0205dc7c"
+      "name": "FS_EndOverlay"
     },
     "arm9:0x0205dd9c": {
       "author": "tangosdev",
-      "name": "func_0205dd9c"
+      "name": "FS_StartOverlay"
     },
     "arm9:0x0205de9c": {
       "author": "tangosdev",
-      "name": "func_0205de9c"
+      "name": "FSi_CompareDigest"
     },
     "arm9:0x0205df40": {
       "author": "tangosdev",
-      "name": "func_0205df40"
+      "name": "FS_LoadOverlayInfo"
     },
     "arm9:0x0205dffc": {
       "author": "ruspecial",
-      "name": "func_0205dffc"
+      "name": "FSi_LoadOverlayInfoCore"
     },
     "arm9:0x0205e088": {
       "author": "tangosdev",
@@ -10567,11 +10567,11 @@
     },
     "arm9:0x0205e0b0": {
       "author": "tangosdev",
-      "name": "func_0205e0b0"
+      "name": "FS_ClearOverlayImage"
     },
     "arm9:0x0205e0f4": {
       "author": "tangosdev",
-      "name": "func_0205e0f4"
+      "name": "DGT_Hash2CalcHmac"
     },
     "arm9:0x0205e280": {
       "author": "ruspecial",
@@ -10607,59 +10607,59 @@
     },
     "arm9:0x0205e9fc": {
       "author": "tangosdev",
-      "name": "func_0205e9fc"
+      "name": "TP_CheckError"
     },
     "arm9:0x0205ea10": {
       "author": "tangosdev",
-      "name": "func_0205ea10"
+      "name": "TP_WaitBusy"
     },
     "arm9:0x0205ea28": {
       "author": "tangosdev",
-      "name": "func_0205ea28"
+      "name": "TP_GetCalibratedPoint"
     },
     "arm9:0x0205eb58": {
       "author": "tangosdev",
-      "name": "func_0205eb58"
+      "name": "TP_CalcCalibrateParam"
     },
     "arm9:0x0205edc8": {
       "author": "tangosdev",
-      "name": "func_0205edc8"
+      "name": "TP_GetLatestIndexInAuto"
     },
     "arm9:0x0205edd8": {
       "author": "tangosdev",
-      "name": "func_0205edd8"
+      "name": "TP_RequestSetStabilityAsync"
     },
     "arm9:0x0205eeac": {
       "author": "tangosdev",
-      "name": "func_0205eeac"
+      "name": "TP_RequestAutoSamplingStartAsync"
     },
     "arm9:0x0205efc0": {
       "author": "tangosdev",
-      "name": "func_0205efc0"
+      "name": "TP_WaitCalibratedResult"
     },
     "arm9:0x0205efe0": {
       "author": "tangosdev",
-      "name": "func_0205efe0"
+      "name": "TP_GetCalibratedResult"
     },
     "arm9:0x0205f040": {
       "author": "tangosdev",
-      "name": "func_0205f040"
+      "name": "TP_RequestSamplingAsync"
     },
     "arm9:0x0205f0e0": {
       "author": "tangosdev",
-      "name": "func_0205f0e0"
+      "name": "TP_SetCalibrateParam"
     },
     "arm9:0x0205f1e4": {
       "author": "andrewboudreau",
-      "name": "func_0205f1e4"
+      "name": "TP_GetUserInfo"
     },
     "arm9:0x0205f270": {
       "author": "tangosdev",
-      "name": "func_0205f270"
+      "name": "TP_Init"
     },
     "arm9:0x0205f300": {
       "author": "tangosdev",
-      "name": "func_0205f300"
+      "name": "TPi_TpCallback"
     },
     "arm9:0x0205f5c0": {
       "author": "tangosdev",
@@ -10923,11 +10923,11 @@
     },
     "arm9:0x020614d0": {
       "author": "tangosdev",
-      "name": "func_020614d0"
+      "name": "WMi_CheckIdle"
     },
     "arm9:0x0206152c": {
       "author": "tangosdev",
-      "name": "func_0206152c"
+      "name": "WMi_CheckInitialized"
     },
     "arm9:0x02061548": {
       "author": "tangosdev",
@@ -10947,7 +10947,7 @@
     },
     "arm9:0x020616e8": {
       "author": "tangosdev",
-      "name": "func_020616e8"
+      "name": "WM_Init"
     },
     "arm9:0x020618b8": {
       "author": "tangosdev",
@@ -10955,7 +10955,7 @@
     },
     "arm9:0x02061960": {
       "author": "tangosdev",
-      "name": "func_02061960"
+      "name": "WM_GetAllowedChannel"
     },
     "arm9:0x020619ac": {
       "author": "tangosdev",
@@ -10971,15 +10971,15 @@
     },
     "arm9:0x02061c20": {
       "author": "tangosdev",
-      "name": "func_02061c20"
+      "name": "WM_ReadStatus"
     },
     "arm9:0x02061c88": {
       "author": "tangosdev",
-      "name": "func_02061c88"
+      "name": "WM_SetPortCallback"
     },
     "arm9:0x02061ce4": {
       "author": "tangosdev",
-      "name": "func_02061ce4"
+      "name": "WM_SetIndCallback"
     },
     "arm9:0x02061d30": {
       "author": "tangosdev",
@@ -10995,7 +10995,7 @@
     },
     "arm9:0x02061fdc": {
       "author": "tangosdev",
-      "name": "func_02061fdc"
+      "name": "WM_StartParent"
     },
     "arm9:0x02062024": {
       "author": "tangosdev",
@@ -11007,31 +11007,31 @@
     },
     "arm9:0x020621b8": {
       "author": "tangosdev",
-      "name": "func_020621b8"
+      "name": "WM_End"
     },
     "arm9:0x02062200": {
       "author": "tangosdev",
-      "name": "func_02062200"
+      "name": "WM_Reset"
     },
     "arm9:0x02062240": {
       "author": "tangosdev",
-      "name": "func_02062240"
+      "name": "WM_Initialize"
     },
     "arm9:0x020622a8": {
       "author": "tangosdev",
-      "name": "func_020622a8"
+      "name": "WM_PowerOff"
     },
     "arm9:0x020622f0": {
       "author": "tangosdev",
-      "name": "func_020622f0"
+      "name": "WM_PowerOn"
     },
     "arm9:0x02062338": {
       "author": "tangosdev",
-      "name": "func_02062338"
+      "name": "WM_Disable"
     },
     "arm9:0x02062380": {
       "author": "tangosdev",
-      "name": "func_02062380"
+      "name": "WM_Enable"
     },
     "arm9:0x020623ec": {
       "author": "tangosdev",
@@ -11055,7 +11055,7 @@
     },
     "arm9:0x02062778": {
       "author": "tangosdev",
-      "name": "func_02062778"
+      "name": "WM_GetSharedDataAddress"
     },
     "arm9:0x020627e8": {
       "author": "tangosdev",
@@ -11079,7 +11079,7 @@
     },
     "arm9:0x02062df0": {
       "author": "andrewboudreau",
-      "name": "func_02062df0"
+      "name": "WM_StepDataSharing"
     },
     "arm9:0x020631dc": {
       "author": "ruspecial",
@@ -11087,7 +11087,7 @@
     },
     "arm9:0x020634fc": {
       "author": "tangosdev",
-      "name": "func_020634fc"
+      "name": "WM_MeasureChannel"
     },
     "arm9:0x02063574": {
       "author": "tangosdev",

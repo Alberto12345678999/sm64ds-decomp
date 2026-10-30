@@ -2,8 +2,8 @@
 #include "WmWork.h"
 extern char *data_020a9db4;
 
-/* The port-1 receive callback func_020690b0 installs through func_02061c88
-   (WM_SetPortCallback). A successful callback with state 0x15 (PORT_RECV)
+/* The port-1 receive callback func_020690b0 installs through
+   WM_SetPortCallback. A successful callback with state 0x15 (PORT_RECV)
    goes to userCallback as event 9; the CONNECTED (7) and DISCONNECTED (9)
    tests ahead of it change nothing. */
 void func_02069918(char *arg0)

@@ -13,7 +13,7 @@ extern void MultiStore16(unsigned short val, void *dst, int n);
  * per member before it), or zero the slot when there is no data. The bit then
  * moves from the set's aidHeader to its receivedBitmap. Called by the parent's
  * port receive callback (func_02062bdc) and by the data sharing step
- * (func_02062df0) for the parent's own data. */
+ * (WM_StepDataSharing) for the parent's own data. */
 
 /* NitroSDK WMDataSet / WMDataSharingInfo, as func_02062aa4 spells them. */
 typedef struct WMDataSet {

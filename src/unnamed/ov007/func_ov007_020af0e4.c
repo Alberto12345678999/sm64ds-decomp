@@ -4,10 +4,6 @@
 /* Returns the picker scene's states[0] (unit020b8f50). */
 extern int func_ov007_020b8f8c(void);
 extern int func_ov007_020c1d78();
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Sends the picker's states[0] to state 5, and states[2] too unless
  * states[0] came from state 1. */

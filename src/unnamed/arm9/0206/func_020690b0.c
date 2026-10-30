@@ -9,7 +9,7 @@
  * the MultiCopyHalf source (the callback) and length (0xb8) say otherwise.
  *
  * WmWork field evidence (WM API ids from each wrapper's WM_SetCallbackTable):
- *   wmSysBuf        buffer arg of func_02062240 (id 0, WM_Initialize)
+ *   wmSysBuf        buffer arg of WM_Initialize (id 0, WM_Initialize)
  *   parentParam     func_020620b0 (id 7, WM_SetParentParameter); KS_Flag at
  *                   +0x12 and the max sizes at +0x32/+0x34 are its size check;
  *                   func_02068844 packs entry/MB/KS/CS into WM_ATTR_FLAG_*
@@ -41,13 +41,13 @@ extern char *data_020a9db8;
 extern u16 data_020a9db0;
 extern char data_020a9dc0[];
 
-extern int func_020621b8(void *fn);
+extern int WM_End(void *fn);
 extern void MBi_CheckWmErrcode(int a, int b);
-extern int func_02061c20(void *p);
+extern int WM_ReadStatus(void *p);
 extern int func_02063574(void *fn, int a, int b, int c);
 extern int func_02061ee4(void *fn, void *p);
 extern int func_02061e38(void *fn, int a, int b);
-extern int func_02061c88(int a, void *fn, int c);
+extern int WM_SetPortCallback(int a, void *fn, int c);
 extern int func_020625fc(void *fn, int a, u16 b, int c, u16 d, u16 e, int f,
                          int g, int h, int i, int j);
 extern int func_0206a230(void);
@@ -120,7 +120,7 @@ void func_020690b0(char *arg0)
     if (w->resetting != 0) {
         if (*(u16 *)arg0 == 1) {
             if (*(u16 *)(arg0 + 2) == 0) {
-                MBi_CheckWmErrcode(2, func_020621b8((void *)func_020690b0));
+                MBi_CheckWmErrcode(2, WM_End((void *)func_020690b0));
                 return;
             }
             w->resetting = 0;
@@ -143,7 +143,7 @@ void func_020690b0(char *arg0)
     case 0:
         if (*(u16 *)(arg0 + 2) == 0) {
             DISPATCH(0x15, arg0);
-            MBi_CheckWmErrcode(0x83, func_02061c20(&w->status));
+            MBi_CheckWmErrcode(0x83, WM_ReadStatus(&w->status));
             MBi_CheckWmErrcode(0x1d, func_02063574((void *)func_020690b0, 0xffff, 0x28, 5));
             return;
         }
@@ -216,7 +216,8 @@ void func_020690b0(char *arg0)
                 w->aid = ((WmStartConnectCallback *)arg0)->aid;
                 DISPATCH(6, arg0);
                 w->childBitmap = 1;
-                if (func_02061c88(1, (void *)func_02069918, 0) != 0) return;
+                if (WM_SetPortCallback(1, (void *)func_02069918, 0) != 0)
+                    return;
                 MBi_CheckWmErrcode(0xe,
                                    func_020625fc((void *)func_020690b0, (int)w->recvBuf,
                                                  w->recvBufSize, (int)w->sendBuf, w->sendBufSize,

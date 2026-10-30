@@ -9,7 +9,7 @@ extern "C" {
 extern int WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int count, ...);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
-extern int func_02061c88(int idx, int b, int c);
+extern int WM_SetPortCallback(int idx, int b, int c);
 typedef void (*Fn)(void *);
 extern int func_020623ec(Fn a0, int a1, int a2, int a3, u16 a4, u16 a5);
 extern void func_02062bdc(void);
@@ -139,7 +139,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
         for (i = 0; i < 4; i++)
             dsInfo->ds[i].aidHeader = (u16)(dsInfo->aidBitmap & (childMask | 1));
 
-        func_02061c88(port, (int)func_02062bdc, (int)self);
+        WM_SetPortCallback(port, (int)func_02062bdc, (int)self);
 
         cur = dsInfo->ds;
         for (n = 0; n < ((dsInfo->doubleMode == 1) ? 2 : 1); n++) {
@@ -161,7 +161,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
         }
     } else {
         dsInfo->sendIndex = 3;
-        func_02061c88(port, (int)func_02062aa4, (int)self);
+        WM_SetPortCallback(port, (int)func_02062aa4, (int)self);
     }
 
     return 0;

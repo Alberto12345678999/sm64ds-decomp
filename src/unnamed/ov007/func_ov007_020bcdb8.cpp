@@ -12,13 +12,8 @@ extern void *func_ov007_020b3f20(int idx);
 extern Ov007CharRecord *func_ov007_020c99d8(int x);
 extern void func_ov007_020c3544(void *p);
 extern void func_ov007_020b3edc(int idx);
-extern char *data_ov007_0210342c;
 
 typedef char Ov007Work_display_must_be_at_0x74[(int)&((Ov007Work *)0)->display == 0x74 ? 1 : -1];
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Loads character record idx into the sub engine's OBJ characters and
  * palette 1 into its OBJ palette. For language 2 and up it also builds a
