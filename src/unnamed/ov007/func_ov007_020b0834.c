@@ -2,20 +2,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; names as in
- * func_ov007_020aec94, only the slots this file touches. */
-typedef struct Ov007Settings {
-    char pad_00[0x37];
-    /* 0x37 / 0x38: 1 when the owner's dispatcher (func_ov007_020cc600)
-     * failed to read the save files (command 0x14) / the minigame data
-     * (0x15), as func_ov007_020b066c stores them */
-    unsigned char filesFailed;
-    unsigned char minigamesFailed;
-    /* 0x39: func_ov007_020b7d94's kind, the window menu state 9 opens before
-     * the choice goes through; 0 = none (func_ov007_020b066c) */
-    unsigned char dialogKind;
-} Ov007Settings;
+#include "Ov007Settings.h"
 
 /* func_ov007_020adc08's 0xc-byte layer slot; func_ov007_020c0638 rebuilds its layer. */
 typedef struct Ov007LayerSlot {

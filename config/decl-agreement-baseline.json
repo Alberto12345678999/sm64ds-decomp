@@ -271,9 +271,6 @@
       ]
     },
     "CopyTexPalFromLevelModel": {
-      "include/decl_common.h": [
-        "return:void"
-      ],
       "src/game/actors/d_a_kpa3_bg.cpp": [
         "return:void"
       ]
@@ -650,10 +647,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vec3 *",
         "param:#2 Vector3 *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c7d60.c": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
       ]
     },
     "DrawOamSprite": {
@@ -784,11 +777,6 @@
         "return:void *"
       ]
     },
-    "GiveHealth": {
-      "include/decl_common.h": [
-        "return:int"
-      ]
-    },
     "Hud_RenderSprite": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int"
@@ -886,10 +874,6 @@
         "param:#2 Matrix4x3 *",
         "return:void"
       ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#2 Mtx43 *",
-        "return:void"
-      ],
       "src/unnamed/ov007/func_ov007_020bfe4c.cpp": [
         "return:void"
       ],
@@ -911,9 +895,6 @@
       ]
     },
     "IsCannonOpenInCurLevel": {
-      "include/decl_common.h": [
-        "return:int"
-      ],
       "src/game/actors/d_a_red_bombhei.cpp": [
         "return:int"
       ]
@@ -1164,11 +1145,6 @@
         "param:#1 signed char",
         "param:#2 unsigned char",
         "param:#3 signed char"
-      ]
-    },
-    "LoadLevelNoReturn": {
-      "include/decl_common.h": [
-        "param:#1 int"
       ]
     },
     "Math_Function_0203b0fc": {
@@ -1609,10 +1585,6 @@
         "param:#1 Vec3 *",
         "param:#2 int *",
         "param:#3 Vec3 *"
-      ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#1 Vec3 *",
-        "param:#2 Mtx43 *"
       ]
     },
     "MultiCopyHalf": {
@@ -1671,20 +1643,11 @@
       "src/unnamed/ov003/func_ov003_020adcbc.cpp": [
         "param:#2 short *"
       ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#2 short *"
-      ],
       "src/unnamed/ov007/func_ov007_020c02d8.cpp": [
         "param:#3 unsigned int"
       ],
       "src/ResetCrashScreen.cpp": [
         "param:#2 volatile void *"
-      ]
-    },
-    "MultiStore32Bytes": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#1 int",
-        "param:#2 int"
       ]
     },
     "MultiStore_Int": {
@@ -1784,9 +1747,6 @@
       ]
     },
     "NumVsStarsObtained": {
-      "include/decl_common.h": [
-        "return:int"
-      ],
       "src/game/actors/d_a_star.cpp": [
         "return:int"
       ]
@@ -4766,17 +4726,6 @@
         "param:#3 const void *"
       ]
     },
-    "_ZN11dScMgBase_c18AfterInitResourcesEj": {
-      "include/decl_common.h": [
-        "arity:1",
-        "return:int"
-      ]
-    },
-    "_ZN11dScMgBase_c19BeforeInitResourcesEv": {
-      "include/decl_common.h": [
-        "return:int"
-      ]
-    },
     "_ZN11dScMgBase_cD2Ev": {
       "include/decl_common.h": [
         "return:void"
@@ -5110,11 +5059,6 @@
         "arity:0"
       ]
     },
-    "_ZN17dExtCommonModel_cD1Ev": {
-      "include/decl_common.h": [
-        "return:void"
-      ]
-    },
     "_ZN17dExtShadowModel_c12InitCylinderEv": {
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
@@ -5322,9 +5266,6 @@
     "_ZN2GX10LoadBGPlttEPKvjj": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int"
       ]
     },
     "_ZN2GX7LoadTexEPKvjj": {
@@ -5471,9 +5412,6 @@
       ]
     },
     "_ZN3G3X13SetClearColorEtiiib": {
-      "include/decl_common.h": [
-        "param:#5 int"
-      ],
       "src/unnamed/ov007/func_ov007_020b6c54.cpp": [
         "param:#5 int"
       ],
@@ -5496,9 +5434,6 @@
     "_ZN3GXS10LoadBGPlttEPKvjj": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int"
       ]
     },
     "_ZN3IRQ10EnableIRQsEj": {
@@ -5513,9 +5448,6 @@
       ]
     },
     "_ZN3IRQ11DisableIRQsEj": {
-      "include/decl_common.h": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_02059cb4.c": [
         "return:void"
       ],
@@ -5524,9 +5456,6 @@
       ]
     },
     "_ZN3IRQ13GetIRQHandlerEj": {
-      "include/decl_common.h": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:void *"
       ]
@@ -6121,9 +6050,6 @@
       ]
     },
     "_ZN5Sound12PlayBank2_2DEj": {
-      "include/decl_common.h": [
-        "return:void"
-      ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:void"
       ],
@@ -8431,11 +8357,6 @@
         "arity:0"
       ]
     },
-    "_ZN8dM3dGLinD2Ev": {
-      "include/decl_common.h": [
-        "return:void"
-      ]
-    },
     "_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit": {
       "src/game/actors/d_a_ots.cpp": [
         "return:int"
@@ -8723,9 +8644,6 @@
       ]
     },
     "_ZTV11dScMgJump_c": {
-      "include/decl_common.h": [
-        "return:void * []"
-      ],
       "src/minigames/d_s_mg_jump.cpp": [
         "return:int []"
       ]
@@ -8768,15 +8686,7 @@
         "return:void * []"
       ]
     },
-    "_ZTV7dBase_c": {
-      "include/decl_common.h": [
-        "return:int []"
-      ]
-    },
     "_ZTV8dScene_c": {
-      "include/decl_common.h": [
-        "return:int []"
-      ],
       "src/game/stages/d_s_entry_entry.cpp": [
         "return:char []"
       ]
@@ -9077,9 +8987,6 @@
       ]
     },
     "data_0208a178": {
-      "include/decl_common.h": [
-        "return:unsigned char []"
-      ],
       "src/InitCrashScreen.cpp": [
         "return:char"
       ],
@@ -9088,9 +8995,6 @@
       ]
     },
     "data_0208c178": {
-      "include/decl_common.h": [
-        "return:unsigned char []"
-      ],
       "src/InitCrashScreen.cpp": [
         "return:char"
       ],
@@ -9169,9 +9073,6 @@
       ]
     },
     "data_02092114": {
-      "include/decl_common.h": [
-        "return:unsigned char"
-      ],
       "src/ui/hud/CapIconMgr.cpp": [
         "return:signed char"
       ]
@@ -10214,11 +10115,6 @@
     "data_0209f310": {
       "src/_ZN6Player19func_ov002_020d94ccEv.cpp": [
         "return:signed char"
-      ]
-    },
-    "data_0209f314": {
-      "include/decl_common.h": [
-        "return:int"
       ]
     },
     "data_0209f318": {
@@ -12069,9 +11965,6 @@
       ]
     },
     "data_ov002_02110064": {
-      "include/decl_common.h": [
-        "return:int []"
-      ],
       "src/unnamed/ov002/func_ov002_020d5ab4.c": [
         "return:char"
       ],
@@ -12215,9 +12108,6 @@
       ]
     },
     "data_ov002_021101e4": {
-      "include/decl_common.h": [
-        "return:int []"
-      ],
       "src/unnamed/ov002/func_ov002_020dde74.cpp": [
         "return:State"
       ],
@@ -12303,9 +12193,6 @@
       ]
     },
     "data_ov002_02110484": {
-      "include/decl_common.h": [
-        "return:char"
-      ],
       "src/unnamed/ov002/func_ov002_020e0ccc.cpp": [
         "return:int []"
       ],
@@ -12424,11 +12311,6 @@
     "data_ov002_02110694": {
       "src/unnamed/ov002/func_ov002_020e2664.c": [
         "return:int"
-      ]
-    },
-    "data_ov002_02110724": {
-      "include/decl_common.h": [
-        "return:int []"
       ]
     },
     "data_ov002_02110924": {
@@ -12609,9 +12491,6 @@
       ]
     },
     "data_ov003_020b1704": {
-      "include/decl_common.h": [
-        "return:int []"
-      ],
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ]
@@ -12930,9 +12809,6 @@
       ]
     },
     "sTrmpAnimBounce": {
-      "include/decl_common.h": [
-        "return:void *"
-      ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:BCA_File *",
         "return:void *"
@@ -13200,26 +13076,6 @@
         "return:int []"
       ]
     },
-    "data_ov007_020d7a5c": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_020d7b80": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:char []"
-      ]
-    },
-    "data_ov007_02102dd8": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_ov007_02102ddc": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:char []"
-      ]
-    },
     "data_ov007_02103254": {
       "src/ui/menus/unit020c3ce4.cpp": [
         "return:FP"
@@ -13228,14 +13084,6 @@
     "data_ov007_02103258": {
       "src/ui/menus/unit020c3ce4.cpp": [
         "return:FP"
-      ]
-    },
-    "data_ov007_02103360": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "return:int *",
-        "return:S *",
-        "return:Obj *",
-        "return:int []"
       ]
     },
     "data_ov007_02103368": {
@@ -13252,11 +13100,6 @@
     "data_ov007_02103370": {
       "src/ui/menus/unit020b3edc.cpp": [
         "return:void * []"
-      ]
-    },
-    "data_ov007_02103428": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "return:int []"
       ]
     },
     "data_ov007_0210342c": {
@@ -13278,16 +13121,6 @@
       "src/unnamed/ov007/func_ov007_020b2728.c": [
         "return:int *"
       ],
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "return:G2 *",
-        "return:int *",
-        "return:int []"
-      ],
-      "src/ui/menus/unit020b413c.cpp": [
-        "return:G2 *",
-        "return:Base *",
-        "return:void *"
-      ],
       "src/unnamed/ov007/func_ov007_020b58e4.c": [
         "return:unsigned char []"
       ],
@@ -13296,21 +13129,6 @@
       ],
       "src/unnamed/ov007/func_ov007_020b5f64.c": [
         "return:unsigned char []"
-      ],
-      "src/ui/menus/unit020b6eb4.cpp": [
-        "return:S *"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int *",
-        "return:unsigned char []"
-      ]
-    },
-    "data_ov007_02103430": {
-      "src/ui/menus/unit020b6eb4.cpp": [
-        "return:char *"
       ]
     },
     "data_ov007_02103448": {
@@ -13328,100 +13146,6 @@
         "return:void * []"
       ]
     },
-    "data_ov007_02103458": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned short"
-      ]
-    },
-    "data_ov007_0210345c": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned int *"
-      ]
-    },
-    "data_ov007_02103460": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int",
-        "return:Obj40 *",
-        "return:Obj *"
-      ]
-    },
-    "data_ov007_02103464": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_ov007_02103468": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_ov007_0210346c": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int",
-        "return:Obj40 *",
-        "return:Obj *"
-      ]
-    },
-    "data_ov007_02103470": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:char *"
-      ]
-    },
-    "data_ov007_02103474": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov007_02103478": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int",
-        "return:int * []",
-        "return:int []",
-        "return:Trio",
-        "return:unsigned int * []"
-      ]
-    },
-    "data_ov007_02103484": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:short []"
-      ]
-    },
-    "data_ov007_02103998": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned char []",
-        "return:unsigned short []"
-      ]
-    },
-    "data_ov007_02103f98": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned short []"
-      ]
-    },
-    "data_ov007_02104598": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:unsigned char []",
-        "return:unsigned short []"
-      ]
-    },
-    "data_ov007_02104b9c": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:int *",
-        "return:void *",
-        "return:unsigned char []",
-        "return:B9C *"
-      ]
-    },
-    "data_ov007_02104ba0": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:int *",
-        "return:int * []",
-        "return:char * *",
-        "return:void *",
-        "return:G *",
-        "return:unsigned char []",
-        "return:BA0 *"
-      ]
-    },
     "data_ov007_02104bb8": {
       "src/ui/menus/unit020bd9e4.cpp": [
         "return:char *"
@@ -13430,19 +13154,6 @@
     "data_ov007_02104bbc": {
       "src/ui/menus/unit020bd9e4.cpp": [
         "return:char *"
-      ]
-    },
-    "data_ov007_02104bd4": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:unsigned char []",
-        "return:int",
-        "return:char *"
-      ]
-    },
-    "data_ov007_02104bd8": {
-      "src/ui/menus/unit020bf690.cpp": [
-        "return:int *",
-        "return:void *"
       ]
     },
     "data_ov007_02104bdc": {
@@ -15114,16 +14825,6 @@
         "return:void *"
       ]
     },
-    "data_ov070_021235bc": {
-      "include/decl_common.h": [
-        "return:char []"
-      ]
-    },
-    "data_ov070_021235cc": {
-      "include/decl_common.h": [
-        "return:char []"
-      ]
-    },
     "data_ov070_021235ec": {
       "src/unnamed/ov070/__sinit_ov070_02122d80.cpp": [
         "return:char []"
@@ -15152,11 +14853,6 @@
     "data_ov070_0212365c": {
       "src/unnamed/ov070/__sinit_ov070_02122d80.cpp": [
         "return:int []"
-      ]
-    },
-    "data_ov071_02122f80": {
-      "include/decl_common.h": [
-        "return:char"
       ]
     },
     "data_ov071_02123038": {
@@ -15475,9 +15171,6 @@
       ]
     },
     "data_ov075_0211d71c": {
-      "include/decl_common.h": [
-        "return:void *"
-      ],
       "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
         "return:char []"
       ],
@@ -15838,11 +15531,6 @@
         "return:char []"
       ]
     },
-    "data_ov084_02130d9c": {
-      "include/decl_common.h": [
-        "return:void *"
-      ]
-    },
     "data_ov084_02130da4": {
       "src/game/actors/d_a_red_bombhei.cpp": [
         "return:SharedFilePtr"
@@ -15882,16 +15570,6 @@
     "data_ov085_02130480": {
       "src/unnamed/ov085/__sinit_ov085_0212f2a8.cpp": [
         "return:char []"
-      ]
-    },
-    "data_ov085_02130488": {
-      "include/decl_common.h": [
-        "return:int []"
-      ]
-    },
-    "data_ov085_02130490": {
-      "include/decl_common.h": [
-        "return:int []"
       ]
     },
     "data_ov085_021304bc": {
@@ -16470,11 +16148,6 @@
         "return:int"
       ]
     },
-    "func_01ffb0c8": {
-      "include/decl_common.h": [
-        "return:void"
-      ]
-    },
     "OS_ResetSystem": {
       "src/func_02013f4c.cpp": [
         "param:#1 int"
@@ -16508,20 +16181,12 @@
       ]
     },
     "func_02007c9c": {
-      "include/decl_common.h": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Vector3 *"
-      ],
       "src/engine/view/d_camera.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *"
       ]
     },
     "func_02007cec": {
-      "include/decl_common.h": [
-        "param:#1 void *",
-        "param:#2 const Vector3 *"
-      ],
       "src/engine/view/d_camera.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
@@ -19015,9 +18680,6 @@
       ]
     },
     "func_02038414": {
-      "include/decl_common.h": [
-        "arity:1"
-      ],
       "src/game/actors/d_a_gmch.cpp": [
         "arity:1",
         "return:int"
@@ -19429,10 +19091,6 @@
       ]
     },
     "func_0203d024": {
-      "include/decl_common.h": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/game/actors/d_a_star.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -22254,16 +21912,6 @@
         "param:#2 unsigned int"
       ]
     },
-    "func_ov002_020c2fec": {
-      "include/decl_common.h": [
-        "param:#2 Vector3 *"
-      ]
-    },
-    "func_ov002_020c37a4": {
-      "include/decl_common.h": [
-        "param:#2 Vector3 *"
-      ]
-    },
     "func_ov002_020c43c4": {
       "src/_ZN6Player16InitBalloonMarioEv.cpp": [
         "param:#2 int"
@@ -22511,11 +22159,6 @@
         "return:void *"
       ]
     },
-    "func_ov002_020e69c0": {
-      "include/decl_common.h": [
-        "arity:1"
-      ]
-    },
     "func_ov002_020e6bb0": {
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "return:int"
@@ -22531,11 +22174,6 @@
       ],
       "src/_ZN6Player16St_WallJump_MainEv.cpp": [
         "param:#2 void *"
-      ]
-    },
-    "func_ov002_020eee3c": {
-      "include/decl_common.h": [
-        "param:#2 char *"
       ]
     },
     "func_ov002_020ef2a4": {
@@ -23234,11 +22872,6 @@
         "param:#1 int"
       ]
     },
-    "Trmp2Spinner_Destruct": {
-      "include/decl_common.h": [
-        "return:void"
-      ]
-    },
     "func_ov007_020ad660": {
       "src/unnamed/ov007/func_ov007_020aed98.cpp": [
         "param:#1 int"
@@ -23254,18 +22887,12 @@
         "param:#1 int"
       ]
     },
-    "func_ov007_020aea4c": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020aea6c": {
       "src/unnamed/ov007/func_ov007_020ade58.c": [
         "param:#1 int"
       ],
       "src/ui/menus/unit020b413c.cpp": [
-        "param:#1 int",
-        "return:void *"
+        "param:#1 int"
       ]
     },
     "func_ov007_020aebac": {
@@ -23337,31 +22964,6 @@
         "param:#1 unsigned short *"
       ]
     },
-    "func_ov007_020b3190": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020b3360": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020b3c54": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "arity:0"
-      ]
-    },
-    "func_ov007_020b3d30": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_ov007_020b3f20": {
-      "src/ui/menus/unit020bf690.cpp": [
-        "return:int"
-      ]
-    },
     "func_ov007_020b42d8": {
       "src/ui/menus/unit020bed60.cpp": [
         "return:int"
@@ -23372,23 +22974,8 @@
         "param:#1 int"
       ]
     },
-    "func_ov007_020b45b0": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "return:int"
-      ]
-    },
     "func_ov007_020b4c04": {
       "src/unnamed/ov007/func_ov007_020b693c.c": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020b6208": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov007_020b63e4": {
-      "src/ui/menus/unit020b413c.cpp": [
         "return:int"
       ]
     },
@@ -23401,16 +22988,6 @@
     "func_ov007_020b7040": {
       "include/decl_common.h": [
         "arity:1"
-      ]
-    },
-    "func_ov007_020b7364": {
-      "src/unnamed/ov007/func_ov007_020b72a0.c": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020b7384": {
-      "src/unnamed/ov007/func_ov007_020b72a0.c": [
-        "return:int"
       ]
     },
     "func_ov007_020b76c4": {
@@ -23455,29 +23032,6 @@
         "return:int"
       ]
     },
-    "func_ov007_020b883c": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov007_020b8b80": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#1 void *",
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020b8cfc": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#2 int"
-      ]
-    },
-    "func_ov007_020b8d48": {
-      "src/ui/menus/unit020b797c.cpp": [
-        "param:#1 void *",
-        "param:#2 unsigned int",
-        "param:#2 void *"
-      ]
-    },
     "func_ov007_020b8f78": {
       "src/unnamed/ov007/func_ov007_020b0358.c": [
         "return:void *"
@@ -23485,16 +23039,6 @@
     },
     "func_ov007_020b9640": {
       "src/unnamed/ov007/func_ov007_020aefb4.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020baa10": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020bad8c": {
-      "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
       ]
     },
@@ -23524,11 +23068,6 @@
       ],
       "src/ui/menus/unit020be0dc.cpp": [
         "param:#2 int"
-      ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
       ]
     },
     "func_ov007_020bc9c8": {
@@ -23545,25 +23084,11 @@
       ]
     },
     "func_ov007_020bdeb0": {
-      "include/decl_common.h": [
-        "arity:1"
-      ],
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "arity:1"
-      ],
       "src/unnamed/ov007/func_ov007_020b6208.c": [
-        "arity:1",
         "return:int"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "arity:1"
       ],
       "src/ui/menus/unit020b8f50.cpp": [
-        "arity:1",
         "return:int"
-      ],
-      "src/ui/menus/unit020bf690.cpp": [
-        "arity:1"
       ]
     },
     "func_ov007_020bdebc": {
@@ -23587,57 +23112,14 @@
         "return:void"
       ]
     },
-    "func_ov007_020bf630": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020bfe4c": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#5 int *"
-      ],
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c5c14.c": [
-        "param:#5 int *"
-      ]
-    },
-    "func_ov007_020bff38": {
-      "src/unnamed/ov007/func_ov007_020b2160.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020c0128": {
-      "src/unnamed/ov007/func_ov007_020b1fa4.cpp": [
-        "return:int"
-      ]
-    },
     "func_ov007_020c02d8": {
       "src/unnamed/ov007/func_ov007_020adc08.c": [
         "param:#1 int"
       ]
     },
-    "func_ov007_020c0384": {
-      "src/unnamed/ov007/func_ov007_020adc08.c": [
-        "param:#1 int",
-        "param:#2 void *"
-      ]
-    },
-    "func_ov007_020c03b0": {
-      "src/unnamed/ov007/func_ov007_020b7364.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
     "func_ov007_020c05f8": {
       "src/unnamed/ov007/func_ov007_020b73b4.c": [
         "arity:1"
-      ]
-    },
-    "func_ov007_020c0604": {
-      "src/unnamed/ov007/func_ov007_020b7594.c": [
-        "return:int"
       ]
     },
     "func_ov007_020c0638": {
@@ -23752,11 +23234,9 @@
     },
     "func_ov007_020c19cc": {
       "src/unnamed/ov007/func_ov007_020c4dfc.c": [
-        "param:#2 int",
         "param:#3 int"
       ],
       "src/unnamed/ov007/func_ov007_020c4f50.c": [
-        "param:#2 int",
         "param:#3 int"
       ]
     },
@@ -23768,9 +23248,6 @@
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020b16f0.c": [
-        "return:int"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
         "return:int"
       ]
     },
@@ -23837,21 +23314,6 @@
         "return:void *"
       ]
     },
-    "func_ov007_020c2f14": {
-      "src/unnamed/ov007/func_ov007_020c5c14.c": [
-        "param:#1 Elem *",
-        "param:#2 unsigned short",
-        "param:#7 int",
-        "param:#8 int"
-      ]
-    },
-    "func_ov007_020c30ac": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#1 int",
-        "param:#5 int",
-        "return:void"
-      ]
-    },
     "func_ov007_020c32e8": {
       "src/unnamed/ov007/func_ov007_020ada70.cpp": [
         "param:#3 int"
@@ -23874,9 +23336,6 @@
       ]
     },
     "func_ov007_020c3598": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#3 signed char *"
-      ],
       "src/ui/menus/unit020b797c.cpp": [
         "param:#3 signed char *"
       ]
@@ -23896,10 +23355,6 @@
     },
     "func_ov007_020c3d1c": {
       "src/unnamed/ov007/func_ov007_020aea4c.c": [
-        "return:int"
-      ],
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#1 int",
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020bc53c.cpp": [
@@ -24016,9 +23471,6 @@
       "src/unnamed/ov007/func_ov007_020aea6c.c": [
         "param:#2 int",
         "return:char *"
-      ],
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#2 int"
       ],
       "src/ui/menus/unit020b413c.cpp": [
         "param:#2 int",
@@ -24143,25 +23595,9 @@
     "func_ov007_020c421c": {
       "src/unnamed/ov007/func_ov007_020b2728.c": [
         "param:#1 int"
-      ],
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#1 Obj *"
-      ],
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#1 UnkC *"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:int"
       ]
     },
     "func_ov007_020c4388": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#1 Obj *",
-        "param:#2 void *"
-      ],
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#1 UnkC *"
-      ],
       "src/ui/menus/unit020b797c.cpp": [
         "param:#2 char *"
       ],
@@ -24188,22 +23624,11 @@
       ]
     },
     "func_ov007_020c44c4": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "param:#1 int"
-      ],
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 int"
       ]
     },
     "func_ov007_020c44e4": {
-      "src/ui/menus/unit020b413c.cpp": [
-        "return:Obj *",
-        "param:#1 unsigned char",
-        "return:void *"
-      ],
-      "src/ui/menus/unit020b797c.cpp": [
-        "return:Obj *"
-      ],
       "src/ui/menus/unit020b8f50.cpp": [
         "return:void *"
       ]
@@ -24225,16 +23650,12 @@
     },
     "func_ov007_020c55bc": {
       "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int",
         "param:#1 char *"
       ]
     },
     "func_ov007_020c5854": {
       "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int"
+        "param:#1 int"
       ]
     },
     "func_ov007_020c5948": {
@@ -24242,33 +23663,7 @@
         "param:#2 int *"
       ]
     },
-    "func_ov007_020c5c14": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 char *",
-        "param:#2 char *"
-      ]
-    },
     "func_ov007_020c6174": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020c62cc": {
-      "src/unnamed/ov007/func_ov007_020c5ef0.c": [
-        "param:#1 O *"
-      ]
-    },
-    "func_ov007_020c64c4": {
-      "src/unnamed/ov007/func_ov007_020c5ef0.c": [
-        "param:#1 O *"
-      ]
-    },
-    "func_ov007_020c6550": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov007_020c65bc": {
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 char *"
       ]
@@ -24276,17 +23671,6 @@
     "func_ov007_020c6684": {
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 int"
-      ]
-    },
-    "func_ov007_020c690c": {
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#5 void *",
-        "param:#6 void *"
-      ]
-    },
-    "func_ov007_020c6b58": {
-      "src/unnamed/ov007/func_ov007_020c5ef0.c": [
-        "param:#1 O *"
       ]
     },
     "func_ov007_020c6d90": {
@@ -24297,19 +23681,6 @@
         "param:#1 char *"
       ]
     },
-    "func_ov007_020c704c": {
-      "src/unnamed/ov007/func_ov007_020c5854.c": [
-        "param:#1 int",
-        "param:#3 void *",
-        "param:#4 void *",
-        "param:#5 void *"
-      ]
-    },
-    "func_ov007_020c73f0": {
-      "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
-        "return:void *"
-      ]
-    },
     "func_ov007_020c7694": {
       "include/decl_common.h": [
         "param:#1 Vector3 *"
@@ -24318,11 +23689,6 @@
     "func_ov007_020c775c": {
       "include/decl_common.h": [
         "param:#1 Vector3 *"
-      ]
-    },
-    "func_ov007_020c78dc": {
-      "src/unnamed/ov007/func_ov007_020c7368.c": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020c7b2c": {
@@ -24348,11 +23714,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c80c8": {
-      "src/unnamed/ov007/func_ov007_020c71c0.c": [
-        "param:#1 int"
-      ]
-    },
     "func_ov007_020c8440": {
       "src/unnamed/ov007/func_ov007_020c78dc.c": [
         "arity:1",
@@ -24363,28 +23724,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c844c": {
-      "src/unnamed/ov007/func_ov007_020c690c.c": [
-        "param:#1 void *"
-      ]
-    },
-    "func_ov007_020c86c4": {
-      "src/unnamed/ov007/func_ov007_020c8688.c": [
-        "arity:2"
-      ]
-    },
-    "func_ov007_020c8970": {
-      "src/unnamed/ov007/func_ov007_020c8498.c": [
-        "arity:1",
-        "return:void"
-      ]
-    },
-    "func_ov007_020c897c": {
-      "src/unnamed/ov007/func_ov007_020c8970.c": [
-        "arity:0",
-        "return:int"
-      ]
-    },
     "func_ov007_020c8b04": {
       "src/unnamed/ov007/func_ov007_020b73b4.c": [
         "arity:1",
@@ -24393,25 +23732,6 @@
       "src/ui/menus/unit020bf690.cpp": [
         "arity:1",
         "return:void"
-      ]
-    },
-    "func_ov007_020c8de0": {
-      "src/unnamed/ov007/func_ov007_020bff38.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov007_020c8f64": {
-      "src/unnamed/ov007/func_ov007_020c023c.c": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020c8f98": {
-      "src/unnamed/ov007/func_ov007_020b5bf0.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020bff38.c": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020c9080": {
@@ -24425,11 +23745,6 @@
       "src/ui/menus/unit020b8f50.cpp": [
         "arity:1",
         "return:void"
-      ]
-    },
-    "func_ov007_020c908c": {
-      "src/unnamed/ov007/func_ov007_020c023c.c": [
-        "return:int"
       ]
     },
     "func_ov007_020c92a0": {
@@ -24449,13 +23764,6 @@
     "func_ov007_020c92d0": {
       "src/unnamed/ov007/func_ov007_020aed98.cpp": [
         "param:#1 int"
-      ],
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#1 int"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 T *",
-        "return:int"
       ]
     },
     "func_ov007_020c934c": {
@@ -24466,16 +23774,6 @@
         "param:#2 void *"
       ]
     },
-    "func_ov007_020c937c": {
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "arity:1",
-        "return:void"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "arity:1",
-        "return:void"
-      ]
-    },
     "func_ov007_020c9388": {
       "src/unnamed/ov007/func_ov007_020adc08.c": [
         "return:int"
@@ -24483,13 +23781,6 @@
       "src/unnamed/ov007/func_ov007_020aea6c.c": [
         "param:#1 int",
         "return:int"
-      ],
-      "src/ui/menus/unit020b2cdc.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/ui/menus/unit020b8f50.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020c93b4": {
@@ -24522,39 +23813,6 @@
         "param:#1 Ctx *"
       ]
     },
-    "func_ov007_020c9a84": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#2 char *",
-        "param:#3 char *",
-        "param:#4 char *"
-      ]
-    },
-    "func_ov007_020c9c24": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov007_020ca010": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020ca2a8": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020ca578": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "param:#1 int *"
-      ]
-    },
-    "func_ov007_020ca5f0": {
-      "include/decl_common.h": [
-        "param:#1 int",
-        "param:#2 int"
-      ]
-    },
     "func_ov007_020ca86c": {
       "src/unnamed/ov007/func_ov007_020ca5f0.cpp": [
         "param:#1 int",
@@ -24564,11 +23822,6 @@
     "func_ov007_020caeac": {
       "src/unnamed/ov007/func_ov007_020ca5f0.cpp": [
         "arity:13"
-      ]
-    },
-    "func_ov007_020cb3dc": {
-      "include/decl_common.h": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020cb4b0": {
@@ -24583,16 +23836,6 @@
         "param:#4 int",
         "param:#5 int",
         "param:#6 int"
-      ]
-    },
-    "func_ov007_020cbbb0": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov007_020cbf8c": {
-      "src/ui/menus/unit020bed60.cpp": [
-        "return:int"
       ]
     },
     "func_ov010_02111984": {
@@ -24620,16 +23863,6 @@
     "func_ov065_02119210": {
       "include/decl_common.h": [
         "param:#1 int"
-      ]
-    },
-    "func_ov065_021195bc": {
-      "include/decl_common.h": [
-        "arity:0"
-      ]
-    },
-    "func_ov065_021195d0": {
-      "include/decl_common.h": [
-        "arity:0"
       ]
     },
     "func_ov070_0211f100": {

@@ -1,19 +1,6 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
-
-/* func_ov007_020b7138's second argument: dScDSMT_c's byte-packed
- * download-play table (data_0209b340); only the slot this file reads. */
-typedef struct Ov007BootArgs {
-    char pad_00[0xb];
-    /* 0x0b: flags1 bit 0 of the loaded save file */
-    unsigned char fileUsed[3];
-} Ov007BootArgs;
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; only the slot this
- * file reads. */
-typedef struct Ov007Settings {
-    Ov007BootArgs *bootArgs; /* 0x00 */
-} Ov007Settings;
+#include "Ov007Settings.h"
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

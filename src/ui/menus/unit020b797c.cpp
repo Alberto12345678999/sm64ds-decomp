@@ -55,6 +55,7 @@
 #include "types.h"
 #include "GX.h"
 #include "Ov007Sprite.h"
+#include "Ov007Settings.h"
 
 #pragma opt_loop_invariants off
 
@@ -673,9 +674,9 @@ void func_ov007_020b8070(int n) {
 }
 
 /* Draws the file-select header into plane 0 from the boot arguments: the
- * message for bootArgs[8], then messages 0x1f51 and 0x1f52 in colours 0xb
- * and 0xc, swapped when bootArgs[9] is clear. */
-void func_ov007_020b7eec(u8 *bootArgs) {
+ * message for soundModeItem, then messages 0x1f51 and 0x1f52 in colours 0xb
+ * and 0xc, swapped when backlightOn is clear. */
+void func_ov007_020b7eec(Ov007BootArgs *bootArgs) {
     int r;
     func_ov007_020c0308(data_ov007_02103998, 0x18, 0xf);
     func_ov007_020c0308(data_ov007_02104598, 0x18, 0xf);
@@ -686,12 +687,12 @@ void func_ov007_020b7eec(u8 *bootArgs) {
     data_ov007_02102dd8 = 0xb;
     data_ov007_02103464 = 0xac;
     data_ov007_02103468 = 4;
-    r = func_ov007_020b8ec0(data_ov007_020d7a50[bootArgs[8]]);
+    r = func_ov007_020b8ec0(data_ov007_020d7a50[bootArgs->soundModeItem]);
     r = func_ov007_020c94a0(0, (unsigned int)r);
     func_ov007_020b8b80(0, (u8 *)r, 0);
     data_ov007_02103464 = 0x8c;
     data_ov007_02103468 = 0xa;
-    if (bootArgs[9] != 0) {
+    if (bootArgs->backlightOn != 0) {
         data_ov007_02102dd8 = 0xb;
     } else {
         data_ov007_02102dd8 = 0xc;

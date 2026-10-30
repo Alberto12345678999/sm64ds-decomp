@@ -38,7 +38,7 @@ extern int func_ov007_020c3df4(int a, void *b);
 extern void *func_ov007_020c11ac(int n);
 extern void *func_ov007_020c40d4(int animCount);
 extern void func_ov007_020c10b0(void *a, int b);
-extern void func_ov007_020c4090(char *c);
+extern void func_ov007_020c4090(Ov007SpriteItem *item);
 
 /* Shows the item's node only while it lies within `margin` pixels of the
  * 256x192 screen, and hides it once it leaves. */
@@ -87,7 +87,7 @@ void *func_ov007_020c3f00(int *layout, int extraAnims) {
     while (i < *layout) {
         grp->items[i] = func_ov007_020c40d4(layout[2]);
         Ov007SpriteItem *item = grp->items[i];
-        func_ov007_020c4090((char *)item);
+        func_ov007_020c4090(item);
         func_ov007_020c10b0(grp->root, (int)item->node);
         i++;
     }

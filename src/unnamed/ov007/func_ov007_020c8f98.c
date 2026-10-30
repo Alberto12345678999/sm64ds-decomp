@@ -2,14 +2,13 @@
 
 extern void func_ov007_020c90c0(void *c);
 
-inline int keep(int x)
-{
+inline int keep(int x) {
     return x;
 }
 
-int func_ov007_020c8f98(int *thiz)
-{
-    Ov007Tween *tw = (Ov007Tween *)thiz;
+/* One frame of a scalar tween (modes as in Ov007Tween.h). Returns 1 once it
+ * has arrived (state 3). */
+int func_ov007_020c8f98(Ov007Tween *tw) {
     s16 t;
     int a;
     int b;

@@ -1,20 +1,10 @@
 #include "Ov007StrokePath.h"
+#include "Ov007Picker.h"
 
 extern int func_ov007_020c3ce4(void);
 extern void func_ov007_020c6724(void *self, int flag);
 extern void func_ov007_020c6e68(void *self, int i);
 extern int func_ov007_020c5db0(void *c);
-
-/* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in
- * unit020b8f50, only the slots this file touches. */
-typedef struct Ov007Picker {
-    char pad_00[8];
-    int groupCount; /* 0x08: committed strokes */
-    char pad_0c[8];
-    int totalPoints; /* 0x14: func_ov007_020c5db0's point total */
-    char pad_18[0x20];
-    Ov007StrokePath **groups; /* 0x38: committed strokes */
-} Ov007Picker;
 
 /* Loads a whole drawing into the picker as count committed strokes: resets
  * it (func_ov007_020c6724), builds stroke i from the coordinate tables
