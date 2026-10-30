@@ -58,6 +58,8 @@ check against, and they don't.
 | OS_alarm.c | 0x02059824..0x02059cb4 | 9 of 9: 8 exact, OSi_ArrangeTimer 0x118 to 0x11c; asm OSi_AlarmHandler first, then the C bodies reversed: folded as arm9/OS_Alarm |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |
 | FS_command_default.c | 0x0205bbdc..0x0205c5e4 | 12 of 12: the nine commands are fsi_default_command's nine entries in FS_COMMAND order, the three helpers identified by body; from an older SDK (FSi_ReadTable returns nothing, FSi_ReadFileCommand and FSi_WriteFileCommand do not return the archive callback's result, 16-bit thread-id queues, the helpers in the order FSi_ReadTable, FSi_SeekDirDirect, FSi_StrNICmp), in that source order reversed: folded as arm9/FS_CommandDefault |
+| FS_command.c | 0x0205c5e4..0x0205c7c4 | 2 of 2 (FSi_TranslateCommand, FSi_ReleaseCommand), identified by body, in pret's source order reversed; FSi_TranslateCommand falls back to fsi_default_command when the archive's own proc declines: folded as arm9/FS_Command |
+| SPI_pm.s (asm only) | 0x0205f5c0..0x0205ff70 | 24 of pmd-sky's 37, each identified by body against pret's pokediamond and pret's pmd-sky; from an older SDK (no sleep-callback lists, no PMi_WriteRegister/PMi_SetAmp, no LED-pattern read; PM_GoSleepMode, PMi_SetLCDPower and PM_ForceToPowerOffAsync without the backlight, amplifier and LCD steps; register replies for commands 0x70..0x73), in pret's pokediamond address order: folded as arm9/PM |
 | CARD_common.c | 0x0205ff70..0x020602bc | 9 of 14: 5 exact, 4 drift from an older SDK (CARDi_InitCommon 0x100 to 0xb4, CARDi_UnlockResource 0xa4 to 0xa8, CARDi_LockResource 0x9c to 0xa0, CARDi_SetTask 0x48 to 0x94), in pret's source order reversed; the other 5 dropped by the linker: folded as arm9/CARD_Common |
 | CARD_rom.c | 0x02060890..0x02060a64 | 4 renamed by body (CARD_Init, CARD_WaitRomAsync, CARDi_ReadRom, CARDi_ReadRomSyncCore), not folded; the order is not pret's reversed (CARD_Init sits below CARD_WaitRomAsync here) |
 | CTRDG_common.c | 0x0206a318..0x0206a600 | 7 of 24: 6 exact, CTRDG_IsExisting 0x11c to 0x120, in pret's source order reversed; the other 17 dropped by the linker: folded as arm9/CTRDG_Common |
@@ -67,7 +69,7 @@ is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is src/MI_SwapWord.c (0x020
 OS_init.c's OS_Init is src/OS_Init.cpp (0x02058c84). It makes pret's calls in pret's order, which names
 each callee: PXI_init.c's PXI_Init (src/PXI_Init.c, 0x0205b858), MI_wram.c's MI_SetWramBank
 (src/MI_SetWramBank.c), OS_valarm.c's OS_InitVAlarm (src/OS_InitVAlarm.cpp), OS_reset.c's
-OS_InitReset (src/OS_InitReset.c), CTRDG_Init (src/CTRDG_Init.c) and PM_Init (src/PM_Init.c).
+OS_InitReset (src/OS_InitReset.c), CTRDG_Init (src/CTRDG_Init.c) and PM_Init (src/engine/spi/PM.cpp).
 OS_timer.c's OSi_SetTimerReserved is src/OSi_SetTimerReserved.c (0x02059624, 0x1c), between the
 OS_exception.c and OS_tick.c runs.
 OS_reset.c's OSi_SendToPxi and OSi_CommonCallback are src/OSi_SendToPxi.c and src/OSi_CommonCallback.c

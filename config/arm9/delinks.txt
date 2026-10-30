@@ -2582,13 +2582,9 @@ src/engine/fs/FS_CommandDefault.cpp:
     complete
     .text start:0x0205bbdc end:0x0205c5e4
 
-src/unnamed/arm9/0205/func_0205c5e4.cpp:
+src/engine/fs/FS_Command.cpp:
     complete
-    .text start:0x0205c5e4 end:0x0205c788
-
-src/unnamed/arm9/0205/func_0205c788.c:
-    complete
-    .text start:0x0205c788 end:0x0205c7c4
+    .text start:0x0205c5e4 end:0x0205c7c4
 
 src/FS_SetArchiveProc.c:
     complete
@@ -2634,23 +2630,23 @@ src/unnamed/arm9/0205/func_0205cd5c.cpp:
     complete
     .text start:0x0205cd5c end:0x0205cdf4
 
-src/unnamed/arm9/0205/func_0205cdf4.cpp:
+src/FSi_SendCommand.cpp:
     complete
     .text start:0x0205cdf4 end:0x0205cf5c
 
-src/unnamed/arm9/0205/func_0205cf5c.c:
+src/FSi_ExecuteSyncCommand.c:
     complete
     .text start:0x0205cf5c end:0x0205cfa4
 
-src/unnamed/arm9/0205/func_0205cfa4.cpp:
+src/FSi_ExecuteAsyncCommand.cpp:
     complete
     .text start:0x0205cfa4 end:0x0205d044
 
-src/unnamed/arm9/0205/func_0205d044.cpp:
+src/FSi_NextCommand.cpp:
     complete
     .text start:0x0205d044 end:0x0205d23c
 
-src/unnamed/arm9/0205/func_0205d23c.cpp:
+src/FS_FindArchive.cpp:
     complete
     .text start:0x0205d23c end:0x0205d28c
 
@@ -2666,7 +2662,7 @@ src/unnamed/arm9/0205/func_0205d2dc.c:
     complete
     .text start:0x0205d2dc end:0x0205d304
 
-src/unnamed/arm9/0205/func_0205d304.c:
+src/FSi_GetPackedName.c:
     complete
     .text start:0x0205d304 end:0x0205d368
 
@@ -2717,11 +2713,11 @@ src/FS_Init.c:
     complete
     .text start:0x0205d89c end:0x0205d8d8
 
-src/unnamed/arm9/0205/func_0205d8d8.c:
+src/FSi_AppendToList.c:
     complete
     .text start:0x0205d8d8 end:0x0205d920
 
-src/unnamed/arm9/0205/func_0205d920.c:
+src/FSi_CutFromList.c:
     complete
     .text start:0x0205d920 end:0x0205d94c
 
@@ -2881,101 +2877,9 @@ src/TPi_TpCallback.c:
     complete
     .text start:0x0205f300 end:0x0205f5c0
 
-src/unnamed/arm9/0205/func_0205f5c0.c:
+src/engine/spi/PM.cpp:
     complete
-    .text start:0x0205f5c0 end:0x0205f5fc
-
-src/unnamed/arm9/0205/func_0205f5fc.c:
-    complete
-    .text start:0x0205f5fc end:0x0205f650
-
-src/unnamed/arm9/0205/func_0205f650.c:
-    complete
-    .text start:0x0205f650 end:0x0205f66c
-
-src/unnamed/arm9/0205/func_0205f66c.c:
-    complete
-    .text start:0x0205f66c end:0x0205f68c
-
-src/unnamed/arm9/0205/func_0205f68c.c:
-    complete
-    .text start:0x0205f68c end:0x0205f77c
-
-src/unnamed/arm9/0205/func_0205f77c.cpp:
-    complete
-    .text start:0x0205f77c end:0x0205f8b0
-
-src/unnamed/arm9/0205/func_0205f8b0.c:
-    complete
-    .text start:0x0205f8b0 end:0x0205f8e0
-
-src/unnamed/arm9/0205/func_0205f8e0.c:
-    complete
-    .text start:0x0205f8e0 end:0x0205f958
-
-src/unnamed/arm9/0205/func_0205f958.c:
-    complete
-    .text start:0x0205f958 end:0x0205f994
-
-src/unnamed/arm9/0205/func_0205f994.c:
-    complete
-    .text start:0x0205f994 end:0x0205f9ac
-
-src/unnamed/arm9/0205/func_0205f9ac.c:
-    complete
-    .text start:0x0205f9ac end:0x0205f9e8
-
-src/unnamed/arm9/0205/func_0205f9e8.c:
-    complete
-    .text start:0x0205f9e8 end:0x0205fa78
-
-src/unnamed/arm9/0205/func_0205fa78.c:
-    complete
-    .text start:0x0205fa78 end:0x0205fab4
-
-src/unnamed/arm9/0205/func_0205fab4.c:
-    complete
-    .text start:0x0205fab4 end:0x0205fb1c
-
-src/unnamed/arm9/0205/func_0205fb1c.c:
-    complete
-    .text start:0x0205fb1c end:0x0205fb58
-
-src/unnamed/arm9/0205/func_0205fb58.c:
-    complete
-    .text start:0x0205fb58 end:0x0205fbd0
-
-src/unnamed/arm9/0205/func_0205fbd0.c:
-    complete
-    .text start:0x0205fbd0 end:0x0205fc44
-
-src/unnamed/arm9/0205/func_0205fc44.c:
-    complete
-    .text start:0x0205fc44 end:0x0205fcfc
-
-src/unnamed/arm9/0205/func_0205fcfc.c:
-    complete
-    .text start:0x0205fcfc end:0x0205fde8
-
-src/PM_Init.c:
-    complete
-    .text start:0x0205fde8 end:0x0205feac
-
-src/unnamed/arm9/0205/func_0205feac.c:
-    complete
-    .text start:0x0205feac end:0x0205ff00
-
-src/unnamed/arm9/0205/func_0205ff00.c:
-    complete
-    .text start:0x0205ff00 end:0x0205ff08
-
-src/unnamed/arm9/0205/func_0205ff08.c:
-    complete
-    .text start:0x0205ff08 end:0x0205ff20
-
-src/unnamed/arm9/0205/func_0205ff20.cpp:
-    complete
-    .text start:0x0205ff20 end:0x0205ff70
+    .text start:0x0205f5c0 end:0x0205ff70
 
 src/engine/card/CARD_Common.cpp:
     complete
@@ -3085,7 +2989,7 @@ src/engine/card/CARD_PullOut.cpp:
     complete
     .text start:0x020610ac end:0x0206116c
 
-src/unnamed/arm9/0206/func_0206116c.cpp:
+src/WmClearFifoRecvFlag.cpp:
     complete
     .text start:0x0206116c end:0x02061428
 src/WM_CheckStateEx.cpp:
@@ -3107,7 +3011,7 @@ src/WM_SetCallbackTable.c:
     complete
     .text start:0x0206165c end:0x02061674
 
-src/unnamed/arm9/0206/func_02061674.c:
+src/WM_Finish.c:
     complete
     .text start:0x02061674 end:0x020616e8
 
@@ -3247,7 +3151,7 @@ src/WM_StepDataSharing.cpp:
     complete
     .text start:0x02062df0 end:0x020631dc
 
-src/unnamed/arm9/0206/func_020631dc.cpp:
+src/WM_StartDataSharing.cpp:
     complete
     .text start:0x020631dc end:0x020634fc
 
@@ -3586,7 +3490,7 @@ src/unnamed/arm9/0206/func_0206703c.cpp:
     complete
     .text start:0x0206703c end:0x02067138
 
-src/unnamed/arm9/0206/func_02067138.c:
+src/MB_CommIsBootable.c:
     complete
     .text start:0x02067138 end:0x02067194
 
@@ -3602,7 +3506,7 @@ src/unnamed/arm9/0206/func_02067250.c:
     complete
     .text start:0x02067250 end:0x020672a4
 
-src/unnamed/arm9/0206/func_020672a4.cpp:
+src/MB_CommSetParentStateCallback.cpp:
     complete
     .text start:0x020672a4 end:0x020672d0
 

@@ -828,11 +828,6 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0205/func_0205f8b0.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/unnamed/arm9/0206/func_0206a600.c": [
         "return:unsigned int"
       ]
@@ -1586,7 +1581,7 @@
       "src/OS_GetOwnerInfo.c": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_0206116c.cpp": [
+      "src/WmClearFifoRecvFlag.cpp": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0206/func_02062aa4.cpp": [
@@ -1752,13 +1747,10 @@
     "OS_SleepThread": {
       "src/myFS_ReadFile.c": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
-        "param:#1 char *"
       ]
     },
     "OS_WakeupThread": {
-      "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
+      "src/IRQ2.cpp": [
         "param:#1 int *"
       ],
       "src/CARDi_EndTask.cpp": [
@@ -3772,7 +3764,7 @@
       ]
     },
     "WM_CheckStateEx": {
-      "src/unnamed/arm9/0206/func_02061674.c": [
+      "src/WM_Finish.c": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_02061b9c.cpp": [
@@ -5407,11 +5399,11 @@
       ]
     },
     "_ZN3IRQ7DisableEv": {
-      "src/Crash.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "return:int"
+      ],
+      "src/Crash.cpp": [
+        "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
@@ -5448,6 +5440,10 @@
       ]
     },
     "_ZN3IRQ7RestoreEj": {
+      "src/unnamed/arm9/0204/func_02040c34.c": [
+        "param:#1 int",
+        "return:void"
+      ],
       "src/DMAStartTransfer.cpp": [
         "return:void"
       ],
@@ -5461,10 +5457,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02040aa4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02040c34.c": [
-        "param:#1 int",
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02041224.cpp": [
@@ -5501,7 +5493,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c5e4.cpp": [
+      "src/engine/fs/FS_Command.cpp": [
         "return:void"
       ],
       "src/FS_ResumeArchive.cpp": [
@@ -5522,13 +5514,13 @@
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
+      "src/FSi_SendCommand.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cfa4.cpp": [
+      "src/FSi_ExecuteAsyncCommand.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205d044.cpp": [
+      "src/FSi_NextCommand.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
@@ -5582,7 +5574,7 @@
       "src/unnamed/arm9/0206/func_020671b4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020672a4.cpp": [
+      "src/MB_CommSetParentStateCallback.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02067928.cpp": [
@@ -10703,11 +10695,6 @@
         "return:unsigned int"
       ]
     },
-    "data_020a8108": {
-      "src/unnamed/arm9/0205/func_0205fcfc.c": [
-        "return:int"
-      ]
-    },
     "data_020a8114": {
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
@@ -10726,7 +10713,7 @@
       "src/WM_SetCallbackTable.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02061674.c": [
+      "src/WM_Finish.c": [
         "return:int"
       ],
       "src/WM_Init.cpp": [
@@ -10813,13 +10800,10 @@
       "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02067138.c": [
-        "return:int *"
-      ],
       "src/unnamed/arm9/0206/func_02067250.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_020672a4.cpp": [
+      "src/MB_CommSetParentStateCallback.cpp": [
         "return:SomeObj *"
       ],
       "src/unnamed/arm9/0206/func_02067604.c": [
@@ -19591,19 +19575,11 @@
         "param:#2 int"
       ]
     },
-    "func_0205c5e4": {
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_0205c788": {
+    "FSi_ReleaseCommand": {
       "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "param:#1 int *"
       ],
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205d044.cpp": [
+      "src/FSi_NextCommand.cpp": [
         "param:#1 Node *"
       ]
     },
@@ -19641,7 +19617,7 @@
         "return:void"
       ]
     },
-    "func_0205cdf4": {
+    "FSi_SendCommand": {
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 UnkStruct_0205d4a0 *",
         "return:void"
@@ -19653,35 +19629,22 @@
         "param:#1 FSFile *"
       ]
     },
-    "func_0205cf5c": {
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
-        "param:#1 char *"
-      ],
+    "FSi_ExecuteSyncCommand": {
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 struct Obj *"
       ]
     },
-    "func_0205cfa4": {
+    "FSi_ExecuteAsyncCommand": {
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
         "param:#1 int"
       ]
     },
-    "func_0205d044": {
+    "FSi_NextCommand": {
       "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205cf5c.c": [
-        "param:#1 int",
         "return:int"
       ]
     },
-    "func_0205d23c": {
+    "FS_FindArchive": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
       ],
@@ -19693,10 +19656,6 @@
       ],
       "src/FS_RegisterArchiveName.cpp": [
         "return:void *"
-      ],
-      "src/FSi_FindPath.c": [
-        "param:#1 char *",
-        "return:FSArchive *"
       ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
@@ -19723,7 +19682,7 @@
         "return:void"
       ]
     },
-    "func_0205d304": {
+    "FSi_GetPackedName": {
       "src/FS_RegisterArchiveName.cpp": [
         "param:#2 void *",
         "return:void *"
@@ -19772,12 +19731,6 @@
     "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
         "return:int"
-      ]
-    },
-    "func_0205d8d8": {
-      "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
-        "param:#1 void *",
-        "param:#2 void *"
       ]
     },
     "func_0205da94": {
@@ -19867,109 +19820,6 @@
         "arity:0"
       ]
     },
-    "func_0205f5c0": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205f5fc": {
-      "src/unnamed/arm9/0205/func_0205f5c0.c": [
-        "param:#2 void *",
-        "param:#3 int *"
-      ]
-    },
-    "func_0205f68c": {
-      "src/unnamed/arm9/0205/func_0205fc44.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f77c": {
-      "src/unnamed/arm9/0201/func_02019ed0.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f8e0": {
-      "src/unnamed/arm9/0201/func_02019dfc.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f958": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205f994": {
-      "src/unnamed/arm9/0205/func_0205f958.c": [
-        "param:#1 void *",
-        "param:#2 int *",
-        "return:int"
-      ]
-    },
-    "func_0205f9e8": {
-      "src/unnamed/arm9/0205/func_0205f9ac.c": [
-        "param:#3 void *",
-        "param:#4 int *"
-      ]
-    },
-    "func_0205fa78": {
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205fab4": {
-      "src/unnamed/arm9/0205/func_0205fa78.c": [
-        "param:#2 void *",
-        "param:#3 int *"
-      ]
-    },
-    "func_0205fb1c": {
-      "src/unnamed/arm9/0205/func_0205f8e0.c": [
-        "param:#2 void *"
-      ]
-    },
-    "func_0205fb58": {
-      "src/unnamed/arm9/0205/func_0205fb1c.c": [
-        "param:#3 void *",
-        "param:#4 int *"
-      ]
-    },
-    "func_0205fbd0": {
-      "src/unnamed/arm9/0205/func_0205f994.c": [
-        "return:void"
-      ]
-    },
-    "func_0205fc44": {
-      "src/unnamed/arm9/0205/func_0205f77c.cpp": [
-        "param:#1 unsigned short",
-        "param:#2 unsigned short"
-      ]
-    },
-    "func_0205ff00": {
-      "src/unnamed/arm9/0205/func_0205f5c0.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205f958.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205f9ac.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205fa78.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_0205fb1c.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205ff20": {
-      "src/unnamed/arm9/0205/func_0205fb58.c": [
-        "arity:4",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205fc44.c": [
-        "return:int"
-      ]
-    },
     "CARD_GetBackupTotalSize": {
       "src/engine/save/SaveData2.cpp": [
         "return:unsigned int"
@@ -20002,7 +19852,7 @@
         "param:#1 void (*)(void)"
       ]
     },
-    "func_02061188": {
+    "WmReceiveFifo": {
       "src/WM_Init.cpp": [
         "arity:0"
       ]
@@ -20123,7 +19973,7 @@
       "src/WM_StepDataSharing.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020631dc.cpp": [
+      "src/WM_StartDataSharing.cpp": [
         "param:#1 void (*)(void *)",
         "return:int"
       ],
@@ -20184,12 +20034,12 @@
       ]
     },
     "func_02062aa4": {
-      "src/unnamed/arm9/0206/func_020631dc.cpp": [
+      "src/WM_StartDataSharing.cpp": [
         "arity:0"
       ]
     },
     "func_02062bdc": {
-      "src/unnamed/arm9/0206/func_020631dc.cpp": [
+      "src/WM_StartDataSharing.cpp": [
         "arity:0"
       ]
     },
@@ -20525,11 +20375,6 @@
       ]
     },
     "func_0206703c": {
-      "src/unnamed/arm9/0203/func_0203e20c.cpp": [
-        "param:#1 unsigned short"
-      ]
-    },
-    "func_02067138": {
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "param:#1 unsigned short"
       ]

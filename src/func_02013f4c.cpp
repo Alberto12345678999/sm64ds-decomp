@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "Heap.h"
+#include "nitro/spi/pm.h"
 
 extern "C" {
 
@@ -13,7 +14,6 @@ extern void *data_020a0eac;
 extern void InitCrashScreen(void);
 extern void ShowCrashScreen(void);
 extern void OS_ResetSystem(int a);
-extern int func_0205f958(void);
 
 void func_02013f4c(void)
 {
@@ -70,7 +70,7 @@ void func_02013f4c(void)
             if (b == 0) {
                 OS_ResetSystem(0);
             } else {
-                func_0205f958();
+                PM_ForceToPowerOff();
             }
         }
         if (old & 1) {

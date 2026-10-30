@@ -5,7 +5,7 @@ extern "C" void *WM_GetSystemWork(void);
 struct CP15 { static void InvalidateDataCache(u32 addr, u32 len); };
 
 /* NitroSDK data sharing, the port send callback: WM_StartDataSharing
- * (func_020631dc) and the send step (func_020627e8, WM_StepDataSharing) pass it to
+ * and the send step (func_020627e8, WM_StepDataSharing) pass it to
  * the port send (func_020623ec). The sharing it belongs to is the port's
  * WM_SetPortCallback argument. On success the parent records the sent set's
  * sequence number and steps sendIndex; a full send queue (errcode 0xa) backs

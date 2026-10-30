@@ -2,15 +2,13 @@
 #include "types.h"
 #include "CP15.h"
 #include "IRQ.h"
+#include "nitro/spi/pm.h"
 
 extern "C" {
 
 enum IPCStatus { IPC_SUCCESS = 0, IPC_ERROR = -1, IPC_FIFO_FULL = -2 };
 
 extern enum IPCStatus PXI_SendWordByFifo(u32 arg0, u32 arg1, u32 arg2);
-extern void func_0205f958(void);
-extern void func_0205f5c0(int a);
-extern void func_0205fa78(int a);
 extern int func_02040714(void);
 extern void func_02040724(void);
 extern void func_0201a4d0(void);
@@ -37,12 +35,12 @@ void func_02019ff4(void) {
 void func_02019f64(void) {
     int r;
     if (data_0209d4e4 != 0) {
-        func_0205f958();
+        PM_ForceToPowerOff();
         func_02019ff4();
         return;
     }
-    func_0205f5c0(3);
-    func_0205fa78(1);
+    PMi_SendLEDPatternCommand(3);
+    PMi_SetLED(1);
     r = func_02040714();
     if (r != 0 && r != 1) {
         do {
@@ -53,8 +51,8 @@ void func_02019f64(void) {
                 break;
         } while (r != 1);
     }
-    func_0205f5c0(1);
-    func_0205fa78(1);
+    PMi_SendLEDPatternCommand(1);
+    PMi_SetLED(1);
     func_02019ff4();
 }
 

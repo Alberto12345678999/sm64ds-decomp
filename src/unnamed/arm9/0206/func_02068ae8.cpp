@@ -16,7 +16,7 @@ extern char *data_020a9db8;
 #define MB_WORK ((MbParentWork *)data_020a9db8)
 
 extern void MultiStore16(u16 val, char *dst, int nbytes);
-extern void func_020672a4(u32 val);
+extern void MB_CommSetParentStateCallback(u32 val);
 extern void func_0205a588(void *dst, int val, u32 size);
 extern void func_020684a8(void);
 extern int func_02068d08(void);
@@ -48,7 +48,7 @@ int func_02068ae8(int param0)
     sp0 = 0;
     MultiStore16(sp0, (char *)MB_WORK->mChildUser, 0x60a0);
 
-    func_020672a4(cb);
+    MB_CommSetParentStateCallback(cb);
 
     MB_WORK->mBlockSize = WM_WORK->parentMaxSize - 6;
     MB_WORK->mReqPieceSize = WM_WORK->childMaxSize - 2;
