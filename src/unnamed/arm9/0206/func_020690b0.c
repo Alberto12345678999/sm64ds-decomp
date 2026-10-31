@@ -44,7 +44,7 @@ extern char data_020a9dc0[];
 extern int WM_End(void *fn);
 extern void MBi_CheckWmErrcode(int a, int b);
 extern int WM_ReadStatus(void *p);
-extern int func_02063574(void *fn, int a, int b, int c);
+extern int WM_SetLifeTime(void *fn, int a, int b, int c);
 extern int WM_StartScan(void *fn, void *p);
 extern int WM_StartConnect(void *fn, int a, int b);
 extern int WM_SetPortCallback(int a, void *fn, int c);
@@ -144,7 +144,7 @@ void func_020690b0(char *arg0)
         if (*(u16 *)(arg0 + 2) == 0) {
             DISPATCH(0x15, arg0);
             MBi_CheckWmErrcode(0x83, WM_ReadStatus(&w->status));
-            MBi_CheckWmErrcode(0x1d, func_02063574((void *)func_020690b0, 0xffff, 0x28, 5));
+            MBi_CheckWmErrcode(0x1d, WM_SetLifeTime((void *)func_020690b0, 0xffff, 0x28, 5));
             return;
         }
         DISPATCH(0x100, arg0);

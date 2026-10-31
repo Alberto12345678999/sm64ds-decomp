@@ -1483,12 +1483,6 @@
       "src/WmClearFifoRecvFlag.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02062aa4.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
-        "param:#3 unsigned int"
-      ],
       "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ],
@@ -3664,12 +3658,6 @@
       "src/WM_Enable.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02062d10.cpp": [
-        "return:void *"
-      ],
-      "src/WM_MeasureChannel.c": [
-        "return:int *"
-      ],
       "src/WM_GetLinkLevel.cpp": [
         "return:void *"
       ],
@@ -3687,6 +3675,9 @@
       ],
       "src/WM_StartScan.cpp": [
         "return:char *"
+      ],
+      "src/engine/wm/WM_Etc.cpp": [
+        "return:int *"
       ]
     },
     "WM_SendCommand": {
@@ -3694,17 +3685,6 @@
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/unnamed/arm9/0206/func_02063574.c": [
-        "arity:5"
-      ],
-      "src/unnamed/arm9/0206/func_020635d8.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0206/func_02063648.cpp": [
-        "arity:8"
       ],
       "src/WM_Disconnect.cpp": [
         "param:#1 int",
@@ -5247,9 +5227,6 @@
       "src/Crash.cpp": [
         "return:void"
       ],
-      "src/WM_SetPortCallback.cpp": [
-        "return:int"
-      ],
       "src/WM_SetIndCallback.cpp": [
         "return:int"
       ],
@@ -5301,15 +5278,8 @@
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:void"
       ],
-      "src/WM_SetPortCallback.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/WM_SetIndCallback.cpp": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02062990.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02065170.cpp": [
@@ -8781,12 +8751,6 @@
     "func_0204921c": {
       "src/engine/sound/Sound.cpp": [
         "param:#1 int *"
-      ]
-    },
-    "func_0205b78c": {
-      "src/engine/sound/SoundEngine.cpp": [
-        "param:#1 struct Node *",
-        "param:#3 struct Node *"
       ]
     },
     "func_0206062c": {
@@ -19033,38 +18997,12 @@
         "param:#1 void *"
       ]
     },
-    "func_02062734": {
-      "src/unnamed/arm9/0206/func_02062990.cpp": [
-        "param:#3 void *",
-        "return:void *"
-      ]
-    },
-    "func_02062990": {
-      "src/unnamed/arm9/0206/func_02062bdc.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int"
-      ]
-    },
-    "func_02062aa4": {
-      "src/WM_StartDataSharing.cpp": [
-        "arity:0"
-      ]
-    },
-    "func_02062bdc": {
-      "src/WM_StartDataSharing.cpp": [
-        "arity:0"
-      ]
-    },
     "WM_MeasureChannel": {
       "src/unnamed/arm9/0203/func_0203f818.c": [
         "param:#1 void *"
       ]
     },
-    "func_02063574": {
+    "WM_SetLifeTime": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
         "param:#1 void *"
       ],
@@ -19072,12 +19010,12 @@
         "param:#1 void *"
       ]
     },
-    "func_020635d8": {
+    "WM_SetBeaconIndication": {
       "src/unnamed/arm9/0206/func_02069994.c": [
         "param:#1 void *"
       ]
     },
-    "func_02063648": {
+    "WM_SetGameInfo": {
       "src/unnamed/arm9/0206/func_02067f68.c": [
         "param:#5 int",
         "param:#6 int"
@@ -22014,22 +21952,16 @@
       ]
     },
     "WM_SetMPDataToPort": {
-      "src/WM_StartDataSharing.cpp": [
-        "param:#1 void (*)(void *)",
-        "return:int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0204/func_02041930.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_020627e8.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068a28.c": [
         "param:#5 int",
         "param:#6 int"
+      ],
+      "src/engine/wm/WM_Ds.cpp": [
+        "param:#1 void (*)(void *)",
+        "return:int"
       ]
     },
     "WM_SetMPDataToPortEx": {

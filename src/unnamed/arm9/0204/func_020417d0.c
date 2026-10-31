@@ -13,7 +13,7 @@ extern void func_02065050(int data, int length);
  * func_02065050. */
 
 /* NitroSDK WMPortRecvCallback, the fields read here: the offsets agree with
- * func_02062aa4.cpp's and func_02062bdc.cpp's view. */
+ * the view of WM_Ds.cpp's two data-sharing receive callbacks. */
 typedef struct WMPortRecvCallback {
     u16 apiid;     /* 0x00 */
     u16 errcode;   /* 0x02 */

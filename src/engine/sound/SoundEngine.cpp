@@ -490,9 +490,10 @@ extern int SND_FlushCommand(u32 flags);
 extern const struct SNDCommand *SND_RecvCommandReply(u32 flags);
 extern u32 SND_GetPlayerStatus(void);
 extern u16 SND_CalcChannelVolume(s32 x);
-extern void func_0205b6b0(void *c);
-extern void func_0205b6f4(void *c);
-extern void func_0205b78c(struct Node *base, int index, struct Node *arg);
+struct SNDWaveArc;
+extern void SND_DestroyWaveArc(struct SNDWaveArc *waveArc);
+extern void SND_DestroyBank(struct SNDBankData *bank);
+extern void SND_AssignWaveArc(struct SNDBankData *bank, int index, struct SNDWaveArc *waveArc);
 extern int FS_UnloadArchive(void *thiz);
 extern int FS_LoadArchive(FSArchive *p_arc, u32 base, u32 fat, u32 fat_size, u32 fnt, u32 fnt_size,
                           FS_ARCHIVE_READ_FUNC read_func, FS_ARCHIVE_WRITE_FUNC write_func);
@@ -904,7 +905,7 @@ extern "C" int func_02051bd0(void **p, int a1, unsigned int a2, int a3, struct A
                 q = (int)((void *(*)(unsigned int a0, unsigned int a1, unsigned int a2, unsigned int a3, void *owner))func_02051634)(*(unsigned int *)node, (unsigned int)&func_02051a48, 0, 0, r6);
                 if (q == 0) { ((void(*)(int r7))func_0204f630)(r7); return 0; }
             }
-            ((void(*)(int base, int index, int arg))func_0205b78c)(r5, i, q);
+            SND_AssignWaveArc((struct SNDBankData *)r5, i, (struct SNDWaveArc *)q);
         }
     }
 
@@ -960,7 +961,7 @@ extern "C" int func_02051a98(void *p0, void *p1, unsigned int p2, void *p3,
                 ((void(*)(void *p))func_0204f630)(r6);
                 return 0;
             }
-            ((void(*)(void *base, int index, void *arg))func_0205b78c)(r5, i, node);
+            SND_AssignWaveArc((struct SNDBankData *)r5, i, (struct SNDWaveArc *)node);
         }
     }
     ((struct E1 *)r6)->func_0204f600((int)((char *)p5 + p5->off18), p4->f0, (int)r5);
@@ -980,14 +981,14 @@ extern "C" int func_02051a88(int a, int b)
 extern "C" void func_02051a68(unsigned char *c, int off)
 {
     SND_InvalidateBankData(c, c + off);
-    func_0205b6f4((void *)(c));
+    SND_DestroyBank((struct SNDBankData *)c);
 }
 
 // @symbol func_02051a48
 extern "C" void func_02051a48(unsigned char *c, int off)
 {
     SND_InvalidateWaveData(c, c + off);
-    func_0205b6b0((void *)(c));
+    SND_DestroyWaveArc((struct SNDWaveArc *)c);
 }
 
 // @symbol func_02051a28
@@ -1081,7 +1082,8 @@ extern "C" int func_0205179c(unsigned int id, int flags, int arg2)
                 if (!p) return 0;
                 q = func_020514b4(*(int*)p, arg2);
                 if (!q) return 0;
-                if (r != 0) ((void(*)(int base, int index, int arg))func_0205b78c)(r, i, q);
+                if (r != 0)
+                    SND_AssignWaveArc((struct SNDBankData *)r, i, (struct SNDWaveArc *)q);
             }
         }
     }
@@ -1117,7 +1119,7 @@ extern "C" int func_020516d4(unsigned int id, int flags, int c) {
                 arg = func_020514b4(*p, c);
                 if (arg == 0) return 0;
                 if (base != 0) {
-                    ((void(*)(int base, int index, int arg))func_0205b78c)(base, i, arg);
+                    SND_AssignWaveArc((struct SNDBankData *)base, i, (struct SNDWaveArc *)arg);
                 }
             }
         }
@@ -1214,14 +1216,14 @@ extern "C" void func_02051420(char *a, int b, int c, int d)
 extern "C" void func_020513e4(char *a, int b, int c, int d) {
     ((extern void(*)(void *a, int c, int d))func_02051454)(a, c, d);
     SND_InvalidateBankData(a, a + b);
-    ((extern void(*)(void *a))func_0205b6f4)(a);
+    SND_DestroyBank((struct SNDBankData *)a);
 }
 
 // @symbol func_020513a8
 extern "C" void func_020513a8(char *a, int b, int c, int d) {
     ((extern void(*)(void *a, int c, int d))func_02051454)(a, c, d);
     SND_InvalidateWaveData(a, a + b);
-    ((extern void(*)(void *a))func_0205b6b0)(a);
+    SND_DestroyWaveArc((struct SNDWaveArc *)a);
 }
 
 // @symbol func_0205130c

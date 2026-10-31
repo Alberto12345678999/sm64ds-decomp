@@ -1,0 +1,74 @@
+{
+  "id": "arm9/SND_Bank",
+  "module": "arm9",
+  "source": "src/engine/sound/SND_Bank.cpp",
+  "promoted_source": "src/engine/sound/SND_Bank.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's SND_bank.c, 0x0205b6b0..0x0205b858: 3 functions, gapless in config/arm9/delinks.txt, identified by their bodies against pret's pokediamond SND_bank.c. SND_DestroyWaveArc walks the archive's topLink chain and clears and flushes each 8-byte link. SND_DestroyBank unchains each of the bank's four links (at 0x18) from its archive, flushing the archive (0x3c) when the link was its head and the previous link (8) otherwise. SND_AssignWaveArc does the same for one index, returns early when the archive is unchanged, then chains the link at the new archive's head and flushes the bank and the archive (0x3c each).",
+    "Order: pret's file defines SND_AssignWaveArc, SND_DestroyBank and SND_DestroyWaveArc in that order, and mwccarm emits the bodies in reverse, so the ROM holds them from SND_DestroyWaveArc up. Older SDK: none of the three takes the sound mutex (pret's lock with SNDi_LockMutex), and pret's later SND_GetFirstInstDataPos, SND_GetNextInstData and the wave-data accessors are absent.",
+    "BOTTOM EDGE: SND_CalcChannelVolume (0x0205b63c..0x0205b6b0), SND_util.c.",
+    "TOP EDGE: PXI_Init at 0x0205b858, the lowest function of arm9/PXI_Fifo."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205b6b0",
+      "end": "0x0205b858"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "SND_DestroyWaveArc",
+      "address": "0x0205b6b0",
+      "size": "0x00000044",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b6b0.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "SND_DestroyBank",
+      "address": "0x0205b6f4",
+      "size": "0x00000098",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b6f4.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "SND_AssignWaveArc",
+      "address": "0x0205b78c",
+      "size": "0x000000cc",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b78c.cpp",
+      "ordinal": 2
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Overlay: tu_map cannot segment arm9/main.",
+    "C++ for CP15::FlushDataCache; every function keeps C linkage."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-SND_Bank/SND_Bank.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 3,
+    "functions_declared": 3,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

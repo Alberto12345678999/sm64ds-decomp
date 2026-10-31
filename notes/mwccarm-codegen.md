@@ -7174,7 +7174,8 @@ reproduced in a 15-instruction toy, `_abwork/crkh/toyprobe.py`:
   `if (x > 0x64) x = 0x64;` clamp four instructions earlier does not help it.
 * Two MATCHED precedents that 6u's corpus scan missed, both single-condition guards with a
   five-instruction return block that keeps its branch:
-      src/unnamed/arm9/0206/func_02062d10.cpp       `bne` over an arm containing `cmp r0,#0 / beq`
+      WmDataSharingSetDataCallback `bne` over an arm containing `cmp r0,#0 / beq`
+                                  (now in src/engine/wm/WM_Ds.cpp)
       func_ov006_020e83bc         `bge` over an arm containing `cmp r0,#0 / movgt / strgt`
                                   (now in src/minigames/d_mg3d_esp_anim_set.cpp)
   Both are the final `else` of an if / else-if / else chain, so the jumped-over arm is the

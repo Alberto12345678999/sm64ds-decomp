@@ -2316,17 +2316,9 @@ src/SND_CalcChannelVolume.c:
     complete
     .text start:0x0205b63c end:0x0205b6b0
 
-src/unnamed/arm9/0205/func_0205b6b0.cpp:
+src/engine/sound/SND_Bank.cpp:
     complete
-    .text start:0x0205b6b0 end:0x0205b6f4
-
-src/unnamed/arm9/0205/func_0205b6f4.cpp:
-    complete
-    .text start:0x0205b6f4 end:0x0205b78c
-
-src/unnamed/arm9/0205/func_0205b78c.cpp:
-    complete
-    .text start:0x0205b78c end:0x0205b858
+    .text start:0x0205b6b0 end:0x0205b858
 
 src/PXI_Init.c:
     complete
@@ -2745,57 +2737,13 @@ src/WM_StartMPEx.cpp:
     complete
     .text start:0x020625fc end:0x02062734
 
-src/unnamed/arm9/0206/func_02062734.c:
+src/engine/wm/WM_Ds.cpp:
     complete
-    .text start:0x02062734 end:0x02062778
+    .text start:0x02062734 end:0x020634fc
 
-src/WM_GetSharedDataAddress.c:
+src/engine/wm/WM_Etc.cpp:
     complete
-    .text start:0x02062778 end:0x020627e8
-
-src/unnamed/arm9/0206/func_020627e8.cpp:
-    complete
-    .text start:0x020627e8 end:0x02062990
-
-src/unnamed/arm9/0206/func_02062990.cpp:
-    complete
-    .text start:0x02062990 end:0x02062aa4
-
-src/unnamed/arm9/0206/func_02062aa4.cpp:
-    complete
-    .text start:0x02062aa4 end:0x02062bdc
-
-src/unnamed/arm9/0206/func_02062bdc.cpp:
-    complete
-    .text start:0x02062bdc end:0x02062d10
-
-src/unnamed/arm9/0206/func_02062d10.cpp:
-    complete
-    .text start:0x02062d10 end:0x02062df0
-
-src/WM_StepDataSharing.cpp:
-    complete
-    .text start:0x02062df0 end:0x020631dc
-
-src/WM_StartDataSharing.cpp:
-    complete
-    .text start:0x020631dc end:0x020634fc
-
-src/WM_MeasureChannel.c:
-    complete
-    .text start:0x020634fc end:0x02063574
-
-src/unnamed/arm9/0206/func_02063574.c:
-    complete
-    .text start:0x02063574 end:0x020635d8
-
-src/unnamed/arm9/0206/func_020635d8.c:
-    complete
-    .text start:0x020635d8 end:0x02063648
-
-src/unnamed/arm9/0206/func_02063648.cpp:
-    complete
-    .text start:0x02063648 end:0x02063718
+    .text start:0x020634fc end:0x02063718
 
 src/unnamed/arm9/0206/func_02063718.c:
     complete

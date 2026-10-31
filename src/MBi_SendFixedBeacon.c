@@ -36,7 +36,7 @@ extern int func_020688e4(void);
 extern int func_020688cc(void);
 extern int func_020688b4(void);
 extern int func_02068844(void);
-extern int func_02063648(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
+extern int WM_SetGameInfo(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
 
 /* NitroSDK MBi_SendFixedBeacon (mb_gameinfo.c), beacon send state 3: copy
    the next 0x62-byte piece of the game record's fixed part into the beacon
@@ -79,7 +79,6 @@ void MBi_SendFixedBeacon(void) {
     else
         data_020a9d2c.state = 4;
 
-    func_02063648(0, (int *)&data_020a9d40, 0x70,
-                  func_020688e4(), func_020688cc(), func_020688b4(),
-                  func_02068844() | 2);
+    WM_SetGameInfo(0, (int *)&data_020a9d40, 0x70, func_020688e4(), func_020688cc(),
+                   func_020688b4(), func_02068844() | 2);
 }

@@ -6,9 +6,9 @@ extern char *data_020a9db8;
 extern int WM_ReadStatus(int *arg);
 extern void MBi_CheckWmErrcode(int x, int kind);
 extern int WM_SetIndCallback(void *x);
-extern int func_02063574(void *a, int b, int c, int d);
+extern int WM_SetLifeTime(void *a, int b, int c, int d);
 extern int WM_SetParentParameter(void *self, char *o);
-extern int func_020635d8(void *a, int b);
+extern int WM_SetBeaconIndication(void *a, int b);
 extern int WM_StartParent(void *x);
 extern int WM_StartMPEx(void *arg0, int arg1, int arg2, int arg3, u16 arg4, u16 arg5, u16 arg6,
                         int arg7, int arg8, int arg9, int arg10);
@@ -59,7 +59,7 @@ void func_02069994(char *arg0)
         if (cb->errcode == 0) {
             MBi_CheckWmErrcode(0x83, WM_ReadStatus((int *)&WM_WORK->status));
             MBi_CheckWmErrcode(0x80, WM_SetIndCallback((void *)func_02069994));
-            MBi_CheckWmErrcode(0x1D, func_02063574((void *)func_02069994, 0xFFFF, 0x28, 5));
+            MBi_CheckWmErrcode(0x1D, WM_SetLifeTime((void *)func_02069994, 0xFFFF, 0x28, 5));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -76,7 +76,7 @@ void func_02069994(char *arg0)
 
     case 0x7:
         DISPATCH(0x15, arg0);
-        MBi_CheckWmErrcode(0x19, func_020635d8((void *)func_02069994, 1));
+        MBi_CheckWmErrcode(0x19, WM_SetBeaconIndication((void *)func_02069994, 1));
         return;
 
     case 0x19:
