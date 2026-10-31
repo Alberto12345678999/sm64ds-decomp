@@ -12,8 +12,10 @@
  * ctor in include/fBase_c.h).
  *
  * Names: fBase_c::SceneNode is a coined name. The ROM has RTTI for fBase_c
- * but none for the node, and the two members' mangled names came in with
- * the project's first import, not from a ROM string. The lead for its real
+ * but none for the node, and no ROM string names it. The name came in with
+ * the project's first import as ActorBase::SceneNode; #1576 renamed the
+ * outer class ActorBase to fBase_c, the cartridge's name for it, and kept
+ * the node's coined name. The lead for its real
  * name is cLib's cTreeNd_c: if this unit is c_tree.cpp, the add, remove
  * and walk steps below are cTreeMg_c's and cTreeNd_c's.
  *

@@ -2,7 +2,7 @@
 #include "Ov007BgLayer.h"
 #include "Ov007LayerSlot.h"
 
-extern int func_ov007_020c0638(void *p, int a, int b, int d);
+extern void func_ov007_020c0638(Ov007BgLayer *layer, int x, int y, u16 tile);
 
 /* Resets the scroll of layer slots 6 and 1 and rebuilds both screens from
  * their sources at a y offset of -0xc0 pixels (func_ov007_020c0638). */

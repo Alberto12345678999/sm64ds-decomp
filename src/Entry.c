@@ -7,8 +7,8 @@ extern void _ZN4CP1511SystemSetupEv(void);
 extern void MIi_UncompressBackward(void);
 extern void do_autoload(void);
 extern void MultiStore_Int(void);
-extern void func_01ffafd4(void);
-extern void func_02019780(void);
+extern void _fp_init(void);
+extern void NitroStartUp(void);
 extern void __call_static_initializers(void);
 asm void Entry(void) {
     mov     ip, #0x4000000
@@ -51,8 +51,8 @@ asm void Entry(void) {
     add     r1, r1, #0x3c
     ldr     r0, =0x1ffd97c
     str     r0, [r1]
-    bl      func_01ffafd4
-    bl      func_02019780
+    bl      _fp_init
+    bl      NitroStartUp
     bl      __call_static_initializers
     ldr     r1, =0x2007000
     ldr     lr, =0xffff0000

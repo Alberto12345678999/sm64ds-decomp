@@ -7,10 +7,10 @@
 extern "C" {
 
 extern int func_ov007_020b8fb4(void);
-extern int func_ov007_020af260(int,int,int*,int*);
-extern int func_ov007_020b8f64(void);
-extern int func_ov007_020b8f50(void);
-extern int func_ov007_020b9640(void);
+extern void func_ov007_020af260(int, int, int *, int *);
+extern Ov007MenuState *func_ov007_020b8f64(void);
+extern Ov007MenuState *func_ov007_020b8f50(void);
+extern void func_ov007_020b9640(void);
 
 typedef char
     Ov007Work_itemNodes_must_be_at_0xa4[(int)&((Ov007Work *)0)->itemNodes == 0xa4 ? 1 : -1];
@@ -36,9 +36,9 @@ void func_ov007_020aefb4(void) {
             int a = -1, b = -1;
             func_ov007_020af260(quo, rem, &a, &b);
             if (a != -1)
-                ((Ov007MenuState *)func_ov007_020b8f64())->requestedState = (short)a;
+                func_ov007_020b8f64()->requestedState = (short)a;
             if (b != -1)
-                ((Ov007MenuState *)func_ov007_020b8f50())->requestedState = (short)b;
+                func_ov007_020b8f50()->requestedState = (short)b;
         } else {
             r6 = 1;
         }
@@ -46,8 +46,8 @@ void func_ov007_020aefb4(void) {
         r6 = 1;
     }
     if (r6) {
-        ((Ov007MenuState *)func_ov007_020b8f64())->requestedState = 0;
-        ((Ov007MenuState *)func_ov007_020b8f50())->requestedState = 0;
+        func_ov007_020b8f64()->requestedState = 0;
+        func_ov007_020b8f50()->requestedState = 0;
     }
     func_ov007_020b9640();
 }

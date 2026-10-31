@@ -13,7 +13,7 @@ struct MeshParamsWords {
     int w[6];
 };
 
-extern void *func_ov007_020c3df4(int a, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern Ov007Grid *func_ov007_020c73f0(int springMode, int columns, int rows, int pointMass);
 extern Ov007Link *func_ov007_020c80a4(void);
 extern void func_ov007_020c72d0(Ov007Grid *grid);

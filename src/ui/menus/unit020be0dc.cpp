@@ -152,7 +152,7 @@ typedef char
 
 extern Ov007ParticleSprites *data_ov007_02104bc0;
 extern int data_ov007_02103230;
-extern int data_ov007_02103234;
+extern char data_ov007_02103234[]; /* "2DEffect" */
 extern int data_ov007_020d7c6c;
 extern u16 data_ov007_020d7c58[];
 
@@ -164,7 +164,7 @@ extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int
 extern void *func_ov007_020b7690(int i);
 extern void func_ov007_020bfd70(struct Ov007Camera *cam, void *pos, int *outX, int *outY);
 extern void func_ov007_020c3d1c(void *p);
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c3e7c(Ov007SpriteGroup *grp);
 extern void func_ov007_020c3ee8(Ov007SpriteGroup *grp, Ov007OamList *list);
 extern Ov007SpriteGroup *func_ov007_020c3f00(int *layout, int extraAnims);
@@ -466,7 +466,7 @@ void func_ov007_020be50c(void) {
     SPRITES->group = func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
 
     SPRITES->tracking = (TrackingRecord *)func_ov007_020c3df4(
-        (int)&data_ov007_02103234, data_ov007_020d7c6c * sizeof(TrackingRecord));
+        data_ov007_02103234, data_ov007_020d7c6c * sizeof(TrackingRecord));
 
     func_ov007_020c3ee8(SPRITES->group, WORK->display->oamListSub);
 

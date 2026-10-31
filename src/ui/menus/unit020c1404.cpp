@@ -39,6 +39,7 @@
  */
 #include "types.h"
 #include "GX.h"
+#include "Ov007Texture.h"
 
 /* File-wide: func_ov007_020c1448 needs it (mwccarm defers codegen, so an
  * optimization pragma covers the whole unit), and every other function
@@ -57,32 +58,13 @@ static inline void G3_TexImageParam(u32 addr, u32 texFmt, u32 texGen, u32 sizeS,
                                   (sizeT << 23) | (repeat << 16) | (flip << 18) | (pltt0 << 29));
 }
 
-/* The 0x2c-byte texture record. */
-typedef struct Ov007Texture {
-    /* 0x00: bit 0 = has texels (func_ov007_020c1560 loads them),
-     * bit 1 = has a palette (func_ov007_020c14d4 loads it) */
-    u32 flags;
-    u32 fmt;             /* 0x04: BMD texture format */
-    const void *texSrc;  /* 0x08: texel data */
-    u32 texSize;         /* 0x0c: texel bytes */
-    u32 texAddr;         /* 0x10: VRAM slot the texels were loaded at */
-    u32 sizeS;           /* 0x14: log2(width / 8) */
-    u32 sizeT;           /* 0x18: log2(height / 8) */
-    const void *plttSrc; /* 0x1c: palette data */
-    u32 plttSize;        /* 0x20: palette bytes, colour count << 1 */
-    u32 plttAddr;        /* 0x24: VRAM slot the palette was loaded at */
-    u16 plttColorCount;  /* 0x28 */
-} Ov007Texture;
-
-typedef char Ov007Texture_size_must_be_0x2c[sizeof(Ov007Texture) == 0x2c ? 1 : -1];
-
 extern u32 data_ov007_02104bdc; /* next free texture slot */
 extern u32 data_ov007_02104be0; /* end of the palette region */
 extern u32 data_ov007_02104be4; /* end of the texture region */
 extern u32 data_ov007_02104be8; /* next free palette slot */
 
 extern void Crash(void);
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c3d1c(void *self);
 
 void func_ov007_020c15ec(Ov007Texture *tex);

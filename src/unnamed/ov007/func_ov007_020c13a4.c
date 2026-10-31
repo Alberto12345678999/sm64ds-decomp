@@ -1,6 +1,6 @@
 #include "Ov007SpriteBank.h"
 
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int b);
 
 /* Allocates a cell animation's frame and duration tables for `frameCount`
  * frames. */
