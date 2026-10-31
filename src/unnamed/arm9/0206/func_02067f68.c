@@ -77,8 +77,8 @@ extern void MultiCopyHalf(void *src, void *dst, int n);
 extern u16 func_02067ee4(u16 *p, int len);
 extern int func_020688e4(void);
 extern int func_020688cc(void);
-extern int func_020688b4(void);
-extern int func_02068844(void);
+extern int MBi_GetTgid(void);
+extern int MBi_GetAttribute(void);
 extern int func_02063648(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
 
 void func_02067f68(void)
@@ -146,6 +146,6 @@ void func_02067f68(void)
 
     a = func_020688e4();
     b = func_020688cc();
-    c = func_020688b4();
-    func_02063648(0, (int *)&data_020a9d40, 0x70, a, b, c, func_02068844() | 2);
+    c = MBi_GetTgid();
+    func_02063648(0, (int *)&data_020a9d40, 0x70, a, b, c, MBi_GetAttribute() | 2);
 }

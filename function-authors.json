@@ -11563,15 +11563,15 @@
     },
     "arm9:0x02068834": {
       "author": "tangosdev",
-      "name": "func_02068834"
+      "name": "MBi_SetMaxScanTime"
     },
     "arm9:0x02068844": {
       "author": "tangosdev",
-      "name": "func_02068844"
+      "name": "MBi_GetAttribute"
     },
     "arm9:0x020688b4": {
       "author": "tangosdev",
-      "name": "func_020688b4"
+      "name": "MBi_GetTgid"
     },
     "arm9:0x020688cc": {
       "author": "tangosdev",
@@ -11619,7 +11619,7 @@
     },
     "arm9:0x02069038": {
       "author": "tangosdev",
-      "name": "func_02069038"
+      "name": "MBi_GetBeaconPeriodDispersion"
     },
     "arm9:0x020690b0": {
       "author": "tangosdev",
@@ -11635,7 +11635,7 @@
     },
     "arm9:0x0206a230": {
       "author": "tangosdev",
-      "name": "func_0206a230"
+      "name": "MBi_IsSendEnabled"
     },
     "arm9:0x0206a29c": {
       "author": "ruspecial",
@@ -11679,7 +11679,7 @@
     },
     "arm9:0x0206a694": {
       "author": "tangosdev",
-      "name": "func_0206a694"
+      "name": "CTRDGi_CallbackForInitModuleInfo"
     },
     "arm9:0x0206a6d0": {
       "author": "tangosdev",
@@ -11871,7 +11871,7 @@
     },
     "arm9:0x0206df14": {
       "author": "andrewboudreau",
-      "name": "func_0206df14"
+      "name": "__flush_all"
     },
     "arm9:0x0206df84": {
       "author": "tangosdev",
@@ -11891,7 +11891,7 @@
     },
     "arm9:0x0206e06c": {
       "author": "andrewboudreau",
-      "name": "func_0206e06c"
+      "name": "fflush"
     },
     "arm9:0x0206e184": {
       "author": "tangosdev",

@@ -96,7 +96,7 @@
       "ordinal": 10
     },
     {
-      "symbol": "func_0206df14",
+      "symbol": "__flush_all",
       "address": "0x0206df14",
       "size": "0x00000070",
       "legacy_source": "src/unnamed/arm9/0206/func_0206df14.c",
@@ -131,7 +131,7 @@
       "ordinal": 15
     },
     {
-      "symbol": "func_0206e06c",
+      "symbol": "fflush",
       "address": "0x0206e06c",
       "size": "0x00000118",
       "legacy_source": "src/unnamed/arm9/0206/func_0206e06c.c",
