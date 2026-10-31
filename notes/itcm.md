@@ -116,12 +116,12 @@ either way, and changing a struct other files build against is not this change's
 
 ### The prologue wall, which blocks four of their neighbours
 
-`func_01ffafd4` (0x34), `__ieee_status` (0x01ffb008, 0x28), `__fp_status` (0x01ffb030, 0x4c) and `func_01ffa3e0`
+`_fp_init` (0x01ffafd4, 0x34), `__ieee_status` (0x01ffb008, 0x28), `__fp_status` (0x01ffb030, 0x4c) and `func_01ffa3e0`
 (0x5c) contain no privileged instruction, so the objective test does not exempt them.
 **CORRECTED 2026-08-03: that reading was too literal — see "wall #2 is a tell, not a wall" below.** They are blocked on the
 same thing, and it is worth naming because it is cheap to mistake for "this was assembly".
 
-`func_01ffafd4` is the clean specimen: thirteen instructions, and the obvious C reproduces
+`_fp_init` (0x01ffafd4) is the clean specimen: thirteen instructions, and the obvious C reproduces
 **all thirteen**, in order, with the right registers. The only difference is that mwccarm
 brackets the body with `sub sp,sp,#4` / `add sp,sp,#4` and the ROM does not — 0x3c against
 0x34. That is 8-byte stack alignment for a prologue that pushes an odd number of registers

@@ -1,6 +1,6 @@
 #include "Ov007SpriteBank.h"
 
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int b);
 extern void MultiStore_Int(int val, int *dst, int len);
 
 /* Allocates a sprite bank for `cellCount` cells and `animCount`

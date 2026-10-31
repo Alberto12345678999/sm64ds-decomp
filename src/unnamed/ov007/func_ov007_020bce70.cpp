@@ -9,7 +9,7 @@
 extern char data_ov007_02102f28[];
 
 extern "C" {
-extern void func_ov007_020c92d0(char *record);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
 extern void func_ov007_020c940c(Ov007PaletteBuf *buf);
 extern void func_ov007_020c93c4(int t, Ov007PaletteBuf *from, Ov007PaletteBuf *to,
                                 Ov007PaletteBuf *out);
@@ -24,7 +24,7 @@ extern "C" void func_ov007_020bce70(short n, int frames) {
     int t;
 
     WORK->paletteState->requestedState = n;
-    func_ov007_020c92d0((char *)WORK->paletteState);
+    func_ov007_020c92d0(WORK->paletteState);
 
     t = WORK->paletteState->stateTicks;
     if (t == 0) {

@@ -20,6 +20,7 @@
    to neither spelling and are unresolvable with or without this guard. */
 struct Player;
 struct MascotWalker;
+struct Ov007MenuState;
 
 #ifdef __cplusplus
 extern "C" {
@@ -889,7 +890,11 @@ extern int RouletteResults_Tick(void);
 extern int RouletteBoard_LoadModels(char*);
 extern int func_ov007_020b6f4c(void);
 extern int func_ov007_020c3ba8(int);
-extern void *func_ov007_020c3df4(int, int);
+/* ov007's allocator: (name, size). The parameters stay unnamed here on
+   purpose: named, they renumbered compiler @NNN labels in this header's C++
+   consumers, and the intact-TU stage refused ten or more actor TUs
+   ("rename source @555 has 0 symbols"). */
+extern void *func_ov007_020c3df4(const char *, int);
 extern int func_ov010_02111984[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
    r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
@@ -1532,7 +1537,7 @@ extern void func_ov007_020c775c(struct Vector3*);
 extern void func_ov007_020c7b2c(int, int, int);
 extern void func_ov007_020c81a0(void*, int, int);
 extern void func_ov007_020c831c(void*, int, int);
-extern void func_ov007_020c92d0(char*);
+extern void func_ov007_020c92d0(struct Ov007MenuState *);
 extern void func_ov014_02111ebc(void*, int);
 extern void func_ov018_021123d0(char*, int);
 extern void func_ov025_021112e0(char*);

@@ -3,7 +3,7 @@
 #include "Ov007Item.h"
 
 /* Returns the picker scene's states[0] (unit020b8f50). */
-extern int func_ov007_020b8f8c(void);
+extern Ov007MenuState *func_ov007_020b8f8c(void);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b9640(void);
 
@@ -20,20 +20,20 @@ void func_ov007_020af12c(void) {
     switch (state) {
     case 0:
         if (ticks == 0) {
-            picker = (Ov007MenuState *)func_ov007_020b8f8c();
+            picker = func_ov007_020b8f8c();
             picker->requestedState = 1;
         }
-        picker = (Ov007MenuState *)func_ov007_020b8f8c();
+        picker = func_ov007_020b8f8c();
         if (picker->currentState == 2)
             WORK->states[1]->requestedState = 1;
         break;
     case 1:
         if (ticks == 0) {
-            picker = (Ov007MenuState *)func_ov007_020b8f8c();
+            picker = func_ov007_020b8f8c();
             picker->requestedState = 2;
             func_ov007_020c1d78(0);
         }
-        picker = (Ov007MenuState *)func_ov007_020b8f8c();
+        picker = func_ov007_020b8f8c();
         if (picker->currentState == 3)
             WORK->itemViews[3]->item->state->requestedState = 2;
         break;

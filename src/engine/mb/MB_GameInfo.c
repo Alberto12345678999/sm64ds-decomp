@@ -7,7 +7,7 @@
  * MBi_SendFixedBeacon), then the volatile part, which is the player count,
  * the player flags and up to four child records per beacon
  * (MBi_InitSendVolatBeacon, MBi_SendVolatBeacon). Then it moves to the
- * next record (func_02068398).
+ * next record (MBi_ReadyBeaconSendStatus).
  *
  * Why these thirteen functions are one file:
  * - NitroSDK's mb_gameinfo.c (ntrtwl's copy; Pokemon D/P's agrees) defines
@@ -149,7 +149,7 @@ void MB_AddGameInfo(MBGameInfo *n);
 void MB_InitSendGameInfoStatus(void);
 void MBi_ClearSendStatus(void);
 void MB_SendGameInfoBeacon(void);
-int func_02068398(void);
+int MBi_ReadyBeaconSendStatus(void);
 void MBi_InitSendFixedBeacon(void);
 void MBi_SendFixedBeacon(void);
 void MBi_InitSendVolatBeacon(void);
@@ -299,7 +299,7 @@ void MB_InitSendGameInfoStatus(void) {
 
 // @symbol MBi_ClearSendStatus
 /* NitroSDK MBi_ClearSendStatus: clear the per-record send counters, bytes
- * 0xd..0x11 of the send status. Called when func_02068398 picks the next
+ * 0xd..0x11 of the send status. Called when MBi_ReadyBeaconSendStatus picks the next
  * record and from MB_InitSendGameInfoStatus. */
 void MBi_ClearSendStatus(void) {
     data_020a9d2c.seqNoFixed = 0;
@@ -321,7 +321,7 @@ void MB_SendGameInfoBeacon(void) {
         switch (data_020a9d2c.state) {
         case 0:
         case 1:
-            if (func_02068398() != 0)
+            if (MBi_ReadyBeaconSendStatus() != 0)
                 break;
             return;
         case 2:
@@ -342,26 +342,25 @@ void MB_SendGameInfoBeacon(void) {
     }
 }
 
-// @symbol func_02068398
+// @symbol MBi_ReadyBeaconSendStatus
 /* Pick the next record to advertise: the one after the current record, or
  * the list's first when there is no current record or it is the last.
  * Then latch its seqNoVolat and move to state 2. Returns 0 with an empty
  * list.
  *
- * This is MBi_ReadyBeaconSendStatus as NitroSDK had it before Rev 1.42
+ * NitroSDK MBi_ReadyBeaconSendStatus as it was before Rev 1.42
  * (11/18/2005, "fix MBi_ReadyBeaconSendStatus()"). That revision added the
  * empty-list WM_SetGameInfo(NULL, bsendBuff, sizeof(MbBeacon),
  * MBi_GetGgid(), MBi_GetTgid(), WM_ATTR_FLAG_CS) that ntrtwl, Pokemon D/P
  * and HeartGold carry; this one only returns 0. Rev 1.13 (09/2004) already
- * latched seqNoVolat here, as this body does. It keeps its address name
- * for now; the rename is a follow-up.
+ * latched seqNoVolat here, as this body does. Formerly func_02068398.
  *
  * The fallback is written as the `||` arm of an if/else. Both failed tests
  * then reach `res = sel`, a two-predecessor block that mwccarm will not
  * predicate, and once `res` and `sel` share r1 that copy is gone, leaving
  * the ROM's `beq` over a lone `mov r1, r0`. A plain `if (q != 0) sel = q;`
  * predicates into `movne` instead (notes/mwccarm-codegen.md 6u). */
-int func_02068398(void) {
+int MBi_ReadyBeaconSendStatus(void) {
     MBGameInfo *sel = data_020a9d2c.gameInfoListTop;
     MBGameInfo *p;
     MBGameInfo *res;

@@ -1,6 +1,6 @@
 #include "Ov007Spring.h"
 
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int b);
 extern void func_ov007_020c806c(void *c);
 extern int func_ov007_020c3d1c(void);
 extern void MultiStore_Int(int val, void *dst, int size);
