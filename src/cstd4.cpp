@@ -322,6 +322,7 @@ extern "C" {
 void __convert_from_newlines(int a, int *b);
 void __prep_buffer(char *self);
 typedef int (*Fn)(int, int, int *, int);
+// @symbol __flush_buffer
 /* MSL's buffer_io.c: __flush_buffer, __prep_buffer and
    __convert_from_newlines, statement for statement with Spirit Tracks'
    copy. In MSL's FILE terms: +0x00 handle, +0x18 position, +0x1c buffer,
@@ -332,7 +333,6 @@ typedef int (*Fn)(int, int, int *, int);
    neighbours it has here; it stays inside this run because a TU claims one
    contiguous span, and cutting it out would leave a fflush..__pformatter
    tail with no name of its own. */
-// @symbol __flush_buffer
 int __flush_buffer(char *thiz, int *out)
 {
   char *new_var;

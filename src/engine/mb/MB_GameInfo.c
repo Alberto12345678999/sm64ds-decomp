@@ -10,23 +10,26 @@
  * next record (func_02068398).
  *
  * Why these thirteen functions are one file:
- * - A byte-matched reconstruction of this file from a later SDK (Lego
- *   Star Wars II's mb_gameinfo.c, compiled as one unit) lists its functions
- *   as MBi_MakeGameInfo, MBi_ReadIconInfo, MB_UpdateGameInfoMember,
- *   mystrlen, MB_AddGameInfo, MB_InitSendGameInfoStatus,
- *   MBi_ClearSendStatus, MB_SendGameInfoBeacon, MBi_ReadyBeaconSendStatus,
- *   MBi_InitSendFixedBeacon, MBi_SendFixedBeacon, MBi_InitSendVolatBeacon,
- *   MBi_SendVolatBeacon, MBi_CheckMBParent. mwccarm emits .text in reverse
- *   source order, and 0x02067f68..0x0206879c is that list from
- *   MBi_SendVolatBeacon up to MBi_MakeGameInfo, read top to bottom. This
- *   file keeps the source order.
+ * - NitroSDK's mb_gameinfo.c (ntrtwl's copy; Pokemon D/P's agrees) defines
+ *   its parent-side functions as MBi_MakeGameInfo, MBi_ReadIconInfo,
+ *   MB_UpdateGameInfoMember, mystrlen, MB_AddGameInfo, MB_DeleteGameInfo,
+ *   MB_InitSendGameInfoStatus, MBi_ClearSendStatus, MB_SendGameInfoBeacon,
+ *   MBi_ReadyBeaconSendStatus, MBi_InitSendFixedBeacon,
+ *   MBi_SendFixedBeacon, MBi_InitSendVolatBeacon, MBi_SendVolatBeacon.
+ *   mwccarm emits .text in reverse source order, and 0x02067f68..0x0206879c
+ *   is that list, less MB_DeleteGameInfo, from MBi_SendVolatBeacon up to
+ *   MBi_MakeGameInfo, read top to bottom. This file keeps the source order.
+ *   Lego Star Wars II's symbols.txt has the same thirteen names in the
+ *   same order (0x020daa6c..0x020db2a8).
  * - The send status data_020a9d2c and the beacon buffer data_020a9d40
  *   are used by these functions and by no other code.
  * - Bottom edge: func_02067f2c (cache flush, then a DMA copy) is not game
- *   record code. MBi_CheckMBParent, last in the later list, is not in
- *   this ROM. Top edge: arm9/MB_WmBase begins at 0x0206879c.
+ *   record code. The SDK file's other functions (MB_DeleteGameInfo and the
+ *   child's beacon-receive side) are not in this ROM, nor in Lego Star
+ *   Wars II's: nothing calls them, so they were dead-stripped. Top edge:
+ *   arm9/MB_WmBase begins at 0x0206879c.
  *
- * This SDK is older than the reference, so its record is 8 bytes shorter
+ * This SDK is older than ntrtwl's, so its record is 8 bytes shorter
  * (no userVolatData) and has no send-volat callback. MB_SendGameInfoBeacon
  * and the two send steps take no ggid/tgid/attribute; the send steps fetch
  * them themselves. The field names follow the SDK's MBGameInfo,
@@ -89,11 +92,11 @@ typedef struct MbBeaconSendStatus {
     MBGameInfo *nowGameInfop;    /* 0x04 */
     u8 *srcp;                    /* 0x08 -- next fixed-part piece */
     u8 state;                    /* 0x0c */
-    u8 pad_0d;
-    u8 seqNoVolat;     /* 0x0e -- latched from the record */
-    u8 fragmentNo;     /* 0x0f */
-    u8 fragmentMaxNum; /* 0x10 */
-    u8 beaconNo;       /* 0x11 */
+    u8 seqNoFixed;               /* 0x0d */
+    u8 seqNoVolat;               /* 0x0e -- latched from the record */
+    u8 fragmentNo;               /* 0x0f */
+    u8 fragmentMaxNum;           /* 0x10 */
+    u8 beaconNo;                 /* 0x11 */
 } MbBeaconSendStatus;
 
 typedef struct MbBeacon {
@@ -299,7 +302,7 @@ void MB_InitSendGameInfoStatus(void) {
  * 0xd..0x11 of the send status. Called when func_02068398 picks the next
  * record and from MB_InitSendGameInfoStatus. */
 void MBi_ClearSendStatus(void) {
-    data_020a9d2c.pad_0d = 0;
+    data_020a9d2c.seqNoFixed = 0;
     data_020a9d2c.seqNoVolat = 0;
     data_020a9d2c.fragmentNo = 0;
     data_020a9d2c.fragmentMaxNum = 0;
@@ -345,21 +348,19 @@ void MB_SendGameInfoBeacon(void) {
  * Then latch its seqNoVolat and move to state 2. Returns 0 with an empty
  * list.
  *
- * It sits where mb_gameinfo.c has MBi_ReadyBeaconSendStatus and does its
- * job, but it keeps its address name. With an empty list the later SDKs'
- * body (HeartGold, Lego Star Wars II) also sets an empty beacon,
- * WM_SetGameInfo(0, bsendBuff, 0x70, MBi_GetGgid(), MBi_GetTgid(), 8),
- * and this one only returns 0. The send-volat hook missing from
- * MB_InitSendGameInfoStatus is a feature this SDK lacks. This one is a
- * behaviour difference instead: once the last game is removed, this parent
- * leaves its last beacon up, where the later SDKs replace it with an empty
- * one.
+ * This is MBi_ReadyBeaconSendStatus as NitroSDK had it before Rev 1.42
+ * (11/18/2005, "fix MBi_ReadyBeaconSendStatus()"). That revision added the
+ * empty-list WM_SetGameInfo(NULL, bsendBuff, sizeof(MbBeacon),
+ * MBi_GetGgid(), MBi_GetTgid(), WM_ATTR_FLAG_CS) that ntrtwl, Pokemon D/P
+ * and HeartGold carry; this one only returns 0. Rev 1.13 (09/2004) already
+ * latched seqNoVolat here, as this body does. It keeps its address name
+ * for now; the rename is a follow-up.
  *
  * The fallback is written as the `||` arm of an if/else. Both failed tests
  * then reach `res = sel`, a two-predecessor block that mwccarm will not
  * predicate, and once `res` and `sel` share r1 that copy is gone, leaving
  * the ROM's `beq` over a lone `mov r1, r0`. A plain `if (q != 0) sel = q;`
- * predicates into `movne` instead (notes 6u). */
+ * predicates into `movne` instead (notes/mwccarm-codegen.md 6u). */
 int func_02068398(void) {
     MBGameInfo *sel = data_020a9d2c.gameInfoListTop;
     MBGameInfo *p;
@@ -465,10 +466,11 @@ void MBi_InitSendVolatBeacon(void) {
  * the record's volatile part (player count, player flags and up to four
  * child records not yet broadcast), checksum it and set it. When every
  * child has been sent, go back to state 1. Statement for statement it is
- * the reconstruction's, less what this SDK lacks: the send-volat callback
+ * ntrtwl's NitroSDK body, less what this SDK lacks: the send-volat callback
  * before and after, and the eight userVolatData bytes. Like
  * MBi_SendFixedBeacon it fetches ggid, tgid and attribute itself and sets
- * attribute | 2 where the reconstruction passes them in and sets | 3. */
+ * attribute | 2 where ntrtwl's passes them in and sets | 3 (the ENTRY
+ * flag, added in Rev 1.41). */
 void MBi_SendVolatBeacon(void) {
     MBGameInfo *ptr;
     volatile u16 zero;
