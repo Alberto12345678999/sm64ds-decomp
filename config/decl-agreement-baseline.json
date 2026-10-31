@@ -19281,9 +19281,6 @@
     "WM_Reset": {
       "src/Wireless_Reset.c": [
         "param:#1 void *"
-      ],
-      "src/engine/mb/MB_WmBase.cpp": [
-        "param:#1 void *"
       ]
     },
     "WM_PowerOff": {
@@ -22118,11 +22115,6 @@
     "data_020a8074": {
       "src/engine/fs/FS_Rom.cpp": [
         "return:FSArchive"
-      ]
-    },
-    "WM_Initialize": {
-      "src/engine/mb/MB_WmBase.cpp": [
-        "param:#2 void *"
       ]
     },
     "WM_SetPortCallback": {

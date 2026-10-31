@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "contiguous linker run: 0x0206879c..0x0206a318, 23 functions, gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
     "SOURCE ORDER: mwccarm emits .text in reverse source order. Read from the top down, the run is the function order of the BW2 decomp's reconstruction of the Nitro SDK's mb_wm_base.c (changeScanChannel, MBi_IsSendEnabled, ..., MBi_GetAttribute, MBi_IsStarted, MBi_CheckWmErrcode) with the newer SDK's MBi_OnInitializeDone, MBi_EndCommon, MBi_OnReset and MB_DisconnectChild absent; only MBi_SetMaxScanTime and func_0206881c sit out of place, just above MBi_IsStarted.",
-    "DATA: sWmWork (data_020a9db4), the scan parameter (data_020a9dc0, sScanParam) and the DMA channel (data_020a9db0, sDmaNo) are that file's statics and are written only by functions in this run.",
+    "DATA: the WmWork (data_020a9db4; the BW2 reconstruction's sWmWork, ntrtwl's p_mbi_param), the scan parameter (data_020a9dc0, sScanParam) and the DMA channel (data_020a9db0, sDmaNo) are that file's statics and are written only by functions in this run.",
     "BOTTOM EDGE: MBi_MakeGameInfo (0x02068680) and the functions under it are the SDK's mb_gameinfo.c, a different file.",
     "TOP EDGE: CTRDGi_SendtoPxi (0x0206a318) opens the cartridge library's ctrdg_common.c (arm9/CTRDG_Common)."
   ],
