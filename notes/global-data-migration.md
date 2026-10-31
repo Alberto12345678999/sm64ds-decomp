@@ -509,7 +509,12 @@ largest contract cluster left, and `d_a_chair.cpp`'s own comment ("AddVec3 take
 this file's Vec3, as their definitions take a plain triple") shows the local
 types exist only because the definitions do.
 
-Order that works: convert the 4 pointer-only files and the 22 object files to
-`Vector3` first, verifying each, and change the seven definitions LAST, when
-nothing still spells the parameter `Vec3 *`. Changing the definitions first is
-the net-negative measured above.
+Order. Consumers-first is net-negative too: `--symbol AddVec3` lists the 12
+`Vec3 *` declarations as agreeing with the `Vec3 *` definition today, so a
+consumer that respells its parameter `Vector3 *` while the definition still
+takes `Vec3 *` opens a row, and `--changed` fails that step just as it fails the
+definitions-first half above. The unit that closes rows without opening any is
+one symbol per PR: its definition plus every declaration that spells `Vec3 *`,
+together, with a byte check on each touched file. The 4 pointer-only files are
+the cheap ones; in the 22 that hold `Vec3` objects, the objects move to
+`Vector3` in the same PR, or the call sites take casts.
