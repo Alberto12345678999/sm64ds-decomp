@@ -9465,27 +9465,27 @@ matched: yes</title></rect><rect x="34.22" y="718.86" width="8.07" height="19.94
 module: arm9
 addr: 0x02057320
 size: 240 bytes
-matched: yes</title></rect><rect x="34.22" y="738.80" width="8.07" height="188.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057410
+matched: yes</title></rect><rect x="34.22" y="738.80" width="8.07" height="188.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_VSNPrintf
 module: arm9
 addr: 0x02057410
 size: 2264 bytes
-matched: yes</title></rect><rect x="34.22" y="926.88" width="8.07" height="1.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057ce8
+matched: yes</title></rect><rect x="34.22" y="926.88" width="8.07" height="1.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_VSPrintf
 module: arm9
 addr: 0x02057ce8
 size: 24 bytes
-matched: yes</title></rect><rect x="34.22" y="928.87" width="8.07" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057d00
+matched: yes</title></rect><rect x="34.22" y="928.87" width="8.07" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SPrintf
 module: arm9
 addr: 0x02057d00
 size: 48 bytes
-matched: yes</title></rect><rect x="34.22" y="932.86" width="8.07" height="8.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057d30
+matched: yes</title></rect><rect x="34.22" y="932.86" width="8.07" height="8.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>string_put_string
 module: arm9
 addr: 0x02057d30
 size: 100 bytes
-matched: yes</title></rect><rect x="34.22" y="941.17" width="8.07" height="8.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057d94
+matched: yes</title></rect><rect x="34.22" y="941.17" width="8.07" height="8.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>string_fill_char
 module: arm9
 addr: 0x02057d94
 size: 108 bytes
-matched: yes</title></rect><rect x="34.22" y="950.14" width="8.07" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057e00
+matched: yes</title></rect><rect x="34.22" y="950.14" width="8.07" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>string_put_char
 module: arm9
 addr: 0x02057e00
 size: 48 bytes
@@ -9573,11 +9573,11 @@ matched: yes</title></rect><rect x="214.17" y="710.22" width="7.63" height="5.98
 module: arm9
 addr: 0x02058618
 size: 68 bytes
-matched: yes</title></rect><rect x="221.80" y="710.22" width="5.83" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205865c
+matched: yes</title></rect><rect x="221.80" y="710.22" width="5.83" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_IsRunOnDebugger
 module: arm9
 addr: 0x0205865c
 size: 52 bytes
-matched: yes</title></rect><rect x="227.63" y="710.22" width="23.78" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058690
+matched: yes</title></rect><rect x="227.63" y="710.22" width="23.78" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OSi_GetDeviceType
 module: arm9
 addr: 0x02058690
 size: 212 bytes
@@ -9585,7 +9585,7 @@ matched: yes</title></rect><rect x="251.41" y="710.22" width="13.46" height="5.9
 module: arm9
 addr: 0x02058764
 size: 120 bytes
-matched: yes</title></rect><rect x="264.88" y="710.22" width="0.90" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020587dc
+matched: yes</title></rect><rect x="264.88" y="710.22" width="0.90" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_IsRunOnEmulator
 module: arm9
 addr: 0x020587dc
 size: 8 bytes
@@ -9881,7 +9881,7 @@ matched: yes</title></rect><rect x="45.58" y="892.82" width="6.51" height="12.77
 module: arm9
 addr: 0x02059eb0
 size: 124 bytes
-matched: yes</title></rect><rect x="45.58" y="905.59" width="6.51" height="2.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059f2c
+matched: yes</title></rect><rect x="45.58" y="905.59" width="6.51" height="2.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_GetMacAddress
 module: arm9
 addr: 0x02059f2c
 size: 28 bytes
@@ -9889,19 +9889,19 @@ matched: yes</title></rect><rect x="45.58" y="908.48" width="6.51" height="1.65"
 module: arm9
 addr: 0x02059f48
 size: 16 bytes
-matched: yes</title></rect><rect x="45.58" y="910.12" width="6.51" height="8.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059f58
+matched: yes</title></rect><rect x="45.58" y="910.12" width="6.51" height="8.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_StopDma
 module: arm9
 addr: 0x02059f58
 size: 80 bytes
-matched: yes</title></rect><rect x="45.58" y="918.36" width="6.51" height="4.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059fa8
+matched: yes</title></rect><rect x="45.58" y="918.36" width="6.51" height="4.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_WaitDma
 module: arm9
 addr: 0x02059fa8
 size: 40 bytes
-matched: yes</title></rect><rect x="45.58" y="922.49" width="6.51" height="15.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059fd0
+matched: yes</title></rect><rect x="45.58" y="922.49" width="6.51" height="15.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_DmaCopy32Async
 module: arm9
 addr: 0x02059fd0
 size: 148 bytes
-matched: yes</title></rect><rect x="45.58" y="937.73" width="6.51" height="17.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a064
+matched: yes</title></rect><rect x="45.58" y="937.73" width="6.51" height="17.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_DmaFill32Async
 module: arm9
 addr: 0x0205a064
 size: 168 bytes
@@ -9917,15 +9917,15 @@ matched: yes</title></rect><rect x="45.58" y="972.34" width="6.51" height="10.71
 module: arm9
 addr: 0x0205a1b4
 size: 104 bytes
-matched: yes</title></rect><rect x="45.58" y="983.05" width="6.51" height="11.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a21c
+matched: yes</title></rect><rect x="45.58" y="983.05" width="6.51" height="11.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MIi_DMACallback
 module: arm9
 addr: 0x0205a21c
 size: 116 bytes
-matched: yes</title></rect><rect x="52.09" y="721.83" width="22.98" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a290
+matched: yes</title></rect><rect x="52.09" y="721.83" width="22.98" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MIi_FIFOCallback
 module: arm9
 addr: 0x0205a290
 size: 200 bytes
-matched: yes</title></rect><rect x="75.07" y="721.83" width="27.58" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a358
+matched: yes</title></rect><rect x="75.07" y="721.83" width="27.58" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MI_SendGXCommandAsync
 module: arm9
 addr: 0x0205a358
 size: 240 bytes
@@ -9981,15 +9981,15 @@ matched: yes</title></rect><rect x="192.27" y="721.83" width="24.82" height="5.8
 module: arm9
 addr: 0x0205a754
 size: 216 bytes
-matched: yes</title></rect><rect x="217.09" y="721.83" width="7.35" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a82c
+matched: yes</title></rect><rect x="217.09" y="721.83" width="7.35" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_Init
 module: arm9
 addr: 0x0205a82c
 size: 64 bytes
-matched: yes</title></rect><rect x="224.44" y="721.83" width="10.11" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Snd_SendCommand
+matched: yes</title></rect><rect x="224.44" y="721.83" width="10.11" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PushCommand_impl
 module: arm9
 addr: 0x0205a86c
 size: 88 bytes
-matched: yes</title></rect><rect x="234.55" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a8c4
+matched: yes</title></rect><rect x="234.55" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_SetSurroundDecay
 module: arm9
 addr: 0x0205a8c4
 size: 44 bytes
@@ -10001,35 +10001,35 @@ matched: yes</title></rect><rect x="245.58" y="721.83" width="5.97" height="5.84
 module: arm9
 addr: 0x0205a924
 size: 52 bytes
-matched: yes</title></rect><rect x="251.56" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a958
+matched: yes</title></rect><rect x="251.56" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetOutputSelector
 module: arm9
 addr: 0x0205a958
 size: 52 bytes
-matched: yes</title></rect><rect x="257.53" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a98c
+matched: yes</title></rect><rect x="257.53" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_InvalidateWaveData
 module: arm9
 addr: 0x0205a98c
 size: 44 bytes
-matched: yes</title></rect><rect x="262.59" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a9b8
+matched: yes</title></rect><rect x="262.59" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_InvalidateBankData
 module: arm9
 addr: 0x0205a9b8
 size: 44 bytes
-matched: yes</title></rect><rect x="267.65" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a9e4
+matched: yes</title></rect><rect x="267.65" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_InvalidateSeqData
 module: arm9
 addr: 0x0205a9e4
 size: 44 bytes
-matched: yes</title></rect><rect x="272.70" y="721.83" width="10.11" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205aa10
+matched: yes</title></rect><rect x="272.70" y="721.83" width="10.11" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetupChannelPcm
 module: arm9
 addr: 0x0205aa10
 size: 88 bytes
-matched: yes</title></rect><rect x="282.81" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205aa68
+matched: yes</title></rect><rect x="282.81" y="721.83" width="5.97" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetChannelVolume
 module: arm9
 addr: 0x0205aa68
 size: 52 bytes
-matched: yes</title></rect><rect x="288.79" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205aa9c
+matched: yes</title></rect><rect x="288.79" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_UnlockChannel
 module: arm9
 addr: 0x0205aa9c
 size: 44 bytes
-matched: yes</title></rect><rect x="293.84" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205aac8
+matched: yes</title></rect><rect x="293.84" y="721.83" width="5.06" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_LockChannel
 module: arm9
 addr: 0x0205aac8
 size: 44 bytes
@@ -10037,19 +10037,19 @@ matched: yes</title></rect><rect x="298.90" y="721.83" width="5.97" height="5.84
 module: arm9
 addr: 0x0205aaf4
 size: 52 bytes
-matched: yes</title></rect><rect x="304.87" y="721.83" width="7.81" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ab28
+matched: yes</title></rect><rect x="304.87" y="721.83" width="7.81" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetupAlarm
 module: arm9
 addr: 0x0205ab28
 size: 68 bytes
-matched: yes</title></rect><rect x="312.69" y="721.83" width="8.73" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ab6c
+matched: yes</title></rect><rect x="312.69" y="721.83" width="8.73" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_SetupCapture
 module: arm9
 addr: 0x0205ab6c
 size: 76 bytes
-matched: yes</title></rect><rect x="52.09" y="727.67" width="3.03" height="24.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205abb8
+matched: yes</title></rect><rect x="52.09" y="727.67" width="3.03" height="24.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_StopTimer
 module: arm9
 addr: 0x0205abb8
 size: 112 bytes
-matched: yes</title></rect><rect x="52.09" y="752.46" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ac28
+matched: yes</title></rect><rect x="52.09" y="752.46" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_StartTimer
 module: arm9
 addr: 0x0205ac28
 size: 52 bytes
@@ -10085,7 +10085,7 @@ matched: yes</title></rect><rect x="52.09" y="818.85" width="3.03" height="5.31"
 module: arm9
 addr: 0x0205ad54
 size: 24 bytes
-matched: yes</title></rect><rect x="52.09" y="824.16" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad6c
+matched: yes</title></rect><rect x="52.09" y="824.16" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_PauseSeq
 module: arm9
 addr: 0x0205ad6c
 size: 44 bytes
@@ -10097,107 +10097,107 @@ matched: yes</title></rect><rect x="52.09" y="843.63" width="3.03" height="11.51
 module: arm9
 addr: 0x0205adc4
 size: 52 bytes
-matched: yes</title></rect><rect x="52.09" y="855.14" width="3.03" height="12.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205adf8
+matched: yes</title></rect><rect x="52.09" y="855.14" width="3.03" height="12.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>AllocCommand
 module: arm9
 addr: 0x0205adf8
 size: 56 bytes
-matched: yes</title></rect><rect x="52.09" y="867.53" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ae30
+matched: yes</title></rect><rect x="52.09" y="867.53" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RequestCommandProc
 module: arm9
 addr: 0x0205ae30
 size: 52 bytes
-matched: yes</title></rect><rect x="52.09" y="879.04" width="3.03" height="23.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ae64
+matched: yes</title></rect><rect x="52.09" y="879.04" width="3.03" height="23.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>InitPXI
 module: arm9
 addr: 0x0205ae64
 size: 108 bytes
-matched: yes</title></rect><rect x="52.09" y="902.94" width="3.03" height="10.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205aed0
+matched: yes</title></rect><rect x="52.09" y="902.94" width="3.03" height="10.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PxiFifoCallback
 module: arm9
 addr: 0x0205aed0
 size: 48 bytes
-matched: yes</title></rect><rect x="52.09" y="913.56" width="3.03" height="7.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205af00
+matched: yes</title></rect><rect x="52.09" y="913.56" width="3.03" height="7.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_CountWaitingCommand
 module: arm9
 addr: 0x0205af00
 size: 32 bytes
-matched: yes</title></rect><rect x="52.09" y="920.64" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205af20
+matched: yes</title></rect><rect x="52.09" y="920.64" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_CountReservedCommand
 module: arm9
 addr: 0x0205af20
 size: 44 bytes
-matched: yes</title></rect><rect x="52.09" y="930.38" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205af4c
+matched: yes</title></rect><rect x="52.09" y="930.38" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_CountFreeCommand
 module: arm9
 addr: 0x0205af4c
 size: 44 bytes
-matched: yes</title></rect><rect x="52.09" y="940.12" width="3.03" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205af78
+matched: yes</title></rect><rect x="52.09" y="940.12" width="3.03" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_IsFinishedCommandTag
 module: arm9
 addr: 0x0205af78
 size: 60 bytes
-matched: yes</title></rect><rect x="52.09" y="953.40" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205afb4
+matched: yes</title></rect><rect x="52.09" y="953.40" width="3.03" height="9.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_GetCurrentCommandTag
 module: arm9
 addr: 0x0205afb4
 size: 44 bytes
-matched: yes</title></rect><rect x="52.09" y="963.13" width="3.03" height="31.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205afe0
+matched: yes</title></rect><rect x="52.09" y="963.13" width="3.03" height="31.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_WaitForCommandProc
 module: arm9
 addr: 0x0205afe0
 size: 144 bytes
-matched: yes</title></rect><rect x="55.12" y="727.67" width="32.19" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b070
+matched: yes</title></rect><rect x="55.12" y="727.67" width="32.19" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_FlushCommand
 module: arm9
 addr: 0x0205b070
 size: 308 bytes
-matched: yes</title></rect><rect x="87.31" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b1a4
+matched: yes</title></rect><rect x="87.31" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_PushCommand
 module: arm9
 addr: 0x0205b1a4
 size: 52 bytes
-matched: yes</title></rect><rect x="92.75" y="727.67" width="16.30" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b1d8
+matched: yes</title></rect><rect x="92.75" y="727.67" width="16.30" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_AllocCommand
 module: arm9
 addr: 0x0205b1d8
 size: 156 bytes
-matched: yes</title></rect><rect x="109.05" y="727.67" width="23.83" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b274
+matched: yes</title></rect><rect x="109.05" y="727.67" width="23.83" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_RecvCommandReply
 module: arm9
 addr: 0x0205b274
 size: 228 bytes
-matched: yes</title></rect><rect x="132.88" y="727.67" width="29.26" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b358
+matched: yes</title></rect><rect x="132.88" y="727.67" width="29.26" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_CommandInit
 module: arm9
 addr: 0x0205b358
 size: 280 bytes
-matched: yes</title></rect><rect x="162.14" y="727.67" width="10.03" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b470
+matched: yes</title></rect><rect x="162.14" y="727.67" width="10.03" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_CallAlarmHandler
 module: arm9
 addr: 0x0205b470
 size: 96 bytes
-matched: yes</title></rect><rect x="172.18" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b4d0
+matched: yes</title></rect><rect x="172.18" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_SetAlarmHandler
 module: arm9
 addr: 0x0205b4d0
 size: 52 bytes
-matched: yes</title></rect><rect x="177.61" y="727.67" width="3.34" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b504
+matched: yes</title></rect><rect x="177.61" y="727.67" width="3.34" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_IncAlarmId
 module: arm9
 addr: 0x0205b504
 size: 32 bytes
-matched: yes</title></rect><rect x="180.96" y="727.67" width="5.02" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b524
+matched: yes</title></rect><rect x="180.96" y="727.67" width="5.02" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_AlarmInit
 module: arm9
 addr: 0x0205b524
 size: 48 bytes
-matched: yes</title></rect><rect x="185.97" y="727.67" width="13.38" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b554
+matched: yes</title></rect><rect x="185.97" y="727.67" width="13.38" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_InitSharedWork
 module: arm9
 addr: 0x0205b554
 size: 128 bytes
-matched: yes</title></rect><rect x="199.35" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b5d4
+matched: yes</title></rect><rect x="199.35" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SNDi_GetFinishedCommandTag
 module: arm9
 addr: 0x0205b5d4
 size: 52 bytes
-matched: yes</title></rect><rect x="204.78" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b608
+matched: yes</title></rect><rect x="204.78" y="727.67" width="5.43" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_GetPlayerStatus
 module: arm9
 addr: 0x0205b608
 size: 52 bytes
-matched: yes</title></rect><rect x="210.22" y="727.67" width="12.12" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b63c
+matched: yes</title></rect><rect x="210.22" y="727.67" width="12.12" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_CalcChannelVolume
 module: arm9
 addr: 0x0205b63c
 size: 116 bytes
-matched: yes</title></rect><rect x="222.34" y="727.67" width="7.11" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b6b0
+matched: yes</title></rect><rect x="222.34" y="727.67" width="7.11" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_DestroyWaveArc
 module: arm9
 addr: 0x0205b6b0
 size: 68 bytes
-matched: yes</title></rect><rect x="229.45" y="727.67" width="15.89" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b6f4
+matched: yes</title></rect><rect x="229.45" y="727.67" width="15.89" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_DestroyBank
 module: arm9
 addr: 0x0205b6f4
 size: 152 bytes
-matched: yes</title></rect><rect x="245.33" y="727.67" width="21.32" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205b78c
+matched: yes</title></rect><rect x="245.33" y="727.67" width="21.32" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SND_AssignWaveArc
 module: arm9
 addr: 0x0205b78c
 size: 204 bytes
@@ -10869,7 +10869,7 @@ matched: yes</title></rect><rect x="244.02" y="757.97" width="37.10" height="8.3
 module: arm9
 addr: 0x020616e8
 size: 464 bytes
-matched: yes</title></rect><rect x="281.12" y="757.97" width="13.43" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020618b8
+matched: yes</title></rect><rect x="281.12" y="757.97" width="13.43" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_GetLinkLevel
 module: arm9
 addr: 0x020618b8
 size: 168 bytes
@@ -10877,15 +10877,15 @@ matched: yes</title></rect><rect x="294.55" y="757.97" width="6.08" height="8.39
 module: arm9
 addr: 0x02061960
 size: 76 bytes
-matched: yes</title></rect><rect x="300.63" y="757.97" width="20.79" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020619ac
+matched: yes</title></rect><rect x="300.63" y="757.97" width="20.79" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_ReadMPData
 module: arm9
 addr: 0x020619ac
 size: 260 bytes
-matched: yes</title></rect><rect x="89.86" y="766.36" width="7.11" height="22.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ab0
+matched: yes</title></rect><rect x="89.86" y="766.36" width="7.11" height="22.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_GetMPReceiveBufferSize
 module: arm9
 addr: 0x02061ab0
 size: 236 bytes
-matched: yes</title></rect><rect x="89.86" y="788.62" width="7.11" height="12.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061b9c
+matched: yes</title></rect><rect x="89.86" y="788.62" width="7.11" height="12.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_GetMPSendBufferSize
 module: arm9
 addr: 0x02061b9c
 size: 132 bytes
@@ -10901,15 +10901,15 @@ matched: yes</title></rect><rect x="89.86" y="819.56" width="7.11" height="7.17"
 module: arm9
 addr: 0x02061ce4
 size: 76 bytes
-matched: yes</title></rect><rect x="89.86" y="826.73" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061d30
+matched: yes</title></rect><rect x="89.86" y="826.73" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_Disconnect
 module: arm9
 addr: 0x02061d30
 size: 264 bytes
-matched: yes</title></rect><rect x="89.86" y="851.63" width="7.11" height="16.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061e38
+matched: yes</title></rect><rect x="89.86" y="851.63" width="7.11" height="16.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_StartConnect
 module: arm9
 addr: 0x02061e38
 size: 172 bytes
-matched: yes</title></rect><rect x="89.86" y="867.85" width="7.11" height="23.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ee4
+matched: yes</title></rect><rect x="89.86" y="867.85" width="7.11" height="23.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_StartScan
 module: arm9
 addr: 0x02061ee4
 size: 248 bytes
@@ -10917,11 +10917,11 @@ matched: yes</title></rect><rect x="89.86" y="891.24" width="7.11" height="6.79"
 module: arm9
 addr: 0x02061fdc
 size: 72 bytes
-matched: yes</title></rect><rect x="89.86" y="898.04" width="7.11" height="13.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062024
+matched: yes</title></rect><rect x="89.86" y="898.04" width="7.11" height="13.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmCheckParentParameter
 module: arm9
 addr: 0x02062024
 size: 140 bytes
-matched: yes</title></rect><rect x="89.86" y="911.24" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020620b0
+matched: yes</title></rect><rect x="89.86" y="911.24" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetParentParameter
 module: arm9
 addr: 0x020620b0
 size: 264 bytes
@@ -10953,11 +10953,11 @@ matched: yes</title></rect><rect x="89.86" y="979.15" width="7.11" height="10.19
 module: arm9
 addr: 0x02062380
 size: 108 bytes
-matched: yes</title></rect><rect x="89.86" y="989.34" width="7.11" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020623ec
+matched: yes</title></rect><rect x="89.86" y="989.34" width="7.11" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetMPDataToPort
 module: arm9
 addr: 0x020623ec
 size: 60 bytes
-matched: yes</title></rect><rect x="96.98" y="766.36" width="33.34" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062428
+matched: yes</title></rect><rect x="96.98" y="766.36" width="33.34" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetMPDataToPortEx
 module: arm9
 addr: 0x02062428
 size: 372 bytes
@@ -10965,11 +10965,11 @@ matched: yes</title></rect><rect x="130.32" y="766.36" width="8.60" height="7.48
 module: arm9
 addr: 0x0206259c
 size: 96 bytes
-matched: yes</title></rect><rect x="138.92" y="766.36" width="27.97" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020625fc
+matched: yes</title></rect><rect x="138.92" y="766.36" width="27.97" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_StartMPEx
 module: arm9
 addr: 0x020625fc
 size: 312 bytes
-matched: yes</title></rect><rect x="166.89" y="766.36" width="6.10" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062734
+matched: yes</title></rect><rect x="166.89" y="766.36" width="6.10" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmGetSharedDataAddress
 module: arm9
 addr: 0x02062734
 size: 68 bytes
@@ -10977,23 +10977,23 @@ matched: yes</title></rect><rect x="172.99" y="766.36" width="10.04" height="7.4
 module: arm9
 addr: 0x02062778
 size: 112 bytes
-matched: yes</title></rect><rect x="183.02" y="766.36" width="38.00" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020627e8
+matched: yes</title></rect><rect x="183.02" y="766.36" width="38.00" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmDataSharingSendDataSet
 module: arm9
 addr: 0x020627e8
 size: 424 bytes
-matched: yes</title></rect><rect x="221.03" y="766.36" width="24.74" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062990
+matched: yes</title></rect><rect x="221.03" y="766.36" width="24.74" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmDataSharingReceiveData
 module: arm9
 addr: 0x02062990
 size: 276 bytes
-matched: yes</title></rect><rect x="245.77" y="766.36" width="27.97" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062aa4
+matched: yes</title></rect><rect x="245.77" y="766.36" width="27.97" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmDataSharingReceiveCallback_Child
 module: arm9
 addr: 0x02062aa4
 size: 312 bytes
-matched: yes</title></rect><rect x="273.73" y="766.36" width="27.61" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062bdc
+matched: yes</title></rect><rect x="273.73" y="766.36" width="27.61" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmDataSharingReceiveCallback_Parent
 module: arm9
 addr: 0x02062bdc
 size: 308 bytes
-matched: yes</title></rect><rect x="301.34" y="766.36" width="20.08" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062d10
+matched: yes</title></rect><rect x="301.34" y="766.36" width="20.08" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WmDataSharingSetDataCallback
 module: arm9
 addr: 0x02062d10
 size: 224 bytes
@@ -11009,15 +11009,15 @@ matched: yes</title></rect><rect x="96.98" y="867.06" width="12.98" height="6.20
 module: arm9
 addr: 0x020634fc
 size: 120 bytes
-matched: yes</title></rect><rect x="96.98" y="873.26" width="12.98" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02063574
+matched: yes</title></rect><rect x="96.98" y="873.26" width="12.98" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetLifeTime
 module: arm9
 addr: 0x02063574
 size: 100 bytes
-matched: yes</title></rect><rect x="96.98" y="878.43" width="12.98" height="5.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020635d8
+matched: yes</title></rect><rect x="96.98" y="878.43" width="12.98" height="5.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetBeaconIndication
 module: arm9
 addr: 0x020635d8
 size: 112 bytes
-matched: yes</title></rect><rect x="96.98" y="884.22" width="12.98" height="10.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02063648
+matched: yes</title></rect><rect x="96.98" y="884.22" width="12.98" height="10.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetGameInfo
 module: arm9
 addr: 0x02063648
 size: 208 bytes
