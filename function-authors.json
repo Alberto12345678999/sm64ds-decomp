@@ -11499,7 +11499,7 @@
     },
     "arm9:0x02067f68": {
       "author": "tangosdev",
-      "name": "func_02067f68"
+      "name": "MBi_SendVolatBeacon"
     },
     "arm9:0x02068188": {
       "author": "tangosdev",

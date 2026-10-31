@@ -1,0 +1,145 @@
+{
+  "id": "arm9/MB_GameInfo",
+  "module": "arm9",
+  "source": "src/engine/mb/MB_GameInfo.c",
+  "promoted_source": "src/engine/mb/MB_GameInfo.c",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "contiguous linker run: 0x02067f68..0x0206879c, 13 functions, gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "SOURCE ORDER: mwccarm emits .text in reverse source order. Read from the top down, the run is the function order of a byte-matched one-unit reconstruction of the SDK's mb_gameinfo.c from Lego Star Wars II (MBi_MakeGameInfo, MBi_ReadIconInfo, MB_UpdateGameInfoMember, mystrlen, MB_AddGameInfo, MB_InitSendGameInfoStatus, MBi_ClearSendStatus, MB_SendGameInfoBeacon, MBi_ReadyBeaconSendStatus, MBi_InitSendFixedBeacon, MBi_SendFixedBeacon, MBi_InitSendVolatBeacon, MBi_SendVolatBeacon), every function in its place. The newer file's last function, MBi_CheckMBParent, is not in this ROM.",
+    "DATA: the beacon send status (data_020a9d2c, the SDK's mbss) and the beacon buffer (data_020a9d40, bsendBuff; data_020a9d48, data_020a9d4e and data_020a9d50 are its checksum span, fixed piece and volatile members) are used by the functions in this run and by no other code in the tree.",
+    "BOTTOM EDGE: func_02067f2c (0x02067f2c) flushes the data cache and starts a DMA copy. It is not game-record code.",
+    "TOP EDGE: MBi_CheckWmErrcode (0x0206879c) opens the SDK's mb_wm_base.c (arm9/MB_WmBase)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02067f68",
+      "end": "0x0206879c"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "MBi_SendVolatBeacon",
+      "address": "0x02067f68",
+      "size": "0x00000220",
+      "legacy_source": "src/unnamed/arm9/0206/func_02067f68.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "MBi_InitSendVolatBeacon",
+      "address": "0x02068188",
+      "size": "0x00000030",
+      "legacy_source": "src/MBi_InitSendVolatBeacon.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "MBi_SendFixedBeacon",
+      "address": "0x020681b8",
+      "size": "0x00000194",
+      "legacy_source": "src/MBi_SendFixedBeacon.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "MBi_InitSendFixedBeacon",
+      "address": "0x0206834c",
+      "size": "0x0000004c",
+      "legacy_source": "src/MBi_InitSendFixedBeacon.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "func_02068398",
+      "address": "0x02068398",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068398.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "MB_SendGameInfoBeacon",
+      "address": "0x02068410",
+      "size": "0x00000074",
+      "legacy_source": "src/MB_SendGameInfoBeacon.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "MBi_ClearSendStatus",
+      "address": "0x02068484",
+      "size": "0x00000024",
+      "legacy_source": "src/MBi_ClearSendStatus.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "MB_InitSendGameInfoStatus",
+      "address": "0x020684a8",
+      "size": "0x00000028",
+      "legacy_source": "src/MB_InitSendGameInfoStatus.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "MB_AddGameInfo",
+      "address": "0x020684d0",
+      "size": "0x00000044",
+      "legacy_source": "src/MB_AddGameInfo.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "mystrlen",
+      "address": "0x02068514",
+      "size": "0x00000028",
+      "legacy_source": "src/mystrlen.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "MB_UpdateGameInfoMember",
+      "address": "0x0206853c",
+      "size": "0x00000090",
+      "legacy_source": "src/MB_UpdateGameInfoMember.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "MBi_ReadIconInfo",
+      "address": "0x020685cc",
+      "size": "0x000000b4",
+      "legacy_source": "src/MBi_ReadIconInfo.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "MBi_MakeGameInfo",
+      "address": "0x02068680",
+      "size": "0x0000011c",
+      "legacy_source": "src/MBi_MakeGameInfo.c",
+      "ordinal": 12
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Twelve members carry the SDK name on a statement-for-statement match with the reconstruction, allowing for this older SDK's differences. The record has no userVolatData and there is no send-volat callback. MB_SendGameInfoBeacon takes no ggid, tgid or attribute; MBi_SendFixedBeacon and MBi_SendVolatBeacon fetch them themselves and set the beacon with attribute | 2 where the reconstruction has | 3. func_02068398 sits where MBi_ReadyBeaconSendStatus does and does its job. It keeps its address name because, with an empty list, it only returns 0, where the later SDKs also set an empty beacon.",
+    "The SDK built this file as C, and so does this TU. The record, send status and beacon types are declared in this file only."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-MB_GameInfo/MB_GameInfo.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 13,
+    "functions_declared": 13,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
