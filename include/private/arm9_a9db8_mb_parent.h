@@ -69,7 +69,10 @@ typedef struct MbParentWork {
      * func_02067928 hands it to MBi_MakeGameInfo, which copies its 0x16 bytes
      * into each registered file's game record */
     u8 mParentUser[0x16];
-    u8 pad_1316[0x2];
+    /* 0x1316 -- the multiboot work is set up (the BW2 reconstruction's
+     * mbc->isMbInitialized): MB_Init refuses while it is set and sets it last,
+     * and the WM_End result clears it on either side (MBi_EndCommon) */
+    u16 mIsMbInitialized;
     /* 0x1318 -- bytes of a file carried per block: func_02068ae8 sets it to
      * the MP parent size less 6; func_02067604 divides each segment by it
      * and func_02067530 turns a block number back into an offset with it */
@@ -82,7 +85,11 @@ typedef struct MbParentWork {
      * (func_02068ae8): func_02065de4 refuses a piece number above it and
      * counts the received bits up to it */
     s32 mReqPieceCount;
-    u8 pad_1324[0x1340 - 0x1324];
+    /* 0x1324 -- a WM_StartMP is in flight (the BW2 reconstruction's
+     * mbc->start_mp_busy): MBi_ParentCallback sets it before starting MP
+     * on a child's CONNECTED, the START_MP result clears it */
+    s32 mStartMpBusy;
+    u8 pad_1328[0x1340 - 0x1328];
     /* 0x1340 -- per child (AID - 1): the user record from its entry request,
      * AID in the high nibble of byte 0 (MBi_CommParentRecvDataPerChild);
      * MBi_CommParentCallback hands the table to MB_UpdateGameInfoMember */

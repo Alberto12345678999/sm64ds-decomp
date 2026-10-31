@@ -1180,54 +1180,6 @@
     {
       "path": "src/engine/mb/MB_WmBase.cpp",
       "rule": "raw-offset",
-      "match": "(int*)(g8+0x1324",
-      "count": 2,
-      "reason": "mbc (data_020a9db8; base2 in MB_Init) is include/private/arm9_a9db8_mb_parent.h's MbParentWork, which has only padding at this offset. The word is set before WM_StartMP and cleared in its callback; the newer SDK keeps start_mp_busy in the WM work instead, so the name is not proved. Follow-up: name MbParentWork 0x1324 and read it through the struct, with byte proof for MB_WmBase and MB_Parent.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.cpp",
-      "rule": "raw-offset",
-      "match": "(int*)(data_020a9db8+0x1324",
-      "count": 1,
-      "reason": "mbc (data_020a9db8; base2 in MB_Init) is include/private/arm9_a9db8_mb_parent.h's MbParentWork, which has only padding at this offset. The word is set before WM_StartMP and cleared in its callback; the newer SDK keeps start_mp_busy in the WM work instead, so the name is not proved. Follow-up: name MbParentWork 0x1324 and read it through the struct, with byte proof for MB_WmBase and MB_Parent.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.cpp",
-      "rule": "raw-offset",
-      "match": "(int*)(base2+0x1324",
-      "count": 1,
-      "reason": "mbc (data_020a9db8; base2 in MB_Init) is include/private/arm9_a9db8_mb_parent.h's MbParentWork, which has only padding at this offset. MB_Init clears it. The word is set before WM_StartMP and cleared in its callback; the newer SDK keeps start_mp_busy in the WM work instead, so the name is not proved. Follow-up: name MbParentWork 0x1324 and read it through the struct, with byte proof for MB_WmBase and MB_Parent.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.cpp",
-      "rule": "raw-offset",
-      "match": "(u16*)(data_020a9db8+0x1316",
-      "count": 2,
-      "reason": "mbc (data_020a9db8; base2 in MB_Init) is include/private/arm9_a9db8_mb_parent.h's MbParentWork, which has only padding at this offset. MB_Init sets this halfword as its last store and refuses to run while it is set, which is the SDK's isMbInitialized; both WM_End callbacks clear it. Follow-up: name MbParentWork pad_1316 isMbInitialized and read it through the struct, with byte proof for MB_WmBase and MB_Parent.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.cpp",
-      "rule": "raw-offset",
-      "match": "(u16*)(base2+0x1316",
-      "count": 1,
-      "reason": "mbc (data_020a9db8; base2 in MB_Init) is include/private/arm9_a9db8_mb_parent.h's MbParentWork, which has only padding at this offset. MB_Init sets this halfword as its last store and refuses to run while it is set, which is the SDK's isMbInitialized; both WM_End callbacks clear it. Follow-up: name MbParentWork pad_1316 isMbInitialized and read it through the struct, with byte proof for MB_WmBase and MB_Parent.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.cpp",
-      "rule": "raw-offset",
-      "match": "(u16*)(data_020a9db8+0x1300",
-      "count": 1,
-      "reason": "mbc (data_020a9db8; base2 in MB_Init) is include/private/arm9_a9db8_mb_parent.h's MbParentWork, which has only padding at this offset. The child's WM_End callback clears mbc+0x1300+0x16, the halfword after the parent's 0x16-byte MBUserInfo copy at 0x1300: the same isMbInitialized at 0x1316, spelled in the shard as the copy's base plus its size. Follow-up: name MbParentWork pad_1316 isMbInitialized and read it through the struct, with byte proof for MB_WmBase and MB_Parent.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.cpp",
-      "rule": "raw-offset",
       "match": "(char*)((a0+0x1f",
       "count": 1,
       "reason": "Not a field access: MB_Init rounds the caller's buffer address up to 32 bytes ((a0 + 0x1f) & ~0x1f) before carving the WmWork out of it. No follow-up.",
@@ -1256,6 +1208,22 @@
       "count": 1,
       "reason": "MBi_StartCommon clears a halfword in WmWork's pad_1e2e region that nothing in this file reads back, so no field is placed there. Follow-up: place it in WmWork once a reader shows its role.",
       "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
+    },
+    {
+      "path": "src/engine/isd/isdoverlay.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ11SetFIQStateEb",
+      "count": 2,
+      "reason": "IRQ::SetFIQState(bool) and IRQ::SetIRQState(bool) are entry labels inside the hand-written func_0206d9cc and func_0206da18, and func_0206d868 passes them the saved word unnormalised. Declared in namespace IRQ with their bool parameter, the call adds the `!= 0` the ROM lacks; declared with int, the name mangles to a symbol the ROM does not have. No header declares IRQ. Follow-up: give IRQ a header once its primitives are reconstructed as C++.",
+      "evidence": "arm9/isdoverlay 6/6 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from src/unnamed/arm9/0206/func_0206d868.cpp on main, which this fold absorbs, with its `local extern:` note"
+    },
+    {
+      "path": "src/engine/isd/isdoverlay.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ11SetIRQStateEb",
+      "count": 2,
+      "reason": "IRQ::SetFIQState(bool) and IRQ::SetIRQState(bool) are entry labels inside the hand-written func_0206d9cc and func_0206da18, and func_0206d868 passes them the saved word unnormalised. Declared in namespace IRQ with their bool parameter, the call adds the `!= 0` the ROM lacks; declared with int, the name mangles to a symbol the ROM does not have. No header declares IRQ. Follow-up: give IRQ a header once its primitives are reconstructed as C++.",
+      "evidence": "arm9/isdoverlay 6/6 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from src/unnamed/arm9/0206/func_0206d868.cpp on main, which this fold absorbs, with its `local extern:` note"
     }
   ]
 }
