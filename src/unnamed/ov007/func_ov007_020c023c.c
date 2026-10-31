@@ -1,6 +1,6 @@
 #include "Ov007Camera.h"
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern Ov007VecTween *func_ov007_020c8f64(Vector3 *out);
 extern void *func_ov007_020c908c(void *out);
 extern void func_ov007_020c0128(Ov007Camera *cam);

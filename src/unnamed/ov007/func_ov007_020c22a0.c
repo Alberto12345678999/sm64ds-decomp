@@ -1,13 +1,13 @@
 #include "Ov007Pad.h"
 
-extern int data_ov007_0210324c[];
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern char data_ov007_0210324c[]; /* "pad" */
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c22a0(Ov007Pad *pad);
 extern int func_ov007_020c3d1c(void);
 
 /* Allocates the pad record Ov007Work::pad points at and clears it. */
 Ov007Pad *func_ov007_020c2304(void) {
-    Ov007Pad *pad = func_ov007_020c3df4((int)data_ov007_0210324c, sizeof(Ov007Pad));
+    Ov007Pad *pad = func_ov007_020c3df4(data_ov007_0210324c, sizeof(Ov007Pad));
     func_ov007_020c22a0(pad);
     return pad;
 }

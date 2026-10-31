@@ -3,22 +3,15 @@
 #include "nitro/fx/fx.h"
 #include "cstd.h"
 #include "Ov007Mesh.h"
+#include "Ov007Texture.h"
 
 extern "C" {
 
-extern void func_ov007_020c1448(void *a, int b, int c, int d, int e);
-extern void func_ov007_020c1404(void *c);
+extern void func_ov007_020c1448(Ov007Texture *self, u32 texGen, u32 repeat, u32 flip, u32 color0);
+extern void func_ov007_020c1404(Ov007Texture *tex);
 extern void func_ov007_020caeac(int a0, int a1, int a2, int a3, int s0, int s1, int s2, int s3,
                                 int s4, int s5, int s6, int s7, int s8);
 extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
-
-/* The 0x2c-byte texture record func_ov007_020c15ec fills; names as in
- * unit020c1404, only the slots this file reads. */
-typedef struct Ov007Texture {
-    char pad_00[0x14];
-    int sizeS; /* 0x14: log2(width / 8); func_ov007_020c1448's name */
-    int sizeT; /* 0x18: log2(height / 8) */
-} Ov007Texture;
 
 /* Draws the mesh (data_ov007_02104bd4[0]) with one of its materials
  * ([1] or [2]): sets the material's light colours, texture and polygon

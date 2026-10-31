@@ -1,7 +1,8 @@
 #include "types.h"
 #include "Ov007Sprite.h"
-extern void func_ov007_020c1448(void *tex, int texGen, int repeat, int flip, int color0);
-extern void func_ov007_020c1404(void *tex);
+#include "Ov007Texture.h"
+extern void func_ov007_020c1448(Ov007Texture *self, u32 texGen, u32 repeat, u32 flip, u32 color0);
+extern void func_ov007_020c1404(Ov007Texture *tex);
 extern void func_ov007_020c49bc(int a0, int a1, int a2, int a3, int a4, int a5, u16 *a6, int a7);
 extern int data_ov007_0210325c;
 /* Draws the sprite's textured quad in `color` at `alpha` (0-31) with
@@ -21,7 +22,7 @@ void func_ov007_020c4684(Ov007Sprite *s, int color, int alpha, int polygonId, in
     int th;
     volatile int *new_var;
     int yl;
-    int *tex;
+    Ov007Texture *tex;
     int orig_tw;
     int w;
     int h;
@@ -52,11 +53,11 @@ void func_ov007_020c4684(Ov007Sprite *s, int color, int alpha, int polygonId, in
     if (alpha == 0) {
         return;
     }
-    tex = (int *)s->frames[s->frame];
+    tex = s->frames[s->frame];
     *((volatile int *)0x04000480) = color;
     if (tex != 0) {
-        tw = 8 << tex[5];
-        th = 8 << tex[6];
+        tw = 8 << tex->sizeS;
+        th = 8 << tex->sizeT;
     }
     func_ov007_020c1448(tex, 1, s->texRepeat, s->texFlip, s->texColor0);
     func_ov007_020c1404(tex);

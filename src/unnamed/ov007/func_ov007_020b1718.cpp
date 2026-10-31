@@ -38,8 +38,8 @@ typedef struct Vec3Words {
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020b257c(void);
 extern void func_ov007_020b2454(void *a, void *b);
-extern void func_ov007_020bce70(int a, int b);
-extern int func_ov007_020c3be0(int a, int b, int c);
+extern void func_ov007_020bce70(short n, int frames);
+extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020b2764(int a);
 
 void func_ov007_020b1718(void) {

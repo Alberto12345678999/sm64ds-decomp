@@ -47,7 +47,7 @@ extern void *data_ov007_02103370[];
 /* the file id each slot loads */
 extern u16 data_ov007_020d7584[];
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void DecompressLZ16(void *src, void *dst);
 
 void func_ov007_020b3edc(int idx);

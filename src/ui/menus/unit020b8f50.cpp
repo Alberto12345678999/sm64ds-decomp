@@ -138,7 +138,7 @@ extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020c3d1c(void *);
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int b);
 extern void func_ov007_020c4f50(void *c, int a1, int a2, int a3, int a4);
 extern int func_ov007_020c5014(void *, int);
 extern void func_ov007_020c510c(char *c);
@@ -159,7 +159,7 @@ extern void func_ov007_020c5ef0(void *o);
 extern int func_ov007_020c8f98(void *p);
 extern void func_ov007_020c9080(int);
 extern void *func_ov007_020c908c(void *r5);
-extern void func_ov007_020c92d0(void *p);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int a);
 
@@ -1725,22 +1725,22 @@ int func_ov007_020b8fa0(void) {
 }
 
 // @symbol func_ov007_020b8f8c
-int func_ov007_020b8f8c(void) {
-    return (int)SCENE->states[0];
+Ov007MenuState *func_ov007_020b8f8c(void) {
+    return SCENE->states[0];
 }
 
 // @symbol func_ov007_020b8f78
-int func_ov007_020b8f78(void) {
-    return (int)SCENE->states[1];
+Ov007MenuState *func_ov007_020b8f78(void) {
+    return SCENE->states[1];
 }
 
 // @symbol func_ov007_020b8f64
-int func_ov007_020b8f64(void) {
-    return (int)SCENE->states[2];
+Ov007MenuState *func_ov007_020b8f64(void) {
+    return SCENE->states[2];
 }
 
 // @symbol func_ov007_020b8f50
-int func_ov007_020b8f50(void) {
-    return (int)SCENE->states[3];
+Ov007MenuState *func_ov007_020b8f50(void) {
+    return SCENE->states[3];
 }
 }

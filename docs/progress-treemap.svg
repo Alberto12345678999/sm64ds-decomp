@@ -2989,7 +2989,7 @@ matched: yes</title></rect><rect x="204.32" y="197.38" width="8.33" height="5.16
 module: arm9
 addr: 0x02019740
 size: 64 bytes
-matched: yes</title></rect><rect x="212.65" y="197.38" width="7.29" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02019780
+matched: yes</title></rect><rect x="212.65" y="197.38" width="7.29" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NitroStartUp
 module: arm9
 addr: 0x02019780
 size: 56 bytes
@@ -12337,7 +12337,7 @@ matched: yes</title></rect><rect x="331.42" y="453.13" width="12.70" height="15.
 module: itcm
 addr: 0x01ffadf0
 size: 484 bytes
-matched: yes</title></rect><rect x="331.42" y="468.19" width="3.93" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_01ffafd4
+matched: yes</title></rect><rect x="331.42" y="468.19" width="3.93" height="5.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_fp_init
 module: itcm
 addr: 0x01ffafd4
 size: 52 bytes

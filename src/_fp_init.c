@@ -1,6 +1,6 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ffafd4 at 0x01ffafd4 (ITCM) -- resets the floating-point runtime state that the
+// _fp_init at 0x01ffafd4 (ITCM) -- resets the floating-point runtime state that the
 // soft-float block above it (0x01ff8000-0x01ffafd0: the double add/multiply, the float
 // and double conversions, and the integer division helpers) reads and updates.
 //
@@ -11,11 +11,15 @@
 // argument (0x04000000 -> +4 ... 0x40000000 -> +0x14), so this leaves the status clear
 // and no handler installed.
 //
-// _start (src/_start.c), the ARM9 startup code, calls it once: after the DTCM, palette and
-// OAM clears, and before the jump to the game. That is the place and job ARM's runtime
-// documents for _fp_init ("initialize the floating-point status register before
-// performing any floating-point operations"). ARM does not specify _fp_init's body, so
-// that name stays a lead.
+// The name is from the call site. _start (src/_start.c), the ARM9 startup code, ends with
+// `bl 01ffafd4; bl NitroStartUp; bl __call_static_initializers`, then loads NitroMain and jumps
+// to it with lr = 0xffff0000. NitroSDK's crt0 ends `_start` with exactly that sequence:
+// `bl _fp_init; bl NitroStartUp; bl __call_static_initializers`, then `ldr r1, =NitroMain`
+// with lr = HW_RESET_VECTOR (the NitroSDK crt0.c in pret's pokediamond). The body
+// does the job ARM's runtime gives _fp_init ("initialize the floating-point status
+// register before performing any floating-point operations"). Pokemon Diamond links a
+// runtime whose _fp_init is a bare `bx lr`, so only the name and the slot are shared with
+// it, not the body.
 //
 // Assembly in the original, like the whole runtime block it belongs to: it keeps r0 live
 // across a `bl` with only `{lr}` pushed, relying on the callee returning its result in r0
@@ -26,7 +30,7 @@
 extern unsigned int *func_0207322c(void);
 extern void *func_02073238(void);
 
-asm void func_01ffafd4(void)
+asm void _fp_init(void)
 {
     stmdb sp!, {lr}
     bl func_0207322c

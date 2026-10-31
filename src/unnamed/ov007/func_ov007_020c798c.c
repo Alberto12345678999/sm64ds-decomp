@@ -1,6 +1,6 @@
 #include "Ov007Spring.h"
 
-extern void *func_ov007_020c3df4(int heap, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c78b0(void *c);
 extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);
 extern Ov007Link *func_ov007_020c80a4(void);

@@ -5,7 +5,7 @@ extern void func_ov007_020b1cf0(void);
 extern void func_ov007_020b1224(void);
 extern void func_ov007_020b1b74(void);
 extern void func_ov007_020b1b70(void);
-extern void func_ov007_020b1b4c(void);
+extern int func_ov007_020b1b4c(void);
 extern void func_ov007_020b1718(void);
 extern void func_ov007_020b166c(void);
 extern void func_ov007_020b155c(void);

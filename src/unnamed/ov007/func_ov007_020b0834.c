@@ -6,7 +6,7 @@
 #include "Ov007LayerSlot.h"
 #include "Ov007Pad.h"
 
-extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
+extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int x, int y, u16 tile);
 extern void func_ov007_020b7d94(int kind);
 extern void func_ov007_020b2614(int a, int b, int c);
 extern void func_ov007_020c1d8c(int i);
