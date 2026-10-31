@@ -11499,7 +11499,7 @@
     },
     "arm9:0x02067f68": {
       "author": "tangosdev",
-      "name": "func_02067f68"
+      "name": "MBi_SendVolatBeacon"
     },
     "arm9:0x02068188": {
       "author": "tangosdev",
@@ -11515,7 +11515,7 @@
     },
     "arm9:0x02068398": {
       "author": "andrewboudreau",
-      "name": "func_02068398"
+      "name": "MBi_ReadyBeaconSendStatus"
     },
     "arm9:0x02068410": {
       "author": "tangosdev",
@@ -11639,7 +11639,7 @@
     },
     "arm9:0x0206a29c": {
       "author": "ruspecial",
-      "name": "func_0206a29c"
+      "name": "changeScanChannel"
     },
     "arm9:0x0206a318": {
       "author": "tangosdev",
@@ -11879,15 +11879,15 @@
     },
     "arm9:0x0206df90": {
       "author": "andrewboudreau",
-      "name": "func_0206df90"
+      "name": "__flush_buffer"
     },
     "arm9:0x0206e030": {
       "author": "lplaat",
-      "name": "func_0206e030"
+      "name": "__prep_buffer"
     },
     "arm9:0x0206e068": {
       "author": "tangosdev",
-      "name": "func_0206e068"
+      "name": "__convert_from_newlines"
     },
     "arm9:0x0206e06c": {
       "author": "andrewboudreau",

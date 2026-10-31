@@ -319,11 +319,21 @@ int abs(int x)
 extern "C" {
 #pragma push
 #pragma defer_codegen off
-void func_0206e068(int a, int *b);
-void func_0206e030(char *self);
+void __convert_from_newlines(int a, int *b);
+void __prep_buffer(char *self);
 typedef int (*Fn)(int, int, int *, int);
-// @symbol func_0206df90
-int func_0206df90(char *thiz, int *out)
+// @symbol __flush_buffer
+/* MSL's buffer_io.c: __flush_buffer, __prep_buffer and
+   __convert_from_newlines, statement for statement with Spirit Tracks'
+   copy. In MSL's FILE terms: +0x00 handle, +0x18 position, +0x1c buffer,
+   +0x20 buffer_size, +0x24 buffer_ptr, +0x28 buffer_len, +0x2c
+   buffer_alignment, +0x34 buffer_pos, +0x40 write_proc, +0x48 ref_con, and
+   the bit tested at +0x04 is mode.binary_io. In Spirit Tracks this file is
+   its own TU between arith.c (abs) and file_io.c (fflush), the same
+   neighbours it has here; it stays inside this run because a TU claims one
+   contiguous span, and cutting it out would leave a fflush..__pformatter
+   tail with no name of its own. */
+int __flush_buffer(char *thiz, int *out)
 {
   char *new_var;
   int diff = (*((int *) (thiz + 0x24))) - (*((int *) (thiz + 0x1c)));
@@ -333,7 +343,7 @@ int func_0206df90(char *thiz, int *out)
     *((int *) (thiz + 0x28)) = diff;
     if (((((unsigned int) ((*((unsigned int *) (thiz + 4))) << 0x13)) >> 9) >> 22) == 0)
     {
-      func_0206e068(*((int *) (thiz + 0x1c)), (int *) (thiz + 0x28));
+      __convert_from_newlines(*((int *) (thiz + 0x1c)), (int *) (thiz + 0x28));
     }
     r = (*((Fn *) (thiz + 0x40)))(*((int *) thiz), *((int *) (thiz + 0x1c)), (int *) (thiz + 0x28), *((int *) (thiz + 0x48)));
     if (out != 0)
@@ -347,15 +357,15 @@ int func_0206df90(char *thiz, int *out)
     new_var = thiz + 0x18;
     *(int *)(new_var) += *((int *) (thiz + 0x28));
   }
-  func_0206e030(thiz);
+  __prep_buffer(thiz);
   return 0;
 }
 #pragma pop
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206e030
-void func_0206e030(char *self)
+// @symbol __prep_buffer
+void __prep_buffer(char *self)
 {
     *(int *)(self + 0x24) = *(int *)(self + 0x1c);
     *(int *)(self + 0x28) = *(int *)(self + 0x20);
@@ -367,8 +377,8 @@ void func_0206e030(char *self)
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206e068
-void func_0206e068(int a, int *b)
+// @symbol __convert_from_newlines
+void __convert_from_newlines(int a, int *b)
 {
 }
 #pragma pop
@@ -394,7 +404,7 @@ typedef struct S6e06c {
    io_state, fd the error flag, +0x18 position and +0x28 buffer_len.
    fflush(NULL) flushes every FILE through __flush_all; a FILE in error or
    closed fails; one open for reading succeeds; otherwise write out the
-   buffer (func_0206df90) and reset the state, position and length. */
+   buffer (__flush_buffer) and reset the state, position and length. */
 // @symbol fflush
 int fflush(S6e06c *p)
 {
@@ -419,7 +429,7 @@ int fflush(S6e06c *p)
         return 0;
     }
 
-    if (func_0206df90((char *)p, 0) != 0) {
+    if (__flush_buffer((char *)p, 0) != 0) {
         p->fd = 1;
         *(int *)((char *)p + 0x28) = 0;
         return -1;

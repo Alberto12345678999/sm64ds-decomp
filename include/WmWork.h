@@ -4,8 +4,10 @@
 /* NitroSDK WM views over the wireless work buffer data_020a9db4 (0x3700
  * bytes, carved by func_02068e4c), the multiboot library's sWmWork in
  * src/engine/mb/MB_WmBase.cpp. SDK field names where the SDK has one; the
- * evidence for each is above WmWork. Plain C types: a consumer
- * (func_02062024.c) does not include types.h. */
+ * evidence for each is above WmWork. Plain C types: some consumers do not
+ * include types.h. func_02062024.c includes this header without it, and
+ * func_020408b0, func_02061ab0 and func_02062428, which keep their own
+ * views of these structs for now, do not include it either. */
 typedef struct {
     unsigned char bytes[0xc0];
 } WmBssDesc; /* WMBssDesc */
@@ -85,7 +87,7 @@ typedef struct {
  *   parentCount, lastParentIndex   the parents[] fill count / last hit
  *   aid             WMStartConnectCallback.aid on CONNECTED
  *   scanContinue    cleared by func_02068a74; scanning stops when 0
- *   scanNextChannel when set, func_0206a29c steps WMScanParam.channel
+ *   scanNextChannel when set, changeScanChannel steps WMScanParam.channel
  * child_bitmap's offset inside WMStatus (+0x17e) is from this code, not the SDK. */
 typedef struct {
     unsigned char wmSysBuf[0x1300];    /* 0x0000 */
