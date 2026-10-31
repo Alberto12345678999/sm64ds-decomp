@@ -38,7 +38,7 @@ typedef struct Ov007Model {
 } Ov007Model;
 
 extern int func_ov007_020aebac(void);
-extern void RequestScreenFade(int, int, int);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020b1fa4(int preset);
 extern void func_ov007_020b0da0(Ov007Figure *figure);
 extern void func_ov007_020be980(Ov007Figure *fig, int anim, int a2);

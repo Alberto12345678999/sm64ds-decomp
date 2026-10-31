@@ -12,7 +12,7 @@ extern void func_ov007_020bf304(void);
 extern void func_ov007_020b6544(void);
 extern void func_ov007_020bcba8(int i);
 extern void func_ov007_020bca40(int i);
-extern void RequestScreenFade(int a, int b, int c);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020bd1c0(int i);
 extern void func_ov007_020b131c(void);
 }

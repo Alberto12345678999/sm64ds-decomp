@@ -1844,17 +1844,6 @@
         "return:int"
       ]
     },
-    "RequestScreenFade": {
-      "src/unnamed/ov007/func_ov007_020af4dc.c": [
-        "param:#3 void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b10dc.c": [
-        "param:#3 void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b155c.c": [
-        "param:#3 void *"
-      ]
-    },
     "RotatingClockHand_ModelFile": {
       "src/unnamed/ov035/__sinit_ov035_02111fc0.c": [
         "return:int []"
@@ -21029,29 +21018,6 @@
     "func_ov007_020aed98": {
       "src/ui/menus/unit020b6eb4.cpp": [
         "arity:1"
-      ]
-    },
-    "func_ov007_020af580": {
-      "src/unnamed/ov007/func_ov007_020af4dc.c": [
-        "kind:data"
-      ]
-    },
-    "func_ov007_020b0520": {
-      "src/unnamed/ov007/func_ov007_020aef84.cpp": [
-        "kind:data"
-      ],
-      "src/unnamed/ov007/func_ov007_020af4dc.c": [
-        "kind:data"
-      ]
-    },
-    "func_ov007_020b1604": {
-      "src/unnamed/ov007/func_ov007_020b155c.c": [
-        "kind:data"
-      ]
-    },
-    "func_ov007_020b16f0": {
-      "src/unnamed/ov007/func_ov007_020b10dc.c": [
-        "kind:data"
       ]
     },
     "func_ov007_020b2cdc": {
