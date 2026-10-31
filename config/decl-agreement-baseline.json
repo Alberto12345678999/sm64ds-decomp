@@ -1576,9 +1576,6 @@
       ]
     },
     "MultiStore_Int": {
-      "src/Entry.c": [
-        "arity:0"
-      ],
       "src/unnamed/arm9/0201/func_02017fd0.cpp": [
         "param:#1 unsigned int",
         "param:#3 unsigned int"
@@ -10461,9 +10458,6 @@
     },
     "data_023c0000": {
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
-        "return:char []"
-      ],
-      "src/engine/cp15/CP15_SystemSetup.cpp": [
         "return:char []"
       ],
       "src/IRQ2.cpp": [

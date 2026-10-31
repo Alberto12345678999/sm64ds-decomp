@@ -11,8 +11,8 @@
 // argument (0x04000000 -> +4 ... 0x40000000 -> +0x14), so this leaves the status clear
 // and no handler installed.
 //
-// The name is from the call site. Entry (src/Entry.c), the ARM9 startup code, ends with
-// `bl 01ffafd4; bl NitroStartUp; bl __call_static_initializers`, then loads main and jumps
+// The name is from the call site. _start (src/_start.c), the ARM9 startup code, ends with
+// `bl 01ffafd4; bl NitroStartUp; bl __call_static_initializers`, then loads NitroMain and jumps
 // to it with lr = 0xffff0000. NitroSDK's crt0 ends `_start` with exactly that sequence:
 // `bl _fp_init; bl NitroStartUp; bl __call_static_initializers`, then `ldr r1, =NitroMain`
 // with lr = HW_RESET_VECTOR (the NitroSDK crt0.c in pret's pokediamond). The body

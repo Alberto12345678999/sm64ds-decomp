@@ -1,7 +1,6 @@
-//cpp
-// @symbol _ZN4CP1511SystemSetupEv
-/* CP15::SystemSetup() at 0x020049f0 -- the boot-time MPU and cache
- * configuration, and the largest CP15 function by an order of magnitude.
+/* init_cp15 at 0x020049f0 -- NitroSDK crt0, the first call _start makes: the
+ * boot-time MPU and cache configuration, and the largest CP15 routine by an
+ * order of magnitude.
  *
  * The sequence, for a reader who has not met CP15 before: disable the caches
  * and MPU by clearing bits in the control register; invalidate both caches and
@@ -11,30 +10,24 @@
  * permission masks (c2, c3, c5); then re-enable everything by ORing 0x5707d
  * back into the control register.
  *
- * HAND-ASM PRIMITIVE. This was the one file in the slice written with the
- * GCC-style `__asm__ volatile ("...")` string form. mwccarm accepts that in C
- * and REJECTS it in C++ -- `illegal constant expression' on the first string --
- * so the migration had to change the asm dialect as well as the language mode.
- * It now uses mwccarm's own whole-function `asm void' form, which is what the
- * other fifteen files in this slice already used.
+ * pret/pokediamond's crt0.c has the same steps as `static asm void
+ * init_cp15(void)`, right after _start_AutoloadDoneCallback. The ROM keeps
+ * that order: _start, MIi_UncompressBackward, do_autoload,
+ * AutoloadCallback (the SDK's _start_AutoloadDoneCallback), then this, then
+ * BuildInfo (_start_ModuleParams). It cannot be static here because _start
+ * lives in its own source.
  *
- * `asm void' rather than an `asm { }' block inside an ordinary function because
- * the ROM has no prologue: the function begins directly at `mrc' and runs to
- * its literal pool, so the terminating `bx lr' is written out here instead of
- * being left to the compiler.
- *
- * Layout-free (plan phase 1): no `this', no vtable, no struct, no includers. */
+ * HAND-ASM PRIMITIVE: `asm void' rather than an `asm { }' block inside an
+ * ordinary function because the ROM has no prologue: the function begins
+ * directly at `mrc' and runs to its literal pool, so the terminating `bx lr' is
+ * written out here instead of being left to the compiler. */
+
 /* The DTCM base, 0x023c0000 -- a real symbol (config/arm9/dtcm/symbols.txt),
-   not a bare address, and SystemSetup is what puts the DTCM there. It has to be
-   declared in C++ scope for the asm block to name it: the GCC string form left
-   `ldr r0, =data_023c0000' to the assembler, but mwccarm's `asm void' body
-   resolves symbols through the compiler and reports `illegal constant
-   expression' otherwise. Spelled as an array, as IRQ::VBlankHandler does. */
-extern "C" char data_023c0000[];
+   not a bare address, and init_cp15 is what puts the DTCM there. Spelled as
+   IRQHandler.cpp declares it. */
+extern short data_023c0000[];
 
-namespace CP15 {
-
-asm void SystemSetup(void)
+asm void init_cp15(void)
 {
     mrc p15, 0, r0, c1, c0, 0
     ldr r1, =0xf9005
@@ -82,6 +75,4 @@ asm void SystemSetup(void)
     orr r0, r0, r1
     mcr p15, 0, r0, c1, c0, 0
     bx lr
-}
-
 }

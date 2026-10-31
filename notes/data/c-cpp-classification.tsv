@@ -112,7 +112,7 @@ src/Enable3dEngines.c	PURE-C	arm9				1		None		-
 src/d_a_e_create.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_e_switch.c	WEAK-refs-only	ov002				1		None		-
 src/EnterBigBoosHaunt.c	PURE-C	arm9				1		None		-
-src/Entry.c	WEAK-refs-only	arm9				1		None		-
+src/_start.c	WEAK-refs-only	arm9				1		None		-
 src/d_a_obj_hatena_block_vs_item_block.c	WEAK-refs-only	ov102				1		None		-
 src/d_a_obj_hatena_block_item_block.c	WEAK-refs-only	ov102				1		None		-
 src/d_a_obj_switch_hanswitch.c	WEAK-refs-only	ov002				1		None		-

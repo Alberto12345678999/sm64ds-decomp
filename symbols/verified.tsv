@@ -16,7 +16,7 @@
 0x01ffde50	DMAStartTransfer	function
 0x01ffe684	__aeabi_uldivmod	data
 0x02004800	_start	function
-0x020049f0	_ZN4CP1511SystemSetupEv	function
+0x020049f0	init_cp15	function
 0x02004b00	OBJ_TO_ACTOR_ID_TABLE	data
 0x02004ffc	DL_PTR_ARR_PTR	data
 0x02005d94	_ZN11dCapEnemy_c12Unk_02005d94Ev	function
