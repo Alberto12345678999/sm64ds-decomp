@@ -3034,7 +3034,7 @@ in the try, no dtor null-check; func_020731fc is now std::terminate):
 
 ```cpp
 //cpp
-extern "C" void func_020731fc(void);   /* terminate()-style wrapper (now std::terminate); source-level call */
+extern "C" void func_020731fc(void); /* std::terminate (_ZSt9terminatev); source-level call */
 typedef void (*dtor_t)(void *);
 extern "C" void func_0207328c(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {

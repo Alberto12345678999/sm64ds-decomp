@@ -433,6 +433,7 @@ void func_02069918(void *arg) {
     }
 }
 
+// @symbol func_020690b0
 /* PARENT_FOUND: refresh the record of a parent already seen (same MAC) or
  * add one, and point lastParentIndex at it. The record's first 0xc0 bytes are
  * the WMBssDesc DMA'd from the scan buffer, and +0xc0 is a copy of the
@@ -462,7 +463,6 @@ static inline void RecordScannedParent(WmWork *const w, char *arg0) {
     }
 }
 
-// @symbol func_020690b0
 /* MBi_ChildCallback: the child side's callback. Initialize, then
  * WM_SetLifeTime and WM_StartScan; each PARENT_FOUND lands in
  * WmWork.parents[] (RecordScannedParent), and the scan goes on, a channel at

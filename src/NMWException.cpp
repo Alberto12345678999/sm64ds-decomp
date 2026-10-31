@@ -1,7 +1,8 @@
 //cpp
-/* MSL's NMWException.cp, as much of it as this game links: the default
- * terminate handler, the handler variable and std::terminate, arm9 .text
- * 0x020731fc..0x0207322c and the .data word 0x0209a6fc.
+/* MSL's NMWException.cp, the .text of as much of it as this game links: the
+ * default terminate handler and std::terminate, arm9 0x020731fc..0x0207322c.
+ * The file's handler variable, the .data word 0x0209a6fc, is not built from
+ * here (see below).
  *
  * MSL declares `static terminate_handler thandler = dthandler;` beside
  * dthandler and terminate, and that is the evidence for the file: the word
@@ -41,12 +42,12 @@ namespace std {
 
 typedef void (*terminate_handler)();
 
+extern terminate_handler thandler; /* MSL: static, = dthandler */
+
 // @symbol _ZSt9dthandlerv
 void dthandler() {
     abort();
 }
-
-extern terminate_handler thandler; /* MSL: static, = dthandler */
 
 // @symbol _ZSt9terminatev
 void terminate() {
