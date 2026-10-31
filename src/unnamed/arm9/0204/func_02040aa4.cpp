@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern void func_0205cd5c(void *arg0, int arg1);
+extern void FS_NotifyArchiveAsyncEnd(void *arc, int result);
 extern void func_020421b4(void);
 extern void func_02065170(void);
 
@@ -32,14 +32,14 @@ void func_02040aa4(void) {
     u32 saved0 = IRQ::Disable();
 
     if (data_020a0f84 != 0) {
-        int cb1 = work->mTable;
+        int table = work->mTable;
 
-        if (cb1 != 0) {
-            if (cb1 != 0) {
+        if (table != 0) {
+            if (table != 0) {
                 u32 saved1 = IRQ::Disable();
                 void *ctxArg = (void *)FILE_SHARE_WORK->mAllocArg;
                 CallbackFn fn = (CallbackFn)FILE_SHARE_WORK->mAllocFunc;
-                fn(ctxArg, 0, cb1);
+                fn(ctxArg, 0, table);
                 IRQ::Restore(saved1);
             }
             *(volatile int *)&work->mTable = 0;
@@ -54,16 +54,16 @@ void func_02040aa4(void) {
             if (p != 0) {
                 void *arg = p->arc;
                 work->mReadRequest = 0;
-                func_0205cd5c(arg, 5);
+                FS_NotifyArchiveAsyncEnd(arg, 5);
             }
 
             {
-                int cb2 = child->mRecvWork;
-                if (cb2 != 0) {
+                int recvWork = child->mRecvWork;
+                if (recvWork != 0) {
                     u32 saved2 = IRQ::Disable();
                     void *ctxArg2 = (void *)FILE_SHARE_WORK->mAllocArg;
                     CallbackFn fn2 = (CallbackFn)FILE_SHARE_WORK->mAllocFunc;
-                    fn2(ctxArg2, 0, cb2);
+                    fn2(ctxArg2, 0, recvWork);
                     IRQ::Restore(saved2);
                 }
             }

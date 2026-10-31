@@ -1,7 +1,7 @@
 #include "Ov007Spring.h"
 
-extern void *func_ov007_020c3df4(int heap, int size);
-extern void func_ov007_020c78b0(void *c);
+extern void *func_ov007_020c3df4(const char *name, int size);
+extern void func_ov007_020c78b0(Ov007PointList *list);
 extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);
 extern Ov007Link *func_ov007_020c80a4(void);
 
@@ -13,12 +13,12 @@ Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, in
     int i;
     Ov007PointList *list;
 
-    list = (Ov007PointList *)func_ov007_020c3df4(0, sizeof(Ov007PointList));
+    list = func_ov007_020c3df4(0, sizeof(Ov007PointList));
     func_ov007_020c78b0(list);
     list->springMode = springMode;
     list->count = count;
     list->flags = flags;
-    list->items = (Ov007Follower **)func_ov007_020c3df4(0, list->count * 4);
+    list->items = func_ov007_020c3df4(0, list->count * 4);
     if (list->flags & 1) {
         for (i = 0; i < list->count; i++)
             list->items[i] = func_ov007_020c844c(0, pointMass);
@@ -29,7 +29,7 @@ Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, in
             n = 0;
         else
             n = list->count - ((list->flags & 2) ? 0 : 1);
-        list->links = (Ov007Link **)func_ov007_020c3df4(0, n * 4);
+        list->links = func_ov007_020c3df4(0, n * 4);
         for (i = 0; i < n; i++)
             list->links[i] = func_ov007_020c80a4();
     }

@@ -1,4 +1,4 @@
-extern int GetPlayerFlagByte(int a0, int a1);
+extern unsigned char GetPlayerFlagByte(int player, int byte);
 
 /* Bits 0-1 of player 0's link settings byte 3: the course-select action
    func_02020078 posts. */

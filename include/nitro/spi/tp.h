@@ -20,7 +20,7 @@ extern "C" {
 /* One panel sample. TP_GetCalibratedPoint transforms a raw pair into screen
    coordinates and copies the other two words through unchanged, so the first
    two are the axes and the last two the touch and validity flags the SDK
-   carries alongside them. func_0203df40's Col4 is the same four words. */
+   carries alongside them. func_0203df40's input record carries one at +0x4. */
 typedef struct TPData {
     u16 x;        /* 0x0 */
     u16 y;        /* 0x2 */
@@ -66,6 +66,10 @@ typedef struct TPWork {
     volatile u16 mErrFlags;           /* 0x34 */
     volatile u16 mCommandFlags;       /* 0x36 */
 } TPWork;
+
+/* The one work block, as include/nitro/card/card_common.h declares cardi_common.
+   Every TP function reaches it by this name. */
+extern TPWork data_020a80cc;
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */

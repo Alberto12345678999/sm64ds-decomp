@@ -7,8 +7,8 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x02070348..0x020707a4, 7 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
-    "BOTTOM EDGE: func_0206fd6c.c (0x0206fd6c..0x02070348) ends exactly where the run begins. It is complete as C but a C++-only stop point (mwccarm SROAs its local print_format struct into registers under -lang c++ while the ROM bytes spill it to the stack: candidate 0x52c vs target 0x5dc, diverging from the prologue), so it stays a one-function source, as do func_0206f820.c / func_0206fb08.c under it. TOP EDGE: func_020707a4.c (0x020707a4) begins exactly where the run ends and stays a one-function source.",
-    "NAMESPACE-LOCAL COMPLETE: the run is cstd::strchr/strcmp/strncpy/strlen plus the rand-LCG, idx-dispatcher and strcpy-like helpers interleaved with them in the same band. Callers of func_0207037c sit in the same 0x0206 band, so nothing here belongs to a neighbour's file. No other cstd run belongs to this job."
+    "BOTTOM EDGE: parse_format.c (0x0206fd6c..0x02070348) ends exactly where the run begins. It is complete as C but a C++-only stop point (mwccarm SROAs its local print_format struct into registers under -lang c++ while the ROM bytes spill it to the stack: candidate 0x52c vs target 0x5dc, diverging from the prologue), so it stays a one-function source, as do longlong2str.c / long2str.c under it. TOP EDGE: copysign.c (0x020707a4) begins exactly where the run ends and stays a one-function source.",
+    "NAMESPACE-LOCAL COMPLETE: the run is cstd::strchr/strcmp/strncpy/strlen plus the rand-LCG, raise and strcpy-like C functions interleaved with them in the same band. Callers of raise sit in the same 0x0206 band, so nothing here belongs to a neighbour's file. No other cstd run belongs to this job."
   ],
   "sections": [
     {
@@ -26,7 +26,7 @@
       "ordinal": 0
     },
     {
-      "symbol": "func_0207037c",
+      "symbol": "raise",
       "address": "0x0207037c",
       "size": "0x00000150",
       "legacy_source": "src/unnamed/arm9/0207/func_0207037c.c",

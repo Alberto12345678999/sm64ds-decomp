@@ -1,8 +1,8 @@
 #include "Ov007Model.h"
 
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c9268(Ov007AnimPlayer *p);
-extern int func_ov007_020c3d1c(void);
+extern void func_ov007_020c3d1c(void *p);
 
 void *func_ov007_020c92ac(void) {
     void *c = func_ov007_020c3df4(0, 0x1c);
@@ -13,8 +13,8 @@ void *func_ov007_020c92ac(void) {
 /* Long-branch veneer: long_calls emits the pooled `ldr ip,[pc]; bx ip`
  * absolute tail-call; bracketed because the pragma is positional. */
 #pragma long_calls on
-int func_ov007_020c92a0(void) {
-    return func_ov007_020c3d1c();
+void func_ov007_020c92a0(void *p) {
+    func_ov007_020c3d1c(p);
 }
 #pragma long_calls off
 

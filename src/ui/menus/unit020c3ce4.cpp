@@ -39,7 +39,7 @@ extern "C" {
 
 typedef int (*Ov007QueryHook)(void);
 typedef void (*Ov007FreeHook)(void *);
-typedef int (*Ov007AllocHook)(void *);
+typedef void *(*Ov007AllocHook)(unsigned int size);
 
 extern Ov007QueryHook data_ov007_02104c14;
 extern Ov007FreeHook data_ov007_02103254;
@@ -82,13 +82,16 @@ void func_ov007_020c3e1c(int v) {
 }
 
 // @symbol func_ov007_020c3df4
-int func_ov007_020c3df4(int a, void *b) {
-    return data_ov007_02103258(b);
+/* The menu's allocator: forwards the size to the alloc hook and returns
+ * the block. name tags the allocation ("global data", "pad",
+ * "touch_panel", ...; most callers pass 0) and is dropped. */
+void *func_ov007_020c3df4(const char *name, int size) {
+    return data_ov007_02103258(size);
 }
 
 // @symbol func_ov007_020c3d40
-int func_ov007_020c3d40(int a, int n) {
-    int *r = (int *)func_ov007_020c3df4(a, (void *)n);
+int func_ov007_020c3d40(const char *name, int n) {
+    int *r = (int *)func_ov007_020c3df4(name, n);
     volatile unsigned short v16;
     volatile unsigned v32;
     volatile int vint;

@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's fs_command_default.c, 0x0205bbdc..0x0205c5e4: 12 functions, gapless in config/arm9/delinks.txt. The nine commands are the nine entries of fsi_default_command (0x02086758), whose relocations (config/arm9/relocs.txt) name them in FS_COMMAND order, the order pret/pokediamond's NitroSDK FS_command_default.c gives its table: FSi_ReadFileCommand, FSi_WriteFileCommand, FSi_SeekDirCommand, FSi_ReadDirCommand, FSi_FindPathCommand, FSi_GetPathCommand, FSi_OpenFileFastCommand, FSi_OpenFileDirectCommand, FSi_CloseFileCommand. The three helpers above them (FSi_StrNICmp, FSi_SeekDirDirect, FSi_ReadTable) are identified by body and are called only by these commands.",
     "Order: mwccarm emits deferred bodies in reverse. The ROM run is the source order reversed: FSi_CloseFileCommand lowest, then the commands up to FSi_ReadFileCommand, then FSi_StrNICmp, FSi_SeekDirDirect and FSi_ReadTable highest. pret defines the helpers FSi_StrNICmp, FSi_ReadTable, FSi_SeekDirDirect; this older SDK has them as FSi_ReadTable, FSi_SeekDirDirect, FSi_StrNICmp.",
     "BOTTOM EDGE: PXIi_HandlerRecvFifoNotEmpty and the rest of pxi_fifo.c (arm9/PXI_Fifo) end at 0x0205bbdc.",
-    "TOP EDGE: func_0205c5e4 (0x0205c5e4) is FSi_TranslateCommand, which indexes fsi_default_command; with FSi_ReleaseCommand above it, it is fs_command.c."
+    "TOP EDGE: FSi_TranslateCommand (0x0205c5e4), which indexes fsi_default_command, and FSi_ReleaseCommand above it are fs_command.c (arm9/FS_Command)."
   ],
   "sections": [
     {

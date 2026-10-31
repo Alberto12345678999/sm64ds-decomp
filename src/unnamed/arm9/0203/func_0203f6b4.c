@@ -1,6 +1,6 @@
 extern int WM_End(void *p);
 extern void Crash(void);
-extern void func_0203f920(void);
+extern void func_0203f920(unsigned short *cb);
 /* Shut the wireless hardware down after a measurement: WM_End
    sends WM_APIID_END (2) through callback slot 2, with
    func_0203f920 as the callback, and anything but 2 (the SDK's

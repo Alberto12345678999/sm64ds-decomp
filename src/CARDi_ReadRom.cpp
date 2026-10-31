@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_02059f58(int a);  /* MI_StopDma */
+void MI_StopDma(u32 dmaNo);
 void CARDi_ReadRomSyncCore(CARDiCommon *c);
 
 /* NitroSDK CARDi_ReadRom (card_rom.c): wait out the request in flight and
@@ -32,7 +32,7 @@ void CARDi_ReadRom(u32 dma, const void *src, void *dst, u32 len, MIDmaCallback c
     c->callback_arg = arg;
 
     if (dma <= 3)
-        func_02059f58(dma);
+        MI_StopDma(dma);
 
     if (CARDi_TryReadCardDma(p)) {
         if (!is_async)

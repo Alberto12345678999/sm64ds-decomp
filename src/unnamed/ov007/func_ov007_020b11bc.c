@@ -1,7 +1,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
 
-extern int func_ov007_020b2614(int a, int b, int c);
+extern void func_ov007_020b2614(int anim, int startFrame, int fadeFrames);
 extern void func_ov007_020b131c(void);
 extern void func_ov007_020b12e8(void);
 

@@ -30,7 +30,7 @@ src/LZ77UnCompReadNormalWrite8bit.c:
     complete
     .text start:0x02004438 end:0x0200443c
 
-src/Entry.c:
+src/_start.c:
     complete
     .text start:0x02004800 end:0x020048d8
 
@@ -46,7 +46,7 @@ src/AutoloadCallback.c:
     complete
     .text start:0x020049ec end:0x020049f0
 
-src/engine/cp15/CP15_SystemSetup.cpp:
+src/init_cp15.c:
     complete
     .text start:0x020049f0 end:0x02004ad8
 
@@ -79,7 +79,7 @@ src/runtime/actor/d_cap_enemy_arm9.cpp:
     complete
     .text start:0x02005d94 end:0x02006588
 
-src/main.cpp:
+src/NitroMain.cpp:
     complete
     .text start:0x02007000 end:0x0200705c
 
@@ -108,11 +108,7 @@ src/GetLanguageIndex.c:
 
 src/unnamed/arm9/0200/func_0200f13c.cpp:
     complete
-    .text start:0x0200f13c end:0x0200f220
-
-src/unnamed/arm9/0200/func_0200f220.cpp:
-    complete
-    .text start:0x0200f220 end:0x0200f2cc
+    .text start:0x0200f13c end:0x0200f2cc
 
 src/unnamed/arm9/0200/func_0200f2cc.cpp:
     complete
@@ -374,7 +370,7 @@ src/engine/graph/d_graph_c_callback.cpp:
     complete
     .text start:0x02018ea0 end:0x02018ec0
 
-src/unnamed/arm9/0201/func_02018ec0.c:
+src/unnamed/arm9/0201/func_02018ec0.cpp:
     complete
     .text start:0x02018ec0 end:0x02018f38
 src/SetSubBg3Offset.c:
@@ -432,7 +428,7 @@ src/unnamed/arm9/0201/func_02019390.cpp:
     complete
     .text start:0x02019390 end:0x02019404
 
-src/unnamed/arm9/0201/func_02019404.c:
+src/unnamed/arm9/0201/func_02019404.cpp:
     complete
     .text start:0x02019404 end:0x02019440
 
@@ -470,7 +466,7 @@ src/Crash.cpp:
     complete
     .text start:0x02019740 end:0x02019780
 
-src/unnamed/arm9/0201/func_02019780.cpp:
+src/NitroStartUp.cpp:
     complete
     .text start:0x02019780 end:0x020197b8
 
@@ -2164,29 +2160,9 @@ src/engine/os/OS_SpinLock.cpp:
     complete
     .text start:0x02057014 end:0x02057410
 
-src/unnamed/arm9/0205/func_02057410.c:
+src/engine/os/OS_Printf.c:
     complete
-    .text start:0x02057410 end:0x02057ce8
-
-src/unnamed/arm9/0205/func_02057ce8.c:
-    complete
-    .text start:0x02057ce8 end:0x02057d00
-
-src/unnamed/arm9/0205/func_02057d00.c:
-    complete
-    .text start:0x02057d00 end:0x02057d30
-
-src/unnamed/arm9/0205/func_02057d30.c:
-    complete
-    .text start:0x02057d30 end:0x02057d94
-
-src/unnamed/arm9/0205/func_02057d94.c:
-    complete
-    .text start:0x02057d94 end:0x02057e00
-
-src/unnamed/arm9/0205/func_02057e00.c:
-    complete
-    .text start:0x02057e00 end:0x02057e30
+    .text start:0x02057410 end:0x02057e30
 
 src/unnamed/arm9/0205/func_02057e30.c:
     complete
@@ -2208,12 +2184,9 @@ src/ARMRestoreContext.c:
     complete
     .text start:0x02058618 end:0x0205865c
 
-src/unnamed/arm9/0205/func_0205865c.cpp:
+src/engine/os/OS_Emulator.cpp:
     complete
-    .text start:0x0205865c end:0x020587dc
-src/unnamed/arm9/0205/func_020587dc.c:
-    complete
-    .text start:0x020587dc end:0x020587e4
+    .text start:0x0205865c end:0x020587e4
 
 src/engine/os/OS_Message.cpp:
     complete
@@ -2283,69 +2256,25 @@ src/unnamed/arm9/0205/func_02059d98.c:
     complete
     .text start:0x02059d98 end:0x02059dd4
 
-src/OSi_SendToPxi.c:
+src/engine/os/OS_Reset.c:
     complete
-    .text start:0x02059dd4 end:0x02059e04
+    .text start:0x02059dd4 end:0x02059eb0
 
-src/OSi_CommonCallback.c:
+src/engine/os/OS_OwnerInfo.c:
     complete
-    .text start:0x02059e04 end:0x02059e48
-
-src/OS_InitReset.c:
-    complete
-    .text start:0x02059e48 end:0x02059eb0
-
-src/OS_GetOwnerInfo.c:
-    complete
-    .text start:0x02059eb0 end:0x02059f2c
-
-src/unnamed/arm9/0205/func_02059f2c.c:
-    complete
-    .text start:0x02059f2c end:0x02059f48
+    .text start:0x02059eb0 end:0x02059f48
 
 src/MI_SetWramBank.c:
     complete
     .text start:0x02059f48 end:0x02059f58
 
-src/unnamed/arm9/0205/func_02059f58.cpp:
+src/engine/mi/MI_Dma.cpp:
     complete
-    .text start:0x02059f58 end:0x02059fa8
+    .text start:0x02059f58 end:0x0205a21c
 
-src/func_02059fa8.c:
+src/engine/mi/MI_DmaGXCommand.cpp:
     complete
-    .text start:0x02059fa8 end:0x02059fd0
-
-src/func_02059fd0.c:
-    complete
-    .text start:0x02059fd0 end:0x0205a064
-
-src/unnamed/arm9/0205/func_0205a064.c:
-    complete
-    .text start:0x0205a064 end:0x0205a10c
-
-src/DMASyncHalfTransfer.c:
-    complete
-    .text start:0x0205a10c end:0x0205a160
-
-src/DMASyncWordTransfer.c:
-    complete
-    .text start:0x0205a160 end:0x0205a1b4
-
-src/DMASyncFillTransfer.c:
-    complete
-    .text start:0x0205a1b4 end:0x0205a21c
-
-src/unnamed/arm9/0205/func_0205a21c.cpp:
-    complete
-    .text start:0x0205a21c end:0x0205a290
-
-src/func_0205a290.cpp:
-    complete
-    .text start:0x0205a290 end:0x0205a358
-
-src/unnamed/arm9/0205/func_0205a358.cpp:
-    complete
-    .text start:0x0205a358 end:0x0205a448
+    .text start:0x0205a21c end:0x0205a448
 
 src/engine/mi/MI_Memory.c:
     complete
@@ -2359,216 +2288,33 @@ src/DecompressLZ16.c:
     complete
     .text start:0x0205a754 end:0x0205a82c
 
-src/unnamed/arm9/0205/func_0205a82c.c:
+src/SND_Init.c:
     complete
     .text start:0x0205a82c end:0x0205a86c
 
-src/Snd_SendCommand.c:
+src/engine/snd/SND_Interface.cpp:
     complete
-    .text start:0x0205a86c end:0x0205a8c4
+    .text start:0x0205a86c end:0x0205adf8
 
-src/unnamed/arm9/0205/func_0205a8c4.c:
+src/engine/snd/SND_Command.cpp:
     complete
-    .text start:0x0205a8c4 end:0x0205a8f0
+    .text start:0x0205adf8 end:0x0205b470
 
-src/SNDi_SetTrackParam.c:
+src/engine/snd/SND_Alarm.cpp:
     complete
-    .text start:0x0205a8f0 end:0x0205a924
+    .text start:0x0205b470 end:0x0205b554
 
-src/SNDi_SetPlayerParam.c:
+src/engine/snd/SND_Work.cpp:
     complete
-    .text start:0x0205a924 end:0x0205a958
+    .text start:0x0205b554 end:0x0205b63c
 
-src/unnamed/arm9/0205/func_0205a958.c:
-    complete
-    .text start:0x0205a958 end:0x0205a98c
-
-src/unnamed/arm9/0205/func_0205a98c.c:
-    complete
-    .text start:0x0205a98c end:0x0205a9b8
-
-src/unnamed/arm9/0205/func_0205a9b8.c:
-    complete
-    .text start:0x0205a9b8 end:0x0205a9e4
-
-src/unnamed/arm9/0205/func_0205a9e4.c:
-    complete
-    .text start:0x0205a9e4 end:0x0205aa10
-
-src/unnamed/arm9/0205/func_0205aa10.c:
-    complete
-    .text start:0x0205aa10 end:0x0205aa68
-
-src/unnamed/arm9/0205/func_0205aa68.c:
-    complete
-    .text start:0x0205aa68 end:0x0205aa9c
-
-src/unnamed/arm9/0205/func_0205aa9c.c:
-    complete
-    .text start:0x0205aa9c end:0x0205aac8
-
-src/unnamed/arm9/0205/func_0205aac8.c:
-    complete
-    .text start:0x0205aac8 end:0x0205aaf4
-
-src/SND_SetTrackMute.c:
-    complete
-    .text start:0x0205aaf4 end:0x0205ab28
-
-src/unnamed/arm9/0205/func_0205ab28.c:
-    complete
-    .text start:0x0205ab28 end:0x0205ab6c
-
-src/unnamed/arm9/0205/func_0205ab6c.c:
-    complete
-    .text start:0x0205ab6c end:0x0205abb8
-
-src/unnamed/arm9/0205/func_0205abb8.c:
-    complete
-    .text start:0x0205abb8 end:0x0205ac28
-
-src/unnamed/arm9/0205/func_0205ac28.c:
-    complete
-    .text start:0x0205ac28 end:0x0205ac5c
-
-src/SND_SetTrackModSpeed.c:
-    complete
-    .text start:0x0205ac5c end:0x0205ac84
-
-src/SND_SetTrackModDepth.c:
-    complete
-    .text start:0x0205ac84 end:0x0205acac
-
-src/SND_SetTrackPan.c:
-    complete
-    .text start:0x0205acac end:0x0205acd4
-
-src/SND_SetTrackPitch.c:
-    complete
-    .text start:0x0205acd4 end:0x0205acfc
-
-src/SND_SetTrackVolume.c:
-    complete
-    .text start:0x0205acfc end:0x0205ad24
-
-src/SND_SetPlayerChannelPriority.c:
-    complete
-    .text start:0x0205ad24 end:0x0205ad3c
-
-src/SND_SetPlayerVolume.c:
-    complete
-    .text start:0x0205ad3c end:0x0205ad54
-
-src/SND_SetPlayerTempoRatio.c:
-    complete
-    .text start:0x0205ad54 end:0x0205ad6c
-
-src/unnamed/arm9/0205/func_0205ad6c.c:
-    complete
-    .text start:0x0205ad6c end:0x0205ad98
-
-src/SND_StopSeq.c:
-    complete
-    .text start:0x0205ad98 end:0x0205adc4
-
-src/SND_StartSeq.c:
-    complete
-    .text start:0x0205adc4 end:0x0205adf8
-
-src/unnamed/arm9/0205/func_0205adf8.c:
-    complete
-    .text start:0x0205adf8 end:0x0205ae30
-
-src/func_0205ae30.c:
-    complete
-    .text start:0x0205ae30 end:0x0205ae64
-
-src/unnamed/arm9/0205/func_0205ae64.c:
-    complete
-    .text start:0x0205ae64 end:0x0205aed0
-
-src/unnamed/arm9/0205/func_0205aed0.cpp:
-    complete
-    .text start:0x0205aed0 end:0x0205af00
-
-src/unnamed/arm9/0205/func_0205af00.c:
-    complete
-    .text start:0x0205af00 end:0x0205af78
-src/unnamed/arm9/0205/func_0205af78.c:
-    complete
-    .text start:0x0205af78 end:0x0205afb4
-
-src/unnamed/arm9/0205/func_0205afb4.c:
-    complete
-    .text start:0x0205afb4 end:0x0205afe0
-
-src/unnamed/arm9/0205/func_0205afe0.c:
-    complete
-    .text start:0x0205afe0 end:0x0205b070
-
-src/func_0205b070.cpp:
-    complete
-    .text start:0x0205b070 end:0x0205b1a4
-
-src/unnamed/arm9/0205/func_0205b1a4.c:
-    complete
-    .text start:0x0205b1a4 end:0x0205b1d8
-
-src/unnamed/arm9/0205/func_0205b1d8.c:
-    complete
-    .text start:0x0205b1d8 end:0x0205b274
-
-src/unnamed/arm9/0205/func_0205b274.c:
-    complete
-    .text start:0x0205b274 end:0x0205b358
-
-src/unnamed/arm9/0205/func_0205b358.c:
-    complete
-    .text start:0x0205b358 end:0x0205b470
-
-src/unnamed/arm9/0205/func_0205b470.c:
-    complete
-    .text start:0x0205b470 end:0x0205b4d0
-
-src/unnamed/arm9/0205/func_0205b4d0.c:
-    complete
-    .text start:0x0205b4d0 end:0x0205b504
-
-src/unnamed/arm9/0205/func_0205b504.c:
-    complete
-    .text start:0x0205b504 end:0x0205b524
-
-src/unnamed/arm9/0205/func_0205b524.c:
-    complete
-    .text start:0x0205b524 end:0x0205b554
-
-src/unnamed/arm9/0205/func_0205b554.cpp:
-    complete
-    .text start:0x0205b554 end:0x0205b5d4
-
-src/unnamed/arm9/0205/func_0205b5d4.cpp:
-    complete
-    .text start:0x0205b5d4 end:0x0205b608
-
-src/unnamed/arm9/0205/func_0205b608.cpp:
-    complete
-    .text start:0x0205b608 end:0x0205b63c
-
-src/unnamed/arm9/0205/func_0205b63c.c:
+src/SND_CalcChannelVolume.c:
     complete
     .text start:0x0205b63c end:0x0205b6b0
 
-src/unnamed/arm9/0205/func_0205b6b0.cpp:
+src/engine/snd/SND_Bank.cpp:
     complete
-    .text start:0x0205b6b0 end:0x0205b6f4
-
-src/unnamed/arm9/0205/func_0205b6f4.cpp:
-    complete
-    .text start:0x0205b6f4 end:0x0205b78c
-
-src/unnamed/arm9/0205/func_0205b78c.cpp:
-    complete
-    .text start:0x0205b78c end:0x0205b858
+    .text start:0x0205b6b0 end:0x0205b858
 
 src/PXI_Init.c:
     complete
@@ -2582,93 +2328,13 @@ src/engine/fs/FS_CommandDefault.cpp:
     complete
     .text start:0x0205bbdc end:0x0205c5e4
 
-src/unnamed/arm9/0205/func_0205c5e4.cpp:
+src/engine/fs/FS_Command.cpp:
     complete
-    .text start:0x0205c5e4 end:0x0205c788
+    .text start:0x0205c5e4 end:0x0205c7c4
 
-src/unnamed/arm9/0205/func_0205c788.c:
+src/engine/fs/FS_Archive.cpp:
     complete
-    .text start:0x0205c788 end:0x0205c7c4
-
-src/FS_SetArchiveProc.c:
-    complete
-    .text start:0x0205c7c4 end:0x0205c7e4
-
-src/FS_ResumeArchive.cpp:
-    complete
-    .text start:0x0205c7e4 end:0x0205c864
-
-src/unnamed/arm9/0205/func_0205c864.cpp:
-    complete
-    .text start:0x0205c864 end:0x0205c91c
-
-src/unnamed/arm9/0205/func_0205c91c.c:
-    complete
-    .text start:0x0205c91c end:0x0205c9b8
-
-src/unnamed/arm9/0205/func_0205c9b8.c:
-    complete
-    .text start:0x0205c9b8 end:0x0205caa8
-
-src/unnamed/arm9/0205/func_0205caa8.cpp:
-    complete
-    .text start:0x0205caa8 end:0x0205cb68
-
-src/FS_LoadArchive.c:
-    complete
-    .text start:0x0205cb68 end:0x0205cbe4
-
-src/FS_ReleaseArchiveName.cpp:
-    complete
-    .text start:0x0205cbe4 end:0x0205cc80
-
-src/FS_RegisterArchiveName.cpp:
-    complete
-    .text start:0x0205cc80 end:0x0205cd34
-
-src/FS_InitArchive.c:
-    complete
-    .text start:0x0205cd34 end:0x0205cd5c
-
-src/unnamed/arm9/0205/func_0205cd5c.cpp:
-    complete
-    .text start:0x0205cd5c end:0x0205cdf4
-
-src/unnamed/arm9/0205/func_0205cdf4.cpp:
-    complete
-    .text start:0x0205cdf4 end:0x0205cf5c
-
-src/unnamed/arm9/0205/func_0205cf5c.c:
-    complete
-    .text start:0x0205cf5c end:0x0205cfa4
-
-src/unnamed/arm9/0205/func_0205cfa4.cpp:
-    complete
-    .text start:0x0205cfa4 end:0x0205d044
-
-src/unnamed/arm9/0205/func_0205d044.cpp:
-    complete
-    .text start:0x0205d044 end:0x0205d23c
-
-src/unnamed/arm9/0205/func_0205d23c.cpp:
-    complete
-    .text start:0x0205d23c end:0x0205d28c
-
-src/unnamed/arm9/0205/func_0205d28c.c:
-    complete
-    .text start:0x0205d28c end:0x0205d2b0
-
-src/unnamed/arm9/0205/func_0205d2b0.c:
-    complete
-    .text start:0x0205d2b0 end:0x0205d2dc
-
-src/unnamed/arm9/0205/func_0205d2dc.c:
-    complete
-    .text start:0x0205d2dc end:0x0205d304
-
-src/unnamed/arm9/0205/func_0205d304.c:
-    complete
-    .text start:0x0205d304 end:0x0205d368
+    .text start:0x0205c7c4 end:0x0205d368
 
 src/unnamed/arm9/0205/func_0205d368.c:
     complete
@@ -2693,7 +2359,7 @@ src/unnamed/arm9/0205/func_0205d568.c:
     complete
     .text start:0x0205d568 end:0x0205d5e8
 
-src/unnamed/arm9/0205/func_0205d5e8.c:
+src/FS_OpenFileDirect.c:
     complete
     .text start:0x0205d5e8 end:0x0205d644
 
@@ -2717,77 +2383,21 @@ src/FS_Init.c:
     complete
     .text start:0x0205d89c end:0x0205d8d8
 
-src/unnamed/arm9/0205/func_0205d8d8.c:
+src/FSi_AppendToList.c:
     complete
     .text start:0x0205d8d8 end:0x0205d920
 
-src/unnamed/arm9/0205/func_0205d920.c:
+src/FSi_CutFromList.c:
     complete
     .text start:0x0205d920 end:0x0205d94c
 
-src/unnamed/arm9/0205/func_0205d94c.c:
+src/engine/fs/FS_Rom.cpp:
     complete
-    .text start:0x0205d94c end:0x0205d96c
+    .text start:0x0205d94c end:0x0205db88
 
-src/FSi_InitRom.c:
+src/engine/fs/FS_Overlay.cpp:
     complete
-    .text start:0x0205d96c end:0x0205da94
-
-src/unnamed/arm9/0205/func_0205da94.c:
-    complete
-    .text start:0x0205da94 end:0x0205db24
-
-src/unnamed/arm9/0205/func_0205db24.c:
-    complete
-    .text start:0x0205db24 end:0x0205db2c
-
-src/unnamed/arm9/0205/func_0205db2c.c:
-    complete
-    .text start:0x0205db2c end:0x0205db78
-
-src/unnamed/arm9/0205/func_0205db78.c:
-    complete
-    .text start:0x0205db78 end:0x0205db88
-
-src/unnamed/arm9/0205/func_0205db88.cpp:
-    complete
-    .text start:0x0205db88 end:0x0205dc0c
-
-src/FS_UnloadOverlay.c:
-    complete
-    .text start:0x0205dc0c end:0x0205dc60
-
-src/FS_UnloadOverlayImage.c:
-    complete
-    .text start:0x0205dc60 end:0x0205dc7c
-
-src/FS_EndOverlay.cpp:
-    complete
-    .text start:0x0205dc7c end:0x0205dd9c
-
-src/FS_StartOverlay.c:
-    complete
-    .text start:0x0205dd9c end:0x0205de9c
-
-src/FSi_CompareDigest.c:
-    complete
-    .text start:0x0205de9c end:0x0205df40
-
-src/FS_LoadOverlayInfo.c:
-    complete
-    .text start:0x0205df40 end:0x0205dffc
-
-src/FSi_LoadOverlayInfoCore.c:
-    complete
-    .text start:0x0205dffc end:0x0205e088
-
-src/FS_GetOverlayFileID.c:
-    complete
-    .text start:0x0205e088 end:0x0205e0b0
-
-src/FS_ClearOverlayImage.cpp:
-    complete
-    .text start:0x0205e0b0 end:0x0205e0f4
+    .text start:0x0205db88 end:0x0205e0f4
 
 src/DGT_Hash2CalcHmac.c:
     complete
@@ -2881,101 +2491,9 @@ src/TPi_TpCallback.c:
     complete
     .text start:0x0205f300 end:0x0205f5c0
 
-src/unnamed/arm9/0205/func_0205f5c0.c:
+src/engine/spi/PM.cpp:
     complete
-    .text start:0x0205f5c0 end:0x0205f5fc
-
-src/unnamed/arm9/0205/func_0205f5fc.c:
-    complete
-    .text start:0x0205f5fc end:0x0205f650
-
-src/unnamed/arm9/0205/func_0205f650.c:
-    complete
-    .text start:0x0205f650 end:0x0205f66c
-
-src/unnamed/arm9/0205/func_0205f66c.c:
-    complete
-    .text start:0x0205f66c end:0x0205f68c
-
-src/unnamed/arm9/0205/func_0205f68c.c:
-    complete
-    .text start:0x0205f68c end:0x0205f77c
-
-src/unnamed/arm9/0205/func_0205f77c.cpp:
-    complete
-    .text start:0x0205f77c end:0x0205f8b0
-
-src/unnamed/arm9/0205/func_0205f8b0.c:
-    complete
-    .text start:0x0205f8b0 end:0x0205f8e0
-
-src/unnamed/arm9/0205/func_0205f8e0.c:
-    complete
-    .text start:0x0205f8e0 end:0x0205f958
-
-src/unnamed/arm9/0205/func_0205f958.c:
-    complete
-    .text start:0x0205f958 end:0x0205f994
-
-src/unnamed/arm9/0205/func_0205f994.c:
-    complete
-    .text start:0x0205f994 end:0x0205f9ac
-
-src/unnamed/arm9/0205/func_0205f9ac.c:
-    complete
-    .text start:0x0205f9ac end:0x0205f9e8
-
-src/unnamed/arm9/0205/func_0205f9e8.c:
-    complete
-    .text start:0x0205f9e8 end:0x0205fa78
-
-src/unnamed/arm9/0205/func_0205fa78.c:
-    complete
-    .text start:0x0205fa78 end:0x0205fab4
-
-src/unnamed/arm9/0205/func_0205fab4.c:
-    complete
-    .text start:0x0205fab4 end:0x0205fb1c
-
-src/unnamed/arm9/0205/func_0205fb1c.c:
-    complete
-    .text start:0x0205fb1c end:0x0205fb58
-
-src/unnamed/arm9/0205/func_0205fb58.c:
-    complete
-    .text start:0x0205fb58 end:0x0205fbd0
-
-src/unnamed/arm9/0205/func_0205fbd0.c:
-    complete
-    .text start:0x0205fbd0 end:0x0205fc44
-
-src/unnamed/arm9/0205/func_0205fc44.c:
-    complete
-    .text start:0x0205fc44 end:0x0205fcfc
-
-src/unnamed/arm9/0205/func_0205fcfc.c:
-    complete
-    .text start:0x0205fcfc end:0x0205fde8
-
-src/PM_Init.c:
-    complete
-    .text start:0x0205fde8 end:0x0205feac
-
-src/unnamed/arm9/0205/func_0205feac.c:
-    complete
-    .text start:0x0205feac end:0x0205ff00
-
-src/unnamed/arm9/0205/func_0205ff00.c:
-    complete
-    .text start:0x0205ff00 end:0x0205ff08
-
-src/unnamed/arm9/0205/func_0205ff08.c:
-    complete
-    .text start:0x0205ff08 end:0x0205ff20
-
-src/unnamed/arm9/0205/func_0205ff20.cpp:
-    complete
-    .text start:0x0205ff20 end:0x0205ff70
+    .text start:0x0205f5c0 end:0x0205ff70
 
 src/engine/card/CARD_Common.cpp:
     complete
@@ -3085,7 +2603,7 @@ src/engine/card/CARD_PullOut.cpp:
     complete
     .text start:0x020610ac end:0x0206116c
 
-src/unnamed/arm9/0206/func_0206116c.cpp:
+src/WmClearFifoRecvFlag.cpp:
     complete
     .text start:0x0206116c end:0x02061428
 src/WM_CheckStateEx.cpp:
@@ -3107,7 +2625,7 @@ src/WM_SetCallbackTable.c:
     complete
     .text start:0x0206165c end:0x02061674
 
-src/unnamed/arm9/0206/func_02061674.c:
+src/WM_Finish.c:
     complete
     .text start:0x02061674 end:0x020616e8
 
@@ -3115,7 +2633,7 @@ src/WM_Init.cpp:
     complete
     .text start:0x020616e8 end:0x020618b8
 
-src/unnamed/arm9/0206/func_020618b8.cpp:
+src/WM_GetLinkLevel.cpp:
     complete
     .text start:0x020618b8 end:0x02061960
 
@@ -3123,15 +2641,15 @@ src/WM_GetAllowedChannel.cpp:
     complete
     .text start:0x02061960 end:0x020619ac
 
-src/unnamed/arm9/0206/func_020619ac.cpp:
+src/WM_ReadMPData.cpp:
     complete
     .text start:0x020619ac end:0x02061ab0
 
-src/unnamed/arm9/0206/func_02061ab0.cpp:
+src/WM_GetMPReceiveBufferSize.cpp:
     complete
     .text start:0x02061ab0 end:0x02061b9c
 
-src/unnamed/arm9/0206/func_02061b9c.cpp:
+src/WM_GetMPSendBufferSize.cpp:
     complete
     .text start:0x02061b9c end:0x02061c20
 
@@ -3147,15 +2665,15 @@ src/WM_SetIndCallback.cpp:
     complete
     .text start:0x02061ce4 end:0x02061d30
 
-src/unnamed/arm9/0206/func_02061d30.cpp:
+src/WM_Disconnect.cpp:
     complete
     .text start:0x02061d30 end:0x02061e38
 
-src/unnamed/arm9/0206/func_02061e38.cpp:
+src/WM_StartConnect.cpp:
     complete
     .text start:0x02061e38 end:0x02061ee4
 
-src/unnamed/arm9/0206/func_02061ee4.cpp:
+src/WM_StartScan.cpp:
     complete
     .text start:0x02061ee4 end:0x02061fdc
 
@@ -3163,11 +2681,11 @@ src/WM_StartParent.c:
     complete
     .text start:0x02061fdc end:0x02062024
 
-src/unnamed/arm9/0206/func_02062024.c:
+src/WmCheckParentParameter.c:
     complete
     .text start:0x02062024 end:0x020620b0
 
-src/unnamed/arm9/0206/func_020620b0.cpp:
+src/WM_SetParentParameter.cpp:
     complete
     .text start:0x020620b0 end:0x020621b8
 
@@ -3199,11 +2717,11 @@ src/WM_Enable.c:
     complete
     .text start:0x02062380 end:0x020623ec
 
-src/unnamed/arm9/0206/func_020623ec.c:
+src/WM_SetMPDataToPort.c:
     complete
     .text start:0x020623ec end:0x02062428
 
-src/unnamed/arm9/0206/func_02062428.cpp:
+src/WM_SetMPDataToPortEx.cpp:
     complete
     .text start:0x02062428 end:0x0206259c
 
@@ -3211,61 +2729,17 @@ src/unnamed/arm9/0206/func_0206259c.c:
     complete
     .text start:0x0206259c end:0x020625fc
 
-src/unnamed/arm9/0206/func_020625fc.cpp:
+src/WM_StartMPEx.cpp:
     complete
     .text start:0x020625fc end:0x02062734
 
-src/unnamed/arm9/0206/func_02062734.c:
+src/engine/wm/WM_Ds.cpp:
     complete
-    .text start:0x02062734 end:0x02062778
+    .text start:0x02062734 end:0x020634fc
 
-src/WM_GetSharedDataAddress.c:
+src/engine/wm/WM_Etc.cpp:
     complete
-    .text start:0x02062778 end:0x020627e8
-
-src/unnamed/arm9/0206/func_020627e8.cpp:
-    complete
-    .text start:0x020627e8 end:0x02062990
-
-src/unnamed/arm9/0206/func_02062990.cpp:
-    complete
-    .text start:0x02062990 end:0x02062aa4
-
-src/unnamed/arm9/0206/func_02062aa4.cpp:
-    complete
-    .text start:0x02062aa4 end:0x02062bdc
-
-src/unnamed/arm9/0206/func_02062bdc.cpp:
-    complete
-    .text start:0x02062bdc end:0x02062d10
-
-src/unnamed/arm9/0206/func_02062d10.cpp:
-    complete
-    .text start:0x02062d10 end:0x02062df0
-
-src/WM_StepDataSharing.cpp:
-    complete
-    .text start:0x02062df0 end:0x020631dc
-
-src/unnamed/arm9/0206/func_020631dc.cpp:
-    complete
-    .text start:0x020631dc end:0x020634fc
-
-src/WM_MeasureChannel.c:
-    complete
-    .text start:0x020634fc end:0x02063574
-
-src/unnamed/arm9/0206/func_02063574.c:
-    complete
-    .text start:0x02063574 end:0x020635d8
-
-src/unnamed/arm9/0206/func_020635d8.c:
-    complete
-    .text start:0x020635d8 end:0x02063648
-
-src/unnamed/arm9/0206/func_02063648.cpp:
-    complete
-    .text start:0x02063648 end:0x02063718
+    .text start:0x020634fc end:0x02063718
 
 src/unnamed/arm9/0206/func_02063718.c:
     complete
@@ -3530,81 +3004,9 @@ src/unnamed/arm9/0206/func_02065de4.c:
     complete
     .text start:0x02065de4 end:0x02065eb8
 
-src/unnamed/arm9/0206/func_02065eb8.c:
+src/engine/mb/MB_Parent.cpp:
     complete
-    .text start:0x02065eb8 end:0x02065edc
-
-src/unnamed/arm9/0206/func_02065edc.c:
-    complete
-    .text start:0x02065edc end:0x02065ef8
-
-src/unnamed/arm9/0206/func_02065ef8.c:
-    complete
-    .text start:0x02065ef8 end:0x02065f08
-
-src/unnamed/arm9/0206/func_02065f08.c:
-    complete
-    .text start:0x02065f08 end:0x02065f78
-
-src/unnamed/arm9/0206/func_02065f78.c:
-    complete
-    .text start:0x02065f78 end:0x0206610c
-
-src/unnamed/arm9/0206/func_0206610c.c:
-    complete
-    .text start:0x0206610c end:0x020662c0
-
-src/unnamed/arm9/0206/func_020662c0.c:
-    complete
-    .text start:0x020662c0 end:0x02066470
-
-src/unnamed/arm9/0206/func_02066470.c:
-    complete
-    .text start:0x02066470 end:0x020664b4
-
-src/unnamed/arm9/0206/func_020664b4.c:
-    complete
-    .text start:0x020664b4 end:0x0206655c
-
-src/unnamed/arm9/0206/func_0206655c.c:
-    complete
-    .text start:0x0206655c end:0x02066a94
-
-src/unnamed/arm9/0206/func_02066a94.c:
-    complete
-    .text start:0x02066a94 end:0x02066fb0
-
-src/unnamed/arm9/0206/func_02066fb0.c:
-    complete
-    .text start:0x02066fb0 end:0x02066fec
-
-src/unnamed/arm9/0206/func_02066fec.c:
-    complete
-    .text start:0x02066fec end:0x0206703c
-
-src/unnamed/arm9/0206/func_0206703c.cpp:
-    complete
-    .text start:0x0206703c end:0x02067138
-
-src/unnamed/arm9/0206/func_02067138.c:
-    complete
-    .text start:0x02067138 end:0x02067194
-
-src/unnamed/arm9/0206/func_02067194.c:
-    complete
-    .text start:0x02067194 end:0x020671b4
-
-src/unnamed/arm9/0206/func_020671b4.cpp:
-    complete
-    .text start:0x020671b4 end:0x02067250
-
-src/unnamed/arm9/0206/func_02067250.c:
-    complete
-    .text start:0x02067250 end:0x020672a4
-
-src/unnamed/arm9/0206/func_020672a4.cpp:
-    complete
-    .text start:0x020672a4 end:0x020672d0
+    .text start:0x02065eb8 end:0x020672d0
 
 src/unnamed/arm9/0206/func_020672d0.c:
     complete
@@ -3653,163 +3055,21 @@ src/unnamed/arm9/0206/func_02067f2c.cpp:
     complete
     .text start:0x02067f2c end:0x02067f68
 
-src/unnamed/arm9/0206/func_02067f68.c:
+src/engine/mb/MB_GameInfo.c:
     complete
-    .text start:0x02067f68 end:0x02068188
+    .text start:0x02067f68 end:0x0206879c
 
-src/unnamed/arm9/0206/func_02068188.c:
+src/engine/mb/MB_WmBase.cpp:
     complete
-    .text start:0x02068188 end:0x020681b8
-
-src/unnamed/arm9/0206/func_020681b8.c:
-    complete
-    .text start:0x020681b8 end:0x0206834c
-
-src/unnamed/arm9/0206/func_0206834c.c:
-    complete
-    .text start:0x0206834c end:0x02068398
-
-src/unnamed/arm9/0206/func_02068398.c:
-    complete
-    .text start:0x02068398 end:0x02068410
-
-src/unnamed/arm9/0206/func_02068410.c:
-    complete
-    .text start:0x02068410 end:0x02068484
-
-src/unnamed/arm9/0206/func_02068484.c:
-    complete
-    .text start:0x02068484 end:0x020684a8
-
-src/unnamed/arm9/0206/func_020684a8.c:
-    complete
-    .text start:0x020684a8 end:0x020684d0
-
-src/unnamed/arm9/0206/func_020684d0.c:
-    complete
-    .text start:0x020684d0 end:0x02068514
-
-src/unnamed/arm9/0206/func_02068514.c:
-    complete
-    .text start:0x02068514 end:0x0206853c
-
-src/unnamed/arm9/0206/func_0206853c.c:
-    complete
-    .text start:0x0206853c end:0x020685cc
-
-src/unnamed/arm9/0206/func_020685cc.c:
-    complete
-    .text start:0x020685cc end:0x02068680
-
-src/unnamed/arm9/0206/func_02068680.c:
-    complete
-    .text start:0x02068680 end:0x0206879c
-
-src/unnamed/arm9/0206/func_0206879c.c:
-    complete
-    .text start:0x0206879c end:0x020687f8
-
-src/unnamed/arm9/0206/func_020687f8.c:
-    complete
-    .text start:0x020687f8 end:0x0206881c
-
-src/unnamed/arm9/0206/func_0206881c.c:
-    complete
-    .text start:0x0206881c end:0x02068834
-
-src/unnamed/arm9/0206/func_02068834.c:
-    complete
-    .text start:0x02068834 end:0x02068844
-
-src/unnamed/arm9/0206/func_02068844.c:
-    complete
-    .text start:0x02068844 end:0x020688b4
-
-src/unnamed/arm9/0206/func_020688b4.c:
-    complete
-    .text start:0x020688b4 end:0x020688cc
-
-src/unnamed/arm9/0206/func_020688cc.c:
-    complete
-    .text start:0x020688cc end:0x020688e4
-
-src/unnamed/arm9/0206/func_020688e4.c:
-    complete
-    .text start:0x020688e4 end:0x020688fc
-
-src/unnamed/arm9/0206/func_020688fc.c:
-    complete
-    .text start:0x020688fc end:0x02068a28
-
-src/unnamed/arm9/0206/func_02068a28.c:
-    complete
-    .text start:0x02068a28 end:0x02068a54
-
-src/unnamed/arm9/0206/func_02068a54.cpp:
-    complete
-    .text start:0x02068a54 end:0x02068a74
-
-src/unnamed/arm9/0206/func_02068a74.c:
-    complete
-    .text start:0x02068a74 end:0x02068ae8
-
-src/unnamed/arm9/0206/func_02068ae8.cpp:
-    complete
-    .text start:0x02068ae8 end:0x02068d08
-
-src/unnamed/arm9/0206/func_02068d08.c:
-    complete
-    .text start:0x02068d08 end:0x02068dc8
-
-src/unnamed/arm9/0206/func_02068dc8.c:
-    complete
-    .text start:0x02068dc8 end:0x02068e44
-
-src/unnamed/arm9/0206/func_02068e44.c:
-    complete
-    .text start:0x02068e44 end:0x02068e4c
-
-src/unnamed/arm9/0206/func_02068e4c.cpp:
-    complete
-    .text start:0x02068e4c end:0x020690b0
-src/unnamed/arm9/0206/func_020690b0.c:
-    complete
-    .text start:0x020690b0 end:0x02069918
-
-src/unnamed/arm9/0206/func_02069918.c:
-    complete
-    .text start:0x02069918 end:0x02069994
-
-src/unnamed/arm9/0206/func_02069994.c:
-    complete
-    .text start:0x02069994 end:0x0206a230
-
-src/unnamed/arm9/0206/func_0206a230.c:
-    complete
-    .text start:0x0206a230 end:0x0206a29c
-
-src/unnamed/arm9/0206/func_0206a29c.c:
-    complete
-    .text start:0x0206a29c end:0x0206a318
+    .text start:0x0206879c end:0x0206a318
 
 src/engine/ctrdg/CTRDG_Common.cpp:
     complete
     .text start:0x0206a318 end:0x0206a600
 
-src/unnamed/arm9/0206/func_0206a600.c:
+src/engine/ctrdg/CTRDG_Proc.cpp:
     complete
-    .text start:0x0206a600 end:0x0206a694
-src/unnamed/arm9/0206/func_0206a694.c:
-    complete
-    .text start:0x0206a694 end:0x0206a6d0
-
-src/unnamed/arm9/0206/func_0206a6d0.cpp:
-    complete
-    .text start:0x0206a6d0 end:0x0206a88c
-
-src/CTRDG_Init.c:
-    complete
-    .text start:0x0206a88c end:0x0206a928
+    .text start:0x0206a600 end:0x0206a928
 
 src/unnamed/arm9/0206/func_0206a928.c:
     complete
@@ -3883,29 +3143,9 @@ src/unnamed/arm9/0206/func_0206cf7c.c:
     complete
     .text start:0x0206cf7c end:0x0206cf98
 
-src/unnamed/arm9/0206/func_0206cf98.c:
+src/engine/isd/isdoverlay.cpp:
     complete
-    .text start:0x0206cf98 end:0x0206d32c
-
-src/unnamed/arm9/0206/func_0206d32c.c:
-    complete
-    .text start:0x0206d32c end:0x0206d868
-
-src/unnamed/arm9/0206/func_0206d868.cpp:
-    complete
-    .text start:0x0206d868 end:0x0206d890
-
-src/unnamed/arm9/0206/func_0206d890.cpp:
-    complete
-    .text start:0x0206d890 end:0x0206d8c4
-
-src/unnamed/arm9/0206/func_0206d8c4.cpp:
-    complete
-    .text start:0x0206d8c4 end:0x0206d940
-
-src/unnamed/arm9/0206/func_0206d940.cpp:
-    complete
-    .text start:0x0206d940 end:0x0206d9cc
+    .text start:0x0206cf98 end:0x0206d9cc
 
 src/unnamed/arm9/0206/func_0206d9cc.cpp:
     complete
@@ -3923,27 +3163,27 @@ src/cstd4.cpp:
     complete
     .text start:0x0206dab4 end:0x0206ece0
 
-src/unnamed/arm9/0206/func_0206ece0.c:
+src/float2str.c:
     complete
     .text start:0x0206ece0 end:0x0206f338
 
-src/unnamed/arm9/0206/func_0206f338.c:
+src/round_decimal.c:
     complete
     .text start:0x0206f338 end:0x0206f46c
 
-src/unnamed/arm9/0206/func_0206f46c.c:
+src/double2hex.c:
     complete
     .text start:0x0206f46c end:0x0206f820
 
-src/unnamed/arm9/0206/func_0206f820.c:
+src/longlong2str.c:
     complete
     .text start:0x0206f820 end:0x0206fb08
 
-src/unnamed/arm9/0206/func_0206fb08.c:
+src/long2str.c:
     complete
     .text start:0x0206fb08 end:0x0206fd6c
 
-src/unnamed/arm9/0206/func_0206fd6c.c:
+src/parse_format.c:
     complete
     .text start:0x0206fd6c end:0x02070348
 
@@ -3951,61 +3191,25 @@ src/cstd6.cpp:
     complete
     .text start:0x02070348 end:0x020707a4
 
-src/unnamed/arm9/0207/func_020707a4.c:
+src/copysign.c:
     complete
     .text start:0x020707a4 end:0x020707cc
 
-src/unnamed/arm9/0207/func_020707cc.c:
+src/fabs.c:
     complete
     .text start:0x020707cc end:0x020707f4
 
-src/unnamed/arm9/0207/func_020707f4.c:
+src/frexp.c:
     complete
     .text start:0x020707f4 end:0x020708b4
 
-src/unnamed/arm9/0207/func_020708b4.c:
+src/ldexp.c:
     complete
     .text start:0x020708b4 end:0x02070b98
 
-src/unnamed/arm9/0207/func_02070b98.c:
+src/lib/msl/ansi_fp.c:
     complete
-    .text start:0x02070b98 end:0x02070c68
-
-src/unnamed/arm9/0207/func_02070c68.c:
-    complete
-    .text start:0x02070c68 end:0x02070ec0
-
-src/unnamed/arm9/0207/func_02070ec0.c:
-    complete
-    .text start:0x02070ec0 end:0x020712a0
-
-src/unnamed/arm9/0207/func_020712a0.c:
-    complete
-    .text start:0x020712a0 end:0x02071364
-
-src/unnamed/arm9/0207/func_02071364.c:
-    complete
-    .text start:0x02071364 end:0x02071510
-
-src/unnamed/arm9/0207/func_02071510.c:
-    complete
-    .text start:0x02071510 end:0x020715e0
-
-src/unnamed/arm9/0207/func_020715e0.c:
-    complete
-    .text start:0x020715e0 end:0x02071644
-
-src/unnamed/arm9/0207/func_02071644.c:
-    complete
-    .text start:0x02071644 end:0x02071698
-
-src/unnamed/arm9/0207/func_02071698.c:
-    complete
-    .text start:0x02071698 end:0x02071708
-
-src/unnamed/arm9/0207/func_02071708.c:
-    complete
-    .text start:0x02071708 end:0x02071784
+    .text start:0x02070b98 end:0x02071784
 
 src/unnamed/arm9/0207/func_02071784.c:
     complete
@@ -4047,15 +3251,15 @@ src/unnamed/arm9/0207/func_0207199c.c:
     complete
     .text start:0x0207199c end:0x020719ac
 
-src/unnamed/arm9/0207/func_020719ac.c:
+src/__close_console.c:
     complete
     .text start:0x020719ac end:0x020719b4
 
-src/unnamed/arm9/0207/func_020719b4.c:
+src/__write_console.c:
     complete
     .text start:0x020719b4 end:0x020719ec
 
-src/unnamed/arm9/0207/func_020719ec.c:
+src/__read_console.c:
     complete
     .text start:0x020719ec end:0x02071a50
 
@@ -4071,7 +3275,7 @@ src/__end__catch.c:
     complete
     .text start:0x02071ba0 end:0x02071be8
 
-src/unnamed/arm9/0207/func_02071be8.c:
+src/unnamed/arm9/0207/func_02071be8.cpp:
     complete
     .text start:0x02071be8 end:0x02071ccc
 
@@ -4079,7 +3283,7 @@ src/unnamed/arm9/0207/func_02071ccc.c:
     complete
     .text start:0x02071ccc end:0x02071d3c
 
-src/unnamed/arm9/0207/func_02071d3c.c:
+src/unnamed/arm9/0207/func_02071d3c.cpp:
     complete
     .text start:0x02071d3c end:0x02071f1c
 
@@ -4091,11 +3295,11 @@ src/unnamed/arm9/0207/func_02071f88.c:
     complete
     .text start:0x02071f88 end:0x02072014
 
-src/unnamed/arm9/0207/func_02072014.c:
+src/unnamed/arm9/0207/func_02072014.cpp:
     complete
     .text start:0x02072014 end:0x02072168
 
-src/unnamed/arm9/0207/func_02072168.c:
+src/unnamed/arm9/0207/func_02072168.cpp:
     complete
     .text start:0x02072168 end:0x020729f4
 
@@ -4115,29 +3319,25 @@ src/unnamed/arm9/0207/func_02072ed0.c:
     complete
     .text start:0x02072ed0 end:0x02072f3c
 
-src/unnamed/arm9/0207/func_02072f3c.c:
+src/__destroy_global_chain.c:
     complete
     .text start:0x02072f3c end:0x02072f94
 
-src/unnamed/arm9/0207/func_02072f94.c:
+src/__call_static_initializers.c:
     complete
     .text start:0x02072f94 end:0x02072fcc
 
-src/unnamed/arm9/0207/func_02072fcc.c:
+src/__throw_catch_compare.c:
     complete
     .text start:0x02072fcc end:0x020731dc
 
-src/unnamed/arm9/0207/func_020731dc.c:
+src/__register_global_object.c:
     complete
     .text start:0x020731dc end:0x020731fc
 
-src/unnamed/arm9/0207/func_020731fc.c:
+src/lib/runtime/NMWException.cpp:
     complete
-    .text start:0x020731fc end:0x02073220
-
-src/unnamed/arm9/0207/func_02073220.c:
-    complete
-    .text start:0x02073220 end:0x0207322c
+    .text start:0x020731fc end:0x0207322c
 
 src/unnamed/arm9/0207/func_0207322c.c:
     complete
@@ -4147,11 +3347,11 @@ src/unnamed/arm9/0207/func_02073238.c:
     complete
     .text start:0x02073238 end:0x02073244
 
-src/unnamed/arm9/0207/func_02073244.c:
+src/__cxa_vec_delete.c:
     complete
     .text start:0x02073244 end:0x0207328c
 
-src/__cxa_vec_cleanup.cpp:
+src/lib/runtime/__cxa_vec_cleanup.cpp:
     complete
     .text start:0x0207328c end:0x02073300
 
@@ -4159,11 +3359,11 @@ src/unnamed/arm9/0207/func_02073300.cpp:
     complete
     .text start:0x02073300 end:0x020733a8
 
-src/__cxa_vec_ctor.cpp:
+src/lib/runtime/__cxa_vec_ctor.cpp:
     complete
     .text start:0x020733a8 end:0x02073470
 
-src/unnamed/arm9/0207/func_02073470.cpp:
+src/lib/runtime/__cxa_vec_new.cpp:
     complete
     .text start:0x02073470 end:0x02073534
 

@@ -8,7 +8,10 @@ extern void CpuCopy8(const void *src, void *dst, unsigned int size);
  * a0 + 3. A piece number past mReqPieceCount is refused; otherwise the
  * piece is copied to its place in the child's mChildRequest row, its bit
  * is set in mChildRequestPieces, and the result is whether every piece is
- * now in. func_0206655c calls it for each request message. */
+ * now in. MBi_CommParentRecvDataPerChild calls it for each request message.
+ * pret's pmd-sky's MBi_ReceiveRequestDataPiece is a lead, not a match: it
+ * files pieces the same way but returns the completed request rather than
+ * a 0/1, so the address name stays. */
 int func_02065de4(u8 *a0, int idx) {
     int new_var;
     int new_var2;

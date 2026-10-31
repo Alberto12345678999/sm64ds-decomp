@@ -1,7 +1,7 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Item.h"
-extern char *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern int func_ov007_020c9388(int a);
 extern void func_ov007_020ae810(Ov007Item *item);
 
@@ -9,7 +9,7 @@ extern void func_ov007_020ae810(Ov007Item *item);
  * slideOut at 0x1000, visible; then seeds its position from the
  * layout's home (func_ov007_020ae810). */
 Ov007Item *func_ov007_020aea6c(short id, Ov007ItemLayout *layout, Ov007HitBox *hitBox) {
-    Ov007Item *item = (Ov007Item *)func_ov007_020c3df4(0, sizeof(Ov007Item));
+    Ov007Item *item = func_ov007_020c3df4(0, sizeof(Ov007Item));
     item->state = (Ov007MenuState *)func_ov007_020c9388(1);
     item->id = id;
     item->half02 = 0;

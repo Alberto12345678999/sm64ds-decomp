@@ -2,17 +2,11 @@
 #define NITRO_SPI_PM_H
 
 /*
- * The ARM9 side of the NitroSDK power-management PXI channel (spi/ARM9/pm.c).
- * The functions keep their address names; each is matched to an SDK function
- * by its body against pret/pmd-sky's lib/NitroSDK/asm/spi_pm.s:
- *   func_0205ff20  PMi_Lock                   test-and-set of `lock`
- *   func_0205ff08  PMi_WaitBusy               spins until `lock` clears
- *   func_0205feac  PMi_CallCallbackAndUnlock  clears `lock`, runs `callback`
- *   func_0205fcfc  PMi_CommonCallback         the tag-8 PXI receive callback
- *   func_0205fbd0  PM_SendUtilityCommandAsync command 0x63
- *   func_0205fb58  PMi_ReadRegisterAsync      command 0x65
- * func_0205f5fc sends command 0x66 the same way; pmd-sky's newer SDK has no
- * 0x66 sender to compare it with.
+ * The ARM9 side of the NitroSDK power-management PXI channel (spi/ARM9/pm.c),
+ * defined in src/engine/spi/PM.cpp. Each function is named by its body
+ * against pret's pokediamond and pret's pmd-sky (both carry this file as
+ * spi_pm.s); that file's banner gives the evidence. Parameters stay unnamed:
+ * a name here takes an @NNN in every C++ includer.
  */
 
 #include "types.h"
@@ -53,9 +47,27 @@ extern struct D020a8114 data_020a8114;
 typedef struct {
     unsigned short flag;
     unsigned short pad;
-    short *reply;
+    u16 *reply;
 } PmEntry;
 extern PmEntry data_020a8138[4];
+
+void PM_Init(void);
+u32 PM_SendUtilityCommandAsync(u32, PMCallback, void *);
+u32 PMi_ReadRegisterAsync(u32, u16 *, PMCallback, void *);
+u32 PMi_ReadRegister(u32, u16 *);
+u32 PMi_SetLEDAsync(u32, PMCallback, void *);
+u32 PMi_SetLED(u32);
+u32 PM_SetBackLightAsync(u32, u32, PMCallback, void *);
+u32 PM_SetBackLight(u32, u32);
+u32 PM_ForceToPowerOffAsync(PMCallback, void *);
+u32 PM_ForceToPowerOff(void);
+u32 PM_GetBackLight(int *, int *);
+void PM_GoSleepMode(u32, u32, u32);
+int PMi_SetLCDPower(u32, u32, int, int);
+int PM_SetLCDPower(u32);
+int PM_GetLCDPower(void);
+u32 PMi_SendLEDPatternCommandAsync(u32, PMCallback, void *);
+u32 PMi_SendLEDPatternCommand(u32);
 
 #ifdef __cplusplus
 }

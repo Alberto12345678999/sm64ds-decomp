@@ -4,9 +4,9 @@ extern unsigned short data_020a0f24;
 extern int Wireless_Reset(void);
 extern int func_0203faa8(void);
 
-/* Leading fields of NitroSDK's WMStartConnectCallback (as func_020690b0.c
+/* Leading fields of NitroSDK's WMStartConnectCallback (as src/engine/mb/MB_WmBase.cpp
    spells them). */
-typedef struct {
+typedef struct WmStartConnectCallback {
     unsigned short apiid;    /* 0x0 */
     unsigned short errcode;  /* 0x2: 0 is WM_ERRCODE_SUCCESS */
     unsigned short wlCmdID;  /* 0x4 */
@@ -15,7 +15,7 @@ typedef struct {
     unsigned short aid;      /* 0xa: the AID the parent assigned */
 } WmStartConnectCallback;
 
-/* The callback func_0203fb5c hands WM_StartConnect (func_02061e38). An
+/* The callback func_0203fb5c hands WM_StartConnect. An
    error clears data_020a0f5c and resets the link (Wireless_Reset). On
    success it resets when data_020a0f5c is 0 or 3, returns when it is
    anything but 4, and at 4 follows the state:

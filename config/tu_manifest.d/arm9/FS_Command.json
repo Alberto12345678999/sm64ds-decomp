@@ -1,0 +1,68 @@
+{
+  "id": "arm9/FS_Command",
+  "module": "arm9",
+  "source": "src/engine/fs/FS_Command.cpp",
+  "promoted_source": "src/engine/fs/FS_Command.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's fs_command.c, 0x0205c5e4..0x0205c7c4: 2 functions, gapless in config/arm9/delinks.txt. pret's pokediamond FS_command.c defines exactly two functions, FSi_ReleaseCommand and then FSi_TranslateCommand, and both are here, each identified by body. FSi_TranslateCommand indexes fsi_default_command, the table of FS_COMMAND handlers that fs_command_default.c below it fills.",
+    "Order: mwccarm emits deferred bodies in reverse. The ROM run is pret's source order reversed: FSi_TranslateCommand lowest, FSi_ReleaseCommand highest. FSi_TranslateCommand (0x1a4) follows pokediamond's C statement for statement; FSi_ReleaseCommand (0x3c) is pret's body without the OS_DisableInterrupts/OS_RestoreInterrupts pair, which this older SDK does not have, and it clears only BUSY|CANCEL|SYNC|ASYNC (0xf), where pret's mask also covers its OPERATING bit.",
+    "BOTTOM EDGE: FSi_CloseFileCommand and the rest of fs_command_default.c (arm9/FS_CommandDefault) end at 0x0205c5e4.",
+    "TOP EDGE: FS_SetArchiveProc (0x0205c7c4) starts FS_archive.c (arm9/FS_Archive), which pret keeps in its own file."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205c5e4",
+      "end": "0x0205c7c4"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "FSi_TranslateCommand",
+      "address": "0x0205c5e4",
+      "size": "0x000001a4",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c5e4.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "FSi_ReleaseCommand",
+      "address": "0x0205c788",
+      "size": "0x0000003c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205c788.c",
+      "ordinal": 1
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_CommandDefault: tu_map cannot segment arm9/main.",
+    "Both symbols were renamed from their func_ names to the SDK names in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only. fsi_default_command stays in .data with its owner unassigned. FSFile and FSArchive are this SDK's layouts and stay local to the file: the other FS shards declare their own partial spellings."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-FS_Command/FS_Command.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 2,
+    "functions_declared": 2,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

@@ -9,10 +9,10 @@ extern int Wireless_Reset(void);
 extern int func_0203faa8(void);
 extern void CpuCopy8(void *dst, void *src, int n);
 extern int func_02042748(u16 *a, u16 *b);
-extern int func_02061d30(int self, unsigned int idx);
+extern int WM_Disconnect(int self, unsigned int idx);
 
 /* Leading fields of NitroSDK WMStartParentCallback, with the names
- * func_02066a94.c gives them. */
+ * MB_Parent.cpp gives them. */
 typedef struct WmStartParentCallback {
     u16 apiid;        /* 0x00 */
     u16 errcode;      /* 0x02 */
@@ -27,7 +27,7 @@ typedef struct WmStartParentCallback {
  * its MAC address equals one of the three entries of data_020a0fbe whose
  * data_020a0f9d flag is set (func_02042748 compares the three halfwords);
  * data_020a0fa0[aid] then takes the address. Any other child is
- * disconnected (func_02061d30, WM_Disconnect). The parameter keeps its
+ * disconnected (WM_Disconnect). The parameter keeps its
  * char * spelling: the other declaration is checked against it. */
 void func_02040014(char *a)
 {
@@ -90,7 +90,7 @@ void func_02040014(char *a)
             if (matched != 0) {
                 return;
             }
-            func_02061d30(0, cb->aid);
+            WM_Disconnect(0, cb->aid);
             break;
         }
         case 9:

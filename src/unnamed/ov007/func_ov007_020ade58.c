@@ -6,7 +6,7 @@ extern Ov007ItemLayout data_ov007_020ccbc4[];
 extern u8 data_ov007_020ccb7d[];
 extern u8 data_ov007_020ccb7c[];
 
-extern int func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern Ov007Item *func_ov007_020aea6c(int id, Ov007ItemLayout *layout, Ov007HitBox *hitBox);
 extern Ov007OamNode *func_ov007_020c11ac(int n);
 extern void func_ov007_020c10b0(Ov007OamNode *parent, Ov007OamNode *child);
@@ -30,7 +30,7 @@ typedef char Ov007NodeSprites_size_must_be_0x8[sizeof(Ov007NodeSprites) == 0x8 ?
  * list (0, 1, 3-5; item 0 also gets a child node) or its main list (7, 8);
  * the nodes of items 2 and 6 go on neither list. */
 Ov007ItemNode *func_ov007_020ade58(int index) {
-    Ov007ItemNode *s = (Ov007ItemNode *)func_ov007_020c3df4(0, 8);
+    Ov007ItemNode *s = func_ov007_020c3df4(0, 8);
     Ov007Display *r6 = WORK->display;
     Ov007OamNode *r4;
     Ov007SpriteBank **sl;

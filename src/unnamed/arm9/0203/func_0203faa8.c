@@ -15,24 +15,20 @@ extern unsigned int data_020a0f64;
 extern unsigned int data_020a0f68;
 extern unsigned int data_020a0f60;
 
-extern void func_0203fdac(void);
+struct WMStartMPCallback;
+extern void func_0203fdac(struct WMStartMPCallback *cb);
 
-extern int func_020625fc(void *fn, unsigned int a, unsigned short b, unsigned int c,
-                         unsigned short s0, unsigned short s1,
-                         int z0, int z1, int z2, int z3, int one);
+extern int WM_StartMPEx(void *fn, unsigned int a, unsigned short b, unsigned int c,
+                        unsigned short s0, unsigned short s1, int z0, int z1, int z2, int z3,
+                        int one);
 
 int func_0203faa8(void)
 {
     unsigned short flag = (unsigned short)(data_020a0f44->field_14 == 0);
     unsigned short s0 = (unsigned short)data_020a0f58;
 
-    int r = func_020625fc(
-        (void *)func_0203fdac,
-        data_020a0f68,
-        (unsigned short)data_020a0f64,
-        data_020a0f60,
-        s0, flag,
-        0, 0, 0, 0, 1);
+    int r = WM_StartMPEx((void *)func_0203fdac, data_020a0f68, (unsigned short)data_020a0f64,
+                         data_020a0f60, s0, flag, 0, 0, 0, 0, 1);
 
     if (r == 2) {
     } else {

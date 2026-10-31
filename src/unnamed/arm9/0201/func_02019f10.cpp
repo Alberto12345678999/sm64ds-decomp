@@ -2,24 +2,19 @@
 #include "types.h"
 #include "CP15.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
+#include "nitro/spi/pm.h"
 
 extern "C" {
 
 enum IPCStatus { IPC_SUCCESS = 0, IPC_ERROR = -1, IPC_FIFO_FULL = -2 };
 
 extern enum IPCStatus PXI_SendWordByFifo(u32 arg0, u32 arg1, u32 arg2);
-extern void func_0205f958(void);
-extern void func_0205f5c0(int a);
-extern void func_0205fa78(int a);
 extern int func_02040714(void);
 extern void func_02040724(void);
 extern void func_0201a4d0(void);
 extern unsigned char data_0209d4e4;
 extern char data_02086214[];
-/* local extern: the thread is untyped storage here (void *) */
-extern void OS_CreateThread(void *a, void *fn, void *c, void *d, unsigned int e, unsigned int f);
-/* local extern: as above */
-extern void OS_WakeupThreadDirect(void *a);
 
 void func_0201a028(void) {
     for (;;) {
@@ -34,15 +29,15 @@ void func_02019ff4(void) {
     func_0201a028();
 }
 
-void func_02019f64(void) {
+void func_02019f64(void *arg) {
     int r;
     if (data_0209d4e4 != 0) {
-        func_0205f958();
+        PM_ForceToPowerOff();
         func_02019ff4();
         return;
     }
-    func_0205f5c0(3);
-    func_0205fa78(1);
+    PMi_SendLEDPatternCommand(3);
+    PMi_SetLED(1);
     r = func_02040714();
     if (r != 0 && r != 1) {
         do {
@@ -53,15 +48,19 @@ void func_02019f64(void) {
                 break;
         } while (r != 1);
     }
-    func_0205f5c0(1);
-    func_0205fa78(1);
+    PMi_SendLEDPatternCommand(1);
+    PMi_SetLED(1);
     func_02019ff4();
 }
 
+/* The thread and its stack reuse the 0x4000-byte sin/cos table
+   data_02082214 (0x02082214..0x02086214), which ends where data_02086214
+   begins: the OSThread takes the table's top 0x94 bytes and its
+   0x3f6c-byte stack runs down from there to the table's start. */
 int func_02019f10(void) {
-    char *base = (char *)((int)data_02086214 - 0x94);
-    OS_CreateThread(base, (void *)func_02019f64, 0, base, 0x3f6c, 0);
-    OS_WakeupThreadDirect(base);
+    OSThread *thread = (OSThread *)data_02086214 - 1;
+    OS_CreateThread(thread, func_02019f64, 0, thread, 0x3f6c, 0);
+    OS_WakeupThreadDirect(thread);
     return 0;
 }
 }

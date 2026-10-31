@@ -2,15 +2,15 @@
 /* cstd tail -- MSL runtime helpers, 0x0206dab4..0x0206ece0.
  * __builtin_trap through __pformatter. The five CP15 coprocessor functions
  * ahead of this run live in src/engine/cp15/CP154.cpp. */
-/* leftovers: func_0206ece0..func_0206fb08 stay one-function sources. They
- * match under -lang c++, but enrolling them is unresolvable: func_0206ece0
- * calls func_01ff9e2c and func_0206f46c calls _deq, both inner addresses of
- * the enrolled itcm asm blob func_01ff97d8.o, which exports only its outer
- * symbol. A TU claims one contiguous .text span, so those two walls stop the
- * absorb before func_0206f338/func_0206f820/func_0206fb08 as well.
- * func_0206fd6c (parse_format) is C-only under -lang c++ and stays a
- * one-function source; cstd6 (0x02070348..0x020707a4) sits beyond it. Whole-
- * function asm is emitted in source order; compiled bodies are too, under a
+/* leftovers: float2str..long2str (0x0206ece0..0x0206fd6c) stay one-function
+ * sources. They match under -lang c++, but enrolling them is unresolvable:
+ * float2str calls func_01ff9e2c and double2hex calls _deq, both inner
+ * addresses of the enrolled itcm asm blob func_01ff97d8.o, which exports only
+ * its outer symbol. A TU claims one contiguous .text span, so those two walls
+ * stop the absorb before round_decimal/longlong2str/long2str as well.
+ * parse_format is C-only under -lang c++ and stays a one-function source;
+ * cstd6 (0x02070348..0x020707a4) sits beyond it. Whole-function asm is
+ * emitted in source order; compiled bodies are too, under a
  * per-function defer_codegen off. */
 #include "types.h"
 #include "cstd.h"
@@ -18,8 +18,10 @@
 
 extern "C" {
 // HAND-ASM PRIMITIVE: `swp` atomic swap has no C equivalent under mwccarm, so asm is the source.
+// Store value to *lock and return the word it held. The isdoverlay table
+// edits (func_0206cf98, func_0206d32c) spin on it with 0x80 to take a lock.
 // @symbol func_0206dab4
-asm void func_0206dab4(void) { swp r0, r0, [r1]; bx lr }
+asm u32 func_0206dab4(u32 value, void *lock) { swp r0, r0, [r1]; bx lr }
 }
 
 #pragma push
@@ -39,22 +41,30 @@ void __builtin_trap(void)
 extern "C" {
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206dac4
+// @symbol __exit
 extern int OS_TryLockMutex(void *p);
 extern void OS_LockMutex(void *p);
 extern void OS_UnlockMutex(void *p);
 typedef struct S6e06c S6e06c;
-int func_0206e06c(S6e06c *p);
+int fflush(S6e06c *p);
 extern void func_02071784(void);
 
 extern int data_020aa020;
 extern int data_020a9fd8;
 extern int data_020a9ffc;
-extern volatile int data_020a9ed0;
-extern void (*volatile data_020a9ed8[])(void);
-extern void (*data_020a9ec8)(void);
+extern volatile int __atexit_curr_func;
+extern void (*volatile __atexit_funcs[])(void);
+extern void (*__console_exit)(void);
 
-int func_0206dac4(int a)
+/* MSL __exit, statement for statement with Spirit Tracks' copy of
+   abort_exit_arm_eabi.c: run __atexit_funcs newest first inside the
+   inlined atexit_funcs_access critical region, call __console_exit once,
+   fflush(NULL), then leave through func_02071784, which has
+   the place and shape of MSL's _ExitProcess (a tail call to the SYS_EXIT
+   semihosting call func_0207199c). That file's five globals sit in .bss at
+   0x020a9ec8..0x020a9fd8 in reverse declaration order: __console_exit,
+   __stdio_exit, __atexit_curr_func, __aborting, then __atexit_funcs[64]. */
+void __exit(int status)
 {
     if (OS_TryLockMutex(&data_020aa020) == 0) {
         data_020a9fd8 = data_020a6134.current->id;
@@ -67,56 +77,61 @@ int func_0206dac4(int a)
         data_020a9ffc = 1;
     }
 
-    while (data_020a9ed0 > 0) {
-        int n = data_020a9ed0 - 1;
-        data_020a9ed0 = n;
-        data_020a9ed8[n]();
+    while (__atexit_curr_func > 0) {
+        int n = __atexit_curr_func - 1;
+        __atexit_curr_func = n;
+        __atexit_funcs[n]();
     }
 
     data_020a9ffc--;
     if (data_020a9ffc == 0) {
         OS_UnlockMutex(&data_020aa020);
     }
-    if (data_020a9ec8 != 0) {
-        data_020a9ec8();
-        data_020a9ec8 = 0;
+    if (__console_exit != 0) {
+        __console_exit();
+        __console_exit = 0;
     }
-    func_0206e06c(0);
+    fflush(0);
     func_02071784();
 }
 #pragma pop
 
 #pragma push
 #pragma defer_codegen off
-typedef void (*FP0206dbf8)(void);
+typedef void (*exit_proc)(void);
 
-extern int data_020a9ed4;
-extern FP0206dbf8 data_020a9ecc;
-void func_02072f3c(void);
+extern int __aborting;
+extern exit_proc __stdio_exit;
+void __destroy_global_chain(void);
 
-// @symbol func_0206dbf8
-int func_0206dbf8(int a) {
-    if (data_020a9ed4 == 0) {
-        func_02072f3c();
-        if (data_020a9ecc != 0) {
-            data_020a9ecc();
-            data_020a9ecc = 0;
+/* MSL exit: unless abort is under way (__aborting),
+   destroy the static objects (__destroy_global_chain) and call
+   __stdio_exit once; then __exit(status). */
+// @symbol exit
+void exit(int status) {
+    if (__aborting == 0) {
+        __destroy_global_chain();
+        if (__stdio_exit != 0) {
+            __stdio_exit();
+            __stdio_exit = 0;
         }
     }
-    return func_0206dac4(a);
+    __exit(status);
 }
 #pragma pop
 
 #pragma push
 #pragma defer_codegen off
-void func_0207037c(int a);
-extern int data_020a9ed4;
+int raise(int sig);
+extern int __aborting;
 
-// @symbol func_0206dc4c
-void func_0206dc4c(void) {
-    func_0207037c(1);
-    data_020a9ed4 = 1;
-    func_0206dbf8(1);
+/* MSL abort: raise(SIGABRT), which is 1 here; set __aborting so exit skips
+   the static destructors and __stdio_exit; then exit(EXIT_FAILURE). */
+// @symbol abort
+void abort(void) {
+    raise(1);
+    __aborting = 1;
+    exit(1);
 }
 #pragma pop
 
@@ -201,40 +216,48 @@ float func_0206ddcc(float a, int op) {
  * is the same pre-2005 codegen difference recorded in notes/mwccarm-codegen.md
  * 6ai for the fBase_c::Process wrappers.
  */
-extern int func_02073238(void);
-extern int func_01ffb008(int a, int b);
-extern void func_0207037c(int idx);
+extern unsigned int __ieee_status(unsigned int mask, unsigned int flags);
+extern int raise(int sig);
 
 typedef void (*DispatchFn)(int a0, Pair p1, Pair p2, unsigned int flags);
+
+/* data_020aa3f8: a head word, then one handler per exception bit 26..30
+   of flags. */
+typedef struct FpHandlerTable {
+    unsigned int head;
+    DispatchFn handler[5];
+} FpHandlerTable;
+extern void *func_02073238(void);
 
 // @symbol func_0206de14
 void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 {
-  DispatchFn fn = (DispatchFn) func_02073238();
+  FpHandlerTable *table = (FpHandlerTable *) func_02073238();
+  DispatchFn fn;
   if ((flags & 0xc00000) == 0)
   {
-    flags |= func_01ffb008(0, 0) & 0xc00000;
+    flags |= __ieee_status(0, 0) & 0xc00000;
   }
   switch (flags & 0x7c000000)
   {
     case 0x40000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0x14));
+      fn = table->handler[4];
       break;
 
     case 0x04000000:
-      fn = *((DispatchFn *) (((char *) fn) + 4));
+      fn = table->handler[0];
       break;
 
     case 0x10000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0xc));
+      fn = table->handler[2];
       break;
 
     case 0x20000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0x10));
+      fn = table->handler[3];
       break;
 
     case 0x08000000:
-      fn = *((DispatchFn *) (((char *) fn) + 8));
+      fn = table->handler[1];
       break;
 
     default:
@@ -245,7 +268,7 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
   if (fn == 0)
   {
-    func_0207037c(2);
+    raise(2);
   }
   fn(a0, p1, p2, flags);
 }
@@ -253,20 +276,23 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206df14
-/* Heap-walk helper: consults func_0206e06c for each of three records. */
+/* MSL __flush_all, statement for statement with Spirit Tracks' copy of
+   ansi_files.c: walk the three console FILEs of the __files table at
+   data_0209a330 (0x4c bytes each), fflush every FILE whose file_kind, bits
+   7..9 of the mode word at +4, is not closed, and return -1 if any flush
+   fails. fflush(NULL) calls it, as MSL's does. */
 extern char data_0209a330[];
 typedef struct S6e06c S6e06c;
-int func_0206e06c(S6e06c *p);
+int fflush(S6e06c *p);
 
-// @symbol func_0206df14
-int func_0206df14(void) {
+// @symbol __flush_all
+int __flush_all(void) {
     int result = 0;
     char *p = data_0209a330;
     int i = 1;
     do {
         if (((unsigned int)*(int *)(p + 4) << 22) >> 29) {
-            if (func_0206e06c((S6e06c *)p)) {
+            if (fflush((S6e06c *)p)) {
                 result = -1;
             }
         }
@@ -293,11 +319,21 @@ int abs(int x)
 extern "C" {
 #pragma push
 #pragma defer_codegen off
-void func_0206e068(int a, int *b);
-void func_0206e030(char *self);
+void __convert_from_newlines(int a, int *b);
+void __prep_buffer(char *self);
 typedef int (*Fn)(int, int, int *, int);
-// @symbol func_0206df90
-int func_0206df90(char *thiz, int *out)
+// @symbol __flush_buffer
+/* MSL's buffer_io.c: __flush_buffer, __prep_buffer and
+   __convert_from_newlines, statement for statement with Spirit Tracks'
+   copy. In MSL's FILE terms: +0x00 handle, +0x18 position, +0x1c buffer,
+   +0x20 buffer_size, +0x24 buffer_ptr, +0x28 buffer_len, +0x2c
+   buffer_alignment, +0x34 buffer_pos, +0x40 write_proc, +0x48 ref_con, and
+   the bit tested at +0x04 is mode.binary_io. In Spirit Tracks this file is
+   its own TU between arith.c (abs) and file_io.c (fflush), the same
+   neighbours it has here; it stays inside this run because a TU claims one
+   contiguous span, and cutting it out would leave a fflush..__pformatter
+   tail with no name of its own. */
+int __flush_buffer(char *thiz, int *out)
 {
   char *new_var;
   int diff = (*((int *) (thiz + 0x24))) - (*((int *) (thiz + 0x1c)));
@@ -307,7 +343,7 @@ int func_0206df90(char *thiz, int *out)
     *((int *) (thiz + 0x28)) = diff;
     if (((((unsigned int) ((*((unsigned int *) (thiz + 4))) << 0x13)) >> 9) >> 22) == 0)
     {
-      func_0206e068(*((int *) (thiz + 0x1c)), (int *) (thiz + 0x28));
+      __convert_from_newlines(*((int *) (thiz + 0x1c)), (int *) (thiz + 0x28));
     }
     r = (*((Fn *) (thiz + 0x40)))(*((int *) thiz), *((int *) (thiz + 0x1c)), (int *) (thiz + 0x28), *((int *) (thiz + 0x48)));
     if (out != 0)
@@ -321,15 +357,15 @@ int func_0206df90(char *thiz, int *out)
     new_var = thiz + 0x18;
     *(int *)(new_var) += *((int *) (thiz + 0x28));
   }
-  func_0206e030(thiz);
+  __prep_buffer(thiz);
   return 0;
 }
 #pragma pop
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206e030
-void func_0206e030(char *self)
+// @symbol __prep_buffer
+void __prep_buffer(char *self)
 {
     *(int *)(self + 0x24) = *(int *)(self + 0x1c);
     *(int *)(self + 0x28) = *(int *)(self + 0x20);
@@ -341,8 +377,8 @@ void func_0206e030(char *self)
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206e068
-void func_0206e068(int a, int *b)
+// @symbol __convert_from_newlines
+void __convert_from_newlines(int a, int *b)
 {
 }
 #pragma pop
@@ -363,11 +399,17 @@ typedef struct S6e06c {
 } S6e06c;
 
 
-// @symbol func_0206e06c
-int func_0206e06c(S6e06c *p)
+/* MSL fflush, statement for statement with Spirit Tracks' copy of
+   file_io.c. In MSL's FILE terms: b4c is file_kind, b4b io_mode, b8
+   io_state, fd the error flag, +0x18 position and +0x28 buffer_len.
+   fflush(NULL) flushes every FILE through __flush_all; a FILE in error or
+   closed fails; one open for reading succeeds; otherwise write out the
+   buffer (__flush_buffer) and reset the state, position and length. */
+// @symbol fflush
+int fflush(S6e06c *p)
 {
     if (p == 0) {
-        return func_0206df14();
+        return __flush_all();
     }
 
     if (p->fd != 0 || p->b4c == 0)
@@ -387,7 +429,7 @@ int func_0206e06c(S6e06c *p)
         return 0;
     }
 
-    if (func_0206df90((char *)p, 0) != 0) {
+    if (__flush_buffer((char *)p, 0) != 0) {
         p->fd = 1;
         *(int *)((char *)p + 0x28) = 0;
         return -1;
@@ -554,15 +596,15 @@ enum {
 
 #define MAX_BUFF 512
 
-extern unsigned char *func_0206fd6c(unsigned char *format_string, char **arg, print_format *format); /* parse_format */
+extern unsigned char *parse_format(unsigned char *format_string, char **arg, print_format *format);
 
 extern int func_0206e450(char *obj, const void *src, unsigned int n);
-extern int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
-                         const unsigned char *format_str, char *arg);
-extern char *func_0206ece0(double x, char *buff_end, print_format format);
-extern char *func_0206f46c(double x, char *buff_end, print_format format);
-extern char *func_0206f820(long long num, char *buff_end, print_format format);
-extern char *func_0206fb08(long num, char *buff_end, print_format format);
+extern int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
+                        const unsigned char *format_str, char *arg);
+extern char *float2str(double x, char *buff_end, print_format format);
+extern char *double2hex(double x, char *buff_end, print_format format);
+extern char *longlong2str(long long num, char *buff_end, print_format format);
+extern char *long2str(long num, char *buff_end, print_format format);
 
 extern unsigned short data_0209a5e4[];
 extern char data_0209a5e8[];
@@ -639,8 +681,8 @@ unsigned int func_0206e3dc(char *buf, unsigned int len,
     ctx.buf = buf;
     ctx.len = len;
     ctx.z = 0;
-    r = func_0206e4a4((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
-                      (const unsigned char *)fmtAddr, (char *)val);
+    r = __pformatter((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
+                     (const unsigned char *)fmtAddr, (char *)val);
     if (buf == 0) return r;
     if (r < len) {
         buf[r] = 0;
@@ -674,16 +716,16 @@ int func_0206e450(char *obj, const void *src, unsigned int n)
 
 #pragma push
 #pragma defer_codegen off
-/* func_0206e4a4 @ 0x0206e4a4 (arm9, size 0x83c)
+/* __pformatter @ 0x0206e4a4 (arm9, size 0x83c)
  * MSL __pformatter: the printf formatting engine. Walks the format string,
- * hands each %-specifier to parse_format (func_0206fd6c), pulls the matching
+ * hands each %-specifier to parse_format, pulls the matching
  * argument off the va_list, renders it with the long/float/hex-float helpers
  * and emits the result through the caller's WriteProc, applying field width,
  * justification and fill. Returns the character count, or -1 if WriteProc fails.
  */
-// @symbol func_0206e4a4
-int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
-                  const unsigned char *format_str, char *arg)
+// @symbol __pformatter
+int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
+                 const unsigned char *format_str, char *arg)
 {
     int num_chars;
     long long long_long_num;
@@ -714,7 +756,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
         if (n && !(*WriteProc)(WriteProcArg, (const char *)format_str, n))
             return -1;
 
-        format_str = func_0206fd6c((unsigned char *)curr_format, &arg, &format);
+        format_str = parse_format((unsigned char *)curr_format, &arg, &format);
 
         switch (format.conversion_char) {
         case 'd':
@@ -738,10 +780,10 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_num = (signed char)long_num;
 
             if (format.argument_options == long_long_argument) {
-                if (!(buff_ptr = (unsigned char *)func_0206f820(long_long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)longlong2str(long_long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             } else {
-                if (!(buff_ptr = (unsigned char *)func_0206fb08(long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)long2str(long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             }
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
@@ -770,10 +812,10 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_num = (unsigned char)long_num;
 
             if (format.argument_options == long_long_argument) {
-                if (!(buff_ptr = (unsigned char *)func_0206f820(long_long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)longlong2str(long_long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             } else {
-                if (!(buff_ptr = (unsigned char *)func_0206fb08(long_num, conv_buff + MAX_BUFF, format)))
+                if (!(buff_ptr = (unsigned char *)long2str(long_num, conv_buff + MAX_BUFF, format)))
                     goto invalid_conversion;
             }
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
@@ -789,7 +831,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_double_num = *(long double *)((arg += sizeof(long double)) - sizeof(long double));
             else
                 long_double_num = *(double *)((arg += sizeof(double)) - sizeof(double));
-            if (!(buff_ptr = (unsigned char *)func_0206ece0(long_double_num, conv_buff + MAX_BUFF, format)))
+            if (!(buff_ptr = (unsigned char *)float2str(long_double_num, conv_buff + MAX_BUFF, format)))
                 goto invalid_conversion;
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
             break;
@@ -800,7 +842,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 long_double_num = *(long double *)((arg += sizeof(long double)) - sizeof(long double));
             else
                 long_double_num = *(double *)((arg += sizeof(double)) - sizeof(double));
-            if (!(buff_ptr = (unsigned char *)func_0206f46c(long_double_num, conv_buff + MAX_BUFF, format)))
+            if (!(buff_ptr = (unsigned char *)double2hex(long_double_num, conv_buff + MAX_BUFF, format)))
                 goto invalid_conversion;
             n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
             break;

@@ -2,14 +2,14 @@
 
 extern void func_ov007_020c937c(void *state);
 extern void func_ov007_020c020c(struct Ov007Camera *cam);
-extern void func_ov007_020c2410(int a);
-extern void func_ov007_020c2018(int a);
-extern void func_ov007_020c22f8(int a);
-extern void func_ov007_020c9080(int a);
+extern void func_ov007_020c2410(void *p);
+extern void func_ov007_020c2018(void *p);
+extern void func_ov007_020c22f8(void *p);
+extern void func_ov007_020c9080(void *p);
 extern void func_ov007_020c3d1c(void *p);
 extern void func_ov007_020c1620(void *tex);
 extern void func_ov007_020b3edc(int a);
-extern void func_ov007_020c9460(int a);
+extern void func_ov007_020c9460(void *p);
 extern void func_ov007_020b4bd4(struct Ov007ItemView *view);
 extern void func_ov007_020b6cd0(void);
 extern void func_ov007_020b283c(void);
@@ -42,27 +42,27 @@ void func_ov007_020b65e0(void)
         WORK->cameras[1] = 0;
     }
     if (WORK->lights[0] != 0) {
-        func_ov007_020c2410((int)WORK->lights[0]);
+        func_ov007_020c2410(WORK->lights[0]);
         WORK->lights[0] = 0;
     }
     if (WORK->lights[1] != 0) {
-        func_ov007_020c2410((int)WORK->lights[1]);
+        func_ov007_020c2410(WORK->lights[1]);
         WORK->lights[1] = 0;
     }
     if (WORK->touch != 0) {
-        func_ov007_020c2018((int)WORK->touch);
+        func_ov007_020c2018(WORK->touch);
         WORK->touch = 0;
     }
     if (WORK->pad != 0) {
-        func_ov007_020c22f8((int)WORK->pad);
+        func_ov007_020c22f8(WORK->pad);
         WORK->pad = 0;
     }
     if (WORK->tweens[0] != 0) {
-        func_ov007_020c9080((int)WORK->tweens[0]);
+        func_ov007_020c9080(WORK->tweens[0]);
         WORK->tweens[0] = 0;
     }
     if (WORK->tweens[1] != 0) {
-        func_ov007_020c9080((int)WORK->tweens[1]);
+        func_ov007_020c9080(WORK->tweens[1]);
         WORK->tweens[1] = 0;
     }
     if (WORK->settings != 0) {
@@ -86,7 +86,7 @@ void func_ov007_020b65e0(void)
 
     for (i = 0; i < 3; i++) {
         if (WORK->paletteBufs[i] != 0) {
-            func_ov007_020c9460((int)WORK->paletteBufs[i]);
+            func_ov007_020c9460(WORK->paletteBufs[i]);
             WORK->paletteBufs[i] = 0;
         }
     }

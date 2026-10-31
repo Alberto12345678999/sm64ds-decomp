@@ -1,13 +1,13 @@
 //cpp
-/* NitroSDK wm_system.c WM_Init: take buf (0x1300 bytes, 32-byte aligned)
- * as the WM system buffer, once. ILLEGAL_STATE (3) on a second call,
- * INVALID_PARAM (6) for a null or misaligned buf or a DMA channel past 3,
- * WM_DISABLE (4) when ARM7 has no WM handler on PXI tag 0xa. Then clear
- * the buffer with DMA channel ch and carve ARM7's work area, the status
- * block and the two FIFO buffers out of it, clear bit 0 of the shared
- * halfword at 0x027fff96 (func_0206116c), clear every port callback, fill
- * the free-buffer queue with the ten 0x100-byte FIFO blocks and install
- * the PXI receive callback (func_02061188). */
+/* NitroSDK wm_system.c WM_Init: take buf (0x1300 bytes, 32-byte aligned) as the
+ * WM system buffer, once. ILLEGAL_STATE (3) on a second call, INVALID_PARAM (6)
+ * for a null or misaligned buf or a DMA channel past 3, WM_DISABLE (4) when
+ * ARM7 has no WM handler on PXI tag 0xa. Then clear the buffer with DMA channel
+ * ch and carve ARM7's work area, the status block and the two FIFO buffers out
+ * of it, clear bit 0 of the shared halfword at 0x027fff96
+ * (WmClearFifoRecvFlag), clear every port callback, fill the free-buffer queue
+ * with the ten 0x100-byte FIFO blocks and install the PXI receive callback
+ * (WmReceiveFifo). */
 #include "types.h"
 #include "CP15.h"
 
@@ -15,8 +15,9 @@ extern "C" {
 
 extern void PXI_Init(void);
 extern int PXI_IsCallbackReady(int tag, int proc);
-extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
-extern void func_0206116c(void);
+/* MI_DmaFill32 */
+extern void DMASyncFillTransfer(u32 dmaNo, void *dest, u32 data, u32 size);
+extern void WmClearFifoRecvFlag(void);
 extern int WM_SetPortCallback(int idx, int b, int c);
 extern void OS_InitMessageQueue(void *s, int *v1, int v2);
 extern int OS_SendMessage(void *q, void *val, int flag);
@@ -27,7 +28,7 @@ extern int *data_020a89ac;
 extern void *data_020a89b0; /* the free FIFO-buffer message queue */
 extern int data_020a89c4;
 extern char data_020a8a40[];
-extern void func_02061188(void);
+extern void WmReceiveFifo(void);
 
 int WM_Init(void *buf, int ch) {
     if (data_020a89a8 != 0)
@@ -61,7 +62,7 @@ int WM_Init(void *buf, int ch) {
     data_020a89ac[3] = data_020a89ac[1] + 0xa00;
     data_020a89ac[4] = data_020a89ac[3] + 0x100;
 
-    func_0206116c();
+    WmClearFifoRecvFlag();
     *(u16 *)((char *)data_020a89ac + 0x560) = (u16)ch;
     data_020a89ac[0x4f] = 0;
 
@@ -81,7 +82,7 @@ int WM_Init(void *buf, int ch) {
         }
     }
 
-    PXI_SetFifoRecvCallback(0xa, (void *)func_02061188);
+    PXI_SetFifoRecvCallback(0xa, (void *)WmReceiveFifo);
     return 0;
 }
 }

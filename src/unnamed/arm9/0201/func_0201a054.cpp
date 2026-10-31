@@ -18,7 +18,7 @@ extern int func_02053be0(int enable);
 extern void func_0203bbc0(void);
 extern void func_0203bb5c(void);
 extern void func_0201fec8(void);
-extern void func_02042f68(int a0, void *src);
+extern void func_02042f68(int backupType, void *magic);
 extern void func_02018aa4(void);
 extern void func_0203ad84(void);
 extern void func_0201a9fc(void *c);
@@ -49,7 +49,7 @@ extern struct S0209ee90 data_0209ee90;
    calls the save setup (func_02042f68) and sets up the game heap, the
    display (func_02019440), the actor spawn table and the boot scene. */
 void func_0201a054(void) {
-    int r4 = (*(u16 *)0x27ffc40 == 2);
+    int isChild = (*(u16 *)0x27ffc40 == 2);
     func_020427f8();
     func_02042784();
     func_02053a8c();
@@ -69,20 +69,20 @@ void func_0201a054(void) {
     func_02053be0(1);
     func_0203bbc0();
     func_0203bb5c();
-    if (!r4)
+    if (!isChild)
         func_0201fec8();
     func_02042f68(0xd01, data_0208ee50); /* 0xd01: a 64-Kbit EEPROM */
-    if (!r4)
+    if (!isChild)
         func_02018aa4();
-    if (r4)
+    if (isChild)
         IRQ::DisableIRQs(0x100000);
-    if (!r4)
+    if (!isChild)
         func_0203ad84();
     func_0201a9fc(data_0209d574);
     mHeap::Heap_t::InitializeGameHeap(0x3b000, 0);
     func_0201a9fc(data_0209d574);
     func_02019440();
-    if (!r4)
+    if (!isChild)
         func_020134c8();
     func_0203b684();
     data_020a4bb8 = ACTOR_SPAWN_TABLE;

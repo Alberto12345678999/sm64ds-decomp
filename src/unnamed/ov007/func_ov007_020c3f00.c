@@ -1,7 +1,7 @@
 #include "types.h"
 #include "Ov007SpriteGroup.h"
 
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern Ov007OamNode *func_ov007_020c11ac(int n);
 extern Ov007SpriteItem *func_ov007_020c40d4(int animCount);
 extern void func_ov007_020c10b0(Ov007OamNode *parent, Ov007OamNode *child);
@@ -41,15 +41,14 @@ void func_ov007_020c3fe4(Ov007SpriteItem *item) {
  * reads), an invisible root at priority 4 with an extra record of
  * `extraAnims` animations and one record per item under it. */
 Ov007SpriteGroup *func_ov007_020c3f00(int *layout, int extraAnims) {
-    Ov007SpriteGroup *grp =
-        (Ov007SpriteGroup *)func_ov007_020c3df4(0, (void *)sizeof(Ov007SpriteGroup));
+    Ov007SpriteGroup *grp = func_ov007_020c3df4(0, sizeof(Ov007SpriteGroup));
     grp->layout = layout;
     grp->root = func_ov007_020c11ac(0);
     grp->root->priority = 4;
     grp->root->visible = 0;
     grp->extra = func_ov007_020c40d4(extraAnims);
     func_ov007_020c10b0(grp->root, grp->extra->node);
-    grp->items = (Ov007SpriteItem **)func_ov007_020c3df4(0, (void *)(*layout << 2));
+    grp->items = func_ov007_020c3df4(0, *layout << 2);
     int i = 0;
     while (i < *layout) {
         grp->items[i] = func_ov007_020c40d4(layout[2]);

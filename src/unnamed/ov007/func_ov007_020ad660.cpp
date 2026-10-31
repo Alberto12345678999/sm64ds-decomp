@@ -14,10 +14,10 @@ extern "C" {
 
 extern short data_02082214[];
 
-extern void func_ov007_020c92d0(void *a);
-extern void func_ov007_020c0638(void *a, int b, int c, int d);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
+extern void func_ov007_020c0638(Ov007BgLayer *layer, int x, int y, u16 tile);
 extern void func_ov007_020c02d8(void *a, int b, u16 c);
-extern void RequestScreenFade(int a, int b, int c);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020c1d8c(int a);
 extern void func_ov007_020ada70(void);
 
@@ -70,7 +70,7 @@ void func_ov007_020ad660(Ov007LayerSlot *slot) {
         if (WORK->paletteState->stateTicks != 0) {
             return;
         }
-        RequestScreenFade(9, 0, (int)func_ov007_020ada70);
+        RequestScreenFade(9, 0, func_ov007_020ada70);
         func_ov007_020c02d8(slot->layer->screen, 0x18, 0x301);
         slot->layer->dirty = 1;
         func_ov007_020c1d8c(0);

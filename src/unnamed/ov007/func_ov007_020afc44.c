@@ -10,9 +10,9 @@ extern void func_ov007_020b0244(void);
 extern void func_ov007_020b7d94(int kind);
 extern int func_ov007_020b79e4(void);
 extern void func_ov007_020c1d8c(int i);
-extern void RequestScreenFade(int a, int b, int c);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020b8188(int slot, void *records, int alt);
-extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int b, int c, int d);
+extern void func_ov007_020c0638(struct Ov007BgLayer *layer, int x, int y, u16 tile);
 extern void func_ov007_020b8070(int n);
 
 /* states[1]'s save-file states 2..6 (func_ov007_020af390): 3 waits for a

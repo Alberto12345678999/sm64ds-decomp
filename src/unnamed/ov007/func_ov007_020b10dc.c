@@ -2,10 +2,10 @@
 #include "Ov007Work.h"
 
 extern void func_ov007_020bdeb0(int x);
-extern void RequestScreenFade(int a, int b, void *p);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020b1fa4(int self);
 extern void func_ov007_020b2764(int x);
-extern char func_ov007_020b16f0[];
+extern void func_ov007_020b16f0(void);
 
 /* Timed by states[1]'s ticks: at 0 it passes 0x11 to the work block's
  * callback; per figureIndex it calls func_ov007_020bdeb0 at two ticks

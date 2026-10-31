@@ -8,6 +8,9 @@
  * func_02018e68 records the string in data_0209d3c0 and sleeps the thread
  * when func_0203d7d4(0) is nonzero. myFS_ReadFile treats a short read as a
  * failure. */
+#include "types.h"
+
+struct FSArchive;
 
 struct BC {
     int x, y;
@@ -19,7 +22,8 @@ extern void *data_0209d3c0;
 extern int func_0205d644(void *out_file_id, const char *path);
 extern void Crash(void);
 extern int data_0208ecd8[];
-extern int func_0205d5e8(int a, int b, int c, int d, int e);
+extern int FS_OpenFileDirect(char *p_file, struct FSArchive *p_arc, u32 image_top, u32 image_bottom,
+                             u32 file_index);
 extern int data_0208ecc4;
 extern char data_0208ec74;
 int func_0205d568(int a, struct BC bc);
@@ -49,8 +53,9 @@ int myFS_ConvertPathToFileID(void *out_file_id, const char *path) {
     return r;
 }
 
-int myFS_OpenFileDirect(int a, int b, int c, int d, int e) {
-    int r = func_0205d5e8(a, b, c, d, e);
+int myFS_OpenFileDirect(char *p_file, struct FSArchive *p_arc, u32 image_top, u32 image_bottom,
+                        u32 file_index) {
+    int r = FS_OpenFileDirect(p_file, p_arc, image_top, image_bottom, file_index);
     if (r == 0) {
         func_02018e68(&data_0208ecc4);
         Crash();

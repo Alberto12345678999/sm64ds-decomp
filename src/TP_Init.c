@@ -6,7 +6,6 @@ extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void TPi_TpCallback(void);
 
 extern char data_020a80c8[];
-extern TPWork data_020a80cc;
 
 void TP_Init(void) {
     if (*(u16 *)data_020a80c8 != 0)

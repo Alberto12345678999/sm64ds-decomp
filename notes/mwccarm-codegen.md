@@ -1627,6 +1627,9 @@ characterized in 6u. Read that before spending any more time on `func_02068398`.
 
 ## 6u. Backend cond-opt: the exact predicate-vs-branch rule (2026-07-16, Fable on func_02068398)
 
+(func_02068398 is now MBi_ReadyBeaconSendStatus, in src/engine/mb/MB_GameInfo.c.
+The dated entries here keep the address name.)
+
 6t left "mwccarm predicates the trailing 1-instr guard regardless of phrasing" as an empirical
 observation. The rule behind it, and why it is a true floor for a SINGLE-condition guard:
 
@@ -3030,11 +3033,11 @@ natural MSL-style C++ gives:
 Winning source shape (0207328c; 02073300 adds the nested
 `try { if (--n) do {...} while (--n); } catch (...) { func_020731fc(); } func_020717c0();`
 inside the catch; 02073534 is `while (current > base) { current -= size; dtor(current); }`
-in the try, no dtor null-check):
+in the try, no dtor null-check; func_020731fc is now std::terminate):
 
 ```cpp
 //cpp
-extern "C" void func_020731fc(void);   /* terminate()-style wrapper; source-level call */
+extern "C" void func_020731fc(void); /* std::terminate (_ZSt9terminatev); source-level call */
 typedef void (*dtor_t)(void *);
 extern "C" void func_0207328c(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {
@@ -7174,7 +7177,8 @@ reproduced in a 15-instruction toy, `_abwork/crkh/toyprobe.py`:
   `if (x > 0x64) x = 0x64;` clamp four instructions earlier does not help it.
 * Two MATCHED precedents that 6u's corpus scan missed, both single-condition guards with a
   five-instruction return block that keeps its branch:
-      src/unnamed/arm9/0206/func_02062d10.cpp       `bne` over an arm containing `cmp r0,#0 / beq`
+      WmDataSharingSetDataCallback `bne` over an arm containing `cmp r0,#0 / beq`
+                                  (now in src/engine/wm/WM_Ds.cpp)
       func_ov006_020e83bc         `bge` over an arm containing `cmp r0,#0 / movgt / strgt`
                                   (now in src/minigames/d_mg3d_esp_anim_set.cpp)
   Both are the final `else` of an if / else-if / else chain, so the jumped-over arm is the
@@ -8723,10 +8727,10 @@ except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extr
 ## 6df. A hand-written `__register_global_object` call is a static `Vector3` the source hasn't declared; mwcc emits the guard, the stores, the registration and `__sinit_<file>.cpp` byte-identical (dMap_c, dScMgSnowball_c, unit020bfec0, 2026-10-27)
 
 Some sources built a static by hand: three stores, then
-`func_020731dc(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate `__sinit_<addr>.c` shard
-or under a hand-tested guard word. `include/types.h` gives `Vector3` a non-trivial
-`~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the object does
-the same thing:
+`__register_global_object(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate
+`__sinit_<addr>.c` shard or under a hand-tested guard word. `include/types.h` gives `Vector3`
+a non-trivial `~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the
+object does the same thing:
 
 - **File scope:** `static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);`. mwcc emits
   `__sinit_d_map.cpp` (0x48, identical to retail `__sinit_ov002_0210804c`), its `.ctor` word,
@@ -8745,9 +8749,9 @@ Bookkeeping, following daObj1UpLogo_c and dMgState_c:
 
 1. The TU's manifest becomes `intact-object` and claims `.init`/`.ctor` (file scope) and the
    `.bss` range, with `bss`/`init`/`ctor` rows, STB_LOCAL->STB_GLOBAL
-   `symbol_binding_rewrites` for the sinit, `.p__sinit`, node and statics, and an
-   `undefined_symbol_aliases` row `__register_global_object` -> `func_020731dc`. Without the
-   alias the scratch link fails with `Undefined : "__register_global_object"`. A file-scope
+   `symbol_binding_rewrites` for the sinit, `.p__sinit`, node and statics. The
+   `__register_global_object` import resolves by name against `config/arm9/symbols.txt`, so
+   it needs no `undefined_symbol_aliases` row (before #4541 it did). A file-scope
    sinit also needs explicit `relocations` rows for its `.init`/`.ctor` words. A text-only
    TU (unit020bfec0) can go intact-object with only `.text` plus the new `.bss` claim, as
    long as verify shows nothing else unlicensed.

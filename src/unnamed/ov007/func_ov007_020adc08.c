@@ -2,19 +2,19 @@
 #include "Ov007Display.h"
 #include "Ov007LayerSlot.h"
 
-extern int func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void *func_ov007_020c9388(int a);
 extern int func_ov007_020b8500(void);
 extern int func_ov007_020b84e8(void);
 extern void func_ov007_020c0384(Ov007BgList *list, Ov007BgLayer *layer);
 extern int func_ov007_020b84f4(void);
-extern void func_ov007_020c02d8(int r0, int r1, unsigned short r2);
+extern void func_ov007_020c02d8(void *screen, int rows, unsigned short tile);
 
 /* Builds layer slot `type` around `layer` and links it into the main or sub
  * BG list: 6/7 take prebuilt screen pairs, 1 keeps the loaded screen as its
  * source behind a fresh buffer, 5 starts from a blank (tile 0x300) screen. */
 Ov007LayerSlot *func_ov007_020adc08(int type, Ov007BgLayer *layer) {
-    Ov007LayerSlot *slot = (Ov007LayerSlot *)func_ov007_020c3df4(0, sizeof(Ov007LayerSlot));
+    Ov007LayerSlot *slot = func_ov007_020c3df4(0, sizeof(Ov007LayerSlot));
     Ov007Display *display = WORK->display;
     slot->kind = type;
     slot->layer = layer;
@@ -32,7 +32,7 @@ Ov007LayerSlot *func_ov007_020adc08(int type, Ov007BgLayer *layer) {
         break;
     case 1:
         layer->source = layer->screen;
-        layer->screen = (void *)func_ov007_020c3df4(0, 0x800);
+        layer->screen = func_ov007_020c3df4(0, 0x800);
         func_ov007_020c0384(display->bgListMain, layer);
         break;
     case 2:
@@ -43,8 +43,8 @@ Ov007LayerSlot *func_ov007_020adc08(int type, Ov007BgLayer *layer) {
         func_ov007_020c0384(display->bgListSub, layer);
         break;
     case 5:
-        layer->screen = (void *)func_ov007_020c3df4(0, 0x800);
-        func_ov007_020c02d8((int)layer->screen, 0x18, 0x300);
+        layer->screen = func_ov007_020c3df4(0, 0x800);
+        func_ov007_020c02d8(layer->screen, 0x18, 0x300);
         func_ov007_020c0384(display->bgListSub, layer);
         break;
     default:

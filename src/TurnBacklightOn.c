@@ -1,7 +1,8 @@
-extern int func_0205f9ac(int a, int b);
+#include "nitro/spi/pm.h"
+
 extern unsigned char data_0208ee3c;
 void TurnBacklightOn(void) {
-    if (func_0205f9ac(2, 1) == 0) {
+    if (PM_SetBackLight(2, 1) == 0) {
         data_0208ee3c = 1;
     }
 }

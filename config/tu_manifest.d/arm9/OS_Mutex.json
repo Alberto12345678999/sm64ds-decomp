@@ -83,7 +83,7 @@
   "notes": [
     "Hand-assembled, following arm9/OS_Tick and arm9/OS_Alarm: tu_map cannot segment arm9/main.",
     "The SDK names were given in this change (symbols/actor_renames.tsv records the evidence).",
-    "Text-only. OSMutex is this SDK's layout (a u16 thread queue) and stays local to the file: the callers (cstd4.cpp, cstd6.cpp, PM_Init.c, OS_Thread.cpp) pass it as an opaque pointer."
+    "Text-only. OSMutex is this SDK's layout (a u16 thread queue) and stays local to the file: the callers (cstd4.cpp, cstd6.cpp, PM.cpp, OS_Thread.cpp) pass it as an opaque pointer."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

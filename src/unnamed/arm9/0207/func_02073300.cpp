@@ -3,7 +3,7 @@
 #pragma exceptions on
 
 // The whole family is source-built now: __cxa_vec_cleanup at 0x0207328c, this one,
-// __cxa_vec_ctor at 0x020733a8, func_02073470 and func_02073534.
+// __cxa_vec_ctor at 0x020733a8, __cxa_vec_new and func_02073534.
 //
 // MSL C++ runtime array-destroy-with-rethrow helper, the sibling of
 // __cxa_vec_cleanup at 0x0207328c. Runs `dtor` over the `n` elements of `size`
@@ -18,10 +18,18 @@
 // The two nested catch contexts are why the frame is 0x30 rather than
 // __cxa_vec_cleanup's 0x18: 0x18 bytes of catch state each, sp spilled at +0x14
 // inside each one (fp+0x14 for the outer try, fp+0x2c for the inner).
-
-extern "C" void func_020731fc(void);
+//
+// It does the job of the Itanium C++ ABI's __cxa_vec_dtor, and
+// __cxa_vec_delete calls it for that step, but it keeps its address name:
+// mwccarm never emits a call to __cxa_vec_dtor, so no compiler output
+// confirms the name, and its body does not follow GCC's __cxa_vec_dtor
+// statement for statement.
 
 typedef void (*dtor_t)(void *);
+
+namespace std {
+void terminate();
+}
 
 extern "C" void func_02073300(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {
@@ -43,7 +51,7 @@ extern "C" void func_02073300(void *block, unsigned int n, unsigned int size, dt
                     } while (--n);
                 }
             } catch (...) {
-                func_020731fc();
+                std::terminate();
             }
             throw;
         }

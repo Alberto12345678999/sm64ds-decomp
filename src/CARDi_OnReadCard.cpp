@@ -7,7 +7,7 @@
 
 extern "C" {
 
-extern void func_02059f58(int a); /* MI_StopDma */
+extern void MI_StopDma(u32 dmaNo);
 extern void CARDi_ReadEnd(void);
 extern void CARDi_SetCardDma(void);
 
@@ -16,7 +16,7 @@ void CARDi_OnReadCard(void) {
     cardi_common.dst += CARD_ROM_PAGE_SIZE;
     cardi_common.len -= CARD_ROM_PAGE_SIZE;
     if (cardi_common.len == 0) {
-        func_02059f58(cardi_common.dma);
+        MI_StopDma(cardi_common.dma);
         IRQ::DisableIRQs(0x80000);
         IRQ::ClearInterrupts(0x80000);
         CARDi_ReadEnd();

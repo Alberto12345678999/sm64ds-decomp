@@ -38,12 +38,12 @@ void func_02041e14(void)
 
     if (s->mResizePending != 0 && s->mBusyCount == 0) {
         int v = s->mNewPacketSize;
-        int a1 = data_020a1fc0.mChildPacketSize;
+        int childSize = data_020a1fc0.mChildPacketSize;
         int snd;
 
         s->mResizePending = 0;
         data_020a1fc0.mParentPacketSize = v;
-        func_020659a0(v, a1);
+        func_020659a0(v, childSize);
 
         snd = s->mResizeChildren;
         if (snd == 0) {

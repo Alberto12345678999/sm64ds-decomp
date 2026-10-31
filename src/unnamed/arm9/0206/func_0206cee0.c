@@ -4,6 +4,15 @@ extern int func_0206da18(void);
 extern int func_0206d9cc(void);
 extern void _ZN3IRQ11SetFIQStateEb(int x); /* 0x0206d9dc, inside func_0206d9cc */
 extern void _ZN3IRQ11SetIRQStateEb(int x); /* 0x0206da28, inside func_0206da18 */
+/* One try at the cartridge lock, with IRQ and FIQ disabled first (the
+ * func_0206da18 / func_0206d9cc entries return the previous states). Returns
+ * nonzero if the lock was taken with lock id 0x70, or if the main processor
+ * already owns it. On success *out gets the flags func_0206ce90 restores
+ * from: 1 IRQ was on, 2 FIQ was on, 0x20 this call took the lock. On failure
+ * the interrupt states are put back and *out is 0. func_0206cec0 spins on it.
+ * The new_var temporaries and the `if (0, new_var2)` test look like permuter
+ * output; no cleaner spelling has been tried against the bytes yet. No SDK or
+ * MSL function with this body has been found. */
 int func_0206cee0(int *out) {
     int v8 = func_0206da18();
     int v7 = func_0206d9cc();

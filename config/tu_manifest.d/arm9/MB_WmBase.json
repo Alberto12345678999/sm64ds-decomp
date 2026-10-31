@@ -1,0 +1,216 @@
+{
+  "id": "arm9/MB_WmBase",
+  "module": "arm9",
+  "source": "src/engine/mb/MB_WmBase.cpp",
+  "promoted_source": "src/engine/mb/MB_WmBase.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "contiguous linker run: 0x0206879c..0x0206a318, 23 functions, gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "SOURCE ORDER: mwccarm emits .text in reverse source order. Read from the top down, the run is the function order of the BW2 decomp's reconstruction of the Nitro SDK's mb_wm_base.c (changeScanChannel, MBi_IsSendEnabled, ..., MBi_GetAttribute, MBi_IsStarted, MBi_CheckWmErrcode) with the newer SDK's MBi_OnInitializeDone, MBi_EndCommon, MBi_OnReset and MB_DisconnectChild absent; only MBi_SetMaxScanTime and func_0206881c sit out of place, just above MBi_IsStarted.",
+    "DATA: the WmWork (data_020a9db4; the BW2 reconstruction's sWmWork, ntrtwl's p_mbi_param), the scan parameter (data_020a9dc0, sScanParam) and the DMA channel (data_020a9db0, sDmaNo) are that file's statics and are written only by functions in this run.",
+    "DATA: mbc (data_020a9db8, MB_Parent.cpp's pPwork) sits among those statics in .bss (sDmaNo 0x020a9db0, sWmWork 0x020a9db4, mbc 0x020a9db8, sScanParam 0x020a9dc0), and func_02068e4c (the SDK's MB_Init) carves it out of the caller's buffer. Unlike them it is not file-static in this build: MB_Parent.cpp clears it and func_02065c2c, func_02065de4, func_02067530, func_02067604 and func_02067928 read it, so it has external linkage. NitroSDK's mb_wm_base.c defines it the same way, as the non-static `MB_CommCommonWork *mbc` that mb_private.h externs (`#define pPwork ((MB_CommPWork *)mbc)`).",
+    "BOTTOM EDGE: MBi_MakeGameInfo (0x02068680) is the highest-addressed function of the SDK's mb_gameinfo.c (arm9/MB_GameInfo), a different file.",
+    "TOP EDGE: CTRDGi_SendtoPxi (0x0206a318) opens the cartridge library's ctrdg_common.c (arm9/CTRDG_Common)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0206879c",
+      "end": "0x0206a318"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "MBi_CheckWmErrcode",
+      "address": "0x0206879c",
+      "size": "0x0000005c",
+      "legacy_source": "src/MBi_CheckWmErrcode.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "MBi_IsStarted",
+      "address": "0x020687f8",
+      "size": "0x00000024",
+      "legacy_source": "src/MBi_IsStarted.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_0206881c",
+      "address": "0x0206881c",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206881c.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "MBi_SetMaxScanTime",
+      "address": "0x02068834",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068834.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "MBi_GetAttribute",
+      "address": "0x02068844",
+      "size": "0x00000070",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068844.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "MBi_GetTgid",
+      "address": "0x020688b4",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0206/func_020688b4.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "func_020688cc",
+      "address": "0x020688cc",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0206/func_020688cc.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_020688e4",
+      "address": "0x020688e4",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0206/func_020688e4.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_020688fc",
+      "address": "0x020688fc",
+      "size": "0x0000012c",
+      "legacy_source": "src/unnamed/arm9/0206/func_020688fc.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "func_02068a28",
+      "address": "0x02068a28",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068a28.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "func_02068a54",
+      "address": "0x02068a54",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068a54.cpp",
+      "ordinal": 10
+    },
+    {
+      "symbol": "func_02068a74",
+      "address": "0x02068a74",
+      "size": "0x00000074",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068a74.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_02068ae8",
+      "address": "0x02068ae8",
+      "size": "0x00000220",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068ae8.cpp",
+      "ordinal": 12
+    },
+    {
+      "symbol": "func_02068d08",
+      "address": "0x02068d08",
+      "size": "0x000000c0",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068d08.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "func_02068dc8",
+      "address": "0x02068dc8",
+      "size": "0x0000007c",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068dc8.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "func_02068e44",
+      "address": "0x02068e44",
+      "size": "0x00000008",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068e44.c",
+      "ordinal": 15
+    },
+    {
+      "symbol": "func_02068e4c",
+      "address": "0x02068e4c",
+      "size": "0x000001ec",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068e4c.cpp",
+      "ordinal": 16
+    },
+    {
+      "symbol": "MBi_GetBeaconPeriodDispersion",
+      "address": "0x02069038",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068e4c.cpp",
+      "ordinal": 17
+    },
+    {
+      "symbol": "func_020690b0",
+      "address": "0x020690b0",
+      "size": "0x00000868",
+      "legacy_source": "src/unnamed/arm9/0206/func_020690b0.c",
+      "ordinal": 18
+    },
+    {
+      "symbol": "func_02069918",
+      "address": "0x02069918",
+      "size": "0x0000007c",
+      "legacy_source": "src/unnamed/arm9/0206/func_02069918.c",
+      "ordinal": 19
+    },
+    {
+      "symbol": "func_02069994",
+      "address": "0x02069994",
+      "size": "0x0000089c",
+      "legacy_source": "src/unnamed/arm9/0206/func_02069994.c",
+      "ordinal": 20
+    },
+    {
+      "symbol": "MBi_IsSendEnabled",
+      "address": "0x0206a230",
+      "size": "0x0000006c",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a230.c",
+      "ordinal": 21
+    },
+    {
+      "symbol": "changeScanChannel",
+      "address": "0x0206a29c",
+      "size": "0x0000007c",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206a29c.c",
+      "ordinal": 22
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Seven members carry the SDK name on a statement-for-statement match with the reconstruction or the HeartGold fork's mb_comm_params.c; the other sixteen keep address names with a comment saying which SDK function they are an older version of and what differs.",
+    "The SDK built this file as C. Three things keep the C++ compile byte-identical: `#pragma always_inline on` for the whole file, because the GameInfo struct copy is an implicit operator= that is called out of line otherwise, and mwccarm generates code only after reading the whole file, so a push/pop-scoped pragma does not reach it; the WM API declared with pointer callbacks, because passing `(int)func` schedules differently from passing a function's address; and `(u16)(cond ? 1 : 0)` where the C source widened a comparison, because a C++ comparison is a bool."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-MB_WmBase/MB_WmBase.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 23,
+    "functions_declared": 23,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

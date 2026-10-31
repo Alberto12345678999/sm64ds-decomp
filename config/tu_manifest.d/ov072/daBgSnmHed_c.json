@@ -775,13 +775,6 @@
       "evidence": "retail initializer call/load destination at this exact relocation site"
     },
     {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "retail initializer call/load destination at this exact relocation site"
-    },
-    {
       "symbol": "_ZN18BgSnmHedTexSeqFileC1Ej",
       "canonical_symbol": "SharedFilePtr_Construct_TexSeq",
       "canonical_module": "arm9",
@@ -819,7 +812,7 @@
       "source": "0x02122218",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -839,7 +832,7 @@
       "source": "0x02122234",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -859,7 +852,7 @@
       "source": "0x02122250",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"

@@ -105,7 +105,7 @@ extern int LenVec3(struct Vector3 *v);
 extern Fix12i Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
 extern void Vec3_MulScalar(struct Vector3 *out, struct Vector3 *in, int s);
 extern void SubVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern void Vec3_Asr(int *d, int *s, int sh);
+extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
@@ -833,7 +833,7 @@ void daSnowman_c::func_ov081_021254d8()
     src[1] = t;
     src[2] = this->mPosZ;
     src[1] = t + this->mSinkOffsetY;
-    Vec3_Asr(dst, src, 3);
+    Vec3_Asr((Vector3 *)dst, (Vector3 *)src, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, dst[0], dst[1], dst[2]);
 
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,

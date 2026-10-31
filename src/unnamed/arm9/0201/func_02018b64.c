@@ -27,32 +27,33 @@ typedef struct Pair {
 } Pair;
 
 extern void FS_InitFile(void *s);
-extern void FS_GetOverlayFileID(Pair *dst, const FSOverlayInfo *p_ovi);
+extern Pair FS_GetOverlayFileID(const FSOverlayInfo *p_ovi);
 extern int myFS_OpenFileFast(void *a, Pair bc);
 extern void FS_ClearOverlayImage(FSOverlayInfo *p_ovi);
 extern int myFS_ReadFile(void *a, int b, int c);
-extern void func_0206d32c(int a, int b, int c, int d);
+extern int func_0206d32c(int target, unsigned int ramAddress, unsigned int romOffset,
+                         unsigned int ramSize);
 extern int FS_CloseFile(void *self);
 
 int func_02018b64(FSOverlayInfo *ovi) {
     FSFile file;
-    Pair v;
+    Pair fileId;
 
     FS_InitFile(&file);
-    FS_GetOverlayFileID(&v, ovi);
-    if (myFS_OpenFileFast(&file, v) == 0)
+    fileId = FS_GetOverlayFileID(ovi);
+    if (myFS_OpenFileFast(&file, fileId) == 0)
         return 0;
 
     FS_ClearOverlayImage(ovi);
     myFS_ReadFile(&file, (int)ovi->header.ram_address, file.prop.bottom - file.prop.top);
 
     {
-        int d = ovi->header.ram_size;
-        int c = file.prop.top;
-        int b = (int)ovi->header.ram_address;
+        int ramSize = ovi->header.ram_size;
+        int romOffset = file.prop.top;
+        int ramAddress = (int)ovi->header.ram_address;
         /* the plain `ovi->target != 0` changes the .text bytes */
         int flag = (int)((ovi->target == 0) ? (char *)0 : (char *)1);
-        func_0206d32c(flag, b, c, d);
+        func_0206d32c(flag, ramAddress, romOffset, ramSize);
     }
 
     FS_CloseFile(&file);

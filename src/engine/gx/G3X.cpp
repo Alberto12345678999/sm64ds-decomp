@@ -30,8 +30,8 @@ extern "C" {
 void MultiCopyHalf(const void *src, void *dst, int size);
 void Copy32Bytes(void *src, void *dst);
 extern int data_02099fd0;
-void func_0205a064(unsigned int ch, unsigned int src, unsigned int dst,
-                   unsigned int size, void (*cb)(unsigned int), unsigned int cbArg);
+void MI_DmaFill32Async(unsigned int dmaNo, void *dest, unsigned int data, unsigned int size,
+                       void (*callback)(void *), void *arg);
 void DMASyncFillTransfer(unsigned int channel, void *dst, unsigned int data,
                          unsigned int size);
 void MultiStore_Int(int val, int *dst, int len);
@@ -179,7 +179,7 @@ void G3X::SetClearColor(unsigned short a, int b, int c, int d, bool e) {
 extern "C" void func_020554bc(void) {
     int i;
     if (data_02099fd0 != -1) {
-        func_0205a064(data_02099fd0, 0x4000330, 0, 0x10, 0, 0);
+        MI_DmaFill32Async(data_02099fd0, (void *)0x4000330, 0, 0x10, 0, 0);
         DMASyncFillTransfer(data_02099fd0, (void *)0x4000360, 0, 0x50);
     } else {
         volatile int a = 0;

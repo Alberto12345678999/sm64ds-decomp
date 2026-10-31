@@ -116,12 +116,13 @@ either way, and changing a struct other files build against is not this change's
 
 ### The prologue wall, which blocks four of their neighbours
 
-`func_01ffafd4` (0x34), `func_01ffb008` (0x28), `func_01ffb030` (0x4c) and `func_01ffa3e0`
-(0x5c) contain no privileged instruction, so the objective test does not exempt them.
+`_fp_init` (0x01ffafd4, 0x34), `__ieee_status` (0x01ffb008, 0x28), `__fp_status` (0x01ffb030,
+0x4c) and `func_01ffa3e0` (0x5c) contain no privileged instruction, so the objective test does
+not exempt them.
 **CORRECTED 2026-08-03: that reading was too literal — see "wall #2 is a tell, not a wall" below.** They are blocked on the
 same thing, and it is worth naming because it is cheap to mistake for "this was assembly".
 
-`func_01ffafd4` is the clean specimen: thirteen instructions, and the obvious C reproduces
+`_fp_init` (0x01ffafd4) is the clean specimen: thirteen instructions, and the obvious C reproduces
 **all thirteen**, in order, with the right registers. The only difference is that mwccarm
 brackets the body with `sub sp,sp,#4` / `add sp,sp,#4` and the ROM does not — 0x3c against
 0x34. That is 8-byte stack alignment for a prologue that pushes an odd number of registers
@@ -240,7 +241,7 @@ C function cannot have two entry points, so even a byte-exact C body would be a 
 
 Net: there are **no** clean C targets left in the maths block. It is vendor runtime end to end.
 Their body is a masked read-modify-write of the word at `func_0207322c()` — a function that
-just returns the constant 0x020aa3f4 (the FP status word) — returning the old value. `func_01ffb030` additionally
+just returns the constant 0x020aa3f4 (the FP status word) — returning the old value: ARM's `__ieee_status`. `__fp_status` additionally
 packs two 5-bit fields from bits [4:0] and [20:16] into [4:0] and [12:8] on the way in,
 unpacks the reverse on the way out, and sets bit 30.
 

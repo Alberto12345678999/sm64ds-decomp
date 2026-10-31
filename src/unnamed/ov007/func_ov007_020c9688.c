@@ -82,7 +82,7 @@ typedef struct Ov007OamAttrs {
 } Ov007OamAttrs;
 
 extern Ov007SpriteBank *func_ov007_020c12ac(int cellCount, int animCount);
-extern void *func_ov007_020c3df4(int a, u32 b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c13a4(Ov007CellAnim *anim, int frameCount, u16 offsetX, u16 offsetY);
 
 Ov007SpriteBank *func_ov007_020c9688(int arg) {
@@ -91,8 +91,10 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
     u32 nA;
     u32 nB;
     u32 cnt;
-    // Every other caller of func_ov007_020c3df4 passes a literal 0; this named local is deliberate (one of the near-miss row's nine zero-plumbing shapes).
-    u32 heap = 0;
+    // The other callers of func_ov007_020c3df4 pass a literal 0 or a name
+    // string; this named local is deliberate (one of the near-miss row's
+    // nine zero-plumbing shapes).
+    const char *name = 0;
     Ov007OamAttrs attrs;
     Ov007BinFile file;
     u32 j;
@@ -109,7 +111,7 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
         cnt = *p;
         p = p + 4;
         cell = &s->cells[i];
-        cell->oam = (Ov007CellEntry *)func_ov007_020c3df4(heap, cnt * 6);
+        cell->oam = func_ov007_020c3df4(name, cnt * 6);
         cell->count = cnt;
         for (j = 0; j < cnt; j++) {
             s16 x;

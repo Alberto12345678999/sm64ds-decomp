@@ -56,7 +56,7 @@ extern int func_02045ce0(void);
 
 extern int func_ov007_020c1804(void);
 extern int func_ov007_020c17f4(void);
-extern int func_ov007_020c3df4(int, void *);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c3d1c(void *);
 extern void func_ov007_020b3edc(int);
 extern void *func_ov007_020b3f20(int);
@@ -114,7 +114,7 @@ int func_ov007_020b78d0(int x) {
 void func_ov007_020b782c(void) {
     int i;
     Particle::System *empty;
-    data_ov007_02103448 = func_ov007_020c3df4((int)&data_ov007_02102dd0, (void *)0x3c00);
+    data_ov007_02103448 = (int)func_ov007_020c3df4(data_ov007_02102dd0, 0x3c00);
     data_ov007_02103444 = 0;
     data_ov007_0210344c = func_0204a4c8((char *(*)(int))func_ov007_020b78d0, 2, 0xc8, 0x23, 0x25);
     i = 0;

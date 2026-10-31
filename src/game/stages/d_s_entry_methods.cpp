@@ -94,10 +94,12 @@ void func_02020028(int a, unsigned char b);
 void func_ov075_0211601c(dScEntry_c::graphCallback_c *, dScEntry_c *, int);
 }
 
-/* The one graph callback the frame dispatchers poll (func_02018ec0 and
-   friends): the scene registers its own object here and clears it on the way
-   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
-   graphCallback_c (include/dGraph_c.h). */
+/* The scene's graph callback: the scene registers its own object here and
+   clears it on the way out. The frame calls its four slots: GraphCallback0 at
+   the frame start (func_02019390), GraphCallback1 before the frame wait
+   (func_02019404), GraphCallback2 and GraphCallback3 in the VBlank IRQ
+   (func_02019144, func_02019100). dGraph_c::callback_c is the ROM-proven base
+   of every scene's nested graphCallback_c (include/dGraph_c.h). */
 extern dGraph_c::callback_c *data_0209d4a8;
 extern u8 data_0209d45c;
 extern u8 data_0209d454;

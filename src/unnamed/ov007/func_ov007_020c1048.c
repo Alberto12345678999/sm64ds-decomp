@@ -1,8 +1,8 @@
 #include "Ov007OamNode.h"
 
-extern void *func_ov007_020c3df4(int a, int b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c1048(Ov007OamList *list);
-extern int func_ov007_020c3d1c(void);
+extern void func_ov007_020c3d1c(void *p);
 
 /* Builds an empty OAM node list. */
 Ov007OamList *func_ov007_020c1068(void) {
@@ -15,8 +15,8 @@ Ov007OamList *func_ov007_020c1068(void) {
  * `ldr ip,[pc]; bx ip` absolute tail-call; bracketed because the pragma is
  * positional. */
 #pragma long_calls on
-int func_ov007_020c105c(void) {
-    return func_ov007_020c3d1c();
+void func_ov007_020c105c(void *p) {
+    func_ov007_020c3d1c(p);
 }
 #pragma long_calls off
 

@@ -2,6 +2,10 @@
 extern int func_0206cf7c(int arg0);
 
 #pragma optimize_for_size on
+/* Debug console byte sink, cartridge-slot form: store val in a 0x8000-byte
+   ring at 0x09fd0000 (flag 0x2000 set) or 0x08fd0000, then rewrite the head
+   until it reads back. The byte is dropped when the ring is full.
+   func_0206cbc0 picks it when flag 1 is set. */
 void func_0206cb0c(void *obj, int val) {
     volatile u16 *self = (volatile u16 *)obj;
     u16 idx = self[0];

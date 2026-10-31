@@ -94,7 +94,7 @@
       "rule": "handspelled-member",
       "match": "_ZN9dFdWipe_cD1Ev",
       "count": 3,
-      "reason": "The fader-array helpers pass dFdWipe_c's destructor by address to the array new/delete helpers (func_02073244/func_02073470); C++ cannot take a destructor's address, so the symbol is declared by its mangled name (local extern).",
+      "reason": "The fader-array helpers pass dFdWipe_c's destructor by address to the array new/delete helpers (__cxa_vec_delete/__cxa_vec_new); C++ cannot take a destructor's address, so the symbol is declared by its mangled name (local extern).",
       "evidence": "CleanupResources and InitResources array helpers; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
     },
     {
@@ -102,7 +102,7 @@
       "rule": "handspelled-member",
       "match": "_ZN9dFdWipe_cC1Ev",
       "count": 2,
-      "reason": "InitResources passes dFdWipe_c's constructor by address to the array-construct helper func_02073470; C++ cannot take a constructor's address, so the symbol is declared by its mangled name (local extern).",
+      "reason": "InitResources passes dFdWipe_c's constructor by address to the array-construct helper __cxa_vec_new; C++ cannot take a constructor's address, so the symbol is declared by its mangled name (local extern).",
       "evidence": "InitResources; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
     },
     {
@@ -802,19 +802,19 @@
       "evidence": "present on origin/main in src/unnamed/arm9/0201/func_02018cbc.c; folded into src/unnamed/arm9/0201/func_02018c00.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/arm9/0206/func_0206116c.cpp",
+      "path": "src/WmClearFifoRecvFlag.cpp",
       "rule": "raw-offset",
       "match": "(char*)msg+0x14",
       "count": 2,
-      "reason": "func_02061188 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "reason": "WmReceiveFifo moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
       "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/arm9/0206/func_0206116c.cpp",
+      "path": "src/WmClearFifoRecvFlag.cpp",
       "rule": "raw-offset",
       "match": "(char*)msg+0x1c",
       "count": 1,
-      "reason": "func_02061188 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "reason": "WmReceiveFifo moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
       "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
@@ -1006,7 +1006,7 @@
       "rule": "handspelled-member",
       "match": "_ZN1T13func_020500a4Ev",
       "count": 2,
-      "reason": "T::func_020500a4 is passed as a callback word to func_0205ab28. A member cannot be cast to that function pointer, so the call names the mangled symbol. The local extern is the same pointer.",
+      "reason": "T::func_020500a4 is passed as a callback word to SND_SetupAlarm. A member cannot be cast to that function pointer, so the call names the mangled symbol. The local extern is the same pointer.",
       "evidence": "arm9/SoundEngine 138/138 MATCH with the mangled callback word."
     },
     {
@@ -1168,6 +1168,62 @@
       "count": 2,
       "reason": "Main turned func_ov002_020f5b24 into StaffRoll::func_ov002_020f5b24. The static descriptor still stores that function's address. A pointer-to-member is not that address, so the initializer names the mangled symbol.",
       "evidence": "include/daDemo_c.h declares StaffRoll::func_ov002_020f5b24. The descriptor data_ov002_0210b7b8 stored func_ov002_020f5b24 before that rename. mwccarm compiled the mangled spelling."
+    },
+    {
+      "path": "src/engine/mb/MB_WmBase.cpp",
+      "rule": "raw-offset",
+      "match": "(int*)(data_020a9db4+0x1428",
+      "count": 1,
+      "reason": "WmWork.status +0x10, a BOOL WM_ReadStatus fills in and MBi_ParentCallback tests before starting MP. Which SDK WMStatus field it is has not been pinned down, so the read keeps the offset rather than inventing a name. Follow-up: name the WMStatus field once a reference layout places +0x10.",
+      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
+    },
+    {
+      "path": "src/engine/mb/MB_WmBase.cpp",
+      "rule": "raw-offset",
+      "match": "(char*)((a0+0x1f",
+      "count": 1,
+      "reason": "Not a field access: MB_Init rounds the caller's buffer address up to 32 bytes ((a0 + 0x1f) & ~0x1f) before carving the WmWork out of it. No follow-up.",
+      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
+    },
+    {
+      "path": "src/engine/mb/MB_WmBase.cpp",
+      "rule": "raw-offset",
+      "match": "(u16*)(base1+0x1e30",
+      "count": 1,
+      "reason": "MB_Init's user-name copy into a halfword in WmWork's pad_1e2e region that nothing in this file reads back, so no field is placed there. It overlaps the 0x1e38 copy. Follow-up: place both copies in WmWork once a reader shows the layout.",
+      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
+    },
+    {
+      "path": "src/engine/mb/MB_WmBase.cpp",
+      "rule": "raw-offset",
+      "match": "(u16*)(base1+0x1e38",
+      "count": 1,
+      "reason": "MB_Init's parent-name copy into a halfword in WmWork's pad_1e2e region that nothing in this file reads back, so no field is placed there. It overlaps the 0x1e30 copy. Follow-up: place both copies in WmWork once a reader shows the layout.",
+      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
+    },
+    {
+      "path": "src/engine/mb/MB_WmBase.cpp",
+      "rule": "raw-offset",
+      "match": "(short*)(data_020a9db4+0x1e48",
+      "count": 1,
+      "reason": "MBi_StartCommon clears a halfword in WmWork's pad_1e2e region that nothing in this file reads back, so no field is placed there. Follow-up: place it in WmWork once a reader shows its role.",
+      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
+    },
+    {
+      "path": "src/engine/isd/isdoverlay.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ11SetFIQStateEb",
+      "count": 2,
+      "reason": "IRQ::SetFIQState(bool) and IRQ::SetIRQState(bool) are entry labels inside the hand-written func_0206d9cc and func_0206da18, and func_0206d868 passes them the saved word unnormalised. Declared in namespace IRQ with their bool parameter, the call adds the `!= 0` the ROM lacks; declared with int, the name mangles to a symbol the ROM does not have. No header declares IRQ. Follow-up: give IRQ a header once its primitives are reconstructed as C++.",
+      "evidence": "arm9/isdoverlay 6/6 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from src/unnamed/arm9/0206/func_0206d868.cpp on main, which this fold absorbs, with its `local extern:` note"
+    },
+    {
+      "path": "src/engine/isd/isdoverlay.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ11SetIRQStateEb",
+      "count": 2,
+      "reason": "IRQ::SetFIQState(bool) and IRQ::SetIRQState(bool) are entry labels inside the hand-written func_0206d9cc and func_0206da18, and func_0206d868 passes them the saved word unnormalised. Declared in namespace IRQ with their bool parameter, the call adds the `!= 0` the ROM lacks; declared with int, the name mangles to a symbol the ROM does not have. No header declares IRQ. Follow-up: give IRQ a header once its primitives are reconstructed as C++.",
+      "evidence": "arm9/isdoverlay 6/6 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from src/unnamed/arm9/0206/func_0206d868.cpp on main, which this fold absorbs, with its `local extern:` note"
     }
   ]
 }

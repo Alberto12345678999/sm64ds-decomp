@@ -85,8 +85,26 @@ LD_VERSION = "1.2/sp2p3"
 # not to perturb .text codegen (see notes/rom-build.md, M2b).
 CFLAGS = ("-O4,p -enum int -lang c99 -char signed -interworking "
           "-proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off")
-LDFLAGS = ("-proc arm946e -nostdlib -interworking -m Entry "
-           "-map closure,unused -msgstyle gcc -nodead")
+# The cartridge header's ARM9 entry address. `-m` wants the symbol there by name, so
+# read whatever config/arm9/symbols.txt calls it instead of pinning one spelling,
+# which a rename of the entry point would strand.
+ARM9_ENTRY = 0x02004800
+
+
+def entry_symbol(symbols=CONFIG_ROOT / "symbols.txt"):
+    """The name symbols.txt gives the function at ARM9_ENTRY."""
+    want = "addr:0x%08x" % ARM9_ENTRY
+    for line in symbols.read_text(encoding="utf-8").splitlines():
+        parts = line.split()
+        if (len(parts) >= 3 and parts[1].startswith("kind:function")
+                and parts[-1] == want):
+            return parts[0]
+    sys.exit("rombuild: %s names no function at 0x%08x, the ARM9 entry"
+             % (symbols, ARM9_ENTRY))
+
+
+LDFLAGS = ("-proc arm946e -nostdlib -interworking -m %s "
+           "-map closure,unused -msgstyle gcc -nodead" % entry_symbol())
 
 
 VERSIONS_FILE = REPO / "config" / "rombuild-versions.txt"

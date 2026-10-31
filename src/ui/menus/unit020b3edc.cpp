@@ -47,7 +47,7 @@ extern void *data_ov007_02103370[];
 /* the file id each slot loads */
 extern u16 data_ov007_020d7584[];
 
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void DecompressLZ16(void *src, void *dst);
 
 void func_ov007_020b3edc(int idx);
@@ -90,11 +90,11 @@ void *func_ov007_020b3f20(int idx) {
         case 0x2c: {
             /* LZ16 header: the decompressed size in the top 24 bits */
             u32 hv = (*((u32 *)obj)) >> 8;
-            int sz = func_ov007_020c3df4(0, (void *)hv);
-            DecompressLZ16(obj, (void *)sz);
+            void *dst = func_ov007_020c3df4(0, hv);
+            DecompressLZ16(obj, dst);
             data_ov007_0210336c(obj);
-            CP15::FlushDataCache(sz, hv);
-            data_ov007_02103370[idx] = (void *)sz;
+            CP15::FlushDataCache((u32)dst, hv);
+            data_ov007_02103370[idx] = dst;
         } break;
 
         case 1:

@@ -1,19 +1,19 @@
+#include "nitro/spi/pm.h"
+
 extern unsigned char data_0209d4d4;
 extern int data_0209d508;
 extern int data_0209d510;
-extern void func_0205f8e0(int *a, int *b);
-extern int func_0205f9ac(int a, int b);
 
 /* Turn both backlights off for a closed lid, once: keep their states
-   (func_0205f8e0 into data_0209d508 and data_0209d510), then
-   func_0205f9ac(2, 0), PM_SetBackLight's shape (both screens, off), as
+   (PM_GetBackLight into data_0209d508 and data_0209d510), then
+   PM_SetBackLight(2, 0) (both screens, off), as
    TurnBacklightOff does. data_0209d4d4 records it. The lid check
    func_02019ac4 calls it when the lid closes. */
 void func_02019e60(void) {
     if (data_0209d4d4)
         return;
-    func_0205f8e0(&data_0209d508, &data_0209d510);
-    func_0205f9ac(2, 0);
+    PM_GetBackLight(&data_0209d508, &data_0209d510);
+    PM_SetBackLight(2, 0);
     data_0209d4d4 = 1;
 }
 
@@ -23,7 +23,7 @@ void func_02019e60(void) {
 void func_02019dfc(void) {
     if (data_0209d4d4 == 0)
         return;
-    func_0205f9ac(0, data_0209d508);
-    func_0205f9ac(1, data_0209d510);
+    PM_SetBackLight(0, data_0209d508);
+    PM_SetBackLight(1, data_0209d510);
     data_0209d4d4 = 0;
 }

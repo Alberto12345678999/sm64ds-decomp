@@ -1,0 +1,81 @@
+{
+  "id": "arm9/WM_Etc",
+  "module": "arm9",
+  "source": "src/engine/wm/WM_Etc.cpp",
+  "promoted_source": "src/engine/wm/WM_Etc.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's wm_etc.c, 0x020634fc..0x02063718: 4 functions, gapless in config/arm9/delinks.txt, identified by their bodies against pret's pokediamond WM_etc.s, which holds them in the same address order. WM_MeasureChannel was already named. WM_SetLifeTime: WMi_CheckIdle, then callback for API 0x1d and WM_SendCommand(0x1d, 3, ...) (pret's sends four). WM_SetBeaconIndication: WMi_CheckIdle, flag must be 0 or 1 (else 6), API 0x19 with one parameter. WM_SetGameInfo: WM_CheckStateEx(2, 7, 9), a null buffer or a size over 0x70 is 6, the buffer is copied to the game-info buffer and flushed, then API 0x18 (pret's sends five parameters; this one six).",
+    "Order: mwccarm emits the bodies in reverse, so the source lists them from WM_SetGameInfo down to WM_MeasureChannel. Older SDK: pret's WM_SetEntry (below WM_MeasureChannel) and WM_SetWEPKeyEx / WM_SetWEPKey (above WM_SetGameInfo) are absent.",
+    "BOTTOM EDGE: WM_StartDataSharing (0x020631dc..0x020634fc), the highest function of wm_ds.c (arm9/WM_Ds).",
+    "TOP EDGE: func_02063718 at 0x02063718, the WBT library."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020634fc",
+      "end": "0x02063718"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "WM_MeasureChannel",
+      "address": "0x020634fc",
+      "size": "0x00000078",
+      "legacy_source": "src/WM_MeasureChannel.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "WM_SetLifeTime",
+      "address": "0x02063574",
+      "size": "0x00000064",
+      "legacy_source": "src/unnamed/arm9/0206/func_02063574.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "WM_SetBeaconIndication",
+      "address": "0x020635d8",
+      "size": "0x00000070",
+      "legacy_source": "src/unnamed/arm9/0206/func_020635d8.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "WM_SetGameInfo",
+      "address": "0x02063648",
+      "size": "0x000000d0",
+      "legacy_source": "src/unnamed/arm9/0206/func_02063648.cpp",
+      "ordinal": 3
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Overlay: tu_map cannot segment arm9/main.",
+    "C++ for CP15::FlushDataCache (WM_SetGameInfo); every function keeps C linkage."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-WM_Etc/WM_Etc.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 4,
+    "functions_declared": 4,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
