@@ -71,7 +71,8 @@ class Compiles(unittest.TestCase):
 
     def test_a_file_that_does_not_compile_blocks_and_never_reaches_linkcheck(self):
         called = []
-        with mock.patch.object(PL, "_compiles", return_value=(False, "did not compile at 2004/b56")),              mock.patch.object(PL, "_run_linkcheck", lambda *a: called.append(a) or ("VERIFIED", 0, [])):
+        with mock.patch.object(PL, "_compiles", return_value=(False, "did not compile at 2004/b56")), \
+             mock.patch.object(PL, "_run_linkcheck", lambda *a: called.append(a) or ("VERIFIED", 0, [])):
             rows = PL.verify("src/game/actors/d_a_mky.cpp")
         self.assertEqual([r["verdict"] for r in rows], ["NO-COMPILE"])
         self.assertEqual(rows[0]["name"], "d_a_mky.cpp")
