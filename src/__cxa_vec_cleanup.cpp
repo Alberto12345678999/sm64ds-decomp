@@ -21,9 +21,11 @@
 // names `__cxa_vec_ctor`, and two objects in this tree import it, so 0x020733a8 is
 // now `__cxa_vec_ctor` with a source file of its own.
 
-extern "C" void func_020731fc(void);
-
 typedef void (*dtor_t)(void *);
+
+namespace std {
+void terminate();
+}
 
 extern "C" void __cxa_vec_cleanup(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {
@@ -37,7 +39,7 @@ extern "C" void __cxa_vec_cleanup(void *block, unsigned int n, unsigned int size
                 } while (--n);
             }
         } catch (...) {
-            func_020731fc();
+            std::terminate();
         }
     }
 }

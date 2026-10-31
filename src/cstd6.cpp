@@ -1,15 +1,15 @@
 //cpp
 /* cstd6 -- second cstd string/printf-band TU, arm9 0x02070348..0x020707a4,
  * 7 functions: cstd::strchr, cstd::strcmp, cstd::strncpy, cstd::strlen +
- * 3 C helpers (rand-LCG, idx-dispatcher, strcpy-like). Below the run,
+ * 3 C functions (a rand-style LCG, MSL raise, a strcpy-like copy). Below the run,
  * parse_format stays a one-function source: mwccarm keeps its
  * local print_format struct in registers under -lang c++ while the ROM spills
  * it to the stack. Above, copysign begins exactly where the run ends.
  */
-// leftovers: the three helpers keep address names (no ROM method evidence).
+// leftovers: the LCG and the copy keep address names (no ROM method evidence).
 // func_020706b0's alignment preamble and word-at-a-time copy stay as built
 // (even the no-op u64 mask colours two words). strcmp keeps MSL's two
-// scalar_reload gotos. Callers of func_0207037c sit in the same 0x0206 band,
+// scalar_reload gotos. Callers of raise sit in the same 0x0206 band,
 // so nothing here belongs to a neighbour's file.
 #include "types.h"
 #include "nitro/os/thread.h"
@@ -19,13 +19,12 @@ extern unsigned int data_0209a624;
 extern int OS_TryLockMutex(void *p);
 extern void OS_LockMutex(void *p);
 extern void OS_UnlockMutex(void *p);
-extern int func_0206dbf8(int a);
+extern void exit(int status);
 extern int data_020aa0ac;
 extern struct G { char p[0x1c]; int v; } data_020a9fd8;
 extern struct G data_020a9ffc;
-extern int data_020aa3d4[];
-
-typedef void (*PFN)(int);
+typedef void (*sig_func)(int);
+extern sig_func signal_funcs[];
 }
 
 // @symbol _ZN4cstd6strlenEPKc
@@ -207,11 +206,17 @@ char *strchr(const char *s, char ch_in) {
 }
 }
 
-// @symbol func_0207037c
+/* MSL raise (signal.c), statement for statement with Spirit Tracks' copy:
+   signals 1..7 (__signal_max), the handler table signal_funcs read and
+   reset to SIG_DFL (0) unless it is SIG_IGN (1) inside the inlined
+   signal_funcs_access critical region; SIG_IGN, or SIG_DFL for SIGABRT
+   (1), returns 0, any other SIG_DFL calls exit(0). abort raises 1 and the
+   floating-point dispatcher in cstd4 raises 2, SIGFPE. */
+// @symbol raise
 extern "C" {
-int func_0207037c(int idx) {
-    int r4;
-    if (idx < 1 || idx > 7)
+int raise(int sig) {
+    sig_func signal_func;
+    if (sig < 1 || sig > 7)
         return -1;
     if (OS_TryLockMutex(&data_020aa0ac) == 0) {
         data_020a9fd8.v = data_020a6134.current->id;
@@ -223,17 +228,17 @@ int func_0207037c(int idx) {
         data_020a9fd8.v = data_020a6134.current->id;
         data_020a9ffc.v = 1;
     }
-    r4 = data_020aa3d4[idx - 1];
-    if (r4 != 1)
-        data_020aa3d4[idx - 1] = 0;
+    signal_func = signal_funcs[sig - 1];
+    if ((unsigned int)signal_func != 1)
+        signal_funcs[sig - 1] = 0;
     data_020a9ffc.v -= 1;
     if (data_020a9ffc.v == 0)
         OS_UnlockMutex(&data_020aa0ac);
-    if (r4 == 1 || (r4 == 0 && idx == 1))
+    if ((unsigned int)signal_func == 1 || (signal_func == 0 && sig == 1))
         return 0;
-    if (r4 == 0)
-        func_0206dbf8(0);
-    ((PFN)r4)(idx);
+    if (signal_func == 0)
+        exit(0);
+    signal_func(sig);
     return 0;
 }
 }

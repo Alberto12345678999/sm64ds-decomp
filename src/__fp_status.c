@@ -22,7 +22,7 @@
 // across the `bl` by pushing r0-r2 and ip, a register set no compiler-generated prologue
 // saves.
 
-extern void *func_0207322c(void);
+extern unsigned int *func_0207322c(void);
 
 asm unsigned int __fp_status(unsigned int mask, unsigned int flags)
 {

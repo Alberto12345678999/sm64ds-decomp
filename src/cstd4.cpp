@@ -18,8 +18,10 @@
 
 extern "C" {
 // HAND-ASM PRIMITIVE: `swp` atomic swap has no C equivalent under mwccarm, so asm is the source.
+// Store value to *lock and return the word it held. The isdoverlay table
+// edits (func_0206cf98, func_0206d32c) spin on it with 0x80 to take a lock.
 // @symbol func_0206dab4
-asm void func_0206dab4(void) { swp r0, r0, [r1]; bx lr }
+asm u32 func_0206dab4(u32 value, void *lock) { swp r0, r0, [r1]; bx lr }
 }
 
 #pragma push
@@ -39,7 +41,7 @@ void __builtin_trap(void)
 extern "C" {
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206dac4
+// @symbol __exit
 extern int OS_TryLockMutex(void *p);
 extern void OS_LockMutex(void *p);
 extern void OS_UnlockMutex(void *p);
@@ -50,11 +52,19 @@ extern void func_02071784(void);
 extern int data_020aa020;
 extern int data_020a9fd8;
 extern int data_020a9ffc;
-extern volatile int data_020a9ed0;
-extern void (*volatile data_020a9ed8[])(void);
-extern void (*data_020a9ec8)(void);
+extern volatile int __atexit_curr_func;
+extern void (*volatile __atexit_funcs[])(void);
+extern void (*__console_exit)(void);
 
-int func_0206dac4(int a)
+/* MSL __exit, statement for statement with Spirit Tracks' copy of
+   abort_exit_arm_eabi.c: run __atexit_funcs newest first inside the
+   inlined atexit_funcs_access critical region, call __console_exit once,
+   fflush(NULL) (func_0206e06c), then leave through func_02071784, which has
+   the place and shape of MSL's _ExitProcess (a tail call to the SYS_EXIT
+   semihosting call func_0207199c). That file's five globals sit in .bss at
+   0x020a9ec8..0x020a9fd8 in reverse declaration order: __console_exit,
+   __stdio_exit, __atexit_curr_func, __aborting, then __atexit_funcs[64]. */
+void __exit(int status)
 {
     if (OS_TryLockMutex(&data_020aa020) == 0) {
         data_020a9fd8 = data_020a6134.current->id;
@@ -67,19 +77,19 @@ int func_0206dac4(int a)
         data_020a9ffc = 1;
     }
 
-    while (data_020a9ed0 > 0) {
-        int n = data_020a9ed0 - 1;
-        data_020a9ed0 = n;
-        data_020a9ed8[n]();
+    while (__atexit_curr_func > 0) {
+        int n = __atexit_curr_func - 1;
+        __atexit_curr_func = n;
+        __atexit_funcs[n]();
     }
 
     data_020a9ffc--;
     if (data_020a9ffc == 0) {
         OS_UnlockMutex(&data_020aa020);
     }
-    if (data_020a9ec8 != 0) {
-        data_020a9ec8();
-        data_020a9ec8 = 0;
+    if (__console_exit != 0) {
+        __console_exit();
+        __console_exit = 0;
     }
     func_0206e06c(0);
     func_02071784();
@@ -88,35 +98,40 @@ int func_0206dac4(int a)
 
 #pragma push
 #pragma defer_codegen off
-typedef void (*FP0206dbf8)(void);
+typedef void (*exit_proc)(void);
 
-extern int data_020a9ed4;
-extern FP0206dbf8 data_020a9ecc;
+extern int __aborting;
+extern exit_proc __stdio_exit;
 void __destroy_global_chain(void);
 
-// @symbol func_0206dbf8
-int func_0206dbf8(int a) {
-    if (data_020a9ed4 == 0) {
+/* MSL exit: unless abort is under way (__aborting),
+   destroy the static objects (__destroy_global_chain) and call
+   __stdio_exit once; then __exit(status). */
+// @symbol exit
+void exit(int status) {
+    if (__aborting == 0) {
         __destroy_global_chain();
-        if (data_020a9ecc != 0) {
-            data_020a9ecc();
-            data_020a9ecc = 0;
+        if (__stdio_exit != 0) {
+            __stdio_exit();
+            __stdio_exit = 0;
         }
     }
-    return func_0206dac4(a);
+    __exit(status);
 }
 #pragma pop
 
 #pragma push
 #pragma defer_codegen off
-void func_0207037c(int a);
-extern int data_020a9ed4;
+int raise(int sig);
+extern int __aborting;
 
-// @symbol func_0206dc4c
-void func_0206dc4c(void) {
-    func_0207037c(1);
-    data_020a9ed4 = 1;
-    func_0206dbf8(1);
+/* MSL abort: raise(SIGABRT), which is 1 here; set __aborting so exit skips
+   the static destructors and __stdio_exit; then exit(EXIT_FAILURE). */
+// @symbol abort
+void abort(void) {
+    raise(1);
+    __aborting = 1;
+    exit(1);
 }
 #pragma pop
 
@@ -201,16 +216,24 @@ float func_0206ddcc(float a, int op) {
  * is the same pre-2005 codegen difference recorded in notes/mwccarm-codegen.md
  * 6ai for the fBase_c::Process wrappers.
  */
-extern int func_02073238(void);
 extern unsigned int __ieee_status(unsigned int mask, unsigned int flags);
-extern void func_0207037c(int idx);
+extern int raise(int sig);
 
 typedef void (*DispatchFn)(int a0, Pair p1, Pair p2, unsigned int flags);
+
+/* data_020aa3f8: a head word, then one handler per exception bit 26..30
+   of flags. */
+typedef struct FpHandlerTable {
+    unsigned int head;
+    DispatchFn handler[5];
+} FpHandlerTable;
+extern void *func_02073238(void);
 
 // @symbol func_0206de14
 void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 {
-  DispatchFn fn = (DispatchFn) func_02073238();
+  FpHandlerTable *table = (FpHandlerTable *) func_02073238();
+  DispatchFn fn;
   if ((flags & 0xc00000) == 0)
   {
     flags |= __ieee_status(0, 0) & 0xc00000;
@@ -218,23 +241,23 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
   switch (flags & 0x7c000000)
   {
     case 0x40000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0x14));
+      fn = table->handler[4];
       break;
 
     case 0x04000000:
-      fn = *((DispatchFn *) (((char *) fn) + 4));
+      fn = table->handler[0];
       break;
 
     case 0x10000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0xc));
+      fn = table->handler[2];
       break;
 
     case 0x20000000:
-      fn = *((DispatchFn *) (((char *) fn) + 0x10));
+      fn = table->handler[3];
       break;
 
     case 0x08000000:
-      fn = *((DispatchFn *) (((char *) fn) + 8));
+      fn = table->handler[1];
       break;
 
     default:
@@ -245,7 +268,7 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
   if (fn == 0)
   {
-    func_0207037c(2);
+    raise(2);
   }
   fn(a0, p1, p2, flags);
 }
@@ -253,8 +276,12 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206df14
-/* Heap-walk helper: consults func_0206e06c for each of three records. */
+/* MSL __flush_all's shape over the three console FILEs of the __files table
+   at data_0209a330 (0x4c bytes each): flush (func_0206e06c, fflush's place)
+   every FILE whose file_kind, bits 7..9 of the mode word at +4, is not
+   closed, and return -1 if any flush fails. Spirit Tracks' __flush_all
+   (ansi_files.c) has this body statement for statement, and fflush(NULL)
+   (func_0206e06c) calls it as MSL's does; the rename is a follow-up. */
 extern char data_0209a330[];
 typedef struct S6e06c S6e06c;
 int func_0206e06c(S6e06c *p);
@@ -558,7 +585,7 @@ extern unsigned char *parse_format(unsigned char *format_string, char **arg, pri
 
 extern int func_0206e450(char *obj, const void *src, unsigned int n);
 extern int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
-                         const unsigned char *format_str, char *arg);
+                        const unsigned char *format_str, char *arg);
 extern char *float2str(double x, char *buff_end, print_format format);
 extern char *double2hex(double x, char *buff_end, print_format format);
 extern char *longlong2str(long long num, char *buff_end, print_format format);
@@ -640,7 +667,7 @@ unsigned int func_0206e3dc(char *buf, unsigned int len,
     ctx.len = len;
     ctx.z = 0;
     r = __pformatter((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
-                      (const unsigned char *)fmtAddr, (char *)val);
+                     (const unsigned char *)fmtAddr, (char *)val);
     if (buf == 0) return r;
     if (r < len) {
         buf[r] = 0;
@@ -683,7 +710,7 @@ int func_0206e450(char *obj, const void *src, unsigned int n)
  */
 // @symbol __pformatter
 int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
-                  const unsigned char *format_str, char *arg)
+                 const unsigned char *format_str, char *arg)
 {
     int num_chars;
     long long long_long_num;

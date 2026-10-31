@@ -27,7 +27,7 @@
 // for five stores without ever re-materialising it. mwccarm compiling equivalent C emits a
 // callee-saved spill and a real frame; this has neither.
 
-extern void *func_0207322c(void);
+extern unsigned int *func_0207322c(void);
 extern void *func_02073238(void);
 
 asm void _fp_init(void)

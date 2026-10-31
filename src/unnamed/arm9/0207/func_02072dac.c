@@ -1,63 +1,64 @@
-struct E {
-    int f0;
-    int f4;
-    int f8;
+/* An exception index entry: start address, size with the inline flag in
+   bit 0, then the action table, or the table itself when inline. */
+struct EHIndexEntry {
+    unsigned int start;
+    unsigned int sizeFlags;
+    int table;
 };
 
-struct S {
-    int f0;
-    unsigned char *f1;
-    int f2;
-    struct E *f3;
-    struct E *f4;
+struct EHTableInfo {
+    int start;
+    unsigned char *table;
+    int action;
+    struct EHIndexEntry *indexBegin;
+    struct EHIndexEntry *indexEnd;
 };
 
-extern int func_02071844(struct S *p, int v);
-extern struct E *func_02072ed0(struct E *base, int count, unsigned int key);
+extern int func_02071844(struct EHTableInfo *info, int pc);
+extern struct EHIndexEntry *func_02072ed0(struct EHIndexEntry *base, int count, unsigned int key);
 extern unsigned char *func_0207180c(unsigned char *p);
 extern unsigned char *func_02071a50(unsigned char *p, int *out);
 
-/* EH runtime: find the action table that covers the code address r4. The
+/* EH runtime: find the action table that covers the code address pc. The
    index entries {start, size with an inline flag in bit 0, table} are
    searched with func_02072ed0. The table is stored inline in the entry
    when bit 0 is set, otherwise it is a pointer. After the header
    (func_0207180c) come {gap, length, action offset} varint records. The
-   record covering r4 sets sb->f2 to the table plus its action offset; f1
-   and f2 stay 0 when nothing covers it. */
-void func_02072dac(int r4, struct S *sb)
-{
-    struct E *e;
+   record covering pc sets info->action to the table plus its action
+   offset; table and action stay 0 when nothing covers it. */
+void func_02072dac(int pc, struct EHTableInfo *info) {
+    struct EHIndexEntry *e;
     unsigned char *p;
-    int a, b, c;
+    int gap, length, actionOffset;
     unsigned int end;
     unsigned int acc;
     unsigned int tmp;
 
-    sb->f1 = 0;
-    sb->f2 = 0;
-    if (!func_02071844(sb, r4))
+    info->table = 0;
+    info->action = 0;
+    if (!func_02071844(info, pc))
         return;
-    e = func_02072ed0(sb->f3, sb->f4 - sb->f3, (unsigned int)r4);
+    e = func_02072ed0(info->indexBegin, info->indexEnd - info->indexBegin, (unsigned int)pc);
     if (!e)
         return;
-    if (e->f4 & 1)
-        sb->f1 = (unsigned char *)&e->f8;
+    if (e->sizeFlags & 1)
+        info->table = (unsigned char *)&e->table;
     else
-        sb->f1 = (unsigned char *)e->f8;
-    sb->f0 = e->f0;
-    end = (unsigned int)(r4 - e->f0);
-    p = func_0207180c(sb->f1);
+        info->table = (unsigned char *)e->table;
+    info->start = e->start;
+    end = (unsigned int)(pc - e->start);
+    p = func_0207180c(info->table);
     acc = 0;
     do {
-        p = func_02071a50(p, &a);
-        if (a == 0)
+        p = func_02071a50(p, &gap);
+        if (gap == 0)
             return;
-        p = func_02071a50(p, &b);
-        p = func_02071a50(p, &c);
-        tmp = acc + (unsigned int)a;
+        p = func_02071a50(p, &length);
+        p = func_02071a50(p, &actionOffset);
+        tmp = acc + (unsigned int)gap;
         if (end < tmp)
             return;
-        acc = tmp + (unsigned int)b;
+        acc = tmp + (unsigned int)length;
     } while (end > acc);
-    sb->f2 = (int)sb->f1 + c;
+    info->action = (int)info->table + actionOffset;
 }

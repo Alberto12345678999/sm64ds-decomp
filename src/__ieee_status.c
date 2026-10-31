@@ -21,7 +21,7 @@
 // and ip is not a frame any compiler builds -- mwccarm would move the arguments into
 // callee-saved registers and push those instead.
 
-extern void *func_0207322c(void);
+extern unsigned int *func_0207322c(void);
 
 asm unsigned int __ieee_status(unsigned int mask, unsigned int flags)
 {

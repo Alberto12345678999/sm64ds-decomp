@@ -2,8 +2,8 @@
 
 /* CodeWarrior exception runtime: fill the handler's CatchInfo from the throw
  * context. Src is the ThrowContext and CatchInfo the catch record, both with
- * the names func_02072168.c and func_02071f1c.c give them; the Src tag stays
- * so the definition keeps agreeing with func_02071be8.c's declaration. A '*'
+ * the names func_02072168.cpp and func_02071f1c.c give them; the Src tag stays
+ * so the definition keeps agreeing with func_02071be8.cpp's declaration. A '*'
  * type string marks a pointer catch: the handler gets a copy of the adjusted
  * pointer in mPointerCopy and mSublocation points at it. */
 typedef struct Src {

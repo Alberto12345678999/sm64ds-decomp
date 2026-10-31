@@ -2,7 +2,7 @@
 #include "WmWork.h"
 extern char *data_020a9db4;
 extern int data_0209a088;
-extern void func_020690b0(void);
+extern void func_020690b0(char *arg0);
 extern int func_02068a28(int a, int b, int c, int d, int e);
 
 /* Queue one MP send. Fails (1) until MP has started or while a reset is
