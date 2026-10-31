@@ -15,7 +15,7 @@ extern int func_ov007_020c3ba8(int);
 extern void *func_ov007_020c3df4(const char *name, int b);
 extern void *func_ov007_020c9388(int initialState);
 extern void func_ov007_020c937c(void *state);
-extern int func_ov007_020c3d1c(void *);
+extern void func_ov007_020c3d1c(void *);
 extern void func_ov007_020c92d0(Ov007MenuState *state);
 
 /* Steps wave i over the mesh: while it holds a line and keepChance wins it
@@ -112,12 +112,12 @@ Ov007MeshWave *func_ov007_020ca2a8(Ov007MeshWaveParams *params) {
 }
 
 /* Frees a mesh wave and its four wave states. */
-int func_ov007_020ca26c(Ov007MeshWave *wave) {
+void func_ov007_020ca26c(Ov007MeshWave *wave) {
     int i;
     for (i = 0; i < 4; i++) {
         func_ov007_020c937c(wave->waves[i]);
     }
-    return func_ov007_020c3d1c(wave);
+    func_ov007_020c3d1c(wave);
 }
 
 /* One tick of a mesh wave over mesh: once the delay has run out, ticks the

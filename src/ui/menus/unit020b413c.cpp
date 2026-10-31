@@ -109,7 +109,7 @@ extern "C" {
 
 extern void func_ov007_020ae834(Ov007Item *item);
 extern Ov007Item *func_ov007_020aea6c(int id, Ov007ItemLayout *layout, Ov007HitBox *hitBox);
-extern int func_ov007_020aea4c(Ov007Item *item);
+extern void func_ov007_020aea4c(Ov007Item *item);
 extern void func_ov007_020aec94(int choice);
 extern int func_ov007_020b58e4(Ov007ItemView *view);
 extern void func_ov007_020b5bf0(Ov007ItemView *view);
