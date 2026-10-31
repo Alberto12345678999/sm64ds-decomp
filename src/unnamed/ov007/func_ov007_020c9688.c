@@ -91,7 +91,9 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
     u32 nA;
     u32 nB;
     u32 cnt;
-    // The other callers of func_ov007_020c3df4 pass a literal 0 or a name string; this named local is deliberate (one of the near-miss row's nine zero-plumbing shapes).
+    // The other callers of func_ov007_020c3df4 pass a literal 0 or a name
+    // string; this named local is deliberate (one of the near-miss row's
+    // nine zero-plumbing shapes).
     const char *heap = 0;
     Ov007OamAttrs attrs;
     Ov007BinFile file;
