@@ -16,8 +16,9 @@
  * than pret's: there is no FS_LoadOverlayImage, FS_LoadOverlayImageAsync,
  * FS_LoadOverlay or FSi_GetOverlayBinarySize, FSi_LoadOverlayInfoCore stops
  * after the header (no file_pos), and FS_StartOverlay has no DC_FlushRange
- * step. The game keeps its own copies of the loaders (func_02018b64 and
- * func_02018c00).
+ * step. The game keeps its own copies of the loaders: FS_LoadOverlay at
+ * 0x02018ad0, func_02018b64 (FS_LoadOverlayImage) and func_02018c00
+ * (FS_LoadOverlayInfo).
  */
 #include "types.h"
 #include "CP15.h"

@@ -12,7 +12,7 @@
  * PushCommand_impl last. mwccarm emits the bodies in reverse, so the ROM
  * runs from PushCommand_impl at 0x0205a86c up to SND_StartSeq at 0x0205adc4.
  * The linker dropped what the game never calls. This SDK is older than
- * pret's, and its command numbers are lower (see SND_COMMAND below).
+ * pret's, and its command numbers are lower (see SND_CMD_* below).
  * SND_SetTrackModDepth and SND_SetTrackModSpeed, which pret's file leaves
  * out, sit after SND_SetTrackPan in the order of pret's SND_interface.h.
  */
