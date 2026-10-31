@@ -5,7 +5,7 @@ extern "C" {
 extern void func_ov007_020c8440(void *p);
 extern void func_ov007_020c8098(void *p);
 extern void func_ov007_020c78dc(void *p);
-extern int func_ov007_020c3d1c(void *p);
+extern void func_ov007_020c3d1c(void *p);
 
 /* Frees the swing: its side points (func_ov007_020c8440) and links
  * (func_ov007_020c8098), the chain (func_ov007_020c78dc), the chain's

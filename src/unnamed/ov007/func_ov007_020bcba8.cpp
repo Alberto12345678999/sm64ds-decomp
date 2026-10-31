@@ -10,7 +10,7 @@ extern "C" {
 extern void *func_ov007_020b3f20(int n);
 extern void *func_02054ea8(void);
 extern int func_02054d88(void);
-extern void func_ov007_020b8548(void *unused, int sheet, int baseTile, void *plane0, void *plane1,
+extern void func_ov007_020b8548(void *unused, void *sheet, int baseTile, void *plane0, void *plane1,
                                 int plane2, void *bank);
 extern void func_ov007_020c32e8(Ov007Palette *pal, int target, unsigned int row, int skip);
 extern void func_ov007_020b3edc(int r0);
@@ -37,7 +37,7 @@ void func_ov007_020bcba8(int idx) {
         void *subBg1 = G2S::GetBG1CharPtr();
         void *messages = g->settings->bootArgs->messages;
         int langFile;
-        func_ov007_020b8548(0, (int)sheet, 0, mainBg1, subBg1, 0, messages);
+        func_ov007_020b8548(0, sheet, 0, mainBg1, subBg1, 0, messages);
 
         GX::LoadOBJ(s->characters[1]->tiles, 0, 0x2000);
         func_ov007_020c32e8(s->palettes[1], 0, 0, 0);
@@ -63,7 +63,7 @@ void func_ov007_020bcba8(int idx) {
         void *subBg1 = G2S::GetBG1CharPtr();
         int mainBg3 = func_02054d88();
         void *messages = g->settings->bootArgs->messages;
-        func_ov007_020b8548(0, (int)sheet, 0, mainBg1, subBg1, mainBg3, messages);
+        func_ov007_020b8548(0, sheet, 0, mainBg1, subBg1, mainBg3, messages);
 
         func_ov007_020bcdb8(2);
         func_ov007_020c33d0(s->characters[3], 9, 0);

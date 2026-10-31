@@ -1,8 +1,8 @@
 #include "Ov007Tween.h"
 
-void func_ov007_020c90c0(char *c)
-{
-    Ov007Tween *tw = (Ov007Tween *)c;
+/* Mode 0 step, shared by the scalar and vector tweens: advances t by step
+ * and, once t has reached 0x1000, holds it there and sets state 2. */
+void func_ov007_020c90c0(Ov007Tween *tw) {
     short value = tw->t;
 
     if (value >= 0x1000) {

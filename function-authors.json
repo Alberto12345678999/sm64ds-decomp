@@ -75,7 +75,7 @@
     },
     "arm9:0x02004800": {
       "author": "ruspecial",
-      "name": "Entry"
+      "name": "_start"
     },
     "arm9:0x020048d8": {
       "author": "tangosdev",
@@ -91,7 +91,7 @@
     },
     "arm9:0x020049f0": {
       "author": "tangosdev",
-      "name": "_ZN4CP1511SystemSetupEv"
+      "name": "init_cp15"
     },
     "arm9:0x02005000": {
       "author": "tangosdev",
@@ -187,7 +187,7 @@
     },
     "arm9:0x02007000": {
       "author": "tangosdev",
-      "name": "main"
+      "name": "NitroMain"
     },
     "arm9:0x0200705c": {
       "author": "andrewboudreau",
@@ -9543,27 +9543,27 @@
     },
     "arm9:0x02057410": {
       "author": "ruspecial",
-      "name": "func_02057410"
+      "name": "OS_VSNPrintf"
     },
     "arm9:0x02057ce8": {
       "author": "tangosdev",
-      "name": "func_02057ce8"
+      "name": "OS_VSPrintf"
     },
     "arm9:0x02057d00": {
       "author": "tangosdev",
-      "name": "func_02057d00"
+      "name": "OS_SPrintf"
     },
     "arm9:0x02057d30": {
       "author": "ruspecial",
-      "name": "func_02057d30"
+      "name": "string_put_string"
     },
     "arm9:0x02057d94": {
       "author": "ruspecial",
-      "name": "func_02057d94"
+      "name": "string_fill_char"
     },
     "arm9:0x02057e00": {
       "author": "lplaat",
-      "name": "func_02057e00"
+      "name": "string_put_char"
     },
     "arm9:0x02057e30": {
       "author": "tangosdev",
@@ -9655,11 +9655,11 @@
     },
     "arm9:0x0205865c": {
       "author": "tangosdev",
-      "name": "func_0205865c"
+      "name": "OSi_IsRunOnDebugger"
     },
     "arm9:0x02058690": {
       "author": "ruspecial",
-      "name": "func_02058690"
+      "name": "OSi_GetDeviceType"
     },
     "arm9:0x02058764": {
       "author": "tangosdev",
@@ -9667,7 +9667,7 @@
     },
     "arm9:0x020587dc": {
       "author": "tangosdev",
-      "name": "func_020587dc"
+      "name": "OS_IsRunOnEmulator"
     },
     "arm9:0x020587e4": {
       "author": "ruspecial",
@@ -9963,7 +9963,7 @@
     },
     "arm9:0x02059f2c": {
       "author": "ruspecial",
-      "name": "func_02059f2c"
+      "name": "OS_GetMacAddress"
     },
     "arm9:0x02059f48": {
       "author": "tangosdev",
@@ -9971,19 +9971,19 @@
     },
     "arm9:0x02059f58": {
       "author": "lplaat",
-      "name": "func_02059f58"
+      "name": "MI_StopDma"
     },
     "arm9:0x02059fa8": {
       "author": "tangosdev",
-      "name": "func_02059fa8"
+      "name": "MI_WaitDma"
     },
     "arm9:0x02059fd0": {
       "author": "tangosdev",
-      "name": "func_02059fd0"
+      "name": "MI_DmaCopy32Async"
     },
     "arm9:0x0205a064": {
       "author": "ruspecial",
-      "name": "func_0205a064"
+      "name": "MI_DmaFill32Async"
     },
     "arm9:0x0205a10c": {
       "author": "tangosdev",
@@ -9999,15 +9999,15 @@
     },
     "arm9:0x0205a21c": {
       "author": "tangosdev",
-      "name": "func_0205a21c"
+      "name": "MIi_DMACallback"
     },
     "arm9:0x0205a290": {
       "author": "tangosdev",
-      "name": "func_0205a290"
+      "name": "MIi_FIFOCallback"
     },
     "arm9:0x0205a358": {
       "author": "tangosdev",
-      "name": "func_0205a358"
+      "name": "MI_SendGXCommandAsync"
     },
     "arm9:0x0205a448": {
       "author": "tangosdev",
@@ -10063,15 +10063,15 @@
     },
     "arm9:0x0205a82c": {
       "author": "tangosdev",
-      "name": "func_0205a82c"
+      "name": "SND_Init"
     },
     "arm9:0x0205a86c": {
       "author": "tangosdev",
-      "name": "Snd_SendCommand"
+      "name": "PushCommand_impl"
     },
     "arm9:0x0205a8c4": {
       "author": "tangosdev",
-      "name": "func_0205a8c4"
+      "name": "SNDi_SetSurroundDecay"
     },
     "arm9:0x0205a8f0": {
       "author": "tangosdev",
@@ -10083,35 +10083,35 @@
     },
     "arm9:0x0205a958": {
       "author": "tangosdev",
-      "name": "func_0205a958"
+      "name": "SND_SetOutputSelector"
     },
     "arm9:0x0205a98c": {
       "author": "tangosdev",
-      "name": "func_0205a98c"
+      "name": "SND_InvalidateWaveData"
     },
     "arm9:0x0205a9b8": {
       "author": "tangosdev",
-      "name": "func_0205a9b8"
+      "name": "SND_InvalidateBankData"
     },
     "arm9:0x0205a9e4": {
       "author": "tangosdev",
-      "name": "func_0205a9e4"
+      "name": "SND_InvalidateSeqData"
     },
     "arm9:0x0205aa10": {
       "author": "tangosdev",
-      "name": "func_0205aa10"
+      "name": "SND_SetupChannelPcm"
     },
     "arm9:0x0205aa68": {
       "author": "tangosdev",
-      "name": "func_0205aa68"
+      "name": "SND_SetChannelVolume"
     },
     "arm9:0x0205aa9c": {
       "author": "tangosdev",
-      "name": "func_0205aa9c"
+      "name": "SND_UnlockChannel"
     },
     "arm9:0x0205aac8": {
       "author": "tangosdev",
-      "name": "func_0205aac8"
+      "name": "SND_LockChannel"
     },
     "arm9:0x0205aaf4": {
       "author": "tangosdev",
@@ -10119,19 +10119,19 @@
     },
     "arm9:0x0205ab28": {
       "author": "tangosdev",
-      "name": "func_0205ab28"
+      "name": "SND_SetupAlarm"
     },
     "arm9:0x0205ab6c": {
       "author": "tangosdev",
-      "name": "func_0205ab6c"
+      "name": "SND_SetupCapture"
     },
     "arm9:0x0205abb8": {
       "author": "tangosdev",
-      "name": "func_0205abb8"
+      "name": "SND_StopTimer"
     },
     "arm9:0x0205ac28": {
       "author": "tangosdev",
-      "name": "func_0205ac28"
+      "name": "SND_StartTimer"
     },
     "arm9:0x0205ac5c": {
       "author": "tangosdev",
@@ -10167,7 +10167,7 @@
     },
     "arm9:0x0205ad6c": {
       "author": "tangosdev",
-      "name": "func_0205ad6c"
+      "name": "SND_PauseSeq"
     },
     "arm9:0x0205ad98": {
       "author": "tangosdev",
@@ -10179,107 +10179,107 @@
     },
     "arm9:0x0205adf8": {
       "author": "tangosdev",
-      "name": "func_0205adf8"
+      "name": "AllocCommand"
     },
     "arm9:0x0205ae30": {
       "author": "tangosdev",
-      "name": "func_0205ae30"
+      "name": "RequestCommandProc"
     },
     "arm9:0x0205ae64": {
       "author": "tangosdev",
-      "name": "func_0205ae64"
+      "name": "InitPXI"
     },
     "arm9:0x0205aed0": {
       "author": "tangosdev",
-      "name": "func_0205aed0"
+      "name": "PxiFifoCallback"
     },
     "arm9:0x0205af00": {
       "author": "tangosdev",
-      "name": "func_0205af00"
+      "name": "SND_CountWaitingCommand"
     },
     "arm9:0x0205af20": {
       "author": "tangosdev",
-      "name": "func_0205af20"
+      "name": "SND_CountReservedCommand"
     },
     "arm9:0x0205af4c": {
       "author": "tangosdev",
-      "name": "func_0205af4c"
+      "name": "SND_CountFreeCommand"
     },
     "arm9:0x0205af78": {
       "author": "tangosdev",
-      "name": "func_0205af78"
+      "name": "SND_IsFinishedCommandTag"
     },
     "arm9:0x0205afb4": {
       "author": "tangosdev",
-      "name": "func_0205afb4"
+      "name": "SND_GetCurrentCommandTag"
     },
     "arm9:0x0205afe0": {
       "author": "tangosdev",
-      "name": "func_0205afe0"
+      "name": "SND_WaitForCommandProc"
     },
     "arm9:0x0205b070": {
       "author": "andrewboudreau",
-      "name": "func_0205b070"
+      "name": "SND_FlushCommand"
     },
     "arm9:0x0205b1a4": {
       "author": "tangosdev",
-      "name": "func_0205b1a4"
+      "name": "SND_PushCommand"
     },
     "arm9:0x0205b1d8": {
       "author": "tangosdev",
-      "name": "func_0205b1d8"
+      "name": "SND_AllocCommand"
     },
     "arm9:0x0205b274": {
       "author": "tangosdev",
-      "name": "func_0205b274"
+      "name": "SND_RecvCommandReply"
     },
     "arm9:0x0205b358": {
       "author": "tangosdev",
-      "name": "func_0205b358"
+      "name": "SND_CommandInit"
     },
     "arm9:0x0205b470": {
       "author": "tangosdev",
-      "name": "func_0205b470"
+      "name": "SNDi_CallAlarmHandler"
     },
     "arm9:0x0205b4d0": {
       "author": "ruspecial",
-      "name": "func_0205b4d0"
+      "name": "SNDi_SetAlarmHandler"
     },
     "arm9:0x0205b504": {
       "author": "ruspecial",
-      "name": "func_0205b504"
+      "name": "SNDi_IncAlarmId"
     },
     "arm9:0x0205b524": {
       "author": "tangosdev",
-      "name": "func_0205b524"
+      "name": "SND_AlarmInit"
     },
     "arm9:0x0205b554": {
       "author": "tangosdev",
-      "name": "func_0205b554"
+      "name": "SNDi_InitSharedWork"
     },
     "arm9:0x0205b5d4": {
       "author": "tangosdev",
-      "name": "func_0205b5d4"
+      "name": "SNDi_GetFinishedCommandTag"
     },
     "arm9:0x0205b608": {
       "author": "tangosdev",
-      "name": "func_0205b608"
+      "name": "SND_GetPlayerStatus"
     },
     "arm9:0x0205b63c": {
       "author": "tangosdev",
-      "name": "func_0205b63c"
+      "name": "SND_CalcChannelVolume"
     },
     "arm9:0x0205b6b0": {
       "author": "tangosdev",
-      "name": "func_0205b6b0"
+      "name": "SND_DestroyWaveArc"
     },
     "arm9:0x0205b6f4": {
       "author": "tangosdev",
-      "name": "func_0205b6f4"
+      "name": "SND_DestroyBank"
     },
     "arm9:0x0205b78c": {
       "author": "tangosdev",
-      "name": "func_0205b78c"
+      "name": "SND_AssignWaveArc"
     },
     "arm9:0x0205b858": {
       "author": "ruspecial",
@@ -10951,7 +10951,7 @@
     },
     "arm9:0x020618b8": {
       "author": "tangosdev",
-      "name": "func_020618b8"
+      "name": "WM_GetLinkLevel"
     },
     "arm9:0x02061960": {
       "author": "tangosdev",
@@ -10959,15 +10959,15 @@
     },
     "arm9:0x020619ac": {
       "author": "tangosdev",
-      "name": "func_020619ac"
+      "name": "WM_ReadMPData"
     },
     "arm9:0x02061ab0": {
       "author": "tangosdev",
-      "name": "func_02061ab0"
+      "name": "WM_GetMPReceiveBufferSize"
     },
     "arm9:0x02061b9c": {
       "author": "tangosdev",
-      "name": "func_02061b9c"
+      "name": "WM_GetMPSendBufferSize"
     },
     "arm9:0x02061c20": {
       "author": "tangosdev",
@@ -10983,15 +10983,15 @@
     },
     "arm9:0x02061d30": {
       "author": "tangosdev",
-      "name": "func_02061d30"
+      "name": "WM_Disconnect"
     },
     "arm9:0x02061e38": {
       "author": "tangosdev",
-      "name": "func_02061e38"
+      "name": "WM_StartConnect"
     },
     "arm9:0x02061ee4": {
       "author": "tangosdev",
-      "name": "func_02061ee4"
+      "name": "WM_StartScan"
     },
     "arm9:0x02061fdc": {
       "author": "tangosdev",
@@ -10999,11 +10999,11 @@
     },
     "arm9:0x02062024": {
       "author": "tangosdev",
-      "name": "func_02062024"
+      "name": "WmCheckParentParameter"
     },
     "arm9:0x020620b0": {
       "author": "tangosdev",
-      "name": "func_020620b0"
+      "name": "WM_SetParentParameter"
     },
     "arm9:0x020621b8": {
       "author": "tangosdev",
@@ -11035,11 +11035,11 @@
     },
     "arm9:0x020623ec": {
       "author": "tangosdev",
-      "name": "func_020623ec"
+      "name": "WM_SetMPDataToPort"
     },
     "arm9:0x02062428": {
       "author": "andrewboudreau",
-      "name": "func_02062428"
+      "name": "WM_SetMPDataToPortEx"
     },
     "arm9:0x0206259c": {
       "author": "tangosdev",
@@ -11047,11 +11047,11 @@
     },
     "arm9:0x020625fc": {
       "author": "andrewboudreau",
-      "name": "func_020625fc"
+      "name": "WM_StartMPEx"
     },
     "arm9:0x02062734": {
       "author": "tangosdev",
-      "name": "func_02062734"
+      "name": "WmGetSharedDataAddress"
     },
     "arm9:0x02062778": {
       "author": "tangosdev",
@@ -11059,23 +11059,23 @@
     },
     "arm9:0x020627e8": {
       "author": "tangosdev",
-      "name": "func_020627e8"
+      "name": "WmDataSharingSendDataSet"
     },
     "arm9:0x02062990": {
       "author": "tangosdev",
-      "name": "func_02062990"
+      "name": "WmDataSharingReceiveData"
     },
     "arm9:0x02062aa4": {
       "author": "tangosdev",
-      "name": "func_02062aa4"
+      "name": "WmDataSharingReceiveCallback_Child"
     },
     "arm9:0x02062bdc": {
       "author": "tangosdev",
-      "name": "func_02062bdc"
+      "name": "WmDataSharingReceiveCallback_Parent"
     },
     "arm9:0x02062d10": {
       "author": "tangosdev",
-      "name": "func_02062d10"
+      "name": "WmDataSharingSetDataCallback"
     },
     "arm9:0x02062df0": {
       "author": "andrewboudreau",
@@ -11091,15 +11091,15 @@
     },
     "arm9:0x02063574": {
       "author": "tangosdev",
-      "name": "func_02063574"
+      "name": "WM_SetLifeTime"
     },
     "arm9:0x020635d8": {
       "author": "tangosdev",
-      "name": "func_020635d8"
+      "name": "WM_SetBeaconIndication"
     },
     "arm9:0x02063648": {
       "author": "tangosdev",
-      "name": "func_02063648"
+      "name": "WM_SetGameInfo"
     },
     "arm9:0x02063718": {
       "author": "tangosdev",

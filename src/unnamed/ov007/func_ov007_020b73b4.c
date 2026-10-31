@@ -10,7 +10,7 @@ extern void func_ov007_020c8b04(void *p);
 extern void func_ov007_020c3544(void *p);
 extern void func_ov007_020c338c(void *p);
 extern void func_ov007_020c121c(void *p);
-extern int func_ov007_020c1180(Ov007OamNode *node);
+extern void func_ov007_020c1180(Ov007OamNode *node);
 extern void func_ov007_020c0a9c(void *p);
 
 /* Frees the display record and everything its tables hold. One untyped

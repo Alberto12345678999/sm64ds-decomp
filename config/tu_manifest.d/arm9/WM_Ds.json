@@ -1,0 +1,117 @@
+{
+  "id": "arm9/WM_Ds",
+  "module": "arm9",
+  "source": "src/engine/wm/WM_Ds.cpp",
+  "promoted_source": "src/engine/wm/WM_Ds.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's wm_ds.c, 0x02062734..0x020634fc: 9 functions, gapless in config/arm9/delinks.txt, identified by their bodies against pret's pokediamond WM_ds.s, which holds the same functions in the same address order. WmGetSharedDataAddress steps receiveBuf by dataLength for each aidBitmap bit below aid (pret's counts them with MATH_CountPopulation). WM_GetSharedDataAddress checks dsInfo, receiveData and the receivedBitmap bit and calls it with receiveData+4. WmDataSharingSendDataSet, with ds[writeIndex].aidHeader clear, steps writeIndex, clears the next set (the one after in double mode), writes the headers and sends the set with WmDataSharingSetDataCallback; 7 counts it sent. WmDataSharingReceiveData finds the member's slot through WmGetSharedDataAddress, copies or clears it, and moves the bit from aidHeader to receivedBitmap under disabled interrupts. WmDataSharingReceiveCallback_Child copies a PORT_RECV set into ds[writeIndex]. WmDataSharingReceiveCallback_Parent calls WmDataSharingReceiveData and WmDataSharingSendDataSet on PORT_RECV, the send alone on CONNECTED, and drops the member's bit on DISCONNECTED. WmDataSharingSetDataCallback reads the port's callback argument and handles errcode 0 and 0xa. WM_StepDataSharing and WM_StartDataSharing were already named.",
+    "Order: mwccarm emits the bodies in reverse, so the source lists them from WM_StartDataSharing down to WmGetSharedDataAddress. Older SDK: WM_EndDataSharing (pret's, between WM_StepDataSharing and WM_StartDataSharing) is absent, the sets go out with WM_SetMPDataToPort rather than WM_SetMPDataToPortEx, and a failed send sets state 3, not 5.",
+    "BOTTOM EDGE: WM_StartMPEx (0x020625fc..0x02062734), wm_mp.c.",
+    "TOP EDGE: WM_MeasureChannel at 0x020634fc, the lowest function of wm_etc.c (arm9/WM_Etc)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02062734",
+      "end": "0x020634fc"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "WmGetSharedDataAddress",
+      "address": "0x02062734",
+      "size": "0x00000044",
+      "legacy_source": "src/unnamed/arm9/0206/func_02062734.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "WM_GetSharedDataAddress",
+      "address": "0x02062778",
+      "size": "0x00000070",
+      "legacy_source": "src/WM_GetSharedDataAddress.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "WmDataSharingSendDataSet",
+      "address": "0x020627e8",
+      "size": "0x000001a8",
+      "legacy_source": "src/unnamed/arm9/0206/func_020627e8.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "WmDataSharingReceiveData",
+      "address": "0x02062990",
+      "size": "0x00000114",
+      "legacy_source": "src/unnamed/arm9/0206/func_02062990.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "WmDataSharingReceiveCallback_Child",
+      "address": "0x02062aa4",
+      "size": "0x00000138",
+      "legacy_source": "src/unnamed/arm9/0206/func_02062aa4.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "WmDataSharingReceiveCallback_Parent",
+      "address": "0x02062bdc",
+      "size": "0x00000134",
+      "legacy_source": "src/unnamed/arm9/0206/func_02062bdc.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "WmDataSharingSetDataCallback",
+      "address": "0x02062d10",
+      "size": "0x000000e0",
+      "legacy_source": "src/unnamed/arm9/0206/func_02062d10.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "WM_StepDataSharing",
+      "address": "0x02062df0",
+      "size": "0x000003ec",
+      "legacy_source": "src/WM_StepDataSharing.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "WM_StartDataSharing",
+      "address": "0x020631dc",
+      "size": "0x00000320",
+      "legacy_source": "src/WM_StartDataSharing.cpp",
+      "ordinal": 8
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Overlay: tu_map cannot segment arm9/main.",
+    "C++ for CP15:: and IRQ::; every function keeps C linkage. The helpers pret has static keep external linkage: the ROM's symbols are global.",
+    "The pragmas each shard carried are kept around their functions: opt_common_subs off for WM_StartDataSharing, WM_StepDataSharing, WmDataSharingReceiveData and WmDataSharingSendDataSet, and opt_strength_reduction off for WM_StartDataSharing."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-WM_Ds/WM_Ds.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 9,
+    "functions_declared": 9,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

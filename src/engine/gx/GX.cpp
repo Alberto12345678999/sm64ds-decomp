@@ -4,8 +4,7 @@
  * 0x02056870, the last function of gx_load2d.c (src/engine/gx/GXS.cpp);
  * above is Copy48BytesFixed at 0x02056c1c.
  */
-// leftovers: the DMASyncWordTransfer declaration stays wide (local extern):
-// the definition's narrower channel inserts a narrowing op at the call. LoadTex's base/top stay plain int (the register web the bytes
+// leftovers: LoadTex's base/top stay plain int (the register web the bytes
 // were built against). BeginLoadTex's byte-offset table reads stay a char *
 // tower (indexing reschedules the body). data_02099fd0 is the render DMA
 // channel, -1 if none.
@@ -26,9 +25,9 @@ extern u16 data_02086326[];
 extern u16 data_02086328[];
 
 extern "C" {
-extern void func_02059fa8(int ch);
-extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
-// local extern: u8 channel per the definition inserts a narrowing op at the call
+extern void MI_WaitDma(u32 dmaNo);
+extern void MI_DmaCopy32Async(u32 dmaNo, const void *src, void *dest, u32 size,
+                              void (*callback)(void *), void *arg);
 extern void DMASyncWordTransfer(unsigned int channel, const void *src, void *dest, unsigned int len);
 extern void MultiCopy_Int(int *src, int *dst, int len);
 }
@@ -66,7 +65,7 @@ void LoadTex(const void *src, unsigned int offset, unsigned int size) {
             int ch = data_02099fd0;
             if (ch != -1) {
                 DMASyncWordTransfer(ch, src, (void*)d0, top);
-                func_02059fd0(data_02099fd0, (int)((char*)src + top), base, size - top, 0, 0);
+                MI_DmaCopy32Async(data_02099fd0, (char *)src + top, (void *)base, size - top, 0, 0);
                 return;
             }
             MultiCopy_Int((int*)src, (int*)d0, top);
@@ -75,7 +74,7 @@ void LoadTex(const void *src, unsigned int offset, unsigned int size) {
         }
     }
     if (data_02099fd0 != -1) {
-        func_02059fd0(data_02099fd0, (int)src, dst, size, 0, 0);
+        MI_DmaCopy32Async(data_02099fd0, src, (void *)dst, size, 0, 0);
         return;
     }
     MultiCopy_Int((int*)src, (int*)dst, size);
@@ -87,7 +86,7 @@ void LoadTex(const void *src, unsigned int offset, unsigned int size) {
 void EndLoadTex()
 {
     if (data_02099fd0 != -1) {
-        func_02059fa8(data_02099fd0);
+        MI_WaitDma(data_02099fd0);
     }
     SetBankForTex(data_020a60b8);
     data_020a60c0 = 0;
@@ -110,7 +109,7 @@ void LoadTexPltt(const void *src, u32 destSlotAddr, u32 size){
     void *dest = (void *)(data_020a60b0 + destSlotAddr);
     s32 dmaCh = data_02099fd0;
     if (dmaCh != -1) {
-        func_02059fd0(dmaCh, (int)src, (int)dest, size, 0, 0);
+        MI_DmaCopy32Async(dmaCh, src, dest, size, 0, 0);
     } else {
         MultiCopy_Int((int*)src, (int*)dest, size);
     }
@@ -120,7 +119,7 @@ void LoadTexPltt(const void *src, u32 destSlotAddr, u32 size){
 void EndLoadTexPltt(){
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
-        func_02059fa8(dmaId);
+        MI_WaitDma(dmaId);
     }
     SetBankForTexPltt(data_020a60b4);
     data_020a60b4 = 0;
