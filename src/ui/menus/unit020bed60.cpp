@@ -57,8 +57,9 @@ typedef struct Ov007MeshScene {
 
 typedef char Ov007MeshScene_size_must_be_0x30[sizeof(Ov007MeshScene) == 0x30 ? 1 : -1];
 
-/* Vector3's layout as a POD: a Vector3 local would make this object emit
- * Vector3's empty out-of-line destructor. */
+/* Vector3's layout as a POD, for func_ov007_020bee14's copy of the template
+ * point: the ROM copies it as one block, and a Vector3 assignment copies
+ * member by member. */
 typedef struct Ov007Point {
     Fix12i x, y, z;
 } Ov007Point;
@@ -106,9 +107,8 @@ void func_ov007_020beeb0(void);
 #define SCENE data_ov007_02104bd4
 
 /* func_ov007_020bf57c's copy of an Ov007Sprite. Ov007Sprite holds two
- * Vector3s, so in C++ a local of it emits Vector3's out-of-line destructor
- * and `buf = *e` copies member by member; the ROM copies the 0x88 bytes as
- * one block. The copy goes through the word view; the fields read through
+ * Vector3s, so in C++ `buf = *e` copies member by member; the ROM copies the
+ * 0x88 bytes as one block. The copy goes through the word view; the fields read through
  * the layout view, a POD twin of the slots the function names. The sprite
  * calls take the copy's address as the Ov007Sprite it holds. */
 typedef struct Ov007SpriteBits {
@@ -138,7 +138,7 @@ typedef char
  * func_ov007_020c30ac finds the mesh vertex nearest it. Returns its index,
  * or -1. */
 int func_ov007_020bf630(Ov007Mesh *mesh, Ov007Camera *camera, int x, int y, int arg5) {
-    Ov007Point local;
+    Vector3 local;
     func_ov007_020bfe4c(camera, x << 0xc, y << 0xc, -camera->distance, &local);
     {
         Ov007Grid *grid = mesh->grid;
