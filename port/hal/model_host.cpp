@@ -189,13 +189,6 @@ extern "C" void _ZN2GX7LoadTexEPKvjj(const void *s, unsigned o, unsigned z)
     GX::LoadTex(s, o, z);
 }
 
-// DMA fallback DMASyncWordTransfer uses; same synchronous copy semantics.
-extern "C" void DMAStartTransfer(int ch, int src, int dst, int ctrl);
-extern "C" void DMAStartTransferFB(unsigned char ch, u32 src, u32 dst, u32 ctrl)
-{
-    DMAStartTransfer(ch, (int)src, (int)dst, (int)ctrl);
-}
-
 // operator_new2 on the DS is a register-passthrough tail-call veneer to
 // func_0203cc0c; that shape breaks on cdecl (the callee would read the
 // wrong stack slot), so the host bridge passes the argument explicitly.

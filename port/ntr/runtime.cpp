@@ -199,6 +199,14 @@ extern "C" void DMAStartTransfer(int ch, int src, int dst, int ctrl) {
     }
 }
 
+// The ITCM DMA fallback src/engine/mi/MI_Dma.cpp's synchronous copies and
+// fills use (DMAStartTransferFB, src/DMAStartTransferFB.cpp); same
+// synchronous copy semantics. It lives here rather than in hal/model_host.cpp
+// because smoke_gx builds MI_Dma.cpp (for MI_WaitDma) without the model host.
+extern "C" void DMAStartTransferFB(unsigned char ch, unsigned src, unsigned dst, unsigned ctrl) {
+    DMAStartTransfer(ch, (int)src, (int)dst, (int)ctrl);
+}
+
 // ---------------------------------------------------------------------------
 // CP15 cache maintenance. The host has coherent memory, so these are no-ops --
 // but they must still exist, because the decomp calls them around every DMA.
