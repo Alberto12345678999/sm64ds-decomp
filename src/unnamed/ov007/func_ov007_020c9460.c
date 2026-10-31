@@ -3,7 +3,6 @@
 #pragma long_calls on
 extern void func_ov007_020c3d1c(void *p);
 
-void func_ov007_020c9460(void *p)
-{
+void func_ov007_020c9460(void *p) {
     func_ov007_020c3d1c(p);
 }

@@ -59,8 +59,7 @@ void func_ov007_020ca5f0(Ov007Mesh *mesh, Ov007MeshMaterial *mat, int *pos, int 
         int fx1 = FX_MUL(mesh->cellWidth, mat->warpS);
         int fx2 = FX_MUL(mesh->cellHeight, mat->warpT);
         func_ov007_020caeac(mesh->verts, mesh->vertexNormals, mesh->texOffsetS, mesh->texOffsetT,
-                            d0, d1, mat->texS, mat->texT, q1, q2, fx1, fx2,
-                            6);
+                            d0, d1, mat->texS, mat->texT, q1, q2, fx1, fx2, 6);
     } else {
         int n = (d1 * d0) << 1;
         if (n > 0) {
