@@ -71,7 +71,7 @@
  * a variable's name does not mangle. */
 extern "C" {
 
-void  Vec3_Asr(void *d, void *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 }
 
 /* Actor IDs 0xbf, 0x10b and 0x10c are PLAYER, UKIKI_THIEF and UKIKI_STAR.
@@ -158,7 +158,7 @@ void daMky_c::func_ov030_02111734()
     rc.SetObjAndLine(a, b, this);
 
     if (this->mPerchPosY - this->mPosY > 0x96000 || rc.DetectClsn()) {
-        Vec3_Asr(&asr, (Vector3 *)&this->mPerchPosX, 3);
+        Vec3_Asr((Vector3 *)&asr, (Vector3 *)&this->mPerchPosX, 3);
 
         if (data_0209f43c.TransformAndClip(data_0209b3ec, asr, 0x1f400, out) > 0xc350000) {
             this->mPosX = this->mPerchPosX;

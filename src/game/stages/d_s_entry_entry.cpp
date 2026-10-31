@@ -89,7 +89,6 @@ void SubVec3(const EntryMeshVec *, const EntryMeshVec *, EntryMeshVec *);
 void CrossVec3(const EntryMeshVec *, const EntryMeshVec *, EntryMeshVec *);
 void NormalizeVec3(const EntryMeshVec *, EntryMeshVec *);
 void Vec3_Sub(EntryMeshVec *, const EntryMeshVec *, const Vector3 *);
-void Vec3_Asr(EntryMeshVec *, const EntryMeshVec *, int);
 /* local extern: the BMD texture and palette VRAM loaders. */
 int func_02045ad8(const void *);
 unsigned int func_02045a50(const void *, unsigned int);
@@ -210,7 +209,7 @@ void EntryMesh::TouchAt(Vector3 *touch) {
     origin.y = 0x15e000;
     origin.z = -0x320000;
     Vec3_Sub(&out, &origin, touch);
-    Vec3_Asr(&r, &out, 3);
+    Vec3_Asr((Vector3 *)&r, (Vector3 *)&out, 3);
     r.x = r.x + 0xfa000;
     r.y = r.y + 0xfa000;
     StartRipple(r.x, r.y);

@@ -56,7 +56,7 @@ void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *, s32, s32, s32);
 void AddVec3(const Vector3 *, const Vector3 *, Vector3 *);
 int DecIfAbove0_Byte(void *);
 s32 RandomIntInternal(s32 *);
-void Vec3_Asr(Vector3 *, const Vector3 *, int);
+void Vec3_Asr(Vector3 *, Vector3 *, int);
 void MulVec3Mat4x3(const Vector3 *, const Matrix4x3 *, Vector3 *);
 void Vec3_LslInPlace(Vector3 *, int);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);

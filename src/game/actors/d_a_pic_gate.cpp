@@ -98,7 +98,7 @@ Fix12i fdiv(s32, s32);
 }
 
 extern "C" {
-void  Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
@@ -175,7 +175,7 @@ void daPicGate_c::func_ov080_02125460()
 void daPicGate_c::func_ov080_0212555c()
 {
     Vec3 v;
-    Vec3_Asr(&v, (Vec3 *)&mPosX, 3);
+    Vec3_Asr((Vector3 *)&v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68,
@@ -242,8 +242,8 @@ void daPicGate_c::func_ov080_021256f8()
     if (r5 == 0)
         return;
 
-    Vec3_Asr(&a, (Vec3 *)&r5->mPrevPosX, 3);
-    Vec3_Asr(&b, (Vec3 *)&r5->mPosX, 3);
+    Vec3_Asr((Vector3 *)&a, (Vector3 *)&r5->mPrevPosX, 3);
+    Vec3_Asr((Vector3 *)&b, (Vector3 *)&r5->mPosX, 3);
     data_020a0e68 = *(Matrix4x3 *)mInvMtx;
     MulVec3Mat4x3((Vector3 *)&a, &data_020a0e68, (Vector3 *)&oa);
     MulVec3Mat4x3((Vector3 *)&b, &data_020a0e68, (Vector3 *)&ob);

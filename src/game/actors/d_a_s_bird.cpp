@@ -89,7 +89,7 @@ extern int data_0209e650;
 /* local extern: no shared header declares these; their definitions take a
    file-local Vec3, and this TU passes raw field addresses. */
 extern "C" {
-extern void Vec3_Asr(void *dst, void *src, int n);
+extern void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
 extern void Vec3_Sub(void *out, void *a, void *b);
 extern s32 LenVec3(void *v);
 }
@@ -298,7 +298,7 @@ s32 daSBird_c::Render() {
 s32 daSBird_c::Behavior() {
     (this->*data_ov009_02113c48.slots[mState])();
     int tmp[3];
-    Vec3_Asr(tmp, &mPosX, 3);
+    Vec3_Asr((Vector3 *)tmp, (Vector3 *)&mPosX, 3);
     MtxStack::transS(tmp[0], tmp[1], tmp[2]);
     mAngleY = mPrevAngleY;
     Matrix4x3_ApplyInPlaceToRotationZ(&MtxStack::get(), mAngleZ);

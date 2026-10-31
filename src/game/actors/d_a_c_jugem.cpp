@@ -106,7 +106,7 @@ int   Vec3_HorzDist(const void *a, const void *b);
 s16   Vec3_HorzAngle(const void *a, const void *b);
 s16   Vec3_VertAngle(const void *a, const void *b);
 void  Vec3_Sub(void *out, const void *a, const void *b);
-void  Vec3_Asr(void *dst, const void *src, int sh);
+void Vec3_Asr(Vector3 *dst, Vector3 *src, int sh);
 int   Vec3_ApproachHorz(void *cur, const void *tgt, int maxStep);
 int   LenVec3(const void *v);
 int   AngleDiff(int a, int b);
@@ -810,7 +810,7 @@ int daC_Jugem_c::SetState(StateFn *record)
 void daC_Jugem_c::UpdateShadow()
 {
     V3 v;
-    Vec3_Asr(&v, &mPosX, 3);
+    Vec3_Asr((Vector3 *)&v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;
@@ -836,7 +836,8 @@ void daC_Jugem_c::UpdateShadowPlayer()
     signed char lvl;
     struct Vector3 *ps;
 
-    Vec3_Asr(&t, &mPosX, 3);
+    /* ::, because this function shadows Vector3 with the POD twin above. */
+    Vec3_Asr((::Vector3 *)&t, (::Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;

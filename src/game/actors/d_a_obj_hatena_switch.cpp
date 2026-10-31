@@ -72,7 +72,7 @@ static inline int IsOffScreen(dActor_c *actor) {
  * dBgW+0x1c store; naming belongs with dBgW. */
 extern "C" {
 extern void func_020393c4(dBgW *collider, void *callback);
-extern void Vec3_Asr(void *destination, const void *source, s32 shift);
+extern void Vec3_Asr(Vector3 *destination, Vector3 *source, s32 shift);
 }
 
 /* Retail static init constructs these 8-byte handles and registers their
@@ -291,7 +291,7 @@ s32 daObjHatenaSwitch_c::CleanupResources() {
 // @symbol _ZN19daObjHatenaSwitch_c20UpdateModelTransformEv
 void daObjHatenaSwitch_c::UpdateModelTransform() {
     s32 shifted[4];
-    Vec3_Asr(&shifted, &mPosX, 3);
+    Vec3_Asr((Vector3 *)&shifted, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shifted[0], shifted[1], shifted[2]);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     *(HatenaMatrixWords *)&mAnmModel.mat4x3 = *(HatenaMatrixWords *)&data_020a0e68;

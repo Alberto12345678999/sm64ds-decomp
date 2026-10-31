@@ -1045,7 +1045,7 @@ void *func_ov002_020e496c(Player *p); /* the player's current mBodyModels entry 
 void MulMat4x3Mat4x3(Matrix4x3 *m1, Matrix4x3 *m0, Matrix4x3 *mF);
 void Matrix4x3_FromTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *mF, short x, short y, short z);
-void Vec3_Asr(Vector3 *vF, const Vector3 *v, int amount);
+void Vec3_Asr(Vector3 *vF, Vector3 *v, int amount);
 void Vec3_Lsl(Vector3 *vF, const Vector3 *v, int amount);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 extern Matrix4x3 data_020a0e68;
@@ -1068,7 +1068,8 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     Vector3 asr;
-    Vec3_Asr(&asr, &vec, 3);
+    /* vec is a const reference; Vec3_Asr's definition is not const-qualified. */
+    Vec3_Asr(&asr, (Vector3 *)&vec, 3);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     mPosX = data_020a0e68.m[9];
     mPosY = data_020a0e68.m[10];

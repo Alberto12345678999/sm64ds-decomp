@@ -112,7 +112,7 @@ extern PknMtx43 data_020a0e68;           /* the shared scratch matrix */
 
 int   Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
-void  Vec3_Asr(PknVec3 *d, PknVec3 *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void  Vec3_LslInPlace(PknVec3 *v, int sh);
 void  SubVec3(PknVec3 *a, PknVec3 *b, PknVec3 *c);
 void  Matrix4x3_FromTranslation(PknMtx43 *m, int x, int y, int z);
@@ -756,7 +756,7 @@ void daPkn_c::UpdatePose()
     int lr;
     int scale;
 
-    Vec3_Asr(&L.v, (PknVec3 *)&mPosX, 3);
+    Vec3_Asr((Vector3 *)&L.v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, L.v.x, L.v.y, L.v.z);
     L.saved = data_020a0e68;
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
