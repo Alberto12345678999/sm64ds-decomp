@@ -2,7 +2,8 @@
 /* The multiboot library's use of the wireless manager (the Nitro SDK's
  * mb_wm_base.c), arm9 .text 0x0206879c..0x0206a318.
  *
- * The parent side sets up the WmWork (data_020a9db4, the SDK's sWmWork) in
+ * The parent side sets up the WmWork (data_020a9db4, the BW2 reconstruction's sWmWork;
+ * ntrtwl's p_mbi_param) in
  * func_02068e4c, starts the manager in func_02068ae8 and func_02068d08, and
  * answers its replies in func_02069994. The child side scans and connects in
  * func_020690b0. func_020688fc sends one MP frame for either side, and
@@ -35,7 +36,8 @@
  * keep their address names until a reference of this SDK's age turns up.
  *
  * This SDK is older than the reconstruction's. MB_Init takes the GGID in two
- * halves and copies no parent name, the parent side has no is_started_ex
+ * halves, resolves no MB_TGID_AUTO and sets no lifetimes or power-save flag,
+ * the parent side has no is_started_ex
  * path, no MBi_OnInitializeDone or MBi_EndCommon and no task thread, and
  * MBi_SendMP pads short frames to a minimum size.
  */
@@ -138,12 +140,12 @@ typedef struct {
 /* The WM API (WM_StartScan, WM_StartConnect, WM_StartMP, WM_SetLifeTime,
  * WM_SetParentParameter, WM_SetBeaconIndication and the rest). The callbacks
  * are WMCallbackFunc pointers, as in the SDK's headers. The definitions in
- * this tree still take them as ints, but passing a function cast to int
- * schedules differently from passing its address, so these declarations keep
- * the pointer the bytes need. */
-extern int WM_Initialize(int buf, void *callback, int dma);
+ * this tree still take them as ints. WM_Initialize and WM_Reset are declared
+ * that way; the rest keep a pointer, because a function cast to int at the
+ * func_02069994 call sites schedules differently from passing its address. */
+extern int WM_Initialize(int buf, int callback, int dma);
 extern int WM_SetIndCallback(void *callback);
-extern int WM_Reset(void *callback);
+extern int WM_Reset(int callback);
 extern int WM_End(void *callback);
 extern int WM_ReadStatus(int *status);
 extern int WM_StartParent(void *callback);
@@ -182,9 +184,10 @@ void MBi_SetMaxScanTime(u16 time);
 /* changeScanChannel: step the scan's channel to the next one the allowed mask
  * (WM_GetAllowedChannel) has, counting 1..16 and wrapping. Returns 0 when no
  * channel is allowed. When the current channel is the only one allowed it is
- * left as it is. Lead: the reconstruction's changeScanChannel steps a
- * WMScanExParam.channelList bitmask; this one steps WMScanParam.channel as a
- * number and tests bit channel-1. */
+ * left as it is. ntrtwl's changeScanChannel is this body statement for
+ * statement (stepping WMScanParam.channel as a number and testing bit
+ * channel-1); the BW2 reconstruction's steps a WMScanExParam.channelList
+ * bitmask instead. */
 int func_0206a29c(WmScanParam *param) {
     u16 mask;
     u16 v;
@@ -642,8 +645,8 @@ void func_020690b0(char *arg0) {
 }
 
 // @symbol MBi_GetBeaconPeriodDispersion
-/* A number from 0 to 19 from the console's MAC address and the time seed at
- * 0x027ffc3c; MB_Init adds it to the beacon period. */
+/* A number from 0 to 19 from the console's MAC address and the VBlank count at
+ * 0x027ffc3c (OS_GetVBlankCount); MB_Init adds it to the beacon period. */
 int MBi_GetBeaconPeriodDispersion(void) {
     u8 mac[6];
     u32 sum;
@@ -787,7 +790,7 @@ int func_02068d08(void) {
     *(short *)(data_020a9db4 + 0x1e48) = 0; /* in WmWork.pad_1e2e: no reader here */
     MBi_SetMaxScanTime(0xa);
     do {
-        ret = WM_Initialize((int)WM_WORK->wmSysBuf, (void *)WM_WORK->stateCallback, data_020a9db0);
+        ret = WM_Initialize((int)WM_WORK->wmSysBuf, (int)WM_WORK->stateCallback, data_020a9db0);
     } while (ret == 4);
     if (ret != 2)
         return 8;
@@ -871,7 +874,7 @@ int func_02068a74(void) {
         p->scanContinue = 0;
         /* through the global again: the ROM reloads data_020a9db4 here */
         WM_WORK->resetting = 1;
-        r = WM_Reset((void *)WM_WORK->stateCallback);
+        r = WM_Reset((int)WM_WORK->stateCallback);
         if (r == 2)
             return 0;
         return r;
