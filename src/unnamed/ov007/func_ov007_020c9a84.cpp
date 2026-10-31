@@ -5,10 +5,7 @@
 
 extern "C" {
 
-/* SubVec3 still defines its vector as its own struct Vec3;
-   declared as defined, the calls cast. */
-struct Vec3;
-extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
+extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern int func_020538b8(int x, int y);
 
 /* Turns the swing into the item sprite's pose (func_ov007_020beeb0 passes
@@ -28,11 +25,9 @@ void func_ov007_020c9a84(Ov007Swing *self, Vector3 *offset, u16 *rotX, u16 *rotY
         int n = p->count - 1;
         offset->y = base[n].y;
     }
-    SubVec3((struct Vec3 *)&self->xPointPos[0], (struct Vec3 *)&self->xPointPos[1],
-            (struct Vec3 *)&d);
+    SubVec3((Vector3 *)&self->xPointPos[0], (Vector3 *)&self->xPointPos[1], (Vector3 *)&d);
     ra = func_020538b8(d.x, d.z);
-    SubVec3((struct Vec3 *)&self->yPointPos[0], (struct Vec3 *)&self->yPointPos[1],
-            (struct Vec3 *)&d);
+    SubVec3((Vector3 *)&self->yPointPos[0], (Vector3 *)&self->yPointPos[1], (Vector3 *)&d);
     rb = func_020538b8(d.z, d.y);
     a1 = (unsigned short)(ra + 0x3fff);
     a2 = (unsigned short)(rb + 0x7fff);
