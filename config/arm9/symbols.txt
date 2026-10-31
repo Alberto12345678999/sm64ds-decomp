@@ -4582,7 +4582,7 @@ data_0209cddc kind:bss addr:0x0209cddc
 data_0209cde0 kind:bss addr:0x0209cde0
 data_0209cde4 kind:bss addr:0x0209cde4
 data_0209cde8 kind:bss addr:0x0209cde8
-data_0209cee8 kind:bss addr:0x0209cee8
+_ZN5dCc_c8listHeadE kind:bss addr:0x0209cee8
 data_0209ceec kind:bss addr:0x0209ceec
 data_0209cef0 kind:bss addr:0x0209cef0
 data_0209cef4 kind:bss addr:0x0209cef4
