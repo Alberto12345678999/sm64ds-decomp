@@ -1,5 +1,11 @@
-struct E { int w[1]; };
-void func_ov007_020c2090(struct E* c){
-  int i;
-  for(i=0;i<0xc;i++){ c[i].w[0xd] = 0; c[i].w[1] = c[i].w[0xd]; }
+#include "Ov007Pad.h"
+
+/* Zeroes every button's held and released frame counts, leaving keys, the
+ * axes and inputLock as they are (func_ov007_020c22a0 clears those too). */
+void func_ov007_020c2090(Ov007Pad *pad) {
+    int i;
+    for (i = 0; i < 12; i++) {
+        pad->releasedFrames[i] = 0;
+        pad->heldFrames[i] = pad->releasedFrames[i];
+    }
 }

@@ -3059,7 +3059,7 @@
     },
     "arm9:0x02019780": {
       "author": "tangosdev",
-      "name": "func_02019780"
+      "name": "NitroStartUp"
     },
     "arm9:0x020197b8": {
       "author": "tangosdev",
@@ -12423,7 +12423,7 @@
     },
     "itcm:0x01ffafd4": {
       "author": "ruspecial",
-      "name": "func_01ffafd4"
+      "name": "_fp_init"
     },
     "itcm:0x01ffb008": {
       "author": "ruspecial",

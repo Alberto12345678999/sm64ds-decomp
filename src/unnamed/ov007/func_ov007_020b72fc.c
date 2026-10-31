@@ -1,6 +1,6 @@
 #include "Ov007Display.h"
 
-extern int func_ov007_020c3d40(int, int);
+extern int func_ov007_020c3d40(const char *, int);
 
 /* Sizes the sprite-bank table (func_ov007_020b6d40 asks for 6), zeroed. */
 void func_ov007_020b72fc(Ov007Display *d, int n) {

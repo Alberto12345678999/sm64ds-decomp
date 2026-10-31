@@ -2,10 +2,12 @@
 #include "cstd.h"
 
 extern "C" {
-extern int func_02070348(int);
+extern unsigned int func_02070348(void);
 
-int func_ov007_020c3ba8(int r4) {
-    int v = func_02070348(r4);
-    return cstd::div(r4 * v, 0x8000);
+/* A pseudo-random value in [0, n): n times func_02070348's 15-bit draw,
+ * over 0x8000. */
+int func_ov007_020c3ba8(int n) {
+    int r = func_02070348();
+    return cstd::div(n * r, 0x8000);
 }
 }

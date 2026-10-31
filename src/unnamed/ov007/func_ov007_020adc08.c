@@ -2,7 +2,7 @@
 #include "Ov007Display.h"
 #include "Ov007LayerSlot.h"
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void *func_ov007_020c9388(int a);
 extern int func_ov007_020b8500(void);
 extern int func_ov007_020b84e8(void);

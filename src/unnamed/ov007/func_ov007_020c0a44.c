@@ -1,6 +1,6 @@
 #include "Ov007BgLayer.h"
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c0a44(Ov007BgLayer *layer);
 extern int func_ov007_020c3d1c(void);
 
