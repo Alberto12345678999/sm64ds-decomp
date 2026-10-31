@@ -11481,15 +11481,15 @@ matched: yes</title></rect><rect x="319.42" y="804.80" width="2.00" height="8.06
 module: arm9
 addr: 0x0206881c
 size: 24 bytes
-matched: yes</title></rect><rect x="134.00" y="812.86" width="7.56" height="1.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02068834
+matched: yes</title></rect><rect x="134.00" y="812.86" width="7.56" height="1.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_SetMaxScanTime
 module: arm9
 addr: 0x02068834
 size: 16 bytes
-matched: yes</title></rect><rect x="134.00" y="814.28" width="7.56" height="9.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02068844
+matched: yes</title></rect><rect x="134.00" y="814.28" width="7.56" height="9.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_GetAttribute
 module: arm9
 addr: 0x02068844
 size: 112 bytes
-matched: yes</title></rect><rect x="134.00" y="824.22" width="7.56" height="2.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020688b4
+matched: yes</title></rect><rect x="134.00" y="824.22" width="7.56" height="2.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_GetTgid
 module: arm9
 addr: 0x020688b4
 size: 24 bytes
@@ -11537,7 +11537,7 @@ matched: yes</title></rect><rect x="134.00" y="951.33" width="7.56" height="43.6
 module: arm9
 addr: 0x02068e4c
 size: 492 bytes
-matched: yes</title></rect><rect x="141.56" y="812.86" width="4.47" height="18.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02069038
+matched: yes</title></rect><rect x="141.56" y="812.86" width="4.47" height="18.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_GetBeaconPeriodDispersion
 module: arm9
 addr: 0x02069038
 size: 120 bytes
@@ -11553,7 +11553,7 @@ matched: yes</title></rect><rect x="230.74" y="812.86" width="82.04" height="18.
 module: arm9
 addr: 0x02069994
 size: 2204 bytes
-matched: yes</title></rect><rect x="312.78" y="812.86" width="4.02" height="18.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a230
+matched: yes</title></rect><rect x="312.78" y="812.86" width="4.02" height="18.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_IsSendEnabled
 module: arm9
 addr: 0x0206a230
 size: 108 bytes
@@ -11597,7 +11597,7 @@ matched: yes</title></rect><rect x="141.56" y="915.06" width="6.34" height="10.1
 module: arm9
 addr: 0x0206a634
 size: 96 bytes
-matched: yes</title></rect><rect x="141.56" y="925.21" width="6.34" height="6.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a694
+matched: yes</title></rect><rect x="141.56" y="925.21" width="6.34" height="6.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CTRDGi_CallbackForInitModuleInfo
 module: arm9
 addr: 0x0206a694
 size: 60 bytes
@@ -11789,7 +11789,7 @@ matched: yes</title></rect><rect x="221.08" y="853.85" width="42.81" height="4.0
 module: arm9
 addr: 0x0206de14
 size: 256 bytes
-matched: yes</title></rect><rect x="263.89" y="853.85" width="18.73" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206df14
+matched: yes</title></rect><rect x="263.89" y="853.85" width="18.73" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__flush_all
 module: arm9
 addr: 0x0206df14
 size: 112 bytes
@@ -11809,7 +11809,7 @@ matched: yes</title></rect><rect x="320.75" y="853.85" width="0.67" height="4.01
 module: arm9
 addr: 0x0206e068
 size: 4 bytes
-matched: yes</title></rect><rect x="182.95" y="857.86" width="5.28" height="35.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e06c
+matched: yes</title></rect><rect x="182.95" y="857.86" width="5.28" height="35.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>fflush
 module: arm9
 addr: 0x0206e06c
 size: 280 bytes
