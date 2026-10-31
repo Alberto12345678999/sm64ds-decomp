@@ -1,8 +1,8 @@
 {
   "id": "arm9/SND_Work",
   "module": "arm9",
-  "source": "src/engine/sound/SND_Work.cpp",
-  "promoted_source": "src/engine/sound/SND_Work.cpp",
+  "source": "src/engine/snd/SND_Work.cpp",
+  "promoted_source": "src/engine/snd/SND_Work.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

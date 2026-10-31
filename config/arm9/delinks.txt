@@ -2292,19 +2292,19 @@ src/SND_Init.c:
     complete
     .text start:0x0205a82c end:0x0205a86c
 
-src/engine/sound/SND_Interface.cpp:
+src/engine/snd/SND_Interface.cpp:
     complete
     .text start:0x0205a86c end:0x0205adf8
 
-src/engine/sound/SND_Command.cpp:
+src/engine/snd/SND_Command.cpp:
     complete
     .text start:0x0205adf8 end:0x0205b470
 
-src/engine/sound/SND_Alarm.cpp:
+src/engine/snd/SND_Alarm.cpp:
     complete
     .text start:0x0205b470 end:0x0205b554
 
-src/engine/sound/SND_Work.cpp:
+src/engine/snd/SND_Work.cpp:
     complete
     .text start:0x0205b554 end:0x0205b63c
 
@@ -2312,7 +2312,7 @@ src/SND_CalcChannelVolume.c:
     complete
     .text start:0x0205b63c end:0x0205b6b0
 
-src/engine/sound/SND_Bank.cpp:
+src/engine/snd/SND_Bank.cpp:
     complete
     .text start:0x0205b6b0 end:0x0205b858
 

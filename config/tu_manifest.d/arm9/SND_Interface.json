@@ -1,8 +1,8 @@
 {
   "id": "arm9/SND_Interface",
   "module": "arm9",
-  "source": "src/engine/sound/SND_Interface.cpp",
-  "promoted_source": "src/engine/sound/SND_Interface.cpp",
+  "source": "src/engine/snd/SND_Interface.cpp",
+  "promoted_source": "src/engine/snd/SND_Interface.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

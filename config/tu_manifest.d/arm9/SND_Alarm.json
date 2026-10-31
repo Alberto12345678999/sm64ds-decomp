@@ -1,8 +1,8 @@
 {
   "id": "arm9/SND_Alarm",
   "module": "arm9",
-  "source": "src/engine/sound/SND_Alarm.cpp",
-  "promoted_source": "src/engine/sound/SND_Alarm.cpp",
+  "source": "src/engine/snd/SND_Alarm.cpp",
+  "promoted_source": "src/engine/snd/SND_Alarm.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

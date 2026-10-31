@@ -1,8 +1,8 @@
 {
   "id": "arm9/SND_Bank",
   "module": "arm9",
-  "source": "src/engine/sound/SND_Bank.cpp",
-  "promoted_source": "src/engine/sound/SND_Bank.cpp",
+  "source": "src/engine/snd/SND_Bank.cpp",
+  "promoted_source": "src/engine/snd/SND_Bank.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
