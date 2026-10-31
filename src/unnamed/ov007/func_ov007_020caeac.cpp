@@ -3,13 +3,6 @@
 #include "nitro/fx/fx.h"
 
 extern "C" {
-// @symbol func_ov007_020caeac
-
-/* Texture-mapped triangle-strip emitter for the ov007 water/cloth grid: one
- * strip per grid row, alternating direction each row. The per-column texcoord
- * offsets tu/tv are refreshed from the next row's normals as the row is walked,
- * so each vertex is emitted with its own row's perturbation. Sibling of
- * func_ov007_020ca86c (the untextured emitter). */
 
 #define REG_BEGIN (*(vu32 *)0x4000500)
 #define REG_END   (*(vu32 *)0x4000504)
@@ -31,6 +24,12 @@ static inline void G3_Tex(s32 s, s32 t) {
     REG_NRM = ((((q)->x) >> 3) & 0x3FF) | (((((q)->y) >> 3) & 0x3FF) << 10) | (((((q)->z) >> 3) & 0x3FF) << 20)
 #define SEND_TEX(s, t) G3_Tex(((s) << 8) >> 16, ((t) << 8) >> 16)
 
+// @symbol func_ov007_020caeac
+/* Texture-mapped triangle-strip emitter for the ov007 water/cloth grid: one
+ * strip per grid row, alternating direction each row. The per-column texcoord
+ * offsets tu/tv are refreshed from the next row's normals as the row is walked,
+ * so each vertex is emitted with its own row's perturbation. Sibling of
+ * func_ov007_020ca86c (the untextured emitter). */
 void func_ov007_020caeac(Vector3 *vtx, Vector3_16 *nrm, s32 *tu, s32 *tv, s32 w, s32 h, s32 u0,
                          s32 v0, s32 du, s32 dv, s32 su, s32 sv, s32 shift) {
     s32 i;

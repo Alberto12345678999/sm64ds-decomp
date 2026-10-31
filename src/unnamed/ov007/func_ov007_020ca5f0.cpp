@@ -9,9 +9,9 @@ extern "C" {
 
 extern void func_ov007_020c1448(Ov007Texture *self, u32 texGen, u32 repeat, u32 flip, u32 color0);
 extern void func_ov007_020c1404(Ov007Texture *tex);
-extern void func_ov007_020caeac(int a0, int a1, int a2, int a3, int s0, int s1, int s2, int s3,
-                                int s4, int s5, int s6, int s7, int s8);
-extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
+extern void func_ov007_020caeac(Vector3 *vtx, Vector3_16 *nrm, s32 *tu, s32 *tv, s32 w, s32 h,
+                                s32 u0, s32 v0, s32 du, s32 dv, s32 su, s32 sv, s32 shift);
+extern void func_ov007_020ca86c(Vector3 *vtx, Vector3_16 *nrm, s32 w, s32 h, s32 shift);
 
 /* Draws the mesh (data_ov007_02104bd4[0]) with one of its materials
  * ([1] or [2]): sets the material's light colours, texture and polygon
@@ -58,8 +58,8 @@ void func_ov007_020ca5f0(Ov007Mesh *mesh, Ov007MeshMaterial *mat, int *pos, int 
         int q2 = cstd::div(th * mat->tilesT, d1);
         int fx1 = FX_MUL(mesh->cellWidth, mat->warpS);
         int fx2 = FX_MUL(mesh->cellHeight, mat->warpT);
-        func_ov007_020caeac((int)mesh->verts, (int)mesh->vertexNormals, (int)mesh->texOffsetS,
-                            (int)mesh->texOffsetT, d0, d1, mat->texS, mat->texT, q1, q2, fx1, fx2,
+        func_ov007_020caeac(mesh->verts, mesh->vertexNormals, mesh->texOffsetS, mesh->texOffsetT,
+                            d0, d1, mat->texS, mat->texT, q1, q2, fx1, fx2,
                             6);
     } else {
         int n = (d1 * d0) << 1;
@@ -85,7 +85,7 @@ void func_ov007_020ca5f0(Ov007Mesh *mesh, Ov007MeshMaterial *mat, int *pos, int 
                 i++;
             } while (i < tw);
         }
-        func_ov007_020ca86c((int)mesh->verts, (int)mesh->faceNormals, d0, d1, 6);
+        func_ov007_020ca86c(mesh->verts, mesh->faceNormals, d0, d1, 6);
     }
     *((volatile u32 *)0x4000448) = 2;
 }
