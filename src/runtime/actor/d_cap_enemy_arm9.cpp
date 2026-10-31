@@ -45,7 +45,7 @@ extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
    Matrix4x3's embedded Vector3 change this function's frame. */
 struct CapVec { int x, y, z; };
 struct CapMtx { int a[12]; };
-extern void Vec3_Asr(CapVec *vF, const CapVec *v, int amount);
+extern void Vec3_Asr(Vector3 *vF, Vector3 *v, int amount);
 extern void Matrix4x3_FromTranslation(CapMtx *mF, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(CapMtx *mF, short x, short y, short z);
 extern CapMtx data_020a0e68;
@@ -136,7 +136,7 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
 
     CapVec sum, asr;
     Vec3_Add((Vector3 *)&sum, &mPos, &pos);
-    Vec3_Asr(&asr, &sum, 3);
+    Vec3_Asr((Vector3 *)&asr, (Vector3 *)&sum, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, rot.x, rot.y, rot.z);
     *(CapMtx *)&mModel.mat4x3 = data_020a0e68;

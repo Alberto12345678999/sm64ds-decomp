@@ -60,7 +60,7 @@ extern daSnowball_StateRec data_ov081_02128eb4;
 /* local extern: no shared header declares these. */
 extern "C" {
 void func_02012694(int a0, void *a1);
-void Vec3_Asr(void *dst, void *src, int n);
+void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
 }
 
 // @symbol _ZN12daSnowball_cD1Ev
@@ -219,7 +219,7 @@ int daSnowball_c::SetState(daSnowball_StateRec *p) {
  * to mModel.mat4x3. */
 void daSnowball_c::UpdateModelMatrix() {
     int v[3];
-    Vec3_Asr(v, &mPosX, 3);
+    Vec3_Asr((Vector3 *)v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3 = data_020a0e68;

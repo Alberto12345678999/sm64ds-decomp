@@ -1006,7 +1006,7 @@
       "rule": "handspelled-member",
       "match": "_ZN1T13func_020500a4Ev",
       "count": 2,
-      "reason": "T::func_020500a4 is passed as a callback word to func_0205ab28. A member cannot be cast to that function pointer, so the call names the mangled symbol. The local extern is the same pointer.",
+      "reason": "T::func_020500a4 is passed as a callback word to SND_SetupAlarm. A member cannot be cast to that function pointer, so the call names the mangled symbol. The local extern is the same pointer.",
       "evidence": "arm9/SoundEngine 138/138 MATCH with the mangled callback word."
     },
     {

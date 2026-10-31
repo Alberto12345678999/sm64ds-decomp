@@ -846,7 +846,7 @@ void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, 
    slot 29) reports, the point Yoshi's egg aims at: it is lifted to that height,
    rotated, and dropped back. */
 extern "C" {
-extern void Vec3_Asr(void *dst, const void *src, int sh);
+extern void Vec3_Asr(Vector3 *dst, Vector3 *src, int sh);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z);
@@ -884,7 +884,7 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, dExtAnmModel_c &a
         mAngleX += mSpinRateX;
         mAngleY += mSpinRateY;
         mAngleZ += mSpinRateZ;
-        Vec3_Asr(v, &mPosX, 3);
+        Vec3_Asr((Vector3 *)v, (Vector3 *)&mPosX, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, OnAimedAtWithEgg() >> 3, 0);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68,
@@ -933,7 +933,7 @@ extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *modelArg, i
         c->mAngleX += c->mSpinRateX;
         c->mAngleY += c->mSpinRateY;
         c->mAngleZ += c->mSpinRateZ;
-        Vec3_Asr(v, &c->mPos, 3);
+        Vec3_Asr((Vector3 *)v, &c->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, c->OnAimedAtWithEgg() >> 3, 0);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);

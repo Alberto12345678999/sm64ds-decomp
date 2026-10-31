@@ -91,9 +91,6 @@ src/CrossVec3.c	PURE-C	arm9				1		None		-
 src/d_a_demo.c	WEAK-refs-only	ov002				1		None		-
 src/DMAStartTransfer.c	WEAK-refs-only					0		None		not-in-delinks
 src/DMAStartTransferFB.c	WEAK-refs-only					0		None		not-in-delinks
-src/DMASyncFillTransfer.c	PURE-C	arm9				1		None		-
-src/DMASyncHalfTransfer.c	PURE-C	arm9				1		None		-
-src/DMASyncWordTransfer.c	PURE-C	arm9				1		None		-
 src/Deallocate.c	WEAK-refs-only	arm9				1		None		-
 src/DeathTable_ClearBit.c	PURE-C	arm9				1		None		-
 src/DeathTable_GetBit.c	PURE-C	arm9				1		None		-
@@ -427,7 +424,6 @@ src/d_a_obj_simple_lift_km3_deru02.c	WEAK-refs-only	ov091				1		None		-
 src/d_a_obj_simple_lift_km3_deru01.c	WEAK-refs-only	ov091				1		None		-
 src/d_a_obj_simple_lift_rc_rift01.c	WEAK-refs-only	ov091				1		None		-
 src/d_a_obj_simple_lift_bk_transbar.c	WEAK-refs-only	ov091				1		None		-
-src/Snd_SendCommand.c	PURE-C	arm9				1		None		-
 src/d_a_snowball.c	WEAK-refs-only	ov081				1		None		-
 src/d_a_bg_snm_bdy.c	WEAK-refs-only	ov072				1		None		-
 src/d_a_bg_snm_hed.c	WEAK-refs-only	ov072				1		None		-
@@ -2491,12 +2487,6 @@ src/unnamed/arm9/0205/func_02056e98.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057000.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057198.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057228.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057410.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057ce8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057d00.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057d30.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057d94.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02057e00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e30.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e34.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02057e48.c	WEAK-refs-only	arm9				1		None		-
@@ -2505,10 +2495,6 @@ src/unnamed/arm9/0205/func_02058048.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205816c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058200.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058568.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_0205865c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058690.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_02058764.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_020587dc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_020587e4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058894.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02058940.c	PURE-C	arm9				1		None		-
@@ -2541,70 +2527,10 @@ src/unnamed/arm9/0205/func_02059bc0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059c18.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059cb4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/OSi_SendToPxi.c	PURE-C	arm9				1		None		-
-src/OSi_CommonCallback.c	PURE-C	arm9				1		None		-
-src/OS_InitReset.c	PURE-C	arm9				1		None		-
-src/OS_GetOwnerInfo.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059f2c.c	PURE-C	arm9				1		None		-
 src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_02059f58.c	WEAK-refs-only	arm9				1		None		-
-src/func_02059fa8.c	PURE-C	arm9				1		None		-
-src/func_02059fd0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a064.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a21c.c	WEAK-refs-only	arm9				1		None		-
-src/func_0205a290.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a588.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/unnamed/arm9/0205/func_0205a82c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a8c4.c	PURE-C	arm9				1		None		-
-src/SNDi_SetTrackParam.c	PURE-C	arm9				1		None		-
-src/SNDi_SetPlayerParam.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a958.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a98c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a9b8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a9e4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205aa10.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205aa68.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205aa9c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205aac8.c	PURE-C	arm9				1		None		-
-src/SND_SetTrackMute.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ab28.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ab6c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205abb8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ac28.c	PURE-C	arm9				1		None		-
-src/SND_SetTrackModSpeed.c	PURE-C	arm9				1		None		-
-src/SND_SetTrackModDepth.c	PURE-C	arm9				1		None		-
-src/SND_SetTrackPan.c	PURE-C	arm9				1		None		-
-src/SND_SetTrackPitch.c	PURE-C	arm9				1		None		-
-src/SND_SetTrackVolume.c	PURE-C	arm9				1		None		-
-src/SND_SetPlayerChannelPriority.c	PURE-C	arm9				1		None		-
-src/SND_SetPlayerVolume.c	PURE-C	arm9				1		None		-
-src/SND_SetPlayerTempoRatio.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ad6c.c	PURE-C	arm9				1		None		-
-src/SND_StopSeq.c	PURE-C	arm9				1		None		-
-src/SND_StartSeq.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205adf8.c	PURE-C	arm9				1		None		-
-src/func_0205ae30.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205ae64.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205aed0.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205af00.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205af20.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205af4c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205af78.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205afb4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205afe0.c	PURE-C	arm9				1		None		-
-src/func_0205b070.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b1a4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b1d8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b274.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b358.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b470.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b4d0.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b504.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b524.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b554.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b5d4.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b608.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205b63c.c	PURE-C	arm9				1		None		-
+src/SND_Init.c	PURE-C	arm9				1		None		-
+src/SND_CalcChannelVolume.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b6b0.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b6f4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205b78c.c	WEAK-refs-only	arm9				1		None		-
@@ -2706,7 +2632,7 @@ src/unnamed/arm9/0206/func_02061ce4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02061d30.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02061e38.c	WEAK-refs-only	arm9				1		None		-
 src/WM_StartParent.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02062024.c	PURE-C	arm9				1		None		-
+src/WmCheckParentParameter.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020620b0.c	WEAK-refs-only	arm9				1		None		-
 src/WM_End.c	PURE-C	arm9				1		None		-
 src/WM_Reset.c	PURE-C	arm9				1		None		-
@@ -2715,7 +2641,7 @@ src/WM_PowerOff.c	PURE-C	arm9				1		None		-
 src/WM_PowerOn.c	PURE-C	arm9				1		None		-
 src/WM_Disable.c	PURE-C	arm9				1		None		-
 src/WM_Enable.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_020623ec.c	PURE-C	arm9				1		None		-
+src/WM_SetMPDataToPort.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02062428.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206259c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020625fc.c	WEAK-refs-only	arm9				1		None		-
@@ -2923,7 +2849,7 @@ src/__cxa_vec_delete.c	PURE-C	arm9				1		None		-
 src/func_020732e8.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02073300.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_0207335c.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/__cxa_vec_ctor.cpp	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
+src/lib/runtime/__cxa_vec_ctor.cpp	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02073470.c	WEAK-refs-only					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02073534.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/func_02073584.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
@@ -5376,10 +5302,7 @@ src/unnamed/ov007/func_ov007_020c9988.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020c99d8.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020c9a2c.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020c9a84.c	WEAK-refs-only	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020c9c24.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020c9d90.c	WEAK-refs-only	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020c9f10.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020ca010.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020ca1d4.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020ca26c.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020ca2a8.c	PURE-C	ov007				1		None		-

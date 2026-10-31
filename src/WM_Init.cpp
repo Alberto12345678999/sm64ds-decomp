@@ -15,7 +15,8 @@ extern "C" {
 
 extern void PXI_Init(void);
 extern int PXI_IsCallbackReady(int tag, int proc);
-extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
+/* MI_DmaFill32 */
+extern void DMASyncFillTransfer(u32 dmaNo, void *dest, u32 data, u32 size);
 extern void WmClearFifoRecvFlag(void);
 extern int WM_SetPortCallback(int idx, int b, int c);
 extern void OS_InitMessageQueue(void *s, int *v1, int v2);

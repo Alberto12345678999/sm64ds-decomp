@@ -3,6 +3,8 @@
 
 extern "C" {
 
+struct FSArchive;
+
 typedef struct {
     char pad00[0x20];
     unsigned int wr;
@@ -24,14 +26,15 @@ typedef struct {
 
 extern int FS_ReadFile(int a, int b, int c);
 extern void FS_InitFile(int *s);
-extern void *FS_FindArchive(int *a, int b);
-extern int FS_OpenFileDirect(char *self, int a1, int a2, int a3, int a4);
+extern FSArchive *FS_FindArchive(const char *name, int name_len);
+extern int FS_OpenFileDirect(char *p_file, FSArchive *p_arc, unsigned int image_top,
+                             unsigned int image_bottom, unsigned int file_index);
 extern int CpuCopy8(void *a, void *b, int c);
 extern int func_0205d368(int *o, int r1, int sel);
 extern int FS_CloseFile(char *self);
 extern void func_02067b68(void *s, unsigned int start, unsigned int end, int flag);
 
-extern int data_0209a080;
+extern char data_0209a080[];
 extern int *data_0209a07c;
 
 int func_02067bfc(Ctx *a, Ctx *b, unsigned int c)
@@ -43,7 +46,7 @@ int func_02067bfc(Ctx *a, Ctx *b, unsigned int c)
     Ctx *ctx;
     int flag;
     unsigned int threshold;
-    int node;
+    FSArchive *node;
     int *rgn;
     Args args;
     int localbuf[17];
@@ -67,7 +70,7 @@ int func_02067bfc(Ctx *a, Ctx *b, unsigned int c)
                 ctx->f80 = 0x1000000;
             }
             FS_InitFile(localbuf);
-            node = (int)FS_FindArchive(&data_0209a080, 3);
+            node = FS_FindArchive(data_0209a080, 3);
             FS_OpenFileDirect((char *)localbuf, node, 0, ctx->f80 + 0x88, -1);
             a = (Ctx *)localbuf;
             base = localbuf[10] - localbuf[8];

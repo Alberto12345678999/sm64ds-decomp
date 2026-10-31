@@ -1,0 +1,104 @@
+{
+  "id": "arm9/MI_Dma",
+  "module": "arm9",
+  "source": "src/engine/mi/MI_Dma.cpp",
+  "promoted_source": "src/engine/mi/MI_Dma.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's mi_dma.c, 0x02059f58..0x0205a21c: 7 functions, gapless in config/arm9/delinks.txt, each identified by its body against pret's pokediamond MI_dma.c. MI_DmaFill32 (DMASyncFillTransfer), MI_DmaCopy32 (DMASyncWordTransfer) and MI_DmaCopy16 (DMASyncHalfTransfer) wait for the channel, start it through MIi_DmaSetParams_wait_noInt (DMAStartTransferFB) and wait again. MI_DmaFill32Async and MI_DmaCopy32Async run the callback at once for size 0, otherwise MI_WaitDma, OSi_EnterDmaCallback when there is a callback, and MIi_DmaSetParams (DMAStartTransfer). MI_WaitDma spins on the enable bit; MI_StopDma clears the timing and enable bits with IRQs disabled.",
+    "Order: pret's file defines MI_DmaFill32, MI_DmaCopy32, MI_DmaCopy16, MI_DmaFill32Async, MI_DmaCopy32Async, MI_WaitDma and MI_StopDma in that relative order, between which this game calls nothing else. mwccarm emits the bodies in reverse, so MI_StopDma is lowest and MI_DmaFill32 highest. The MIi_DmaSetParams family is in ITCM (0x01ffde00, 0x01ffde50), not here.",
+    "BOTTOM EDGE: MI_SetWramBank (0x02059f48..0x02059f58), the whole of mi_wram.c, which stays its own source (src/MI_SetWramBank.c).",
+    "TOP EDGE: MIi_DMACallback at 0x0205a21c, the lowest function of mi_dma_gxcommand.c (arm9/MI_DmaGXCommand)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02059f58",
+      "end": "0x0205a21c"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "MI_StopDma",
+      "address": "0x02059f58",
+      "size": "0x00000050",
+      "legacy_source": "src/unnamed/arm9/0205/func_02059f58.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "MI_WaitDma",
+      "address": "0x02059fa8",
+      "size": "0x00000028",
+      "legacy_source": "src/func_02059fa8.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "MI_DmaCopy32Async",
+      "address": "0x02059fd0",
+      "size": "0x00000094",
+      "legacy_source": "src/func_02059fd0.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "MI_DmaFill32Async",
+      "address": "0x0205a064",
+      "size": "0x000000a8",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205a064.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "DMASyncHalfTransfer",
+      "address": "0x0205a10c",
+      "size": "0x00000054",
+      "legacy_source": "src/DMASyncHalfTransfer.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "DMASyncWordTransfer",
+      "address": "0x0205a160",
+      "size": "0x00000054",
+      "legacy_source": "src/DMASyncWordTransfer.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "DMASyncFillTransfer",
+      "address": "0x0205a1b4",
+      "size": "0x00000068",
+      "legacy_source": "src/DMASyncFillTransfer.c",
+      "ordinal": 6
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Rom: tu_map cannot segment arm9/main.",
+    "C++ for IRQ::Disable/IRQ::Restore (MI_StopDma); every function keeps C linkage.",
+    "func_02059f58, func_02059fa8, func_02059fd0 and func_0205a064 were renamed MI_StopDma, MI_WaitDma, MI_DmaCopy32Async and MI_DmaFill32Async from their bodies in this change. symbols/actor_renames.tsv records the evidence. The three synchronous copies keep their earlier names DMASyncFillTransfer, DMASyncWordTransfer and DMASyncHalfTransfer.",
+    "Text-only."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-MI_Dma/MI_Dma.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 7,
+    "functions_declared": 7,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

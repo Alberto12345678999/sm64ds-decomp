@@ -53,7 +53,7 @@ enum daShark_c_AssetId { ASSET_HOJIRO_BMD = 0x0325, ASSET_HOJIRO_SWIM_BCA = 0x03
 /* local extern: no shared header declares these. */
 extern "C" {
 extern int func_02012694(int, void *);
-extern void Vec3_Asr(void *dst, void *src, int n);
+extern void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
 extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 extern s32 LenVec3(Vector3 *value);
 extern s16 Vec3_VertAngle(Vector3 *a, Vector3 *b);
@@ -188,7 +188,7 @@ int daShark_c::SetState(StateFn *state) {
 void daShark_c::UpdateModelMatrix() {
     int pos[3];
 
-    Vec3_Asr(pos, &mPosX, 3);
+    Vec3_Asr((Vector3 *)pos, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, pos[0], pos[1], pos[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     mAnmModel.mat4x3 = data_020a0e68;

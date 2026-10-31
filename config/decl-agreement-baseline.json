@@ -300,19 +300,10 @@
       "src/unnamed/arm9/0204/func_020426f8.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_02059f2c.c": [
-        "arity:3"
-      ],
-      "src/FS_LoadOverlayInfo.c": [
-        "arity:3"
-      ],
       "src/unnamed/arm9/0206/func_0206062c.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_0206071c.cpp": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02063ea8.c": [
@@ -403,6 +394,15 @@
       "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ],
+      "src/WM_StartConnect.cpp": [
+        "arity:3"
+      ],
+      "src/engine/os/OS_OwnerInfo.c": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Overlay.cpp": [
+        "arity:3"
+      ],
       "src/engine/mb/MB_WmBase.cpp": [
         "arity:3"
       ]
@@ -445,54 +445,8 @@
       ]
     },
     "DMAStartTransfer": {
-      "src/func_02059fd0.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/MI_SendGXCommand.c": [
         "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/func_0205a290.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int"
-      ]
-    },
-    "DMAStartTransferFB": {
-      "src/DMASyncFillTransfer.c": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/DMASyncHalfTransfer.c": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/DMASyncWordTransfer.c": [
-        "param:#1 unsigned char"
-      ]
-    },
-    "DMASyncFillTransfer": {
-      "src/WM_Init.cpp": [
-        "param:#1 int",
-        "param:#3 int",
-        "param:#4 int"
-      ]
-    },
-    "DMASyncWordTransfer": {
-      "src/WM_SendCommand.cpp": [
-        "param:#1 int"
-      ],
-      "src/engine/gx/GX.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
         "param:#3 void *"
       ]
     },
@@ -693,16 +647,16 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/FSi_LoadOverlayInfoCore.c": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ],
       "src/unnamed/arm9/0206/func_02067e70.c": [
         "param:#1 void *",
         "param:#2 void *"
       ],
       "src/engine/fs/FS_Archive.cpp": [
         "param:#1 int *"
+      ],
+      "src/engine/fs/FS_Overlay.cpp": [
+        "param:#1 void *",
+        "param:#2 void *"
       ],
       "src/engine/mb/MB_GameInfo.c": [
         "param:#1 int *",
@@ -763,11 +717,6 @@
       ]
     },
     "PXI_SendWordByFifo": {
-      "src/func_0205ae30.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:IPCStatus"
       ],
@@ -1525,16 +1474,7 @@
       "src/game/actors/d_a_demo.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/OS_GetOwnerInfo.c": [
-        "param:#3 unsigned int"
-      ],
       "src/WmClearFifoRecvFlag.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0206/func_02062aa4.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/ov007/func_ov007_020c0638.c": [
@@ -2531,43 +2471,6 @@
     "ShowArea": {
       "src/game/actors/d_a_star_gate.cpp": [
         "return:int"
-      ]
-    },
-    "Snd_SendCommand": {
-      "src/unnamed/arm9/0205/func_0205a8c4.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a958.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a98c.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a9b8.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a9e4.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205aa10.c": [
-        "param:#2 unsigned int",
-        "param:#4 unsigned int",
-        "param:#5 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_0205aa68.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205aa9c.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205aac8.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ac28.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad6c.c": [
-        "param:#2 void *"
       ]
     },
     "Sound_PlayBank1Panned": {
@@ -3689,34 +3592,28 @@
       "src/WM_Finish.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_02061b9c.cpp": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0206/func_02061d30.cpp": [
-        "arity:6"
-      ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0206/func_020620b0.cpp": [
-        "param:#2 int"
-      ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
+      "src/WM_Disconnect.cpp": [
+        "arity:6"
+      ],
+      "src/WM_GetMPSendBufferSize.cpp": [
+        "arity:3"
+      ],
+      "src/WM_SetParentParameter.cpp": [
+        "param:#2 int"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "param:#2 int"
+      ],
+      "src/WM_StartMPEx.cpp": [
         "arity:3"
       ]
     },
     "WM_GetSystemWork": {
-      "src/unnamed/arm9/0206/func_020618b8.cpp": [
-        "return:void *"
-      ],
       "src/WM_GetAllowedChannel.cpp": [
         "return:void *"
-      ],
-      "src/unnamed/arm9/0206/func_02061b9c.cpp": [
-        "return:int *"
       ],
       "src/WM_SetPortCallback.cpp": [
         "return:char *"
@@ -3724,69 +3621,61 @@
       "src/WM_SetIndCallback.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
-        "return:int *"
-      ],
-      "src/unnamed/arm9/0206/func_02061ee4.cpp": [
-        "return:char *"
-      ],
       "src/WM_Initialize.c": [
         "return:int *"
       ],
       "src/WM_Enable.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02062428.cpp": [
-        "return:int *"
-      ],
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
-        "return:int *"
-      ],
-      "src/unnamed/arm9/0206/func_02062d10.cpp": [
+      "src/WM_GetLinkLevel.cpp": [
         "return:void *"
       ],
-      "src/WM_MeasureChannel.c": [
+      "src/WM_GetMPSendBufferSize.cpp": [
+        "return:int *"
+      ],
+      "src/WM_SetMPDataToPortEx.cpp": [
+        "return:int *"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "return:int *"
+      ],
+      "src/WM_StartMPEx.cpp": [
+        "return:int *"
+      ],
+      "src/WM_StartScan.cpp": [
+        "return:char *"
+      ],
+      "src/engine/wm/WM_Etc.cpp": [
         "return:int *"
       ]
     },
     "WM_SendCommand": {
-      "src/unnamed/arm9/0206/func_02061d30.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_02061ee4.cpp": [
-        "arity:2"
-      ],
-      "src/unnamed/arm9/0206/func_020620b0.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0206/func_02062428.cpp": [
-        "arity:9"
-      ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
-        "arity:12"
-      ],
-      "src/unnamed/arm9/0206/func_02063574.c": [
-        "arity:5"
-      ],
-      "src/unnamed/arm9/0206/func_020635d8.c": [
+      "src/WM_Disconnect.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_02063648.cpp": [
-        "arity:8"
+      "src/WM_SetMPDataToPortEx.cpp": [
+        "arity:9"
+      ],
+      "src/WM_SetParentParameter.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#3 void *"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "arity:2"
+      ],
+      "src/WM_StartMPEx.cpp": [
+        "arity:12"
+      ],
+      "src/WM_StartScan.cpp": [
+        "arity:2"
       ]
     },
     "_Z11UpdateAngleRssis": {
@@ -5043,9 +4932,6 @@
       "src/minigames/d_s_mg_flower.cpp": [
         "return:char *"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:unsigned short *"
-      ],
       "src/minigames/d_s_mg_snowball.cpp": [
         "return:char *"
       ],
@@ -5087,9 +4973,6 @@
       ]
     },
     "_ZN3G2S12GetBG0ScrPtrEv": {
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
@@ -5110,9 +4993,6 @@
       "src/minigames/d_s_mg_amida.cpp": [
         "return:void *"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ]
@@ -5124,9 +5004,6 @@
       "src/minigames/d_s_mg_slots.cpp": [
         "return:void *"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:unsigned short *"
-      ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
@@ -5137,9 +5014,6 @@
     "_ZN3G2S12GetBG3ScrPtrEv": {
       "src/ui/hud/d_map.cpp": [
         "return:void *"
-      ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:char *"
       ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
@@ -5155,9 +5029,6 @@
       ]
     },
     "_ZN3G2S13GetBG0CharPtrEv": {
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
@@ -5175,9 +5046,6 @@
       "src/minigames/d_s_mg_slots.cpp": [
         "return:void *"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ]
@@ -5187,9 +5055,6 @@
         "return:char *"
       ],
       "src/game/actors/d_a_demo.cpp": [
-        "return:char *"
-      ],
-      "src/minigames/d_s_mg_smartball.cpp": [
         "return:char *"
       ]
     },
@@ -5217,9 +5082,6 @@
       "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "return:void"
-      ],
       "src/CARDi_TryReadCardDma.cpp": [
         "return:void"
       ]
@@ -5227,21 +5089,10 @@
     "_ZN3IRQ11DisableIRQsEj": {
       "src/unnamed/arm9/0205/func_02059cb4.c": [
         "return:void"
-      ],
-      "src/CARDi_OnReadCard.cpp": [
-        "return:void"
-      ]
-    },
-    "_ZN3IRQ13GetIRQHandlerEj": {
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "return:void *"
       ]
     },
     "_ZN3IRQ13SetIRQHandlerEjPFvvE": {
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/CARDi_TryReadCardDma.cpp": [
@@ -5249,9 +5100,6 @@
       ]
     },
     "_ZN3IRQ15ClearInterruptsEj": {
-      "src/CARDi_OnReadCard.cpp": [
-        "return:void"
-      ],
       "src/CARDi_TryReadCardDma.cpp": [
         "return:void"
       ]
@@ -5259,12 +5107,6 @@
     "_ZN3IRQ7DisableEv": {
       "src/Crash.cpp": [
         "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "return:int"
-      ],
-      "src/WM_SetPortCallback.cpp": [
-        "return:int"
       ],
       "src/WM_SetIndCallback.cpp": [
         "return:int"
@@ -5290,9 +5132,6 @@
       "src/DMAStartTransfer.cpp": [
         "return:void"
       ],
-      "src/DMAStartTransferFB.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040a5c.cpp": [
         "return:void"
       ],
@@ -5300,22 +5139,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02041a94.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02042254.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205865c.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059f58.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "param:#1 int",
         "return:void"
       ],
       "src/engine/fs/FS_Command.cpp": [
@@ -5333,18 +5156,8 @@
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:void"
       ],
-      "src/WM_SetPortCallback.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/WM_SetIndCallback.cpp": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_020627e8.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02062990.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02065170.cpp": [
@@ -5479,9 +5292,6 @@
       ]
     },
     "_ZN4CP1527FlushAndInvalidateDataCacheEjj": {
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "param:#1 void *"
-      ],
       "src/unnamed/arm9/0204/func_020499bc.cpp": [
         "param:#1 void *"
       ]
@@ -8398,11 +8208,6 @@
         "param:#3 int",
         "param:#4 void *"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *"
-      ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "param:#2 int",
         "param:#3 int",
@@ -8756,11 +8561,6 @@
         "return:int"
       ]
     },
-    "data_02099e6c": {
-      "src/unnamed/arm9/0204/func_02042254.cpp": [
-        "return:char []"
-      ]
-    },
     "data_02099e70": {
       "src/runtime/actor/ActorBase.cpp": [
         "return:unsigned int"
@@ -8772,11 +8572,6 @@
       ],
       "src/unnamed/arm9/0204/func_020433b8.c": [
         "return:int []"
-      ]
-    },
-    "data_02099fd0": {
-      "src/engine/gx/G3X.cpp": [
-        "return:int"
       ]
     },
     "data_0209b2e8": {
@@ -8799,38 +8594,9 @@
         "param:#1 int *"
       ]
     },
-    "func_0205b470": {
-      "src/unnamed/arm9/0205/func_0205aed0.cpp": [
-        "param:#1 void *"
-      ]
-    },
-    "func_0205b78c": {
-      "src/engine/sound/SoundEngine.cpp": [
-        "param:#1 struct Node *",
-        "param:#3 struct Node *"
-      ]
-    },
-    "FSi_CompareDigest": {
-      "src/unnamed/arm9/0205/func_0205db88.cpp": [
-        "param:#1 Obj *",
-        "param:#3 void *",
-        "return:unsigned int"
-      ]
-    },
-    "func_0205e904": {
-      "src/unnamed/arm9/0205/func_0205db88.cpp": [
-        "param:#1 unsigned int",
-        "return:unsigned int"
-      ]
-    },
     "func_0206062c": {
       "src/unnamed/arm9/0206/func_02060484.cpp": [
         "return:int"
-      ]
-    },
-    "func_0206cf98": {
-      "src/FS_EndOverlay.cpp": [
-        "return:void"
       ]
     },
     "gMgSaveDirty": {
@@ -10166,9 +9932,6 @@
       ]
     },
     "data_020a0f9d": {
-      "src/unnamed/arm9/0204/func_02040014.c": [
-        "return:unsigned char []"
-      ],
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "return:unsigned char"
       ]
@@ -10334,60 +10097,6 @@
     "data_020a6134": {
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
-      ]
-    },
-    "data_020a6484": {
-      "src/unnamed/arm9/0205/func_0205b274.c": [
-        "return:void * *"
-      ],
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:N5b358 *"
-      ]
-    },
-    "data_020a6488": {
-      "src/unnamed/arm9/0205/func_0205af78.c": [
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_0205afb4.c": [
-        "return:void *"
-      ]
-    },
-    "data_020a648c": {
-      "src/func_0205b070.cpp": [
-        "return:volatile int"
-      ],
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:int"
-      ]
-    },
-    "data_020a6494": {
-      "src/unnamed/arm9/0205/func_0205b274.c": [
-        "return:void * *"
-      ]
-    },
-    "data_020a649c": {
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:int"
-      ]
-    },
-    "data_020a64a4": {
-      "src/unnamed/arm9/0205/func_0205afb4.c": [
-        "return:void *"
-      ]
-    },
-    "data_020a64a8": {
-      "src/unnamed/arm9/0205/func_0205b274.c": [
-        "return:void * * []"
-      ]
-    },
-    "data_020a6760": {
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:N5b358 []"
-      ]
-    },
-    "data_020a7fc0": {
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:void *"
       ]
     },
     "data_020a8114": {
@@ -15043,16 +14752,6 @@
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/engine/model/ModelComponents.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ]
-    },
-    "MIi_UncompressBackward": {
-      "src/FS_StartOverlay.c": [
-        "arity:1"
       ]
     },
     "func_020070e8": {
@@ -17191,11 +16890,6 @@
         "arity:2"
       ]
     },
-    "myFS_OpenFileDirect": {
-      "src/unnamed/arm9/0201/func_02018c00.c": [
-        "param:#1 void *"
-      ]
-    },
     "myFS_ConvertPathToFileID": {
       "src/unnamed/arm9/0201/func_020189f0.c": [
         "param:#2 int",
@@ -18055,23 +17749,6 @@
         "arity:1"
       ]
     },
-    "func_02042668": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_020426f0": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "return:void"
-      ]
-    },
-    "func_020426f8": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
     "func_02042784": {
       "src/unnamed/arm9/0201/func_0201a054.cpp": [
         "return:unsigned int"
@@ -18652,57 +18329,6 @@
         "arity:1"
       ]
     },
-    "OSi_EnterDmaCallback": {
-      "src/func_02059fd0.c": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#3 int"
-      ],
-      "src/func_0205a290.cpp": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#3 int"
-      ]
-    },
-    "func_02057410": {
-      "src/unnamed/arm9/0205/func_02057ce8.c": [
-        "param:#1 int",
-        "param:#2 unsigned int",
-        "param:#3 int",
-        "param:#4 unsigned int",
-        "return:void"
-      ]
-    },
-    "func_02057ce8": {
-      "src/unnamed/arm9/0205/func_02057d00.c": [
-        "param:#1 void *",
-        "param:#2 unsigned int",
-        "param:#3 unsigned int"
-      ]
-    },
-    "func_02057d00": {
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "param:#2 void *",
-        "param:#3 int"
-      ]
-    },
-    "func_02057d30": {
-      "src/unnamed/arm9/0205/func_02057410.c": [
-        "param:#1 Ctx *"
-      ]
-    },
-    "func_02057d94": {
-      "src/unnamed/arm9/0205/func_02057410.c": [
-        "param:#1 Ctx *",
-        "param:#2 int"
-      ]
-    },
-    "func_02057e00": {
-      "src/unnamed/arm9/0205/func_02057410.c": [
-        "param:#1 Ctx *",
-        "param:#2 int"
-      ]
-    },
     "OS_CreateThread": {
       "src/unnamed/arm9/0204/func_02042200.c": [
         "param:#2 void *"
@@ -18780,16 +18406,6 @@
         "param:#3 void (*)(void *)"
       ]
     },
-    "func_02059f2c": {
-      "src/unnamed/arm9/0203/func_0203db64.c": [
-        "param:#1 void *"
-      ]
-    },
-    "func_0205a358": {
-      "src/engine/model/ModelComponents.cpp": [
-        "param:#4 int"
-      ]
-    },
     "func_0205a588": {
       "include/decl_common.h": [
         "arity:3",
@@ -18810,15 +18426,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/FS_StartOverlay.c": [
-        "arity:3"
-      ],
-      "src/FS_ClearOverlayImage.cpp": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0206/func_02061e38.cpp": [
-        "arity:3"
-      ],
       "src/unnamed/arm9/0206/func_020647fc.c": [
         "arity:3"
       ],
@@ -18837,72 +18444,14 @@
       "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ],
+      "src/WM_StartConnect.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Overlay.cpp": [
+        "arity:3"
+      ],
       "src/engine/mb/MB_WmBase.cpp": [
         "arity:3"
-      ]
-    },
-    "func_0205a8c4": {
-      "src/unnamed/arm9/0204/func_02049c48.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_0205aed0": {
-      "src/unnamed/arm9/0205/func_0205ae64.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205b070": {
-      "src/unnamed/arm9/0205/func_0205b1d8.c": [
-        "return:void"
-      ]
-    },
-    "func_0205b1d8": {
-      "src/Snd_SendCommand.c": [
-        "return:Node5b1a4 *"
-      ]
-    },
-    "func_0205b274": {
-      "src/func_0205b070.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205afe0.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205b1d8.c": [
-        "return:int"
-      ]
-    },
-    "func_0205b4d0": {
-      "src/unnamed/arm9/0205/func_0205ab28.c": [
-        "param:#2 int"
-      ]
-    },
-    "FS_SetArchiveProc": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#2 void *",
-        "param:#3 int"
-      ]
-    },
-    "FS_LoadArchive": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#7 void *",
-        "param:#8 void *",
-        "return:void",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int",
-        "param:#6 int"
-      ],
-      "src/engine/sound/SoundEngine.cpp": [
-        "param:#1 int *",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int",
-        "param:#6 int",
-        "param:#7 int",
-        "param:#8 int"
       ]
     },
     "FSi_SendCommand": {
@@ -18920,24 +18469,6 @@
     "FSi_ExecuteSyncCommand": {
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 struct Obj *"
-      ]
-    },
-    "FS_FindArchive": {
-      "src/unnamed/arm9/0204/func_02042254.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0206/func_02067bfc.cpp": [
-        "param:#1 int *",
-        "return:void *"
-      ],
-      "src/func_0201a2f8.cpp": [
-        "return:void *"
       ]
     },
     "func_0205d4a0": {
@@ -18970,24 +18501,12 @@
         "return:int"
       ]
     },
-    "func_0205db88": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ]
-    },
     "FS_UnloadOverlay": {
       "src/UnloadOverlay.c": [
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_02017e94.c": [
         "return:void"
-      ]
-    },
-    "FSi_LoadOverlayInfoCore": {
-      "src/FS_LoadOverlayInfo.c": [
-        "param:#4 void *"
       ]
     },
     "func_0205e280": {
@@ -19067,11 +18586,6 @@
         "param:#1 int"
       ]
     },
-    "func_02061b9c": {
-      "src/unnamed/arm9/0206/func_020625fc.cpp": [
-        "return:int"
-      ]
-    },
     "WM_SetIndCallback": {
       "src/unnamed/arm9/0203/func_0203fc38.c": [
         "param:#1 void *"
@@ -19080,32 +18594,9 @@
         "param:#1 void *"
       ]
     },
-    "func_02061e38": {
-      "src/unnamed/arm9/0203/func_0203fb5c.c": [
-        "param:#1 void *",
-        "param:#3 int"
-      ],
-      "src/engine/mb/MB_WmBase.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "WM_StartParent": {
       "src/unnamed/arm9/0203/func_0203fb98.c": [
         "param:#1 void *"
-      ],
-      "src/engine/mb/MB_WmBase.cpp": [
-        "param:#1 void *"
-      ]
-    },
-    "func_02062024": {
-      "src/unnamed/arm9/0206/func_020620b0.cpp": [
-        "return:void"
-      ]
-    },
-    "func_020620b0": {
-      "src/unnamed/arm9/0203/func_0203fbc4.c": [
-        "param:#1 void *",
-        "param:#2 int"
       ],
       "src/engine/mb/MB_WmBase.cpp": [
         "param:#1 void *"
@@ -19144,70 +18635,14 @@
         "param:#1 void *"
       ]
     },
-    "func_020623ec": {
-      "src/WM_StartDataSharing.cpp": [
-        "param:#1 void (*)(void *)"
-      ]
-    },
-    "func_02062428": {
-      "src/unnamed/arm9/0206/func_020623ec.c": [
-        "param:#5 int"
-      ]
-    },
     "func_0206259c": {
       "src/unnamed/arm9/0203/func_0203fd64.c": [
         "param:#1 void *"
       ]
     },
-    "func_020625fc": {
-      "src/unnamed/arm9/0203/func_0203faa8.c": [
-        "param:#1 void *",
-        "param:#2 unsigned int",
-        "param:#3 unsigned short",
-        "param:#4 unsigned int",
-        "param:#7 int"
-      ],
-      "src/engine/mb/MB_WmBase.cpp": [
-        "param:#1 void *",
-        "param:#3 unsigned short",
-        "param:#7 int"
-      ]
-    },
-    "func_02062734": {
-      "src/unnamed/arm9/0206/func_02062990.cpp": [
-        "param:#3 void *",
-        "return:void *"
-      ]
-    },
-    "func_02062990": {
-      "src/unnamed/arm9/0206/func_02062bdc.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int"
-      ]
-    },
-    "func_02062aa4": {
-      "src/WM_StartDataSharing.cpp": [
-        "arity:0"
-      ]
-    },
-    "func_02062bdc": {
-      "src/WM_StartDataSharing.cpp": [
-        "arity:0"
-      ]
-    },
     "WM_MeasureChannel": {
       "src/unnamed/arm9/0203/func_0203f818.c": [
         "param:#1 void *"
-      ]
-    },
-    "func_02063648": {
-      "src/engine/mb/MB_GameInfo.c": [
-        "param:#5 int",
-        "param:#6 int"
       ]
     },
     "func_02063718": {
@@ -19655,30 +19090,20 @@
       ]
     },
     "func_02071790": {
-      "src/unnamed/arm9/0207/func_02071be8.cpp": [
-        "arity:3"
-      ],
       "src/unnamed/arm9/0207/func_02071f1c.c": [
         "arity:3"
-      ]
-    },
-    "func_02071864": {
-      "src/unnamed/arm9/0207/func_02071be8.cpp": [
-        "param:#1 struct Src *",
-        "param:#2 Ctx *"
       ],
-      "src/unnamed/arm9/0207/func_02072168.cpp": [
-        "param:#1 char *",
-        "param:#2 char *"
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
+        "arity:3"
       ]
     },
     "func_02071910": {
+      "src/unnamed/arm9/0207/func_020729f4.c": [
+        "arity:2"
+      ],
       "src/unnamed/arm9/0207/func_02072168.cpp": [
         "arity:2",
         "return:int"
-      ],
-      "src/unnamed/arm9/0207/func_020729f4.c": [
-        "arity:2"
       ]
     },
     "func_02071988": {
@@ -19691,62 +19116,35 @@
         "arity:0"
       ]
     },
-    "func_02071ccc": {
-      "src/unnamed/arm9/0207/func_02071be8.cpp": [
-        "param:#1 struct Src *"
-      ]
-    },
-    "func_02071d3c": {
-      "src/unnamed/arm9/0207/func_02071be8.cpp": [
-        "param:#1 struct Src *",
-        "param:#2 Ctx *",
-        "param:#3 int *",
-        "return:unsigned char *"
-      ]
-    },
-    "func_02072014": {
-      "src/unnamed/arm9/0207/func_02071be8.cpp": [
-        "param:#1 struct Src *",
-        "param:#2 Ctx *"
-      ]
-    },
     "func_02072168": {
+      "src/unnamed/arm9/0207/func_02071f1c.c": [
+        "param:#3 int"
+      ],
       "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#1 struct Src *",
         "param:#2 Ctx *",
         "param:#3 unsigned char *"
-      ],
-      "src/unnamed/arm9/0207/func_02071f1c.c": [
-        "param:#3 int"
-      ]
-    },
-    "func_020729f4": {
-      "src/unnamed/arm9/0207/func_02071d3c.cpp": [
-        "param:#1 S72d90 *"
-      ],
-      "src/unnamed/arm9/0207/func_02072014.cpp": [
-        "return:unsigned char"
       ]
     },
     "func_02072dac": {
+      "src/unnamed/arm9/0207/func_020729f4.c": [
+        "param:#1 void *"
+      ],
       "src/unnamed/arm9/0207/func_02071be8.cpp": [
         "param:#2 Ctx *"
       ],
       "src/unnamed/arm9/0207/func_02072168.cpp": [
         "param:#2 char *"
-      ],
-      "src/unnamed/arm9/0207/func_020729f4.c": [
-        "param:#1 void *"
       ]
     },
     "__throw_catch_compare": {
+      "src/unnamed/arm9/0207/func_02071f88.c": [
+        "param:#2 unsigned int"
+      ],
       "src/unnamed/arm9/0207/func_02071d3c.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/unnamed/arm9/0207/func_02071f88.c": [
-        "param:#2 unsigned int"
       ]
     },
     "func_0207322c": {
@@ -21514,40 +20912,109 @@
         "return:int"
       ]
     },
-    "FS_UnloadArchive": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#1 int *"
+    "WM_GetMPSendBufferSize": {
+      "src/WM_StartMPEx.cpp": [
+        "return:int"
       ]
     },
-    "FS_OpenFileDirect": {
-      "src/myFS_ReadFile.c": [
-        "param:#1 int"
+    "WM_SetMPDataToPort": {
+      "src/engine/wm/WM_Ds.cpp": [
+        "param:#1 void (*)(void *)"
+      ]
+    },
+    "WM_SetMPDataToPortEx": {
+      "src/WM_SetMPDataToPort.c": [
+        "param:#5 int"
+      ]
+    },
+    "WM_SetParentParameter": {
+      "src/unnamed/arm9/0203/func_0203fbc4.c": [
+        "param:#1 void *",
+        "param:#2 int"
       ],
-      "src/engine/fs/FS_Archive.cpp": [
-        "param:#2 FSArchive *",
-        "param:#3 unsigned int",
+      "src/engine/mb/MB_WmBase.cpp": [
+        "param:#1 void *"
+      ]
+    },
+    "WM_StartConnect": {
+      "src/unnamed/arm9/0203/func_0203fb5c.c": [
+        "param:#1 void *",
+        "param:#3 int"
+      ],
+      "src/engine/mb/MB_WmBase.cpp": [
+        "param:#1 void *"
+      ]
+    },
+    "WM_StartMPEx": {
+      "src/unnamed/arm9/0203/func_0203faa8.c": [
+        "param:#1 void *",
+        "param:#2 unsigned int",
+        "param:#3 unsigned short",
         "param:#4 unsigned int",
-        "param:#5 unsigned int"
+        "param:#7 int"
+      ],
+      "src/engine/mb/MB_WmBase.cpp": [
+        "param:#1 void *",
+        "param:#3 unsigned short",
+        "param:#7 int"
       ]
     },
-    "FS_RegisterArchiveName": {
-      "src/engine/sound/SoundEngine.cpp": [
-        "param:#3 void *"
+    "WmCheckParentParameter": {
+      "src/WM_SetParentParameter.cpp": [
+        "return:void"
       ]
     },
-    "data_020a8064": {
-      "src/engine/fs/FS_Rom.cpp": [
-        "return:CARDRomRegion"
+    "MIi_UncompressBackward": {
+      "src/engine/fs/FS_Overlay.cpp": [
+        "arity:1"
       ]
     },
-    "data_020a806c": {
-      "src/engine/fs/FS_Rom.cpp": [
-        "return:CARDRomRegion"
+    "func_0205e904": {
+      "src/engine/fs/FS_Overlay.cpp": [
+        "param:#1 unsigned int",
+        "return:unsigned int"
       ]
     },
-    "data_020a8074": {
-      "src/engine/fs/FS_Rom.cpp": [
-        "return:FSArchive"
+    "func_0206cf98": {
+      "src/engine/fs/FS_Overlay.cpp": [
+        "return:void"
+      ]
+    },
+    "func_02071864": {
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
+        "param:#1 struct Src *",
+        "param:#2 Ctx *"
+      ],
+      "src/unnamed/arm9/0207/func_02072168.cpp": [
+        "param:#1 char *",
+        "param:#2 char *"
+      ]
+    },
+    "func_02071ccc": {
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
+        "param:#1 struct Src *"
+      ]
+    },
+    "func_02071d3c": {
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
+        "param:#1 struct Src *",
+        "param:#2 Ctx *",
+        "param:#3 int *",
+        "return:unsigned char *"
+      ]
+    },
+    "func_02072014": {
+      "src/unnamed/arm9/0207/func_02071be8.cpp": [
+        "param:#1 struct Src *",
+        "param:#2 Ctx *"
+      ]
+    },
+    "func_020729f4": {
+      "src/unnamed/arm9/0207/func_02071d3c.cpp": [
+        "param:#1 S72d90 *"
+      ],
+      "src/unnamed/arm9/0207/func_02072014.cpp": [
+        "return:unsigned char"
       ]
     },
     "WM_SetPortCallback": {
@@ -21555,17 +21022,23 @@
         "param:#2 void *"
       ]
     },
-    "func_02061ee4": {
+    "WM_SetBeaconIndication": {
       "src/engine/mb/MB_WmBase.cpp": [
         "param:#1 void *"
       ]
     },
-    "func_02063574": {
+    "WM_SetGameInfo": {
+      "src/engine/mb/MB_GameInfo.c": [
+        "param:#5 int",
+        "param:#6 int"
+      ]
+    },
+    "WM_SetLifeTime": {
       "src/engine/mb/MB_WmBase.cpp": [
         "param:#1 void *"
       ]
     },
-    "func_020635d8": {
+    "WM_StartScan": {
       "src/engine/mb/MB_WmBase.cpp": [
         "param:#1 void *"
       ]
