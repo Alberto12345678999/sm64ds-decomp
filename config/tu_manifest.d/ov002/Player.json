@@ -1829,7 +1829,7 @@
       "ordinal": 255
     },
     {
-      "symbol": "func_ov002_020caf98",
+      "symbol": "_ZN6Player10StartClimbEP5dCc_c",
       "address": "0x020caf98",
       "size": "0x000001c4",
       "legacy_source": "src/func_ov002_020caf98.cpp",

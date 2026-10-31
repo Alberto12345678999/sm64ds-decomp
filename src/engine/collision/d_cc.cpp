@@ -3,7 +3,8 @@
  * intrusive-list node that dCcPos_c, dCcAc_c and dCcAcPos_c derive from.
  * Process() walks the global list whose head is listHead, finds pairs
  * whose flags interlock, and writes per-node pushback; the two file-static
- * helpers resolve a flag-8 hit's owner to the player actor and notify it.
+ * helpers resolve a flag-8 hit's owner to the player actor and hand it the
+ * collider through Player::StartClimb.
  * mwccarm emits .text in reverse source order, so the definitions below run
  * ROM-descending.
  *
@@ -20,17 +21,7 @@
 #include "nitro/fx/fx.h"
 #include "cstd.h"
 #include "math/CalcLib.h"
-
-struct Player;
-struct Arg;
-
-extern "C" {
-/* local extern: no header declares it; the definition lives in Player.cpp
-   (extern "C", takes its collider param as its file-local `Arg` scaffold --
-   arg->m2() is vtable slot 2, our GetPos, and it tests the flags word at
-   +0x18). */
-int func_ov002_020caf98(struct Player *player, struct Arg *clsn);
-}
+#include "Player.h"
 
 // @symbol _ZN5dCc_cC2Ev
 /* C2, the base-subobject constructor. The vptr store is the compiler's; the
@@ -96,20 +87,18 @@ void dCc_c::Unlink() {
 }
 
 // @symbol func_02014f5c
-/* Resolve a collider hit owner and notify it only when it is the player.
- * IsPlayer returns int: the ROM materialises the 0/1 before testing it, and a
- * bool predicate or a direct compare folds that away. self is a dCc_c; the
- * Player notifier reads it through its local Arg view (the flags word at
- * +0x18 and the m2() position). */
+/* Resolve a collider hit owner and, only when it is the player, offer it the
+ * collider to climb. IsPlayer returns int: the ROM materialises the 0/1 before
+ * testing it, and a bool predicate or a direct compare folds that away. */
 #define PLAYER_ACTOR_ID 0xbf
 static inline int IsPlayer(dActor_c *actor) {
     return actor->actorID == PLAYER_ACTOR_ID;
 }
 
 extern "C" void func_02014f5c(dCc_c *self, u32 id) {
-    dActor_c *player = dActor_c::FindWithID(id);
-    if (player && IsPlayer(player))
-        func_ov002_020caf98((Player *)player, (Arg *)self);
+    dActor_c *actor = dActor_c::FindWithID(id);
+    if (actor && IsPlayer(actor))
+        static_cast<Player *>(actor)->StartClimb(self);
 }
 
 // @symbol func_02014f44

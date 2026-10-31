@@ -7678,3 +7678,4 @@ arm9	0x02063648	func_02063648	WM_SetGameInfo	pret's pokediamond WM_etc.s: WM_Che
 arm9	0x0205b6b0	func_0205b6b0	SND_DestroyWaveArc	pret's pokediamond SND_bank.c: clears and flushes every link chained from the wave archive's topLink
 arm9	0x0205b6f4	func_0205b6f4	SND_DestroyBank	pret's pokediamond SND_bank.c: unchains each of the bank's four wave-archive links from its archive
 arm9	0x0205b78c	func_0205b78c	SND_AssignWaveArc	pret's pokediamond SND_bank.c: unchains the bank's link at index from its old archive and chains it at the new archive's head
+ov002	0x020caf98	func_ov002_020caf98	_ZN6Player10StartClimbEP5dCc_c	coined member Player::StartClimb(dCc_c *): dCc_c's player-hit callback func_02014f5c passes it the player (r0) and the collider (r1); it tests the collider's flags word, reads its position through vtable slot 2 (GetPos), stores it in mClimbClsn and enters the climb state 0x021106dc, the state St_Climb_Cleanup and St_Headstand_Main treat as the climb
