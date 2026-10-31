@@ -159,8 +159,7 @@ extern int func_02061e38(void *callback, int bssDesc, void *ssid);
 extern int func_020625fc(void *callback, int recvBuf, u16 recvBufSize, int sendBuf, u16 sendBufSize,
                          u16 mpFreq, int defaultRetryCount, int minPollBmpMode,
                          int singlePacketMode, int fixFreqMode, int ignoreFatalError);
-// local extern: WM_SetMPDataToPort. Its definition (func_020623ec.c) returns
-// void, but it leaves the WM result in r0 and every caller reads it.
+/* WM_SetMPDataToPort; it returns func_02062428's WM result. */
 extern int func_020623ec(int callback, int data, int size, int aidBitmap, u16 port, u16 prio);
 
 extern void func_02059f2c(int mac); /* OS_GetMacAddress */

@@ -19304,27 +19304,13 @@
       ]
     },
     "func_020623ec": {
-      "src/unnamed/arm9/0204/func_02041930.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_020627e8.cpp": [
-        "return:int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
-        "return:int"
-      ],
       "src/WM_StartDataSharing.cpp": [
-        "param:#1 void (*)(void *)",
-        "return:int"
-      ],
-      "src/engine/mb/MB_WmBase.cpp": [
-        "return:int"
+        "param:#1 void (*)(void *)"
       ]
     },
     "func_02062428": {
       "src/unnamed/arm9/0206/func_020623ec.c": [
-        "param:#5 int",
-        "return:void"
+        "param:#5 int"
       ]
     },
     "func_0206259c": {
