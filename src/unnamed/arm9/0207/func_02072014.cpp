@@ -1,5 +1,15 @@
+//cpp
+/* Load-bearing: the ROM build passes -Cpp_exceptions off, and the
+   .exceptix record at 0x0207391c (func_02072014, length 0x154)
+   exists only because this pragma turns exceptions back on. */
+#pragma exceptions on
+namespace std {
+void terminate();
+}
+
+extern "C" {
+
 extern unsigned char func_02072d90(void *p);
-extern void func_020731fc(void);
 extern unsigned char func_020729f4(void *p);
 extern unsigned char *ReadSignedVarInt(unsigned char *p, int *out);
 
@@ -21,7 +31,7 @@ struct Local {
    read its signed offset into the frame (ReadSignedVarInt) and return that
    frame address. c receives the saved catch info found there: [0] the word
    at +4, [1] the word at +0, [2] 0, [3] the address. Actions 1 and 14, and
-   any unknown action, call the terminate path (func_020731fc). */
+   any unknown action, call the terminate path (std::terminate). */
 int func_02072014(int *c, int *arg)
 {
     struct Local l;
@@ -52,7 +62,7 @@ int func_02072014(int *c, int *arg)
         case 1:
         case 14:
         default:
-            func_020731fc();
+            std::terminate();
             break;
         case 0:
         case 2:
@@ -85,4 +95,5 @@ int func_02072014(int *c, int *arg)
     c[2] = 0;
     c[3] = bt;
     return bt;
+}
 }

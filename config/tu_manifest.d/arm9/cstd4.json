@@ -33,21 +33,21 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_0206dac4",
+      "symbol": "__exit",
       "address": "0x0206dac4",
       "size": "0x00000134",
       "legacy_source": "src/unnamed/arm9/0206/func_0206dac4.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_0206dbf8",
+      "symbol": "exit",
       "address": "0x0206dbf8",
       "size": "0x00000054",
       "legacy_source": "src/unnamed/arm9/0206/func_0206dbf8.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_0206dc4c",
+      "symbol": "abort",
       "address": "0x0206dc4c",
       "size": "0x00000030",
       "legacy_source": "src/unnamed/arm9/0206/func_0206dc4c.c",
@@ -96,7 +96,7 @@
       "ordinal": 10
     },
     {
-      "symbol": "func_0206df14",
+      "symbol": "__flush_all",
       "address": "0x0206df14",
       "size": "0x00000070",
       "legacy_source": "src/unnamed/arm9/0206/func_0206df14.c",
@@ -110,28 +110,28 @@
       "ordinal": 12
     },
     {
-      "symbol": "func_0206df90",
+      "symbol": "__flush_buffer",
       "address": "0x0206df90",
       "size": "0x000000a0",
       "legacy_source": "src/unnamed/arm9/0206/func_0206df90.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_0206e030",
+      "symbol": "__prep_buffer",
       "address": "0x0206e030",
       "size": "0x00000038",
       "legacy_source": "src/unnamed/arm9/0206/func_0206e030.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_0206e068",
+      "symbol": "__convert_from_newlines",
       "address": "0x0206e068",
       "size": "0x00000004",
       "legacy_source": "src/unnamed/arm9/0206/func_0206e068.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_0206e06c",
+      "symbol": "fflush",
       "address": "0x0206e06c",
       "size": "0x00000118",
       "legacy_source": "src/unnamed/arm9/0206/func_0206e06c.c",

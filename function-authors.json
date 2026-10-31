@@ -11499,7 +11499,7 @@
     },
     "arm9:0x02067f68": {
       "author": "tangosdev",
-      "name": "func_02067f68"
+      "name": "MBi_SendVolatBeacon"
     },
     "arm9:0x02068188": {
       "author": "tangosdev",
@@ -11527,7 +11527,7 @@
     },
     "arm9:0x020684a8": {
       "author": "ruspecial",
-      "name": "func_020684a8"
+      "name": "MB_InitSendGameInfoStatus"
     },
     "arm9:0x020684d0": {
       "author": "tangosdev",
@@ -11563,15 +11563,15 @@
     },
     "arm9:0x02068834": {
       "author": "tangosdev",
-      "name": "func_02068834"
+      "name": "MBi_SetMaxScanTime"
     },
     "arm9:0x02068844": {
       "author": "tangosdev",
-      "name": "func_02068844"
+      "name": "MBi_GetAttribute"
     },
     "arm9:0x020688b4": {
       "author": "tangosdev",
-      "name": "func_020688b4"
+      "name": "MBi_GetTgid"
     },
     "arm9:0x020688cc": {
       "author": "tangosdev",
@@ -11619,7 +11619,7 @@
     },
     "arm9:0x02069038": {
       "author": "tangosdev",
-      "name": "func_02069038"
+      "name": "MBi_GetBeaconPeriodDispersion"
     },
     "arm9:0x020690b0": {
       "author": "tangosdev",
@@ -11635,11 +11635,11 @@
     },
     "arm9:0x0206a230": {
       "author": "tangosdev",
-      "name": "func_0206a230"
+      "name": "MBi_IsSendEnabled"
     },
     "arm9:0x0206a29c": {
       "author": "ruspecial",
-      "name": "func_0206a29c"
+      "name": "changeScanChannel"
     },
     "arm9:0x0206a318": {
       "author": "tangosdev",
@@ -11679,7 +11679,7 @@
     },
     "arm9:0x0206a694": {
       "author": "tangosdev",
-      "name": "func_0206a694"
+      "name": "CTRDGi_CallbackForInitModuleInfo"
     },
     "arm9:0x0206a6d0": {
       "author": "tangosdev",
@@ -11835,15 +11835,15 @@
     },
     "arm9:0x0206dac4": {
       "author": "ruspecial",
-      "name": "func_0206dac4"
+      "name": "__exit"
     },
     "arm9:0x0206dbf8": {
       "author": "tangosdev",
-      "name": "func_0206dbf8"
+      "name": "exit"
     },
     "arm9:0x0206dc4c": {
       "author": "tangosdev",
-      "name": "func_0206dc4c"
+      "name": "abort"
     },
     "arm9:0x0206dc7c": {
       "author": "ruspecial",
@@ -11871,7 +11871,7 @@
     },
     "arm9:0x0206df14": {
       "author": "andrewboudreau",
-      "name": "func_0206df14"
+      "name": "__flush_all"
     },
     "arm9:0x0206df84": {
       "author": "tangosdev",
@@ -11879,19 +11879,19 @@
     },
     "arm9:0x0206df90": {
       "author": "andrewboudreau",
-      "name": "func_0206df90"
+      "name": "__flush_buffer"
     },
     "arm9:0x0206e030": {
       "author": "lplaat",
-      "name": "func_0206e030"
+      "name": "__prep_buffer"
     },
     "arm9:0x0206e068": {
       "author": "tangosdev",
-      "name": "func_0206e068"
+      "name": "__convert_from_newlines"
     },
     "arm9:0x0206e06c": {
       "author": "andrewboudreau",
-      "name": "func_0206e06c"
+      "name": "fflush"
     },
     "arm9:0x0206e184": {
       "author": "tangosdev",
@@ -11971,7 +11971,7 @@
     },
     "arm9:0x0207037c": {
       "author": "tangosdev",
-      "name": "func_0207037c"
+      "name": "raise"
     },
     "arm9:0x020704cc": {
       "author": "tangosdev",
@@ -12175,11 +12175,11 @@
     },
     "arm9:0x020731fc": {
       "author": "tangosdev",
-      "name": "func_020731fc"
+      "name": "_ZSt9terminatev"
     },
     "arm9:0x02073220": {
       "author": "ruspecial",
-      "name": "func_02073220"
+      "name": "_ZSt9dthandlerv"
     },
     "arm9:0x0207322c": {
       "author": "tangosdev",

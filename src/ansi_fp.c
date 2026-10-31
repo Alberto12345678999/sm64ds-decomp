@@ -63,7 +63,9 @@ extern unsigned char data_0209a6f8[];
    __count_trailing_zero(double) with this same low-word-first shape; the
    Petari decomp has an inline count_trailing over a compiler builtin
    instead, and the Advance Wars DS decomp calls it __cnt_trail_zeros. The
-   algorithms differ, so the body does not confirm either name. */
+   algorithms differ: Wind Waker's halves a mask (16, 8, 4, 2, 1 bits),
+   Spirit Tracks' is 32 - __cntlzw(~x & (x - 1)), and this one walks zero
+   bytes in memory. So the body does not confirm either name. */
 // @symbol func_02071708
 int func_02071708(int w0, ...) {
     unsigned char *p;

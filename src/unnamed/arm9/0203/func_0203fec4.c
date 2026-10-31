@@ -4,7 +4,7 @@ extern unsigned short data_020a0f24;
 extern int Wireless_Reset(void);
 extern int func_0203faa8(void);
 
-/* Leading fields of NitroSDK's WMStartConnectCallback (as func_020690b0.c
+/* Leading fields of NitroSDK's WMStartConnectCallback (as src/engine/mb/MB_WmBase.cpp
    spells them). */
 typedef struct WmStartConnectCallback {
     unsigned short apiid;    /* 0x0 */

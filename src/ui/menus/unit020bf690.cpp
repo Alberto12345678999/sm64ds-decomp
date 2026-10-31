@@ -93,7 +93,7 @@ extern void func_ov007_020bc53c(void *p);
 extern Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020c3d1c(void *self);
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c8498(Ov007Transition *tr);
 extern void func_ov007_020c8688(Ov007Transition *tr, int v);
 extern void func_ov007_020c86a8(Ov007Transition *tr, int v);
@@ -106,7 +106,7 @@ extern Ov007Transition *func_ov007_020c8b10(void);
 void func_ov007_020bfcec(void) {
     void *file;
 
-    data_ov007_02104bd8 = (Ov007Fade *)func_ov007_020c3df4(0, (void *)sizeof(Ov007Fade));
+    data_ov007_02104bd8 = (Ov007Fade *)func_ov007_020c3df4(0, sizeof(Ov007Fade));
     FADE->transition = func_ov007_020c8b10();
     InitialiseVramGlobals();
     file = func_ov007_020b3f20(0x24);

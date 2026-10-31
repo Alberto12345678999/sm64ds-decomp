@@ -164,7 +164,7 @@ extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int
 extern void *func_ov007_020b7690(int i);
 extern void func_ov007_020bfd70(struct Ov007Camera *cam, void *pos, int *outX, int *outY);
 extern void func_ov007_020c3d1c(void *p);
-extern int func_ov007_020c3df4(int a, void *b);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c3e7c(Ov007SpriteGroup *grp);
 extern void func_ov007_020c3ee8(Ov007SpriteGroup *grp, Ov007OamList *list);
 extern Ov007SpriteGroup *func_ov007_020c3f00(int *layout, int extraAnims);
@@ -258,7 +258,7 @@ Ov007Figure *func_ov007_020beaa0(int index, int figureIndex) {
     void *file;
     int flags;
 
-    fig = (Ov007Figure *)func_ov007_020c3df4(0, (void *)sizeof(Ov007Figure));
+    fig = (Ov007Figure *)func_ov007_020c3df4(0, sizeof(Ov007Figure));
     fig->index = index;
     fig->figureIndex = figureIndex;
     /* Only a pointer-typed conditional gives the ROM's arm order (moveq #0
@@ -462,11 +462,11 @@ void func_ov007_020be50c(void) {
 
     t = WORK->display->spriteBanks;
 
-    SPRITES = (Ov007ParticleSprites *)func_ov007_020c3df4(0, (void *)sizeof(Ov007ParticleSprites));
+    SPRITES = (Ov007ParticleSprites *)func_ov007_020c3df4(0, sizeof(Ov007ParticleSprites));
     SPRITES->group = func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
 
     SPRITES->tracking = (TrackingRecord *)func_ov007_020c3df4(
-        (int)&data_ov007_02103234, (void *)(data_ov007_020d7c6c * sizeof(TrackingRecord)));
+        (int)&data_ov007_02103234, data_ov007_020d7c6c * sizeof(TrackingRecord));
 
     func_ov007_020c3ee8(SPRITES->group, WORK->display->oamListSub);
 

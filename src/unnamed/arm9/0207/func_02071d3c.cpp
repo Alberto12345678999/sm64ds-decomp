@@ -1,4 +1,16 @@
+//cpp
+/* Load-bearing: the ROM build passes -Cpp_exceptions off, and the
+   .exceptix record at 0x020738f8 (func_02071d3c, length 0x1e0)
+   exists only because this pragma turns exceptions back on. */
+#pragma exceptions on
 #include "types.h"
+
+namespace std {
+void terminate();
+}
+
+extern "C" {
+
 struct S6  { int v[6]; };
 struct S7  { int v[7]; };
 struct S21 { int v[21]; };
@@ -15,7 +27,6 @@ extern u8 *ReadSignedVarInt(u8 *p, int *out);
 extern int __throw_catch_compare(int a, int b, int c);
 extern int func_02071f88(void *a, void *list);
 extern void func_02071f1c(char *a, void *b, char *c, int d);
-extern void func_020731fc(void);
 extern int func_020729f4(struct S72d90 *c);
 
 struct Tmp {
@@ -34,7 +45,7 @@ struct Tmp {
    __throw_catch_compare. Action 15 is an exception
    specification: a thrown type it does not list (func_02071f88) goes to
    func_02071f1c. Actions 1 and 14, and any unknown action, call the
-   terminate path (func_020731fc). The other actions are skipped. */
+   terminate path (std::terminate). The other actions are skipped. */
 int func_02071d3c(int *self, struct S6 *src, int flag)
 {
     struct Tmp tmp;
@@ -90,7 +101,7 @@ int func_02071d3c(int *self, struct S6 *src, int flag)
         case 1:
         case 14:
         default:
-            func_020731fc();
+            std::terminate();
             break;
 
         case 0:
@@ -115,4 +126,5 @@ int func_02071d3c(int *self, struct S6 *src, int flag)
     }
 
     return buf.p0.v[2];
+}
 }

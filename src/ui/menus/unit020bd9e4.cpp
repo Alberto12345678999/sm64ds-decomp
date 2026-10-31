@@ -50,7 +50,7 @@ extern void func_0204f94c(int *);
 extern int func_0204fa2c(int *, int);
 extern void func_02051f1c(int *, int, int);
 extern int func_020531a4(int);
-extern int func_ov007_020c3df4(int, void *);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c3d1c(void *);
 
 extern int data_ov007_02103134[];
@@ -75,8 +75,8 @@ void func_ov007_020be00c(void) {
     int i;
     int j;
 
-    data_ov007_02104bbc = (int *)func_ov007_020c3df4((int)&data_ov007_02103218, (void *)0xe4);
-    data_ov007_02104bb8 = (int *)func_ov007_020c3df4((int)&data_ov007_02103220, (void *)0x10);
+    data_ov007_02104bbc = (int *)func_ov007_020c3df4((int)&data_ov007_02103218, 0xe4);
+    data_ov007_02104bb8 = (int *)func_ov007_020c3df4((int)&data_ov007_02103220, 0x10);
 
     for (i = 0; i < 0x39; i++)
         func_0204f94c(&data_ov007_02104bbc[i]);

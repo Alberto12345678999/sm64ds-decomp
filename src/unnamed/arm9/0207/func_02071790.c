@@ -2,6 +2,16 @@
 // in the original (SDK/runtime primitive: block copy, matrix/math, CP15, context
 // switch, etc.), so there is no C to decompile it to -- the asm block is the
 // faithful source. Counts as matched (asm-primitive policy), not a C transcription.
+//
+// C++ exception runtime: enter a landing pad. r0 is the throw context (for
+// example the 0x70-byte block __rethrow builds), r1 the action iterator, and r2 the pad
+// address. func_02071be8 and func_02071f1c both pass a function start plus a
+// PC offset. The function reloads r4-r11 from the context's saved registers
+// at 0x2c..0x48, sets sp to the word at 0x5c minus the word at 0x64, and
+// branches. __rethrow stores the caller's sp at 0x5c, and func_02071864 fills
+// 0x64 from the frame header. r0 and r1 reach the pad unchanged. The void
+// signature is kept until the EH files share one context type (no shared
+// header declares one yet).
 asm void func_02071790(void) {
     ldr r4, [r0, #0x2c]
     ldr r5, [r0, #0x30]

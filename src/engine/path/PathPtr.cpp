@@ -38,14 +38,14 @@ extern char *PATH_NODES;    /* flat node records, six bytes each */
 extern int NUM_PATHS;       /* entries in PATH_DEFS */
 
 extern "C" {
-void func_02018434(int a0, int a1, int a2);
+void func_02018434(const char *path, int dst, int size);
 extern char data_020994d4[];
 extern char data_020a0d90[];
 }
 
 // @symbol func_0203ad84
 extern "C" void func_0203ad84(void) {
-    func_02018434((int)data_020994d4, (int)data_020a0d90, 0x1f);
+    func_02018434(data_020994d4, (int)data_020a0d90, 0x1f);
     data_020a0d90[0x1f] = 0;
 }
 

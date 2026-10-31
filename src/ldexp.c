@@ -1,6 +1,3 @@
-extern int func_01ff9d40(double, double);
-extern double func_01ff8708(double, double);
-extern double func_01ff8000(double, double);
 extern double copysign(double, double);
 
 static inline int fpclassify_(double x) {

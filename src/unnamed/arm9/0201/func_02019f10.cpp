@@ -2,6 +2,7 @@
 #include "types.h"
 #include "CP15.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 #include "nitro/spi/pm.h"
 
 extern "C" {
@@ -14,10 +15,6 @@ extern void func_02040724(void);
 extern void func_0201a4d0(void);
 extern unsigned char data_0209d4e4;
 extern char data_02086214[];
-/* local extern: the thread is untyped storage here (void *) */
-extern void OS_CreateThread(void *a, void *fn, void *c, void *d, unsigned int e, unsigned int f);
-/* local extern: as above */
-extern void OS_WakeupThreadDirect(void *a);
 
 void func_0201a028(void) {
     for (;;) {
@@ -32,7 +29,7 @@ void func_02019ff4(void) {
     func_0201a028();
 }
 
-void func_02019f64(void) {
+void func_02019f64(void *arg) {
     int r;
     if (data_0209d4e4 != 0) {
         PM_ForceToPowerOff();
@@ -56,10 +53,14 @@ void func_02019f64(void) {
     func_02019ff4();
 }
 
+/* The thread and its stack reuse the 0x4000-byte sin/cos table
+   data_02082214 (0x02082214..0x02086214), which ends where data_02086214
+   begins: the OSThread takes the table's top 0x94 bytes and its
+   0x3f6c-byte stack runs down from there to the table's start. */
 int func_02019f10(void) {
-    char *base = (char *)((int)data_02086214 - 0x94);
-    OS_CreateThread(base, (void *)func_02019f64, 0, base, 0x3f6c, 0);
-    OS_WakeupThreadDirect(base);
+    OSThread *thread = (OSThread *)data_02086214 - 1;
+    OS_CreateThread(thread, func_02019f64, 0, thread, 0x3f6c, 0);
+    OS_WakeupThreadDirect(thread);
     return 0;
 }
 }
