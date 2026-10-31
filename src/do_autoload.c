@@ -4,12 +4,13 @@
 // first three words are the autoload list, the list end and the packed autoload data.
 // For each {destination, size, bss size} entry it copies the block and zeroes the bss
 // after it; then it zeroes the static bss (params +0x0c..+0x10) and falls into
-// _start_AutoloadDoneCallback, AutoloadCallback here, with a plain `b`.
+// _start_AutoloadDoneCallback (AutoloadCallback, the name dsd needs) with a plain `b`,
+// r0 still pointing at the params.
 //
 // pret/pokediamond's crt0.c has the same loop as an `asm` function, plus a cache-line
 // flush per block that this older SDK does not do. It uses r4-r7 without saving them and
 // never returns by itself, so there is no C to write. Per asm policy.
-extern void AutoloadCallback(void);
+extern void AutoloadCallback(void *argv[]);
 asm void do_autoload(void) {
     ldr     r0, =0x2004ad8
     ldr     r1, [r0]

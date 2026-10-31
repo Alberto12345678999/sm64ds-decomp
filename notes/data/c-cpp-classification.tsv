@@ -112,7 +112,7 @@ src/Enable3dEngines.c	PURE-C	arm9				1		None		-
 src/d_a_e_create.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_e_switch.c	WEAK-refs-only	ov002				1		None		-
 src/EnterBigBoosHaunt.c	PURE-C	arm9				1		None		-
-src/Entry.c	WEAK-refs-only	arm9				1		None		-
+src/_start.c	WEAK-refs-only	arm9				1		None		-
 src/d_a_obj_hatena_block_vs_item_block.c	WEAK-refs-only	ov102				1		None		-
 src/d_a_obj_hatena_block_item_block.c	WEAK-refs-only	ov102				1		None		-
 src/d_a_obj_switch_hanswitch.c	WEAK-refs-only	ov002				1		None		-
@@ -2809,19 +2809,6 @@ src/unnamed/arm9/0206/func_02067bfc.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067e70.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067ee4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_02067f2c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0206/func_02067f68.c	PURE-C	arm9				1		None		-
-src/MBi_InitSendVolatBeacon.c	PURE-C	arm9				1		None		-
-src/MBi_SendFixedBeacon.c	PURE-C	arm9				1		None		-
-src/MBi_InitSendFixedBeacon.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068398.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
-src/MB_SendGameInfoBeacon.c	PURE-C	arm9				1		None		-
-src/MBi_ClearSendStatus.c	PURE-C	arm9				1		None		-
-src/MB_InitSendGameInfoStatus.c	PURE-C	arm9				1		None		-
-src/MB_AddGameInfo.c	PURE-C	arm9				1		None		-
-src/mystrlen.c	PURE-C	arm9				1		None		-
-src/MB_UpdateGameInfoMember.c	PURE-C	arm9				1		None		-
-src/MBi_ReadIconInfo.c	PURE-C	arm9				1		None		-
-src/MBi_MakeGameInfo.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a37c.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a3a4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206a928.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
@@ -2844,12 +2831,6 @@ src/unnamed/arm9/0206/func_0206ce90.c	WEAK-refs-only					0		None		not-in-delinks
 src/unnamed/arm9/0206/func_0206cec0.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/0206/func_0206cee0.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/0206/func_0206cf7c.c	PURE-C					0		None		not-in-delinks
-src/unnamed/arm9/0206/func_0206cf98.c	WEAK-refs-only					0		None		not-in-delinks
-src/unnamed/arm9/0206/func_0206d32c.c	WEAK-refs-only					0		None		not-in-delinks
-src/unnamed/arm9/0206/func_0206d868.c	WEAK-refs-only					0		None		not-in-delinks
-src/unnamed/arm9/0206/func_0206d890.c	WEAK-refs-only					0		None		not-in-delinks
-src/unnamed/arm9/0206/func_0206d8c4.c	WEAK-refs-only					0		None		not-in-delinks
-src/unnamed/arm9/0206/func_0206d940.c	WEAK-refs-only					0		None		not-in-delinks
 src/unnamed/arm9/0206/func_0206d9cc.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/0206/func_0206da18.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/0206/func_0206da64.c	PURE-C	arm9				1		None		-

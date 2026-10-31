@@ -88,7 +88,7 @@ extern void func_ov007_020c9f10(Ov007Swing *swing, void *pos, int w, int h);
 extern void func_ov007_020c9fa0(Ov007Swing *swing);
 extern Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params);
 extern void func_ov007_020ca1d4(Ov007MeshWave *wave, Ov007Mesh *mesh);
-extern int func_ov007_020ca26c(Ov007MeshWave *wave);
+extern void func_ov007_020ca26c(Ov007MeshWave *wave);
 extern Ov007MeshWave *func_ov007_020ca2a8(Ov007MeshWaveParams *params);
 extern void func_ov007_020ca578(Ov007Mesh *mesh, int i, int j, int t);
 extern void func_ov007_020ca5f0(Ov007Mesh *mesh, Ov007MeshMaterial *mat, int *pos, int scaleZ,

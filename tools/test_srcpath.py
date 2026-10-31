@@ -471,7 +471,7 @@ class EnrolmentMatchesTheTree(unittest.TestCase):
     A one-symbol source is named after the thing it defines, but "named after" has three
     spellings now.  Legacy sources use the symbol itself.  A nested Itanium name may
     instead use ``Outer_Inner_Method`` (``_itanium_qualified_stem``), which is how
-    ``CP15::SystemSetup`` lives in ``CP15_SystemSetup.cpp``.  The actor/process profile
+    ``cstd::atan2`` lives in ``cstd_atan2.cpp``.  The actor/process profile
     reconstruction gave every recovered factory an NSMBW-convention filename instead --
     `daObjKm2_Ami_Bou_c_classInit` lives in `d_a_obj_km2_ami_bou.c` -- so `symbol_for`,
     which is `Path.stem` and nothing else, stops agreeing for those.

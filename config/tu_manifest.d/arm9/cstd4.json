@@ -110,21 +110,21 @@
       "ordinal": 12
     },
     {
-      "symbol": "func_0206df90",
+      "symbol": "__flush_buffer",
       "address": "0x0206df90",
       "size": "0x000000a0",
       "legacy_source": "src/unnamed/arm9/0206/func_0206df90.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_0206e030",
+      "symbol": "__prep_buffer",
       "address": "0x0206e030",
       "size": "0x00000038",
       "legacy_source": "src/unnamed/arm9/0206/func_0206e030.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_0206e068",
+      "symbol": "__convert_from_newlines",
       "address": "0x0206e068",
       "size": "0x00000004",
       "legacy_source": "src/unnamed/arm9/0206/func_0206e068.c",

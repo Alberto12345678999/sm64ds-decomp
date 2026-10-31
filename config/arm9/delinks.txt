@@ -30,7 +30,7 @@ src/LZ77UnCompReadNormalWrite8bit.c:
     complete
     .text start:0x02004438 end:0x0200443c
 
-src/Entry.c:
+src/_start.c:
     complete
     .text start:0x02004800 end:0x020048d8
 
@@ -46,7 +46,7 @@ src/AutoloadCallback.c:
     complete
     .text start:0x020049ec end:0x020049f0
 
-src/engine/cp15/CP15_SystemSetup.cpp:
+src/init_cp15.c:
     complete
     .text start:0x020049f0 end:0x02004ad8
 
@@ -79,7 +79,7 @@ src/runtime/actor/d_cap_enemy_arm9.cpp:
     complete
     .text start:0x02005d94 end:0x02006588
 
-src/main.cpp:
+src/NitroMain.cpp:
     complete
     .text start:0x02007000 end:0x0200705c
 
@@ -3385,57 +3385,9 @@ src/unnamed/arm9/0206/func_02067f2c.cpp:
     complete
     .text start:0x02067f2c end:0x02067f68
 
-src/unnamed/arm9/0206/func_02067f68.c:
+src/engine/mb/MB_GameInfo.c:
     complete
-    .text start:0x02067f68 end:0x02068188
-
-src/MBi_InitSendVolatBeacon.c:
-    complete
-    .text start:0x02068188 end:0x020681b8
-
-src/MBi_SendFixedBeacon.c:
-    complete
-    .text start:0x020681b8 end:0x0206834c
-
-src/MBi_InitSendFixedBeacon.c:
-    complete
-    .text start:0x0206834c end:0x02068398
-
-src/unnamed/arm9/0206/func_02068398.c:
-    complete
-    .text start:0x02068398 end:0x02068410
-
-src/MB_SendGameInfoBeacon.c:
-    complete
-    .text start:0x02068410 end:0x02068484
-
-src/MBi_ClearSendStatus.c:
-    complete
-    .text start:0x02068484 end:0x020684a8
-
-src/MB_InitSendGameInfoStatus.c:
-    complete
-    .text start:0x020684a8 end:0x020684d0
-
-src/MB_AddGameInfo.c:
-    complete
-    .text start:0x020684d0 end:0x02068514
-
-src/mystrlen.c:
-    complete
-    .text start:0x02068514 end:0x0206853c
-
-src/MB_UpdateGameInfoMember.c:
-    complete
-    .text start:0x0206853c end:0x020685cc
-
-src/MBi_ReadIconInfo.c:
-    complete
-    .text start:0x020685cc end:0x02068680
-
-src/MBi_MakeGameInfo.c:
-    complete
-    .text start:0x02068680 end:0x0206879c
+    .text start:0x02067f68 end:0x0206879c
 
 src/engine/mb/MB_WmBase.cpp:
     complete
@@ -3521,29 +3473,9 @@ src/unnamed/arm9/0206/func_0206cf7c.c:
     complete
     .text start:0x0206cf7c end:0x0206cf98
 
-src/unnamed/arm9/0206/func_0206cf98.c:
+src/engine/isd/isdoverlay.cpp:
     complete
-    .text start:0x0206cf98 end:0x0206d32c
-
-src/unnamed/arm9/0206/func_0206d32c.c:
-    complete
-    .text start:0x0206d32c end:0x0206d868
-
-src/unnamed/arm9/0206/func_0206d868.cpp:
-    complete
-    .text start:0x0206d868 end:0x0206d890
-
-src/unnamed/arm9/0206/func_0206d890.cpp:
-    complete
-    .text start:0x0206d890 end:0x0206d8c4
-
-src/unnamed/arm9/0206/func_0206d8c4.cpp:
-    complete
-    .text start:0x0206d8c4 end:0x0206d940
-
-src/unnamed/arm9/0206/func_0206d940.cpp:
-    complete
-    .text start:0x0206d940 end:0x0206d9cc
+    .text start:0x0206cf98 end:0x0206d9cc
 
 src/unnamed/arm9/0206/func_0206d9cc.cpp:
     complete

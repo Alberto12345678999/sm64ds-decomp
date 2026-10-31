@@ -13,7 +13,7 @@ matched: yes</title></rect><rect x="5.93" y="27.13" width="0.56" height="7.19" f
 module: arm9
 addr: 0x02004782
 size: 6 bytes
-matched: yes</title></rect><rect x="6.49" y="27.13" width="20.15" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Entry
+matched: yes</title></rect><rect x="6.49" y="27.13" width="20.15" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_start
 module: arm9
 addr: 0x02004800
 size: 216 bytes
@@ -25,7 +25,7 @@ matched: yes</title></rect><rect x="41.94" y="27.13" width="10.45" height="7.19"
 module: arm9
 addr: 0x0200497c
 size: 112 bytes
-matched: yes</title></rect><rect x="52.76" y="27.13" width="21.64" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4CP1511SystemSetupEv
+matched: yes</title></rect><rect x="52.76" y="27.13" width="21.64" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>init_cp15
 module: arm9
 addr: 0x020049f0
 size: 232 bytes
@@ -121,7 +121,7 @@ matched: yes</title></rect><rect x="254.38" y="34.32" width="4.61" height="7.56"
 module: arm9
 addr: 0x02006554
 size: 52 bytes
-matched: yes</title></rect><rect x="258.99" y="34.32" width="8.16" height="7.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>main
+matched: yes</title></rect><rect x="258.99" y="34.32" width="8.16" height="7.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NitroMain
 module: arm9
 addr: 0x02007000
 size: 92 bytes
@@ -11417,7 +11417,7 @@ matched: yes</title></rect><rect x="122.63" y="991.46" width="11.37" height="3.5
 module: arm9
 addr: 0x02067f2c
 size: 60 bytes
-matched: yes</title></rect><rect x="134.00" y="804.80" width="45.27" height="8.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067f68
+matched: yes</title></rect><rect x="134.00" y="804.80" width="45.27" height="8.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_SendVolatBeacon
 module: arm9
 addr: 0x02067f68
 size: 544 bytes
@@ -11433,7 +11433,7 @@ matched: yes</title></rect><rect x="216.89" y="804.80" width="6.32" height="8.06
 module: arm9
 addr: 0x0206834c
 size: 76 bytes
-matched: yes</title></rect><rect x="223.22" y="804.80" width="9.99" height="8.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02068398
+matched: yes</title></rect><rect x="223.22" y="804.80" width="9.99" height="8.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MBi_ReadyBeaconSendStatus
 module: arm9
 addr: 0x02068398
 size: 120 bytes
@@ -11557,7 +11557,7 @@ matched: yes</title></rect><rect x="312.78" y="812.86" width="4.02" height="18.0
 module: arm9
 addr: 0x0206a230
 size: 108 bytes
-matched: yes</title></rect><rect x="316.80" y="812.86" width="4.62" height="18.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a29c
+matched: yes</title></rect><rect x="316.80" y="812.86" width="4.62" height="18.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>changeScanChannel
 module: arm9
 addr: 0x0206a29c
 size: 124 bytes
@@ -11797,15 +11797,15 @@ matched: yes</title></rect><rect x="282.62" y="853.85" width="2.01" height="4.01
 module: arm9
 addr: 0x0206df84
 size: 12 bytes
-matched: yes</title></rect><rect x="284.63" y="853.85" width="26.76" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206df90
+matched: yes</title></rect><rect x="284.63" y="853.85" width="26.76" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__flush_buffer
 module: arm9
 addr: 0x0206df90
 size: 160 bytes
-matched: yes</title></rect><rect x="311.39" y="853.85" width="9.36" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e030
+matched: yes</title></rect><rect x="311.39" y="853.85" width="9.36" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__prep_buffer
 module: arm9
 addr: 0x0206e030
 size: 56 bytes
-matched: yes</title></rect><rect x="320.75" y="853.85" width="0.67" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e068
+matched: yes</title></rect><rect x="320.75" y="853.85" width="0.67" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__convert_from_newlines
 module: arm9
 addr: 0x0206e068
 size: 4 bytes

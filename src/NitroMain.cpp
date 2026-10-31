@@ -12,11 +12,11 @@ extern void func_0201a054(void);
 extern void func_020197b8(void);
 
 /* The game's exception handler: it takes the context and ignores arg, which
- * main passes as the launcher thread (the thread main runs on). */
+ * NitroMain passes as the launcher thread (the thread NitroMain runs on). */
 extern void func_0201a03c(int context);
 extern mHeap::Heap_t *data_020a0e9c;
 
-void main(void) {
+void NitroMain(void) {
     OS_InitTick();
     OS_InitAlarm();
     OS_SetUserExceptionHandler((OSExceptionHandler)func_0201a03c, &data_020a621c);

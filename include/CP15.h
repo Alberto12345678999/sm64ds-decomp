@@ -19,7 +19,6 @@ void InvalidateInstructionCache(unsigned int, unsigned int);
 void WaitForInterrupt(void);
 
 /* Protection unit and DTCM control (src/engine/cp15/). */
-void SystemSetup(void);
 void EnableMPU(void);
 void DisableMPU(void);
 void MPUDataRegion1(unsigned int);

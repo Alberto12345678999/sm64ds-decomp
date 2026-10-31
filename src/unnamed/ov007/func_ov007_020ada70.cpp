@@ -13,7 +13,7 @@ void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
 extern "C" {
 extern void func_ov007_020c32e8(Ov007Palette *pal, int target, unsigned int row, int skip);
 
-extern void RequestScreenFade(int a, int b, int c);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020adb84(void);
 
 /* For palette states 4..7, loads palette 2..5 into the sub BG palette, then
@@ -44,6 +44,6 @@ void func_ov007_020ada70(void) {
     const u16 *dst = r5->palettes[1]->colors + n * 16;
     CP15::FlushAndInvalidateDataCache((unsigned int)dst, 0x20);
     GXS::LoadOBJPltt(dst, 0x180, 0x20);
-    RequestScreenFade(9, 2, (int)&func_ov007_020adb84);
+    RequestScreenFade(9, 2, func_ov007_020adb84);
 }
 }

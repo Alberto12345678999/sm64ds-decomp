@@ -477,7 +477,7 @@ void func_ov007_020b8690(void) {
  * screen and its two copies, and opens no window. The zero values go
  * through volatile locals, the corpus idiom for MultiStore32Bytes's value
  * argument. */
-void func_ov007_020b8548(void *unused, int sheet, int baseTile, void *plane0, void *plane1,
+void func_ov007_020b8548(void *unused, void *sheet, int baseTile, void *plane0, void *plane1,
                          int plane2, void *bank) {
     func_ov007_020c951c(0, bank, data_ov007_02102ef8);
 

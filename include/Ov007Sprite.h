@@ -61,8 +61,7 @@ extern "C" {
 struct Ov007Camera;
 
 Ov007Sprite *func_ov007_020c44e4(int frameCount);
-/* The int is func_ov007_020c3d1c's, the free the function tail-calls. */
-int func_ov007_020c44c4(Ov007Sprite *sprite);
+void func_ov007_020c44c4(Ov007Sprite *sprite);
 void func_ov007_020c4388(Ov007Sprite *sprite, struct Ov007Camera *camera);
 void func_ov007_020c43bc(Ov007Sprite *sprite, struct Ov007Camera *camera);
 void func_ov007_020c42f8(Ov007Sprite *sprite);

@@ -1627,6 +1627,9 @@ characterized in 6u. Read that before spending any more time on `func_02068398`.
 
 ## 6u. Backend cond-opt: the exact predicate-vs-branch rule (2026-07-16, Fable on func_02068398)
 
+(func_02068398 is now MBi_ReadyBeaconSendStatus, in src/engine/mb/MB_GameInfo.c.
+The dated entries here keep the address name.)
+
 6t left "mwccarm predicates the trailing 1-instr guard regardless of phrasing" as an empirical
 observation. The rule behind it, and why it is a true floor for a SINGLE-condition guard:
 
@@ -3034,7 +3037,7 @@ in the try, no dtor null-check; func_020731fc is now std::terminate):
 
 ```cpp
 //cpp
-extern "C" void func_020731fc(void);   /* terminate()-style wrapper (now std::terminate); source-level call */
+extern "C" void func_020731fc(void); /* std::terminate (_ZSt9terminatev); source-level call */
 typedef void (*dtor_t)(void *);
 extern "C" void func_0207328c(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {
