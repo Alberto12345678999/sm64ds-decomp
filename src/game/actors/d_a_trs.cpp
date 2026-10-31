@@ -183,7 +183,7 @@ typedef struct Vec3_16 { s16 x, y, z; } Vec3_16;
 extern "C" {
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 int RandomIntInternal(int *seed);
-void Vec3_Asr(void *d, const void *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);

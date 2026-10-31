@@ -15,7 +15,7 @@ typedef struct WmStartConnectCallback {
     unsigned short aid;      /* 0xa: the AID the parent assigned */
 } WmStartConnectCallback;
 
-/* The callback func_0203fb5c hands WM_StartConnect (func_02061e38). An
+/* The callback func_0203fb5c hands WM_StartConnect. An
    error clears data_020a0f5c and resets the link (Wireless_Reset). On
    success it resets when data_020a0f5c is 0 or 3, returns when it is
    anything but 4, and at 4 follows the state:

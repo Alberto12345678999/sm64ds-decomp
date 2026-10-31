@@ -98,13 +98,13 @@ Fix12i fdiv(s32, s32);
 }
 
 extern "C" {
-void  Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 int   InvMat4x3(int *src, int *dst);
 void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
-void  SubVec3(Vec3 *a, Vec3 *b, Vec3 *out);
+void SubVec3(Vector3 *a, Vector3 *b, Vector3 *out);
 void  CrossVec3(const Vec3_Fix12 *a, const Vec3_Fix12 *b, Vec3_Fix12 *out);
 void  NormalizeVec3(int *v, int *out);
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
@@ -175,7 +175,7 @@ void daPicGate_c::func_ov080_02125460()
 void daPicGate_c::func_ov080_0212555c()
 {
     Vec3 v;
-    Vec3_Asr(&v, (Vec3 *)&mPosX, 3);
+    Vec3_Asr((Vector3 *)&v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68,
@@ -242,8 +242,8 @@ void daPicGate_c::func_ov080_021256f8()
     if (r5 == 0)
         return;
 
-    Vec3_Asr(&a, (Vec3 *)&r5->mPrevPosX, 3);
-    Vec3_Asr(&b, (Vec3 *)&r5->mPosX, 3);
+    Vec3_Asr((Vector3 *)&a, (Vector3 *)&r5->mPrevPosX, 3);
+    Vec3_Asr((Vector3 *)&b, (Vector3 *)&r5->mPosX, 3);
     data_020a0e68 = *(Matrix4x3 *)mInvMtx;
     MulVec3Mat4x3((Vector3 *)&a, &data_020a0e68, (Vector3 *)&oa);
     MulVec3Mat4x3((Vector3 *)&b, &data_020a0e68, (Vector3 *)&ob);
@@ -322,18 +322,18 @@ void daPicGate_c::func_ov080_02125940()
             q = (int *)&n;  q[0] = z; q[1] = z; q[2] = z;
 
             if (j == 0)
-                SubVec3((Vec3 *)p, (Vec3 *)(p + 1), &ej);
+                SubVec3((Vector3 *)p, (Vector3 *)(p + 1), (Vector3 *)&ej);
             else if (j == mCols - 1)
-                SubVec3((Vec3 *)(p - 1), (Vec3 *)p, &ej);
+                SubVec3((Vector3 *)(p - 1), (Vector3 *)p, (Vector3 *)&ej);
             else
-                SubVec3((Vec3 *)(p - 1), (Vec3 *)(p + 1), &ej);
+                SubVec3((Vector3 *)(p - 1), (Vector3 *)(p + 1), (Vector3 *)&ej);
 
             if (i == 0)
-                SubVec3((Vec3 *)p, (Vec3 *)(p + mRows), &ei);
+                SubVec3((Vector3 *)p, (Vector3 *)(p + mRows), (Vector3 *)&ei);
             else if (i == mRows - 1)
-                SubVec3((Vec3 *)(p - mRows), (Vec3 *)p, &ei);
+                SubVec3((Vector3 *)(p - mRows), (Vector3 *)p, (Vector3 *)&ei);
             else
-                SubVec3((Vec3 *)(p - mRows), (Vec3 *)(p + mRows), &ei);
+                SubVec3((Vector3 *)(p - mRows), (Vector3 *)(p + mRows), (Vector3 *)&ei);
 
             CrossVec3((const Vec3_Fix12 *)&ej, (const Vec3_Fix12 *)&ei, (Vec3_Fix12 *)&n);
             n.z >>= 1;

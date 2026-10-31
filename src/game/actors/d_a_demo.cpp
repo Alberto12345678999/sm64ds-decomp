@@ -511,7 +511,7 @@ extern void func_02012694(unsigned int, void*);
 extern short ReadUnalignedShort(unsigned char *p);
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 /* local extern dropped: decl_common.h declares data_ov002_0210bc88 as 'int'; callers cast the address */
-extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
+extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern int* Vec3_LslInPlace(int *v, int sh);
 extern u16 gKuppaScriptFrame;
@@ -563,7 +563,9 @@ extern W data_ov002_0210b928;
 extern W data_ov002_0210b930;
 extern W data_ov002_0210b938;
 extern PMF3 data_ov002_0211104c[24];
-extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+/* local extern: the Vector3 spelling math/CalcLib.h declares. The locals
+   stay the POD Vec3, so the call casts. */
+extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, s32 x, s32 y, s32 z);
@@ -3923,8 +3925,7 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
           int m = FX_MUL(r, 0xa000);
           this->mMagnitude = m + 0x19000;
       }
-      AddVec3((Vec3 *)(&this->mPosX), (Vec3 *)&((dCamera_c *)data_0209f318)->pos,
-              (Vec3 *)(&this->mPosX));
+      AddVec3((Vector3 *)&this->mPosX, &((dCamera_c *)data_0209f318)->pos, (Vector3 *)&this->mPosX);
       if (arg2 > 0x2bc) {
           this->mPosY -= 0x96000;
       }
@@ -4448,7 +4449,7 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     this->mOpacity = 0x1f;
     cam = (dCamera_c *)data_0209f318;
 
-    AddVec3((Vec3 *)&v0, (Vec3 *)&cam->pos, (Vec3 *)&v0);
+    AddVec3((Vector3 *)&v0, &cam->pos, (Vector3 *)&v0);
     dist = Vec3_Dist(&v0, &cam->pos);
 
     {
@@ -4618,7 +4619,7 @@ int daDemo_c::Behavior()
             }
         }
     }
-    Vec3_Asr(&asr, (Vec3 *)(&this->mPosX), 3);
+    Vec3_Asr((Vector3 *)&asr, (Vector3 *)&this->mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     t = this->param1;
     if ((((u32)t) >= 0x1a) && (((u32)t) <= 0x2d)) {

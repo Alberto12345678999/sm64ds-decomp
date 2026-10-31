@@ -8,9 +8,7 @@
  */
 // leftovers: opt_propagation off is file-global for LoadOBJ and
 // func_020565b4 (constant VRAM destinations 0x6400000/0x6600000); every other
-// member matches either way. DMASyncWordTransfer keeps a wide u32 spelling
-// (local extern): the definition's narrower channel inserts a narrowing op at
-// the call. The func_ helpers keep address names (no
+// member matches either way. The func_ helpers keep address names (no
 // recovered names exist).
 
 #include "types.h"
@@ -48,9 +46,9 @@ extern u32 data_020a60a4;  // BG ext-palette bank saved by BeginLoadBG, restored
 extern u32 data_020a60a8;  // OBJ ext-palette bank saved by BeginLoadOBJ, restored by EndLoadOBJ
 
 extern "C" {
-extern void func_02059fa8(int ch);
-extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
-// local extern: u8 channel per the definition inserts a narrowing op at the call
+extern void MI_WaitDma(u32 dmaNo);
+extern void MI_DmaCopy32Async(u32 dmaNo, const void *src, void *dest, u32 size,
+                              void (*callback)(void *), void *arg);
 extern void DMASyncWordTransfer(u32 ch, const void *src, void *dst, u32 size);
 extern void DMASyncHalfTransfer(u32 ch, const void *src, volatile void *dst, u32 count);
 extern void MultiCopyHalf(const void *src, volatile void *dst, int count);
@@ -409,7 +407,7 @@ void BeginLoadBGExtPltt() {
 void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
-        func_02059fd0(dmaId, (int)src, (int)(destSlotAddr + GXS_BG_EXT_PLTT_BASE), size, 0, 0);
+        MI_DmaCopy32Async(dmaId, src, (void *)(destSlotAddr + GXS_BG_EXT_PLTT_BASE), size, 0, 0);
     } else {
         MultiCopy_Int((int *)src, (int *)(destSlotAddr + GXS_BG_EXT_PLTT_BASE), size);
     }
@@ -419,7 +417,7 @@ void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
 void EndLoadBGExtPltt() {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
-        func_02059fa8(dmaId);
+        MI_WaitDma(dmaId);
     }
     GX::SetBankForSubBGExtPltt(data_020a60a4);
     data_020a60a4 = 0;
@@ -436,7 +434,7 @@ void BeginLoadOBJExtPltt() {
 void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
-        func_02059fd0(dmaId, (int)src, (int)(destSlotAddr + GXS_OBJ_EXT_PLTT_BASE), size, 0, 0);
+        MI_DmaCopy32Async(dmaId, src, (void *)(destSlotAddr + GXS_OBJ_EXT_PLTT_BASE), size, 0, 0);
     } else {
         MultiCopy_Int((int *)src, (int *)(destSlotAddr + GXS_OBJ_EXT_PLTT_BASE), size);
     }
@@ -446,7 +444,7 @@ void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
 void EndLoadOBJExtPltt() {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
-        func_02059fa8(dmaId);
+        MI_WaitDma(dmaId);
     }
     GX::SetBankForSubOBJExtPltt(data_020a60a8);
     data_020a60a8 = 0;

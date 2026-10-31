@@ -49,6 +49,7 @@ enum daOnms_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "Sound.h"
+#include "math/CalcLib.h"
 
 /* mMoveDir indexes the member-pointer table this file defines below. The
    compiler copies the nine pointer-to-member descriptors into it at
@@ -71,9 +72,6 @@ enum { kMoveAlongPath = 3 };
 /* One member pointer per mMoveDir. */
 typedef void (daOnms_c::*daOnms_cState)();
 struct daOnms_cStateEntry { daOnms_cState state; };
-
-/* Vec3, not Vector3: Vec3_Asr would emit ~Vector3 if the arg were Vector3. */
-typedef struct { int x, y, z; } Vec3;
 
 #define ActorPos(actor) (&(actor)->mPos)
 #define CamPos(actor)   (&(actor)->mCamSpacePos)
@@ -117,7 +115,6 @@ int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16 data_02082214[];
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, int a1, int a2, int a3, int sp0, int sp1);
-void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angX);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
@@ -575,7 +572,7 @@ int daOnms_c::Behavior()
 int daOnms_c::InitResources()
 {
     void *f;
-    Vec3 tmp;
+    Vector3 tmp;
 
     f = dExtSimpleModel_c::LoadFile(gOnimasuModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
@@ -600,7 +597,7 @@ int daOnms_c::InitResources()
     mRestPos.x = mPosX;
     mRestPos.y = mPosY;
     mRestPos.z = mPosZ;
-    Vec3_Asr(&tmp, (Vec3 *)ActorPos(this), 3);
+    Vec3_Asr(&tmp, ActorPos(this), 3);
 
     Matrix4x3_FromTranslation(&data_020a0e68, tmp.x, tmp.y, tmp.z);
     mModel.mat4x3 = data_020a0e68;

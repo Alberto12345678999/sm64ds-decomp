@@ -151,18 +151,18 @@ extern int WM_ReadStatus(int *status);
 extern int WM_StartParent(void *callback);
 extern int WM_SetPortCallback(int port, void *callback, int arg);
 extern u16 WM_GetAllowedChannel(void);
-extern int func_02063574(void *callback, int tableNo, int camLife, int frameLife);
-extern int func_020620b0(void *callback, char *parentParam);
-extern int func_020635d8(void *callback, int flag);
-extern int func_02061ee4(void *callback, char *scanParam);
-extern int func_02061e38(void *callback, int bssDesc, void *ssid);
-extern int func_020625fc(void *callback, int recvBuf, u16 recvBufSize, int sendBuf, u16 sendBufSize,
-                         u16 mpFreq, int defaultRetryCount, int minPollBmpMode,
-                         int singlePacketMode, int fixFreqMode, int ignoreFatalError);
-/* WM_SetMPDataToPort; it returns func_02062428's WM result. */
-extern int func_020623ec(int callback, int data, int size, int aidBitmap, u16 port, u16 prio);
+extern int WM_SetLifeTime(void *callback, int tableNo, int camLife, int frameLife);
+extern int WM_SetParentParameter(void *callback, char *parentParam);
+extern int WM_SetBeaconIndication(void *callback, int flag);
+extern int WM_StartScan(void *callback, char *scanParam);
+extern int WM_StartConnect(void *callback, int bssDesc, void *ssid);
+extern int WM_StartMPEx(void *callback, int recvBuf, u16 recvBufSize, int sendBuf, u16 sendBufSize,
+                        u16 mpFreq, int defaultRetryCount, int minPollBmpMode, int singlePacketMode,
+                        int fixFreqMode, int ignoreFatalError);
+/* It returns WM_SetMPDataToPortEx's WM result. */
+extern int WM_SetMPDataToPort(int callback, int data, int size, int aidBitmap, u16 port, u16 prio);
 
-extern void func_02059f2c(int mac); /* OS_GetMacAddress */
+extern void OS_GetMacAddress(unsigned char *macAddress);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiCopyHalf(const void *src, void *dst, int count);
@@ -244,7 +244,7 @@ void func_02069994(char *arg0) {
         if (cb->errcode == 0) {
             MBi_CheckWmErrcode(0x83, WM_ReadStatus((int *)&WM_WORK->status));
             MBi_CheckWmErrcode(0x80, WM_SetIndCallback((void *)func_02069994));
-            MBi_CheckWmErrcode(0x1D, func_02063574((void *)func_02069994, 0xFFFF, 0x28, 5));
+            MBi_CheckWmErrcode(0x1D, WM_SetLifeTime((void *)func_02069994, 0xFFFF, 0x28, 5));
             return;
         }
         WM_WORK->userCallback(0x100, arg0);
@@ -252,8 +252,8 @@ void func_02069994(char *arg0) {
 
     case 0x1D:
         if (cb->errcode == 0) {
-            MBi_CheckWmErrcode(7,
-                               func_020620b0((void *)func_02069994, (char *)&WM_WORK->parentParam));
+            MBi_CheckWmErrcode(
+                7, WM_SetParentParameter((void *)func_02069994, (char *)&WM_WORK->parentParam));
             return;
         }
         WM_WORK->userCallback(0x100, arg0);
@@ -261,7 +261,7 @@ void func_02069994(char *arg0) {
 
     case 0x7:
         WM_WORK->userCallback(0x15, arg0);
-        MBi_CheckWmErrcode(0x19, func_020635d8((void *)func_02069994, 1));
+        MBi_CheckWmErrcode(0x19, WM_SetBeaconIndication((void *)func_02069994, 1));
         return;
 
     case 0x19:
@@ -292,9 +292,9 @@ void func_02069994(char *arg0) {
                             v = 0;
                         }
                         MBi_CheckWmErrcode(
-                            0xE, func_020625fc((void *)func_02069994, (int)WM_WORK->recvBuf,
-                                               WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
-                                               WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
+                            0xE, WM_StartMPEx((void *)func_02069994, (int)WM_WORK->recvBuf,
+                                              WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
+                                              WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
                         return;
                     }
                 }
@@ -502,7 +502,7 @@ void func_020690b0(char *arg0) {
         if (*(u16 *)(arg0 + 2) == 0) {
             w->userCallback(0x15, arg0);
             MBi_CheckWmErrcode(0x83, WM_ReadStatus((int *)&w->status));
-            MBi_CheckWmErrcode(0x1d, func_02063574((void *)func_020690b0, 0xffff, 0x28, 5));
+            MBi_CheckWmErrcode(0x1d, WM_SetLifeTime((void *)func_020690b0, 0xffff, 0x28, 5));
             return;
         }
         w->userCallback(0x100, arg0);
@@ -520,7 +520,7 @@ void func_020690b0(char *arg0) {
             SCAN_PARAM->bssid[2] = 0xffff;
             w->scanContinue = 1;
             w->scanNextChannel = 1;
-            MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+            MBi_CheckWmErrcode(0xa, WM_StartScan((void *)func_020690b0, data_020a9dc0));
             return;
         }
         w->userCallback(0x100, arg0);
@@ -538,7 +538,7 @@ void func_020690b0(char *arg0) {
                     return;
                 if (w->scanNextChannel != 0 && changeScanChannel(SCAN_PARAM) == 0)
                     MBi_CheckWmErrcode(2, func_02068a74());
-                MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+                MBi_CheckWmErrcode(0xa, WM_StartScan((void *)func_020690b0, data_020a9dc0));
                 return;
             case 4:
                 w->userCallback(5, arg0);
@@ -546,7 +546,7 @@ void func_020690b0(char *arg0) {
                     return;
                 if (w->scanNextChannel != 0 && changeScanChannel(SCAN_PARAM) == 0)
                     MBi_CheckWmErrcode(2, func_02068a74());
-                MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+                MBi_CheckWmErrcode(0xa, WM_StartScan((void *)func_020690b0, data_020a9dc0));
                 return;
             default:
                 w->userCallback(0x100, arg0);
@@ -559,7 +559,7 @@ void func_020690b0(char *arg0) {
 
     case 0xb:
         if (*(u16 *)(arg0 + 2) == 0) {
-            MBi_CheckWmErrcode(0xc, func_02061e38((void *)func_020690b0, w->connectBssDesc, 0));
+            MBi_CheckWmErrcode(0xc, WM_StartConnect((void *)func_020690b0, w->connectBssDesc, 0));
             return;
         }
         w->userCallback(0x100, arg0);
@@ -577,9 +577,9 @@ void func_020690b0(char *arg0) {
                 if (WM_SetPortCallback(1, (void *)func_02069918, 0) != 0)
                     return;
                 MBi_CheckWmErrcode(
-                    0xe, func_020625fc((void *)func_020690b0, (int)w->recvBuf, w->recvBufSize,
-                                       (int)w->sendBuf, w->sendBufSize,
-                                       (u16)(w->mpContinuous == 0 ? 1 : 0), 0, 0, 0, 1, 1));
+                    0xe, WM_StartMPEx((void *)func_020690b0, (int)w->recvBuf, w->recvBufSize,
+                                      (int)w->sendBuf, w->sendBufSize,
+                                      (u16)(w->mpContinuous == 0 ? 1 : 0), 0, 0, 0, 1, 1));
                 return;
             case 9:
                 w->userCallback(0xa, arg0);
@@ -646,7 +646,7 @@ int MBi_GetBeaconPeriodDispersion(void) {
     u32 sum;
     int i;
 
-    func_02059f2c((int)mac);
+    OS_GetMacAddress(mac);
     for (i = 0, sum = 0; i < 6; i++) {
         sum += mac[i];
     }
@@ -890,7 +890,7 @@ void func_02068a54(void) {
  * The fourth parameter is unused. Lead: the reconstruction's calls
  * WM_SetMPDataToPortEx and passes the result to MBi_CheckWmErrcode. */
 int func_02068a28(int callback, int data, int size, int unused, u16 aidBitmap) {
-    return func_020623ec(callback, data, size, aidBitmap, 1, 3);
+    return WM_SetMPDataToPort(callback, data, size, aidBitmap, 1, 3);
 }
 
 // @symbol func_020688fc

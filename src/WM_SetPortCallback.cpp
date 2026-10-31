@@ -7,7 +7,7 @@ extern int WMi_CheckInitialized(void);
 extern char *WM_GetSystemWork(void);
 
 /* WM_GetSystemWork's WMArm9Buf, the per-port tables this function fills,
- * with NitroSDK's names (func_02062d10, the data-sharing send callback,
+ * with NitroSDK's names (WmDataSharingSetDataCallback, the data-sharing send callback,
  * looks its argument up in the second one by port). */
 typedef struct WMArm9Buf {
     char pad_00[0xac];

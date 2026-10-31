@@ -31,12 +31,15 @@ typedef struct {
     int size;
 } RomRegion;
 
-extern WorkInfo data_020a1fc0;
-extern int data_02099e6c;
+struct FSArchive;
 
-extern void *FS_FindArchive(void *a, int b);
+extern WorkInfo data_020a1fc0;
+extern char data_02099e6c[]; /* "rom" */
+
+extern FSArchive *FS_FindArchive(const char *name, int name_len);
 extern void FS_InitFile(int *s);
-extern int FS_OpenFileDirect(char *self, int a1, int a2, int a3, int a4);
+extern int FS_OpenFileDirect(char *p_file, FSArchive *p_arc, u32 image_top, u32 image_bottom,
+                             u32 file_index);
 extern int FS_ReadFile(int a, int b, int c);
 extern int FS_CloseFile(char *self);
 
@@ -75,12 +78,12 @@ void func_020424c0(void) {
     IRQ::Restore(irq);
 
     if (data_020a1fc0.mIsParent != 0) {
-        void *sb;
+        FSArchive *sb;
         char *buf;
         int roundedSize;
         int j;
 
-        sb = FS_FindArchive(&data_02099e6c, 3);
+        sb = FS_FindArchive(data_02099e6c, 3);
         buf = (char *)fp + 4;
         FS_InitFile(local);
         j = 0;
@@ -96,7 +99,7 @@ void func_020424c0(void) {
             buf += 4;
             data0 = p->offset;
             end = roundedSize + data0;
-            FS_OpenFileDirect((char *)local, (int)sb, data0, end, -1);
+            FS_OpenFileDirect((char *)local, sb, data0, end, -1);
             FS_ReadFile((int)local, (int)buf, roundedSize);
             FS_CloseFile((char *)local);
             buf += roundedSize;

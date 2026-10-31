@@ -122,7 +122,7 @@ extern "C" void func_020553c0(unsigned addr) {
 
 // ---------------------------------------------------------------------------
 // IRQ handler registry + synthetic delivery. The display-list pump
-// (func_0205a358/func_0205a290) is interrupt-driven on hardware: GXFIFO-timed
+// (MI_SendGXCommandAsync/MIi_FIFOCallback) is interrupt-driven on hardware: GXFIFO-timed
 // DMA chunks re-arm on the FIFO-half-empty IRQ (IE bit 21, mask 0x200000) and
 // the final chunk raises the DMA-channel IRQ, whose OS dispatcher calls the
 // callback registered through OSi_EnterDmaCallback. On host the copies are
@@ -133,7 +133,7 @@ extern "C" void func_020553c0(unsigned addr) {
 
 extern "C" {
 // storage for the game's DMA bookkeeping (BSS on the DS)
-int data_020a6460[8];                                   /* GX-DMA state */
+int MIi_GXDmaParams[8];                                /* GX-DMA state */
 struct { unsigned handler, active, arg; } data_020a60c4[8]; /* per-channel cbs */
 }
 
@@ -161,7 +161,7 @@ extern "C" unsigned _ZN3IRQ11DisableIRQsEj(unsigned mask) {
 extern "C" void _ZN3IRQ15ClearInterruptsEj(unsigned) {}
 
 // The same registry under include/IRQ.h's real names. Decomp files that call
-// IRQ::GetIRQHandler and friends through that header (func_0205a358) link
+// IRQ::GetIRQHandler and friends through that header (MI_SendGXCommandAsync) link
 // against these C++-linkage definitions; files that still declare the mangled
 // spelling locally link against the extern "C" ones above.
 namespace IRQ {
@@ -172,7 +172,7 @@ Handler GetIRQHandler(unsigned mask) {
 void SetIRQHandler(unsigned mask, Handler h) { _ZN3IRQ13SetIRQHandlerEjPFvvE(mask, h); }
 unsigned EnableIRQs(unsigned mask) { return _ZN3IRQ10EnableIRQsEj(mask); }
 unsigned DisableIRQs(unsigned mask) { return _ZN3IRQ11DisableIRQsEj(mask); }
-// The host has no IF register to acknowledge; func_0205a290 calls this after
+// The host has no IF register to acknowledge; MIi_FIFOCallback calls this after
 // every chunk it starts and ignores the result.
 unsigned ClearInterrupts(unsigned mask) {
     _ZN3IRQ15ClearInterruptsEj(mask);
@@ -182,7 +182,7 @@ unsigned Disable() { return _ZN3IRQ7DisableEv(); }
 unsigned Restore(unsigned prev) { return _ZN3IRQ7RestoreEj(prev); }
 }  // namespace IRQ
 
-// DMA to the FIFO is the display-list path (func_0205a290). ctrl bit 30 is
+// DMA to the FIFO is the display-list path (MIi_FIFOCallback). ctrl bit 30 is
 // IRQ-on-complete (the final chunk); a GXFIFO-destined chunk without it relies
 // on the half-empty IRQ to pump the next chunk.
 extern "C" void DMAStartTransfer(int ch, int src, int dst, int ctrl) {
@@ -197,6 +197,14 @@ extern "C" void DMAStartTransfer(int ch, int src, int dst, int ctrl) {
             if (g_gxfifo_handler) g_gxfifo_handler();
         }
     }
+}
+
+// The ITCM DMA fallback src/engine/mi/MI_Dma.cpp's synchronous copies and
+// fills use (DMAStartTransferFB, src/DMAStartTransferFB.cpp); same
+// synchronous copy semantics. It lives here rather than in hal/model_host.cpp
+// because smoke_gx builds MI_Dma.cpp (for MI_WaitDma) without the model host.
+extern "C" void DMAStartTransferFB(unsigned char ch, unsigned src, unsigned dst, unsigned ctrl) {
+    DMAStartTransfer(ch, (int)src, (int)dst, (int)ctrl);
 }
 
 // ---------------------------------------------------------------------------

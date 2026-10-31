@@ -14,10 +14,8 @@
  * Parameter types follow each DEFINITION in src/. Parameters stay unnamed: a
  * name here takes an @NNN in every includer.
  *
- * Only helpers some includer calls are declared so far. Vec3_Asr is not:
- * its definition takes a file-local struct Vec3, so no spelling here agrees
- * with it yet. The C++ steppers (UpdateAngle, ApproachLinear) are in
- * math/Approach.h. */
+ * Only helpers some includer calls are declared so far. The C++ steppers
+ * (UpdateAngle, ApproachLinear) are in math/Approach.h. */
 #include "math/Approach.h"
 
 extern "C" {
@@ -31,6 +29,14 @@ int ApproachAngle(short *, short, int, int, int);
 
 /* Advance the LCG seed and return it. */
 int RandomIntInternal(int *);
+
+/* Shift a vector right per axis. Reads all three components before writing
+   any, so d == s is allowed. */
+void Vec3_Asr(Vector3 *, Vector3 *, int);
+
+/* out = a + b and a - b, per axis; out may alias either operand. */
+void AddVec3(Vector3 *, Vector3 *, Vector3 *);
+void SubVec3(Vector3 *, Vector3 *, Vector3 *);
 
 short Vec3_HorzAngle(const Vector3 *, const Vector3 *);
 Fix12i Vec3_HorzLen(const Vector3 *);

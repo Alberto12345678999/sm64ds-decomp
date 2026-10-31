@@ -105,10 +105,9 @@ extern s32 data_ov002_02100334[];
 extern s32 data_ov002_02100348[];
 extern s16 data_02082214[];
 
-/* local extern: arm9/ov002 C helpers with no shared header yet. Vec3_Asr's
-   definition takes a plain triple, spelled here as this file's Vec3. */
+/* local extern: arm9/ov002 C helpers with no shared header yet. Vec3_Asr is
+   not among them any more -- math/CalcLib.h, included above, declares it. */
 extern "C" {
-void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 int func_ov002_020ad660(void *cc, void *pp, void *r5p, int flags);
 void func_02012694(unsigned int, const Vector3 *);
 }
@@ -215,7 +214,7 @@ void daFPknBall_c::UpdateVisuals() {
         if (mMirrored != 0)
             pos.x = x * (u32)-1;
     }
-    Vec3_Asr(&shadowPos, &pos, 3);
+    Vec3_Asr((Vector3 *)&shadowPos, (Vector3 *)&pos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shadowPos.x, shadowPos.y, shadowPos.z);
     mShadowMat = data_020a0e68;
     DropShadowRadHeight(mShadowModel, mShadowMat, 0x28000, 0x64000, 0xf);

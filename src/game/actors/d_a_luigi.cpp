@@ -47,7 +47,9 @@ struct Mtx {
     int m[12];
 };
 
-/* Vec3_Asr's definition. Three ints, same layout as mPosX/Y/Z. */
+/* POD twin of Vector3, for the local below. Vector3's declared destructor
+   (see include/types.h) costs this TU a numbered .data local if an object of
+   it is declared here, so the local stays POD and casts at the call. */
 struct Vec3 {
     int x, y, z;
 };
@@ -111,7 +113,9 @@ void func_0203c178(Matrix4x3 *m, int sx, int sy, int sz);
 void MulMat3x3Mat3x3(const int *a, const int *b, int *dst);
 void func_02016acc(dExtSimpleModel_c *model, unsigned int mask);
 void func_02016b24(dExtSimpleModel_c *model, u32 mask);
-void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
+/* local extern: math/CalcLib.h's spelling is the one below, but including
+   that header renumbers this TU's @NNN .data locals. */
+void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
@@ -146,7 +150,7 @@ int daLuigi_c::InitResources() {
 
     mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
 
-    Vec3_Asr(&t, (Vec3 *)&mPosX, 3);
+    Vec3_Asr((Vector3 *)&t, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
 

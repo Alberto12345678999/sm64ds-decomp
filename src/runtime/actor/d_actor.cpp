@@ -483,19 +483,14 @@ extern "C" void func_02010da4(dActor_c *actor) {
 // @symbol _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c
 /* ROM ordinal 75 -- dActor_c::UpdatePosWithOnlySpeed(dCc_c *)
  * 0x02010d40  size 0x64 */
-/* AddVec3's own definition (src/AddVec3.c) spells its operands with this
-   three-int struct, not Vector3; declared to agree with it. */
-struct Vec3 {
-    s32 x, y, z;
-};
 extern "C" {
-void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
+void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void func_02010da4(dActor_c *actor);
 }
 /* Adds the velocity (mSpeedX, mVertSpeed, mSpeedZ) to mPos, then the
    cylinder's horizontal push-out, then clamps to the world bounds. */
 void dActor_c::UpdatePosWithOnlySpeed(dCc_c *clsn) {
-    AddVec3((Vec3 *)&mPos, (Vec3 *)&mSpeedX, (Vec3 *)&mPos);
+    AddVec3(&mPos, (Vector3 *)&mSpeedX, &mPos);
     if (clsn != 0) {
         mPosX += clsn->pushback.x;
         mPosZ += clsn->pushback.z;
@@ -1045,7 +1040,7 @@ void *func_ov002_020e496c(Player *p); /* the player's current mBodyModels entry 
 void MulMat4x3Mat4x3(Matrix4x3 *m1, Matrix4x3 *m0, Matrix4x3 *mF);
 void Matrix4x3_FromTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *mF, short x, short y, short z);
-void Vec3_Asr(Vector3 *vF, const Vector3 *v, int amount);
+void Vec3_Asr(Vector3 *vF, Vector3 *v, int amount);
 void Vec3_Lsl(Vector3 *vF, const Vector3 *v, int amount);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 extern Matrix4x3 data_020a0e68;
@@ -1068,7 +1063,8 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     Vector3 asr;
-    Vec3_Asr(&asr, &vec, 3);
+    /* vec is a const reference; Vec3_Asr's definition is not const-qualified. */
+    Vec3_Asr(&asr, (Vector3 *)&vec, 3);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     mPosX = data_020a0e68.m[9];
     mPosY = data_020a0e68.m[10];

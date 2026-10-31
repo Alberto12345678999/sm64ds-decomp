@@ -10,7 +10,7 @@
     "One extra member: OSi_WaitByLoop (0x020570a8, 0x10) calls OS_SpinWait(0x1000). The lock loops call it between retries, which is where pret's tree has an inline wait.",
     "Order: mwccarm emits an asm function where it stands and defers the C bodies, emitting them in reverse. The three asm functions (OS_UnLockCartridge, OS_GetLockID, OS_ReleaseLockID) open the run, then the C functions come in reverse source order down to OS_InitLock at 0x02057320, the first function in the SDK file.",
     "BOTTOM EDGE: OS_InitIrqTable at 0x02057000 is the last function of os_interrupt.c (arm9/OS_Interrupt).",
-    "TOP EDGE: func_02057410 (0x02057410..0x02057ce8) is a vsnprintf-style formatter (buffer, length, format, argument list), not a lock routine."
+    "TOP EDGE: OS_VSNPrintf at 0x02057410, the lowest of os_printf.c (arm9/OS_Printf)."
   ],
   "sections": [
     {

@@ -114,7 +114,7 @@ extern BTA_File data_ov026_02112f40;
 /* local extern: no shared header declares these. */
 extern "C" {
 extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
-extern void Vec3_Asr(void *dst, void *src, int n);
+extern void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
 extern void KillPlayer(void);
 }
 
@@ -284,7 +284,7 @@ int daWater_Tatumaki_c::SetState(const State *state) {
 /* Rebuild the model matrix from the position and angles. */
 void daWater_Tatumaki_c::UpdateModelMatrix() {
     Vector3 pos;
-    Vec3_Asr(&pos, &mPos, 3);
+    Vec3_Asr((Vector3 *)&pos, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, pos.x, pos.y, pos.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     /* Twelve flat words. A Matrix4x3 assignment copies r and t separately. */

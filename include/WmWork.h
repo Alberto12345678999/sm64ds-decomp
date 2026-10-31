@@ -5,9 +5,10 @@
  * bytes, carved by func_02068e4c), the multiboot library's sWmWork in
  * src/engine/mb/MB_WmBase.cpp. SDK field names where the SDK has one; the
  * evidence for each is above WmWork. Plain C types: some consumers do not
- * include types.h. func_02062024.c includes this header without it, and
- * func_020408b0, func_02061ab0 and func_02062428, which keep their own
- * views of these structs for now, do not include it either. */
+ * include types.h. WmCheckParentParameter.c includes this header without
+ * it, and func_020408b0, WM_GetMPReceiveBufferSize and WM_SetMPDataToPortEx,
+ * which keep their own views of these structs for now, do not include it
+ * either. */
 typedef struct {
     unsigned char bytes[0xc0];
 } WmBssDesc; /* WMBssDesc */
@@ -64,18 +65,18 @@ typedef struct {
 
 /* WmWork field evidence (WM API ids from each wrapper's WM_SetCallbackTable):
  *   wmSysBuf        buffer arg of WM_Initialize (id 0, WM_Initialize)
- *   parentParam     func_020620b0 (id 7, WM_SetParentParameter); KS_Flag at
+ *   parentParam     WM_SetParentParameter (id 7); KS_Flag at
  *                   +0x12 and the max sizes at +0x32/+0x34 are its size check;
  *                   MBi_GetAttribute packs entry/MB/KS/CS into WM_ATTR_FLAG_*
  *   scanBuf         WMScanParam.scanBuf; DMA'd into parents[i].bssDesc
  *   parent/childMaxSize   set by func_02068dc8, copied into parentParam
- *   sendBuf/recvBuf, sendBufSize/recvBufSize   WM_StartMP (func_020625fc)
+ *   sendBuf/recvBuf, sendBufSize/recvBufSize   WM_StartMPEx
  *   stateCallback   WM_Initialize / WM_SetIndCallback / WM_Reset callback
  *   mpSending       set while WM_SetMPDataToPort is pending, cleared in its
  *                   callback (id 0xf)
  *   initialized     set after WM_Initialize, cleared in the WM_End callback
  *   userCallback    every DISPATCH; func_02068ae8 installs MBi_CommParentCallback
- *   connectBssDesc  WM_StartConnect's pInfo (func_02061e38, id 0xc)
+ *   connectBssDesc  WM_StartConnect's pInfo (id 0xc)
  *   mode            func_02068ae8 sets 1 (parent); func_020688fc's case 2
  *                   sends through this (child) callback
  *   resetting       set by func_02068a74 before WM_Reset; while set the
