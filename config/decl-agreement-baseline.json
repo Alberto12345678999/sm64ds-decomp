@@ -19727,14 +19727,6 @@
         "arity:0"
       ]
     },
-    "func_0206d868": {
-      "src/unnamed/arm9/0206/func_0206cf98.c": [
-        "param:#1 const SavedIntState *"
-      ],
-      "src/unnamed/arm9/0206/func_0206d32c.c": [
-        "param:#1 const SavedIntState *"
-      ]
-    },
     "func_0206dc7c": {
       "src/unnamed/arm9/01ff/func_01ff97d8.c": [
         "arity:0",
