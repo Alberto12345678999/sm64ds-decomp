@@ -1,6 +1,6 @@
 #include "Ov007OamNode.h"
 
-extern void *func_ov007_020c3df4(const char *name, int b);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c1048(Ov007OamList *list);
 extern void func_ov007_020c3d1c(void *p);
 
