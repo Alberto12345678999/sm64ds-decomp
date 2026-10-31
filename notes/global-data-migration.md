@@ -462,3 +462,54 @@ object:
 The detectors above remain useful as a worklist in the other direction: the `bss`
 objects whose source reaches furthest past their first row are where recovering a
 type will next expose this.
+
+## The Vec3 / Vector3 split, and why fixing the definitions makes it worse
+
+`check_decl_agreement --inventory` puts this family at the top, and it is not
+close: `AddVec3` 94, `Vec3_Sub` 88, `SubVec3` 73, `Vec3_Asr` 57,
+`Vec3_HorzAngle` 41, `Vec3_Add` 40, `MulMat4x3Mat4x3` 38, `MulVec3Mat4x3` 38 --
+roughly **430 of the tree's 3,116 disagreements in one cluster**.
+
+The cause is one line repeated: each leaf defines its own POD triple.
+
+```c
+/* src/AddVec3.c */
+struct Vec3 { int x, y, z; };
+void AddVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c) { ... }
+```
+
+`include/types.h` has the shared `Vector3 { Fix12i x, y, z; }` with the same
+layout, and the consumer spellings say what the interface should be -- for
+`AddVec3`: 23 files `Vector3 *`, 12 `Vec3 *`, 9 `void *`, 6
+`const Vector3 *`, and three one-offs.
+
+**The obvious fix is byte-clean and still a net loss.** Measured: swapping the
+local triple for `Vector3` in the seven `.c` leaves (`AddVec3`, `SubVec3`,
+`Vec3_Add`, `Vec3_Sub`, `Vec3_Asr`, `LenVec3`, `MulVec3Mat4x3`) reproduces every
+one of them under `match.py --strict-relocs`, and closes 109 disagreements
+(3,116 -> 3,007). It also **opens 165**, because the consumers that spell the
+parameter `Vec3 *` agreed with the old definition and no longer do. Net +56, and
+`--changed` fails. Reverted unmerged; do not re-derive this half on its own.
+
+**What the full campaign costs.** 26 files define a local `struct Vec3`, and the
+hazard is not uniform. `include/types.h` gives `Vector3` a declared destructor
+*on purpose* -- the ROM runs `__cxa_vec_cleanup` over arrays of it -- so in a
+C++ TU a local POD `Vec3` and `Vector3` are not interchangeable for anything
+but pointers. Splitting the 26 on that:
+
+- **4 are pointer-only** and cannot hit the hazard, because `Vec3` appears only
+  in `Vec3 *` parameters and `(Vec3 *)` casts: `d_a_f_pkn.cpp`, `d_a_tree.cpp`,
+  `d_s_mg_snowball.cpp`, `d_actor.cpp`.
+- **22 declare objects of it** and need per-file byte proof, from two
+  declarations up to 40 in `d_mg3d_heyho_obj_adapter.cpp`. `Player.cpp` has 7.
+
+So this is a real campaign -- consumers first, then the definitions, with a
+byte check per file -- not an increment. It is worth doing: it is the single
+largest contract cluster left, and `d_a_chair.cpp`'s own comment ("AddVec3 take
+this file's Vec3, as their definitions take a plain triple") shows the local
+types exist only because the definitions do.
+
+Order that works: convert the 4 pointer-only files and the 22 object files to
+`Vector3` first, verifying each, and change the seven definitions LAST, when
+nothing still spells the parameter `Vec3 *`. Changing the definitions first is
+the net-negative measured above.
