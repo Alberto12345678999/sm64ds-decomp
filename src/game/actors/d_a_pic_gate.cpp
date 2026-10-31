@@ -98,7 +98,7 @@ Fix12i fdiv(s32, s32);
 }
 
 extern "C" {
-void  Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);

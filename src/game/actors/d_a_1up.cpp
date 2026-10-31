@@ -197,7 +197,7 @@ extern "C" {
 int Vec3_HorzLen(const Vector3*);
 short Vec3_HorzAngle(const Vector3*, const Vector3*);
 int func_ov002_020d0d2c(void*);
-void Vec3_Asr(Vector3*, Vector3*, int);
+void Vec3_Asr(Vector3 *, Vector3 *, int);
 void Matrix4x3_FromRotationY(void*, int);
 void Matrix4x3_FromTranslation(void*, int, int, int);
 void GiveCoins(int, int);

@@ -106,7 +106,7 @@ int   Vec3_HorzDist(const void *a, const void *b);
 s16   Vec3_HorzAngle(const void *a, const void *b);
 s16   Vec3_VertAngle(const void *a, const void *b);
 void  Vec3_Sub(void *out, const void *a, const void *b);
-void  Vec3_Asr(Vector3 *dst, Vector3 *src, int sh);
+void Vec3_Asr(Vector3 *dst, Vector3 *src, int sh);
 int   Vec3_ApproachHorz(void *cur, const void *tgt, int maxStep);
 int   LenVec3(const void *v);
 int   AngleDiff(int a, int b);
