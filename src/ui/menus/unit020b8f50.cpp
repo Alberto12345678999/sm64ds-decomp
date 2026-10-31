@@ -157,7 +157,7 @@ extern int func_ov007_020c5db0(void *p);
 extern void func_ov007_020c5dec(void *c);
 extern void func_ov007_020c5ef0(void *o);
 extern int func_ov007_020c8f98(void *p);
-extern void func_ov007_020c9080(int);
+extern void func_ov007_020c9080(void *);
 extern void *func_ov007_020c908c(void *r5);
 extern void func_ov007_020c92d0(Ov007MenuState *state);
 extern void func_ov007_020c937c(void *state);
@@ -1429,8 +1429,8 @@ void func_ov007_020b9770(void) {
     func_ov007_020c937c(SCENE->states[1]);
     func_ov007_020c937c(SCENE->states[2]);
     func_ov007_020c937c(SCENE->states[3]);
-    func_ov007_020c9080((int)SCENE->tweens[0]);
-    func_ov007_020c9080((int)SCENE->tweens[1]);
+    func_ov007_020c9080(SCENE->tweens[0]);
+    func_ov007_020c9080(SCENE->tweens[1]);
 
     for (i = 0; i < 2; i++)
         func_ov007_020c44c4(SPRITES->sprites[i]);

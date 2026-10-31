@@ -130,7 +130,7 @@ extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c3598(int value, int count, char *digits, int base);
 extern void func_ov007_020c3d1c(void *p);
 extern void *func_ov007_020c3df4(const char *name, int size);
-extern int func_ov007_020c9080(int tween);
+extern void func_ov007_020c9080(void *tween);
 extern void *func_ov007_020c908c(void *out);
 
 void func_ov007_020b45b0(Ov007ItemView *view);
@@ -511,7 +511,7 @@ Ov007ItemView *func_ov007_020b4c04(int arg0) {
  * its sprite, then the view itself. */
 // @symbol func_ov007_020b4bd4
 void func_ov007_020b4bd4(Ov007ItemView *view) {
-    func_ov007_020c9080((int)view->slideTween);
+    func_ov007_020c9080(view->slideTween);
     func_ov007_020aea4c(view->item);
     func_ov007_020c44c4(view->sprite);
     func_ov007_020c3d1c(view);

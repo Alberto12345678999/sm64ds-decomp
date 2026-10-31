@@ -3,7 +3,7 @@
 extern char data_ov007_0210324c[]; /* "pad" */
 extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c22a0(Ov007Pad *pad);
-extern int func_ov007_020c3d1c(void);
+extern void func_ov007_020c3d1c(void *p);
 
 /* Allocates the pad record Ov007Work::pad points at and clears it. */
 Ov007Pad *func_ov007_020c2304(void) {
@@ -15,8 +15,8 @@ Ov007Pad *func_ov007_020c2304(void) {
 /* Long-branch veneer: long_calls emits the pooled `ldr ip,[pc]; bx ip`
  * absolute tail-call; bracketed because the pragma is positional. */
 #pragma long_calls on
-int func_ov007_020c22f8(void) {
-    return func_ov007_020c3d1c();
+void func_ov007_020c22f8(void *p) {
+    func_ov007_020c3d1c(p);
 }
 #pragma long_calls off
 
