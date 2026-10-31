@@ -1,7 +1,7 @@
 #include "types.h"
 #include "Ov007PaletteBuf.h"
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c940c(Ov007PaletteBuf *buf);
 
 /* Allocates a palette buffer on `source` and loads it. */

@@ -84,12 +84,12 @@ void CTRDG_Init(void) {
     data_020a9dec = 0;
 }
 
+// @symbol func_0206a6d0
 /* pret's CTRDGi_InitModuleInfo, older: copy the cartridge's module ID, the
  * three extended LSI IDs, the maker and game codes into the shared module
  * information at 0x027ffc30 and hand the header copy to the ARM7. It reads
  * the header's last 0x40 bytes with DMASyncHalfTransfer, and has none of
  * pret's checks of the 0x027fff9b flag or of CTRDG_IsExisting. */
-// @symbol func_0206a6d0
 void func_0206a6d0(void) {
     int sp[4];
     unsigned int irq;
@@ -153,10 +153,10 @@ void CTRDGi_CallbackForInitModuleInfo(int a0, int a1) {
     Crash();
 }
 
+// @symbol func_0206a634
 /* pret's CTRDGi_PulledOutCallback, older: on the ARM7's pulled-out message
  * (command 0x11) ask the hook data_020a9dec, and stop if it returns nonzero.
  * It has no isOnTerminate flag, so it does not remember having asked. */
-// @symbol func_0206a634
 void func_0206a634(int unused, int arg) {
     if ((arg & 0x3f) == 0x11) {
         int r = 0;
@@ -170,10 +170,10 @@ void func_0206a634(int unused, int arg) {
     }
 }
 
+// @symbol func_0206a600
 /* pret's CTRDG_TerminateForPulledOut, older: send command 2 on the CTRDG
  * FIFO and stop. The send is inlined here (retried until it succeeds)
  * where pret's calls CTRDGi_SendtoPxi. */
-// @symbol func_0206a600
 void func_0206a600(void) {
     while (PXI_SendWordByFifo(PXI_FIFO_TAG_CTRDG, 2, 0) != 0)
         ;

@@ -9,7 +9,8 @@
     "contiguous linker run: 0x0206879c..0x0206a318, 23 functions, gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
     "SOURCE ORDER: mwccarm emits .text in reverse source order. Read from the top down, the run is the function order of the BW2 decomp's reconstruction of the Nitro SDK's mb_wm_base.c (changeScanChannel, MBi_IsSendEnabled, ..., MBi_GetAttribute, MBi_IsStarted, MBi_CheckWmErrcode) with the newer SDK's MBi_OnInitializeDone, MBi_EndCommon, MBi_OnReset and MB_DisconnectChild absent; only MBi_SetMaxScanTime and func_0206881c sit out of place, just above MBi_IsStarted.",
     "DATA: the WmWork (data_020a9db4; the BW2 reconstruction's sWmWork, ntrtwl's p_mbi_param), the scan parameter (data_020a9dc0, sScanParam) and the DMA channel (data_020a9db0, sDmaNo) are that file's statics and are written only by functions in this run.",
-    "BOTTOM EDGE: MBi_MakeGameInfo (0x02068680) and the functions under it are the SDK's mb_gameinfo.c, a different file.",
+    "DATA: mbc (data_020a9db8, MB_Parent.cpp's pPwork) sits among those statics in .bss (sDmaNo 0x020a9db0, sWmWork 0x020a9db4, mbc 0x020a9db8, sScanParam 0x020a9dc0), and func_02068e4c (the SDK's MB_Init) carves it out of the caller's buffer. Unlike them it is not file-static in this build: MB_Parent.cpp clears it and func_02065c2c, func_02065de4, func_02067530, func_02067604 and func_02067928 read it, so it has external linkage. NitroSDK's mb_wm_base.c defines it the same way, as the non-static `MB_CommCommonWork *mbc` that mb_private.h externs (`#define pPwork ((MB_CommPWork *)mbc)`).",
+    "BOTTOM EDGE: MBi_MakeGameInfo (0x02068680) is the highest-addressed function of the SDK's mb_gameinfo.c (arm9/MB_GameInfo), a different file.",
     "TOP EDGE: CTRDGi_SendtoPxi (0x0206a318) opens the cartridge library's ctrdg_common.c (arm9/CTRDG_Common)."
   ],
   "sections": [
@@ -45,21 +46,21 @@
       "symbol": "MBi_SetMaxScanTime",
       "address": "0x02068834",
       "size": "0x00000010",
-      "legacy_source": "src/MBi_SetMaxScanTime.c",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068834.c",
       "ordinal": 3
     },
     {
       "symbol": "MBi_GetAttribute",
       "address": "0x02068844",
       "size": "0x00000070",
-      "legacy_source": "src/MBi_GetAttribute.c",
+      "legacy_source": "src/unnamed/arm9/0206/func_02068844.c",
       "ordinal": 4
     },
     {
       "symbol": "MBi_GetTgid",
       "address": "0x020688b4",
       "size": "0x00000018",
-      "legacy_source": "src/MBi_GetTgid.c",
+      "legacy_source": "src/unnamed/arm9/0206/func_020688b4.c",
       "ordinal": 5
     },
     {
@@ -175,7 +176,7 @@
       "ordinal": 21
     },
     {
-      "symbol": "func_0206a29c",
+      "symbol": "changeScanChannel",
       "address": "0x0206a29c",
       "size": "0x0000007c",
       "legacy_source": "src/unnamed/arm9/0206/func_0206a29c.c",

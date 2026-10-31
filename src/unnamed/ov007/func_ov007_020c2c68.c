@@ -1,6 +1,6 @@
 #include "Ov007StrokePath.h"
 
-extern void *func_ov007_020c3df4(int heapName, int size);
+extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c29b4(Ov007StrokePath *path);
 extern void func_ov007_020c28ac(void* c);
 
