@@ -1600,7 +1600,6 @@ extern void*data_02099d90;
 extern void*data_0209b2e8;
 extern void*data_0209b450;
 extern void*data_0209b458;
-extern void*data_0209cee8;
 extern void*data_0209cef4[];
 extern void*data_0209ee78;
 extern void*data_0209ee7c;
