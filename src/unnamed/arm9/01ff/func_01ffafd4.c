@@ -11,7 +11,7 @@
 // argument (0x04000000 -> +4 ... 0x40000000 -> +0x14), so this leaves the status clear
 // and no handler installed.
 //
-// Entry (src/Entry.c), the ARM9 startup code, calls it once: after the DTCM, palette and
+// _start (src/_start.c), the ARM9 startup code, calls it once: after the DTCM, palette and
 // OAM clears, and before the jump to the game. That is the place and job ARM's runtime
 // documents for _fp_init ("initialize the floating-point status register before
 // performing any floating-point operations"). ARM does not specify _fp_init's body, so
