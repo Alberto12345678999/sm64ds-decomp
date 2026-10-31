@@ -131,7 +131,7 @@ extern int func_ov007_020c3598(int value, int count, char *digits, int base);
 extern void func_ov007_020c3d1c(void *p);
 extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c9080(void *tween);
-extern void *func_ov007_020c908c(void *out);
+extern struct Ov007Tween *func_ov007_020c908c(s32 *out);
 
 void func_ov007_020b45b0(Ov007ItemView *view);
 
@@ -426,7 +426,7 @@ Ov007ItemView *func_ov007_020b4c04(int arg0) {
         data_ov007_020d76a1[*(s32 *)((char *)data_ov007_020d77d8 + view->item->id * 0xc) * 2];
     sprite->depth = data_ov007_020d7648[data_ov007_020d77e1[view->item->id * 0xc]];
     view->pad_08 = 0;
-    view->slideTween = (struct Ov007Tween *)func_ov007_020c908c(&view->slideT);
+    view->slideTween = func_ov007_020c908c(&view->slideT);
     view->slideT = 0;
     view->slideToX = view->item->layout->homeX;
     view->slideFromX = view->slideToX;
