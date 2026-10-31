@@ -40,7 +40,8 @@
 
 #pragma defer_codegen off
 
-/* The tag SubVec3.c / Vec3_Asr.c define their parameters by. */
+/* The tag SubVec3.c defines its parameters by. Vec3_Asr.c takes Vector3
+   now, so the extern below uses that. */
 struct Vec3 { int x, y, z; };
 
 /* UpdateClsnOffset's stack locals: three bone-angle sums, then the
@@ -111,7 +112,7 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int IsStarCollectedInCurLevel(u32 flag);
 void SetStarMarker(int i, void *self, int v);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *d);
 void Vec3_LslInPlace(void *v, int sh);
@@ -238,7 +239,7 @@ void daFPkn_c::UpdateClsnOffset()
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
 
-    Vec3_Asr((Vec3 *)locals.tmp, (Vec3 *)&mPosX, 3);
+    Vec3_Asr((Vector3 *)locals.tmp, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(
         data_020a0e68,
         locals.tmp[0],

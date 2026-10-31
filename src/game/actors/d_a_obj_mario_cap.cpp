@@ -235,7 +235,7 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 int   Vec3_HorzLen(void *v);
 void  Vec3_MulScalarInPlace(void *v, int s);
 void  Vec3_Add(void *out, void *a, void *b);
-void  Vec3_Asr(int *out, void *v, int shift);
+void  Vec3_Asr(Vector3 *out, Vector3 *v, int shift);
 
 void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
@@ -716,7 +716,8 @@ void daObjMarioCap_c::UpdateMatrix()
     if ((unsigned int)(mType - 6) <= 1)
         mAnmModel.ApplyOpacity(0, 0);
 
-    Vec3_Asr(v, &mPosX, 3);     /* position / 8: the model matrix's translation scale */
+    /* position / 8: the model matrix's translation scale */
+    Vec3_Asr((Vector3 *)v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX,
                                            mAngleY, mAngleZ);

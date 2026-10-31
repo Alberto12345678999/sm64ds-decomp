@@ -193,12 +193,11 @@ enum {
    The views differed only in pointer types, so marshalling -- and the emitted
    bytes -- are unchanged. func_ov002_020aefa4 needs no entry: its definition
    below is already file-scope C linkage. */
-struct Vec3;
 extern "C" {
 int Vec3_HorzLen(const Vector3*);
 short Vec3_HorzAngle(const Vector3*, const Vector3*);
 int func_ov002_020d0d2c(void*);
-void Vec3_Asr(struct Vec3*, struct Vec3*, int);
+void Vec3_Asr(Vector3*, Vector3*, int);
 void Matrix4x3_FromRotationY(void*, int);
 void Matrix4x3_FromTranslation(void*, int, int, int);
 void GiveCoins(int, int);
@@ -562,7 +561,7 @@ void da1up_c::func_ov002_020af4ec() {
         mModel.mat4x3.m[10] = mPosY >> 3;
         mModel.mat4x3.m[11] = mPosZ >> 3;
     } else {
-        Vec3_Asr((struct Vec3*)&v1, (struct Vec3*)&mPosX, 3);
+        Vec3_Asr(&v1, &mPos, 3);
         Matrix4x3_FromTranslation(&mModel.mat4x3, v1.x, v1.y, v1.z);
     }
 

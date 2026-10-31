@@ -111,7 +111,9 @@ typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, i
 extern void LoadBlueCoinModel(void* c);
 extern void UnloadBlueCoinModel(void *c);
 
-extern void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
+/* local extern: math/CalcLib.h's spelling cannot be used here -- this TU's
+   Vec3_Dist(void *, void *) would contradict that header's declaration of it. */
+extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *m, short angY);
 extern struct Matrix4x3 data_020a0e68; /* MATRIX_SCRATCH_PAPER */
@@ -703,8 +705,8 @@ void daNknk_c::func_ov062_021183e0()
 void daNknk_c::func_ov062_02118334()
 {
     short *angleY;
-    struct Vec3 v;
-    Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
+    Vector3 v;
+    Vec3_Asr(&v, &mPos, 3);
     if (1) {
         Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
         angleY = &mAngleY;
