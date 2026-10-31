@@ -75,7 +75,7 @@
     },
     "arm9:0x02004800": {
       "author": "ruspecial",
-      "name": "Entry"
+      "name": "_start"
     },
     "arm9:0x020048d8": {
       "author": "tangosdev",
@@ -91,7 +91,7 @@
     },
     "arm9:0x020049f0": {
       "author": "tangosdev",
-      "name": "_ZN4CP1511SystemSetupEv"
+      "name": "init_cp15"
     },
     "arm9:0x02005000": {
       "author": "tangosdev",
@@ -187,7 +187,7 @@
     },
     "arm9:0x02007000": {
       "author": "tangosdev",
-      "name": "main"
+      "name": "NitroMain"
     },
     "arm9:0x0200705c": {
       "author": "andrewboudreau",

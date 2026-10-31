@@ -67,7 +67,7 @@ typedef struct OSThreadInfo {
 } OSThreadInfo;
 
 extern OSThreadInfo data_020a6134; /* OSi_ThreadInfo */
-extern OSThread data_020a621c;     /* OSi_LauncherThread: the thread main() runs on */
+extern OSThread data_020a621c;     /* OSi_LauncherThread: the thread NitroMain() runs on */
 
 void OS_InitThread(void);
 void OS_CreateThread(OSThread *, void (*)(void *), void *, void *, u32, u32);

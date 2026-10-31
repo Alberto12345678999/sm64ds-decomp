@@ -3,13 +3,13 @@
 
 extern "C" {
 
-extern int func_ov007_020c3d1c(void *p);
+extern void func_ov007_020c3d1c(void *p);
 
 /* Frees an OAM node and, when it has any, its animation table. */
-int func_ov007_020c1180(Ov007OamNode *node) {
+void func_ov007_020c1180(Ov007OamNode *node) {
     if (node->animCount) {
         func_ov007_020c3d1c(node->anims);
     }
-    return func_ov007_020c3d1c(node);
+    func_ov007_020c3d1c(node);
 }
 }

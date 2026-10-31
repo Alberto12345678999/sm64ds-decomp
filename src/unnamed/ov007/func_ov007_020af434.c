@@ -6,7 +6,7 @@ extern void func_ov007_020b76a0(void);
 extern void func_ov007_020bcba8(int i);
 extern void func_ov007_020bca40(int i);
 extern void func_ov007_020bd1c0(int i);
-extern void RequestScreenFade(int a, int b, int c);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020aec00(void);
 extern void func_ov007_020c1d78(int i);
 

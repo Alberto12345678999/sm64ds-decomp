@@ -1,13 +1,8 @@
 //cpp
 #include "types.h"
+#include "common.h"
 
 extern "C" {
-typedef struct Vec {
-    s32 x, y, z;
-} Vec;
-typedef struct VecN {
-    s16 x, y, z;
-} VecN;
 
 #define REG_BEGIN (*(vu32 *)0x4000500)
 #define REG_END   (*(vu32 *)0x4000504)
@@ -24,14 +19,14 @@ static inline void G3_Vtx(s16 x, s16 y, s16 z) {
 #define SEND_NRM(q) \
     REG_NRM = ((((q)->x) >> 3) & 0x3FF) | (((((q)->y) >> 3) & 0x3FF) << 10) | (((((q)->z) >> 3) & 0x3FF) << 20)
 
-void func_ov007_020ca86c(Vec *vtx, VecN *nrm, s32 w, s32 h, s32 shift) {
+void func_ov007_020ca86c(Vector3 *vtx, Vector3_16 *nrm, s32 w, s32 h, s32 shift) {
     s32 j, i;
     s32 dir;
     s32 w1;
     s32 rowbase;
-    VecN *n;
-    VecN *n2;
-    Vec *p00, *p10, *p01, *p11;
+    Vector3_16 *n;
+    Vector3_16 *n2;
+    Vector3 *p00, *p10, *p01, *p11;
 
     REG_BEGIN = 0;
     w1 = w + 1;

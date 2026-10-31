@@ -94,7 +94,7 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
     // The other callers of func_ov007_020c3df4 pass a literal 0 or a name
     // string; this named local is deliberate (one of the near-miss row's
     // nine zero-plumbing shapes).
-    const char *heap = 0;
+    const char *name = 0;
     Ov007OamAttrs attrs;
     Ov007BinFile file;
     u32 j;
@@ -111,7 +111,7 @@ Ov007SpriteBank *func_ov007_020c9688(int arg) {
         cnt = *p;
         p = p + 4;
         cell = &s->cells[i];
-        cell->oam = func_ov007_020c3df4(heap, cnt * 6);
+        cell->oam = func_ov007_020c3df4(name, cnt * 6);
         cell->count = cnt;
         for (j = 0; j < cnt; j++) {
             s16 x;

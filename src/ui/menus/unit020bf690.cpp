@@ -180,12 +180,13 @@ void func_ov007_020bfaf0(Ov007Camera *cam) {
 }
 
 // @symbol RequestScreenFade
-/* Queues fade kind r0 (1..9, see func_ov007_020bf790) with flags r1 and end
- * callback r2; func_ov007_020bf690 starts it on its next run. */
-void RequestScreenFade(int r0, int r1, int r2) {
-    FADE->request = r0;
-    FADE->flags = r1;
-    FADE->onEnd = (void (*)(void))r2;
+/* Queues fade kind `kind` (1..9, see func_ov007_020bf790) with flags and
+ * the end callback onEnd (0 for none); func_ov007_020bf690 starts it on its
+ * next run. */
+void RequestScreenFade(int kind, int flags, void (*onEnd)(void)) {
+    FADE->request = kind;
+    FADE->flags = flags;
+    FADE->onEnd = onEnd;
 }
 
 // @symbol func_ov007_020bf790

@@ -10926,7 +10926,7 @@
    "n_functions_map": 4,
    "n_files": 3,
    "files": [
-    "src/Entry.c",
+    "src/_start.c",
     "src/MIi_UncompressBackward.c",
     "src/AutoloadCallback.c"
    ],
@@ -11053,7 +11053,7 @@
    "n_functions_map": 2984,
    "n_files": 2903,
    "files": [
-    "src/engine/cp15/CP15_SystemSetup.cpp",
+    "src/init_cp15.c",
     "src/unnamed/arm9/0200/func_02005000.cpp",
     "src/unnamed/arm9/0200/func_02005060.cpp",
     "src/unnamed/arm9/0200/func_02005098.cpp",

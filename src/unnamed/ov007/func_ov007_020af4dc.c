@@ -2,9 +2,9 @@
 #include "Ov007Work.h"
 
 extern void func_ov007_020c1d8c(int i);
-extern void RequestScreenFade(int a, int b, void* p);
-extern char func_ov007_020b0520[];
-extern char func_ov007_020af580[];
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
+extern void func_ov007_020b0520(void);
+extern void func_ov007_020af580(void);
 
 /* On entering states[1]'s current state it calls func_ov007_020c1d8c(0);
  * 0x1e ticks in, it fades out to func_ov007_020b0520 (no choice pending)
