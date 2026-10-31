@@ -49,7 +49,7 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_02068398",
+      "symbol": "MBi_ReadyBeaconSendStatus",
       "address": "0x02068398",
       "size": "0x00000078",
       "legacy_source": "src/unnamed/arm9/0206/func_02068398.c",
@@ -117,7 +117,7 @@
   "relocations": [],
   "compiler_only_output": [],
   "notes": [
-    "Twelve members carry the SDK name on a statement-for-statement match with ntrtwl's NitroSDK mb_gameinfo.c, allowing for this older SDK's differences. The record has no userVolatData and there is no send-volat callback. MB_SendGameInfoBeacon takes no ggid, tgid or attribute; MBi_SendFixedBeacon and MBi_SendVolatBeacon fetch them themselves and set the beacon with attribute | 2 where ntrtwl's has | 3 (the ENTRY flag, NitroSDK Rev 1.41). func_02068398 is MBi_ReadyBeaconSendStatus as it was before Rev 1.42 (11/18/2005), which added the empty-list WM_SetGameInfo; it keeps its address name until a follow-up renames it.",
+    "All thirteen members carry the SDK name on a statement-for-statement match with ntrtwl's NitroSDK mb_gameinfo.c, allowing for this older SDK's differences. The record has no userVolatData and there is no send-volat callback. MB_SendGameInfoBeacon takes no ggid, tgid or attribute; MBi_SendFixedBeacon and MBi_SendVolatBeacon fetch them themselves and set the beacon with attribute | 2 where ntrtwl's has | 3 (the ENTRY flag, NitroSDK Rev 1.41). MBi_ReadyBeaconSendStatus (formerly func_02068398) is the body as it was before Rev 1.42 (11/18/2005), which added the empty-list WM_SetGameInfo.",
     "The SDK built this file as C, and so does this TU. The record, send status and beacon types are declared in this file only."
   ],
   "verification": {

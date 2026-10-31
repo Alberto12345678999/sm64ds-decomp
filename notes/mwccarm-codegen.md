@@ -1627,6 +1627,9 @@ characterized in 6u. Read that before spending any more time on `func_02068398`.
 
 ## 6u. Backend cond-opt: the exact predicate-vs-branch rule (2026-07-16, Fable on func_02068398)
 
+(func_02068398 is now MBi_ReadyBeaconSendStatus, in src/engine/mb/MB_GameInfo.c.
+The dated entries here keep the address name.)
+
 6t left "mwccarm predicates the trailing 1-instr guard regardless of phrasing" as an empirical
 observation. The rule behind it, and why it is a true floor for a SINGLE-condition guard:
 
