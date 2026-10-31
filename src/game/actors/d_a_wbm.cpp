@@ -82,7 +82,7 @@ extern s16 data_02082214[];
 /* The scratch matrix the matrix helpers build in. */
 extern Matrix4x3 data_020a0e68;
 
-void Vec3_Asr(Vector3 *dst, const Vector3 *src, int shift);
+void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 angY);
 s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);

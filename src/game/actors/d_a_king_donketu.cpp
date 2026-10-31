@@ -254,7 +254,9 @@ extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigne
 extern s16 Vec3_VertAngle(const void* a, const void* b);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
 extern void d_a_king_donketuRunningSlidingDustAtHold(int a, int b, int c);
-extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
+/* local extern: the Vector3 spelling math/CalcLib.h declares. This TU's
+   locals stay the POD Vec3 above, so the call casts. */
+extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
 extern void UnloadKeyModels(int i);
@@ -1745,7 +1747,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
     int i;
     Vec3* p;
 
-    Vec3_Asr(&v, (Vec3*)&c->mPosX, 3);
+    Vec3_Asr((Vector3 *)&v, (Vector3 *)&c->mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
 

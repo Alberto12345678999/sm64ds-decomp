@@ -74,12 +74,12 @@ void func_02052514(int *a, int *b)
 }
 
 /* ITCM fast-path display-list submit: same (channel, src, size) contract as
- * func_0205a358 (func_02044534 calls that one with identical arguments), so
+ * MI_SendGXCommandAsync (func_02044534 calls that one with identical arguments), so
  * the host forwards to the pump that gate 4a already proved byte-exact. */
-void func_0205a358(int ch, int src, int size, void (*cb)(int), int arg);
+void MI_SendGXCommandAsync(int ch, int src, int size, void (*cb)(int), int arg);
 void MI_SendGXCommand(int ch, int src, int size)
 {
-    func_0205a358(ch, src, size, 0, 0);
+    MI_SendGXCommandAsync(ch, src, size, 0, 0);
 }
 
 // ---- GX bank plumbing ----------------------------------------------------
@@ -187,13 +187,6 @@ void LoadTex(const void *src, unsigned offset, unsigned size);
 extern "C" void _ZN2GX7LoadTexEPKvjj(const void *s, unsigned o, unsigned z)
 {
     GX::LoadTex(s, o, z);
-}
-
-// DMA fallback DMASyncWordTransfer uses; same synchronous copy semantics.
-extern "C" void DMAStartTransfer(int ch, int src, int dst, int ctrl);
-extern "C" void DMAStartTransferFB(unsigned char ch, u32 src, u32 dst, u32 ctrl)
-{
-    DMAStartTransfer(ch, (int)src, (int)dst, (int)ctrl);
 }
 
 // operator_new2 on the DS is a register-passthrough tail-call veneer to

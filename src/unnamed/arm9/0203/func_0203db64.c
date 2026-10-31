@@ -11,7 +11,7 @@ extern int func_0203d81c(void);
 extern void func_0203d918(void);
 extern int func_0203d8fc(void);
 extern void OS_GetOwnerInfo(void *dst);
-extern void func_02059f2c(void *p);
+extern void OS_GetMacAddress(void *p);
 
 /* A player's 0x16-byte profile as the link exchanges it (func_0203ea5c sends
    them a chunk at a time): the owner's favourite colour and nickname.
@@ -169,8 +169,8 @@ void func_0203db64(void *arg0, void *arg1) {
         CpuCopy8(buf.nickName, data_020a10fe, buf.nickNameLength * 2);
         CpuCopy8(buf.nickName, data_020a10a6, buf.nickNameLength * 2);
         data_020a0f00 = buf.language;
-        func_02059f2c(data_020a0fb8);
-        func_02059f2c(data_020a0fa0);
+        OS_GetMacAddress(data_020a0fb8);
+        OS_GetMacAddress(data_020a0fa0);
     }
     data_020a0ef0 = 1;
 }

@@ -136,7 +136,7 @@ typedef struct MBGameRegistry {
 } MBGameRegistry;
 
 /* NitroSDK WMMpRecvData, one child's slot of an MP receive buffer, as
- * func_020619ac (WM_ReadMPData) returns it. */
+ * WM_ReadMPData returns it. */
 typedef struct WMMpRecvData {
     u16 length;     /* 0x00 */
     u16 rate;       /* 0x02 */
@@ -165,7 +165,7 @@ extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern void CpuCopy8(const void *src, void *dst, u32 size);
 extern void func_0205a588(void *dst, int val, u32 size);
-extern char *func_020619ac(char *buf, unsigned int aid);
+extern char *WM_ReadMPData(char *buf, unsigned int aid);
 extern u8 *func_02065c2c(u8 *src, u8 *dst);
 extern u8 *func_02065d5c(MBCommParentBlockHeader *hdr, u8 *buf);
 extern int func_02065de4(u8 *hdr, int aid);
@@ -612,7 +612,7 @@ void MBi_CommParentRecvData(char *arg) {
             MB_FILE(i)->mRequestedBlock = 0;
     }
     for (i = 1; i <= 0xf; i++) {
-        u16 *p = (u16 *)func_020619ac(arg, i);
+        u16 *p = (u16 *)WM_ReadMPData(arg, i);
         if (p == 0)
             continue;
         if (*p == 0xffff)

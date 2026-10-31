@@ -563,7 +563,9 @@ extern W data_ov002_0210b928;
 extern W data_ov002_0210b930;
 extern W data_ov002_0210b938;
 extern PMF3 data_ov002_0211104c[24];
-extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+/* local extern: the Vector3 spelling math/CalcLib.h declares. The locals
+   stay the POD Vec3, so the call casts. */
+extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, s32 x, s32 y, s32 z);
@@ -4618,7 +4620,7 @@ int daDemo_c::Behavior()
             }
         }
     }
-    Vec3_Asr(&asr, (Vec3 *)(&this->mPosX), 3);
+    Vec3_Asr((Vector3 *)&asr, (Vector3 *)&this->mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     t = this->param1;
     if ((((u32)t) >= 0x1a) && (((u32)t) <= 0x2d)) {

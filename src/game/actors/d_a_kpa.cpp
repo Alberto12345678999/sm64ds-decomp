@@ -373,7 +373,9 @@ extern KpaAnimationFileHandle data_ov060_0211ac68;
 extern KpaAnimationFileHandle data_ov060_0211ac70;
 extern s16 data_ov060_0211a4e0[];
 extern s16 func_02010844(void *unused, void *v, s16 angle);
-extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+/* local extern: the Vector3 spelling math/CalcLib.h declares. The locals
+   stay the POD Vec3 above, so the calls cast. */
+extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 angX);
@@ -1125,7 +1127,7 @@ void daKpa_c::func_ov060_0211577c(){
     this->mAngleX = func_02010844(this, &this->mGroundNormalX, this->mAngleY);
     this->mAngleZ = func_02010844(this, &this->mGroundNormalX, (s16)(this->mAngleY - 0x4000));
 skip_angles:
-    Vec3_Asr(&v, (Vec3 *)(&this->mPosX), 3);
+    Vec3_Asr((Vector3 *)&v, (Vector3 *)&this->mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, this->mAngleX);
@@ -1166,7 +1168,7 @@ skip_angles:
             pos.y = rc.clsnY;
         else
             pos.y = this->mPosY;
-        Vec3_Asr(&v2, &pos, 3);
+        Vec3_Asr((Vector3 *)&v2, (Vector3 *)&pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v2.x, v2.y, v2.z);
         *(Matrix4x3 *)(&this->mShadowMtx) = data_020a0e68;
         DropShadowRadHeight(this->mShadowModel, *(Matrix4x3 *)&this->mShadowMtx, 0x140000, 0x64000,
