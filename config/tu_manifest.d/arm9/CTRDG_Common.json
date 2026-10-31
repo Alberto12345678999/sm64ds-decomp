@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's ctrdg_common.c, 0x0206a318..0x0206a600: 7 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/CTRDG_common.c defines, in source order, CTRDGi_InitCommon, the CTRDG_IsAgbCartridge/IsOptionCartridge/GetAgb* family, CTRDG_IsPulledOut, CTRDG_IsExisting, CTRDGi_ChangeLatestAccessCycle, CTRDGi_RestoreAccessCycle, CTRDGi_LockByProcessor, CTRDGi_UnlockByProcessor, CTRDGi_SendtoPxi, then the copy/read/enable routines. Seven of them are here, each identified by body: CTRDGi_SendtoPxi 0x64, UnlockByProcessor 0x28, LockByProcessor 0x80, RestoreAccessCycle 0x34, ChangeLatestAccessCycle 0x48 and InitCommon 0x40 at pret's sizes, and CTRDG_IsExisting at 0x120 (0x11c in pret).",
     "Order: all seven are C, and mwccarm emits deferred C bodies in reverse. The ROM run is exactly pret's source order reversed (SendtoPxi lowest, InitCommon highest), with the functions nothing in this game calls dropped by the linker.",
     "BOTTOM EDGE: func_0206a29c (0x0206a29c..0x0206a318) scans a 16-bit channel mask from WM_GetAllowedChannel; it is not cartridge code.",
-    "TOP EDGE: func_0206a600.c (0x0206a600..0x0206a694) holds a PXI callback for the cartridge tag (0xd) and its send-then-Crash helper; func_0206a694 is the ack callback, func_0206a6d0 the module-info setup and CTRDG_Init (0x0206a88c) the init that installs them. pret's tree has no file for them (an older ctrdg.c), so they stay out."
+    "TOP EDGE: 0x0206a600..0x0206a928 is the Nitro SDK's ctrdg_proc.c (arm9/CTRDG_Proc), which pret's pokediamond has as CTRDG_proc.s: the pulled-out PXI callbacks, CTRDGi_CallbackForInitModuleInfo, the module-info setup and CTRDG_Init, a different file."
   ],
   "sections": [
     {

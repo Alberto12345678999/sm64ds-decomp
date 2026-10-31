@@ -3030,11 +3030,11 @@ natural MSL-style C++ gives:
 Winning source shape (0207328c; 02073300 adds the nested
 `try { if (--n) do {...} while (--n); } catch (...) { func_020731fc(); } func_020717c0();`
 inside the catch; 02073534 is `while (current > base) { current -= size; dtor(current); }`
-in the try, no dtor null-check):
+in the try, no dtor null-check; func_020731fc is now std::terminate):
 
 ```cpp
 //cpp
-extern "C" void func_020731fc(void);   /* terminate()-style wrapper; source-level call */
+extern "C" void func_020731fc(void);   /* terminate()-style wrapper (now std::terminate); source-level call */
 typedef void (*dtor_t)(void *);
 extern "C" void func_0207328c(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {

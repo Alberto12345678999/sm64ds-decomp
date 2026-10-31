@@ -1,0 +1,68 @@
+{
+  "id": "arm9/NMWException",
+  "module": "arm9",
+  "source": "src/NMWException.cpp",
+  "promoted_source": "src/NMWException.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "contiguous linker run: .text 0x020731fc..0x0207322c, 2 functions (std::terminate, std::dthandler), gapless in config/arm9/delinks.txt. The .data word 0x0209a6fc (std::thandler) belongs to the file but stays ROM bytes; see notes.",
+    "DATA: the word at 0x0209a6fc holds 0x02073220 (dthandler) in the ROM and is read by terminate, the only code in the tree that refers to it. MSL's NMWException.cp declares `static terminate_handler thandler = dthandler;` beside dthandler and terminate, so the three belong to one file.",
+    "SOURCE ORDER: mwccarm emits .text in reverse source order; MSL defines dthandler before terminate, and dthandler sits above terminate here.",
+    "BOTTOM EDGE: __register_global_object (0x020731dc), which MSL keeps in global_destructor_chain.c and Spirit Tracks' decomp gives a file of its own with __global_destructor_chain's .bss.",
+    "TOP EDGE: func_0207322c (0x0207322c) returns the address of the soft-float status word data_020aa3f4, which is not exception-handling code."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020731fc",
+      "end": "0x0207322c"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZSt9terminatev",
+      "address": "0x020731fc",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZSt9terminatev.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZSt9dthandlerv",
+      "address": "0x02073220",
+      "size": "0x0000000c",
+      "legacy_source": "src/_ZSt9dthandlerv.cpp",
+      "ordinal": 1
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Text-only. MSL's dthandler and thandler are static and thandler (`= dthandler`) is defined in this file. Owning that .data word needs the intact-object production path, and with it a tubuild linkcheck proof; that linkcheck stops on the missing `linkcheck --baseline` vtable-partition proofs of five unrelated TUs (arm9/dBgCh_Gnd, dBgCh_Lin, dBgCh_SphCrr, ov036/daObjRcCarpet_c, ov070/daPropeller_Heyho_c). Until then thandler is declared extern and dthandler keeps external linkage, since the ROM word's R_ARM_ABS32 reaches it from outside the object. Follow-up: an intact-object promotion that owns .data 0x0209a6fc..0x0209a700 and restores both statics.",
+    "Not folded: __throw_catch_compare (0x02072fcc), the next MSL function in NMWException.cp, sits below __register_global_object. Either __register_global_object is in this file in this MSL, or __throw_catch_compare is in another file; nothing in the ROM settles which."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-NMWException/NMWException.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 2,
+    "functions_declared": 2,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
