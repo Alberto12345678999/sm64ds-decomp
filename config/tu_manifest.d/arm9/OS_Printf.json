@@ -1,0 +1,97 @@
+{
+  "id": "arm9/OS_Printf",
+  "module": "arm9",
+  "source": "src/engine/os/OS_Printf.c",
+  "promoted_source": "src/engine/os/OS_Printf.c",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_printf.c, 0x02057410..0x02057e30: 6 functions, gapless in config/arm9/delinks.txt, each identified by its body against pret's pokediamond OS_printf.c. string_put_char, string_fill_char and string_put_string write into a printfStr {spaceLeft, stringEnd, stringStart}, storing only what fits and advancing stringEnd by the whole count. OS_SPrintf takes the stack word after format as the argument list and calls OS_VSPrintf, which calls OS_VSNPrintf with bufsz 0x7fffffff. OS_VSNPrintf (0x8d8) copies Shift-JIS lead bytes in pairs and handles the flags, '*' width and precision, h/hh/l/ll and the o u X p c s n % x d i specs exactly as pret's does.",
+    "Order: pret's file defines string_put_char, string_fill_char, string_put_string, OS_SPrintf, OS_VSPrintf, OS_SNPrintf and OS_VSNPrintf. mwccarm emits the bodies in reverse, so OS_VSNPrintf is lowest and string_put_char highest. OS_SNPrintf is absent: nothing in this game calls it, so the linker dropped it.",
+    "BOTTOM EDGE: OS_InitLock (0x02057320..0x02057410), the highest of os_spinLock.c (arm9/OS_SpinLock).",
+    "TOP EDGE: func_02057e30 (0x02057e30..0x02057e34) is an empty function whose only reference is the data word 0x0209a03c; it is not printf code, and arm9/OS_Thread begins after it."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02057410",
+      "end": "0x02057e30"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OS_VSNPrintf",
+      "address": "0x02057410",
+      "size": "0x000008d8",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057410.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OS_VSPrintf",
+      "address": "0x02057ce8",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057ce8.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_SPrintf",
+      "address": "0x02057d00",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057d00.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "string_put_string",
+      "address": "0x02057d30",
+      "size": "0x00000064",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057d30.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "string_fill_char",
+      "address": "0x02057d94",
+      "size": "0x0000006c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057d94.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "string_put_char",
+      "address": "0x02057e00",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057e00.c",
+      "ordinal": 5
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Rom: tu_map cannot segment arm9/main.",
+    "All six were renamed from func_ names from their bodies in this change. symbols/actor_renames.tsv records the evidence.",
+    "C, not C++, like arm9/MI_Memory: the SDK file is C. OS_VSNPrintf keeps the shard's body, including its two pragmas, which now sit at the end of the file so they reach no other function.",
+    "Text-only."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_Printf/OS_Printf.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 6,
+    "functions_declared": 6,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

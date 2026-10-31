@@ -18,13 +18,14 @@ extern u32 FS_TryLoadTable(void *p_mem, u32 size);
 extern void LoadOverlay(int id);
 extern void InitializeAssetHandleTable(void);
 extern void UnloadOverlay(int id);
-extern void *FS_FindArchive(void *p, int n);
+struct FSArchive;
+extern FSArchive *FS_FindArchive(const char *name, int name_len);
 extern void *FS_UnloadArchiveTables(void *p_arc);
 extern void LoadFont(int id);
 
 extern int OVERLAY_0_ID;
 extern int OVERLAY_1_ID;
-extern int data_0208ee5c;
+extern char data_0208ee5c[];
 
 void func_0201a2f8(int unused) {
     int cond = (*(unsigned short*)0x27ffc40 == 2);
@@ -45,7 +46,7 @@ void func_0201a2f8(int unused) {
     InitializeAssetHandleTable();
     UnloadOverlay((int)&OVERLAY_0_ID);
     if (ptr != 0) {
-        FS_UnloadArchiveTables(FS_FindArchive(&data_0208ee5c, 3));
+        FS_UnloadArchiveTables(FS_FindArchive(data_0208ee5c, 3));
         Memory::Deallocate(ptr);
     }
     LoadOverlay((int)&OVERLAY_1_ID);

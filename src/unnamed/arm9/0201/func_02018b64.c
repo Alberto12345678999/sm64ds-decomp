@@ -27,7 +27,7 @@ typedef struct Pair {
 } Pair;
 
 extern void FS_InitFile(void *s);
-extern void FS_GetOverlayFileID(Pair *dst, const FSOverlayInfo *p_ovi);
+extern Pair FS_GetOverlayFileID(const FSOverlayInfo *p_ovi);
 extern int myFS_OpenFileFast(void *a, Pair bc);
 extern void FS_ClearOverlayImage(FSOverlayInfo *p_ovi);
 extern int myFS_ReadFile(void *a, int b, int c);
@@ -40,7 +40,7 @@ int func_02018b64(FSOverlayInfo *ovi) {
     Pair fileId;
 
     FS_InitFile(&file);
-    FS_GetOverlayFileID(&fileId, ovi);
+    fileId = FS_GetOverlayFileID(ovi);
     if (myFS_OpenFileFast(&file, fileId) == 0)
         return 0;
 

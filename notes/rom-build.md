@@ -449,9 +449,9 @@ compiling the same snippet under both compilers in isolation:
   computed address and then RE-READS the field with a base+displacement load, b56
   recognises the second access as the first lvalue and reuses the register. Writing the
   two accesses with different expression shapes (`(char *)p + K` vs `(int)p + K`, or an
-  index) stops it. Every sharing site has to be respelled together -- `func_02062428`
-  has three, and respelling any one alone left the other two sharing. Fixed
-  [func_ov015_02111e80](../src/game/actors/d_a_obj_bk_dossunbar.cpp) (func 12 used to assemble the TU - `d_a_obj_bk_dossunbar`), [func_ov006_020ded00](../src/minigames/d_s_mg_cup.cpp) (part of `d_s_mg_cup.cpp`, element 11 used to assemble the TU), `func_02062428`,
+  index) stops it. Every sharing site has to be respelled together --
+  `WM_SetMPDataToPortEx` (then `func_02062428`) has three, and respelling any one alone left the other two sharing. Fixed
+  [func_ov015_02111e80](../src/game/actors/d_a_obj_bk_dossunbar.cpp) (func 12 used to assemble the TU - `d_a_obj_bk_dossunbar`), [func_ov006_020ded00](../src/minigames/d_s_mg_cup.cpp) (part of `d_s_mg_cup.cpp`, element 11 used to assemble the TU), `WM_SetMPDataToPortEx`,
   [func_ov006_02111e90](../src/minigames/d_s_mg_smartball.cpp).
 - **Prefer pointer arithmetic on a typed pointer over integer arithmetic then a cast.**
   `ldr` carries a 12-bit displacement and `ldrh`/`ldrsh`/`strh` only 8, so a large

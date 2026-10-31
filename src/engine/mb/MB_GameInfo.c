@@ -51,7 +51,7 @@ extern int func_020688e4(void);
 extern int func_020688cc(void);
 extern int MBi_GetTgid(void);
 extern int MBi_GetAttribute(void);
-extern int func_02063648(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
+extern int WM_SetGameInfo(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
 
 typedef struct MBGameRegistry {
     const char *romFilePathp;     /* 0x00 */
@@ -444,8 +444,8 @@ void MBi_SendFixedBeacon(void) {
     else
         data_020a9d2c.state = 4;
 
-    func_02063648(0, (int *)&data_020a9d40, 0x70, func_020688e4(), func_020688cc(), MBi_GetTgid(),
-                  MBi_GetAttribute() | 2);
+    WM_SetGameInfo(0, (int *)&data_020a9d40, 0x70, func_020688e4(), func_020688cc(), MBi_GetTgid(),
+                   MBi_GetAttribute() | 2);
 }
 
 // @symbol MBi_InitSendVolatBeacon
@@ -533,5 +533,5 @@ void MBi_SendVolatBeacon(void) {
     a = func_020688e4();
     b = func_020688cc();
     c = MBi_GetTgid();
-    func_02063648(0, (int *)&data_020a9d40, 0x70, a, b, c, MBi_GetAttribute() | 2);
+    WM_SetGameInfo(0, (int *)&data_020a9d40, 0x70, a, b, c, MBi_GetAttribute() | 2);
 }
