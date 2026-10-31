@@ -90,8 +90,9 @@ extern PukuStateRow data_ov090_02134584;
 extern Vector3 data_ov090_021342d8;
 extern int data_0209e650[];
 
-/* local extern: math/CalcLib.h leaves Vec3_Asr out. */
-extern "C" void Vec3_Asr(void *dst, void *src, int n);
+/* local extern: the spelling math/CalcLib.h declares, repeated here because
+   dropping the declaration renumbers this TU's @NNN locals. */
+extern "C" void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
 
 // @symbol daPukupuku_c_classInit
 extern "C" {
@@ -184,7 +185,7 @@ int daPukupuku_c::CleanupResources() {
  * scratch matrix and copied out. */
 void daPukupuku_c::UpdateModelMatrix() {
     int v[3];
-    Vec3_Asr(v, &mPosX, 3);
+    Vec3_Asr((Vector3 *)v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     mAnmModel.mat4x3 = data_020a0e68;
