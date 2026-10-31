@@ -3,7 +3,7 @@
 
 extern void func_ov007_020c1d8c(int i);
 extern void func_ov007_020b2764(int n);
-extern void RequestScreenFade(int r0, int r1, int r2);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020b16f0(void);
 
 /* On states[1]'s first tick: sets the screen quads' corner colours to their
@@ -17,7 +17,7 @@ void func_ov007_020b166c(void) {
     func_ov007_020c1d8c(0);
     func_ov007_020b2764(0x1000);
     if (fromState6)
-        RequestScreenFade(1, 2, (int)func_ov007_020b16f0);
+        RequestScreenFade(1, 2, func_ov007_020b16f0);
     else
-        RequestScreenFade(2, 3, (int)func_ov007_020b16f0);
+        RequestScreenFade(2, 3, func_ov007_020b16f0);
 }

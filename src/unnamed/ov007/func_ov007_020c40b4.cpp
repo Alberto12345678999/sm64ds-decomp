@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern int func_ov007_020c1180(Ov007OamNode *node);
+extern void func_ov007_020c1180(Ov007OamNode *node);
 extern void func_ov007_020c3d1c(void *);
 
 /* Frees a func_ov007_020c40d4 record and its node. */

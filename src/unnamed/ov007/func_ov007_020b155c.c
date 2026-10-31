@@ -1,9 +1,9 @@
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
 
-extern void RequestScreenFade(int a, int b, void *p);
+extern void RequestScreenFade(int kind, int flags, void (*onEnd)(void));
 extern void func_ov007_020c1d8c(int i);
-extern char func_ov007_020b1604[];
+extern void func_ov007_020b1604(void);
 
 /* On the first tick of states[1]'s state, fades out to func_ov007_020b1604:
  * fade 2 for pending choices 0xa and 0xb, fade 1 otherwise. Unless the

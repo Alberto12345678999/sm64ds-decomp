@@ -2,7 +2,7 @@
 
 extern void *func_ov007_020c3df4(const char *name, int size);
 extern void func_ov007_020c0a44(Ov007BgLayer *layer);
-extern int func_ov007_020c3d1c(void);
+extern void func_ov007_020c3d1c(void *p);
 
 /* Allocates a BG layer for BG bg at priority, over the width x height-tile
  * screen buffer screen. */
@@ -20,8 +20,8 @@ Ov007BgLayer *func_ov007_020c0aa8(void *screen, int bg, int priority, u16 width,
 /* Long-branch veneer: long_calls emits the pooled `ldr ip,[pc]; bx ip`
  * absolute tail-call; bracketed because the pragma is positional. */
 #pragma long_calls on
-int func_ov007_020c0a9c(void) {
-    return func_ov007_020c3d1c();
+void func_ov007_020c0a9c(void *p) {
+    func_ov007_020c3d1c(p);
 }
 #pragma long_calls off
 
