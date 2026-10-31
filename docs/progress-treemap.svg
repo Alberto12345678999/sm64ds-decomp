@@ -12093,11 +12093,11 @@ matched: yes</title></rect><rect x="242.26" y="978.08" width="6.98" height="3.08
 module: arm9
 addr: 0x020731dc
 size: 32 bytes
-matched: yes</title></rect><rect x="242.26" y="981.15" width="6.98" height="3.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731fc
+matched: yes</title></rect><rect x="242.26" y="981.15" width="6.98" height="3.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZSt9terminatev
 module: arm9
 addr: 0x020731fc
 size: 36 bytes
-matched: yes</title></rect><rect x="242.26" y="984.62" width="6.98" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073220
+matched: yes</title></rect><rect x="242.26" y="984.62" width="6.98" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZSt9dthandlerv
 module: arm9
 addr: 0x02073220
 size: 12 bytes
