@@ -11639,7 +11639,7 @@
     },
     "arm9:0x0206a29c": {
       "author": "ruspecial",
-      "name": "func_0206a29c"
+      "name": "changeScanChannel"
     },
     "arm9:0x0206a318": {
       "author": "tangosdev",

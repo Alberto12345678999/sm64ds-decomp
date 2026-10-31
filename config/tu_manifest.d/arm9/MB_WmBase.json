@@ -175,7 +175,7 @@
       "ordinal": 21
     },
     {
-      "symbol": "func_0206a29c",
+      "symbol": "changeScanChannel",
       "address": "0x0206a29c",
       "size": "0x0000007c",
       "legacy_source": "src/unnamed/arm9/0206/func_0206a29c.c",

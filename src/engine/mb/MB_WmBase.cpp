@@ -72,7 +72,7 @@ extern u16 *data_0209a084;
  * a byte pointer (MB_Parent.cpp's MB_WORK). */
 #define MB_WORK ((MbParentWork *)data_020a9db8)
 
-/* WMScanParam (data_020a9dc0), WM_StartScan's argument; func_0206a29c steps
+/* WMScanParam (data_020a9dc0), WM_StartScan's argument; changeScanChannel steps
  * its channel through the allowed-channel mask. */
 typedef struct {
     WmBssDesc *scanBuf; /* 0x0 */
@@ -180,35 +180,30 @@ void MBi_CheckWmErrcode(int apiid, int errcode);
 int func_02068a74(void);
 void MBi_SetMaxScanTime(u16 time);
 
-// @symbol func_0206a29c
+// @symbol changeScanChannel
 /* changeScanChannel: step the scan's channel to the next one the allowed mask
  * (WM_GetAllowedChannel) has, counting 1..16 and wrapping. Returns 0 when no
  * channel is allowed. When the current channel is the only one allowed it is
- * left as it is. ntrtwl's changeScanChannel is this body statement for
- * statement (stepping WMScanParam.channel as a number and testing bit
- * channel-1); the BW2 reconstruction's steps a WMScanExParam.channelList
- * bitmask instead. */
-int func_0206a29c(WmScanParam *param) {
-    u16 mask;
-    u16 v;
-    u16 i;
-    u16 cur;
-    mask = WM_GetAllowedChannel();
-    if (mask == 0)
+ * left as it is. This is the HeartGold fork's changeScanChannel as written:
+ * dropped in, it compiles to these bytes. It steps WMScanParam.channel as a
+ * number and tests bit channel-1. ntrtwl's is the same body. The BW2
+ * reconstruction's steps a WMScanExParam.channelList bitmask instead. */
+int changeScanChannel(WmScanParam *param) {
+    int allowed = WM_GetAllowedChannel();
+    u16 channel, i;
+    if (allowed == 0) {
         return 0;
-    cur = param->channel;
+    }
+    channel = param->channel;
     i = 0;
-    v = cur;
     do {
-        if (mask & (1 << (v - 1))) {
-            if (cur != v) {
-                param->channel = v;
-                break;
-            }
+        if ((allowed & (1 << (channel - 1))) && param->channel != channel) {
+            param->channel = channel;
+            break;
         }
-        i = i + 1;
-        v = (v == 0x10) ? 1 : v + 1;
-    } while (i < 0x10);
+        i++;
+        channel = channel == 16 ? 1 : channel + 1;
+    } while (i < 16);
     return 1;
 }
 
@@ -542,7 +537,7 @@ void func_020690b0(char *arg0) {
                 w->userCallback(4, arg0);
                 if (w->scanContinue == 0)
                     return;
-                if (w->scanNextChannel != 0 && func_0206a29c(SCAN_PARAM) == 0)
+                if (w->scanNextChannel != 0 && changeScanChannel(SCAN_PARAM) == 0)
                     MBi_CheckWmErrcode(2, func_02068a74());
                 MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
                 return;
@@ -550,7 +545,7 @@ void func_020690b0(char *arg0) {
                 w->userCallback(5, arg0);
                 if (w->scanContinue == 0)
                     return;
-                if (w->scanNextChannel != 0 && func_0206a29c(SCAN_PARAM) == 0)
+                if (w->scanNextChannel != 0 && changeScanChannel(SCAN_PARAM) == 0)
                     MBi_CheckWmErrcode(2, func_02068a74());
                 MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
                 return;

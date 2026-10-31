@@ -85,7 +85,7 @@ typedef struct {
  *   parentCount, lastParentIndex   the parents[] fill count / last hit
  *   aid             WMStartConnectCallback.aid on CONNECTED
  *   scanContinue    cleared by func_02068a74; scanning stops when 0
- *   scanNextChannel when set, func_0206a29c steps WMScanParam.channel
+ *   scanNextChannel when set, changeScanChannel steps WMScanParam.channel
  * child_bitmap's offset inside WMStatus (+0x17e) is from this code, not the SDK. */
 typedef struct {
     unsigned char wmSysBuf[0x1300];    /* 0x0000 */
