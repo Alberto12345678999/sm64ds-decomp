@@ -46,7 +46,7 @@ extern int OS_TryLockMutex(void *p);
 extern void OS_LockMutex(void *p);
 extern void OS_UnlockMutex(void *p);
 typedef struct S6e06c S6e06c;
-int func_0206e06c(S6e06c *p);
+int fflush(S6e06c *p);
 extern void func_02071784(void);
 
 extern int data_020aa020;
@@ -59,7 +59,7 @@ extern void (*__console_exit)(void);
 /* MSL __exit, statement for statement with Spirit Tracks' copy of
    abort_exit_arm_eabi.c: run __atexit_funcs newest first inside the
    inlined atexit_funcs_access critical region, call __console_exit once,
-   fflush(NULL) (func_0206e06c), then leave through func_02071784, which has
+   fflush(NULL), then leave through func_02071784, which has
    the place and shape of MSL's _ExitProcess (a tail call to the SYS_EXIT
    semihosting call func_0207199c). That file's five globals sit in .bss at
    0x020a9ec8..0x020a9fd8 in reverse declaration order: __console_exit,
@@ -91,7 +91,7 @@ void __exit(int status)
         __console_exit();
         __console_exit = 0;
     }
-    func_0206e06c(0);
+    fflush(0);
     func_02071784();
 }
 #pragma pop
@@ -276,24 +276,23 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
 #pragma push
 #pragma defer_codegen off
-/* MSL __flush_all's shape over the three console FILEs of the __files table
-   at data_0209a330 (0x4c bytes each): flush (func_0206e06c, fflush's place)
-   every FILE whose file_kind, bits 7..9 of the mode word at +4, is not
-   closed, and return -1 if any flush fails. Spirit Tracks' __flush_all
-   (ansi_files.c) has this body statement for statement, and fflush(NULL)
-   (func_0206e06c) calls it as MSL's does; the rename is a follow-up. */
+/* MSL __flush_all, statement for statement with Spirit Tracks' copy of
+   ansi_files.c: walk the three console FILEs of the __files table at
+   data_0209a330 (0x4c bytes each), fflush every FILE whose file_kind, bits
+   7..9 of the mode word at +4, is not closed, and return -1 if any flush
+   fails. fflush(NULL) calls it, as MSL's does. */
 extern char data_0209a330[];
 typedef struct S6e06c S6e06c;
-int func_0206e06c(S6e06c *p);
+int fflush(S6e06c *p);
 
-// @symbol func_0206df14
-int func_0206df14(void) {
+// @symbol __flush_all
+int __flush_all(void) {
     int result = 0;
     char *p = data_0209a330;
     int i = 1;
     do {
         if (((unsigned int)*(int *)(p + 4) << 22) >> 29) {
-            if (func_0206e06c((S6e06c *)p)) {
+            if (fflush((S6e06c *)p)) {
                 result = -1;
             }
         }
@@ -390,11 +389,17 @@ typedef struct S6e06c {
 } S6e06c;
 
 
-// @symbol func_0206e06c
-int func_0206e06c(S6e06c *p)
+/* MSL fflush, statement for statement with Spirit Tracks' copy of
+   file_io.c. In MSL's FILE terms: b4c is file_kind, b4b io_mode, b8
+   io_state, fd the error flag, +0x18 position and +0x28 buffer_len.
+   fflush(NULL) flushes every FILE through __flush_all; a FILE in error or
+   closed fails; one open for reading succeeds; otherwise write out the
+   buffer (func_0206df90) and reset the state, position and length. */
+// @symbol fflush
+int fflush(S6e06c *p)
 {
     if (p == 0) {
-        return func_0206df14();
+        return __flush_all();
     }
 
     if (p->fd != 0 || p->b4c == 0)

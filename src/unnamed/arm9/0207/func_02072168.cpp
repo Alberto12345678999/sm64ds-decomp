@@ -1,4 +1,8 @@
 //cpp
+/* Load-bearing: the ROM build passes -Cpp_exceptions off, and the
+   .exceptix record at 0x02073928 (func_02072168, length 0x88c)
+   exists only because this pragma turns exceptions back on. */
+#pragma exceptions on
 /* func_02072168 @ 0x02072168 (arm9, size 0x88c)   [mwccarm 1.2/base, 1.2/sp2, 1.2/sp2p3, 2004/b56]
  * C++ exception unwinder: interprets a function's exception-action table, running
  * the destructors of everything live in the frame, until it reaches `end`. (An

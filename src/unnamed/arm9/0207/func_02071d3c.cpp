@@ -1,4 +1,8 @@
 //cpp
+/* Load-bearing: the ROM build passes -Cpp_exceptions off, and the
+   .exceptix record at 0x020738f8 (func_02071d3c, length 0x1e0)
+   exists only because this pragma turns exceptions back on. */
+#pragma exceptions on
 #include "types.h"
 
 namespace std {

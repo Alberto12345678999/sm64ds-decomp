@@ -34,8 +34,8 @@ extern void MultiCopyHalf(const void *src, void *dst, int count);
 extern u16 func_02067ee4(u16 *p, int len);
 extern int func_020688e4(void);
 extern int func_020688cc(void);
-extern int func_020688b4(void);
-extern int func_02068844(void);
+extern int MBi_GetTgid(void);
+extern int MBi_GetAttribute(void);
 extern int func_02063648(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
 
 /* NitroSDK MBi_SendFixedBeacon (mb_gameinfo.c), beacon send state 3: copy
@@ -43,8 +43,8 @@ extern int func_02063648(int a0, int *src, int len, int a3, int arg5, int arg6, 
    (data_020a9d40), zero-filling a short last piece, stamp the record's
    attributes and the checksum, and set the beacon. After the last piece go
    to state 4. Newer SDKs take ggid, tgid and attr as parameters; this one
-   reads them itself (func_020688e4, func_020688cc, func_020688b4,
-   func_02068844). */
+   reads them itself (func_020688e4, func_020688cc, MBi_GetTgid,
+   MBi_GetAttribute). */
 void MBi_SendFixedBeacon(void) {
     volatile u16 v;
 
@@ -79,7 +79,6 @@ void MBi_SendFixedBeacon(void) {
     else
         data_020a9d2c.state = 4;
 
-    func_02063648(0, (int *)&data_020a9d40, 0x70,
-                  func_020688e4(), func_020688cc(), func_020688b4(),
-                  func_02068844() | 2);
+    func_02063648(0, (int *)&data_020a9d40, 0x70, func_020688e4(), func_020688cc(), MBi_GetTgid(),
+                  MBi_GetAttribute() | 2);
 }
