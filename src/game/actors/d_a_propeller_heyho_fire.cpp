@@ -74,7 +74,7 @@ extern HeyhoStateTable data_ov002_02111190;
  * included, see M48). */
 extern "C" {
 void func_02012694(unsigned int a, Vector3 const &v);
-void Vec3_Asr(void *dst, void *src, int n);
+void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
 }
@@ -190,7 +190,7 @@ int daPropeller_Heyho_Fire_c::SetState(State *state) {
    X/Y/Z angles, built in the scratch matrix and copied out. */
 void daPropeller_Heyho_Fire_c::UpdateModelMatrix() {
     int v[3];
-    Vec3_Asr(v, &mPosX, 3);
+    Vec3_Asr((Vector3 *)v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     *(M48 *)&mModel.mat4x3 = data_020a0e68;
