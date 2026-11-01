@@ -38,7 +38,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "PlayerInput.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "dActor_c.h"
 #include "dCamera_c.h"
 #include "OAM.h"
@@ -80,7 +80,7 @@ struct Vec3 { int x, y, z; };
 #define ICON_Y_VISIBLE(y) ((u16)((y) + 0x10) < 0xe0)
 
 extern "C" {
-extern void Vec3_Sub(struct Vector3* out, struct Vector3* a, struct Vector3* b);
+extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern signed char data_0209f2f8;
 extern u8 data_0209f220;
 extern u32 data_0209caa0[];
@@ -128,7 +128,7 @@ extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern s32  GetMinimapID(struct Obj *obj, s32 arg);
 extern s32  GetMinimapScale(s32 idx);
 extern void UpdateMinimap(s32 *a, s32 b, s32 c, s32 d, s32 e);
-void Vec3_DivScalarInPlace(struct Vec3* v, int s);
+int *Vec3_DivScalarInPlace(struct Vec3 *v, int s);
 void Vec3_MulScalarInPlace(struct Vec3* v, int s);
 void Vec3_RotateYAndTranslate(struct Vec3* out, struct Vec3* in, short ang, struct Vec3* t);
 }
@@ -386,7 +386,7 @@ int dMap_c::Render()
     u8 idx = data_0209f250;
 
     if ((u8)(flag294 | (flag2c4 | flag20c)) == 0 || !(data_0209caa0[2] & 0x80) || (flag20c != 0 && (u32)data_0209f2d4 < 3)) {
-        Player *player = (Player *)data_0209f394[idx];
+        daPly_c *player = (daPly_c *)data_0209f394[idx];
         int vs = (data_0209f2d8 == 1);
         if (vs != 0) {
             OAM::RenderSub(OAM::MM_VS_PLAYER_ICONS[player->param1 + idx * 4],
@@ -412,7 +412,7 @@ int dMap_c::Render()
                             if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
                                     OAM::RenderSub(
-                                        OAM::MM_VS_PLAYER_ICONS_S[j + ((Player *)data_0209f394[i])
+                                        OAM::MM_VS_PLAYER_ICONS_S[j + ((daPly_c *)data_0209f394[i])
                                                                           ->param1],
                                         x, y, -1, 2);
                                 }
@@ -567,13 +567,13 @@ s32 dMap_c::Behavior()
     dActor_c *focus;
     Vector3 miniPos, focusPos, clampedWorld, playerPos, scrollDelta;
     Vector3 *focusPosSrc;
-    Player *player;
+    daPly_c *player;
     dCamera_c *cam;
     u32 flagsOr;
     s32 i;
 
     cam = (dCamera_c *)data_0209f318;
-    player = (Player *)data_0209f394[data_0209f250];
+    player = (daPly_c *)data_0209f394[data_0209f250];
     focus = 0;
 
     if (data_0209f5bc->vt->f[5](data_0209f5bc) == 0) goto L274;
@@ -767,7 +767,7 @@ L738:
     /* Project each object list onto the map. A missing object gets map id -1. Stars whose
      * kind byte in data_0209f37c is 4 are the ones Render draws as MM_RED_COIN. */
     for (i = 0; i < 4; i++) {
-        Player *o = (Player *)data_0209f394[i];
+        daPly_c *o = (daPly_c *)data_0209f394[i];
         if (o != 0) {
             /* the (int) launder keeps the ROM's precomputed copy source */
             playerPos = *(Vector3 *)((int)&o->mPos);

@@ -26,7 +26,7 @@
 enum daObjSm_Lift_c_AssetId { ASSET_SM_LIFT_BMD = 0x06b3, ASSET_SM_LIFT_KCL = 0x06b4 };
 
 #include "daObjSm_Lift_c.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
 #include "nitro/fx/fx.h"
@@ -44,10 +44,10 @@ void Vec3_Asr(Vector3 *d, Vector3 *s, int n);
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
 int AngleDiff(int, int);
-void Math_Function_0203b14c(void *p, int a, int b, int c, int d);
+int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 void Vec3_Sub(void *out, void *a, void *b);
 int LenVec3(void *v);
-void Vec3_MulScalar(void *out, void *v, int scalar);
+void Vec3_MulScalar(Vector3 *out, const Vector3 *v, int scalar);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 }
 
@@ -76,8 +76,8 @@ extern SmLiftClsnFileHandle gSmLiftCollisionFile;
 // @symbol _ZN14daObjSm_Lift_cD0Ev
 daObjSm_Lift_c::~daObjSm_Lift_c() {}
 
-// @symbol _ZN14daObjSm_Lift_c15OnHitByMegaCharER6Player
-void daObjSm_Lift_c::OnHitByMegaChar(Player &player) {
+// @symbol _ZN14daObjSm_Lift_c15OnHitByMegaCharER7daPly_c
+void daObjSm_Lift_c::OnHitByMegaChar(daPly_c &player) {
     player.IncMegaKillCount();
     KillByMegaChar(player);
     mAngleY = mPrevAngleY + 0x4000;

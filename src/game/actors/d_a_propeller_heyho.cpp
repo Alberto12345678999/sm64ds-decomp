@@ -14,11 +14,11 @@ struct System {
  * func_ov070_0211f100 sorts contact. Source order is the reverse of the
  * ROM, so the one .text section emits ascending.
  */
-/* leftovers: Player::SpinBounce and Player::Hurt stay mangled: each takes
+/* leftovers: daPly_c::SpinBounce and daPly_c::Hurt stay mangled: each takes
  * Fix12<int> by value.
  * Finished and WillHitFrame stay qualified through mAnmModel; a char*
  * view of that member moves a word in func_ov070_0211f48c,
- * func_ov070_0211f62c and func_ov070_0211f6e0. Player-position reads
+ * func_ov070_0211f62c and func_ov070_0211f6e0. daPly_c-position reads
  * through int* in func_ov070_0211fd98, func_ov070_0211fae4 and
  * func_ov070_0211f48c, and the Vector3 write through ((int *)&v)[i] in
  * func_ov070_0211f368, stay as written. The mPrevAngle triple keeps
@@ -128,15 +128,14 @@ s32 daPropeller_Heyho_c::OnYoshiTryEat() {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN19daPropeller_Heyho_c13OnTurnIntoEggER6Player
+// @symbol _ZN19daPropeller_Heyho_c13OnTurnIntoEggER7daPly_c
 /* Vtable slot 19. _ZTV19daPropeller_Heyho_c at 0x02123168 + 0x4c is this body. */
-#include "Player.h"
+#include "daPly_c.h"
 
 /* Turned into an egg: the player is paid mExtraCoinCount + 1 coins
  * (InitResources seeds mExtraCoinCount to 1, so 2 coins here), then this
  * actor is killed and recorded in the death table. */
-void daPropeller_Heyho_c::OnTurnIntoEgg(Player &player)
-{
+void daPropeller_Heyho_c::OnTurnIntoEgg(daPly_c &player) {
     GivePlayerCoins(player, (u8)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
@@ -319,7 +318,7 @@ int daPropeller_Heyho_c::Behavior()
 
     mdCcAc_c.Clear();
     {
-        Player *p = ClosestPlayer();
+        daPly_c *p = ClosestPlayer();
         if (p != 0 && p->mIsVanish == 0) {
             mdCcAc_c.Update();
         }
@@ -434,7 +433,7 @@ typedef short s16;
 
 extern int Vec3_Dist(void *a, void *b);
 extern short Vec3_HorzAngle(void *a, void *b);
-extern void ApproachAngle(s16 *dst, s16 target, int a, int b, int c);
+extern int ApproachAngle(s16 *dst, s16 target, int a, int b, int c);
 extern short Vec3_VertAngle(void *a, void *b);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
@@ -458,7 +457,7 @@ int func_ov070_0211fd98(daPropeller_Heyho_c *c)
     int in[3];
     int out[3];
     Vector3 t;
-    Player *p;
+    daPly_c *p;
 
     in[0] = 0; in[1] = 0; in[2] = 0;
     out[0] = 0; out[1] = 0; out[2] = 0;
@@ -524,7 +523,7 @@ extern "C" {
 
 extern short Vec3_HorzAngle(void *v0, void *v1);
 extern short Vec3_VertAngle(void *v1, void *v0);
-extern void ApproachAngle(s16 *cur, s16 target, int a, int b, int c);
+extern int ApproachAngle(s16 *cur, s16 target, int a, int b, int c);
 extern void Matrix4x3_FromRotationY(void *m, int ang);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 extern void MulVec3Mat4x3(void *a, void *m, void *out);
@@ -551,7 +550,7 @@ extern daPropeller_Heyho_c::State data_ov070_0212358c;
  * fire state. */
 int func_ov070_0211fae4(daPropeller_Heyho_c *c)
 {
-    Player *player;
+    daPly_c *player;
     Vector3 vin;
     Vector3 vb;
     Vector3 vc;
@@ -704,7 +703,7 @@ extern void MulVec3Mat4x3(void* v, void* m, void* res);
  * counts down and the speed drops to 9.0. */
 int daPropeller_Heyho_c::func_ov070_0211f6e0()
 {
-    Player* player;
+    daPly_c *player;
     Vector3 tmp;
     Vector3 v;
     Vector3 aim;
@@ -884,7 +883,7 @@ extern daPropeller_Heyho_c::State data_ov070_0212359c;
  * When the animation has finished it resets the frame to 0, starts the 90-frame
  * cooldown and returns to wander. */
 int daPropeller_Heyho_c::func_ov070_0211f48c() {
-    Player* pl;
+    daPly_c *pl;
     struct Vector3_16 vel;
     struct Vector3 posbuf;
     struct Vector3 fp;
@@ -950,7 +949,7 @@ extern "C" unsigned d_a_propeller_heyhoNewHold(unsigned a, unsigned b, Fix12i c,
                                                void *f, void *g);
 extern "C" u32 d_a_propeller_heyhoNewUnkCallback818Hold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e,
                                                         const Vector3_16f *f);
-extern "C" void ApproachAngle(short* v, short a, int b, int c, int d);
+extern "C" int ApproachAngle(short *v, short a, int b, int c, int d);
 
 /* Knocked main. While mStateStep is non-zero (normally a fire hit; the
  * mega-character hit leaves it unchanged) it refreshes the effects 0x13a and
@@ -1008,17 +1007,17 @@ extern void func_02012694(int a, void* b);
  * kills as above; a mega-character hit spawns the mega particles, counts the
  * kill and plays sound 0x1d before the knocked state; a metal player or one on a
  * shell sends it to the knocked state with mStateStep = 0; any other contact
- * hurts the player (Player::Hurt) and, in the dive state with mHitDuringAttack
+ * hurts the player (daPly_c::Hurt) and, in the dive state with mHitDuringAttack
  * still 0, plays the file-02123528 animation and sets mStateStep =
  * mHitDuringAttack = 1. */
 extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
 {
-    Player* hitPlayer;
+    daPly_c *hitPlayer;
     s32 hitFlags;
 
     if (c->mdCcAc_c.otherOwner == 0)
         return;
-    hitPlayer = (Player *)dActor_c::FindWithID(c->mdCcAc_c.otherOwner);
+    hitPlayer = (daPly_c *)dActor_c::FindWithID(c->mdCcAc_c.otherOwner);
     if (!hitPlayer)
         return;
 

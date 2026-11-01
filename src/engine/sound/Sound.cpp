@@ -23,7 +23,7 @@
  *   sound handle raw; the table-side alloc/link/unlink/find sites use the
  *   typed SndRegTable view below.
  * - func_02013078 reads the player object raw (+0x706 flag byte, +0x60 word);
- *   Player.h is out of scope for this TU.
+ *   daPly_c.h is out of scope for this TU.
  */
 #include "types.h"
 #include "Sound.h"
@@ -39,7 +39,7 @@ extern "C" {
 /* Foreign callees. */
 extern int func_02051f1c(void *a, u32 b, int c);
 extern int func_02051e60(int a, int b, int c, int d, int e, int f);
-extern int func_02051074(int a);
+extern unsigned int func_02051074(int a);
 extern int func_020511d4(int a, int b, int c, int d, int e);
 extern int func_0203d974(void);
 extern int func_0205117c(int a);
@@ -59,7 +59,7 @@ extern void func_020485f0(int a0, int a1);
 extern void func_02048528(int a0, int a1);
 extern void func_0204f9c4(int a, int b);
 extern void func_0204f958(int a, int b);
-extern void func_0204fa2c(int *g, int z);
+extern int func_0204fa2c(int *g, int z);
 extern void func_0204f94c(void *p);
 extern void NNS_SndPlayerMoveVolume(int a, int b, int c); // local extern: untyped handle
 extern void func_0204f070(void);
@@ -72,7 +72,7 @@ extern void func_02049cd8(void *a, int b, int mode);
 extern void func_02048f34(void *owner);
 extern int func_0201a9ec(int *c);
 extern int func_02051918(unsigned int id, int arg);
-extern void func_0201a96c(int *c, int s);
+extern unsigned char func_0201a96c(int *c, int s);
 extern int func_02051fb4(void *g, unsigned int x);
 extern void func_02049764(void);
 extern void func_0204921c(int *g, int v);
@@ -837,11 +837,12 @@ extern "C" int func_02011ee4(void *c)
 }
 
 // @symbol func_02011e94
-extern "C" void func_02011e94(int *out)
-{
+extern "C" void *func_02011e94(int *out) {
     int r = func_02051074(data_0209b498);
-    func_020511d4(data_0209b498, r, 0, 0, 0);
-    if (out != 0) *out = r;
+    void *block = (void *)func_020511d4(data_0209b498, r, 0, 0, 0);
+    if (out != 0)
+        *out = r;
+    return block;
 }
 
 // @symbol Player_PlaySoundEffect

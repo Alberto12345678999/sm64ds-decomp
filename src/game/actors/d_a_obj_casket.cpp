@@ -35,7 +35,7 @@ enum daObjCasket_c_AssetId { ASSET_CASKET_BMD = 0x05b4, ASSET_CASKET_KCL = 0x05b
 #include "daObjCasket_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "math/Approach.h"
 #include "math/MtxStack.h"
 
@@ -49,7 +49,7 @@ struct CasketState {
 
 /* Resource handles this TU's static initializer constructs. File IDs and
  * widths are the ROM's; constructor/destructor addresses are aliased in
- * the manifest (Eyerok idiom). */
+ * the manifest (daIwante_c idiom). */
 struct CasketModelFilePtr : SharedFilePtr {
     CasketModelFilePtr(u32 fileID);
     ~CasketModelFilePtr();
@@ -79,7 +79,7 @@ extern CLPS_Block data_ov063_0211ebd8;
 extern "C" {
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
-void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
+void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *out);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 unsigned short DecIfAbove0_Short(unsigned short *p);
@@ -222,7 +222,7 @@ void daObjCasket_c::St_Wait_Main() {
         Sound::PlayBank3(0x5a, mCamSpacePos);
     } else {
         Vector3 *playerPosPtr;
-        Player *closest = ClosestPlayer();
+        daPly_c *closest = ClosestPlayer();
         if (closest == 0)
             return;
         /* Through a pointer: copied straight off the player, it is one instruction short. */

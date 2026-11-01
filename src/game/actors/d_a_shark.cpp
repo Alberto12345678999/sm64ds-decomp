@@ -45,19 +45,19 @@ enum daShark_c_AssetId { ASSET_HOJIRO_BMD = 0x0325, ASSET_HOJIRO_SWIM_BCA = 0x03
 #include "daShark_c.h"
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "math/Approach.h"
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
 
 /* local extern: no shared header declares these. */
 extern "C" {
-extern int func_02012694(int, void *);
+extern void func_02012694(int, void *);
 extern void Vec3_Asr(Vector3 *dst, Vector3 *src, int n);
-extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
+extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern s32 LenVec3(Vector3 *value);
 extern s16 Vec3_VertAngle(Vector3 *a, Vector3 *b);
-extern void MulVec3Mat4x3(void *a, void *matrix, void *b);
+extern void MulVec3Mat4x3(Vector3 *a, Matrix4x3 *matrix, Vector3 *b);
 }
 
 typedef daShark_c::StateFn SharkFn;
@@ -138,12 +138,12 @@ void daShark_c::CheckPlayerHit() {
         if (isPlayer == 0)
             return;
     }
-    if (((Player *)hit)->mIsVanish)
+    if (((daPly_c *)hit)->mIsVanish)
         return;
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
-    ((Player *)hit)->Hurt(pos, 3, 0xc000, 1, 0, 1);
+    ((daPly_c *)hit)->Hurt(pos, 3, 0xc000, 1, 0, 1);
 }
 
 // @symbol _ZN9daShark_c9StateSwimEPS_
@@ -260,7 +260,7 @@ int daShark_c::Behavior() {
     UpdateModelMatrix();
     mdCcAcPos_c.Clear();
     {
-        Player *player = ClosestPlayer();
+        daPly_c *player = ClosestPlayer();
         if (player != 0 && player->mIsVanish == 0)
             mdCcAcPos_c.Update();
     }

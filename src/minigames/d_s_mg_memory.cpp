@@ -54,7 +54,7 @@ extern "C" dScMgMemory_cState sMemoryResultTable[];
 extern "C" dScMgMemory_cState sMemoryStateTable[];
 extern dScMgMemory_cState sMemoryRoundTable[];
 extern dScMgMemory_cCardState sMemoryCardTable[];
-/* Player markers use the int-argument handlers, like the card handlers. */
+/* daPly_c markers use the int-argument handlers, like the card handlers. */
 extern "C" dScMgMemory_cPlayerState sMemoryPlayerTable[];
 
 namespace GX {
@@ -79,7 +79,7 @@ extern unsigned short sMemoryFlipFrameTimes[];
 extern void Mg_SaveRecordPair(int a, int b);
 extern s16 data_02082214[];
 extern u16 *sMemoryCardPositionsPerDifficulty[];
-extern int MgCoins_StartPayout(int);
+extern void MgCoins_StartPayout(int);
 extern short gMgCoinsStatus;
 extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int c);
@@ -93,7 +93,7 @@ void Camera_InitDealerView(char *p);
 void Mg_DrawCredits(char *c, int a, int b, int d);
 void Dealer_Draw(char *p);
 void MgCoins_Update(void);
-int Dealer_Update(Dealer *p);
+void Dealer_Update(Dealer *p);
 void LoadCard2SubBg3(void);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);

@@ -20,7 +20,7 @@ void RunningSlidingDustAt(int, int, int);
  *   InitResources walk segment rows through char* bases. Indexing
  *   mSegmentPos[seg] / &mAnmModels[i].mat4x3 changes those sizes, and
  *   UpdateSegments' NormalizeVec3IfNonZero relocation moves with them.
- * - func_ov002_020c51d0 is ov002's. Player::Hurt and Player::Bounce
+ * - func_ov002_020c51d0 is ov002's. daPly_c::Hurt and daPly_c::Bounce
  *   stay mangled (Fix12<int> by value).
  */
 
@@ -70,7 +70,7 @@ enum daHanachan_c_AssetId {
 #include "decl_Player.h"
 #include "dCamera_c.h"
 #include "SharedFilePtr.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "dBgCh_Gnd.h"
 #include "Message.h"
 #include "Vector3s.h"
@@ -127,7 +127,7 @@ extern void *d_a_hanachanNewHold(u32 a, u32 b, s32 x, s32 y, s32 z, const void *
 extern int func_ov002_020c51d0(void *, void *);
 extern unsigned char data_ov034_0211433c[];
 extern s32 data_ov034_021138d8[];
-extern void func_020092c4(void *arg0, void *out, void *target);
+extern int func_020092c4(void *arg0, void *out, void *target);
 extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
 extern void *data_0209f318;
@@ -360,7 +360,7 @@ void daHanachan_c::StateDamageTalkInit()
 void daHanachan_c::StateDamageMain()
 {
     Vector3 st;
-    Player *talk;
+    daPly_c *talk;
 
     ApproachLinear(mHorzSpeed, 0, 0x1000);
     mTargetAngleY = HorzAngleToCPlayer();
@@ -427,7 +427,7 @@ void daHanachan_c::StateMoveMain()
     len = LenVec3(v);
 
     if (mDefeated != 0 && mFalling == 0) {
-        Player *cp = ClosestPlayer();
+        daPly_c *cp = ClosestPlayer();
         if (Vec3_HorzDist(&mPosX, &cp->mPosX) < 0xc8000) {
             mFalling = 1;
             mVertAccel = -0x1000;
@@ -491,7 +491,7 @@ void daHanachan_c::StateMoveStartMain()
     int k;
     dExtAnmModel_c *anim;
     unsigned health;
-    Player *player;
+    daPly_c *player;
 
     anim = &mAnmModels[0];
     anim = anim + 2;
@@ -564,7 +564,7 @@ void daHanachan_c::StateMoveStopMain()
 {
     int i, k;
     dExtAnmModel_c *anim;
-    Player *player;
+    daPly_c *player;
 
     ApproachLinear(mHorzSpeed, 0, 0x1000);
 
@@ -628,7 +628,7 @@ void daHanachan_c::StateMoveStopInit()
 void daHanachan_c::StateDemoCallMain()
 {
     Vector3 v;
-    Player *player = mPlayer;
+    daPly_c *player = mPlayer;
     v.x = mSegmentPos[0].x;
     v.y = mSegmentPos[0].y;
     v.z = mSegmentPos[0].z;
@@ -655,7 +655,7 @@ void daHanachan_c::StateDemoWaitMain()
 {
     Vector3 v;
     int len;
-    Player *player;
+    daPly_c *player;
 
     Vec3_Sub(&v, &mPosX, &mHomePos);
     len = LenVec3(&v);
@@ -799,14 +799,14 @@ void daHanachan_c::HandlePlayerHits()
         playerPos.y = src->y;
         playerPos.z = src->z;
         if (IsStompedBy(cyl, a) != 0) {
-            ((Player *)a)->Bounce(0x28000);
+            ((daPly_c *)a)->Bounce(0x28000);
             func_0201267c(0x11c, &mCamSpacePos);
             if ((unsigned int)i > 1) {
                 mSegmentBounceTimer[i] = 0x1e;
                 return;
             }
             mSegmentBounceTimer[0] = 0x1e;
-            mPlayer = (Player *)a;
+            mPlayer = (daPly_c *)a;
             SetState(5);
             return;
         }
@@ -814,7 +814,7 @@ void daHanachan_c::HandlePlayerHits()
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
-            ((Player *)a)->Hurt(v, 2, 0xc000, 1, 0, 1);
+            ((daPly_c *)a)->Hurt(v, 2, 0xc000, 1, 0, 1);
             SetState(8);
         }
     }
@@ -837,7 +837,7 @@ void daHanachan_c::HandlePlayerHits()
             hv.x = mPosX;
             hv.y = mPosY;
             hv.z = mPosZ;
-            ((Player *)a)->Hurt(hv, 0, 0x5000, 1, 0, 1);
+            ((daPly_c *)a)->Hurt(hv, 0, 0x5000, 1, 0, 1);
         }
     }
 }

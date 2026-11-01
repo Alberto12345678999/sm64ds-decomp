@@ -2,14 +2,14 @@
 #include "types.h"
 #include "cstd.h"
 #include "dCamera_c.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "math/CalcLib.h"
 
 extern "C" {
 
-extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
+extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern int *Vec3_AsrInPlace(int *v, int sh);
-extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
+extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 extern int func_020091f8(dCamera_c *cam, Vector3 *lookAt, int angleY, int angleX);
@@ -43,7 +43,7 @@ int func_02005110(dCamera_c *cam) {
         aim.x = eye.x;
         aim.y = eye.y;
         aim.z = eye.z;
-        if (((Player *)cam->mTargetPlayer)->mOwlFarCamera != 0) {
+        if (((daPly_c *)cam->mTargetPlayer)->mOwlFarCamera != 0) {
             eyeDist = 0xd0000;
         }
         horzAngle = cam->mTargetPlayer->mAngleY;

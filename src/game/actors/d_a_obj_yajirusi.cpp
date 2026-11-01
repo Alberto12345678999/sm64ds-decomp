@@ -51,7 +51,7 @@
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "decl_ActorBase.h"
 #include "decl_Platform.h"
 #include "decl_ShadowModel.h"
@@ -79,7 +79,7 @@ struct ArrowSignFileColumn {
 /* local extern: see the banner; the port builds this TU for the host. */
 extern "C" {
 void Matrix4x3_FromRotationY(void *mtx, int angle);
-int func_02012694(int id, void *pos);
+void func_02012694(int id, void *pos);
 }
 
 namespace Particle {
@@ -167,8 +167,8 @@ int daObjYajirusi_c::CleanupResources() {
 }
 
 // 0x02137d80 (0x3c)
-// @symbol _ZN15daObjYajirusi_c15OnHitByMegaCharER6Player
-void daObjYajirusi_c::OnHitByMegaChar(Player &player) {
+// @symbol _ZN15daObjYajirusi_c15OnHitByMegaCharER7daPly_c
+void daObjYajirusi_c::OnHitByMegaChar(daPly_c &player) {
     player.IncMegaKillCount();
     func_02012694(0x1e, &mCamSpacePosX);
     KillByMegaChar(player);

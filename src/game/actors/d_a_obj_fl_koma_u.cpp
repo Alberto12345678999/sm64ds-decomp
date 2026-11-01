@@ -25,7 +25,7 @@ enum daObjFl_KomaU_c_AssetId { ASSET_FL_KOMA_U_BMD = 0x05f7, ASSET_FL_KOMA_U_KCL
 #include "daObjFl_KomaU_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "Particle__System.h"
 #include "math/MtxStack.h"
 
@@ -59,7 +59,7 @@ extern FileTable data_ov064_0211adbc;
 /* local extern: arm9 vector helpers and the dBgW callback store, with no
  * shared header yet. */
 extern "C" {
-void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *dst);
+void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *dst);
 void func_020393d4(dBgW *bgw, void *fn);
 }
@@ -142,7 +142,7 @@ s32 daObjFl_KomaU_c::Behavior() {
             if (actor != 0) {
                 is_burn = (actor->actorID == 0xbf) ? 1 : 0;
                 if (is_burn != 0)
-                    ((Player *)actor)->Burn();
+                    ((daPly_c *)actor)->Burn();
             }
         }
 

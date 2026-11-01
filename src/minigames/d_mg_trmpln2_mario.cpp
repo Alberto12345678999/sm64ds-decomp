@@ -14,7 +14,7 @@ struct System {
  *
  * ROM evidence: D1 0x020ca604 and constructor 0x020ca78c of
  * dMgTrmpln2Mario_c (the constructor was misfiled as
- * _ZN6Player29TryExitCharacterDoorWithIntroEv: it stores vptr
+ * _ZN7daPly_c29TryExitCharacterDoorWithIntroEv: it stores vptr
  * _ZTV17dMgTrmpln2Mario_c and constructs a dExtAnmModel_c at +0x78);
  * D1 0x020ccfc8 and constructor 0x020cd12c of dMgTrmpln3DMario_c;
  * _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c 0x0213b244,
@@ -32,13 +32,14 @@ struct System {
 
 // The hierarchy is real (include/dMgTrmpObjAdapter_c.h): both Marios'
 // constructors and non-virtual destructors, the two adapters' base-object
-// constructors and their Clear slots are methods. The adapters' Clear are their
-// key functions, so this TU emits those two vtables and typeinfos (the manifest
-// discards them against the cartridge's copies); the Mario vtables stay imported.
+// constructors and their Clear slots are methods, and so are both Marios' four
+// slot overrides (GetPos, GetPrevPos, GetVelocity, IsActive). The adapters'
+// Clear and the Marios' GetPos are the key functions, so this TU emits all four
+// vtables and typeinfos (the manifest discards them against the cartridge's
+// copies).
 //
 // leftovers: the rest of both classes stays address-named free functions over
-// char* -- their four slot functions included, which is why the Marios' slot
-// overrides are declared and not defined. The per-shard namespaces stay
+// char*. The per-shard namespaces stay
 // (independent decl shapes would collide). The records are read through
 // dMgTrmpln2Mario_c.h / dMgTrmpln3DMario_c.h (MARIO2 / MARIO3D). Each embeds a
 // real dExtAnmModel_c at +0x78/+0x6c, so the model, frame-controller and
@@ -124,47 +125,45 @@ namespace cstd {
 int fdiv(s32, s32);
 }
 
-// ---- Trmp2Mario_GetVelocity
-namespace ns_020c8dd4 {
-extern "C" {
-// @symbol Trmp2Mario_GetVelocity
-int Trmp2Mario_GetVelocity(int p) {
-    return p + 60;
+// ---- dMgTrmpln2Mario_c::GetVelocity
+// @symbol _ZN17dMgTrmpln2Mario_c11GetVelocityEv
+Vector3 *dMgTrmpln2Mario_c::GetVelocity() {
+    return &mVel;
 }
-}
-}
-// ---- Trmp2Mario_Reset
+// ---- dMgTrmpln2Mario_c::IsActive
 namespace ns_020c8ddc {
-extern "C" {
 extern "C" int pmf_Trmp2Mario_StateMissed[2];
 extern "C" int pmf_Trmp2Mario_StateHidden_4[2];
+}
 
-// @symbol Trmp2Mario_Reset
-int Trmp2Mario_Reset(char *c) {
+/* Neither missed nor hidden: the drawn line only bounces a Mario in play. */
+// @symbol _ZN17dMgTrmpln2Mario_c8IsActiveEv
+int dMgTrmpln2Mario_c::IsActive() {
+    using namespace ns_020c8ddc;
     int *p;
     int *d;
     int result;
     int flag;
 
-    p = MARIO2(c)->mState;
+    p = mState;
     d = pmf_Trmp2Mario_StateMissed;
     result = 0;
     flag = 1;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
-            if (MARIO2(c)->mState[0] != 0)
+            if (mState[0] != 0)
                 goto after1;
         }
         flag = 0;
     }
 after1:
     if (flag != 0) {
-        p = MARIO2(c)->mState;
+        p = mState;
         d = pmf_Trmp2Mario_StateHidden_4;
         flag = 1;
         if (p[0] == d[0]) {
             if (p[1] != d[1]) {
-                if (MARIO2(c)->mState[0] != 0)
+                if (mState[0] != 0)
                     goto after2;
             }
             flag = 0;
@@ -175,25 +174,15 @@ after1:
     }
     return result;
 }
+// ---- dMgTrmpln2Mario_c::GetPrevPos
+// @symbol _ZN17dMgTrmpln2Mario_c10GetPrevPosEv
+Vector3 *dMgTrmpln2Mario_c::GetPrevPos() {
+    return &mPrevPos;
 }
-}
-// ---- Trmp2Mario_GetPrevPos
-namespace ns_020c8e80 {
-extern "C" {
-// @symbol Trmp2Mario_GetPrevPos
-int Trmp2Mario_GetPrevPos(int p) {
-    return p + 48;
-}
-}
-}
-// ---- Trmp2Mario_GetPos
-namespace ns_020c8e88 {
-extern "C" {
-// @symbol Trmp2Mario_GetPos
-int Trmp2Mario_GetPos(int p) {
-    return p + 36;
-}
-}
+// ---- dMgTrmpln2Mario_c::GetPos
+// @symbol _ZN17dMgTrmpln2Mario_c6GetPosEv
+Vector3 *dMgTrmpln2Mario_c::GetPos() {
+    return &mPos;
 }
 // ---- Trmp2Mario_Render
 namespace ns_020c8e90 {
@@ -307,7 +296,7 @@ extern int pmf_Trmp2Mario_StateHidden_5[2];
 extern int pmf_Trmp2Mario_StateRespawnWait[2];
 extern int pmf_Trmp2Mario_StateKnockedOut[2];
 extern void Trmp2Mario_EnterHidden(char *c);
-extern void D3D_PlaySeAtX(int a, int b);
+extern int D3D_PlaySeAtX(int a, int b);
 }
 
 // @symbol Trmp2Mario_EnterByKind
@@ -355,7 +344,7 @@ namespace ns_020c91ac {
 
 extern "C" {
 void Trmp2Mario_EnterFall(void *c);
-void D3D_PlaySeAtX(int a0, int a1);
+int D3D_PlaySeAtX(int a0, int a1);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 }
@@ -808,7 +797,7 @@ extern "C" {
 extern int sTrmp2GravityStep;
 extern int sTrmpSpeedScale;
 extern Pair pmf_Trmp2Mario_StateBounce;
-extern void D3D_PlaySeAtX(int a, int b);
+extern int D3D_PlaySeAtX(int a, int b);
 extern void Trmp2Mario_StateBounce(char *c);
 }
 
@@ -928,7 +917,7 @@ extern "C" void Trmp2Mario_StateMissed(char *c) {
 // ---- Trmp2Mario_EnterMissed
 namespace ns_020c9fe4 {
 extern "C" {
-extern void D3D_PlaySeAtX(int a, int b);
+extern int D3D_PlaySeAtX(int a, int b);
 extern int sTrmp2Lives[];
 extern double pmf_Trmp2Mario_StateMissed_2;
 void Trmp2Mario_EnterMissed(char *c);
@@ -1223,24 +1212,24 @@ dMgTrmpln2Mario_c::~dMgTrmpln2Mario_c() {
 }
 // ---- Trmp2Mario_Construct
 /* dMgTrmpln2Mario_c's constructor, ov006 0x020ca78c. It was filed as
- * _ZN6Player29TryExitCharacterDoorWithIntroEv; it is not a Player method.
+ * _ZN7daPly_c29TryExitCharacterDoorWithIntroEv; it is not a daPly_c method.
  *
  * The shape is a constructor, not a state handler: it calls a base routine,
  * stores a vptr into [this+0], then runs a member constructor at this+0x78.
- * Player's own constructors are _ZN6PlayerC1Ev / C3Ev in ov002, and Player's
- * dExtAnmModel_c members live at 0xf0 and 0x174 -- not 0x78, which on a real Player is
+ * daPly_c's own constructors are _ZN7daPly_cC1Ev / C3Ev in ov002, and daPly_c's
+ * dExtAnmModel_c members live at 0xf0 and 0x174 -- not 0x78, which on a real daPly_c is
  * dActor_c's mCamSpacePosY.
  *
- * This file was the only evidence for Player.h's `mAnmModel2` at 0x078, so
+ * This file was the only evidence for daPly_c.h's `mAnmModel2` at 0x078, so
  * that field can now be dropped and the offset returned to dActor_c.
  *
  * The vptr it stores, 0x0213b2e0, is dMgTrmpln2Mario_c's vtable address point
  * (_ZTV17dMgTrmpln2Mario_c): the two words before it are the offset 0 and
- * _ZTI17dMgTrmpln2Mario_c, and its slots are Trmp2Mario_GetPos, GetPrevPos,
- * GetVelocity, Reset and dMgTrmpRingObjAdapter_c::Clear. 0x0213b2c4 is the same
+ * _ZTI17dMgTrmpln2Mario_c, and its slots are GetPos, GetPrevPos, GetVelocity,
+ * IsActive and dMgTrmpRingObjAdapter_c::Clear. 0x0213b2c4 is the same
  * for dMgTrmpln3DMario_c.
  *
- * Detached from Player.h; see SlotB2_Hide.cpp.
+ * Detached from daPly_c.h; see SlotB2_Hide.cpp.
  */
 
 /* The ring adapter base and mAnmModel are constructed before the (empty) body. */
@@ -1437,11 +1426,11 @@ void Trmp2Mario_DrawAll(void) {
 // ---- Trmp2Mario_UpdateAll
 namespace ns_020cac30 {
 /* ov006, 0x020cac30, size 0x6c. Held the name
- * _ZN6Player12St_Null_InitEv until that symbol was moved to ov002, where an
+ * _ZN7daPly_c12St_Null_InitEv until that symbol was moved to ov002, where an
  * eight-byte `return 1` sits at the same shared address and is reached from
- * ov002's Player::State pointer-to-member table. This function is reached
+ * ov002's daPly_c::State pointer-to-member table. This function is reached
  * instead by two direct arm_calls from ov006 (module:overlay(6)) and touches
- * no Player field, so nothing here was ever Player's. Back to a placeholder
+ * no daPly_c field, so nothing here was ever daPly_c's. Back to a placeholder
  * name until its own class is identified.
  */
 extern "C" {
@@ -1567,49 +1556,38 @@ int Trmp2Mario_InitPool(int base, int n) {
 }
 }
 }
-// ---- Trmp3DMario_GetVelocity
-namespace ns_020caf44 {
-extern "C" {
-// @symbol Trmp3DMario_GetVelocity
-int Trmp3DMario_GetVelocity(int p) {
-    return p + 52;
+// ---- dMgTrmpln3DMario_c::GetVelocity
+// @symbol _ZN18dMgTrmpln3DMario_c11GetVelocityEv
+Vector3 *dMgTrmpln3DMario_c::GetVelocity() {
+    return &mVel;
 }
-}
-}
-// ---- Trmp3DMario_IsMissed
+// ---- dMgTrmpln3DMario_c::IsActive
 namespace ns_020caf4c {
-extern "C" {
 extern "C" int pmf_Trmp3DMario_StateMissed[];
-// @symbol Trmp3DMario_IsMissed
-int Trmp3DMario_IsMissed(int *r0) {
-    int *p = MARIO3D(r0)->mState;
+}
+
+/* Anything but missed: the drawn line only bounces a Mario in play. */
+// @symbol _ZN18dMgTrmpln3DMario_c8IsActiveEv
+int dMgTrmpln3DMario_c::IsActive() {
+    using namespace ns_020caf4c;
+    int *p = mState;
     int *g = pmf_Trmp3DMario_StateMissed;
     int lr = 1;
     if (p[0] == g[0]) {
-        if (p[1] == g[1] || MARIO3D(r0)->mState[0] == 0)
+        if (p[1] == g[1] || mState[0] == 0)
             lr = 0;
     }
     return lr;
 }
+// ---- dMgTrmpln3DMario_c::GetPrevPos
+// @symbol _ZN18dMgTrmpln3DMario_c10GetPrevPosEv
+Vector3 *dMgTrmpln3DMario_c::GetPrevPos() {
+    return &mPrevPos;
 }
-}
-// ---- Trmp3DMario_GetPrevPos
-namespace ns_020cafa4 {
-extern "C" {
-// @symbol Trmp3DMario_GetPrevPos
-int Trmp3DMario_GetPrevPos(int p) {
-    return p + 40;
-}
-}
-}
-// ---- Trmp3DMario_GetPos
-namespace ns_020cafac {
-extern "C" {
-// @symbol Trmp3DMario_GetPos
-int Trmp3DMario_GetPos(int p) {
-    return p + 28;
-}
-}
+// ---- dMgTrmpln3DMario_c::GetPos
+// @symbol _ZN18dMgTrmpln3DMario_c6GetPosEv
+Vector3 *dMgTrmpln3DMario_c::GetPos() {
+    return &mPos;
 }
 // ---- Trmp3DMario_Render
 namespace ns_020cafb4 {
@@ -1706,7 +1684,7 @@ void Trmp3DMario_ApplyGravity(char *o) {
 // ---- Trmp3DMario_StateKnockedOut
 namespace ns_020cb16c {
 extern "C" {
-extern int Trmp3DMario_EnterOffstage(void *c);
+extern void Trmp3DMario_EnterOffstage(void *c);
 // @symbol Trmp3DMario_StateKnockedOut
 void Trmp3DMario_StateKnockedOut(int *c) {
     if (MARIO3D(c)->mPos.y >= -0x120000)
@@ -2537,7 +2515,7 @@ void Trmp3DMario_StateMissed(char *c) {
 // ---- Trmp3DMario_EnterMissed
 namespace ns_020cc37c {
 extern "C" {
-extern void D3D_PlaySeAtX(int a, int b);
+extern int D3D_PlaySeAtX(int a, int b);
 extern int sTrmp3DLives[];
 extern double pmf_Trmp3DMario_StateMissed_2;
 void Trmp3DMario_EnterMissed(char *c);
@@ -3202,7 +3180,7 @@ void Trmp3DMario_UpdateAll(void) {
 // ---- Trmp3DMario_ResetAll
 namespace ns_020cd424 {
 extern "C" {
-extern int Trmp3DMario_SetTuning(int sz);
+extern void Trmp3DMario_SetTuning(int sz);
 extern void Trmp3DMario_SetSpawnHeight(int n);
 extern void Trmp3DMario_EnterOffstage(char *c);
 extern void Trmp3DMario_UpdateMatrix(char *o);

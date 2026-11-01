@@ -30,7 +30,7 @@
  *   data_0209f49c..data_0209f4ae symbols with (char *) stride arithmetic.
  */
 #include "dCamera_c.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
 #include "Memory.h"
@@ -123,7 +123,7 @@ extern void *GetViewObj(int idx);
 
 extern s16 Vec3_HorzAngle(const void *v0, const void *v1);
 extern s16 Vec3_VertAngle(const void *v1, const void *v0);
-extern int Vec3_HorzDist(const void *a, const void *b);
+extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern int Vec3_HorzLen(const void *v);
 extern int LenVec3(void *v);
 extern void Vec3_Add(void *out, const void *a, const void *b);
@@ -135,7 +135,7 @@ extern void Vec3_MulScalarInPlace(void *v, int s);
 extern int *Vec3_LslInPlace(int *v, int sh);
 extern void Vec3_RotateYAndTranslate(void *out, const void *in, short angle, const void *src);
 extern void MulVec3Mat4x3(void *dst, const void *src, void *out);
-extern s32 Vec3_Dist(const void *a, const void *b);
+extern s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void Matrix4x3_FromRotationZ(void *m, int angle);
 extern void MulMat4x3Mat4x3(void *dst, const void *a, void *b);
 extern void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
@@ -391,7 +391,7 @@ block_7:
     }
 
     {
-        Player *m = (Player *)mTargetPlayer;
+        daPly_c *m = (daPly_c *)mTargetPlayer;
         enum Bool isBf = (enum Bool)(m->actorID == 0xbf);
         if (isBf != FALSE) {
             s32 t2 = data_0209f32c - (data_02082214[((u16)mAngleX >> 4) * 2] * 0x10);
@@ -1218,11 +1218,11 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
     int hval;
     int col1;
     int col2;
-    Player *p;
-    Player *obj;
+    daPly_c *p;
+    daPly_c *obj;
     int res;
 
-    p = (Player *)cam->mTargetPlayer;
+    p = (daPly_c *)cam->mTargetPlayer;
     obj = 0;
     {
         int b = p->actorID;
@@ -3504,7 +3504,7 @@ void func_020089d8(dCamera_c *cam) {
 
 // @symbol func_0200897c
 /* Prepare a collision query for the camera. It always stops ignoring
- * vanish surfaces, then starts again if the target is a vanished Player,
+ * vanish surfaces, then starts again if the target is a vanished daPly_c,
  * and finally enables camera mode on the query.
  *
  * Codegen note: the (actorID == 0xbf) test is held in an enum-typed boolean.
@@ -3515,10 +3515,10 @@ void func_020089d8(dCamera_c *cam) {
  * bool gives the exact `cmp r0, #0`. */
 void func_0200897c(void *self, void *arg) {
     dCamera_c *cam = (dCamera_c *)self;
-    Player *owner;
+    daPly_c *owner;
     enum Bool isType;
     ((dBgCh *)arg)->StopIgnoringVanishSurfaces();
-    owner = (Player *)cam->mTargetPlayer;
+    owner = (daPly_c *)cam->mTargetPlayer;
     isType = (enum Bool)(owner->actorID == 0xbf);
     if (isType && owner->mIsVanish != 0) {
         ((dBgCh *)arg)->StartIgnoringVanishSurfaces();
@@ -3673,11 +3673,11 @@ int func_020082a0(dCamera_c *cam, u8 *src, int id) {
    between the script player's ground and its position, and keep lookAt.y
    at least that high. */
 int func_02008200(dCamera_c *cam, u8 *data, int first) {
-    Player *a;
+    daPly_c *a;
     int diff, val, target;
     if (first == gKuppaScriptFrame)
         cam->savedLookAt.y = 0x190000;
-    a = (Player *)FindScriptPlayer(0);
+    a = (daPly_c *)FindScriptPlayer(0);
     diff = a->mPosY - a->mGroundY;
     val = FX_MUL(diff, 0x1199);
     target = a->mGroundY + 0x50000 + val;

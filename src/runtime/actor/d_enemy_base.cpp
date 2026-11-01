@@ -67,7 +67,7 @@ struct System {
 #include "nitro/fx/fx.h"
 #include "decl_dBgPi.h"
 #include "dBgCh_Lin.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "SurfaceInfo.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
@@ -344,7 +344,7 @@ void Aea30C::func_ov002_020ae87c(dActor_c* a, dBgCh_Actr*)
     func_ov002_020ae8b8(this, a);
 }
 
-extern "C" s16 Vec3_HorzAngle(const void *v0, const void *v1);
+extern "C" s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 
 // @symbol _ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr
 void Aea30C::func_ov002_020ae844(dActor_c* a, dBgCh_Actr*)
@@ -384,7 +384,7 @@ typedef int (dEnemyBase_c::*DeathPMF)(dBgCh_Actr &);
 extern DeathPMF data_ov002_0210dbc0[];
 
 extern "C" {
-extern void DecIfAbove0_Short(unsigned short *p);
+extern unsigned short DecIfAbove0_Short(unsigned short *p);
 }
 
 // @symbol _ZN12dEnemyBase_c11UpdateDeathER10dBgCh_Actr
@@ -810,8 +810,8 @@ struct SystemHold {
 }
 }
 
-// @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Playeri
-void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, Fix12i) {
+// @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R7daPly_ci
+void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, daPly_c &player, Fix12i) {
     mFlags &= ~0x10000001;
     mPrevAngleY = Vec3_HorzAngle(&player.mPos, &mPos);
     mHorzSpeed = 0xa000;
@@ -891,54 +891,6 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, dExtAnmModel_c &a
             mAngleX, mAngleY, mAngleZ);
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, (-OnAimedAtWithEgg()) >> 3, 0);
         anim.mat4x3 = *(Matrix4x3 *)&data_020a0e68;
-    }
-    return 1;
-}
-
-/* The death-state-8 sibling of UpdateKillByInvincibleChar above: the same
-   vtable-slot-29 spin over data_020a0e68, but reached as a free helper taking
-   the enemy, its collision and its dExtSimpleModel_c as raw pointers plus the
-   coin/death-table flags, and running the wall-reflect variant of the
-   collision update. Lowest address in the TU, so it is defined last: this
-   file runs highest ROM address first. */
-/* Vec3_Asr, the Matrix4x3 helpers and data_020a0e68 reuse the declarations
-   above UpdateKillByInvincibleChar. The parameters stay untyped: the four
-   callers' declarations spell them as void * and char *. */
-
-// @symbol func_ov002_020ad660
-extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *modelArg, int flags) {
-    dEnemyBase_c *c = (dEnemyBase_c *)enemy;
-    dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
-    dExtSimpleModel_c *model = (dExtSimpleModel_c *)modelArg;
-    int v[3];
-
-    if (c->mDeathState != 8)
-        return 0;
-
-    if (c->mDeathTimer == 0 || (clsn != 0 && (clsn->IsOnGround() || clsn->IsOnWall()))) {
-        if (flags & 1)
-            c->SpawnCoin();
-        if (flags & 2)
-            c->KillAndTrackInDeathTable();
-        c->mDeathState = 0;
-        return 2;
-    }
-
-    c->mDeathTimer -= 1;
-    c->UpdatePos(0);
-    if (clsn != 0)
-        c->UpdateWMClsn(*clsn, 0);
-
-    if (model != 0) {
-        c->mAngleX += c->mSpinRateX;
-        c->mAngleY += c->mSpinRateY;
-        c->mAngleZ += c->mSpinRateZ;
-        Vec3_Asr((Vector3 *)v, &c->mPos, 3);
-        Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
-        Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, c->OnAimedAtWithEgg() >> 3, 0);
-        Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
-        Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, (-c->OnAimedAtWithEgg()) >> 3, 0);
-        model->mat4x3 = *(Matrix4x3 *)&data_020a0e68;
     }
     return 1;
 }

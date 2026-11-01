@@ -28,7 +28,7 @@ struct Vector3_16f;
 #include "SharedFilePtr.h"
 #include "types.h"
 #include "dExtSimpleModel_c.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "SaveData.h"
 #include "SpawnInfo.h"
 
@@ -57,11 +57,11 @@ void AddVec3(Vector3 *, Vector3 *, Vector3 *);
 int DecIfAbove0_Byte(void *);
 s32 RandomIntInternal(s32 *);
 void Vec3_Asr(Vector3 *, Vector3 *, int);
-void MulVec3Mat4x3(const Vector3 *, const Matrix4x3 *, Vector3 *);
-void Vec3_LslInPlace(Vector3 *, int);
+void MulVec3Mat4x3(Vector3 *, Matrix4x3 *, Vector3 *);
+int *Vec3_LslInPlace(Vector3 *, int);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
-void InvMat4x3(Matrix4x3 *dst, const Matrix4x3 *src);
+int InvMat4x3(Matrix4x3 *dst, const Matrix4x3 *src);
 /* local extern: these five names hold the @NNN count. */
 void d_a_snm_bthPlayLongHold(int handle, unsigned int a, unsigned int b, void *pos, unsigned int c);
 extern Matrix4x3 data_020a0e68;
@@ -105,7 +105,7 @@ void SnowmanBreathParticle::HitPlayer()
         return;
     Particle::System::NewSimple(0x100, mPos.x, mPos.y, mPos.z);
 
-    Player *player = (Player *)actor;
+    daPly_c *player = (daPly_c *)actor;
     if (player->mIsMetal)
         return;
     if (player->mIsMega)
@@ -196,9 +196,8 @@ void SnowmanBreathParticle::Behavior()
     mCollider.Update();
 }
 
-// @symbol _ZN21SnowmanBreathParticle8TrySpawnER6Player
-int SnowmanBreathParticle::TrySpawn(Player &player)
-{
+// @symbol _ZN21SnowmanBreathParticle8TrySpawnER7daPly_c
+int SnowmanBreathParticle::TrySpawn(daPly_c &player) {
     s32 angle;
     if (mTimer != 0)
         return 0;
@@ -229,7 +228,7 @@ SnowmanBreathParticle::SnowmanBreathParticle()
 // @symbol _ZN10daSnmBth_c15IsPlayerInRangeEv
 int daSnmBth_c::IsPlayerInRange()
 {
-    Player *player = ClosestPlayer();
+    daPly_c *player = ClosestPlayer();
     mTalkPlayer = player;
 
     Vector3 playerPos;

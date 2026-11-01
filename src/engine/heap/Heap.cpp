@@ -67,10 +67,10 @@ extern "C" {
     extern u32   ROOT_HEAP_ARENA_ID;            /* 0x020a0ea4 */
     extern Heap* data_020a0e9c;                 /* the root heap; unnamed */
 
-    int OS_GetArenaLo(u32 arena);
-    int OS_GetArenaHi(u32 arena);
+    unsigned int OS_GetArenaLo(u32 arena);
+    unsigned int OS_GetArenaHi(u32 arena);
     int OS_InitAlloc(u32 arena, int lo, int hi, int maxHeaps);
-    int OS_SetArenaLo(u32 arena, int lo);
+    void OS_SetArenaLo(u32 arena, int lo);
     void *OS_AllocFromArenaLo(u32 arena, int size, int align);
 }
 
@@ -1252,3 +1252,20 @@ void Deallocate(void *ptr)
 
 }
 
+/* Zero Vector3 immediately after GAME_HEAP_PTR. Vector3(x, y, z) scalarizes,
+ * and a type derived from Vector3 would emit ~Vector3 into this object, so
+ * the stores are a file-local type. Its destructor is aliased to ~Vector3. */
+#ifndef _MSC_VER
+struct VecOff {
+    int x, y, z;
+    VecOff(int px, int py, int pz) {
+        x = px;
+        y = py;
+        z = pz;
+    }
+    ~VecOff();
+};
+typedef char VecOff_size_must_be_0xc[sizeof(VecOff) == 0xc ? 1 : -1];
+
+VecOff data_020a0ebc(0, 0, 0);
+#endif

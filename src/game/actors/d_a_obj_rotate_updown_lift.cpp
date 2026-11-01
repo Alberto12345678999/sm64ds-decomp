@@ -49,7 +49,7 @@ enum daObjRotateUpdownLift_c_AssetId {
 #pragma defer_codegen off
 
 #include "daObjRotateUpdownLift_c.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -139,7 +139,7 @@ void Matrix4x3_FromRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void MulVec3Mat4x3(void *src, void *m, void *dst);
 void Vec3_Add(void *out, void *a, void *b);
 void Vec3_Sub(void *out, void *a, void *b);
-void Vec3_MulScalar(void *out, void *in, int scale);
+void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(void *a, void *b, void *c);
 int LenVec3(void *v);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -216,11 +216,10 @@ void daObjRotateUpdownLift_c::Kill()
 }
 
 // 0x021310fc (0x64)
-// @symbol _ZN23daObjRotateUpdownLift_c15OnHitByMegaCharER6Player
+// @symbol _ZN23daObjRotateUpdownLift_c15OnHitByMegaCharER7daPly_c
 /* HS_UPDOWN_LIFT ignores the hit. The others count it, play 0x1e, and
    snap yaw back to the previous angle. */
-void daObjRotateUpdownLift_c::OnHitByMegaChar(Player &player)
-{
+void daObjRotateUpdownLift_c::OnHitByMegaChar(daPly_c &player) {
     unsigned short id = actorID;
     int isHs = (id == 0x1e);
     if (isHs)

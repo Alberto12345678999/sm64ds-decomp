@@ -22,7 +22,7 @@
  *   panned to the shutter.
  * - func_0201277c plays sound 0x47. data_0209f2f8 / data_0209f220 are the
  *   scene/level gates Render checks.
- * - Player.h is needed for ClosestPlayer()->mIsMega.
+ * - daPly_c.h is needed for ClosestPlayer()->mIsMega.
  */
 
 /* daObjCannonShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach
@@ -35,13 +35,13 @@ enum d_a_obj_cannon_shutter_AssetId {
 
 #include "daObjCannonShutter_c.h"
 #include "SpawnInfo.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "SharedFilePtr.h"
 #include "decl_common.h"
 #include "math/MtxStack.h"
 
 extern "C" {
-void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *dst);
+void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *dst);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);

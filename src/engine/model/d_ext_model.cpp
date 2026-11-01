@@ -62,7 +62,7 @@ void MulMat4x3Mat4x3(const Matrix4x3 *m1, const Matrix4x3 *m0, Matrix4x3 *mF);
 /* local extern: no header declares it; data.transforms-bone walk in Virtual10 */
 void func_02045074(ModelComponents *data, BMD_Bone *bones);
 /* local extern: no header declares it; sizes the transforms buffer from the file */
-u32 func_02046564(BMD_File *file);
+int func_02046564(BMD_File *file);
 /* local extern: no header declares it; initializes ModelComponents over the file */
 void func_020462d0(ModelComponents *data, BMD_File *file, void *buffer);
 /* defined below; DoSetFile calls it */
@@ -85,7 +85,7 @@ void *func_0203cc0c(u32 size);
 void *LoadFile(u16 ov0ID);
 /* local extern: func_020469e0.c defines int(int *). The caller's shard
    matched this spelling (banked rows). */
-u32 func_020469e0(void *ptr);
+int func_020469e0(void *ptr);
 /* local extern: no header declares it; dExtModel_c's destructor frees the file.
    decl_common.h's copy is the same spelling; that catch-all does not count. */
 void Deallocate(void *ptr);
@@ -142,9 +142,10 @@ extern dExtShadowModel_c *data_0209cef4;
 extern u8 data_0209ceec;
 /* The two shadow model files live in the shared overlay-0/1 region: arm9's own
  * symbols.txt rows for 0x020ad524/0x020ad560 sit past .bss and name nothing
- * the link defines, so the ov000 spelling is the resolvable one. */
-extern BMD_File data_ov000_020ad524;
-extern BMD_File data_ov000_020ad560;
+ * the link defines. In overlay 0 both addresses fall inside asset path
+ * strings, so the objects are overlay 1's .data. */
+extern BMD_File data_ov001_020ad524;
+extern BMD_File data_ov001_020ad560;
 /* local extern: no header declares these; the shadow scale matrix and the two
    opacity passes RenderAll draws with */
 void func_0203c178(Matrix4x3 *m, Fix12i sx, Fix12i sy, Fix12i sz);
@@ -682,8 +683,8 @@ void dExtAnm2Model_c::Func_020162C4(u32 animFile, int flags, Fix12i speed, u16 s
     }
 }
 
-/* Pose bone `bone` from the second animation at its current frame. Player
-   calls it on a body model with bone 8; the int `self` keeps Player's
+/* Pose bone `bone` from the second animation at its current frame. daPly_c
+   calls it on a body model with bone 8; the int `self` keeps daPly_c's
    declaration and this definition in agreement. */
 // @symbol func_020162a4
 extern "C" void func_020162a4(int self, int bone) {
@@ -832,12 +833,12 @@ int dExtShadowModel_c::DoSetFile(char *file, int a, int b) {
 
 // @symbol _ZN17dExtShadowModel_c10InitCuboidEv
 int dExtShadowModel_c::InitCuboid() {
-    return SetFile(&data_ov000_020ad524, 1, -1);
+    return SetFile(&data_ov001_020ad524, 1, -1);
 }
 
 // @symbol _ZN17dExtShadowModel_c12InitCylinderEv
 int dExtShadowModel_c::InitCylinder() {
-    return SetFile(&data_ov000_020ad560, 1, -1);
+    return SetFile(&data_ov001_020ad560, 1, -1);
 }
 
 /* MEASURED 2026-10-26: a real method reproduces 0x02015e64/0x58 exactly. The

@@ -71,7 +71,7 @@ enum daOwl_c_AssetId {
 #include "decl_common.h"
 #include "daOwl_c.h"
 #include "SharedFilePtr.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
@@ -161,7 +161,7 @@ extern Matrix4x3 data_020a0e68;
 void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *pos,
                          unsigned int d);
 int func_ov002_020df7f4(void *c);
-int func_02012694(int a, void *pos);
+void func_02012694(int a, void *pos);
 int ApproachAngle(short *p, int target, int a, int b, int c);
 int Vec3_Dist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
@@ -177,7 +177,7 @@ void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
 int IsStarCollectedInCurLevel(int);
-void DecIfAbove0_Short(void *);
+unsigned short DecIfAbove0_Short(void *);
 }
 
 /* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
@@ -217,7 +217,7 @@ void daOwl_c::func_ov094_021357a4()
         return;
     if (!IsPlayerActor(other))
         return;
-    mRider = (Player *)other;
+    mRider = (daPly_c *)other;
     st[0] = 0;
     st[1] = 0;
     st[2] = 0;
@@ -286,7 +286,7 @@ int daOwl_c::func_ov094_0213598c()
  * or the owl hits a wall. */
 int daOwl_c::func_ov094_021359d8()
 {
-    Player *rider;
+    daPly_c *rider;
 
     if (OWL_TIMER(this) == 1) {
         mAnmModel.SetAnim((BCA_File *)data_ov094_02136ae8.filePtr, 0, 0x1000, 0);
@@ -366,7 +366,7 @@ int daOwl_c::func_ov094_02135c28()
 
     if (mTalkState == TALK_IDLE) {
         if (ClosestPlayer() != 0) {
-            Player *player = mTalkTarget;
+            daPly_c *player = mTalkTarget;
             if (player != 0) {
                 if ((u16)(player->mStateFlags & 0x800) == 0) {
                     if (player->StartTalk(*this, 1) != 0) {
@@ -473,7 +473,7 @@ int daOwl_c::func_ov094_02135fe0()
  */
 int daOwl_c::func_ov094_02136024()
 {
-    Player *p = ClosestPlayer();
+    daPly_c *p = ClosestPlayer();
     if (p != 0 && p->mClimbClsn != 0) {
         OwlVec *playerPos = (OwlVec *)&p->mPosX;
         OwlVec pp;
@@ -559,7 +559,7 @@ void daOwl_c::func_ov094_021361d8()
 void daOwl_c::func_ov094_021362e0()
 {
     OwlVec v;
-    Player *m;
+    daPly_c *m;
     int z = 0;
     if (mRider == 0)
         return;

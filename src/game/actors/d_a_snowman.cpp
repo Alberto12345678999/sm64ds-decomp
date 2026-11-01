@@ -59,7 +59,7 @@ enum daSnowman_c_AssetId {
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
 #include "SaveData.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "Sound.h"
 #include "math/Approach.h"
 
@@ -90,7 +90,7 @@ extern s16 data_ov081_021289a4;
 extern s16 data_ov081_021289a6;
 extern s16 data_ov081_021289a8;
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
-extern void ApproachAngle(void *p, int target, int a, int b, int c);
+extern int ApproachAngle(void *p, int target, int a, int b, int c);
 extern int AngleDiff(int a, int b);
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 /* Sound::Play(3, id, pos) — PlayBank3. This TU calls the wrapper. */
@@ -100,10 +100,10 @@ extern unsigned char data_0209f21c[];
 extern void *data_0209f394[];
 extern unsigned d_a_snowmanNewHold(unsigned a, unsigned b, int c, int d, int e, const void *f,
                                    void *g);
-extern void Vec3_Sub(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b);
+extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern int LenVec3(struct Vector3 *v);
 extern Fix12i Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
-extern void Vec3_MulScalar(struct Vector3 *out, struct Vector3 *in, int s);
+extern void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int s);
 extern void SubVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -118,7 +118,7 @@ extern int atan2_hold_d_a_snowman_1(int a, int b);
 extern void Matrix4x3_FromRotationY(void *m, int ang);
 extern int Vec3_HorzLen(void *v);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
-extern void MulVec3Mat4x3(void *a, void *m, void *b);
+extern void MulVec3Mat4x3(Vector3 *a, Matrix4x3 *m, Vector3 *b);
 }
 
 /* File handles the static initializer constructs. The two models use
@@ -213,7 +213,7 @@ void daSnowman_c::func_ov081_02124134()
    after 40 frames of that topples over. */
 void daSnowman_c::func_ov081_0212423c(int idx)
 {
-    Player *player;
+    daPly_c *player;
     struct Vector3 v;
     int ang;
     int off;
@@ -281,7 +281,7 @@ void daSnowman_c::func_ov081_021243cc()
 
     u32 id = this->mdCcAcPos_c.otherOwner;
     if (id == 0) return;
-    Player *found = (Player *)dActor_c::FindWithID(id);
+    daPly_c *found = (daPly_c *)dActor_c::FindWithID(id);
     if (found == 0) return;
 
     int hit;
@@ -312,7 +312,7 @@ void daSnowman_c::func_ov081_021243cc()
             vv.x = (s16)-0x1200;
             vv.y = 0;
             vv.z = 0;
-            KillByInvincibleChar(vv, *(Player *)found, 0);
+            KillByInvincibleChar(vv, *(daPly_c *)found, 0);
             func_02012694(0x1d, &this->mCamSpacePosX);
             hit = 1;
         }
@@ -343,7 +343,7 @@ int daSnowman_c::func_ov081_021245e8()
     this->mClosestPlayerIdx = -1;
     if ((int)data_0209f21c[0] > 0) {
         do {
-            Player *obj = (Player *)data_0209f394[i];
+            daPly_c *obj = (daPly_c *)data_0209f394[i];
             if (obj != 0) {
                 int dist;
                 int *s = &obj->mPosX;   /* one base pointer; see 0212423c */
@@ -525,7 +525,7 @@ int daSnowman_c::func_ov081_02124b98()
 {
     Vector3 in, out, v[2];
     dActor_c *target;
-    Player *player;
+    daPly_c *player;
 
     if (this->mSnowballID != 0) {
         target = dActor_c::FindWithID(this->mSnowballID);
@@ -927,7 +927,7 @@ int daSnowman_c::Render()
 // @symbol _ZN11daSnowman_c8BehaviorEv
 int daSnowman_c::Behavior()
 {
-    Player *p;
+    daPly_c *p;
     dActor_c *cap;
     if (mType == 3) {
         switch (mCapPhase) {

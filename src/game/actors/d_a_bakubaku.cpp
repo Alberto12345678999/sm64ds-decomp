@@ -40,7 +40,7 @@ enum daBakubaku_c_AssetId {
 #include "common.h"
 #include "daBakubaku_c.h"
 #include "SpawnInfo.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "SharedFilePtr.h"
 #include "math/Approach.h"
 
@@ -104,13 +104,13 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, s16 angY);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
-void MulVec3Mat4x3(void *in, void *m, void *out);
+void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 
 /* local extern: retain the matched scalar ABI; native Fix12<int> calls remain pending. */
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a,
                          void *b);
-/* Sets Player::mStateStep to 6 and stores this fish in mAttachedActor. */
+/* Sets daPly_c::mStateStep to 6 and stores this fish in mAttachedActor. */
 int func_ov002_020c5cd8(void *a, void *self);
 /* Sound::Play with bank 3. */
 void func_02012694(int a, void *p);
@@ -223,7 +223,7 @@ s32 daBakubaku_c::Behavior()
     mBodyClsn.Clear();
     mHeadClsn.Clear();
 
-    Player *p = ClosestPlayer();
+    daPly_c *p = ClosestPlayer();
     if (p != 0 && p->mIsVanish == 0) {
         mBodyClsn.Update();
         mHeadClsn.Update();
@@ -533,7 +533,7 @@ int daBakubaku_c::func_ov032_02111814()
 // @symbol _ZN12daBakubaku_c19func_ov032_02111620Ev
 int daBakubaku_c::func_ov032_02111620()
 {
-    Player *r5 = ClosestPlayer();
+    daPly_c *r5 = ClosestPlayer();
     if (r5 == 0)
         return 1;
 
@@ -607,7 +607,7 @@ void daBakubaku_c::func_ov032_021113fc()
     if (id1 != 0) {
         dActor_c *actor = dActor_c::FindWithID(id1);
         if (IsPlayerActor(actor)) {
-            Player *f = static_cast<Player *>(actor);
+            daPly_c *f = static_cast<daPly_c *>(actor);
             if (f->mIsVanish != 0) return;
             if (mBodyClsn.hitFlags & kCcMega) {
                 SpawnMegaCharParticles(*f, 0);
@@ -637,7 +637,7 @@ void daBakubaku_c::func_ov032_021113fc()
     dActor_c *actor2 = dActor_c::FindWithID(id2);
     if (!IsPlayerActor(actor2))
         return;
-    Player *f2 = static_cast<Player *>(actor2);
+    daPly_c *f2 = static_cast<daPly_c *>(actor2);
 
     if (mHeadClsn.hitFlags & kCcMega) {
         SpawnMegaCharParticles(*f2, 0);
@@ -678,7 +678,7 @@ int daBakubaku_c::func_ov032_02111350()
 // @symbol _ZN12daBakubaku_c19func_ov032_02111254Ev
 int daBakubaku_c::func_ov032_02111254()
 {
-    Player *pl = ClosestPlayer();
+    daPly_c *pl = ClosestPlayer();
     int *s;
     void *t;
     int d;

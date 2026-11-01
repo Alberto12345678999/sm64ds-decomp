@@ -63,7 +63,7 @@ enum daDossy_c_AssetId {
 #include "daDossyCap_c.h"
 #include "dBgW.h"
 #include "SharedFilePtr.h"
-#include "Player.h"
+#include "daPly_c.h"
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
@@ -148,7 +148,7 @@ void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 a);
 void MulMat4x3Mat4x3(const Matrix4x3 *a, const Matrix4x3 *b, Matrix4x3 *o);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *o);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *o);
-void Vec3_LslInPlace(Vector3 *v, s32 sh);
+int *Vec3_LslInPlace(Vector3 *v, s32 sh);
 extern void Vec3_Asr(void* d, void* s, int sh);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void hold_d_a_dossy(void *self, void *kcl, void *mtx, Fix12i r, short s, void *clps);
@@ -341,7 +341,7 @@ int daDossyCap_c::Behavior()
         dActor_c *spit = dActor_c::Spawn(0x10d, 0x1210, mPos, &mAngle, mAreaId, -1);
         if (spit != 0) {
             ((MarioCapEatView *)spit)->mEatingPlayer = mEatingPlayer;
-            ((Player *)mEatingPlayer)->mObjInMouth = (s32)spit;
+            ((daPly_c *)mEatingPlayer)->mObjInMouth = (s32)spit;
             spit->mFlags |= 0x20000;
             mFlags &= ~0x20000;
             mEatingPlayer = 0;
@@ -586,7 +586,7 @@ void daDossy_c::func_ov065_02118634()
     {
         u32 id = mCylClsn2.otherOwner;
         if (id != 0) {
-            Player *player = (Player *)dActor_c::FindWithID(id);
+            daPly_c *player = (daPly_c *)dActor_c::FindWithID(id);
             if (player != 0) {
                 if (player->mIsAirborne == 0) landed = 1;
             }
@@ -673,9 +673,8 @@ void daDossy_c::func_ov065_021183c8()
         if (mClsnState == 2 && mRideCooldown == 0) {
             if (mCap == 0 || func_ov065_02119210((unsigned char *)mCap) == 0) {
                 playerPos = mClsnPlayer->mPos;
-                if (playerPos.y >= mHomePosY
-                    && Vec3_HorzDist(&playerPos, &mHomePosX) < 0x88000
-                    && ((Player *)mClsnPlayer)->SetNoControlState(5, -1, 0) != 0) {
+                if (playerPos.y >= mHomePosY && Vec3_HorzDist(&playerPos, &mHomePosX) < 0x88000 &&
+                    ((daPly_c *)mClsnPlayer)->SetNoControlState(5, -1, 0) != 0) {
                     mState++;
                     mStateState = 0;
                     mAnmModel.SetAnim((BCA_File *)data_ov065_0211d748.filePtr, 0x40000000, 0x1000,
@@ -706,11 +705,12 @@ void daDossy_c::func_ov065_021182e4()
         mStateState = 1;
         mAnmModel.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);
         if (mRider == 0) return;
-        ((Player *)mRider)->Unk_020ca150(5);
+        ((daPly_c *)mRider)->Unk_020ca150(5);
         return;
     case 1:
         if (mRider != 0) {
-            if (((Player *)mRider)->Unk_020c9e5c(5) != 0) return;
+            if (((daPly_c *)mRider)->Unk_020c9e5c(5) != 0)
+                return;
         }
         mState = 0;
         mStateState = 0;
@@ -747,14 +747,14 @@ int daDossy_c::func_ov065_02118248()
 extern "C" int func_ov065_021180d4(char *self)
 {
     daDossyCap_c *cap = (daDossyCap_c *)self;
-    Player *player;
+    daPly_c *player;
     u32 id;
 
     /* Single exit for the failure path: an early return per check is
        56 bytes longer. */
     id = cap->mdCcAc_c.otherOwner;
     if (id != 0 && (cap->mdCcAc_c.hitFlags & 0x400000)) {
-        player = (Player *)dActor_c::FindWithID(id);
+        player = (daPly_c *)dActor_c::FindWithID(id);
         if (player != 0) {
             int isPlayer = (int)(player->actorID == 0xbf);
             if (isPlayer != 0 && player->mIsAirborne == 0
