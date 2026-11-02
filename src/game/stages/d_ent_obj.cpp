@@ -1,11 +1,4 @@
 //cpp
-struct Vector3_16f;
-namespace Particle {
-struct Callback;
-struct System {
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
-};
-}
 /* dEntObj_c and UnknownVsPlayer. ov075 0x02113ee0..0x02115ab8, 43 functions.
  *
  * The versus-mode entry scene's stage object: four player figures on the
@@ -24,15 +17,14 @@ struct System {
  * the classInit factory, then UnknownVsPlayer's constructor.
  *
  * leftovers:
- *  - The Fix12-by-value member calls (dExtShadowModel_c::InitModel,
- *    Particle::System::New) keep measured scalar-extern spellings: spelled as
+ *  - The Fix12-by-value dExtShadowModel_c::InitModel call keeps its measured
+ *    scalar-extern spelling: spelled as
  *    the real member types, mwccarm homes the register arguments and the
  *    callers grow. G3i::PerspectiveW_ is the Fix12i method.
  *  - LAUNDER((char*)) stays on the mModel.data / mAnimation.data /
  *    mModel.mat4x3 alias reads in func_ov075_02114be4 -- the plain member
  *    read changes which value-numbering class mwcc folds them into.
- *  - VsBoneFile/VsBoneComponents/MatrixCopyWords stay file-layout shadows: the bone
- *    record offsets are measured, not the BMD/ModelComponents layouts.
+ *  - MatrixCopyWords stays a flat 12-word view for the Matrix4x3 copies.
  *  - Behavior's mFellOffThisFrame probe keeps the second `walk` induction variable
  *    alongside `player`: folding it into `player->mFellOffThisFrame` drops a
  *    register and rewrites the whole function.
@@ -40,6 +32,7 @@ struct System {
  *    int[]-indexed spelling emits a different addressing pair.
  */
 
+#include "Particle__System.h"
 #include "dEntObj_c.h"
 #include "decl_common.h"
 #include "common.h"
@@ -107,7 +100,7 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 int Math_Function_0203b14c(int *p, int target, int a, int b, int c);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-int func_0201251c(int a, int b, void *pos, int c);
+void func_0201251c(int a, int b, void *pos, int c);
 unsigned int func_02012174(unsigned int a, unsigned int b);
 void func_020167a4(void *model);
 long long __aeabi_uidiv(unsigned int n, unsigned int d);
@@ -248,38 +241,33 @@ void UnknownVsPlayer::func_ov075_021140e4() {
 /* Animation state 3: once the current animation finishes, switch to the
  * one in data_ov075_0211d3ec and drop to state 0. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_021141b8Ev
-int UnknownVsPlayer::func_ov075_021141b8() {
-    int finished = mModel.Finished();
-    if (!finished)
-        return finished;
+void UnknownVsPlayer::func_ov075_021141b8() {
+    if (!mModel.Finished())
+        return;
     mModel.SetAnim(*(BCA_File *)data_ov075_0211d3ec.filePtr, 4, 0, 0x1000, 0);
     mAnimState = ANIM_NONE;
-    return 0;
 }
 
 /* Animation state 2: once the current one-shot finishes, start the next one
  * and hand over to state 3. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114218Ev
-int UnknownVsPlayer::func_ov075_02114218() {
-    int finished = mModel.Finished();
-    if (!finished)
-        return finished;
+void UnknownVsPlayer::func_ov075_02114218() {
+    if (!mModel.Finished())
+        return;
     mModel.SetAnim(*(BCA_File *)data_ov075_0211d3a4.filePtr, 4, 0x40000000, 0x1000, 0);
     mAnimState = ANIM_WAIT_FOR_IDLE;
-    return 3;
 }
 
 /* Animation state 1: step sounds on frames 4 and 0x22 while walking. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_0211427cEv
-int UnknownVsPlayer::func_ov075_0211427c() {
+void UnknownVsPlayer::func_ov075_0211427c() {
     Vector3 screenPos;
-    if (mModel.WillHitFrame(4) == 0) {
-        int hit = mModel.WillHitFrame(0x22);
-        if (hit == 0)
-            return hit;
+    if (!mModel.WillHitFrame(4)) {
+        if (mModel.WillHitFrame(0x22) == 0)
+            return;
     }
     data_0209f43c.TransformAndClip(data_0209b3ec, mPosition, 0, screenPos);
-    return func_0201251c(0, 0x20, &screenPos, mSpeed);
+    func_0201251c(0, 0x20, &screenPos, mSpeed);
 }
 
 // @symbol _ZN15UnknownVsPlayer19func_ov075_021142fcEv
@@ -543,46 +531,24 @@ int UnknownVsPlayer::func_ov075_02114ac4(Vector3 *at, Vector3 *pos) {
 
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114b60Ev
 /* Put the model's bone translations back to the file's rest pose: bone 0,
- * then bones 2 onward (bone 1 keeps whatever the animation gave it). The
- * file's bone records are 0x40 bytes with the translation at +0x24; the
- * model's are 0x34 bytes with it at +0x20. */
-struct VsBoneFileRecord {
-    char _pad0[0x24];
-    int x, y, z;
-    char _pad30[0x10];
-};
-struct VsBoneRecord {
-    char _pad0[0x20];
-    int x, y, z;
-    char _pad2c[0x8];
-};
-struct VsBoneFile {
-    char _pad0[4];
-    u32 numBones;
-    VsBoneFileRecord *bones;
-};
-struct VsBoneComponents {
-    VsBoneFile *file;
-    char _pad0[4];
-    VsBoneRecord *bones;
-};
+ * then bones 2 onward (bone 1 keeps whatever the animation gave it). */
 void UnknownVsPlayer::func_ov075_02114b60() {
-    VsBoneComponents *components = (VsBoneComponents *)&mModel.data;
-    VsBoneRecord *destination;
-    VsBoneFile *file = components->file;
-    VsBoneRecord *bones = components->bones;
-    VsBoneFileRecord *sourceBones = file->bones;
-    VsBoneFileRecord *source;
+    ModelComponents *components = &mModel.data;
+    ModelBone *destination;
+    BMD_File *file = components->modelFile;
+    ModelBone *bones = components->bones;
+    BMD_Bone *sourceBones = file->bones;
+    BMD_Bone *source;
     s16 boneIndex;
-    bones->x = sourceBones->x;
-    bones->y = sourceBones->y;
-    bones->z = sourceBones->z;
+    bones->transX = sourceBones->transX;
+    bones->transY = sourceBones->transY;
+    bones->transZ = sourceBones->transZ;
     destination = bones + 2;
     source = sourceBones + 2;
     for (boneIndex = 2; boneIndex < file->numBones; boneIndex++) {
-        destination->x = source->x;
-        destination->y = source->y;
-        destination->z = source->z;
+        destination->transX = source->transX;
+        destination->transY = source->transY;
+        destination->transZ = source->transZ;
         destination++;
         source++;
     }
@@ -1109,10 +1075,7 @@ extern "C" UnknownVsPlayerStateRow data_ov075_0211d56c[10] = {
     {&UnknownVsPlayer::func_ov075_02114390}, {&UnknownVsPlayer::func_ov075_02114300},
 };
 extern "C" UnknownVsPlayerStateRow data_ov075_0211d53c[6] = {
-    {&UnknownVsPlayer::func_ov075_021142fc},
-    {(UnknownVsPlayerState)&UnknownVsPlayer::func_ov075_0211427c},
-    {(UnknownVsPlayerState)&UnknownVsPlayer::func_ov075_02114218},
-    {(UnknownVsPlayerState)&UnknownVsPlayer::func_ov075_021141b8},
-    {&UnknownVsPlayer::func_ov075_021140e4},
-    {&UnknownVsPlayer::func_ov075_02114010},
+    {&UnknownVsPlayer::func_ov075_021142fc}, {&UnknownVsPlayer::func_ov075_0211427c},
+    {&UnknownVsPlayer::func_ov075_02114218}, {&UnknownVsPlayer::func_ov075_021141b8},
+    {&UnknownVsPlayer::func_ov075_021140e4}, {&UnknownVsPlayer::func_ov075_02114010},
 };

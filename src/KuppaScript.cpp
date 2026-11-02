@@ -52,6 +52,7 @@
 #include "dScene_c.h"
 #include "daPly_c.h"
 #include "PlayerInput.h"
+#include "private/controller_input.h"
 #include "SaveData.h"
 #include "Sound.h"
 
@@ -100,7 +101,7 @@ int ContinueKuppaScriptIfNecessary();
 void ResetKuppaScript();
 
 /* daDemo_c's and the camera's command dispatchers. */
-int func_ov002_020f7d74(daDemo_c *demo, u8 *command, int first, int last);
+void func_ov002_020f7d74(daDemo_c *demo, u8 *command, int first, int last);
 int func_02008550(dCamera_c *camera, u8 *command, int first, int last);
 void func_0201f32c(int messageID);
 void LoadLevelNoReturn(int levelID, u32 entrance, u32 arg2, u32 arg3);
@@ -132,7 +133,7 @@ extern dFdBrightness_c *data_0209f5bc; /* SCENE_FADER */
 extern u8 data_0209d45c;               /* TOP_SCREEN_RELATED */
 extern u8 data_0209d66c;               /* set to close the open message */
 extern s8 data_02092110;               /* NEXT_LEVEL_ID */
-extern u8 data_020a0e58[];             /* BUTTON_INPUT_ARR, 4 bytes a player */
+extern PadData data_020a0e58[];        /* BUTTON_INPUT_ARR, one per player */
 extern dCamera_c *data_0209f318;       /* CAMERA */
 extern int data_ov002_02110aec;        /* WATERFALL_SOUNDS_DISABLED */
 
@@ -4433,6 +4434,9 @@ static inline int IsTouchJustBegun(u32 off) {
     return gTouchHeld[off] != 0 && *(gTouchHeld + off + 1) != 0;
 }
 
+/* Shaped like RunPlayerCommand, but the demo dispatcher returns nothing, so the
+ * success path falls off the end: the ROM loads 0 only on the spawn-failed
+ * return, and nothing reads the result. */
 int RunDemoCommand(u8 *command, int first, int last) {
     dActor_c *demo = FindDemoActor(command[1]);
     if (demo == 0) {
@@ -4440,7 +4444,7 @@ int RunDemoCommand(u8 *command, int first, int last) {
         if (demo == 0)
             return 0;
     }
-    return func_ov002_020f7d74((daDemo_c *)demo, command, first, last);
+    func_ov002_020f7d74((daDemo_c *)demo, command, first, last);
 }
 
 /* Spawns daDemo_c (actor 0x160) into the first free slot of gDemoActorIDs.
@@ -4599,7 +4603,7 @@ void ProcessKuppaScript() {
                 if (data_0209f5bc->IsBetweenStartAndEnd() == 0) {
                     u32 i = gActivePlayerSlot;
                     u32 off = i * 4;
-                    if (*(u16 *)(data_020a0e58 + i * 4 + 2) != 0 || IsTouchJustBegun(off)) {
+                    if (data_020a0e58[i].pressed != 0 || IsTouchJustBegun(off)) {
                         dScene_c::StartSceneFade(1, 0, 0);
                         Sound::StopLoadedMusic_Layer1(0x3c);
                     }

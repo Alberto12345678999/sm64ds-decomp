@@ -1,11 +1,4 @@
 //cpp
-struct Vector3_16f;
-namespace Particle {
-struct Callback;
-struct System {
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
-};
-}
 /*
  * The two player-controlled Mario classes of the trampoline minigames,
  * dMgTrmpln2Mario_c and dMgTrmpln3DMario_c, with their helpers and the
@@ -50,6 +43,8 @@ struct System {
 // Trmp2Mario_* / Trmp3DMario_* record access spells a MARIO2 / MARIO3D member
 // except Trmp2 +0x68 and Trmp3D +0x5c, which stay raw: each is only ever stored
 // 0 (BounceOffLineA, EnterBounce), and no reader gives it a role.
+
+#include "Particle__System.h"
 #pragma defer_codegen off
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -2144,7 +2139,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
     if (alongLine < 0)
         alongLine = -alongLine;
     {
-        int *src = (int *)(c + 4);
+        int *src = (int *)&MARIO3D(c)->mContactNormal;
         tmp.x = src[0];
         tmp.y = src[1];
         tmp.z = src[2];
@@ -2370,7 +2365,7 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c) {
         alongLine = -alongLine;
 
     {
-        int *src = (int *)(c + 4);
+        int *src = (int *)&MARIO3D(c)->mContactNormal;
         tmp.x = src[0];
         tmp.y = src[1];
         tmp.z = src[2];

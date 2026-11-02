@@ -107,7 +107,7 @@ extern int Mg_IsNewRecord(void);
 extern void Mg_SetSharedState(int state);
 extern void Mg_SubmitScore(int score);
 extern int Mg_GetTopRecord(void);
-extern int Mg_DrawTopLeftCounter(int self);
+extern void Mg_DrawTopLeftCounter(int self);
 extern char *Ov004_LoadFileByPath(void *p);
 extern void Mg_SetTopScreenYOffset(int a);
 
@@ -1137,8 +1137,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
  * -(cos(angle) * speed) / 4. */
 void dScMgCurling_c::SetStoneSpin(int stoneIndex) {
     int heading = mStone[stoneIndex].angle;
-    int tableOffset = (((heading >> 4) << 1) + 1) << 1;
-    int cosHeading = *(short *)((char *)data_02082214 + tableOffset);
+    int cosHeading = data_02082214[((heading >> 4) << 1) + 1];
     int speed = mStone[stoneIndex].speed;
     long long product = (long long)cosHeading * speed;
     int velocityX = (int)(((unsigned long long)(product + 0x800)) >> 12);
