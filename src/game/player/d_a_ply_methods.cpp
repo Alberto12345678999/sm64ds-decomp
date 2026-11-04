@@ -110,7 +110,7 @@ extern int atan2_hold_Player_9(int x, int z);
 extern int data_0208e430;
 extern signed char data_02092110;
 extern signed char data_02092120;
-extern signed char data_02092124;
+extern signed char gLastCourseSublevel;
 extern u8 data_02092128[];
 extern int data_0209212c;
 extern short data_02092144[];
@@ -124,7 +124,7 @@ extern u8 data_0209f250;
 extern u8 data_0209f254;
 extern u8 data_0209f264;
 extern unsigned char data_0209f28c;
-extern unsigned char data_0209f2ac;
+extern unsigned char gNewStarCollected;
 extern s16 data_0209f4a2[];
 extern u8 data_0209f4ab[];
 extern u8 data_0209fc5c[];
@@ -6048,7 +6048,7 @@ int func_ov002_020c6e14(daPly_c *actor) {
     extern void* data_0209f318[];
     int idx;
 
-    if (data_0209f2ac != 0) {
+    if (gNewStarCollected != 0) {
         idx = -1;
         switch (NumStars()) {
         case 1:  idx = 0; break;
@@ -6539,7 +6539,7 @@ extern "C" {
 int daPly_c::func_ov002_020c7cbc() {
     extern u8 data_0209f2fc;
     if (data_0209f2fc == 1) {
-        switch (data_02092124) {
+        switch (gLastCourseSublevel) {
         case 0x24: mKeyModelId = 0; break;
         case 0x26: mKeyModelId = 1; break;
         case 0x2d: mKeyModelId = 2; break;
