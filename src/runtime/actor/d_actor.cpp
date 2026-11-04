@@ -75,6 +75,7 @@
 #include "dActor_c.h"
 #include "daPly_c.h"
 #include "common.h"
+#include "math/CalcLib.h"
 #include "dCc_c.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
@@ -108,19 +109,6 @@ extern void *data_020a4bb8;
 extern unsigned char data_0209f2d8;
 /* Defined below as extern "C". Fix12-by-value, so it is not a method. */
 }
-
-#ifdef _MSC_VER
-/* The host has one ~dActor_c(). These are the ROM's flat D2 and D0 names. */
-extern "C" dActor_c *_ZN8dActor_cD2Ev(dActor_c *thiz) {
-    thiz->dActor_c::~dActor_c();
-    return thiz;
-}
-extern "C" dActor_c *_ZN8dActor_cD0Ev(dActor_c *thiz) {
-    thiz->dActor_c::~dActor_c();
-    dActor_c::operator delete(thiz);
-    return thiz;
-}
-#endif
 
 /* The global actor list every dActor_c links its mActorListNode into: the
    first and last nodes. Its inline constructor empties it, so mwcc emits
@@ -265,8 +253,11 @@ extern dClipper data_0209f43c;  /* the dClipper instance */
 extern u8 data_0209f274; /* doubles the far-away threshold when set */
 extern u8 data_0209f2c4;
 extern u8 data_0209f20c;
-extern u8 data_0209f294;
-extern u32 data_0209b464; /* flag mask that forces thinking; 0 means "any" */
+extern u8 gVsExitScreenActive;
+/* This frame's actor update mask, copied from gNextActorUpdateMask by
+   dScStage_c::Behavior: while non-zero, only actors whose mFlags share a bit
+   with it behave. */
+extern u32 gActorUpdateMask;
 }
 int dActor_c::BeforeBehavior()
 {
@@ -311,8 +302,8 @@ int dActor_c::BeforeBehavior()
         }
     }
 
-    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) != 0 ||
-        (((mFlags & 9) == 9 || (data_0209b464 != 0 && (mFlags & data_0209b464) == 0)) &&
+    if (((data_0209f2c4 | data_0209f20c | gVsExitScreenActive) & 0xff) != 0 ||
+        (((mFlags & 9) == 9 || (gActorUpdateMask != 0 && (mFlags & gActorUpdateMask) == 0)) &&
          data_0209fc68 == 0))
         return 0;
 
@@ -582,7 +573,6 @@ void dActor_c::DropShadowScaleXYZ(dExtShadowModel_c &shadow, Matrix4x3 &matrix, 
 /* ROM ordinal 70 -- dActor_c::ClosestPlayer()
  * 0x02010ad8  size 0xc4 */
 extern "C" {
-extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern int data_0208e380;           /* distance to the cached closest player */
 extern int data_0208e37c;           /* distance to the cached farthest player */
 extern unsigned char data_0209f21c; /* number of players */
@@ -654,9 +644,6 @@ s32 dActor_c::DistToCPlayer()
 // @symbol _ZN8dActor_c18HorzAngleToCPlayerEv
 /* ROM ordinal 67 -- dActor_c::HorzAngleToCPlayer()
  * 0x020109b8  size 0x2c */
-extern "C" {
-s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-}
 s16 dActor_c::HorzAngleToCPlayer()
 {
     ClosestPlayer();
@@ -730,7 +717,6 @@ dActor_c *dActor_c::ClosestWithActorID(u32 actorID)
  * 0x02010844  size 0x80 */
 extern "C" {
 extern s16 atan2_hold_d_actor_1(Fix12i y, Fix12i x);
-extern s32 Vec3_HorzLen(Vector3 *v);
 }
 /* atan2 of v's horizontal length, projected onto heading `angle`, against
    v->y. The leading actor argument is unused. */
@@ -1300,25 +1286,23 @@ s32 dActor_c::GetWaterHeightWDW()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol LoadBlueCoinModel
-/* ROM ordinal 27 -- LoadBlueCoinModel
+// @symbol _ZN8dActor_c17LoadBlueCoinModelEv
+/* ROM ordinal 27 -- dActor_c::LoadBlueCoinModel()
  * 0x0200fe9c  size 0x2c */
 extern "C" {
 extern SharedFilePtr data_ov002_0210da00; /* 0x0210da00 */
 extern SharedFilePtr data_ov002_0210d9c8; /* 0x0210d9c8 */
 }
-extern "C" void LoadBlueCoinModel(void)
-{
+void dActor_c::LoadBlueCoinModel() {
     dExtSimpleModel_c::LoadFile(data_ov002_0210da00);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9c8);
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol UnloadBlueCoinModel
-/* ROM ordinal 26 -- UnloadBlueCoinModel
+// @symbol _ZN8dActor_c19UnloadBlueCoinModelEv
+/* ROM ordinal 26 -- dActor_c::UnloadBlueCoinModel()
  * 0x0200fe70  size 0x2c */
-extern "C" void UnloadBlueCoinModel(void)
-{
+void dActor_c::UnloadBlueCoinModel() {
     data_ov002_0210da00.Release();
     data_ov002_0210d9c8.Release();
 }

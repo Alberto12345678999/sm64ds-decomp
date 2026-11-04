@@ -83,6 +83,7 @@ enum dMeter_c_AssetId {
 #include "dCamera_c.h"
 #include "dScStage_c.h"
 #include "PlayerInput.h"
+#include "SaveData.h"
 #include "private/controller_input.h"
 #include "Sound.h"
 #include "Event.h"
@@ -96,7 +97,10 @@ struct OamAttr;
 struct Matrix2x2;
 
 extern "C" {
-extern unsigned char data_ov002_02111184;
+/* RenderTimeTimer draws the data_0209d4c8 timer only while this is set. The
+   writers start that timer with it: daPly_c on surface type 15 and the Koopa
+   the Quick race (daRNk_c). InitResources clears it. */
+extern unsigned char gShowRaceTimer;
 extern Timer data_0209d4c8;
 extern struct OamAttr data_ov002_0210ce80;
 extern struct OamAttr data_ov002_0210c6c0;
@@ -105,14 +109,14 @@ extern void OamRender10_d_meter(int sub, struct OamAttr *attr, int x, int y, int
 extern volatile unsigned short data_ov002_0210c208[];
 extern unsigned char data_0209f250;
 extern unsigned char data_ov002_02111178;
-extern signed char data_0209f2f4;
+extern signed char gNumLives;
 struct OamAttr;
 extern void *data_0209f394[];
 extern u8 data_ov002_02111180;
 extern void *data_0209f318;
 extern ControllerInput data_0209f498[];
 extern int data_0208ee44;
-extern u32 data_0209b454;
+extern u32 gNextActorUpdateMask;
 extern u8 data_0209d660;
 extern signed char data_0209f310[];
 /* ov001's OAM::NUMBERS, not ov000's -- ov000 shares this load window with ov002 and
@@ -130,7 +134,7 @@ extern signed char data_0209f2f8;
 extern int SublevelToLevel(int i);
 extern unsigned char data_0209f2c4;
 extern unsigned char data_0209f20c;
-extern unsigned char data_0209f294;
+extern unsigned char gVsExitScreenActive;
 extern unsigned char data_0209f204;
 extern struct OamAttr data_ov002_0210d290;
 extern struct OamAttr data_ov002_0210d2c0;
@@ -145,7 +149,7 @@ extern int GetOwnerLanguage(void);
 
 extern unsigned char data_0209f2bc;
 extern unsigned short data_ov002_02111188;
-extern unsigned char data_0209d454;
+extern unsigned char gSubScreenLayers;
 extern unsigned char data_ov002_0211117c[];
 extern struct OamAttr *data_ov002_0210c254[];
 extern struct OamAttr *data_ov002_0210c278[];
@@ -154,7 +158,7 @@ extern struct OamAttr data_ov002_0210d5d0;
 extern struct OamAttr data_ov002_0210d4f0;
 extern struct OamAttr data_ov002_0210c690;
 extern int data_0209caa0[];
-extern unsigned char data_0209f284;
+extern unsigned char gShowTouchScreenArrows;
 extern dFdBrightness_c *data_0209f5bc;
 void *LoadFile(int handle);
 void DecompressLZ16(void *handle, int addr);
@@ -319,7 +323,7 @@ int dMeter_c::InitResources() {
     }
 
     data_ov002_02111188 = 0xB4;
-    data_ov002_02111184 = 0;
+    gShowRaceTimer = 0;
     {
         u8 idx = *(volatile u8 *)&data_0209f250;
         data_ov002_0211117c[0] = ((daPly_c *)((idx ? (void *volatile *)data_0209f394
@@ -352,7 +356,7 @@ int dMeter_c::InitResources() {
         mLifeCountX = 0x10;
         mStarCountX = 0xF0;
         mStarCountSlideIn = 0;
-    } else if (!(data_0209caa0[2] & 0x80)) {
+    } else if (!(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)) {
         data_ov002_02111178 = 6;
         mLifeCountX = -0x3A;
         mStarCountX = (s16)(starDigitsWidth + 0x120);
@@ -385,7 +389,7 @@ int dMeter_c::Behavior() {
 
     /* vs is computed only once the first test passes and is reused below. */
     if (data_0209f5bc->IsAtStart() == 0 ||
-        ((vs = IsVsMode()) == 0 && (data_0209caa0[2] & 0x80) == 0))
+        ((vs = IsVsMode()) == 0 && (data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) == 0))
         return 1;
     if (vs != 0) {
         UpdateVsTimer();
@@ -479,7 +483,7 @@ int dMeter_c::Behavior() {
 int dMeter_c::Render() {
     if (IsVsMode()) {
         if (data_0209fc9c == 0) {
-            if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) == 0) {
+            if (((data_0209f2c4 | data_0209f20c | gVsExitScreenActive) & 0xff) == 0) {
                 RenderVsTimer();
                 RenderStarCount();
                 RenderCoinCount();
@@ -490,17 +494,17 @@ int dMeter_c::Render() {
                 }
             }
         }
-    } else if ((data_0209caa0[2] & 0x80) != 0) {
+    } else if ((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) != 0) {
         unsigned char v = data_0209f20c;
-        if (((data_0209f2c4 | v | data_0209f294) & 0xff) == 0) {
+        if (((data_0209f2c4 | v | gVsExitScreenActive) & 0xff) == 0) {
             RenderHealthMeter();
-            if (Event::GetBit(0x1d) == 0) {
+            if (Event::GetBit(EVENT_COLLECTING_STAR) == 0) {
                 RenderCoinCount();
                 RenderRedCoins();
                 RenderSilverStars();
                 RenderTimeTimer();
             }
-            if (data_0209f284 != 0) {
+            if (gShowTouchScreenArrows != 0) {
                 dScStage_c::RenderBouncingArrows();
             }
         } else {
@@ -510,7 +514,8 @@ int dMeter_c::Render() {
             }
         }
         unsigned char v2 = data_0209f20c;
-        if (((data_0209f2c4 | v2 | data_0209f294) & 0xff) == 0 || (v2 != 0 && data_0209f2d4 < 3)) {
+        if (((data_0209f2c4 | v2 | gVsExitScreenActive) & 0xff) == 0 ||
+            (v2 != 0 && data_0209f2d4 < 3)) {
             RenderStarCount();
             RenderCameraButtons();
             RenderLifeCount();
@@ -545,13 +550,13 @@ void dMeter_c::UpdateHealthMeter() {
     int chr = data_0209f250;
     daPly_c *player = (daPly_c *)data_0209f394[chr];
     unsigned int health = (data_02092144[chr] >> 8) & 0xff;
-    if ((unsigned char)(data_0209f2c4 | data_0209f20c | data_0209f294) != 0)
+    if ((unsigned char)(data_0209f2c4 | data_0209f20c | gVsExitScreenActive) != 0)
         return;
     if (mHealthMeterHoldTimer != 0)
         mHealthMeterHoldTimer -= data_0208ee44;
     if (mHealthTickTimer != 0)
         mHealthTickTimer -= data_0208ee44;
-    if (Event::GetBit(0x1d)) {
+    if (Event::GetBit(EVENT_COLLECTING_STAR)) {
         unsigned char s = mHealthMeterState;
         if (s != 0) {
             if (s < 5)
@@ -656,7 +661,7 @@ void dMeter_c::UpdateHealthMeter() {
             mHealthMeterState = 6;
         return;
     case 6:
-        if (Event::GetBit(0x1d) == 0)
+        if (Event::GetBit(EVENT_COLLECTING_STAR) == 0)
             mHealthMeterState = 1;
         return;
     }
@@ -692,7 +697,7 @@ void dMeter_c::UpdateVsTimer() {
 
     if (data_0209f2bc != 0)
         return;
-    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) != 0)
+    if (((data_0209f2c4 | data_0209f20c | gVsExitScreenActive) & 0xff) != 0)
         return;
 
     if (data_ov002_02111188 != 0)
@@ -711,7 +716,7 @@ void dMeter_c::UpdateVsTimer() {
             data_0209f204 = 1;
             data_ov002_02111188 = 0x3c;
             func_02012790(0x29);
-            data_0209d454 &= ~4;
+            gSubScreenLayers &= ~4;
         }
     }
 
@@ -748,7 +753,7 @@ void dMeter_c::UpdateVsTimer() {
 void dMeter_c::RenderVsTimer() {
     int t = mVsTimer;
 
-    if ((unsigned char)(data_0209f2c4 | data_0209f20c | data_0209f294) == 0) {
+    if ((unsigned char)(data_0209f2c4 | data_0209f20c | gVsExitScreenActive) == 0) {
         if (GetOwnerLanguage() == 5) {
             OAM::Render(0, &data_ov002_0210d290, 0x84, 9, -1, -1, 0x1000, 0x1000, 0, -1);
         } else if (GetOwnerLanguage() == 4) {
@@ -963,7 +968,7 @@ void dMeter_c::RenderCameraButtons() {
     if (t != 0)
         data_ov002_02111180 = t - data_0208ee44;
 
-    if (data_0209b454 & 0x40000000)
+    if (gNextActorUpdateMask & ACTOR_UPDATE_MASK_STAGE_ENDING)
         return;
 
     if (cam->mFlags & 0x1000) {
@@ -1028,7 +1033,7 @@ void dMeter_c::RenderLifeCount() {
         OAM::Render(0, OAM::LIFE_ICONS[player->mCharacter], mLifeCountX, 0xa, -1, 1, 0x1000, 0x1000,
                     0, -1);
         OAM::Render(false, &OAM::TIMES, mLifeCountX + 0x10, 0xa, -1, 1, 0);
-        CalculateDigits((unsigned short)data_0209f2f4);
+        CalculateDigits((unsigned short)gNumLives);
         int x = mLifeCountX + 0x18;
         for (int i = 0; i < 3; i++) {
             signed char d = mDigits[i];
@@ -1040,7 +1045,7 @@ void dMeter_c::RenderLifeCount() {
     } else {
         OAM::RenderSub(OAM::LIFE_ICONS[player->mCharacter], mLifeCountX, 0xa, -1, 1);
         OAM::Render(true, &OAM::TIMES, mLifeCountX + 0x10, 0xa, -1, 1, 0);
-        CalculateDigits((unsigned short)data_0209f2f4);
+        CalculateDigits((unsigned short)gNumLives);
         int i;
         int x = mLifeCountX + 0x18;
         for (i = 0; i < 3; i++) {
@@ -1089,7 +1094,7 @@ void dMeter_c::RenderTimeTimer() {
     unsigned long long sec;
     unsigned long long centi;
 
-    if (data_ov002_02111184 == 0)
+    if (gShowRaceTimer == 0)
         return;
 
     t = data_0209d4c8.GetTime() << 6;

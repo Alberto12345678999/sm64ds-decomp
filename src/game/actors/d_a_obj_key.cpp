@@ -194,7 +194,7 @@ extern ObjKeyStateTable data_ov089_02132cec;
  * UpdateContinuous veneer, not the method. */
 extern "C" {
 extern void *data_0209f318;
-extern int data_0209b454;
+extern int gNextActorUpdateMask;
 extern void *d_a_obj_keyNewHold(u32 a, u32 b, int c, int d, int e, void *f, void *g);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern void func_ov002_020c3dbc(void *player);
@@ -217,9 +217,12 @@ extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, int ang);
 extern void MulMat4x3Mat4x3(void *d, void *a, void *b);
-extern void SubVec3(void *d, void *a, void *b);
+/* local extern: named parameters keep this TU's compiler-numbered aliases. */
+extern void SubVec3(Vector3 *d, Vector3 *a, Vector3 *b);
 extern int *Vec3_LslInPlace(void *v, int sh);
-extern void AddVec3(void *d, void *a, void *b);
+/* local extern: CalcLib's declaration is unnamed; retain these names so this
+ * TU's compiler-numbered aliases remain stable. */
+extern void AddVec3(Vector3 *d, Vector3 *a, Vector3 *b);
 extern void LoadKeyModels(int idx);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int a, int b, void *v, void *w);
@@ -341,7 +344,7 @@ void daObjKey_c::StateFlyToCenter()
             Vector3 *pos;
             Vector3 *camLookAt;
             mFlags |= FLAG_CAM_TAKEOVER;
-            data_0209b454 |= FLAG_CAM_TAKEOVER;
+            gNextActorUpdateMask |= FLAG_CAM_TAKEOVER;
             lookAt = &cam->lookAt;
             camLookAt = &mCamLookAt;
             mCamLookAt.x = lookAt->x;
@@ -415,7 +418,7 @@ void daObjKey_c::StateFlyToCenter()
                     mdCcAcPos_c.flags &= ~CC_DISABLED;
                     cam->mFlags &= ~8;
                     mFlags &= ~FLAG_CAM_TAKEOVER;
-                    data_0209b454 &= ~FLAG_CAM_TAKEOVER;
+                    gNextActorUpdateMask &= ~FLAG_CAM_TAKEOVER;
                 }
             }
         }
@@ -443,9 +446,9 @@ void daObjKey_c::StateFlyToCenter()
     v.x = data_020a0e68.m[9];
     v.y = data_020a0e68.m[10];
     v.z = data_020a0e68.m[11];
-    SubVec3(&v, &mPosX, &v);
+    SubVec3(&v, (Vector3 *)&mPosX, &v);
     Vec3_LslInPlace(&v, 3);
-    AddVec3(&v, &mPosX, &v);
+    AddVec3(&v, (Vector3 *)&mPosX, &v);
     v.y = mScaleX * 13 + v.y;
     mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_TRAIL_A, v.x, v.y, v.z, 0, 0);
     mParticleID[1] = (u32)Particle::System::New(mParticleID[1], FX_TRAIL_B, v.x, v.y, v.z, 0, 0);
@@ -480,7 +483,7 @@ void daObjKey_c::StateStarJump()
             daPly_c *player;
             s32 *playerPos;
             mFlags |= FLAG_CAM_TAKEOVER;
-            data_0209b454 |= FLAG_CAM_TAKEOVER;
+            gNextActorUpdateMask |= FLAG_CAM_TAKEOVER;
             lookAt = &cam->lookAt;
             mSavedCamLookAt.x = lookAt->x;
             pos = &cam->pos;
@@ -569,7 +572,7 @@ void daObjKey_c::StateStarJump()
             cam->SetPos(mSavedCamPos);
             cam->mFlags &= ~8;
             mFlags &= ~FLAG_CAM_TAKEOVER;
-            data_0209b454 &= ~FLAG_CAM_TAKEOVER;
+            gNextActorUpdateMask &= ~FLAG_CAM_TAKEOVER;
             mStep++;
             return;
         }
@@ -620,7 +623,7 @@ void daObjKey_c::StateDrop()
             Vector3 *lookAt = &cam->lookAt;
             Vector3 *pos = &cam->pos;
             mFlags |= FLAG_CAM_TAKEOVER;
-            data_0209b454 |= FLAG_CAM_TAKEOVER;
+            gNextActorUpdateMask |= FLAG_CAM_TAKEOVER;
             mSavedCamLookAt.x = lookAt->x;
             mSavedCamLookAt.y = lookAt->y;
             mSavedCamLookAt.z = lookAt->z;
@@ -660,7 +663,7 @@ void daObjKey_c::StateDrop()
         cam->SetPos(mSavedCamPos);
         cam->mFlags &= ~8;
         mFlags &= ~FLAG_CAM_TAKEOVER;
-        data_0209b454 &= ~FLAG_CAM_TAKEOVER;
+        gNextActorUpdateMask &= ~FLAG_CAM_TAKEOVER;
         mStep++;
         mdCcAcPos_c.flags &= ~CC_DISABLED;
         mParticleID[0] = 0;
@@ -821,9 +824,9 @@ int daObjKey_c::Behavior()
                 vec.x = data_020a0e68.m[9];
                 vec.y = data_020a0e68.m[10];
                 vec.z = data_020a0e68.m[11];
-                SubVec3(&vec, &mPosX, &vec);
+                SubVec3(&vec, (Vector3 *)&mPosX, &vec);
                 Vec3_LslInPlace(&vec, 3);
-                AddVec3(&vec, &mPosX, &vec);
+                AddVec3(&vec, (Vector3 *)&mPosX, &vec);
                 /* First bone, word at +0xc. BMD_Bone has no field there. */
                 vec.y = *(int *)((char *)mAnmModel.data.bones + 0xc) * BONE_Y_MUL + vec.y;
                 vec.y = vec.y - Y_BONE;

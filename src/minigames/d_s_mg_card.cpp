@@ -13,6 +13,7 @@
  */
 
 #include "dScMgCard_c.h"
+#include "nitro/hw/registers.h"
 #include "types.h"
 #include "decl_common.h"
 #include "Sound.h"
@@ -55,17 +56,17 @@ extern void *sCardHudSprites[];
 extern int sCardSelectLocked;
 extern int sCardSwapRequested;
 extern int data_ov006_02141770;
-extern "C" void Vec2_Sub(int* o, int* a, int* b);
-extern "C" void func_0203d680(int* out, int* in, int scale);
+extern void Vec2_Sub(int *o, int *a, int *b);
+extern void func_0203d680(int *out, int *in, int scale);
 extern const Five sCardHandOrder;
 extern int RandomIntInternal(int *seed);
 extern int sCardFaceWeights[];
 extern int data_0209e650;
-extern "C" void Camera_InitDealerView(void *c);
-extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern "C" void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
-extern "C" void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
-extern "C" void Dealer_Draw(void *c);
+extern void Camera_InitDealerView(void *c);
+extern void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
+extern void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
+extern void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
+extern void Dealer_Draw(void *c);
 extern int data_ov006_02134028;
 void Dealer_Update(Dealer *table);
 void MgCoins_Update(void);
@@ -85,10 +86,10 @@ extern int sCardHandPayouts[];
 extern void FreeGfxSlotsById(int arg);
 extern void MgCoins_StartPayout(int a);
 extern s16 gMgCoinsStatus;
-extern "C" void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
-extern "C" void MgCoins_Reset(void);
-extern u8 data_0209d45c;
-extern u8 data_0209d454;
+extern void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
+extern void MgCoins_Reset(void);
+extern u8 gMainScreenLayers;
+extern u8 gSubScreenLayers;
 extern void LoadCard2SubBg3(char *);
 extern void *LoadFile(int);
 extern int GetGameLanguage(void);
@@ -135,8 +136,8 @@ s32 dScMgCard_c::InitResources()
 
     Mg_SetTopScreenYOffset(0x20);
     LoadCard2SubBg3(c);
-    data_0209d45c = 0x11;
-    data_0209d454 = 0x18;
+    gMainScreenLayers = DISPLAY_LAYER_BG0 | DISPLAY_LAYER_OBJ;
+    gSubScreenLayers = 0x18;
     mainTiles = LoadFile(0xbd);
     mainPalette = LoadFile(0xbe);
     subTiles = LoadFile(sCardNcgByLanguage[GetGameLanguage()]);

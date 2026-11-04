@@ -26,9 +26,12 @@
 
 #pragma defer_codegen off
 #include "types.h"
+#include "nitro/hw/registers.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "SaveData.h"
 #include "Message.h"
+#include "MessageBank.h"
 #include "G2x.h"
 #include "G2.h"
 
@@ -85,9 +88,9 @@ extern u8 data_0208f074[];
 extern u8 data_0208f174[];
 extern s32 data_0208ee44;
 extern int data_0209caa0[3];
-extern u32 data_0209b454;
-extern u8 data_0209d454;
-extern u8 data_0209d45c;
+extern u32 gNextActorUpdateMask;
+extern u8 gSubScreenLayers;
+extern u8 gMainScreenLayers;
 extern s16 data_0209f4a2[];
 extern u16 data_020a0e5a[];
 extern s32 data_020a0db0;
@@ -139,17 +142,6 @@ void Message_DrawLineBG2VS(void);
 void func_020345b0(int arg0);
 void LoadFont3D(void);
 }
-
-/* The current message's 8-byte table entry (data_0209fd00 points into the
- * table at data_0209fd08, idx * 8). +4 is the box width in pixels
- * ((width + 7) / 8 tile columns into data_0209fc78) and +6 the number of text
- * lines; each line is two tile rows. Only the fields the readers touch are
- * spelled out. */
-struct MessageEntry {
-    s32 textOffset; /* 0x0 */
-    u16 width;      /* 0x4 */
-    u8 lineCount;   /* 0x6 */
-};
 
 /* The text cursor's current control record (data_0209fd0c). Bytes 3 and 4 are
  * a big-endian argument; 5 and 6 are the number-format mode and base. */
@@ -863,15 +855,17 @@ extern "C" int func_020321fc(void) {
     data_0209fc9c = 0;
     data_0209fcb8 = 0;
     if (data_0209fca8 != 0) {
-        data_0209d454 &= ~2;
-        *(volatile u32 *)0x4001000 = (*(volatile u32 *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
+        gSubScreenLayers &= ~2;
+        *(volatile u32 *)0x4001000 =
+            (*(volatile u32 *)0x4001000 & ~0x1f00) | (gSubScreenLayers << 8);
         *(volatile u16 *)0x4001050 = 0;
         *(volatile u16 *)0x4001048 &= ~0x3f;
         *(volatile u16 *)0x400104a &= ~0x3f;
         *(volatile u32 *)0x4001000 &= ~0xe000;
     } else {
-        data_0209d45c &= ~8;
-        *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x1f00) | (data_0209d45c << 8);
+        gMainScreenLayers &= ~DISPLAY_LAYER_BG3;
+        *(volatile u32 *)0x4000000 =
+            (*(volatile u32 *)0x4000000 & ~0x1f00) | (gMainScreenLayers << 8);
         *(volatile u16 *)0x4000050 = 0;
         *(volatile u16 *)0x4000048 &= ~0x3f;
         *(volatile u16 *)0x400004a &= ~0x3f;
@@ -1046,13 +1040,13 @@ extern "C" void func_020326ac(void) {
         }
     }
     case 7: {
-        if ((data_0209caa0[2] & 0x80) && IsButtonInputValid() != 0) {
+        if ((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) && IsButtonInputValid() != 0) {
             data_0209fd0c += 1;
             data_0209fcc4 = 1;
             data_0209fcbc = 0;
             data_0209fcc8 = 1;
         }
-        if (!(data_0209caa0[2] & 0x80)) {
+        if (!(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)) {
             return;
         }
         {
@@ -1839,7 +1833,7 @@ extern "C" void func_020345b0(int arg0) {
     data_0209fc74 = 0x63;
     data_0209fcac = 0;
     data_0209fc7c = 0;
-    data_0209b454 |= 0x800000;
+    gNextActorUpdateMask |= 0x800000;
 
     {
         void *p = (char *)func_02054d88() + 0x4000;
@@ -1879,9 +1873,10 @@ extern "C" void func_020345b0(int arg0) {
     }
     data_0209fcb4 = t;
 
-    G2x::SetBlendBrightness((volatile u16 *)0x4000050, (data_0209d45c ^ 0x10) | 0x20, -8);
+    G2x::SetBlendBrightness((volatile u16 *)0x4000050, (gMainScreenLayers ^ 0x10) | 0x20, -8);
 
-    *(volatile u16 *)0x4000048 = (*(volatile u16 *)0x4000048 & ~0x3f) | (data_0209d45c | 8) | 0x20;
+    *(volatile u16 *)0x4000048 =
+        (*(volatile u16 *)0x4000048 & ~0x3f) | (gMainScreenLayers | 8) | 0x20;
     *(volatile u16 *)0x400004a = (*(volatile u16 *)0x400004a & ~0x3f) | 0x17;
     *(volatile s16 *)0x4000040 =
         ((data_0209fc8c << 8) & 0xff00) | (u8)(((data_0209fce4 * 2) - data_0209fc8c) + 1);
@@ -1890,8 +1885,8 @@ extern "C" void func_020345b0(int arg0) {
 
     data_0209fcc8 = 0;
     *(volatile s32 *)0x4000000 = (*(volatile s32 *)0x4000000 & ~0xe000) | 0x2000;
-    data_0209d45c |= 8;
-    *(volatile s32 *)0x4000000 = (*(volatile s32 *)0x4000000 & ~0x1f00) | (data_0209d45c << 8);
+    gMainScreenLayers |= DISPLAY_LAYER_BG3;
+    *(volatile s32 *)0x4000000 = (*(volatile s32 *)0x4000000 & ~0x1f00) | (gMainScreenLayers << 8);
 }
 
 // @symbol LoadFont3D

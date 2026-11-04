@@ -51,6 +51,7 @@
 #pragma defer_codegen off
 
 #include "types.h"
+#include "nitro/hw/registers.h"
 #include "nitro/fx/fx.h"
 #include "dScMgPachinko_c.h"
 
@@ -87,20 +88,6 @@ struct C2 {
     char visible;
     unsigned char state;
 };
-
-/* PachinkoFlyer_StateDescend's typed view of mFlyer from its y (0x5bb4).
-   `volatile` on y is needed: the ROM reloads it after the store. */
-typedef struct Ent {
-    volatile int y; /* 0x00 mFlyer[i].y (20.12) */
-    int vx;         /* 0x04 mFlyer[i].vx */
-    int vy;         /* 0x08 mFlyer[i].vy (20.12) */
-    char _padC[0x10];
-} Ent;
-
-typedef struct Obj {
-    char _pad0[0x5bb4]; /* 0x0000 */
-    Ent entries[8];     /* 0x5bb4 mFlyer[0].y */
-} Obj;
 
 /* The {code pointer, adjustment} records PachinkoPipe_UpdateAll,
    PachinkoBall_UpdateAll and PachinkoBobOmb_UpdateAll walk. */
@@ -210,8 +197,8 @@ extern void func_020564f4(const void *src, int offset, int count);
 
 /* --- ROM data this TU reads --- */
 extern int   data_0209d4b8;
-extern unsigned char data_0209d45c;
-extern u8    data_0209d454;
+extern unsigned char gMainScreenLayers;
+extern u8 gSubScreenLayers;
 extern s16   data_02082214[];
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern u8    gActivePlayerSlot;
@@ -306,7 +293,7 @@ extern void PachinkoFlyer_CheckHits(char *c, int idx);
 extern void PachinkoFlyer_StateLeave(char *c, int i);
 extern void PachinkoFlyer_StatePause(char *c, int i);
 extern void PachinkoFlyer_StateCross(char *p, int i);
-extern void PachinkoFlyer_StateDescend(Obj *self, int i);
+extern void PachinkoFlyer_StateDescend(dScMgPachinko_c *self, int i);
 extern void PachinkoFlyer_StateWaiting(char *c, int idx);
 extern void PachinkoFlyer_Update(C2 *c);
 extern void PachinkoTarget_Choose(char *obj);
@@ -453,7 +440,7 @@ void PachinkoBg_StateSinkOut(char *raw, int i) {
     if (y < 0x40) return;
     *(short *)(raw + REC_OFF(mBg, timer) + off) = 0x258;
     *(unsigned char *)(raw + REC_OFF(mBg, state) + off) = 0;
-    data_0209d45c &= ~4;
+    gMainScreenLayers &= ~DISPLAY_LAYER_BG2;
     PachinkoDeco_HideAll(raw);
 }
 
@@ -529,10 +516,10 @@ void PachinkoBg_StateWaiting(char *raw, int idx) {
         return;
     }
 
-    flag = data_0209d45c;
+    flag = gMainScreenLayers;
     p_row = raw + off;
     neg = 0x1000;
-    data_0209d45c = flag | 4;
+    gMainScreenLayers = flag | DISPLAY_LAYER_BG2;
     *(int *)((raw + REC_OFF(mBg, x)) + off) = 0x100000;
     *(int *)((raw + REC_OFF(mBg, y)) + off) = 0x40000;
     neg = -neg;
@@ -574,7 +561,7 @@ void PachinkoBg_Start(char *raw){
 // @symbol PachinkoBg_Stop
 void PachinkoBg_Stop(char *raw)
 {
-    data_0209d45c &= ~4;
+    gMainScreenLayers &= ~DISPLAY_LAYER_BG2;
     PACHINKO(raw)->mBg[0].active = 0;
 }
 
@@ -770,13 +757,13 @@ void PachinkoFlyer_StateCross(char *raw, int i) {
 /* Moves flyer i down: y += vy. While y is still below -0xc0 it slows
    (vy -= 0x60); once it reaches -0xc0 it snaps to -0xc0000 and stops.
    Then hands on to PachinkoFlyer_StateCross. */
-void PachinkoFlyer_StateDescend(Obj *self, int i) {
-    self->entries[i].y += self->entries[i].vy;
-    if (self->entries[i].y >> 12 >= -0xc0) {
-        self->entries[i].y = -0xc0000;
-        self->entries[i].vy = 0;
+void PachinkoFlyer_StateDescend(dScMgPachinko_c *self, int i) {
+    ((volatile int &)self->mFlyer[i].y) += self->mFlyer[i].vy;
+    if (((volatile int &)self->mFlyer[i].y) >> 12 >= -0xc0) {
+        ((volatile int &)self->mFlyer[i].y) = -0xc0000;
+        self->mFlyer[i].vy = 0;
     } else {
-        self->entries[i].vy -= 0x60;
+        self->mFlyer[i].vy -= 0x60;
     }
     PachinkoFlyer_StateCross((char *)self, i);
 }
@@ -2779,7 +2766,7 @@ s32 dScMgPachinko_c::InitResources()
     int y;
     int x;
 
-    data_0209d45c |= 8;
+    gMainScreenLayers |= DISPLAY_LAYER_BG3;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 1;
     *(volatile u16 *)0x400000e &= ~0x40;
     *(volatile u32 *)0x400001c = 0;
@@ -2818,7 +2805,7 @@ s32 dScMgPachinko_c::InitResources()
     DecompressLZ16((void *)objChar, (void *)0x6400000);
     GX::LoadOBJPltt((const void *)objPltt, 0, 0x100);
 
-    data_0209d454 |= 0xd;
+    gSubScreenLayers |= 0xd;
     *(volatile u16 *)0x400100c &= ~3;
     *(volatile u16 *)0x400100c &= ~0x40;
     *(volatile u32 *)0x4001018 = 0;

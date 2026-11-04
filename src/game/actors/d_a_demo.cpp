@@ -401,7 +401,7 @@ struct JugemModelFile : SharedFilePtr {
 };
 
 extern "C" {
-extern unsigned char data_0209d454;
+extern unsigned char gSubScreenLayers;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern OamAttr data_ov002_0210bddc;
@@ -459,9 +459,9 @@ extern PMF data_ov002_02110eec[];
 extern int data_ov002_02100190[];
 extern int data_ov002_02100170[];
 extern PMF data_ov002_02110e64[];
-extern "C" void func_ov002_020f39ec(char* c, int i);
+extern void func_ov002_020f39ec(char *c, int i);
 extern PMF data_ov002_02110e7c[];
-extern "C" void func_ov002_020f5990(char* c);
+extern void func_ov002_020f5990(char *c);
 extern void func_ov002_020f5a6c(char* p);
 extern void func_ov002_020f396c(char* p);
 extern void func_ov002_020f30d4(char* p);
@@ -514,7 +514,7 @@ extern int ApproachAngle(s16 *cur, s16 target, int divisor, int band, int maxSte
 extern void func_0201f138(void);
 extern void func_0201ef38(void);
 extern void Math_Function_0203b0fc(int* p, int target, int scale, int max);
-extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
+extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern void Vec3_MulScalar(Vec3* out, const Vec3* in, int scale);
 extern void Vec3_Add(Vec3* out, Vec3* a, Vec3* b);
 
@@ -564,7 +564,7 @@ extern Matrix4x3 data_0209b41c;
 extern unsigned char data_0209f2d8;
 extern char data_ov002_0211094c;
 extern JugemModelFile data_ov085_0213074c;
-/* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f23f0, NOT applied: extern u8 data_0209d454; */
+/* TUBUILD CONFLICT -- alternate declaration of gSubScreenLayers, from the legacy file for func_ov002_020f23f0, NOT applied: extern u8 gSubScreenLayers; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2aec, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, unsigned short c, int d); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2bf4, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, int c, unsigned short d); */
 /* TUBUILD CONFLICT -- alternate declaration of func_0201ef50, from the legacy file for func_ov002_020f2e30, NOT applied: extern void func_0201ef50(unsigned int x); */
@@ -587,7 +587,7 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020f3828, from the legacy file for func_ov002_020f5ed8, NOT applied: extern void func_ov002_020f3828(void *); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020f3828, from the legacy file for func_ov002_020f5ee4, NOT applied: extern void func_ov002_020f3828(void *); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN6Memory16operator_delete2EPv, from the legacy file for func_ov002_020f5f60, NOT applied: extern void _ZN6Memory16operator_delete2EPv(void *p); */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f5fe4, NOT applied: extern u8 data_0209d454; */
+/* TUBUILD CONFLICT -- alternate declaration of gSubScreenLayers, from the legacy file for func_ov002_020f5fe4, NOT applied: extern u8 gSubScreenLayers; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN6Memory16operator_delete2EPv, from the legacy file for func_ov002_020f63a0, NOT applied: extern void _ZN6Memory16operator_delete2EPv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c7AdvanceEv, from the legacy file for func_ov002_020f65ec, NOT applied: extern int _ZN15dExtFrameCtrl_c7AdvanceEv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of ReadUnalignedShort, from the legacy file for func_ov002_020f6bc0, NOT applied: extern s16 ReadUnalignedShort(unsigned char *p); */
@@ -636,24 +636,6 @@ daDemo_c::~daDemo_c()
 }
 
 // @symbol _ZN8daDemo_cD0Ev
-#ifdef _MSC_VER
-/* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~daDemo_c() it
- * emits, which the class's D1 file already defines, so compiling the
- * definition below as well would define that symbol twice. This arm
- * spells out, in terms of it, what the deleting destructor this file is
- * enrolled for does: the D1 body, called qualified so it is a direct call
- * even where a header declares the destructor virtual, then the
- * class-specific operator delete. Nothing here reaches mwccarm: it builds
- * the `#else` arm and emits the ROM bytes it always emitted, and the
- * object is byte-identical either way. */
-extern "C" daDemo_c *_ZN8daDemo_cD0Ev(daDemo_c *thiz)
-{
-    thiz->daDemo_c::~daDemo_c();  /* the D1 body, through the one host symbol */
-    daDemo_c::operator delete(thiz);    /* the class-specific delete D0 ends with */
-    return thiz;
-}
-#endif
 /* the D0 deleting destructor this file is enrolled for emits from the
    ~daDemo_c definition at ordinal 0 below; objisolate keeps the
    variant this file's delinks entry names. */
@@ -665,7 +647,7 @@ extern "C" daDemo_c *_ZN8daDemo_cD0Ev(daDemo_c *thiz)
 /* Sub-screen fade step (param1 0x2f, states 2 and 3). While fadeLevel is
  * non-zero it counts fadeTimer to 0x18, then drops fadeLevel by one and calls
  * G2x::SetBlendAlpha on 0x4001050 with (4, 0x28, fadeLevel, 0x10 - fadeLevel).
- * When fadeLevel reaches zero it clears bit 2 of data_0209d454, writes that
+ * When fadeLevel reaches zero it clears bit 2 of gSubScreenLayers, writes that
  * mask into bits 8..12 of 0x4001000, sets the blend to (0, 0x28, 0xc, 4),
  * advances the state and gives the three sprite slots delays 0x10/0x20/0x30. */
 
@@ -684,9 +666,9 @@ void daDemo_c::func_ov002_020f1fcc()
         G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 0x28, v, 0x10 - v);
         return;
     }
-    data_0209d454 &= ~4;
+    gSubScreenLayers &= ~4;
     *(volatile unsigned int *)0x4001000 =
-        (*(volatile unsigned int *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
+        (*(volatile unsigned int *)0x4001000 & ~0x1f00) | (gSubScreenLayers << 8);
     G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 0x28, 0xc, 4);
     mScroll->state++;
     for (i = 0; i < 3; i++) {
@@ -848,7 +830,7 @@ int daDemo_c::func_ov002_020f23d0()
  *      when fadeLevel reaches zero
  *   4  wait for mCue == 4, horizontal scroll
  *   5  on frames with FRAME_TIMER bit 0 clear, bg1Y++ and bg0Y--; at
- *      bg1Y 0xe0, next state and bits 0..1 of data_0209d454 cleared into
+ *      bg1Y 0xe0, next state and bits 0..1 of gSubScreenLayers cleared into
  *      bits 8..12 of 0x4001000. Also runs the horizontal scroll (237c)
  *   6  nothing
  * Every state then runs 2340, 2210 and 20f4. */
@@ -906,8 +888,9 @@ int daDemo_c::func_ov002_020f23f0()
             mScroll->bg0Y--;
             if (mScroll->bg1Y >= 0xe0) {
                 mScroll->state++;
-                data_0209d454 = data_0209d454 & ~3;
-                *(volatile u32*)0x4001000 = (*(volatile u32*)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
+                gSubScreenLayers = gSubScreenLayers & ~3;
+                *(volatile u32 *)0x4001000 =
+                    (*(volatile u32 *)0x4001000 & ~0x1f00) | (gSubScreenLayers << 8);
             }
         }
         func_ov002_020f237c();
@@ -1174,7 +1157,7 @@ void func_ov002_020f2aec(char *c, int idx)
     unsigned char cnt;
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) == 0) {
-        data_0209d454 |= 1;
+        gSubScreenLayers |= 1;
     }
     *(unsigned short *)(c + CREDIT_OFF(timer) + idx * 8) += 1;
     *(unsigned short *)(c + CREDIT_OFF(blendTimer) + idx * 8) += 1;
@@ -1224,7 +1207,7 @@ void func_ov002_020f2bf4(char *c, int idx)
     *(unsigned char *)(c + CREDIT_OFF(message) + idx * 8) += 1;
     *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend)) = 0;
     *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
-    data_0209d454 &= ~1;
+    gSubScreenLayers &= ~1;
     func_0201ef50(*(unsigned char *)(c + idx * 8 + CREDIT_OFF(message)));
 }
 #pragma opt_common_subs on
@@ -1300,7 +1283,7 @@ void StaffRoll::StartCredit(int n) {
     credit[0].message = (unsigned char)n;
     func_0201f108();
     func_0201ef50(n & 0xff);
-    data_0209d454 |= 1;
+    gSubScreenLayers |= 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1627,7 +1610,7 @@ void func_ov002_020f35e4(char *c, int i)
                     *(int *)(c + WINDOW_OFF(bgY) + off) >> 12);
     SetSubBg2Offset(*(int *)(c + WINDOW_OFF(bgX) + off) >> 12,
                     *(int *)(c + WINDOW_OFF(bgY) + off) >> 12);
-    data_0209d454 |= 6;
+    gSubScreenLayers |= 6;
     *(unsigned char *)(c + WINDOW_OFF(step) + off) =
         *(unsigned char *)(c + WINDOW_OFF(step) + off) + 1;
 }
@@ -1712,7 +1695,7 @@ void func_ov002_020f3828(int *c)
     ((StaffRoll *)c)->window[0].bgY = -0x38000;
     SetSubBg1Offset(((StaffRoll *)c)->window[0].bgX >> 12, ((StaffRoll *)c)->window[0].bgY >> 12);
     SetSubBg2Offset(((StaffRoll *)c)->window[0].bgX >> 12, ((StaffRoll *)c)->window[0].bgY >> 12);
-    data_0209d454 |= 6;
+    gSubScreenLayers |= 6;
 }
 }
 
@@ -3023,8 +3006,8 @@ void func_ov002_020f5ad4(char* c)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev
 void StaffRoll::func_ov002_020f5b24() {
-    data_0209d454 &= ~6;
-    data_0209d454 |= 8;
+    gSubScreenLayers &= ~6;
+    gSubScreenLayers |= 8;
     func_ov002_020f2f64((char *)this);
     *(volatile unsigned int *)0x4001000 &= ~0xe000;
     this->window[0].active = 0;
@@ -3416,7 +3399,7 @@ void func_ov002_020f5fe4(char* c)
     SetSubBg3Offset(0, 0);
     GXS::SetGraphicsMode(0);
 
-    data_0209d454 &= ~0x1f;
+    gSubScreenLayers &= ~0x1f;
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_END_EUR_NCG_BIN);
     DecompressLZ16(f, (void*)0x6400000);
@@ -3484,7 +3467,7 @@ void func_ov002_020f5fe4(char* c)
     func_02056374((const void*)f, 0, 0x800);
     Deallocate((void*)f);
 
-    data_0209d454 |= 0x10;
+    gSubScreenLayers |= 0x10;
 
     {
         int f6 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCG_BIN);
@@ -4229,7 +4212,7 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     }
 
     Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
-    Vec3_Sub(&diff, (Vec3 *)&sViewEnd, (Vec3 *)base);
+    Vec3_Sub((Vector3 *)&diff, (const Vector3 *)&sViewEnd, (const Vector3 *)base);
     tmp.x = diff.x;
     tmp.y = diff.y;
     tmp.z = diff.z;
@@ -4734,6 +4717,10 @@ struct DemoTexSeqFile {
 };
 
 extern "C" {
+/* Flat {address, 0} words in .data. A pointer-to-member initializer is
+   copied out of .bss by __sinit (data_ov002_0210b678 left .data and @4347
+   disappeared). (int)&daDemo_c::func_ov002_... does not compile: these
+   handlers are non-static, and a pointer to member does not convert to int. */
 /* local extern: descriptor word is the function address as an int */
 extern int _ZN8daDemo_c19func_ov002_020f79c0EPvi(daDemo_c *, void *,
                                                  int); /* local extern: descriptor address */

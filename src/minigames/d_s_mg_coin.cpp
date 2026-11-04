@@ -50,6 +50,7 @@ enum dScMgCoin_c_AssetId {
 };
 
 #include "types.h"
+#include "nitro/hw/registers.h"
 #include "G2.h"
 #include "decl_common.h"
 #include "Sound.h"
@@ -161,8 +162,8 @@ extern int Mg_GetTopRecord(void);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 
-extern u8 data_0209d45c;
-extern u8 data_0209d454;
+extern u8 gMainScreenLayers;
+extern u8 gSubScreenLayers;
 extern int data_0208ee44;
 extern void func_0203b9b4(int *p, int v);
 }
@@ -227,20 +228,6 @@ CoinPmfEntry sCoinBagStateTable[4] = {{pmf_dScMgCoin_c_Bag_StateIdle},
 /* Nothing to destroy by hand: D1 stores the vptr and calls dScMgBase_c's
    D2, and D0 adds the delete. */
 dScMgCoin_c::~dScMgCoin_c() {}
-
-#ifdef _MSC_VER
-/* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~dScMgCoin_c() above,
- * so this spells out what the deleting destructor does in terms of it: the
- * D1 body, called qualified so it is a direct call, then the class-specific
- * operator delete. mwccarm never defines _MSC_VER, so nothing here reaches
- * the cartridge object. */
-extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz) {
-    thiz->dScMgCoin_c::~dScMgCoin_c();
-    dScMgCoin_c::operator delete(thiz);
-    return thiz;
-}
-#endif
 
 // @symbol _ZN11dScMgCoin_c8Bag_DrawEv
 /* The hand cursor while the stylus is down: the sine table entry for the
@@ -1617,7 +1604,7 @@ int dScMgCoin_c::InitResources() {
     char *c = (char *)self;
     int a, b, d;
 
-    data_0209d45c |= 8;
+    gMainScreenLayers |= DISPLAY_LAYER_BG3;
     *(volatile u16 *)0x400000e &= ~3;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1210;
 
@@ -1638,7 +1625,7 @@ int dScMgCoin_c::InitResources() {
     DecompressLZ16(b, (void *)0x6400000);
     GX::LoadOBJPltt((const void *)a, 0, 0x100);
 
-    data_0209d454 |= 8;
+    gSubScreenLayers |= 8;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x1210;
 

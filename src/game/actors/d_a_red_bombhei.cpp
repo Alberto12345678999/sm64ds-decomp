@@ -116,8 +116,8 @@ extern "C" {
 extern dCamera_c *data_0209f318;           /* the camera */
 extern s8  data_0209f2f8;               /* current level */
 extern u8  data_0209f220;
-extern u8  data_0209f284;
-extern u8  data_0209f288;
+extern u8 gShowTouchScreenArrows;
+extern u8 gShowRedCoinMarkers;
 extern int data_0209caa0[];             /* save data; word 2 holds the progress flags */
 extern u8  data_0209d660;               /* nonzero while a message box is open */
 extern u8  data_0209d6bc;               /* message box page state */
@@ -554,7 +554,7 @@ void daRedBombhei_c::func_ov084_0212c508()
                     msg = 0x15f;
                 }
                 func_ov084_0212c9f0(msg, 0);
-                data_0209f288 = 1;
+                gShowRedCoinMarkers = 1;
             } else if (func_ov084_0212cac0() != 0 && IsCannonOpenInCurLevel() != 0) {
                 if (this->mCannonOpened == 0) {
                     if (data_0209f2f8 == 6)
@@ -588,7 +588,7 @@ void daRedBombhei_c::func_ov084_0212c508()
 
     if (data_0209d6bc == 9) {
         if (func_ov084_0212caa8() != 0)
-            data_0209f288 = 0;
+            gShowRedCoinMarkers = 0;
     }
 
     {
@@ -604,29 +604,29 @@ void daRedBombhei_c::func_ov084_0212c508()
     shownMsg = data_0209d6d4;
     if (shownMsg == 0x15c || shownMsg == 0x15e || func_ov084_0212ca60() != 0) {
         if (this->mMsgPage == 0)
-            data_0209f284 = 1;
+            gShowTouchScreenArrows = 1;
         else
-            data_0209f284 = 0;
+            gShowTouchScreenArrows = 0;
     }
 
     if (shownMsg == 0x15b || shownMsg == 0x15d) {
         if (this->mMsgPage == 1)
-            data_0209f284 = 1;
+            gShowTouchScreenArrows = 1;
         else
-            data_0209f284 = 0;
+            gShowTouchScreenArrows = 0;
     }
 
     if (shownMsg == 0x8a) {
         if (this->mMsgPage == 1)
-            data_0209f284 = 1;
+            gShowTouchScreenArrows = 1;
         if (data_0209d6bc == 9)
-            data_0209f284 = 0;
+            gShowTouchScreenArrows = 0;
     }
 
-    if (this->mMsgHint != data_0209f284 && data_0209f284 != 0)
+    if (this->mMsgHint != gShowTouchScreenArrows && gShowTouchScreenArrows != 0)
         func_02012790(0x24);
 
-    this->mMsgHint = data_0209f284;
+    this->mMsgHint = gShowTouchScreenArrows;
     this->mPrevMsgPageState = data_0209d6bc;
 }
 

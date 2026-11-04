@@ -96,13 +96,15 @@ int  Vec3_HorzLen(const Vector3 *);
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 s16  Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int  Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-void AddVec3(void *a, void *b, void *c_);
-int  RandomIntInternal(void *p);
+/* local extern: include/math/CalcLib.h has the same typed declaration, but
+ * including it here conflicts with this TU's other vector helper spellings. */
+void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c_);
+/* local extern: CalcLib.h has this signature without a parameter name; retain
+ * the name here so the TU's compiler-numbered aliases remain stable. */
+int RandomIntInternal(int *p);
 void func_ov063_0211cae8(void *found, int mask);
 void func_0203568c(int *p, int v);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-void UnloadBlueCoinModel(void *);
-void LoadBlueCoinModel(void *c);
 void func_0200f760(void *a, void *b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height,
@@ -151,35 +153,11 @@ daBook_c::~daBook_c()
 {
 }
 
-#ifdef _MSC_VER
-/* The host uses the flat ROM D0 name, which MSVC never emits: it folds the
- * Itanium destructor variants into the one ~daBook_c() above. This arm
- * spells out what the deleting destructor does -- the D1 body, called
- * qualified so it is a direct call, then the class-specific operator delete.
- * Nothing here reaches mwccarm. */
-extern "C" daBook_c *_ZN8daBook_cD0Ev(daBook_c *thiz)
-{
-    thiz->daBook_c::~daBook_c();
-    daBook_c::operator delete(thiz);
-    return thiz;
-}
-#endif
-
 // @symbol _ZN11daBookGen_cD1Ev
 // @symbol _ZN11daBookGen_cD0Ev
 daBookGen_c::~daBookGen_c()
 {
 }
-
-#ifdef _MSC_VER
-/* Host D0, as for daBook_c above. */
-extern "C" daBookGen_c *_ZN11daBookGen_cD0Ev(daBookGen_c *thiz)
-{
-    thiz->daBookGen_c::~daBookGen_c();
-    daBookGen_c::operator delete(thiz);
-    return thiz;
-}
-#endif
 
 // @symbol _ZN8daBook_c19func_ov020_021112b0Ev
 /* Points the book at the closest player: mAimYaw and mAimPitch are the angles
@@ -521,7 +499,7 @@ void daBook_c::func_ov020_02111b28() {
     if (mUsesAnmModel != 0) {
         mAnmModel.Advance();
     }
-    AddVec3(&mPosX, &mSpeedX, &mPosX);
+    AddVec3((Vector3 *)&mPosX, (Vector3 *)&mSpeedX, (Vector3 *)&mPosX);
     if (func_ov020_02111418() != 0)
         return;
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
@@ -726,7 +704,7 @@ int daBook_c::CleanupResources()
     ((SharedFilePtr *)(&data_ov020_02114ab8))->Release();
     ((SharedFilePtr *)(&data_ov020_02114aa8))->Release();
     ((SharedFilePtr *)(&data_ov020_02114ab0))->Release();
-    UnloadBlueCoinModel(this);
+    UnloadBlueCoinModel();
     return 1;
 }
 
@@ -735,7 +713,7 @@ int daBookGen_c::CleanupResources()
 {
     ((SharedFilePtr *)&data_ov020_02114aa0)->Release();
     ((SharedFilePtr *)&data_ov020_02114ab8)->Release();
-    UnloadBlueCoinModel(this);
+    UnloadBlueCoinModel();
     return 1;
 }
 
@@ -834,7 +812,7 @@ int daBook_c::InitResources()
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114ab8);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114aa8);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114ab0);
-    LoadBlueCoinModel(this);
+    LoadBlueCoinModel();
 
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -914,7 +892,7 @@ int daBookGen_c::InitResources()
     mSpawnTimer = 0;
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114aa0);
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114ab8);
-    LoadBlueCoinModel(this);
+    LoadBlueCoinModel();
     return 1;
 }
 

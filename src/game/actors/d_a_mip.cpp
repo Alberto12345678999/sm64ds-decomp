@@ -49,6 +49,7 @@ enum daMip_c_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "LevelRng.h"
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -79,10 +80,11 @@ int   SurfaceInfo_TestFlag0x20(void *);
 s16   Vec3_HorzAngle(const void *, const void *);
 s32   Vec3_HorzDist(const void *, const void *);
 s32   Vec3_Dist(const void *, const void *);
-void  Vec3_Sub(void *, const void *, const void *);
+void Vec3_Sub(Vector3 *, const Vector3 *, const Vector3 *);
 void  Vec3_MulScalar(void *, const void *, int);
 void  Vec3_Asr(void *, void *, int);
-void  SubVec3(void *, void *, void *);
+/* local extern: CalcLib conflicts with this TU's Vec3_MulScalar spelling. */
+void SubVec3(Vector3 *, Vector3 *, Vector3 *);
 s32   LenVec3(const void *);
 int   AngleDiff(int, int);
 int   ApproachAngle(void *, s16, int, int, int);
@@ -91,14 +93,14 @@ void  Matrix4x3_FromRotationY(void *, int);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *, int, int, int);
 void  MulMat4x3Mat4x3(void *, void *, void *);
 void  MulMat3x3Mat3x3(void *, void *, void *);
-void  MulVec3Mat4x3(const void *, const void *, void *);
-/* Unsigned, and that is measured: InitResources shifts the result right by 8
-   and the ROM uses LSR. Declared `int`, the same expression comes out ASR. */
-u32   RandomIntInternal(int *);
-u8    NumStars(void);
-u16   DecIfAbove0_Short(void *);
-int   func_02013890(int, int);
-void  func_02013944(void);
+void MulVec3Mat4x3(const void *, const void *, void *);
+/* local extern: CalcLib's int(int *) declaration is kept local because its
+   vector declarations conflict with this TU's other helper signatures. */
+int RandomIntInternal(int *);
+u8 NumStars(void);
+u16 DecIfAbove0_Short(void *);
+int func_02013890(int, int);
+void func_02013944(void);
 void func_02012694(unsigned int id, const Vector3 *pos);
 void func_02016acc(void *, unsigned int);
 void func_02016b24(void *, unsigned int);
@@ -830,7 +832,7 @@ int daMip_c::StateFleeMain() {
     {
         s32 y = mPosY;
         node.y = y;
-        Vec3_Sub(&delta, &mPos, &node);
+        Vec3_Sub((::Vector3 *)&delta, (const ::Vector3 *)&mPos, (const ::Vector3 *)&node);
         len = LenVec3(&delta);
     }
     if ((len == 0) || (len <= lim)) {
@@ -854,7 +856,7 @@ int daMip_c::StateFleeMain() {
             {
                 int s = cstd::fdiv(lim, len);
                 Vec3_MulScalar(&scaled, &delta, s);
-                SubVec3(&mPos, &scaled, &mPos);
+                SubVec3((::Vector3 *)&mPos, (::Vector3 *)&scaled, (::Vector3 *)&mPos);
             }
             if (mVertSpeed > 0) {
                 mPosY = ysave;
@@ -946,7 +948,7 @@ int daMip_c::StateIdleMain()
        not instantiate (its vague-linkage D1 lived in this TU only for
        these two locals). */
     typedef struct Vector3 { int x, y, z; } Vector3;
-    extern int data_0209e650[];
+    extern LevelRng data_0209e650;
     extern MipStatePair data_ov085_0213066c;
     extern DaMipAnimationFilePtr gMipRunAnimationFile;
     extern DaMipAnimationFilePtr data_ov085_021305b0;
@@ -994,7 +996,7 @@ int daMip_c::StateIdleMain()
         }
     }
 
-    u32 r = (u32)RandomIntInternal(data_0209e650) >> 8;
+    u32 r = (u32)RandomIntInternal((int *)&data_0209e650) >> 8;
     if (mRabbitId == 1) {
         if (Vec3_HorzDist(&mPos, &pp) < 0x4b0000) {
             mTargetAngY = Vec3_HorzAngle(&mPos, &pp) + 0x8000;
@@ -1465,7 +1467,7 @@ int daMip_c::InitResources()
     extern s32 data_ov085_021305ac;
     extern int data_0209caa0[];
     extern s8 data_0209f2f8;
-    extern int data_0209e650;
+    extern LevelRng data_0209e650;
 
     void* player;
     void* closest;
@@ -1557,7 +1559,7 @@ int daMip_c::InitResources()
             if (data_0209f2f8 == 0x32)
                 v = 1;
             if (func_02013890(mRabbitId, v) != 0 && data_ov085_021305ac < 8) {
-                u32 rnd = RandomIntInternal(&data_0209e650) >> 8;
+                u32 rnd = (u32)RandomIntInternal((int *)&data_0209e650) >> 8;
                 if (NumStars() >= 0x51) {
                     if ((s32)((daPly_c *)closest)->param1 == 3) {
                         if ((rnd & 0xf) == 0)

@@ -17,15 +17,9 @@
  * - The destructor, the key function, is in d_s_entry.cpp. This file
  *   defines no virtual the class declares first, so it emits no
  *   dScEntry_c vtable or typeinfo.
- * - OamAnimation() and icon_c() are written out of line. The
- *   cartridge's copies close the run after the RESULT factory, the
- *   place the inline copies a factory forces would land. Inline
- *   copies are not emitted here: the factories name the two
- *   constructors by their linker names, so nothing in C++ uses them.
- * - The factory keeps its hand-built construction. A `new dScEntry_c'
- *   would need the class constructor, which is not reconstructed.
- *   Its __cxa_vec_ctor calls take the icon_c and OamAnimation
- *   structors by address, which C++ cannot spell.
+ * - OamAnimation() and icon_c() stay out of line, closing the run
+ *   after the RESULT factory. Both profile factories are
+ *   `return new dScEntry_c`.
  * - The header names the entry object and shared step workspace. The
  *   extern "C" step callbacks take the scene as a dScEntry_c pointer and
  *   reach it through those members. The transition helpers use the
@@ -52,6 +46,7 @@
 #pragma defer_codegen off
 
 #include "types.h"
+#include "nitro/hw/registers.h"
 #include "PlayerInput.h"
 #include "private/controller_input.h"
 #include "Sound.h"
@@ -102,8 +97,8 @@ void func_ov075_0211601c(dScEntry_c::graphCallback_c *, dScEntry_c *, int);
    (func_02019144, func_02019100). dGraph_c::callback_c is the ROM-proven base
    of every scene's nested graphCallback_c (include/dGraph_c.h). */
 extern dGraph_c::callback_c *data_0209d4a8;
-extern u8 data_0209d45c;
-extern u8 data_0209d454;
+extern u8 gMainScreenLayers;
+extern u8 gSubScreenLayers;
 extern s32 data_0208ee44;
 
 /* The scene manager Behavior polls through its slot 5. */
@@ -116,11 +111,6 @@ extern "C" dFdBrightness_c *data_0209f5bc;
 #include "dBase_c.h"
 #include "G2.h"
 #include "Message.h"
-
-/* The RESULT factory retains its two-word aggregate-copy schedule. */
-struct P2Copy {
-    int words[2];
-};
 
 extern "C" {
 int func_0203d974(void);
@@ -645,11 +635,11 @@ void dScEntry_c::UpdateSettingsSync() {
 
 // @symbol _ZN10dScEntry_c17EnterSettingsSyncEv
 void dScEntry_c::EnterSettingsSync() {
-    data_0209d45c &= ~4;
-    data_0209d454 &= ~1;
+    gMainScreenLayers &= ~DISPLAY_LAYER_BG2;
+    gSubScreenLayers &= ~1;
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
     func_020338b0(0x145, 0xb0, 0x1d, -1);
-    data_0209d454 |= 5;
+    gSubScreenLayers |= 5;
     mIconCount = 0;
     func_02020334();
     func_02012790(0x120);
@@ -803,7 +793,7 @@ void dScEntry_c::EnterSoundSettings() {
 
     Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
 
-    data_0209d454 |= 5;
+    gSubScreenLayers |= 5;
     G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0xb, ~5);
 
     mSelectedIcon = 0;
@@ -960,7 +950,7 @@ void dScEntry_c::EnterControlSettings() {
     func_ov075_02115e8c((char *)&mIcons[4], 0xc, 0, data_ov075_0211b5d4[r], 0xa8);
 
     mIconCount = 5;
-    data_0209d454 &= ~5;
+    gSubScreenLayers &= ~5;
 
     r = GetLanguageIndex();
     func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(data_ov075_0211c9b8[r]));
@@ -973,8 +963,8 @@ void dScEntry_c::EnterControlSettings() {
         SetBg2Offset(0, 0x100);
 
     func_02033bb8(5);
-    data_0209d45c |= 4;
-    data_0209d454 |= 5;
+    gMainScreenLayers |= DISPLAY_LAYER_BG2;
+    gSubScreenLayers |= 5;
     G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0xb, ~5);
 
     mStepWork[0] = mSelectedIcon;
@@ -983,11 +973,12 @@ void dScEntry_c::EnterControlSettings() {
 
 // @symbol _ZN10dScEntry_c16EnterQuitMessageEv
 void dScEntry_c::EnterQuitMessage() {
-    data_0209d45c = data_0209d45c & (~0xe);
-    data_0209d454 = data_0209d454 & (~1);
+    gMainScreenLayers =
+        gMainScreenLayers & ~(DISPLAY_LAYER_BG1 | DISPLAY_LAYER_BG2 | DISPLAY_LAYER_BG3);
+    gSubScreenLayers = gSubScreenLayers & (~1);
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
     func_020338b0(0x145, 0xb0, 0x17, -1);
-    data_0209d454 = data_0209d454 | 5;
+    gSubScreenLayers = gSubScreenLayers | 5;
     mIconCount = 0;
     G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x1f, ~5);
     mStepDelay = 2;
@@ -1005,7 +996,7 @@ void dScEntry_c::UpdateQuit() {
 
 // @symbol _ZN10dScEntry_c9EnterQuitEv
 void dScEntry_c::EnterQuit() {
-    data_0209d45c &= ~0xe;
+    gMainScreenLayers &= ~(DISPLAY_LAYER_BG1 | DISPLAY_LAYER_BG2 | DISPLAY_LAYER_BG3);
     mStepDelay = 0x14;
     UnloadOverlay((int)&OVERLAY_100_ID);
     UnloadOverlay((int)&OVERLAY_102_ID);
@@ -1066,18 +1057,18 @@ static inline int IsEntryScene(const dScEntry_c *scene) {
 void dScEntry_c::EnterQuitConfirm() {
     void *fh;
 
-    data_0209d454 = data_0209d454 & ~1;
+    gSubScreenLayers = gSubScreenLayers & ~1;
     if (IsEntryScene(this)) {
         Message::DisplayDontSaveTextVS(0x19);
     } else {
-        data_0209d454 = data_0209d454 & ~4;
+        gSubScreenLayers = gSubScreenLayers & ~4;
         fh = LoadFile(0x9802);
         func_ov075_02116030(ENTRY_GRAPH_CALLBACK, fh);
         Message::DisplayDontSaveTextVS(0x16);
-        data_0209d454 = data_0209d454 | 4;
+        gSubScreenLayers = gSubScreenLayers | 4;
         mRenderStep = data_ov075_0211d810.render;
     }
-    data_0209d454 = data_0209d454 | 1;
+    gSubScreenLayers = gSubScreenLayers | 1;
     mIconCount = 2;
     mSelectedIcon = 1;
     func_ov075_02115e8c((char *)&mIcons[0], 8, 0, 0x50, 0xa8);
@@ -1095,7 +1086,8 @@ void dScEntry_c::UpdateRematchSync() {
         func_02020190();
         func_020200e0();
         func_02030994();
-        data_0209d45c = data_0209d45c & ~0xe;
+        gMainScreenLayers =
+            gMainScreenLayers & ~(DISPLAY_LAYER_BG1 | DISPLAY_LAYER_BG2 | DISPLAY_LAYER_BG3);
         mDisconnectHideMask = 0;
         mRenderStep = 0;
         dScene_c::StartSceneFade(6, 2, 0);
@@ -1111,10 +1103,10 @@ void dScEntry_c::UpdateRematchSync() {
 
 // @symbol _ZN10dScEntry_c16EnterRematchSyncEv
 void dScEntry_c::EnterRematchSync() {
-    data_0209d454 &= ~1;
+    gSubScreenLayers &= ~1;
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
     func_020338b0(0x145, 0xb0, 0x1d, -1);
-    data_0209d454 |= 5;
+    gSubScreenLayers |= 5;
     mIconCount = 0;
     if (data_0209fc58 == 0) {
         func_020201c0();
@@ -1220,19 +1212,19 @@ void dScEntry_c::UpdateRematchPrompt() {
     func_02012790(0x119);
 }
 
-/* Sets data_0209d45c bits 0xe and records them in mDisconnectHideMask; on
- * a player disconnect HandlePlayerDisconnect clears data_0209d45c by
+/* Sets gMainScreenLayers bits 0xe and records them in mDisconnectHideMask; on
+ * a player disconnect HandlePlayerDisconnect clears gMainScreenLayers by
  * ~mDisconnectHideMask, and UpdateRematchSync clears both on its own. */
 // @symbol _ZN10dScEntry_c18EnterRematchPromptEv
 void dScEntry_c::EnterRematchPrompt() {
-    data_0209d454 &= ~5;
+    gSubScreenLayers &= ~5;
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 1);
     func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(0x9801));
     LoadCompressedFileAt(0x8407, G2S::GetBG3ScrPtr());
     Message::DisplayVsExitText(0x1f);
 
-    data_0209d45c |= 0xe;
-    data_0209d454 |= 5;
+    gMainScreenLayers |= DISPLAY_LAYER_BG1 | DISPLAY_LAYER_BG2 | DISPLAY_LAYER_BG3;
+    gSubScreenLayers |= 5;
     mSelectedIcon = 0;
     func_ov075_02115e8c((char *)&mIcons[0], 0xa, 0, 0x80, 0x48);
     func_ov075_02115e8c((char *)&mIcons[1], 0xa, 0, 0x80, 0x78);
@@ -1417,7 +1409,7 @@ void dScEntry_c::EnterResults() {
 
     func_020331fc(0x40, 0x20, func_0203da9c() << 24 >> 24);
 
-    data_0209d454 |= 1;
+    gSubScreenLayers |= 1;
 
     func_02020304();
 
@@ -1475,7 +1467,7 @@ void dScEntry_c::UpdateMatchLoading() {
 
 // @symbol _ZN10dScEntry_c19LoadCourseResourcesEi
 void dScEntry_c::LoadCourseResources(int course) {
-    mHeap::Heap_t *previousHeap = static_cast<mHeap::Heap_t *>(data_020a0eac)->SetDefault();
+    mHeap::Heap_t *previousHeap = data_020a0eac->SetDefault();
     LoadArchive(7);
     int selectedArchive = course + 2;
     unsigned int archive;
@@ -1581,8 +1573,8 @@ void dScEntry_c::EnterCourseSelect() {
     int x;
     icon_c *icon;
 
-    data_0209d45c &= ~4;
-    data_0209d454 &= ~5;
+    gMainScreenLayers &= ~DISPLAY_LAYER_BG2;
+    gSubScreenLayers &= ~5;
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 1);
     func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(0x8409));
     LoadCompressedFileAt(0x8407, G2S::GetBG3ScrPtr());
@@ -1592,7 +1584,7 @@ void dScEntry_c::EnterCourseSelect() {
     else
         func_020338b0(0x225, 0xb0, 0x1d, -1);
 
-    data_0209d454 |= 5;
+    gSubScreenLayers |= 5;
 
     icon = mIcons;
     index = 0;
@@ -1651,7 +1643,7 @@ void dScEntry_c::EnterPlayerSelectIntro() {
     int col;
     u16 *tiles;
     u32 palette;
-    data_0209d454 &= ~5;
+    gSubScreenLayers &= ~5;
     if (GetLanguageIndex() == 0)
         LoadCompressedFileAt(0x840a, G2S::GetBG2ScrPtr());
     else
@@ -1666,7 +1658,7 @@ void dScEntry_c::EnterPlayerSelectIntro() {
             tiles[col] = palette | (tiles[col] & 0xfff);
         tiles += 32;
     }
-    data_0209d454 |= 4;
+    gSubScreenLayers |= 4;
     mIconCount = 0;
     mStepDelay = 180;
     if (func_0203d974()) {
@@ -1733,11 +1725,11 @@ void dScEntry_c::UpdatePlayerSync() {
 void dScEntry_c::EnterPlayerSync() {
     // Download-play clients and non-host stations install the waiting screen.
     if (func_0203d974()) {
-        data_0209d454 &= ~5;
+        gSubScreenLayers &= ~5;
         void *screen = LoadFile(0x8409);
         func_ov075_02116030(ENTRY_GRAPH_CALLBACK, screen);
         func_020338b0(0x225, 0xb0, 0x1d, -1);
-        data_0209d454 |= 5;
+        gSubScreenLayers |= 5;
         mIconCount = 0;
         mWaiting.wavePhase = 0;
         mWaiting.waveDelay = 120;
@@ -1802,11 +1794,11 @@ extern "C" void func_ov075_02119640(dScEntry_c *self) {
 // @symbol func_ov075_021196d0
 extern "C" void func_ov075_021196d0(dScEntry_c *self) {
     self->mEntObj->func_ov075_02115134();
-    data_0209d454 &= ~5;
+    gSubScreenLayers &= ~5;
     func_ov075_02116030(ENTRY_GRAPH_CALLBACK, data_0209b2e8);
     data_0209b2e8 = 0;
     func_020338b0(0x225, 0xb0, 0x1d, -1);
-    data_0209d454 |= 5;
+    gSubScreenLayers |= 5;
     self->mIconCount = 0;
     self->mWaiting.wavePhase = 0;
     self->mWaiting.waveDelay = 0x78;
@@ -1862,11 +1854,11 @@ extern "C" void func_ov075_021197e8(dScEntry_c *self) {
 
 // @symbol func_ov075_02119918
 extern "C" void func_ov075_02119918(dScEntry_c *self) {
-    data_0209d454 = data_0209d454 & ~1;
+    gSubScreenLayers = gSubScreenLayers & ~1;
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 2);
     Message::DisplayDontSaveTextVS(0x11);
 
-    data_0209d454 = data_0209d454 | 5;
+    gSubScreenLayers = gSubScreenLayers | 5;
     self->mSelectedIcon = 1;
     func_ov075_02115e8c((char *)&self->mIcons[0], 8, 0, 0x50, 0xa8);
     func_ov075_02115e8c((char *)&self->mIcons[1], 8, 0, 0xb0, 0xa8);
@@ -1964,10 +1956,10 @@ extern "C" void func_ov075_02119b34(dScEntry_c *self) {
 
 // @symbol func_ov075_02119c38
 extern "C" void func_ov075_02119c38(dScEntry_c *self) {
-    data_0209d454 &= ~1;
+    gSubScreenLayers &= ~1;
     func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 1);
     func_020337ec();
-    data_0209d454 |= 5;
+    gSubScreenLayers |= 5;
     func_ov075_02115e8c((char *)&self->mIcons[0], 0xa, 0, 0x80, 0xa8);
     self->mIconCount = 1;
     self->mStepPhase = 0;
@@ -2017,7 +2009,7 @@ void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
     int player;
     u8 disconnectFlags;
 
-    data_0209d454 = data_0209d454 & ~0x11;
+    gSubScreenLayers = gSubScreenLayers & ~0x11;
     activePeerMask = 0;
     peerActive = data_0209fc5d;
     for (player = 1; player < 4; player++) {
@@ -2040,7 +2032,7 @@ void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
             }
         }
         mBehaviorStep = 0;
-        data_0209d45c = data_0209d45c & ~mDisconnectHideMask;
+        gMainScreenLayers = gMainScreenLayers & ~mDisconnectHideMask;
         if (mDisconnectHideMask)
             mRenderStep = 0;
         G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
@@ -2058,7 +2050,7 @@ void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
                 func_020338b0(0x125, 0xb0, 0x1a, -1);
             func_02030a78();
             ChangeStepsAfterDelay(reinterpret_cast<const StepSet *>(&data_ov075_0211d930), 0xb4);
-            data_0209d45c = data_0209d45c & ~mDisconnectHideMask;
+            gMainScreenLayers = gMainScreenLayers & ~mDisconnectHideMask;
             if (mDisconnectHideMask)
                 mRenderStep = 0;
             G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
@@ -2076,7 +2068,7 @@ void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
             }
         }
     }
-    data_0209d454 = data_0209d454 | 5;
+    gSubScreenLayers = gSubScreenLayers | 5;
     mIconCount = 0;
 }
 
@@ -2212,7 +2204,7 @@ s32 dScEntry_c::InitResources() {
     SetBg0Offset(0, 0);
     SetBg2Offset(0, 0);
     SetBg3Offset(0, 0);
-    data_0209d45c = 0x11;
+    gMainScreenLayers = DISPLAY_LAYER_BG0 | DISPLAY_LAYER_OBJ;
 
     *(u16 *)0x4001008 = (*(u16 *)0x4001008 & ~3) | 1;
     *(u16 *)0x400100c = (*(u16 *)0x400100c & ~3) | 3;
@@ -2220,7 +2212,7 @@ s32 dScEntry_c::InitResources() {
     SetSubBg0Offset(0, 0);
     SetSubBg2Offset(0, 0);
     SetSubBg3Offset(0, 0);
-    data_0209d454 = 0x18;
+    gSubScreenLayers = 0x18;
 
     mFadeBrightness = 0;
     mFadeTick = 0;
@@ -2286,60 +2278,8 @@ bool dScEntry_c::BeforeInitResources() {
 }
 
 // @symbol dScEntry_c_classInit_RESULT
-/* The array runtime passes each element address and ignores lifecycle
- * results. Explicit function-pointer casts mark that runtime ABI
- * boundary. */
-extern "C" {
-/* local extern: the factory runs the base constructor over fresh operator new
-   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
-extern void *_ZN7fBase_cC2Ev(void *);
-extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
-                           void (*ctor)(void *), void (*dtor)(void *));
-
-extern char data_0208e4b8[];
-extern char _ZTV10dScEntry_c[];
-/* local extern: __cxa_vec_ctor takes the element constructor and destructor
-   by address, and C++ cannot take a constructor's or destructor's address. */
-extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cD1Ev(dScEntry_c::icon_c *object);
-extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cC1Ev(dScEntry_c::icon_c *object);
-extern OamAnimation *_ZN12OamAnimationD1Ev(OamAnimation *object);
-extern OamAnimation *_ZN12OamAnimationC1Ev(OamAnimation *object);
-
-/* Reconstructed source-style name: SM64DS proves dScEntry_c through RTTI,
- * allocation size, vtable identity, and the RESULT registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: func_ov075_0211a740. */
-void *dScEntry_c_classInit_RESULT(void) {
-    /* The raw byte pointer preserves the ROM factory's address-expression
-       tree; typed member expressions fold five instructions in mwccarm.
-       Members cast through it (pauseFlags, the three steps, mIcons,
-       mOamAnimations) are byte-neutral. */
-    char *p = (char *)fBase_c::operator new(sizeof(dScEntry_c));
-    if (p) {
-        dScEntry_c::Step v;
-        _ZN7fBase_cC2Ev(p);
-        *(char **)p = data_0208e4b8;
-        *(char **)p = (char *)_ZTV8dScene_c;
-        {
-            unsigned char *flags = &((dScEntry_c *)p)->pauseFlags;
-            *flags |= 1;
-            *flags |= 4;
-        }
-        *(char **)p = _ZTV10dScEntry_c;
-        v = 0;
-        /* Keep the factory's aggregate-copy schedule for these three stores. */
-        *(struct P2Copy *)&((dScEntry_c *)p)->mEnterStep = *(struct P2Copy *)&v;
-        *(struct P2Copy *)&((dScEntry_c *)p)->mBehaviorStep = *(struct P2Copy *)&v;
-        *(struct P2Copy *)&((dScEntry_c *)p)->mRenderStep = *(struct P2Copy *)&v;
-        __cxa_vec_ctor(((dScEntry_c *)p)->mIcons, 9, sizeof(dScEntry_c::icon_c),
-                       (void (*)(void *))_ZN10dScEntry_c6icon_cC1Ev,
-                       (void (*)(void *))_ZN10dScEntry_c6icon_cD1Ev);
-        __cxa_vec_ctor(
-            ((dScEntry_c *)p)->mOamAnimations, 4, sizeof(((dScEntry_c *)p)->mOamAnimations[0]),
-            (void (*)(void *))_ZN12OamAnimationC1Ev, (void (*)(void *))_ZN12OamAnimationD1Ev);
-    }
-    return p;
-}
+extern "C" void *dScEntry_c_classInit_RESULT(void) {
+    return new dScEntry_c;
 }
 
 // @symbol _ZN12OamAnimationC1Ev

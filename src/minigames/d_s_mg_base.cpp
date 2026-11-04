@@ -122,8 +122,6 @@ int Mg_GetSaveTable(void *scene);
 extern int *sMgSpriteTables[];
 }
 
-namespace s20ad660 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c12IsAltVariantEv
 /* dScMgBase_c::IsAltVariant - slot 35, the LAST slot of dScMgBase_c's own
    eighteen.  Twenty bytes, and the end of the 18-35 keystone range: with this
@@ -153,9 +151,6 @@ extern "C" {
    The rename had to be scoped: 0x020ad660 is an overlay load base, so ov000,
    ov002, ov003, ov004 and ov007 all have unrelated symbols at that address
    (ov003's is dScTitle_c's D1).  Only ov004's is this function. */
-}
-}
-
 int dScMgBase_c::IsAltVariant()
 {
     return (param1 & 0xff) != 0;
@@ -715,14 +710,9 @@ void Mg_SpawnFx(char *state, short timer, short pos, int *vecA, int *vecB, int *
 }
 }
 
-namespace s20ae03c {
-extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback3Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback3 -- slot 3: calls the
    registered scene's OnGraphCallback3 (slot 25, +0x64) and reports handled. */
-}
-}
-
 int dScMgBase_c::graphCallback_c::GraphCallback3()
 {
     dScMgBase_c *p = mScene;
@@ -734,8 +724,6 @@ int dScMgBase_c::graphCallback_c::GraphCallback3()
     return 1;
 }
 
-namespace s20ae06c {
-extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback2Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback2 -- slot 2.
  *
@@ -743,9 +731,6 @@ extern "C" {
  * +0x60) result rather than discarding it and reporting handled; it only
  * reports handled when no scene is registered.
  */
-}
-}
-
 int dScMgBase_c::graphCallback_c::GraphCallback2()
 {
     dScMgBase_c *p = mScene;
@@ -757,14 +742,9 @@ int dScMgBase_c::graphCallback_c::GraphCallback2()
     return p->OnGraphCallback2();
 }
 
-namespace s20ae0a4 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback1Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback1 -- slot 1: calls the
    registered scene's OnGraphCallback1 (slot 22, +0x58) and reports handled. */
-}
-}
-
 int dScMgBase_c::graphCallback_c::GraphCallback1()
 {
     dScMgBase_c *p = mScene;
@@ -776,14 +756,9 @@ int dScMgBase_c::graphCallback_c::GraphCallback1()
     return 1;
 }
 
-namespace s20ae0d4 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback0Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback0 -- slot 0: calls the
    registered scene's OnGraphCallback0 (slot 23, +0x5c) and reports handled. */
-}
-}
-
 int dScMgBase_c::graphCallback_c::GraphCallback0()
 {
     dScMgBase_c *p = mScene;
@@ -800,27 +775,17 @@ int dScMgBase_c::graphCallback_c::GraphCallback0()
    store, and mScene = 0 are the three writes the ROM body makes. */
 dScMgBase_c::graphCallback_c::graphCallback_c() : mScene(0) {}
 
-namespace s20ae128 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c16OnGraphCallback3Ev
 /* dScMgBase_c::OnGraphCallback3 - slot 25: nonzero while the menu is closed. */
-}
-}
-
 int dScMgBase_c::OnGraphCallback3()
 {
     return mMenuOpen == 0;
 }
 
-namespace s20ae140 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c16OnGraphCallback2Ev
 /* dScMgBase_c::OnGraphCallback2 - slot 24. When mMenuOpen differs from its latch
    mMenuScreenSaved, calls SaveScreenForMenu (slot 29) if the menu has opened or
    RestoreScreenFromMenu (slot 30) if it has closed, then latches it. */
-}
-}
-
 int dScMgBase_c::OnGraphCallback2()
 {
     int v2 = mMenuOpen;
@@ -836,25 +801,15 @@ done:
     return 1;
 }
 
-namespace s20ae198 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c16OnGraphCallback1Ev
 /* dScMgBase_c::OnGraphCallback1 - slot 22 */
-}
-}
-
 int dScMgBase_c::OnGraphCallback1()
 {
     return 1;
 }
 
-namespace s20ae1a0 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c16OnGraphCallback0Ev
 /* dScMgBase_c::OnGraphCallback0 - slot 23 */
-}
-}
-
 int dScMgBase_c::OnGraphCallback0()
 {
     return 1;
@@ -1014,17 +969,13 @@ extern "C" {
    `PaintSquare` is coined here from what the body does; it was `Virtual88`,
    after the +0x88 vtable offset. The cartridge names no method of this
    class. */
-extern "C" {
 extern int* func_02054efc(void);
 extern int* func_02054ea8(void);
 extern int* func_02054d88(void);
 extern void MultiCopy_Int(void* a, void* b, int n);
-}
 
-extern "C" {
 extern int sMgPaintWord;
 extern int sMgTopScreenYOffset;
-}
 }
 }
 
@@ -1323,9 +1274,7 @@ extern "C" void Mg_DrawSpriteList(void *self, void *actor, void *c2, void *c3)
 namespace s20aea78 {
 extern "C" {
 struct M { int _00, _01, _10, _11; };
-extern "C" {
 extern void Mg_RenderSpriteOnMtx(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
-}
 
 struct BF { unsigned int lo:10; unsigned int hi:22; };
 struct S { int x; BF y; };
@@ -1354,7 +1303,6 @@ struct MgMenuPickView {
 
 // @symbol Mg_UpdateMenu
 namespace s20aeb24 {
-extern "C" {
 extern "C" {
 extern void func_0203b958(short* o, short* a, short* b);
 extern void func_02012dd0(int a);
@@ -1464,7 +1412,6 @@ after:
 }
 }
 }
-}
 
 /* What SaveScreenForMenu and RestoreScreenFromMenu keep in the header's
    pad_228 while the menu is up. A file-local view: dScMgBase_c.h is shared
@@ -1496,10 +1443,10 @@ extern "C" {
    down.  It is not a Yoshi egg, and it does not return a vector -- see the
    slot-30 block in include/dScMgBase_c.h for the AAPCS measurement that
    refutes the `ReturnVec` in the name. */
-extern "C" u8 data_0209d45c;
-extern "C" u8 data_0209d454;
-extern "C" u8 data_0209d460;
-extern "C" u8 data_0209d458;
+extern u8 gMainScreenLayers;
+extern u8 gSubScreenLayers;
+extern u8 data_0209d460;
+extern u8 data_0209d458;
 
 /* RETURN TYPE, MEASURED -- and it corrects the header's earlier `int`, which
    that slot's own evidence block called "a HINT".  Declaring this member `int`
@@ -1518,14 +1465,14 @@ extern "C" u8 data_0209d458;
 }
 
 void dScMgBase_c::RestoreScreenFromMenu() {
-    using s20aeed8::data_0209d454;
+    using s20aeed8::gSubScreenLayers;
     using s20aeed8::data_0209d458;
-    using s20aeed8::data_0209d45c;
+    using s20aeed8::gMainScreenLayers;
     using s20aeed8::data_0209d460;
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
-    data_0209d45c = 0;
-    data_0209d454 = 0;
+    gMainScreenLayers = 0;
+    gSubScreenLayers = 0;
 
     *(u32*)0x4000000 &= ~0x1f00;
     *(u32*)0x4001000 &= ~0x1f00;
@@ -1547,14 +1494,14 @@ void dScMgBase_c::RestoreScreenFromMenu() {
         MultiCopy_Int((int *)save->subObjChars, (int *)src, 0x2000);
     }
 
-    data_0209d45c = (u8)mSavedMainBgBits;
-    data_0209d454 = (u8)mSavedSubBgBits;
+    gMainScreenLayers = (u8)mSavedMainBgBits;
+    gSubScreenLayers = (u8)mSavedSubBgBits;
 
     if (GetDisplayMode() == 2)
         return;
 
-    *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0x1f00) | ((u32)data_0209d45c << 8);
-    *(u32*)0x4001000 = (*(u32*)0x4001000 & ~0x1f00) | ((u32)data_0209d454 << 8);
+    *(u32 *)0x4000000 = (*(u32 *)0x4000000 & ~0x1f00) | ((u32)gMainScreenLayers << 8);
+    *(u32 *)0x4001000 = (*(u32 *)0x4001000 & ~0x1f00) | ((u32)gSubScreenLayers << 8);
 }
 
 namespace s20af04c {
@@ -1567,8 +1514,8 @@ extern "C" {
    re-enables the 3D engines only if the class's own GetDisplayMode
    says so. */
 
-extern "C" void func_02012e1c(char *c);
-extern "C" void Enable3dEngines();
+extern void func_02012e1c(char *c);
+extern void Enable3dEngines();
 
 /* THE EARLY EXITS ARE SPELT AS NESTED IFS, NOT `return;`. mwccarm accepts a
    valueless `return` in a non-void function; C++ does not, and no host option
@@ -1610,13 +1557,13 @@ extern "C" {
    this module is dScMgBase_c::OnGraphCallback2, which reaches it only on a rising edge
    of mMenuOpen.  That is the three-item overlay menu going up, not a Yoshi egg.
    See the slot 29 block in include/dScMgBase_c.h for why the name is kept. */
-extern "C" void MultiStore16(unsigned short val, char *dst, int nbytes);
-extern "C" void func_0201f32c(int arg0);
-extern "C" int GetGameLanguage(void);
-extern "C" void DecompressLZ16(void *src, void *dst);
+extern void MultiStore16(unsigned short val, char *dst, int nbytes);
+extern void func_0201f32c(int arg0);
+extern int GetGameLanguage(void);
+extern void DecompressLZ16(void *src, void *dst);
 
-extern "C" unsigned char data_0209d45c;
-extern "C" unsigned char data_0209d454;
+extern unsigned char gMainScreenLayers;
+extern unsigned char gSubScreenLayers;
 
 /* THE EARLY EXITS ARE SPELT AS NESTED IFS, NOT `return;`. mwccarm accepts a
    valueless `return` in a non-void function; C++ does not, and no host option
@@ -1633,8 +1580,8 @@ int dScMgBase_c::SaveScreenForMenu() {
     using s20af094::DecompressLZ16;
     using s20af094::GetGameLanguage;
     using s20af094::MultiStore16;
-    using s20af094::data_0209d454;
-    using s20af094::data_0209d45c;
+    using s20af094::gSubScreenLayers;
+    using s20af094::gMainScreenLayers;
     using s20af094::func_0201f32c;
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
@@ -1643,12 +1590,12 @@ int dScMgBase_c::SaveScreenForMenu() {
 
     mSavedScreenSwap = (REG_POWCNT1 & 0x8000) >> 15;
 
-    mSavedMainBgBits = data_0209d45c;
-    mSavedSubBgBits = data_0209d454;
+    mSavedMainBgBits = gMainScreenLayers;
+    mSavedSubBgBits = gSubScreenLayers;
 
     REG_POWCNT1 |= 0x8000;
-    data_0209d45c = 0;
-    data_0209d454 = 0;
+    gMainScreenLayers = 0;
+    gSubScreenLayers = 0;
 
     *(volatile int *)0x4000000 &= ~0x1f00;
     *(volatile int *)0x4001000 &= ~0x1f00;
@@ -1677,8 +1624,8 @@ int dScMgBase_c::SaveScreenForMenu() {
 
     func_0201f32c(mSceneKind);
 
-    data_0209d45c = 0x12;
-    data_0209d454 = 0x10;
+    gMainScreenLayers = DISPLAY_LAYER_BG1 | DISPLAY_LAYER_OBJ;
+    gSubScreenLayers = 0x10;
 
     if (GetDisplayMode() != 2) {
         int *vbase = (int *)0x6600000;
@@ -1690,15 +1637,10 @@ int dScMgBase_c::SaveScreenForMenu() {
     }
 }
 
-namespace s20af27c {
-extern "C" {
 // @symbol _ZN11dScMgBase_c8OpenMenuEv
 /* dScMgBase_c::OpenMenu - slot 27. Unless mMenuDisabled is set, opens
    the three-item overlay menu: items start at their slide-in positions,
    the prompt is disabled and nothing is highlighted. */
-}
-}
-
 void dScMgBase_c::OpenMenu()
 {
     if (mMenuDisabled != 0) return;
@@ -1717,7 +1659,6 @@ void dScMgBase_c::OpenMenu()
 
 // @symbol Mg_InitBrush
 namespace s20af2f8 {
-extern "C" {
 extern "C" {
 extern void MultiStore16(int val, int ptr, int n);
 extern int func_02054efc(void);
@@ -1846,7 +1787,6 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
 }
 }
 }
-}
 
 #pragma push
 #pragma opt_strength_reduction off
@@ -1952,8 +1892,8 @@ extern "C" {
 struct OamAttr;
 }
 typedef int Fix12i;
-extern "C" int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
-                                      Fix12i e, int f);
+extern int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
+                                  Fix12i e, int f);
 
 extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
                                         unsigned short a6) {
@@ -2043,8 +1983,8 @@ extern "C" {
 struct OamAttr;
 }
 typedef int Fix12i;
-extern "C" int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
-                                      Fix12i e, int f);
+extern int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
+                                  Fix12i e, int f);
 
 extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
                                          unsigned short a6) {
@@ -2138,8 +2078,8 @@ struct OamAttr;
 extern int sMgTopScreenYOffset;
 }
 typedef int Fix12i;
-extern "C" int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
-                                      Fix12i e, int f);
+extern int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
+                                  Fix12i e, int f);
 
 extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int a3, int a4,
                                          Fix12i a5, int a6) {
@@ -2173,7 +2113,6 @@ extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int
 // @symbol RenderOamBothScreens
 namespace s20b0104 {
 extern "C" {
-extern "C" {
 extern int sMgTopScreenYOffset;
 void RenderOamBothScreens(void *attr, int x, int y, int palette, int priority, void *mtx) {
     dScMgBase_c *scene = gMgScene;
@@ -2196,11 +2135,9 @@ void RenderOamBothScreens(void *attr, int x, int y, int palette, int priority, v
 }
 }
 }
-}
 
 // @symbol Mg_RenderSpriteBothPalMtx
 namespace s20b023c {
-extern "C" {
 extern "C" {
 extern int sMgTopScreenYOffset;
 void Mg_RenderSpriteBothPalMtx(void *a0, int a1, int a2, int a3, void *a4) {
@@ -2223,11 +2160,9 @@ void Mg_RenderSpriteBothPalMtx(void *a0, int a1, int a2, int a3, void *a4) {
 }
 }
 }
-}
 
 // @symbol Mg_RenderSpriteBothMtx
 namespace s20b0380 {
-extern "C" {
 extern "C" {
 extern int sMgTopScreenYOffset;
 void Mg_RenderSpriteBothMtx(void *a0, int a1, int a2, void *a3) {
@@ -2250,7 +2185,6 @@ void Mg_RenderSpriteBothMtx(void *a0, int a1, int a2, void *a3) {
 }
 }
 }
-}
 
 // @symbol Mg_GetTopScreenYOffset
 namespace s20b04c0 {
@@ -2270,8 +2204,6 @@ void Mg_SetTopScreenYOffset(int v) { sMgTopScreenYOffset[0] = v; }
 }
 }
 
-namespace s20b04e0 {
-extern "C" {
 // @symbol _ZN11dScMgBase_c14GetDisplayModeEv
 /* dScMgBase_c::GetDisplayMode - slot 26: which display layout the scene
  * uses. BeforeInitResources turns the 3D engines on for any nonzero answer.
@@ -2280,9 +2212,6 @@ extern "C" {
  * `return 2;` in dScMgD3DBase_c's.  Three distinct constants out of three
  * bodies is what makes the return type int rather than void, and it is why the
  * caller has to be able to tell the three apart. */
-}
-}
-
 int dScMgBase_c::GetDisplayMode()
 {
     return 0;
@@ -2762,8 +2691,8 @@ void Mg_DrawPrompt(char* c)
 // @symbol Mg_DrawTally
 namespace s20b0e84 {
 extern "C" {
-extern "C" int GetGameLanguage(void);
-extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
+extern int GetGameLanguage(void);
+extern void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 
 static inline int sdiv4(int d) {
     int t = d + (int)((unsigned)(d >> 1) >> 0x1e);
@@ -3574,7 +3503,7 @@ extern "C" {
 
    ENGINE BRING-UP.  Graphics modes for both engines (GX mode 1/0/0, GXS mode
    0), VRAM banks assigned to BG and OBJ on both screens, and BOTH BG-enable
-   shadows -- data_0209d45c for the main engine, data_0209d454 for the sub --
+   shadows -- gMainScreenLayers for the main engine, gSubScreenLayers for the sub --
    initialised to 0x10, which is the value slots 30 and 31 later save, clear
    bits out of and restore.  A language-indexed character file (indexed by
    GetGameLanguage into sMgStockCounterFiles) is decompressed into BOTH engines'
@@ -3608,9 +3537,9 @@ extern void Ov004_Deallocate(void *p);
 extern void Mg_ResetOverlays(void);
 extern void FreeGfxSlotsById(int arg);
 extern int sMgTopScreenYOffset;
-extern u8 data_0209d45c;
+extern u8 gMainScreenLayers;
 extern int sMgStockCounterFiles[];
-extern u8 data_0209d454;
+extern u8 gSubScreenLayers;
 extern void **data_0209d4a8;
 extern int data_0208ee44;
 }
@@ -3622,8 +3551,8 @@ void dScMgBase_c::InitEngines() {
     using s20b265c::GetGameLanguage;
     using s20b265c::Ov004_Deallocate;
     using s20b265c::data_0208ee44;
-    using s20b265c::data_0209d454;
-    using s20b265c::data_0209d45c;
+    using s20b265c::gSubScreenLayers;
+    using s20b265c::gMainScreenLayers;
     using s20b265c::data_0209d4a8;
     using s20b265c::sMgStockCounterFiles;
     using s20b265c::sMgTopScreenYOffset;
@@ -3647,7 +3576,7 @@ void dScMgBase_c::InitEngines() {
     *(vu32 *)0x4000000u &= ~0x38000000u;
     GX::SetBankForBG(3);
     GX::SetBankForOBJ(0x10);
-    data_0209d45c = 0x10;
+    gMainScreenLayers = DISPLAY_LAYER_OBJ;
     GX::SetBankForSubBG(4);
     GX::SetBankForSubOBJ(8);
     p = Ov004_LoadFile(sMgStockCounterFiles[GetGameLanguage()]);
@@ -3665,7 +3594,7 @@ void dScMgBase_c::InitEngines() {
     GX::LoadOBJPltt(p, 0x100u, 0x100u);
     GXS::LoadOBJPltt(p, 0x100u, 0x100u);
     Ov004_Deallocate(p);
-    data_0209d454 = 0x10;
+    gSubScreenLayers = 0x10;
     sMgGraphCallback.mScene = this;
     data_0209d4a8 = (void **)&sMgGraphCallback;
     Mg_ResetOverlays();
@@ -3690,25 +3619,27 @@ extern "C" {
 
    It touches no collision.  It is slot 31 with the other display engine: three
    read-modify-writes leave the MAIN BG1CNT at 0x0400000a holding exactly 0x1000,
-   the layer's scroll is reset, BG1's bit is cleared from data_0209d45c -- the
+   the layer's scroll is reset, BG1's bit is cleared from gMainScreenLayers -- the
    MAIN BG-enable shadow slot 30 restores the main DISPCNT from, where 31 cleared
-   the sub's data_0209d454 -- and a language-indexed character file plus the
+   the sub's gSubScreenLayers -- and a language-indexed character file plus the
    shared screen map (file 0x67 here, 0x5b there) are installed.  It builds this
    minigame's TOP-screen background, from AfterInitResources. */
 extern int GetGameLanguage(void);
 extern unsigned int LoadCompressedFileAt(int fileID, void *target);
-extern unsigned char data_0209d45c[];
+extern unsigned char gMainScreenLayers[];
 }
 }
 
-void dScMgBase_c::InitMainScreenBg()
-{ using s20b27f4::GetGameLanguage; using s20b27f4::LoadCompressedFileAt; using s20b27f4::data_0209d45c;
+void dScMgBase_c::InitMainScreenBg() {
+    using s20b27f4::GetGameLanguage;
+    using s20b27f4::LoadCompressedFileAt;
+    using s20b27f4::gMainScreenLayers;
     int f;
     *(volatile unsigned short *)0x400000a = *(volatile unsigned short *)0x400000a & ~3;
     *(volatile unsigned short *)0x400000a = (*(volatile unsigned short *)0x400000a & 0x43) | 0x1000;
     *(volatile unsigned short *)0x400000a = *(volatile unsigned short *)0x400000a & ~0x40;
     SetBg1Offset(0, 0);
-    data_0209d45c[0] &= ~2;
+    gMainScreenLayers[0] &= ~DISPLAY_LAYER_BG1;
     f = GetGameLanguage();
     LoadCompressedFileAt(sMgPauseBgNcgByLanguage[f], (void *)func_02054ea8());
     LoadCompressedFileAt(0x67, G2::GetBG1ScrPtr());
@@ -3736,20 +3667,20 @@ extern "C" {
    minigame's touch-screen background, from BeforeInitResources. */
 extern int GetGameLanguage(void);
 extern unsigned int LoadCompressedFileAt(int fileID, void *target);
-extern unsigned char data_0209d454[];
+extern unsigned char gSubScreenLayers[];
 }
 }
 
 int dScMgBase_c::InitSubScreenBg() {
     using s20b2880::GetGameLanguage;
     using s20b2880::LoadCompressedFileAt;
-    using s20b2880::data_0209d454;
+    using s20b2880::gSubScreenLayers;
     int f;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x10;
     *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~0x40;
     *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~3;
     SetSubBg1Offset(0, 0);
-    data_0209d454[0] &= ~2;
+    gSubScreenLayers[0] &= ~2;
     f = GetGameLanguage();
     LoadCompressedFileAt(sMgOptionNcgByLanguage[f], (void *)G2S::GetBG1CharPtr());
     LoadCompressedFileAt(0x5b, G2S::GetBG1ScrPtr());
@@ -3891,28 +3822,5 @@ dScMgBase_c::~dScMgBase_c()
 {
     gMgScene = 0;
 }
-
-#ifdef _MSC_VER
-/* THE HOST NEEDS THE ROM'S FLAT D2 AND D0 NAMES, AND MSVC NEVER EMITS THEM.
- * MSVC folds the Itanium destructor variants into the one ~dScMgBase_c()
- * above. Descendants tearing down a dScMgBase_c base subobject call the
- * base-object variant by its flat name; the deleting variant is the D1 body
- * followed by the class-specific operator delete. Each is spelled here in
- * terms of the one host destructor, called qualified so it is a direct call.
- * mwccarm never defines _MSC_VER, so nothing here reaches the cartridge
- * object. */
-extern "C" dScMgBase_c *_ZN11dScMgBase_cD2Ev(dScMgBase_c *thiz)
-{
-    thiz->dScMgBase_c::~dScMgBase_c();
-    return thiz;
-}
-
-extern "C" dScMgBase_c *_ZN11dScMgBase_cD0Ev(dScMgBase_c *thiz)
-{
-    thiz->dScMgBase_c::~dScMgBase_c();
-    dScMgBase_c::operator delete(thiz);
-    return thiz;
-}
-#endif
 
 #pragma pop
