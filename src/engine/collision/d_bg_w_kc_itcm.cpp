@@ -3,8 +3,10 @@
  * #pragma exceptions off stays: DetectClsn's pool word and four zero-init
  * stores change when exceptions are left on. SQRT_RESULT is a const s32*;
  * a volatile read coalesces the three hypotenuses into the spill pool.
- * DetectClsn(dBgCh_SphCrr&) keeps the volatile round-trip on rsc so the
- * radius lands at sp+0x104; spelled inline, the compiler recomputes it.
+ * DetectClsn(dBgCh_SphCrr&) keeps the `rsc = (s32)rsc;` self-assignment so the
+ * radius lands at sp+0x104; spelled inline, the compiler recomputes it. The
+ * cast no longer goes through `volatile`: casting a prvalue to a cv-qualified
+ * scalar discards the qualifier, and the plain cast reproduces the ROM.
  * Its region dispatch keeps its gotos: the ROM shares each vertex block
  * between the two edges that meet at it and branches to the shared blocks
  * (see the comment above the dispatch). EDGE_FILTER keeps the
@@ -212,7 +214,7 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
             dh = (d) >> 4;                                                         \
             fh = faceDot >> 4;                                                     \
             axisDot = DotVec3(&sn, (const Vector3 *)&upAxis);                       \
-            SqrtStart((u64)((s64)fh * fh + (s64)dh * dh), zval, k1);               \
+            SqrtStart((s64)fh * fh + (s64)dh * dh, zval, k1);                 \
             hypv = SQRT_RESULT;                                                    \
             if (IsNearZeroDivisor(hypv))                                               \
                 continue;                                                          \
@@ -236,7 +238,6 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
         (lo) = v;
 
 /* ---- defs in reverse ROM order ---- */
-// @symbol _ZN7dBgW_Kc14GetSurfaceInfoEsR11SurfaceInfo
 void dBgW_Kc::GetSurfaceInfo(s16 triID, SurfaceInfo &res)
 {
     CLPS *entry;
@@ -248,7 +249,6 @@ void dBgW_Kc::GetSurfaceInfo(s16 triID, SurfaceInfo &res)
     func_02037eb0(&res, *entry, &normal);
 }
 
-// @symbol _ZN7dBgW_Kc9GetNormalEsR7Vector3
 void dBgW_Kc::GetNormal(s16 triID, Vector3 &res)
 {
     s16 *normal = kclFile->normals[kclFile->tris[triID].normalIdx];
@@ -258,7 +258,6 @@ void dBgW_Kc::GetNormal(s16 triID, Vector3 &res)
     res.z = normal[2] << 2;
 }
 
-// @symbol _ZN7dBgW_Kc17GetTriangleOriginEsR7Vector3
 void dBgW_Kc::GetTriangleOrigin(s16 triID, Vector3 &res)
 {
     s32 *vertex = kclFile->positions[kclFile->tris[triID].posIdx];
@@ -268,7 +267,6 @@ void dBgW_Kc::GetTriangleOrigin(s16 triID, Vector3 &res)
     res.z = vertex[2] << 6;
 }
 
-// @symbol _ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd
 int dBgW_Kc::DetectClsn(dBgCh_Gnd &ray)
 {
     KCL_File *file = kclFile;
@@ -385,7 +383,6 @@ int dBgW_Kc::DetectClsn(dBgCh_Gnd &ray)
     return 1;
 }
 
-// @symbol _ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr
 s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
 {
     /* DECLARATION ORDER BELOW IS LOAD-BEARING -- do not tidy it.
@@ -521,21 +518,22 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
     c = &sphere.centre;   /* the dM3dGSph base sub-object's centre, at 0x3c */
     f = kclFile;
     {
-        /* Per-site (const Vector3 *) casts, ABOVE the rad6/origin declarations,
-           in x, y, z statement order.  The cast expression is its own CSE class:
-           it stops the `add r0,fp,#0x3c` result being consumed by the first read
-           (the ROM never reads through that add -- f's load clobbers it first)
-           and lets y and z share one pointer reload while x takes its own.  The
-           ROM's y-before-x LOAD order is scheduler freedom, not source order.
-           Win conditions, from a 2,520-variant positional sweep: x,y,z statement
-           order, reads above BOTH rad6 and origin, rad6 declared before origin,
-           and at least two of the three reads cast-spelled.  This is what closes
-           prologue indices 2..17, and it is qualifier-honest -- the volatile
-           pointee is no longer read bare here.
+        /* Per-site (const Vector3 *) casts on the y and z reads, ABOVE the
+           rad6/origin declarations, in x, y, z statement order.  The cast
+           expression is its own CSE class: it stops the `add r0,fp,#0x3c` result
+           being consumed by the first read (the ROM never reads through that add
+           -- f's load clobbers it first) and lets y and z share one pointer
+           reload while x takes its own.  The ROM's y-before-x LOAD order is
+           scheduler freedom, not source order.  Win conditions, from a
+           2,520-variant positional sweep: x,y,z statement order, reads above
+           BOTH rad6 and origin, rad6 declared before origin, and at least two of
+           the three reads cast-spelled.  Exactly two is enough -- x reads `c`
+           bare, as a genuine volatile read, and only y and z strip the qualifier.
+           This is what closes prologue indices 2..17.
 
            No re-bind here any more, and do not re-add one: a second definition
            of `c` demotes it into the pool and undoes the slot fix below. */
-        rawX = ((const Vector3 *)c)->x >> 6;
+        rawX = c->x >> 6;
         rawY = ((const Vector3 *)c)->y >> 6;
         rawZ = ((const Vector3 *)c)->z >> 6;
         s32 rad6 = sphere.radius >> 6;
@@ -565,7 +563,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
 
     rsc = sphere.radius << 4;
     /* Demotes rsc into the temp pool at sp+0x104. An inline spelling recomputes it. */
-    rsc = (s32)(volatile s32)rsc;
+    rsc = (s32)rsc;
 
     hiPX = loPX = 0;
     hiPY = loPY = 0;
@@ -1014,7 +1012,6 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
  * and walked with *++leaf. The edge-normal dots stay inline; a named local
  * for them spills the leaf pointer.
  */
-// @symbol _ZN7dBgW_Kc10DetectClsnER9dBgCh_Lin
 s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
 {
     s32 loX, hiX;
@@ -1232,7 +1229,6 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
     return 1;
 }
 
-// @symbol _ZNK7dBgW_Kc16GetOctreeOriginYEv
 Fix12i dBgW_Kc::GetOctreeOriginY() const
 {
     return kclFile->origin.y << 6;
@@ -1243,44 +1239,37 @@ Fix12i dBgW_Kc::GetOctreeOriginY() const
    units, hence the `lsl #12` against the origin's `lsl #6`. The name is the
    ROM's own, so it is kept rather than renamed to what the arithmetic
    suggests. */
-// @symbol _ZNK7dBgW_Kc13GetUnkOctreeYEv
 Fix12i dBgW_Kc::GetUnkOctreeY() const
 {
     return (kclFile->origin.y << 6) + (~kclFile->yMask << 12);
 }
 
-// @symbol func_01ffb0c8
 extern "C" KCL_File *func_01ffb0c8(dBgW_Kc *self)
 {
     return self->kclFile;
 }
 
-// @symbol func_01ffb0bc
 extern "C" void func_01ffb0bc(dBgW_Kc *self)
 {
     self->shallowOnly = true;
 }
 
-// @symbol func_01ffb0b0
 extern "C" void func_01ffb0b0(dBgW_Kc *self)
 {
     self->shallowOnly = false;
 }
 
-// @symbol func_01ffb0a4
 extern "C" void func_01ffb0a4(dBgW_Kc *self)
 {
     self->depthByDir = true;
 }
 
-// @symbol func_01ffb098
 extern "C" void func_01ffb098(dBgW_Kc *self)
 {
     self->depthByDir = false;
 }
 
 /* Copies the depth direction memberwise: three separate word loads and stores. */
-// @symbol func_01ffb07c
 extern "C" void func_01ffb07c(dBgW_Kc *self, const Vector3 *v)
 {
     self->depthDir.x = v->x;

@@ -36,7 +36,7 @@ enum d_a_obj_rc_guruguru_AssetId { ASSET_RC_GURUGURU_BMD = 0x06a4, ASSET_RC_GURU
 extern void *data_ov036_02113d78[];
 
 extern "C" {
-void func_020393d4(void *bgw, void *fn);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
 /* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
@@ -49,7 +49,6 @@ static inline int IsOffScreen(dActor_c *actor) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjRc_Guruguru_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjRc_Guruguru_c through
    RTTI, allocation size, vtable identity, and the RC_GURUGURU registry
    profile; later EAD lineage supplies classInit. Exact original spelling is
@@ -66,7 +65,6 @@ extern "C" daObjRc_Guruguru_c *daObjRc_Guruguru_c_classInit() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjRc_Guruguru_c13InitResourcesEv
 s32 daObjRc_Guruguru_c::InitResources() {
     mModel.SetFile(
         (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov036_02113d78[0]), 1, -1);
@@ -79,7 +77,7 @@ s32 daObjRc_Guruguru_c::InitResources() {
 
     /* The mesh follows the actor's position AND angles -- this platform turns,
        so the collision has to turn with it. */
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosAndAngs);
 
     /* The default spin is clockwise at 0x80 units of yaw a frame; a level
        author overrides both rate and direction through the spawn's mAngleZ. */
@@ -91,7 +89,6 @@ s32 daObjRc_Guruguru_c::InitResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjRc_Guruguru_c8BehaviorEv
 s32 daObjRc_Guruguru_c::Behavior() {
     /* `+=`, not `mAngleY = mAngleY + ...`: the compound form CSEs the field
        address into a register and reuses it for the load and the store, which
@@ -112,7 +109,6 @@ s32 daObjRc_Guruguru_c::Behavior() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjRc_Guruguru_c6RenderEv
 s32 daObjRc_Guruguru_c::Render() {
     mModel.Render(0);
     return 1;
@@ -120,7 +116,6 @@ s32 daObjRc_Guruguru_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjRc_Guruguru_c16CleanupResourcesEv
 s32 daObjRc_Guruguru_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -132,8 +127,6 @@ s32 daObjRc_Guruguru_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjRc_Guruguru_cD1Ev
-// @symbol _ZN18daObjRc_Guruguru_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjRc_Guruguru_c() {}` in the
    header is the whole source of both variants: from an inline body mwcc emits
    D1 and then D0 -- the cartridge's own order -- and no D2, which is the order
@@ -154,7 +147,6 @@ struct RcGuruguruCollisionFilePtr : SharedFilePtr {
     ~RcGuruguruCollisionFilePtr();
 };
 
-// @symbol __sinit_d_a_obj_rc_guruguru.cpp
 /* The retail initializer constructs the model first, then the collision
  * file. */
 RcGuruguruModelFilePtr gRcGuruguruModelFile(ASSET_RC_GURUGURU_BMD);         /* model */

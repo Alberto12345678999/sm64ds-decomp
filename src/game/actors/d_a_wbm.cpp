@@ -59,6 +59,7 @@ enum daWbm_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "Sound.h"
 #include "math/Approach.h"
+#include "math/MtxStack.h"
 
 typedef void (daWbm_c::*State)();
 
@@ -80,12 +81,8 @@ extern SharedFilePtr data_ov002_0210da38;
 extern u16 data_ov098_0213bf90[];
 /* The sine and cosine table. */
 extern s16 data_02082214[];
-/* The scratch matrix the matrix helpers build in. */
-extern Matrix4x3 data_020a0e68;
 
 void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
-void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 angY);
 s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 u16 DecIfAbove0_Short(u16 *counter);
@@ -111,7 +108,6 @@ struct WbmModelFilePtr : SharedFilePtr {
  * its destructor, then copies the pointers from .data. The cannon preloads
  * the same bomb model for the bombs it fires.
  * ------------------------------------------------------------------------ */
-// @symbol __sinit_d_a_wbm.cpp
 WbmModelFilePtr data_ov098_0213c91c(ASSET_WATER_BOMB_BMD);
 
 /* The member pointers the initializer copies into the table
@@ -127,7 +123,6 @@ State data_ov098_0213c930[3] = {
     data_ov098_0213c71c,
 };
 
-// @symbol daWbm_c_classInit
 /* Reconstructed source-style name: SM64DS proves daWbm_c through RTTI,
  * allocation size, vtable identity and the WATERBOMB registry profile; later
  * EAD lineage supplies classInit. Historical alias: WaterBomb_Spawn. */
@@ -136,7 +131,6 @@ extern "C" int *daWbm_c_classInit(void)
     return (int *)new daWbm_c;
 }
 
-// @symbol _ZN7daWbm_c13InitResourcesEv
 int daWbm_c::InitResources()
 {
     BMD_File *bmd;
@@ -201,7 +195,6 @@ int daWbm_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN7daWbm_c8BehaviorEv
 int daWbm_c::Behavior()
 {
     if (func_ov098_0213b6e0()) {
@@ -231,7 +224,6 @@ int daWbm_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN7daWbm_c6RenderEv
 int daWbm_c::Render()
 {
     if (mVariant != 0) {
@@ -240,7 +232,6 @@ int daWbm_c::Render()
     return 1;
 }
 
-// @symbol _ZN7daWbm_c16CleanupResourcesEv
 int daWbm_c::CleanupResources()
 {
     if (mVariant == 2) {
@@ -252,7 +243,6 @@ int daWbm_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN7daWbm_c9StateFallEv
 /* State 1, falling. A bomb that lands squashes and hops; a fragment that
  * lands is gone. A variant-3 bomb ignores the ground and is destroyed once
  * it rises to 6144 units; nothing in this TU spawns one. */
@@ -275,7 +265,6 @@ void daWbm_c::StateFall()
     MarkForDestruction();
 }
 
-// @symbol _ZN7daWbm_c9StateDropEv
 /* State 0, the dropper. Once the cooldown has run out, and the closest player
  * is within 1500 units horizontally and not above the dropper, drop a bomb
  * 1152 units above the player, led ahead of them by their speed. The arithmetic is
@@ -331,7 +320,6 @@ void daWbm_c::StateDrop()
     func_0201267c(0xd8, &mCamSpacePos);
 }
 
-// @symbol _ZN7daWbm_c11StateBounceEv
 /* State 2, after a landing. Phase 0 squashes, and on the third landing the
  * bomb bursts at the bottom of the squash. Phase 1 stretches back up and hops
  * toward the closest player. Phase 2 is the hop; on the way down the bomb is
@@ -386,7 +374,6 @@ void daWbm_c::StateBounce()
     }
 }
 
-// @symbol _ZN7daWbm_c19func_ov098_0213b6e0Ev
 /* The hit check. Touching a player hurts them, and a bomb
  * bursts with a splash; touching a BOMBHEI (actor 206) bursts a bomb too. Returns 1
  * when the bomb burst. */
@@ -426,7 +413,6 @@ int daWbm_c::func_ov098_0213b6e0()
     return 0;
 }
 
-// @symbol _ZN7daWbm_c5BurstEv
 /* Throw five fragments out at the table's angles, play the splash and go. */
 void daWbm_c::Burst()
 {
@@ -446,7 +432,6 @@ void daWbm_c::Burst()
     MarkForDestruction();
 }
 
-// @symbol _ZN7daWbm_c19func_ov098_0213b584Ev
 /* Place the model and the drop shadow at the bomb's position. */
 void daWbm_c::func_ov098_0213b584()
 {
@@ -459,7 +444,6 @@ void daWbm_c::func_ov098_0213b584()
     DropShadowRadHeight(mShadowModel, mShadowMat, mScaleX * 0xa0, 0x3e8000, 6);
 }
 
-// @symbol _ZN7daWbm_c4LandEv
 /* Stop, start the squash from the current height and count the bounce. */
 void daWbm_c::Land()
 {

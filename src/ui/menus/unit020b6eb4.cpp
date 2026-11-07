@@ -36,6 +36,7 @@
 #include "Ov007Work.h"
 #include "Ov007Display.h"
 #include "Ov007Settings.h"
+#include "Ov007Touch.h"
 #include "private/arm_math_state.h"
 
 extern "C" {
@@ -55,8 +56,8 @@ typedef struct Ov007MenuHooks {
 extern int data_ov007_02103430;
 
 extern void func_02045d9c(void);
-extern void func_ov007_020aed98(void *thiz);
-extern void func_ov007_020b2e64(u16 *buf);
+extern void func_ov007_020aed98(void);
+extern void func_ov007_020b2e64(Ov007TouchSample *sample);
 extern void func_ov007_020b3050(void);
 extern void func_ov007_020b30b0(void);
 extern void func_ov007_020b40c0(void);
@@ -85,14 +86,13 @@ extern void func_ov007_020be50c(void);
 extern void func_ov007_020bf690(void);
 extern void func_ov007_020bfc54(void);
 extern void func_ov007_020bfcec(void);
-extern void func_ov007_020c1db0(void *c, u16 *in);
+extern void func_ov007_020c1db0(Ov007Touch *touch, Ov007TouchSample *sample);
 extern void func_ov007_020c20b8(struct Ov007Pad *pad, void *src);
 extern void func_ov007_020c3bc8(void);
 extern void func_ov007_020c3e1c(int v);
 extern void func_ov007_020c3e2c(int v);
 extern void func_ov007_020c3e3c(int v);
 
-// @symbol func_ov007_020b7138
 int func_ov007_020b7138(Ov007MenuHooks *hooks, Ov007BootArgs *bootArgs) {
     Ov007Work *p;
     int flags;
@@ -133,20 +133,20 @@ int func_ov007_020b7138(Ov007MenuHooks *hooks, Ov007BootArgs *bootArgs) {
     return 1;
 }
 
-// @symbol func_ov007_020b7090
 int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4) {
-    u16 buf[4];
+    Ov007TouchSample sample;
     int ret = 0;
 
     data_ov007_02103430 = 0;
     func_ov007_020c20b8(WORK->pad, &arg4);
-    buf[0] = a0;
-    buf[1] = a1;
-    buf[2] = a2;
-    buf[3] = a3;
-    func_ov007_020b2e64(buf);
-    func_ov007_020c1db0(WORK->touch, buf);
-    func_ov007_020aed98(func_ov007_020bdebc());
+    sample.x = a0;
+    sample.y = a1;
+    sample.touch = a2;
+    sample.validity = a3;
+    func_ov007_020b2e64(&sample);
+    func_ov007_020c1db0(WORK->touch, &sample);
+    func_ov007_020bdebc();
+    func_ov007_020aed98();
     {
         Ov007Work *ip = WORK;
         if (ip->choiceReady != 0 || ip->pendingChoice == 1)
@@ -155,7 +155,6 @@ int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4) {
     return ret;
 }
 
-// @symbol func_ov007_020b7040
 int func_ov007_020b7040(void) {
     func_ov007_020bcf90();
     func_ov007_020bc9c8(WORK->display);
@@ -164,7 +163,6 @@ int func_ov007_020b7040(void) {
     return 1;
 }
 
-// @symbol func_ov007_020b6f4c
 int func_ov007_020b6f4c(void) {
     Ov007Work *p = WORK;
     int r;
@@ -194,7 +192,6 @@ int func_ov007_020b6f4c(void) {
     return r;
 }
 
-// @symbol func_ov007_020b6eb4
 int func_ov007_020b6eb4(void) {
     ARMMathState s;
     if (data_ov007_02103430 != 0) {

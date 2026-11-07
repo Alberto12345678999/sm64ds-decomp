@@ -121,25 +121,24 @@ typedef struct {
 
 /* The WM API (WM_StartScan, WM_StartConnect, WM_StartMP, WM_SetLifeTime,
  * WM_SetParentParameter, WM_SetBeaconIndication and the rest). The callbacks
- * are WMCallbackFunc pointers, as in the SDK's headers. The definitions in
- * this tree still take them as ints. WM_Initialize and WM_Reset are declared
- * that way; the rest keep a pointer, because a function cast to int at the
- * func_02069994 call sites schedules differently from passing its address. */
-extern int WM_Initialize(int buf, int callback, int dma);
+ * are WMCallbackFunc pointers in the SDK's headers; the definitions take them
+ * as void *, the type of the callback tables they are stored in. Only
+ * WM_SetMPDataToPort's definition still takes its callback as an int. */
+extern int WM_Initialize(int buf, void *callback, int dma);
 extern int WM_SetIndCallback(void *callback);
-extern int WM_Reset(int callback);
+extern int WM_Reset(void *callback);
 extern int WM_End(void *callback);
 extern int WM_ReadStatus(int *status);
 extern int WM_StartParent(void *callback);
-extern int WM_SetPortCallback(int port, void *callback, int arg);
+extern int WM_SetPortCallback(int port, void *callback, void *arg);
 extern u16 WM_GetAllowedChannel(void);
 extern int WM_SetLifeTime(void *callback, int tableNo, int camLife, int frameLife);
-extern int WM_SetParentParameter(void *callback, char *parentParam);
+extern int WM_SetParentParameter(void *callback, WmParentParam *parentParam);
 extern int WM_SetBeaconIndication(void *callback, int flag);
 extern int WM_StartScan(void *callback, char *scanParam);
 extern int WM_StartConnect(void *callback, int bssDesc, void *ssid);
 extern int WM_StartMPEx(void *callback, int recvBuf, u16 recvBufSize, int sendBuf, u16 sendBufSize,
-                        u16 mpFreq, int defaultRetryCount, int minPollBmpMode, int singlePacketMode,
+                        u16 mpFreq, u16 defaultRetryCount, int minPollBmpMode, int singlePacketMode,
                         int fixFreqMode, int ignoreFatalError);
 /* It returns WM_SetMPDataToPortEx's WM result. */
 extern int WM_SetMPDataToPort(int callback, int data, int size, int aidBitmap, u16 port, u16 prio);
@@ -161,7 +160,6 @@ void MBi_CheckWmErrcode(int apiid, int errcode);
 int func_02068a74(void);
 void MBi_SetMaxScanTime(u16 time);
 
-// @symbol changeScanChannel
 /* changeScanChannel: step the scan's channel to the next one the allowed mask
  * (WM_GetAllowedChannel) has, counting 1..16 and wrapping. Returns 0 when no
  * channel is allowed. When the current channel is the only one allowed it is
@@ -188,7 +186,6 @@ int changeScanChannel(WmScanParam *param) {
     return 1;
 }
 
-// @symbol MBi_IsSendEnabled
 /* Whether frames may go out: MP runs, nothing is on its way, no end is asked
  * for and a child is connected. */
 int MBi_IsSendEnabled(void) {
@@ -208,7 +205,6 @@ int MBi_IsSendEnabled(void) {
     return ready;
 }
 
-// @symbol func_02069994
 /* MBi_ParentCallback: the parent's callback for the manager's replies.
  * Initialize, then WM_SetLifeTime, WM_SetParentParameter,
  * WM_SetBeaconIndication and WM_StartParent; on a child's CONNECTED it starts
@@ -234,8 +230,8 @@ void func_02069994(char *arg0) {
 
     case 0x1D:
         if (cb->errcode == 0) {
-            MBi_CheckWmErrcode(
-                7, WM_SetParentParameter((void *)func_02069994, (char *)&WM_WORK->parentParam));
+            MBi_CheckWmErrcode(7,
+                               WM_SetParentParameter((void *)func_02069994, &WM_WORK->parentParam));
             return;
         }
         WM_WORK->userCallback(0x100, arg0);
@@ -393,7 +389,6 @@ void func_02069994(char *arg0) {
     }
 }
 
-// @symbol func_02069918
 /* MBi_ChildPortCallback: the port-1 receive callback func_020690b0 installs
  * through WM_SetPortCallback. A successful PORT_RECV goes to userCallback as
  * event 9. Lead: the reconstruction's switch also lists states 0x19 and 0x1a
@@ -415,7 +410,6 @@ void func_02069918(void *arg) {
     }
 }
 
-// @symbol func_020690b0
 /* PARENT_FOUND: refresh the record of a parent already seen (same MAC) or
  * add one, and point lastParentIndex at it. The record's first 0xc0 bytes are
  * the WMBssDesc DMA'd from the scan buffer, and +0xc0 is a copy of the
@@ -620,7 +614,6 @@ void func_020690b0(char *arg0) {
     }
 }
 
-// @symbol MBi_GetBeaconPeriodDispersion
 /* A number from 0 to 19 from the console's MAC address and the VBlank count at
  * 0x027ffc3c (OS_GetVBlankCount); MB_Init adds it to the beacon period. */
 int MBi_GetBeaconPeriodDispersion(void) {
@@ -635,7 +628,6 @@ int MBi_GetBeaconPeriodDispersion(void) {
     return (sum + *(int *)0x27ffc3c) * 7 % 20;
 }
 
-// @symbol func_02068e4c
 /* MB_Init: carve the WmWork and mbc out of the caller's buffer (each 32-byte
  * aligned), clear them, copy the user name and the parent name, store the
  * user info and set the parent parameters. Refused (2) while
@@ -725,7 +717,6 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     return 0;
 }
 
-// @symbol func_02068e44
 /* MBi_IsCommSizeValid: the size check func_02068dc8 runs. Lead: the
  * reconstruction's checks the parent size (0xe4..0x1fe), the child size
  * (8..0x10) and the buffer they need; this one accepts everything. */
@@ -733,7 +724,6 @@ int func_02068e44(int parentMaxSize, int childMaxSize, int maxEntry) {
     return 1;
 }
 
-// @symbol func_02068dc8
 /* MB_SetParentCommParam: set the MP sizes and the parent's maxEntry. Refused
  * (0) once the wireless layer is initialized, or if func_02068e44 rejects
  * them. The game's link setup func_0203e20c passes (0x1fe, 8, 3). Lead: the
@@ -751,7 +741,6 @@ int func_02068dc8(int parentMaxSize, int childMaxSize, int maxEntry) {
     return 1;
 }
 
-// @symbol func_02068d08
 /* MBi_StartCommon: clear the MP state, set the scan time and start the
  * manager (WM_Initialize until it is not WM_DISABLE), 8 if that fails. Lead:
  * the reconstruction's sets the scan time to 30, not 10, and has an
@@ -766,7 +755,7 @@ int func_02068d08(void) {
     *(short *)(data_020a9db4 + 0x1e48) = 0; /* in WmWork.pad_1e2e: no reader here */
     MBi_SetMaxScanTime(0xa);
     do {
-        ret = WM_Initialize((int)WM_WORK->wmSysBuf, (int)WM_WORK->stateCallback, data_020a9db0);
+        ret = WM_Initialize((int)WM_WORK->wmSysBuf, (void *)WM_WORK->stateCallback, data_020a9db0);
     } while (ret == 4);
     if (ret != 2)
         return 8;
@@ -775,7 +764,6 @@ int func_02068d08(void) {
     return 0;
 }
 
-// @symbol func_02068ae8
 /* MBi_StartParentCore with MB_StartParent: record the channel, clear the
  * parent work from mChildUser on (keeping the parent callback across the
  * clear), size the blocks and the child request pieces from the MP packet
@@ -836,7 +824,6 @@ int func_02068ae8(int param0) {
     return result;
 }
 
-// @symbol func_02068a74
 /* MBi_CommEnd with MBi_CallReset: unless a reset is already under way, stop
  * the scan, mark the reset and call WM_Reset; 0 on OPERATING, 1 if a reset
  * was already running. Lead: the reconstruction's MBi_CommEnd disables
@@ -850,7 +837,7 @@ int func_02068a74(void) {
         p->scanContinue = 0;
         /* through the global again: the ROM reloads data_020a9db4 here */
         WM_WORK->resetting = 1;
-        r = WM_Reset((int)WM_WORK->stateCallback);
+        r = WM_Reset((void *)WM_WORK->stateCallback);
         if (r == 2)
             return 0;
         return r;
@@ -858,7 +845,6 @@ int func_02068a74(void) {
     return 1;
 }
 
-// @symbol func_02068a54
 /* MB_End: func_02068a74 with interrupts disabled. Lead: the reconstruction's
  * also calls OS_Terminate when MB_StartParent was not used. */
 void func_02068a54(void) {
@@ -867,7 +853,6 @@ void func_02068a54(void) {
     IRQ::Restore(saved);
 }
 
-// @symbol func_02068a28
 /* MBi_SetMPData: send on port 1 at priority 3 through WM_SetMPDataToPort.
  * The fourth parameter is unused. Lead: the reconstruction's calls
  * WM_SetMPDataToPortEx and passes the result to MBi_CheckWmErrcode. */
@@ -875,7 +860,6 @@ int func_02068a28(int callback, int data, int size, int unused, u16 aidBitmap) {
     return WM_SetMPDataToPort(callback, data, size, aidBitmap, 1, 3);
 }
 
-// @symbol func_020688fc
 /* MBi_SendMP: queue one MP send. Fails (1) until MP has started or while a
  * reset is under way. A parent (mode 1) sends through stateCallback, a child
  * (mode 2) through func_020690b0. On WM's OPERATING (2) it sets mpSending and
@@ -925,7 +909,6 @@ int func_020688fc(int arg0, int arg1, int arg2) {
     }
 }
 
-// @symbol func_020688e4
 /* parentParam.ggid[0]. Lead: the reconstruction's MBi_GetGgid returns the
  * whole u32; this SDK keeps the GGID as two u16s (WmParentParam) and has a
  * getter for each half, which the beacon senders pass to WM_SetGameInfo. */
@@ -933,18 +916,15 @@ int func_020688e4(void) {
     return WM_WORK->parentParam.ggid[0];
 }
 
-// @symbol func_020688cc
 /* parentParam.ggid[1], the other half (see func_020688e4). */
 int func_020688cc(void) {
     return WM_WORK->parentParam.ggid[1];
 }
 
-// @symbol MBi_GetTgid
 int MBi_GetTgid(void) {
     return WM_WORK->parentParam.tgid;
 }
 
-// @symbol MBi_GetAttribute
 /* The beacon attribute byte for WM_SetGameInfo: entryFlag 1, multiBootFlag
  * 2, KS_Flag 4, CS_Flag 8 (the SDK's WM_ATTR_FLAG_* bits). The beacon senders
  * OR in 2 again. */
@@ -956,12 +936,10 @@ int MBi_GetAttribute(void) {
     return (d | (c | (b | a))) & 0xff;
 }
 
-// @symbol MBi_SetMaxScanTime
 void MBi_SetMaxScanTime(u16 time) {
     SCAN_PARAM->maxChannelTime = time;
 }
 
-// @symbol func_0206881c
 /* WmWork.parentMaxSize, the parent's MP send size (set by func_02068dc8).
  * MBi_CommParentCallback uses it to size the request record it clears for a
  * child. Lead: the reconstruction has no getter for p_sendlen. */
@@ -969,14 +947,12 @@ int func_0206881c(void) {
     return WM_WORK->parentMaxSize;
 }
 
-// @symbol MBi_IsStarted
 /* Whether the wireless layer is up: WmWork.initialized == 1, set after
  * WM_Initialize. func_02067928 refuses to register a file before then. */
 int MBi_IsStarted(void) {
     return WM_WORK->initialized == 1;
 }
 
-// @symbol MBi_CheckWmErrcode
 /* Report a failed WM call: {apiid, errcode} goes to WmWork.userCallback as
  * event 0xff, MBi_CommParentCallback's failed-WM-call code. A call that
  * succeeded (0) or is still running (2, OPERATING) is dropped. */

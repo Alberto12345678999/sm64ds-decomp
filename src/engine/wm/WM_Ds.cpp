@@ -14,33 +14,6 @@
 
 extern "C" {
 
-/* NitroSDK WMDataSet / WMDataSharingInfo (0x420; WM_StartDataSharing clears
- * that many bytes): four 0x100-byte data sets, then the ring indices. */
-typedef struct WMDataSet {
-    u16 aidHeader;      /* 0x00 -- members whose data the set holds */
-    u16 receivedBitmap; /* 0x02 */
-    u16 data[0x7e];     /* 0x04 */
-} WMDataSet;
-
-typedef struct WMDataSharingInfo {
-    WMDataSet ds[4];   /* 0x000 */
-    u16 seqNum[4];     /* 0x400 -- each set's MP sequence number */
-    u16 writeIndex;    /* 0x408 */
-    u16 sendIndex;     /* 0x40a */
-    u16 readIndex;     /* 0x40c */
-    u16 aidBitmap;     /* 0x40e -- the members, this station included */
-    u16 dataLength;    /* 0x410 -- per member */
-    u16 stationNumber; /* 0x412 */
-    u16 dataSetLength; /* 0x414 -- dataLength * stationNumber + 4 */
-    u16 port;          /* 0x416 */
-    u16 doubleMode;    /* 0x418 */
-    u16 currentSeqNum; /* 0x41a */
-    u16 state;         /* 0x41c -- 1 running, 2 retry the send, 3 error */
-    u16 reserved[1];   /* 0x41e */
-} WMDataSharingInfo;
-
-typedef char WMDataSharingInfo_size_must_be_0x420[sizeof(WMDataSharingInfo) == 0x420 ? 1 : -1];
-
 /* NitroSDK WMPortSendCallback: only the fields read here. */
 typedef struct WMPortSendCallback {
     char pad0[2];
@@ -51,16 +24,14 @@ typedef struct WMPortSendCallback {
     u16 seqNo; /* 0x1c */
 } WMPortSendCallback;
 
-extern int WM_GetSystemWork(void);
-extern int WM_CheckStateEx(int count, ...);
-extern int WM_SetPortCallback(int port, int callback, int arg);
+extern int WM_SetPortCallback(int port, void *callback, void *arg);
 typedef void (*WMCallbackFunc)(void *arg);
 
 /* sendData stays an int, as WM_SetMPDataToPort.c defines it. */
 extern int WM_SetMPDataToPort(WMCallbackFunc callback, int sendData, int sendDataSize,
                               int destBitmap, u16 port, u16 prio);
 extern void MultiStore16(u16 val, void *dst, int nbytes);
-extern void MultiStore32Bytes(unsigned val, int *dst, int len);
+extern void MultiStore32Bytes(unsigned val, void *dst, int len);
 extern void MultiCopyHalf(const void *src, void *dst, int nbytes);
 
 void WmDataSharingSetDataCallback(void *arg);
@@ -78,7 +49,6 @@ u16 *WmGetSharedDataAddress(WMDataSharingInfo *dsInfo, unsigned aidBitmap, u16 *
  * (aid 0) primes the four sets, registers its port receive callback and
  * sends the first set (two in double mode); a child registers its own
  * receive callback and waits. */
-// @symbol WM_StartDataSharing
 int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int dataLength,
                         int doubleMode) {
     u16 childMask = 1;
@@ -91,7 +61,7 @@ int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int 
     u16 bits;
     volatile unsigned zero;
 
-    sys = (WMArm9Buf *)WM_GetSystemWork();
+    sys = WM_GetSystemWork();
     r = WM_CheckStateEx(2, 9, 0xa);
     if (r != 0)
         return r;
@@ -115,7 +85,7 @@ int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int 
     }
 
     zero = 0;
-    MultiStore32Bytes(zero, (int *)dsInfo, 0x420);
+    MultiStore32Bytes(zero, dsInfo, 0x420);
 
     dsInfo->writeIndex = 0;
     dsInfo->sendIndex = 0;
@@ -155,7 +125,7 @@ int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int 
         for (i = 0; i < 4; i++)
             dsInfo->ds[i].aidHeader = (u16)(dsInfo->aidBitmap & (childMask | 1));
 
-        WM_SetPortCallback(port, (int)WmDataSharingReceiveCallback_Parent, (int)dsInfo);
+        WM_SetPortCallback(port, (void *)WmDataSharingReceiveCallback_Parent, dsInfo);
 
         cur = dsInfo->ds;
         for (n = 0; n < ((dsInfo->doubleMode == 1) ? 2 : 1); n++) {
@@ -177,7 +147,7 @@ int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int 
         }
     } else {
         dsInfo->sendIndex = 3;
-        WM_SetPortCallback(port, (int)WmDataSharingReceiveCallback_Child, (int)dsInfo);
+        WM_SetPortCallback(port, (void *)WmDataSharingReceiveCallback_Child, dsInfo);
     }
 
     return 0;
@@ -190,40 +160,35 @@ int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int 
  * whatever is ready (WmDataSharingSendDataSet). A child arms or hands over
  * the received set and sends its own data to the parent. Returns 0 with a
  * set handed over, 5 when none was ready, 1 on a send error. */
-// @symbol WM_StepDataSharing
-int WM_StepDataSharing(u8 *self, u8 *sendData, u8 *receiveData) {
-    WMDataSharingInfo *dsInfo = (WMDataSharingInfo *)self;
-    /* the system work, then the return code: a separate WMArm9Buf * local
-     * recolours the registers */
+int WM_StepDataSharing(WMDataSharingInfo *dsInfo, const void *sendData, WMDataSet *receiveData) {
     int result;
     u16 aid;
     u16 childMask;
     int did;
     int fp;
     int state;
-    int r;
+    WMArm9Buf *p = WM_GetSystemWork();
 
-    result = WM_GetSystemWork();
-    r = WM_CheckStateEx(2, 9, 0xa);
-    if (r != 0)
-        return r;
+    result = WM_CheckStateEx(2, 9, 0xa);
+    if (result != 0)
+        return result;
 
-    CP15::InvalidateDataCache((u32)(&((WMArm9Buf *)result)->status->mp_flag), 4);
-    if (((WMArm9Buf *)result)->status->mp_flag == 0)
+    CP15::InvalidateDataCache((u32)(&p->status->mp_flag), 4);
+    if (p->status->mp_flag == 0)
         return 3;
 
-    if (self == 0)
+    if (dsInfo == 0)
         return 6;
     if (sendData == 0)
         return 6;
     if (receiveData == 0)
         return 6;
 
-    CP15::InvalidateDataCache((u32)(&((WMArm9Buf *)result)->status->aid), 2);
-    aid = ((WMArm9Buf *)result)->status->aid;
+    CP15::InvalidateDataCache((u32)(&p->status->aid), 2);
+    aid = p->status->aid;
     if (aid == 0) {
-        CP15::InvalidateDataCache((u32) & ((WMArm9Buf *)result)->status->mp_readyBitmap, 2);
-        childMask = ((WMArm9Buf *)result)->status->mp_readyBitmap;
+        CP15::InvalidateDataCache((u32)&p->status->mp_readyBitmap, 2);
+        childMask = p->status->mp_readyBitmap;
     }
 
     state = dsInfo->state;
@@ -321,10 +286,9 @@ int WM_StepDataSharing(u8 *self, u8 *sendData, u8 *receiveData) {
  * parent records the sent set's sequence number and steps sendIndex; a full
  * send queue (errcode 0xa) backs a child's sendIndex up and asks for a
  * retry (state 2); any other failure is the error state 3. */
-// @symbol WmDataSharingSetDataCallback
 void WmDataSharingSetDataCallback(void *arg) {
     WMPortSendCallback *callback = (WMPortSendCallback *)arg;
-    WMArm9Buf *c = (WMArm9Buf *)WM_GetSystemWork();
+    WMArm9Buf *c = WM_GetSystemWork();
     WMDataSharingInfo *r4 = (WMDataSharingInfo *)c->portCallbackArgument[callback->port];
     CP15::InvalidateDataCache((u32)&c->status->aid, 2);
     u16 v = c->status->aid;
@@ -349,7 +313,6 @@ void WmDataSharingSetDataCallback(void *arg) {
  * DISCONNECTED (9) stops waiting for that child in the current set (and the
  * next one in double mode) before sending. A failed receive puts the
  * sharing into state 3, the error state. */
-// @symbol WmDataSharingReceiveCallback_Parent
 void WmDataSharingReceiveCallback_Parent(WMPortRecvCallback *callback) {
     WMDataSharingInfo *dsInfo = (WMDataSharingInfo *)callback->arg;
     if (callback->errcode == 0) {
@@ -387,9 +350,8 @@ void WmDataSharingReceiveCallback_Parent(WMPortRecvCallback *callback) {
  * parent's whole data set into ds[writeIndex], records its sequence number
  * and steps writeIndex; CONNECTED (7) and DISCONNECTED (9) are ignored. A
  * failed receive (errcode != 0) puts the sharing into state 3. */
-// @symbol WmDataSharingReceiveCallback_Child
 void WmDataSharingReceiveCallback_Child(WMPortRecvCallback *callback) {
-    WMArm9Buf *h = (WMArm9Buf *)WM_GetSystemWork();
+    WMArm9Buf *h = WM_GetSystemWork();
     WMDataSharingInfo *r5 = (WMDataSharingInfo *)callback->arg;
     if (callback->errcode == 0) {
         u32 r4;
@@ -428,7 +390,6 @@ void WmDataSharingReceiveCallback_Child(WMPortRecvCallback *callback) {
  * (ds[writeIndex], or in double mode the next one), at that member's slot,
  * or zero the slot when there is no data. The bit then moves from the set's
  * aidHeader to its receivedBitmap. */
-// @symbol WmDataSharingReceiveData
 void WmDataSharingReceiveData(WMDataSharingInfo *dsInfo, int aid, const void *data) {
     u16 mask = (u16)(1 << aid);
     u16 aidBitmap = dsInfo->aidBitmap;
@@ -467,9 +428,8 @@ void WmDataSharingReceiveData(WMDataSharingInfo *dsInfo, int aid, const void *da
  * parent, and send the full set to the children. excludeParent clears the
  * parent's own bit from the sent header. With no child to send to (7) the
  * set counts as sent; any failure but OPERATING (2) is state 3. */
-// @symbol WmDataSharingSendDataSet
 void WmDataSharingSendDataSet(WMDataSharingInfo *dsInfo, int excludeParent) {
-    int ctx;
+    WMArm9Buf *ctx;
     u32 saved;
     u16 slot;
     u16 next;
@@ -483,11 +443,11 @@ void WmDataSharingSendDataSet(WMDataSharingInfo *dsInfo, int excludeParent) {
     saved = IRQ::Disable();
     slot = dsInfo->writeIndex;
     if (dsInfo->ds[slot].aidHeader == 0) {
-        CP15::InvalidateDataCache((u32) & ((WMArm9Buf *)ctx)->status->mp_readyBitmap, 2);
+        CP15::InvalidateDataCache((u32)&ctx->status->mp_readyBitmap, 2);
 
         prevSlot = dsInfo->writeIndex;
         next = (u16)((prevSlot + 1) % 4);
-        mask = ((WMArm9Buf *)ctx)->status->mp_readyBitmap;
+        mask = ctx->status->mp_readyBitmap;
         newSlot = (dsInfo->doubleMode == 1) ? (u16)((next + 1) % 4) : next;
 
         zero = 0;
@@ -520,22 +480,19 @@ void WmDataSharingSendDataSet(WMDataSharingInfo *dsInfo, int excludeParent) {
 /* NitroSDK WM_GetSharedDataAddress: where member aid's data sits in a
  * received data set, or 0 for a null dsInfo or receiveData or when the set
  * holds nothing from aid (its receivedBitmap bit is clear). */
-// @symbol WM_GetSharedDataAddress
-unsigned WM_GetSharedDataAddress(char *dsInfo, WMDataSet *receiveData, int aid) {
+u16 *WM_GetSharedDataAddress(WMDataSharingInfo *dsInfo, WMDataSet *receiveData, int aid) {
     if (dsInfo == 0)
         return 0;
     if (receiveData == 0)
         return 0;
     if ((receiveData->receivedBitmap & (1u << aid)) == 0)
         return 0;
-    return (unsigned)WmGetSharedDataAddress((WMDataSharingInfo *)dsInfo, receiveData->aidHeader,
-                                            receiveData->data, aid);
+    return WmGetSharedDataAddress(dsInfo, receiveData->aidHeader, receiveData->data, aid);
 }
 
 /* Member aid's slot in a set: receiveBuf, past dataLength bytes for each
  * member below aid in aidBitmap. pret's later SDK counts them with
  * MATH_CountPopulation; this one steps the bits itself. */
-// @symbol WmGetSharedDataAddress
 u16 *WmGetSharedDataAddress(WMDataSharingInfo *dsInfo, unsigned aidBitmap, u16 *receiveBuf,
                             int aid) {
     int i;

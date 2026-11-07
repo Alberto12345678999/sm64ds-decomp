@@ -8,8 +8,13 @@
  *
  * Functions are written in reverse of ROM order; do not reorder.
  * `opt_loop_invariants off` above PaintSquare has no matching `on`, so it
- * applies to the whole file. TUBUILD CONFLICT comments are paired with
- * the manifest; leave them.
+ * applies to the whole file. Measured 2026-11-06: PaintSquare is the only
+ * function in the TU whose bytes move when invariants are hoisted, and the
+ * setting still cannot be narrowed to it -- this TU leaves codegen deferred,
+ * so mwccarm reads the state at the end of the file and an `on` placed after
+ * PaintSquare (or after the function following it) puts hoisting back for
+ * PaintSquare as well. TUBUILD CONFLICT comments are paired with the
+ * manifest; leave them.
  *
  * leftovers:
  * - The factory still builds the object by hand, so its offset stores
@@ -38,6 +43,8 @@ enum d_s_mg_trampoline_AssetId {
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "LevelRng.h"
+#include "decl_common.h"
 /* local: the ROM re-reads the slot byte at each use here, so keep the read volatile. */
 #define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
 /* local: these readers only reproduce through a 4-byte-record view of the lane. */
@@ -153,28 +160,29 @@ extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern const unsigned char sTrmpBrushPltt[];
 extern dFdBrightness_c *data_0209f5bc;
 extern int sTrmpTouchBlocked;
-int TrmpLine_Create(Vec2s *a, Vec2s *b);
+int TrmpLine_Create(s16 *a, s16 *b);
 
 void SetBg2Offset(int a, int b);
 int Mg_GetTopScreenYOffset(void);
 extern unsigned char gMainScreenLayers;
-extern void Mg_CommitRecords(void *scene);
+extern void Mg_CommitRecords(void);
 int GetGameLanguage(void);
-void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
-void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
+struct OamAttr;
+struct Matrix2x2;
+void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
+void RenderOamMainScreen(OamAttr *a0, int a1, int a2, int a3, int a4);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern short sTrmpGoalRow;
 
-extern void Trmp3DMario_UpdateAll(...);
+extern void Trmp3DMario_UpdateAll(void);
 extern int Trmp3DMario_CountFinished(void);
 extern void Mg_SetSharedState(int);
-extern void Trmp3DMario_StartAll(void *c);
+extern void Trmp3DMario_StartAll(void);
 extern int sTrmpComboCount;
 extern int sTrmp3DLives;
 extern int sTrmpMariosInPlay;
 extern int sTrmpAnyOnLedge;
-extern int data_0209e650;
 extern void TrmpLine_UpdateAll(void);
 extern int Trmp3DMario_IsOffstage(int *r0);
 extern void Trmp3DMario_EnterWalkIn(char *c);
@@ -185,9 +193,8 @@ void TrmpLine_CreateStartLineT1(void);
 extern s16 sTrmpIntroFromX;
 extern s16 sTrmpStartTouchX;
 extern s16 sTrmpStartTouchY;
-extern void Camera_UpdateMatrices(void *cam);
-extern int LoadFile(int handle);
-extern void DecompressLZ16(int src, void *dst);
+extern void *LoadFile(int handle);
+extern void DecompressLZ16(void *src, void *dst);
 extern void Deallocate(void *ptr);
 extern int sTrmpNcgByLanguage[];
 extern void InitialiseVramGlobals(void);
@@ -204,8 +211,6 @@ extern void func_02012718(int, int);
 extern void TrmpFx_UpdateAll(void);
 extern void Mg_SubmitScore(int);
 extern void TrmpFx_DrawAll(void);
-extern int *sTrmpTextSpritesByLanguage[];
-extern int sTrmpLifeIconSprite;
 extern void Mg_DrawTopRightCounter(int, int);
 extern void *sTrmpDoorSignSprites[];
 extern void *sTrmpArrowSprite;
@@ -217,20 +222,20 @@ dScMgTrampoline_c *dScMgTrampoline_c_classInit(void);
    to the int word a descriptor holds, and a pointer-to-member initializer
    is not static .data (see the note above the P2 definition). StateDone is
    static, so the descriptor below names it directly. */
-extern void _ZN17dScMgTrampoline_c13StateWaitExitEv(void); /* local extern: PMF -> int */
-extern void _ZN17dScMgTrampoline_c12StateResultsEv(void);  /* local extern: PMF -> int */
-extern void _ZN17dScMgTrampoline_c9StatePlayEv(void);      /* local extern: PMF -> int */
-extern void _ZN17dScMgTrampoline_c10StateIntroEv(void);    /* local extern: PMF -> int */
+extern void _ZN17dScMgTrampoline_c13StateWaitExitEv(void *); /* local extern: PMF -> int */
+extern void _ZN17dScMgTrampoline_c12StateResultsEv(void *);  /* local extern: PMF -> int */
+extern void _ZN17dScMgTrampoline_c9StatePlayEv(void *);      /* local extern: PMF -> int */
+extern void _ZN17dScMgTrampoline_c10StateIntroEv(void *);    /* local extern: PMF -> int */
 extern int sTrmpPuffEnglish[];
 extern int sTrmpPuffSpanish[];
 extern int sTrmpPuffFrench[];
 extern int sTrmpPuffGerman[];
 extern int sTrmpPuffItalian[];
-extern int sMgTextSpritesEnglish[];
-extern int sMgTextSpritesSpanish[];
-extern int sMgTextSpritesFrench[];
-extern int sMgTextSpritesGerman[];
-extern int sMgTextSpritesItalian[];
+extern OamAttr *sMgTextSpritesEnglish[];
+extern OamAttr *sMgTextSpritesSpanish[];
+extern OamAttr *sMgTextSpritesFrench[];
+extern OamAttr *sMgTextSpritesGerman[];
+extern OamAttr *sMgTextSpritesItalian[];
 
 /* Data owned by the same original TU. */
 P2 pmf_dScMgTrampoline_c_StateWaitExit = {(int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0};
@@ -244,9 +249,9 @@ BaseSpawnInfo<dScMgTrampoline_c> g_profile_MG_TRAMPOLINE = {
 P2 pmf_dScMgTrampoline_c_StatePlay = {(int)_ZN17dScMgTrampoline_c9StatePlayEv, 0};
 P2 pmf_dScMgTrampoline_c_StateResults = {(int)_ZN17dScMgTrampoline_c12StateResultsEv, 0};
 int sTrmpNcgByLanguage[] = {0x107, 0x109, 0x104, 0x105, 0x106};
-int *sTrmpTextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpanish,
-                                     sMgTextSpritesFrench, sMgTextSpritesGerman,
-                                     sMgTextSpritesItalian};
+OamAttr **sTrmpTextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpanish,
+                                          sMgTextSpritesFrench, sMgTextSpritesGerman,
+                                          sMgTextSpritesItalian};
 int sTrmpPuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int)sTrmpPuffFrench,
                               (int)sTrmpPuffGerman, (int)sTrmpPuffItalian};
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_Link, NOT applied: extern void *sTrmpFxList; */
@@ -286,10 +291,8 @@ int sTrmpPuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_0212231c, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 }
 
-// @symbol _ZN14TrmpScorePopupC1Ev
 TrmpScorePopup::TrmpScorePopup() {}
 
-// @symbol dScMgTrampoline_c_classInit
 /* `new dScMgTrampoline_c` reproduces it: the inline dScMgD3DBase_c
    constructor, then this class's vtable, the three element arrays and the
    door mark's clear. */
@@ -297,16 +300,15 @@ extern "C" dScMgTrampoline_c *dScMgTrampoline_c_classInit(void) {
     return new dScMgTrampoline_c;
 }
 
-// @symbol _ZN17dScMgTrampoline_c11InitDisplayEv
 void dScMgTrampoline_c::InitDisplay() {
-    int r8, r7, r6, r5, r4;
+    void *bgChar, *bgScr, *bgPltt, *objChar, *objPltt;
     volatile u16 sp0;
 
-    r8 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCG_BIN);
-    r7 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NSC_BIN);
-    r6 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCL_BIN);
-    r5 = LoadFile(sTrmpNcgByLanguage[GetGameLanguage()]);
-    r4 = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
+    bgChar = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCG_BIN);
+    bgScr = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NSC_BIN);
+    bgPltt = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCL_BIN);
+    objChar = LoadFile(sTrmpNcgByLanguage[GetGameLanguage()]);
+    objPltt = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
 
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 2;
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x9110;
@@ -317,27 +319,26 @@ void dScMgTrampoline_c::InitDisplay() {
         sp0 = 0;
         MultiStore16(sp0, dst, 0x4000);
     }
-    DecompressLZ16(r8, (void *)((char *)G2::GetBG2CharPtr() + 0x4000));
-    DecompressLZ16(r7, (void *)G2::GetBG2ScrPtr());
-    GX::LoadBGPltt((const void *)r6, 0x1a0, 0x60);
+    DecompressLZ16(bgChar, (void *)((char *)G2::GetBG2CharPtr() + 0x4000));
+    DecompressLZ16(bgScr, (void *)G2::GetBG2ScrPtr());
+    GX::LoadBGPltt(bgPltt, 0x1a0, 0x60);
 
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 1;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1318;
     *(volatile u16 *)0x400000e &= ~0x40;
 
-    DecompressLZ16(r5, (void *)0x6400000);
-    GX::LoadOBJPltt((const void *)r4, 0, 0x60);
+    DecompressLZ16(objChar, (void *)0x6400000);
+    GX::LoadOBJPltt(objPltt, 0, 0x60);
 
-    Deallocate((void *)r8);
-    Deallocate((void *)r7);
-    Deallocate((void *)r6);
-    Deallocate((void *)r5);
-    Deallocate((void *)r4);
+    Deallocate(bgChar);
+    Deallocate(bgScr);
+    Deallocate(bgPltt);
+    Deallocate(objChar);
+    Deallocate(objPltt);
 
     InitBrush(3);
 }
 
-// @symbol _ZN17dScMgTrampoline_c13InitResourcesEv
 /* Slot 0. Sets up the two cameras and the fog, then ends with a virtual
  * call to StartRound(-1), the scene's reset hook. */
 s32 dScMgTrampoline_c::InitResources() {
@@ -354,21 +355,21 @@ s32 dScMgTrampoline_c::InitResources() {
     InitialiseVramGlobals();
     *(u16 *)0x4000008 = (*(u16 *)0x4000008 & ~3) | 1;
     fov = cstd::fdiv(0xc0000, (s32)data_02082414);
-    this->mCameras[0].mEyeX = 0;
-    this->mCameras[0].mEyeY = -0x64000;
-    this->mCameras[0].mEyeZ = 0;
-    this->mCameras[0].mTargetX = 0;
-    this->mCameras[0].mTargetY = 0;
-    this->mCameras[0].mTargetZ = fov;
-    this->mCameras[0].mAngle = 0x400;
+    this->mCameras[0].mLookAt.x = 0;
+    this->mCameras[0].mLookAt.y = -0x64000;
+    this->mCameras[0].mLookAt.z = 0;
+    this->mCameras[0].mPos.x = 0;
+    this->mCameras[0].mPos.y = 0;
+    this->mCameras[0].mPos.z = fov;
+    this->mCameras[0].mFovAngle = 0x400;
     Camera_UpdateMatrices(&mCameras[0]);
-    this->mCameras[1].mEyeX = 0;
-    this->mCameras[1].mEyeY = 0x82000;
-    this->mCameras[1].mEyeZ = 0;
-    this->mCameras[1].mTargetX = 0;
-    this->mCameras[1].mTargetY = 0;
-    this->mCameras[1].mTargetZ = fov;
-    this->mCameras[1].mAngle = 0x400;
+    this->mCameras[1].mLookAt.x = 0;
+    this->mCameras[1].mLookAt.y = 0x82000;
+    this->mCameras[1].mLookAt.z = 0;
+    this->mCameras[1].mPos.x = 0;
+    this->mCameras[1].mPos.y = 0;
+    this->mCameras[1].mPos.z = fov;
+    this->mCameras[1].mFovAngle = 0x400;
     Camera_UpdateMatrices(&mCameras[1]);
     if (Trmp3DMario_InitPool((unsigned char *)(base + 0x500c), 4) == 0)
         return 0;
@@ -379,8 +380,7 @@ s32 dScMgTrampoline_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c10StartRoundEi
-extern "C" void TrmpLine_ClearAll(int);
+extern "C" void TrmpLine_ClearAll(u32);
 extern volatile s16 data_020a0dbc[];
 
 void dScMgTrampoline_c::StartRound(int /* arg */) {
@@ -420,7 +420,8 @@ void dScMgTrampoline_c::StartRound(int /* arg */) {
     self->mInputEnabled = 0;
     self->mRoundOver = 0;
     self->mDoorSwitchTimer =
-        (((int)(((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13) * 0x2d0) >>
+        (((int)(((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13) *
+          0x2d0) >>
          12) +
         0x2d0;
     self->mDoorBlinkTimer = 0;
@@ -439,14 +440,12 @@ void dScMgTrampoline_c::StartRound(int /* arg */) {
     BeginIntro();
 }
 
-// @symbol _ZN17dScMgTrampoline_c11CanEndStateEi
 /* dScMgTrampoline_c::CanEndState, from its vtable slot. */
 int dScMgTrampoline_c::CanEndState(int /* mode */) {
     Puff_ClearAll(0, sTrmpPuffXByLanguage[GetGameLanguage()]);
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c10BeginIntroEv
 void dScMgTrampoline_c::BeginIntro() {
     short a;
     short b;
@@ -462,7 +461,6 @@ void dScMgTrampoline_c::BeginIntro() {
     *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateIntro;
 }
 
-// @symbol _ZN17dScMgTrampoline_c10StateIntroEv
 void dScMgTrampoline_c::StateIntro() {
     int counter;
 
@@ -499,7 +497,8 @@ void dScMgTrampoline_c::StateIntro() {
         mTouchY = sTrmpStartTouchY;
 
         mTouchY +=
-            ((((int)((unsigned int)(RandomIntInternal(&data_0209e650) & ~0x80000000) >> 19) - 0x800)
+            ((((int)((unsigned int)(RandomIntInternal(&data_0209e650.value) & ~0x80000000) >> 19) -
+               0x800)
               << 2) >>
              12);
 
@@ -510,7 +509,6 @@ void dScMgTrampoline_c::StateIntro() {
     }
 }
 
-// @symbol _ZN17dScMgTrampoline_c9BeginPlayEv
 void dScMgTrampoline_c::BeginPlay() {
     mTimer = 0x1e;
     mInputEnabled = 1;
@@ -520,7 +518,6 @@ void dScMgTrampoline_c::BeginPlay() {
     *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StatePlay;
 }
 
-// @symbol _ZN17dScMgTrampoline_c12UpdateScrollEv
 void dScMgTrampoline_c::UpdateScroll() {
     int q = sTrmpComboCount / 10;
     int old = mLevel;
@@ -551,7 +548,6 @@ void dScMgTrampoline_c::UpdateScroll() {
     }
 }
 
-// @symbol _ZN17dScMgTrampoline_c9StatePlayEv
 void dScMgTrampoline_c::StatePlay() {
     int old = sTrmpComboCount;
     TrmpLine_UpdateAll();
@@ -599,7 +595,8 @@ void dScMgTrampoline_c::StatePlay() {
             }
             Sound::PlayBank2_2D(0x1b6);
             {
-                unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff;
+                unsigned int rnd =
+                    (unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff;
                 int prod = (rnd >> 19) * 0x2d0;
                 mDoorSwitchTimer = (s16)((prod >> 12) + 0x2d0);
                 mDoorBlinkTimer = 0;
@@ -627,18 +624,14 @@ void dScMgTrampoline_c::StatePlay() {
     }
 }
 
-// @symbol _ZN17dScMgTrampoline_c12BeginResultsEv
 void dScMgTrampoline_c::BeginResults() {
-    char *c = (char *)this;
-    Trmp3DMario_StartAll(c);
+    Trmp3DMario_StartAll();
     mTimer = 0x5a;
     *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateResults;
 }
 
-// @symbol _ZN17dScMgTrampoline_c12StateResultsEv
 void dScMgTrampoline_c::StateResults() {
-    unsigned char *c = (unsigned char *)this;
-    Trmp3DMario_UpdateAll(c);
+    Trmp3DMario_UpdateAll();
     if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (Trmp3DMario_CountFinished() == 0)
@@ -649,7 +642,6 @@ void dScMgTrampoline_c::StateResults() {
     *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateWaitExit;
 }
 
-// @symbol _ZN17dScMgTrampoline_c13StateWaitExitEv
 void dScMgTrampoline_c::StateWaitExit() {
     int idx, b;
     mTimer -= 1;
@@ -678,21 +670,17 @@ void dScMgTrampoline_c::StateWaitExit() {
     }
 }
 
-// @symbol _ZN17dScMgTrampoline_c9StateDoneEv
 void dScMgTrampoline_c::StateDone() {}
 
-// @symbol _ZN17dScMgTrampoline_c11GetDoorSideEv
 s16 dScMgTrampoline_c::GetDoorSide() {
     return mDoorSide;
 }
 
-// @symbol _ZN17dScMgTrampoline_c11SetDoorSideEs
 void dScMgTrampoline_c::SetDoorSide(short value) {
     sTrmpGoalRow = value;
     mDoorSide = value;
 }
 
-// @symbol _ZN17dScMgTrampoline_c16UpdateTouchInputEv
 void dScMgTrampoline_c::UpdateTouchInput() {
     int i;
     int b;
@@ -732,7 +720,6 @@ void dScMgTrampoline_c::UpdateTouchInput() {
     }
 }
 
-// @symbol _ZN17dScMgTrampoline_c8BehaviorEv
 /* Slot 6. The field at 0x5004 is a pointer to member function: the current
  * state, one of the five State functions. The header keeps it as two raw
  * words, so it is cast to dScMgTrampoline_c::State here to dispatch. */
@@ -747,7 +734,6 @@ s32 dScMgTrampoline_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c6RenderEv
 /* Draws the three miss icons, the two door arrows, and the flashing mark.
    The arrows slide in mArrow1X / mArrow2X; mDoorBlinkPhase picks the frame
    on the lit side. */
@@ -768,8 +754,7 @@ s32 dScMgTrampoline_c::Render() {
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite((void *)sTrmpTextSpritesByLanguage[idx][1], (void *)a1v, 0xc,
-                              (void *)0);
+                DrawOamSprite(sTrmpTextSpritesByLanguage[idx][1], a1v, 0xc, 0);
             } else {
                 RenderOamMainScreen(sTrmpLifeIconSprite, a1v, 0xc, -1, -1);
             }
@@ -806,14 +791,12 @@ s32 dScMgTrampoline_c::Render() {
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c16CleanupResourcesEv
 /* Slot 3. */
 s32 dScMgTrampoline_c::CleanupResources() {
-    Mg_CommitRecords(this);
+    Mg_CommitRecords();
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c16OnGraphCallback2Ev
 /* dScMgTrampoline_c::OnGraphCallback2, from its vtable slot. */
 int dScMgTrampoline_c::OnGraphCallback2() {
     if (!dScMgD3DBase_c::OnGraphCallback2())
@@ -833,13 +816,11 @@ int dScMgTrampoline_c::OnGraphCallback2() {
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c16OnGraphCallback3Ev
 /* dScMgTrampoline_c::OnGraphCallback3, from its vtable slot. */
 int dScMgTrampoline_c::OnGraphCallback3() {
     return dScMgD3DBase_c::OnGraphCallback3() != 0;
 }
 
-// @symbol _ZN17dScMgTrampoline_c16OnGraphCallback0Ev
 /* dScMgTrampoline_c::OnGraphCallback0, from its vtable slot. */
 int dScMgTrampoline_c::OnGraphCallback0() {
     volatile u16 z;
@@ -872,7 +853,7 @@ int dScMgTrampoline_c::OnGraphCallback0() {
             v1.y = mTouchStartY;
             v2.x = mTouchX;
             v2.y = mTouchY;
-            if (TrmpLine_Create(&v1, &v2)) {
+            if (TrmpLine_Create(&v1.x, &v2.x)) {
                 func_02012718(0x1af, (mTouchStartX + mTouchX) << 11);
             } else {
                 func_02012790(0xe);
@@ -887,7 +868,6 @@ int dScMgTrampoline_c::OnGraphCallback0() {
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c9InitBrushEi
 void dScMgTrampoline_c::InitBrush(int layer) {
     BrushLayerObj *self = (BrushLayerObj *)this;
     volatile unsigned short t0;
@@ -933,9 +913,10 @@ void dScMgTrampoline_c::InitBrush(int layer) {
     GX::LoadBGPltt(sTrmpBrushPltt, 0xe0, 0x20);
 }
 
+/* Kept for PaintSquare: see the file comment above for why it reaches the
+   whole TU instead of just that function. */
 #pragma opt_loop_invariants off
 
-// @symbol _ZN17dScMgTrampoline_c11PaintSquareEiiii
 /* Slot 34, the brush stamp. dScMgD3DBase_c does not override this slot,
    so each trampoline class has its own; they differ only in the shape
    table (sTrmpBrushWord here, _02142f78 in dScMgTrampoline2_c).
@@ -998,7 +979,6 @@ void dScMgTrampoline_c::PaintSquare(int x_base, int y, int val, int n) {
     }
 }
 
-// @symbol TrmpFx_InitPool
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void TrmpFx_InitPool(void *records, int count) {
     sTrmpFxPool = (int)records;
@@ -1006,7 +986,6 @@ void TrmpFx_InitPool(void *records, int count) {
 }
 }
 
-// @symbol TrmpFx_Spawn
 extern "C" { /* .c-derived member: C linkage for the whole block */
 /* TrmpScorePopup* index DIFFed (the scale folded the wrong register). */
 void TrmpFx_Spawn(int x, int y) {
@@ -1020,7 +999,6 @@ void TrmpFx_Spawn(int x, int y) {
 }
 }
 
-// @symbol TrmpFx_ClearAll
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void TrmpFx_ClearAll(void) {
     int i;
@@ -1031,7 +1009,6 @@ void TrmpFx_ClearAll(void) {
 }
 }
 
-// @symbol TrmpFx_UpdateAll
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void TrmpFx_UpdateAll(void) {
     int i = 0;
@@ -1046,7 +1023,6 @@ void TrmpFx_UpdateAll(void) {
 }
 }
 
-// @symbol TrmpFx_DrawAll
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void TrmpFx_DrawAll(void) {
     void *node = sTrmpFxList;
@@ -1059,7 +1035,6 @@ void TrmpFx_DrawAll(void) {
 }
 }
 
-// @symbol TrmpFx_Link
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void TrmpFx_Link(int *entryRaw) {
     TrmpScorePopup *entry = (TrmpScorePopup *)entryRaw;
@@ -1076,7 +1051,6 @@ void TrmpFx_Link(int *entryRaw) {
 }
 }
 
-// @symbol TrmpFx_Unlink
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void TrmpFx_Unlink(struct Node *node) {
     struct Node *prev = sTrmpFxList;
@@ -1096,7 +1070,6 @@ void TrmpFx_Unlink(struct Node *node) {
 }
 }
 
-// @symbol _ZN14TrmpScorePopup5SpawnEii
 /* Fills a slot with fixed parameters and tail-calls TrmpFx_Link. */
 void TrmpScorePopup::Spawn(int y, int number) {
     x = 0x110000;
@@ -1112,7 +1085,6 @@ void TrmpScorePopup::Spawn(int y, int number) {
 }
 
 extern "C" void func_0203d630(int *p, int m);
-// @symbol _ZN14TrmpScorePopup6UpdateEv
 /* Member form of x += speedX DIFFed. Offsets are TrmpScorePopup's. */
 void TrmpScorePopup::Update() {
     char *self = (char *)this;
@@ -1131,7 +1103,6 @@ void TrmpScorePopup::Update() {
     func_0203d630((int *)(self + 0x14), 0xf00);
 }
 
-// @symbol _ZN14TrmpScorePopup6RenderEv
 /* Member form DIFFed (ldrsh of number). Offsets are TrmpScorePopup::active, x, y, number. */
 void TrmpScorePopup::Render() {
     char *desc = (char *)this;
@@ -1141,19 +1112,16 @@ void TrmpScorePopup::Render() {
                      -1, -1, 0, 0);
 }
 
-// @symbol _ZN24dScMgTrampoline_DoorMark4InitEv
 void dScMgTrampoline_DoorMark::Init() {
     active = 0;
     shown = 0;
 }
 
-// @symbol _ZN24dScMgTrampoline_DoorMark4HideEv
 void dScMgTrampoline_DoorMark::Hide() {
     active = 0;
     shown = 0;
 }
 
-// @symbol _ZN24dScMgTrampoline_DoorMark4ShowEi
 void dScMgTrampoline_DoorMark::Show(int side) {
     row = (s16)side;
     timer = 0x3c;
@@ -1162,7 +1130,6 @@ void dScMgTrampoline_DoorMark::Show(int side) {
     Sound::PlayBank2_2D(0x1B7);
 }
 
-// @symbol _ZN24dScMgTrampoline_DoorMark6UpdateEv
 void dScMgTrampoline_DoorMark::Update() {
     if (active == 0)
         return;
@@ -1176,7 +1143,6 @@ void dScMgTrampoline_DoorMark::Update() {
     }
 }
 
-// @symbol _ZN24dScMgTrampoline_DoorMark6RenderEi
 void dScMgTrampoline_DoorMark::Render(int scrollY) {
     if (active == 0)
         return;
@@ -1186,5 +1152,4 @@ void dScMgTrampoline_DoorMark::Render(int scrollY) {
                         -1);
 }
 
-// @symbol _ZN14TrmpScorePopupD1Ev
 TrmpScorePopup::~TrmpScorePopup() {}

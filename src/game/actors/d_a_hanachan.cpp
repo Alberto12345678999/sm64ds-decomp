@@ -69,6 +69,7 @@ enum daHanachan_c_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "LevelRng.h"
 
 /* The file-scope resource handles. The model five use the plain SharedFilePtr
  * pair (func_02017acc / func_02017ab4), the animation twenty-five use
@@ -91,27 +92,27 @@ extern daHanachan_c::State data_ov034_02114538[];
 
 extern "C" {
 extern void **data_ov034_02113888[];
-extern int DecIfAbove0_Byte(void*);
+extern u8 DecIfAbove0_Byte(u8 *);
 extern void **data_ov034_0211389c[];
 extern void **data_ov034_02113860[];
 extern int Math_Function_0203b14c(void *base, int a, int b, int c, int d);
 extern int data_ov034_021138c4[];
-extern short Vec3_HorzAngle(const void* a, const void* b);
+extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern short data_ov034_02113820[];
 extern void **data_ov034_021138b0[];
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern int LenVec3(void *v);
 extern int Vec3_HorzDist(void *a, void *b);
 extern int RandomIntInternal(int *seed);
-extern int data_0209e650;
 extern int data_ov034_02114488[];
-extern char data_020a0e68[];
+extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void MulVec3Mat4x3(void *in, void *m, void *out);
+/* local extern: no shared math header declares MulVec3Mat4x3. */
+extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 // local extern: no shared header declares Vec3_Add.
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern int NormalizeVec3IfNonZero(void *v);
-extern void Vec3_MulScalarInPlace(void *v, int s);
+extern int NormalizeVec3IfNonZero(Vector3 *v);
+extern void Vec3_MulScalarInPlace(Vector3 *v, int s);
 extern SharedFilePtr *data_ov034_02113838[];
 extern SharedFilePtr *data_ov034_0211384c[];
 extern void **data_ov034_02113874[];
@@ -123,13 +124,11 @@ extern s32 data_ov034_021138d8[];
 extern int func_020092c4(void *arg0, void *out, void *target);
 extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
-extern void *data_0209f318;
+extern dCamera_c *data_0209f318;
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 }
 
-// @symbol _ZN12daHanachan_cD1Ev
-// @symbol _ZN12daHanachan_cD0Ev
 /* Destroys the eight per-segment arrays in reverse declaration order, then
  * the dEnemyBase_c base. D0 frees through the inherited operator delete. */
 daHanachan_c::~daHanachan_c()
@@ -137,7 +136,6 @@ daHanachan_c::~daHanachan_c()
 }
 
 /* DAMAGE_START: stagger the animation change down the body, then MOVE. */
-// @symbol _ZN12daHanachan_c20StateDamageStartMainEv
 void daHanachan_c::StateDamageStartMain()
 {
     int i;
@@ -178,7 +176,6 @@ void daHanachan_c::StateDamageStartMain()
 }
 
 /* DAMAGE_START entry. */
-// @symbol _ZN12daHanachan_c20StateDamageStartInitEv
 void daHanachan_c::StateDamageStartInit()
 {
     mStateTimer = 0;
@@ -189,7 +186,6 @@ void daHanachan_c::StateDamageStartInit()
 }
 
 /* DAMAGE_WAIT: wait out the timer, then DAMAGE_START. */
-// @symbol _ZN12daHanachan_c19StateDamageWaitMainEv
 void daHanachan_c::StateDamageWaitMain()
 {
     if (DecIfAbove0_Byte(&mStateTimer))
@@ -198,14 +194,12 @@ void daHanachan_c::StateDamageWaitMain()
 }
 
 /* DAMAGE_WAIT entry: 90 frames. */
-// @symbol _ZN12daHanachan_c19StateDamageWaitInitEv
 void daHanachan_c::StateDamageWaitInit()
 {
     mStateTimer = 90;
 }
 
 /* DAMAGE_STOP: brake, stagger the animation change down the body, then DAMAGE_WAIT. */
-// @symbol _ZN12daHanachan_c19StateDamageStopMainEv
 void daHanachan_c::StateDamageStopMain()
 {
     int i;
@@ -248,7 +242,6 @@ void daHanachan_c::StateDamageStopMain()
 }
 
 /* DAMAGE_STOP entry. */
-// @symbol _ZN12daHanachan_c19StateDamageStopInitEv
 void daHanachan_c::StateDamageStopInit()
 {
     mStateTimer = 0;
@@ -259,7 +252,6 @@ void daHanachan_c::StateDamageStopInit()
 }
 
 /* DEAD: poof one segment every five frames while the scales settle, then spawn the star and go to MOVE_START. */
-// @symbol _ZN12daHanachan_c13StateDeadMainEv
 void daHanachan_c::StateDeadMain()
 {
     /* starPos is written and never read; removing it changes StateDeadMain's bytes. */
@@ -314,7 +306,6 @@ void daHanachan_c::StateDeadMain()
 }
 
 /* DEAD entry. */
-// @symbol _ZN12daHanachan_c13StateDeadInitEv
 void daHanachan_c::StateDeadInit()
 {
     mDeathDelay = 0;
@@ -325,7 +316,6 @@ void daHanachan_c::StateDeadInit()
 }
 
 /* DAMAGETALK: once the message is done, MOVE_START while health remains, else DEAD. */
-// @symbol _ZN12daHanachan_c19StateDamageTalkMainEv
 void daHanachan_c::StateDamageTalkMain()
 {
     ApproachLinear(mHorzSpeed, 0, 0x1000);
@@ -339,7 +329,6 @@ void daHanachan_c::StateDamageTalkMain()
 }
 
 /* DAMAGETALK entry. */
-// @symbol _ZN12daHanachan_c19StateDamageTalkInitEv
 void daHanachan_c::StateDamageTalkInit()
 {
     int i;
@@ -349,7 +338,6 @@ void daHanachan_c::StateDamageTalkInit()
 }
 
 /* DAMAGE: stop, face the player and start the hurt message, then DAMAGETALK. */
-// @symbol _ZN12daHanachan_c15StateDamageMainEv
 void daHanachan_c::StateDamageMain()
 {
     Vector3 st;
@@ -366,10 +354,10 @@ void daHanachan_c::StateDamageMain()
     if (!talk->StartTalk(*this, true))
         return;
 
-    ((dCamera_c *)data_0209f318)->SetFlag_3();
+    data_0209f318->SetFlag_3();
     mDriveCamera = 1;
 
-    ApproachLinear(mPlayer->mAngleY, Vec3_HorzAngle(&mSegmentPos[0], &mPlayer->mPosX), 0x100);
+    ApproachLinear(mPlayer->mAngleY, Vec3_HorzAngle(&mSegmentPos[0], &mPlayer->mPos), 0x100);
 
     func_ov002_020c51d0(talk, &st);
 
@@ -389,7 +377,6 @@ void daHanachan_c::StateDamageMain()
 }
 
 /* DAMAGE entry: hurt animation, flag 4 on the first cylinder set, one health lost. */
-// @symbol _ZN12daHanachan_c15StateDamageInitEv
 void daHanachan_c::StateDamageInit()
 {
     int i;
@@ -407,7 +394,6 @@ void daHanachan_c::StateDamageInit()
 }
 
 /* MOVE: wander and keep near home, checking player contact. Once defeated, fall away when a player comes near. */
-// @symbol _ZN12daHanachan_c13StateMoveMainEv
 void daHanachan_c::StateMoveMain()
 {
     int len;
@@ -428,7 +414,7 @@ void daHanachan_c::StateMoveMain()
     }
 
     if (DecIfAbove0_Byte(&mStateTimer) == 0) {
-        rnd = RandomIntInternal(&data_0209e650);
+        rnd = RandomIntInternal(&data_0209e650.value);
         {
             unsigned char health = mHealth;
             unsigned int bits;
@@ -445,8 +431,8 @@ void daHanachan_c::StateMoveMain()
     }
 
     if (mWithMeshClsn.IsOnWall() != 0 || len > 0x5dc000) {
-        rnd = RandomIntInternal(&data_0209e650);
-        mTargetAngleY = Vec3_HorzAngle(&mPosX, &mHomePos);
+        rnd = RandomIntInternal(&data_0209e650.value);
+        mTargetAngleY = Vec3_HorzAngle(&mPos, &mHomePos);
         mStateTimer = (unsigned char)((unsigned int)(rnd + 0x1e) >> 0x1b);
         mStateTimer = (unsigned char)(mStateTimer - (4 - mHealth) * 0x1e);
         if (mStateTimer >= 0x40)
@@ -466,7 +452,6 @@ void daHanachan_c::StateMoveMain()
 }
 
 /* MOVE entry. */
-// @symbol _ZN12daHanachan_c13StateMoveInitEv
 void daHanachan_c::StateMoveInit()
 {
     mPlayer = 0;
@@ -475,7 +460,6 @@ void daHanachan_c::StateMoveInit()
 }
 
 /* MOVE_START: stagger the walk animation down the body; when the talk ends, hop by remaining health and enter MOVE. */
-// @symbol _ZN12daHanachan_c18StateMoveStartMainEv
 void daHanachan_c::StateMoveStartMain()
 {
     int i;
@@ -521,7 +505,7 @@ void daHanachan_c::StateMoveStartMain()
                         mVertAccel = -0x4000;
                     }
                 }
-                ((dCamera_c *)data_0209f318)->mFlags &= ~8;
+                data_0209f318->mFlags &= ~8;
                 mDriveCamera = 0;
                 SetState(4);
             }
@@ -534,7 +518,6 @@ void daHanachan_c::StateMoveStartMain()
 }
 
 /* MOVE_START entry: clear flag 4 on the first cylinder set. */
-// @symbol _ZN12daHanachan_c18StateMoveStartInitEv
 void daHanachan_c::StateMoveStartInit()
 {
     int i;
@@ -548,7 +531,6 @@ void daHanachan_c::StateMoveStartInit()
 }
 
 /* MOVE_STOP: when the intro talk ends, start the music and enter MOVE_START. */
-// @symbol _ZN12daHanachan_c17StateMoveStopMainEv
 void daHanachan_c::StateMoveStopMain()
 {
     int i, k;
@@ -605,7 +587,6 @@ void daHanachan_c::StateMoveStopMain()
 }
 
 /* MOVE_STOP entry. */
-// @symbol _ZN12daHanachan_c17StateMoveStopInitEv
 void daHanachan_c::StateMoveStopInit()
 {
     mStateTimer = 0;
@@ -613,7 +594,6 @@ void daHanachan_c::StateMoveStopInit()
 }
 
 /* DEMOCALL: show the intro message, then MOVE_STOP. */
-// @symbol _ZN12daHanachan_c17StateDemoCallMainEv
 void daHanachan_c::StateDemoCallMain()
 {
     Vector3 v;
@@ -625,21 +605,19 @@ void daHanachan_c::StateDemoCallMain()
     if (player->ShowMessage(*this, data_ov034_02113820[0], &v, 1, 0) == 0)
         return;
     Message::PrepareTalk();
-    ((dCamera_c *)data_0209f318)->SetFlag_3();
+    data_0209f318->SetFlag_3();
     mDriveCamera = 1;
     func_0201267c(0x11b, &mCamSpacePos);
     SetState(2);
 }
 
 /* DEMOCALL entry: remember the closest player. */
-// @symbol _ZN12daHanachan_c17StateDemoCallInitEv
 void daHanachan_c::StateDemoCallInit()
 {
     mPlayer = ClosestPlayer();
 }
 
 /* DEMOWAIT: wander near home until a player is 0x12c000 above, then DEMOCALL. */
-// @symbol _ZN12daHanachan_c17StateDemoWaitMainEv
 void daHanachan_c::StateDemoWaitMain()
 {
     Vector3 v;
@@ -655,7 +633,7 @@ void daHanachan_c::StateDemoWaitMain()
     }
 
     if (DecIfAbove0_Byte(&mStateTimer) == 0) {
-        int r = (unsigned)RandomIntInternal(&data_0209e650) >> 0x1b;
+        int r = (unsigned)RandomIntInternal(&data_0209e650.value) >> 0x1b;
         if (r & 1) {
             mTargetAngleY = (short)((r & 0xf) << 0xc);
         } else {
@@ -665,14 +643,13 @@ void daHanachan_c::StateDemoWaitMain()
     }
 
     if (mWithMeshClsn.IsOnWall() || len > 0x5dc000) {
-        mTargetAngleY = Vec3_HorzAngle(&mPosX, &mHomePos);
+        mTargetAngleY = Vec3_HorzAngle(&mPos, &mHomePos);
         mStateTimer = data_ov034_0211433c[mHealth];
     }
     ApproachLinear(mHorzSpeed, data_ov034_02114488[0], 0x1000);
 }
 
 /* DEMOWAIT entry: lay the body out in a line behind the head. */
-// @symbol _ZN12daHanachan_c17StateDemoWaitInitEv
 void daHanachan_c::StateDemoWaitInit()
 {
     /* Strength reduction is off. posRow and rotRow start at this and step by
@@ -713,8 +690,8 @@ void daHanachan_c::StateDemoWaitInit()
             out.y = zero;
             out.z = zero;
             in.z = zval;
-            Matrix4x3_FromRotationY(data_020a0e68, (short)(mSegmentRot[0].y + 0x200));
-            MulVec3Mat4x3(&in, data_020a0e68, &out);
+            Matrix4x3_FromRotationY(&data_020a0e68, (short)(mSegmentRot[0].y + 0x200));
+            MulVec3Mat4x3(&in, &data_020a0e68, &out);
             prev = seg - 1;
             Vec3_Add(&sum, &mSegmentPos[prev], &out);
             ((daHanachan_c *)posRow)->mSegmentPos[0].x = sum.x;
@@ -726,7 +703,6 @@ void daHanachan_c::StateDemoWaitInit()
 }
 
 /* Enters a state and runs its Init. */
-// @symbol _ZN12daHanachan_c8SetStateEi
 void daHanachan_c::SetState(int state)
 {
     mState = state;
@@ -734,14 +710,12 @@ void daHanachan_c::SetState(int state)
 }
 
 /* Runs the current state's Main. */
-// @symbol _ZN12daHanachan_c9ExecStateEv
 void daHanachan_c::ExecState()
 {
     (this->*data_ov034_02114538[mState].mMain)();
 }
 
 /* True when the actor is falling onto the cylinder from above. */
-// @symbol _ZN12daHanachan_c11IsStompedByEP10dCcAcPos_cP8dActor_c
 int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor)
 {
     volatile int pad[4];    /* the ROM reserves 0x10 bytes of stack it never touches */
@@ -754,7 +728,6 @@ int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor)
 }
 
 /* Players stomping a segment bounce off it; the head also hurts on contact. The second cylinder set only hurts. */
-// @symbol _ZN12daHanachan_c16HandlePlayerHitsEv
 void daHanachan_c::HandlePlayerHits()
 {
     int i;
@@ -829,7 +802,6 @@ void daHanachan_c::HandlePlayerHits()
 }
 
 /* Pulls each segment to its spacing behind the one ahead, sets it on the ground and moves its cylinders. */
-// @symbol _ZN12daHanachan_c14UpdateSegmentsEv
 void daHanachan_c::UpdateSegments()
 {
     Vector3 diff;
@@ -864,7 +836,6 @@ void daHanachan_c::UpdateSegments()
 }
 
 /* Copies each segment's rotation and position into its model matrix. */
-// @symbol _ZN12daHanachan_c19UpdateSegmentModelsEv
 void daHanachan_c::UpdateSegmentModels()
 {
     /* rot steps by one Vector3s from this, so the y load keeps add #0x400.
@@ -884,7 +855,6 @@ void daHanachan_c::UpdateSegmentModels()
     }
 }
 
-// @symbol _ZN12daHanachan_c16CleanupResourcesEv
 /* Releases all five entries of each of the seven file tables. */
 int daHanachan_c::CleanupResources()
 {
@@ -902,7 +872,6 @@ int daHanachan_c::CleanupResources()
 }
 
 /* Animates each segment's texture and draws the segment at its scale. */
-// @symbol _ZN12daHanachan_c6RenderEv
 int daHanachan_c::Render()
 {
     int i = 0;
@@ -919,7 +888,6 @@ int daHanachan_c::Render()
     return 1;
 }
 
-// @symbol _ZN12daHanachan_c8BehaviorEv
 /* vtable slot 6. Runs the state, advances the segment animations and the
  * stomp bounce, then moves the body, its cylinders and, while mDriveCamera is
  * set, the camera. */
@@ -1055,16 +1023,16 @@ int daHanachan_c::Behavior()
     }
 
     if (mDriveCamera != 0) {
-        dCamera_c *cam = (dCamera_c *)data_0209f318;
+        dCamera_c *cam = data_0209f318;
         camA.x = 0; camA.y = 0x80000; camA.z = 0;
         camB.x = 0; camB.y = 0x80000; camB.z = 0x1f4000;
         scratch.x = 0; scratch.y = 0; scratch.z = 0;
-        Matrix4x3_FromRotationY(data_020a0e68, mSegmentRot[0].y);
-        MulVec3Mat4x3(&camA, data_020a0e68, &scratch);
+        Matrix4x3_FromRotationY(&data_020a0e68, mSegmentRot[0].y);
+        MulVec3Mat4x3(&camA, &data_020a0e68, &scratch);
         Vec3_Add(&t0, &mPos, &scratch);
         camA = t0;
         scratch.x = 0; scratch.y = 0; scratch.z = 0;
-        MulVec3Mat4x3(&camB, data_020a0e68, &scratch);
+        MulVec3Mat4x3(&camB, &data_020a0e68, &scratch);
         Vec3_Add(&t1, &mPos, &scratch);
         camB = t1;
         func_020092c4(cam, &cam->lookAt, &camA);
@@ -1074,7 +1042,6 @@ int daHanachan_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN12daHanachan_c13InitResourcesEv
 int daHanachan_c::InitResources()
 {
     char *c = (char *)this;
@@ -1163,8 +1130,8 @@ int daHanachan_c::InitResources()
             vb[0] = zeroC;
             vb[1] = zeroC;
             vb[2] = zeroC;
-            Matrix4x3_FromRotationY(data_020a0e68, mSegmentRot[0].y);
-            MulVec3Mat4x3(va, data_020a0e68, vb);
+            Matrix4x3_FromRotationY(&data_020a0e68, mSegmentRot[0].y);
+            MulVec3Mat4x3((Vector3 *)va, &data_020a0e68, (Vector3 *)vb);
             prev = i - 1;
             Vec3_Add((Vector3 *)out, &mSegmentPos[prev], (const Vector3 *)vb);
             ((daHanachan_c *)posRow)->mSegmentPos[0].x = out[0];
@@ -1220,7 +1187,6 @@ int daHanachan_c::InitResources()
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Wiggler_Spawn.
  */
-// @symbol daHanachan_c_classInit
 extern "C" daHanachan_c *daHanachan_c_classInit()
 {
     return new daHanachan_c;

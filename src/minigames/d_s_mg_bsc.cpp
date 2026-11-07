@@ -17,6 +17,7 @@ enum d_s_mg_bsc_AssetId { ASSET_D_2D_MG_BIG_SMALL_NCL_BIN = 0x00b3 };
 #include "decl_common.h"
 #include "PlayerInput.h"
 #include "math/Approach.h"
+#include "LevelRng.h"
 
 /* The state table: one pointer-to-member per state, indexed by mState.
  * Declared outside extern "C" it still links by its plain name. */
@@ -43,7 +44,7 @@ extern "C" {
 extern short gMgCoinsStatus;
 extern int Math_Function_0203b14c(int *ptr, int target, int rate, int limit, int step);
 extern void Mg_ResumeSharedState(void);
-extern int Dealer_IsIdle(int *r0);
+extern int Dealer_IsIdle(Dealer *dealer);
 extern void MgCoins_StartPayout(int x);
 extern void MgCoins_StartLose(void);
 extern int gMgCoinsInPlay;
@@ -57,23 +58,21 @@ extern void Mg_SaveRecordPair(int a, int b);
 extern int sBscLaneX[];
 extern int sMgCoinsBetPlaced;
 extern int RandomIntInternal(int *seed);
-extern void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
-extern int data_0209e650;
+extern void Dealer_StartShuffle(Dealer *dealer, int unused, short count, s16 *counter);
 extern void FreeGfxSlotsById(int arg);
 extern void MgCoins_Reset(void);
-void Camera_InitDealerView(void *camera);
 void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 void Mg_DrawCredits(void *scene, int a1, int a2, int a3);
 void Mg_DrawScoreTally(void *scene, int a1, int a2, int a3);
 void Dealer_Draw(void *table);
 void MgCoins_Update(void);
 void Dealer_Update(Dealer *c);
-extern unsigned char gMainScreenLayers[];
-extern int data_0208ee44[];
-extern void LoadCard2SubBg3(void);
+extern unsigned char gMainScreenLayers;
+extern int data_0208ee44;
+extern void LoadCard2SubBg3(void *);
 extern s32 GetGameLanguage(void);
 extern u32 LoadCompressedFileAt(int fileID, void *target);
-extern int LoadFile(int handle);
+extern void *LoadFile(int handle);
 extern int Dealer_Load(char *c);
 }
 
@@ -89,40 +88,36 @@ void LoadOBJPltt(const void *plt, u32 base, u32 size);
 
 /* Moves value toward target by step; nonzero once it gets there. */
 
-// @symbol dScMgBSC_c_classInit
 /* `new` inlines the implicit constructor: the base chain, this class's
    vptr, then mDealer and mCardPos in declaration order. */
 extern "C" void *dScMgBSC_c_classInit() {
     return new dScMgBSC_c;
 }
 
-// @symbol _ZN10dScMgBSC_c13InitResourcesEv
 /* Slot 0, and the key function: the destructor is inline in the header, so
  * this is the first virtual defined out of line, and defining it here emits
  * the vtable and the D1 and D0 pair. The last call dispatches virtually
- * (mwcc does not devirtualize it). pad_4660 is the head of the camera
- * block, untyped in the header. */
+ * (mwcc does not devirtualize it). */
 s32 dScMgBSC_c::InitResources() {
-    int paletteData;
-    gMainScreenLayers[0] = DISPLAY_LAYER_BG0 | DISPLAY_LAYER_OBJ;
-    LoadCard2SubBg3();
+    void *paletteData;
+    gMainScreenLayers = DISPLAY_LAYER_BG0 | DISPLAY_LAYER_OBJ;
+    LoadCard2SubBg3(this);
     LoadCompressedFileAt(sBscBigSmallNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
     paletteData = LoadFile(ASSET_D_2D_MG_BIG_SMALL_NCL_BIN);
-    GXS::LoadOBJPltt((void *)paletteData, 0, 0x100);
-    Deallocate((void *)paletteData);
-    Camera_InitDealerView(pad_4660);
+    GXS::LoadOBJPltt(paletteData, 0, 0x100);
+    Deallocate(paletteData);
+    Camera_InitDealerView(&mCamera);
     if (Dealer_Load((char *)&mDealer) == 0)
         return 0;
     Mg_SetTopScreenYOffset(0x20);
     Mg_PlaceBannersOnTopScreen();
-    data_0208ee44[0] = 1;
+    data_0208ee44 = 1;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
     this->StartRound(3);
     return 1;
 }
 
-// @symbol _ZN10dScMgBSC_c8BehaviorEv
 /* Slot 6: runs the current state from the table. */
 s32 dScMgBSC_c::Behavior() {
     (this->*sBSCStateTable[mState])();
@@ -131,13 +126,12 @@ s32 dScMgBSC_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN10dScMgBSC_c6RenderEv
 /* Slot 9. Card positions are 20.12 fixed point. Sprite frames 0 to 2 are
  * the flip; from frame 3 the card's value picks the face. */
 s32 dScMgBSC_c::Render() {
     int cardIndex;
 
-    Camera_InitDealerView(pad_4660);
+    Camera_InitDealerView(&mCamera);
     if (mState >= STATE_WAIT_DEAL) {
         for (cardIndex = 0; cardIndex < 2; cardIndex++) {
             if (mCardFrame[cardIndex] < 3) {
@@ -156,7 +150,6 @@ s32 dScMgBSC_c::Render() {
     return 1;
 }
 
-// @symbol _ZN10dScMgBSC_c10StartRoundEi
 /* Slot 18. Mode 3 reads the meter score into mHudScore and posts it; every
    mode then restarts the state machine. The redundant `!= 4 && != 5`
    compares are in the ROM and must stay. */
@@ -170,7 +163,6 @@ void dScMgBSC_c::StartRound(int mode) {
     mState = STATE_DEAL_CARDS;
 }
 
-// @symbol _ZN10dScMgBSC_c11CanEndStateEi
 /* Slot 19. In state 13, once the table's reaction has finished, mode 4
    moves to state 9 and mode 5 to state 10. When the round has settled
    (state 12, with gMgCoinsStatus set) the final scores go to the
@@ -179,7 +171,7 @@ s32 dScMgBSC_c::CanEndState(int mode) {
     int state;
     short coinStatus;
     if (mState == STATE_WAIT_RESULT) {
-        if (Dealer_IsIdle((int *)&mDealer) != 0) {
+        if (Dealer_IsIdle(&mDealer) != 0) {
             if (mode == 4) {
                 FreeGfxSlotsById(0x1d);
                 mState = STATE_WAIT_WIN;
@@ -205,7 +197,6 @@ settle:
     return 1;
 }
 
-// @symbol _ZN10dScMgBSC_c10OnDealDoneEv
 /* Slot 21: raises the bet to one of four tiers from mHudScore / 5,
    capped at tier 3. */
 void dScMgBSC_c::OnDealDone() {
@@ -217,7 +208,6 @@ void dScMgBSC_c::OnDealDone() {
     MgCoins_RaiseBet(tier + 1);
 }
 
-// @symbol _ZN10dScMgBSC_c14StateDealCardsEv
 /* State 0: deals two cards with distinct random values out of five
  * (valueUsed marks the values taken), starts the deal animation and the
  * prompt, and moves to StateWaitDeal. */
@@ -233,7 +223,7 @@ void dScMgBSC_c::StateDealCards() {
     for (cardIndex = 0; cardIndex < 2; cardIndex++) {
         mCardPos[cardIndex].x = 0x80000;
         mCardPos[cardIndex].y = -0x40000;
-        cardValue = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) % 5u;
+        cardValue = ((unsigned int)RandomIntInternal(&data_0209e650.value) >> 16) % 5u;
         for (;;) {
             if (valueUsed[cardValue] == 0) {
                 mCardValue[cardIndex] = cardValue;
@@ -249,7 +239,7 @@ void dScMgBSC_c::StateDealCards() {
     mOtherCard = 0;
     mChosenCard = 1;
     mCardsDealt = 0;
-    Dealer_StartShuffle((char *)&mDealer, 3, 2, (int)&mCardsDealt);
+    Dealer_StartShuffle(&mDealer, 3, 2, &mCardsDealt);
 
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
@@ -260,7 +250,6 @@ void dScMgBSC_c::StateDealCards() {
     mState += 1;
 }
 
-// @symbol _ZN10dScMgBSC_c13StateWaitDealEv
 /* State 1: slides each card to its lane (x toward
  * sBscLaneX, y toward 0x60000). The dealer animation increments
  * mCardsDealt as cards are dealt; the loop reloads that count each pass.
@@ -303,7 +292,6 @@ after_loop:
     mState++;
 }
 
-// @symbol _ZN10dScMgBSC_c15StateChooseCardEv
 /* State 2: waits for a touch within 16 pixels of a lane's x and 24 of y
  * 0x60. The touched card becomes mChosenCard and the machine moves on. */
 void dScMgBSC_c::StateChooseCard() {
@@ -338,7 +326,6 @@ void dScMgBSC_c::StateChooseCard() {
     }
 }
 
-// @symbol _ZN10dScMgBSC_c14StateMoveCardsEv
 /* State 3: moves the chosen card down and the other up, then primes the
  * 30-frame timer. */
 void dScMgBSC_c::StateMoveCards() {
@@ -354,7 +341,6 @@ void dScMgBSC_c::StateMoveCards() {
     mState += 1;
 }
 
-// @symbol _ZN10dScMgBSC_c13StateWaitMoveEv
 /* State 4: waits out the timer, then plays the move sound. */
 void dScMgBSC_c::StateWaitMove() {
     mStateTimer = mStateTimer - 1;
@@ -364,7 +350,6 @@ void dScMgBSC_c::StateWaitMove() {
     mState = mState + 1;
 }
 
-// @symbol _ZN10dScMgBSC_c16StateRevealCardsEv
 /* State 5: flips both cards, one frame every four ticks, until the other
  * card is face up. Then settles the stakes: the higher card wins, which
  * adds twice gMgCoinsInPlay to mCredits and one to the score; a loss
@@ -397,7 +382,6 @@ void dScMgBSC_c::StateRevealCards() {
     }
 }
 
-// @symbol _ZN10dScMgBSC_c15StateJudgeCardsEv
 /* State 6: 30 frames after the flip, bumps the score (capped at 9999) and
  * the best score on a win, plays jingle 4 or 5, queues the table's win or
  * loss reaction, and parks in state 13. The bump goes through a pointer on
@@ -431,7 +415,6 @@ void dScMgBSC_c::StateJudgeCards() {
     }
 }
 
-// @symbol _ZN10dScMgBSC_c18StateTableReactionEv
 /* States 7 and 8: queue the table's win or loss reaction. Nothing in this
  * file sets state 7 or 8; StateJudgeCards does the same work inline. */
 void dScMgBSC_c::StateTableReaction() {
@@ -444,11 +427,10 @@ void dScMgBSC_c::StateTableReaction() {
     }
 }
 
-// @symbol _ZN10dScMgBSC_c14StateWaitTableEv
 /* States 9 and 10: wait for the table's reaction to finish, then pay out
  * a win (state 12) or play the loss sting and gather the cards (state 11). */
 void dScMgBSC_c::StateWaitTable() {
-    if (Dealer_IsIdle((int *)&mDealer) == 0)
+    if (Dealer_IsIdle(&mDealer) == 0)
         return;
     if (mState == STATE_WAIT_WIN) {
         MgCoins_StartPayout(gMgCoinsInPlay << 1);
@@ -459,7 +441,6 @@ void dScMgBSC_c::StateWaitTable() {
     }
 }
 
-// @symbol _ZN10dScMgBSC_c16StateReturnCardsEv
 /* State 11, while gMgCoinsStatus is set: if the credits are spent,
  * first walks both cards back to the deck (mCardsDealt re-read every pass,
  * as in StateWaitDeal). Then refreshes the meter and settles in state 12. */
@@ -492,7 +473,6 @@ void dScMgBSC_c::StateReturnCards() {
     mState = STATE_WAIT_COINS;
 }
 
-// @symbol _ZN10dScMgBSC_c9StateDoneEv
 /* States 12 and 13: at rest. */
 void dScMgBSC_c::StateDone() {}
 

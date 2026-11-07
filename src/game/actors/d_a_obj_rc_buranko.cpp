@@ -54,6 +54,7 @@ enum d_a_obj_rc_buranko_AssetId { ASSET_RC_BURANKO_BMD = 0x0695, ASSET_RC_BURANK
 #include "daObjRcBuranko_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "math/MtxStack.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
@@ -72,21 +73,32 @@ typedef char RcBurankoModelFilePtr_size_must_be_8[sizeof(RcBurankoModelFilePtr) 
 typedef char RcBurankoClsnFilePtr_size_must_be_8[sizeof(RcBurankoClsnFilePtr) == 8 ? 1 : -1];
 
 struct KCL_File;
-struct CLPS_Block;
+/* CLPS.h keeps the block opaque: header with the entry stride at +4, then
+   two entries. The all-ones word after them is its own symbol. */
+struct CLPS_Block {
+    u32 tag;
+    u32 hdr;
+    u32 w0;
+    u32 w1;
+    u32 w2;
+    u32 w3;
+    u32 rest;
+};
 
 extern RcBurankoClsnFilePtr data_ov036_02114020;  /* the collision KCL  */
 extern RcBurankoModelFilePtr data_ov036_02114028; /* the platform's BMD */
-extern CLPS_Block data_ov036_02112b68;
+CLPS_Block data_ov036_02112b68 = {
+    0x53504c43, 0x00020008, 0x01000fc0, 0x000000ff, 0x01002fc0, 0x000000ff, 0xffffffff,
+};
+u32 data_ov036_02112b84 = 0xffffffff;
 
 /* local extern: no shared header declares these. */
 extern "C" {
-void func_020393d4(dBgW *bgw, void *fn);
-void Matrix4x3_FromRotationXYZExt(void *mtx, int x, int y, int z);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjRcBuranko_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjRcBuranko_c through
    RTTI, allocation size, vtable identity, and the RC_BURANKO registry profile;
    later EAD lineage supplies classInit. Exact original spelling is not
@@ -97,7 +109,6 @@ extern "C" daObjRcBuranko_c *daObjRcBuranko_c_classInit() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjRcBuranko_c13InitResourcesEv
 int daObjRcBuranko_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov036_02114028), 1, -1);
 
@@ -112,14 +123,13 @@ int daObjRcBuranko_c::InitResources() {
 
     /* A rider is carried by the collider's whole transform, not by a position
        and a pair of angles: the platform tilts underfoot as it swings. */
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
 
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjRcBuranko_c8BehaviorEv
 int daObjRcBuranko_c::Behavior() {
     /* The whole pendulum is these four lines: a constant 4-unit acceleration
        always pointed back at zero, integrated into the angle. There is no
@@ -140,7 +150,6 @@ int daObjRcBuranko_c::Behavior() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjRcBuranko_c6RenderEv
 int daObjRcBuranko_c::Render() {
     mModel.Render(0);
     return 1;
@@ -148,7 +157,6 @@ int daObjRcBuranko_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjRcBuranko_c16CleanupResourcesEv
 int daObjRcBuranko_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -160,7 +168,6 @@ int daObjRcBuranko_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjRcBuranko_c17UpdateModelMatrixEv
 /* Private "put the model where the actor is" helper: rebuilds mModel.mat4x3
  * from the actor's three angles, then writes the actor position >> 3 into
  * that matrix's translation row. */
@@ -174,8 +181,6 @@ void daObjRcBuranko_c::UpdateModelMatrix() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjRcBuranko_cD1Ev
-// @symbol _ZN16daObjRcBuranko_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The destructor body is INLINE in
  * include/daObjRcBuranko_c.h and declared FIRST. Two measurements force that:
  *   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,

@@ -47,6 +47,7 @@ enum d_a_obj_clock_huriko_AssetId { ASSET_C2_HURIKO_BMD = 0x05b3 };
 #include "daObjClockHuriko_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/MtxStack.h"
 
 /* dExtSimpleModel_c handles construct through func_02017acc and destroy through
  * func_02017ab4. The manifest aliases those undefined members onto the ROM
@@ -56,16 +57,11 @@ struct ClockHurikoModelFilePtr : SharedFilePtr {
     ~ClockHurikoModelFilePtr();
 };
 
-extern "C" {
-extern void Matrix4x3_FromRotationZXYExt(void *, int, int, int);
-}
-
-extern signed char data_02092110[];
+extern signed char data_02092110;
 extern ClockHurikoModelFilePtr data_ov013_02112280;
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjClockHuriko_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjClockHuriko_c through RTTI,
  * allocation size, vtable identity, and the CLOCK_HURIKO registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -76,7 +72,6 @@ extern "C" daObjClockHuriko_c *daObjClockHuriko_c_classInit() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_c13InitResourcesEv
 // recovered name: daObjClockHuriko_c::InitResources
 /* daObjClockHuriko_c::InitResources -- vtable slot 0, ov013 0x0211133c.
  * A REAL MEMBER ON PURPOSE: the destructor is inline in the header, so this
@@ -91,7 +86,6 @@ s32 daObjClockHuriko_c::InitResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_c8BehaviorEv
 /* daObjClockHuriko_c::Behavior -- vtable slot 6, ov013 0x021112a8. The
  * pendulum swings while the global at data_02092110 is not positive: the swing
  * speed reverses at each end of the arc, the angle integrates it, and the tick
@@ -100,7 +94,7 @@ s32 daObjClockHuriko_c::InitResources() {
  * The swing angle is dActor_c::mAngleZ. Its separately materialized pointer
  * below preserves the ROM's load/read-modify-write order under 2004/b56. */
 s32 daObjClockHuriko_c::Behavior() {
-    if (data_02092110[0] <= 0) {
+    if (data_02092110 <= 0) {
         s16 *angleZ = &mAngleZ;
         /* The test reads the field instead of going through angleZ, and that is
            load-bearing under 2004/b56: the ROM tests the field directly
@@ -126,7 +120,6 @@ s32 daObjClockHuriko_c::Behavior() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_c6RenderEv
 /* daObjClockHuriko_c::Render -- vtable slot 9, ov013 0x02111280. */
 s32 daObjClockHuriko_c::Render() {
     mModel.Render(0);
@@ -135,7 +128,6 @@ s32 daObjClockHuriko_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_c20UpdateModelTransformEv
 /* Rebuilds mModel.mat4x3 from the actor angles and from position >> 3.
  * The marker above is not decoration -- without it tools/tiers.py folds this
  * body into the preceding member's fragment. */
@@ -148,7 +140,6 @@ void daObjClockHuriko_c::UpdateModelTransform() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_c16CleanupResourcesEv
 /* daObjClockHuriko_c::CleanupResources -- vtable slot 3, ov013 0x02111214.
  * Releases the one shared file the painting holds; it never touches `this`. */
 s32 daObjClockHuriko_c::CleanupResources() {
@@ -158,8 +149,6 @@ s32 daObjClockHuriko_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_cD1Ev
-// @symbol _ZN18daObjClockHuriko_cD0Ev
 /* Both destructors are emitted from the INLINE `~daObjClockHuriko_c() {}` in
  * include/daObjClockHuriko_c.h -- there is deliberately no body here.
  *

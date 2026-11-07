@@ -58,6 +58,8 @@ enum d_a_fish_AssetId {
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
 #include "private/mtx43.h"
+#include "LevelRng.h"
+#include "SaveBlock.h"
 
 struct daFishState {
     void (daFish_c::*func)();
@@ -96,8 +98,7 @@ extern daFishState data_ov100_02148468;
 extern daFishState data_ov100_02148458;
 extern daFishState data_ov100_02148470;
 extern daFishState data_ov100_02148478;
-extern int data_0209e650; /* the shared random seed */
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 extern int data_0209f32c;
 
 /* local extern: arm9 C helpers with no shared header yet. */
@@ -131,12 +132,10 @@ inline daFish_c::daFish_c() {
     func_0203b9b4(&mSeed, 1);
 }
 
-// @symbol daFish_c_classInit
 extern "C" daFish_c *daFish_c_classInit() {
     return new daFish_c();
 }
 
-// @symbol _ZN8daFish_c13InitResourcesEv
 s32 daFish_c::InitResources() {
     u8 modelIndex;
     dExtFrameCtrl_c::LoadFile(data_ov100_021489cc);
@@ -159,7 +158,6 @@ s32 daFish_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN8daFish_c8BehaviorEv
 s32 daFish_c::Behavior() {
     Vector3 shiftedPos;
     daFish_c *spawner;
@@ -184,17 +182,14 @@ s32 daFish_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN8daFish_c6RenderEv
 s32 daFish_c::Render() {
     if (mIsSpawner == 0)
         mAnmModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN8daFish_c16OnPendingDestroyEv
 void daFish_c::OnPendingDestroy() {}
 
-// @symbol _ZN8daFish_c16CleanupResourcesEv
 s32 daFish_c::CleanupResources() {
     daFish_c *spawner;
     data_ov100_021489cc.Release();
@@ -205,7 +200,6 @@ s32 daFish_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN8daFish_c18StateWaitForPlayerEv
 /* Spawner state 0: wait for the player, then spawn the school. The legacy
    one-function source needed `#pragma opt_loop_invariants off`; the whole
    TU matches without it. */
@@ -226,7 +220,7 @@ void daFish_c::StateWaitForPlayer() {
     if (Vec3_HorzLen(&diff) >= 0x1388000)
         return;
 
-    if (data_0209caa0[2] & 0x80000) {
+    if (data_0209caa0.file.flags2 & 0x80000) {
         int lim = data_0209f32c - 0x64000;
         if (this->mSurfaceY > lim) {
             this->mSurfaceY = lim;
@@ -249,21 +243,21 @@ void daFish_c::StateWaitForPlayer() {
     for (i = 0; i < n; i++) {
         int r;
         if (this->mVariant != 0) {
-            r = RandomIntInternal(&data_0209e650);
+            r = RandomIntInternal(&data_0209e650.value);
             pos.x = this->mPosX + (((unsigned)r % 0x140) - 0xa0) * 0x1000;
-            r = RandomIntInternal(&data_0209e650);
+            r = RandomIntInternal(&data_0209e650.value);
             pos.z = this->mPosZ + (((unsigned)r % 0x140) - 0xa0) * 0x1000;
         } else {
-            r = RandomIntInternal(&data_0209e650);
+            r = RandomIntInternal(&data_0209e650.value);
             pos.x = this->mPosX + (((unsigned)r % 0x2bc) - 0x15e) * 0x1000;
-            r = RandomIntInternal(&data_0209e650);
+            r = RandomIntInternal(&data_0209e650.value);
             pos.z = this->mPosZ + (((unsigned)r % 0x2bc) - 0x15e) * 0x1000;
         }
 
-        r = RandomIntInternal(&data_0209e650);
+        r = RandomIntInternal(&data_0209e650.value);
         pos.y = (this->mSurfaceY - 0x64000) - (((unsigned)r >> 11 & 0xfff) * 0xc8);
 
-        r = RandomIntInternal(&data_0209e650);
+        r = RandomIntInternal(&data_0209e650.value);
         rot.y = rot.y + (s16)((unsigned)r >> 16);
 
         {
@@ -278,7 +272,6 @@ void daFish_c::StateWaitForPlayer() {
     this->mState = 1;
 }
 
-// @symbol _ZN8daFish_c19StateWaitPlayerAwayEv
 /* Spawner state 1: wait for the player to go beyond 6000.0. */
 int daFish_c::StateWaitPlayerAway() {
     if (this->ClosestPlayer()) {
@@ -290,22 +283,20 @@ int daFish_c::StateWaitPlayerAway() {
     return 2;
 }
 
-// @symbol _ZN8daFish_c19StateWaitSchoolGoneEv
 /* Spawner state 2: wait for the last fish to be gone. */
 void daFish_c::StateWaitSchoolGone() {
     if (this->mNumFish == 0)
         this->mState = 0;
 }
 
-// @symbol _ZN8daFish_c9StateIdleEv
 /* Fish state 3: idle, turning to face the player; flee once it is close. */
 void daFish_c::StateIdle() {
     Vector3 d;
     int st = this->mStateTimer;
     if (st == 0) {
-        unsigned r = RandomIntInternal(&data_0209e650);
+        unsigned r = RandomIntInternal(&data_0209e650.value);
         this->mHorzSpeed = ((r >> 15) & 0x1fff) + 0x3000;
-        r = RandomIntInternal(&data_0209e650);
+        r = RandomIntInternal(&data_0209e650.value);
         this->mTriggerDist = ((r % 500) + 0x96) << 0xc;
         this->mAnmModel.speed = 0x2000;
     } else if (st == 0xa) {
@@ -336,16 +327,15 @@ void daFish_c::StateIdle() {
     }
 }
 
-// @symbol _ZN8daFish_c9StateFleeEv
 /* Fish state 4: flee from the player until far enough away. */
 void daFish_c::StateFlee() {
     daPly_c *pl;
     Vector3 v;
     if (this->mStateTimer == 0) {
-        this->mMaxSpeed = (RandomIntInternal(&data_0209e650) & 0x3fff) + 0xd000;
-        this->mTriggerDist = (((unsigned int)RandomIntInternal(&data_0209e650) % 0x12c) + 0x1f4)
-                             << 12;
-        this->mTurnSpeed = (RandomIntInternal(&data_0209e650) & 0x3ff) + 0x400;
+        this->mMaxSpeed = (RandomIntInternal(&data_0209e650.value) & 0x3fff) + 0xd000;
+        this->mTriggerDist =
+            (((unsigned int)RandomIntInternal(&data_0209e650.value) % 0x12c) + 0x1f4) << 12;
+        this->mTurnSpeed = (RandomIntInternal(&data_0209e650.value) & 0x3ff) + 0x400;
         this->mAnmModel.speed = 0x4000;
     } else if (this->mStateTimer == 0x14) {
         this->mAnmModel.speed = 0x1000;
@@ -365,7 +355,6 @@ void daFish_c::StateFlee() {
     func_0201267c(kFleeSound, &this->mCamSpacePos);
 }
 
-// @symbol _ZN8daFish_c11StateWanderEv
 /* Fish state 5: wander until the timer runs out or it strays too far. */
 void daFish_c::StateWander() {
     Vector3 v;
@@ -381,7 +370,6 @@ void daFish_c::StateWander() {
     this->mState = 6;
 }
 
-// @symbol _ZN8daFish_c14StateTurnAboutEv
 /* Fish state 6: turn about, then wander again once back in range. */
 void daFish_c::StateTurnAbout() {
     Vector3 v;
@@ -393,25 +381,24 @@ void daFish_c::StateTurnAbout() {
     }
     if (Vec3_HorzLen(&v) >= 0xfa000)
         return;
-    this->mHorzSpeed = (((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x1fff) + 0x2000;
+    this->mHorzSpeed =
+        (((unsigned)RandomIntInternal(&data_0209e650.value) >> 15) & 0x1fff) + 0x2000;
     this->mAnmModel.speed = 0x1000;
     this->mWanderTimer =
-        (unsigned char)((((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x7f) + 0x3c);
+        (unsigned char)((((unsigned)RandomIntInternal(&data_0209e650.value) >> 15) & 0x7f) + 0x3c);
     this->mState = 5;
 }
 
-// @symbol _ZN8daFish_c13IsSpawnerIdleEv
 /* Is the spawner back in its idle wait? Its fish leave when it is. */
 int daFish_c::IsSpawnerIdle() {
     return this->mState == 2;
 }
 
-// @symbol _ZN8daFish_c15InitFromSpawnerEj
 /* Set up a fish its spawner has just created. */
 void daFish_c::InitFromSpawner(u32 spawnerID) {
     this->mVertAccel = 0;
     this->mTerminalVelocity = -0x1e000;
-    unsigned int r = RandomIntInternal(&data_0209e650);
+    unsigned int r = RandomIntInternal(&data_0209e650.value);
     int fc = this->mAnmModel.GetFrameCount();
     this->mAnmModel.currFrame = (unsigned short)(r % (unsigned)fc) << 12;
     this->mIsSpawner = 0;
@@ -427,16 +414,17 @@ void daFish_c::InitFromSpawner(u32 spawnerID) {
         } else {
             *angle = *angle | 0x4000;
         }
-        this->mHorzSpeed = (((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x1fff) + 0x2000;
+        this->mHorzSpeed =
+            (((unsigned)RandomIntInternal(&data_0209e650.value) >> 15) & 0x1fff) + 0x2000;
         this->mWanderTimer =
-            (unsigned char)((((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x7f) + 0x3c);
+            (unsigned char)((((unsigned)RandomIntInternal(&data_0209e650.value) >> 15) & 0x7f) +
+                            0x3c);
         this->mState = 5;
     } else {
         this->mState = 3;
     }
 }
 
-// @symbol _ZN8daFish_c10OnFishGoneEv
 /* A fish is gone: one fewer for its spawner. */
 void daFish_c::OnFishGone() {
     if (this->mNumFish != 0) {
@@ -444,8 +432,6 @@ void daFish_c::OnFishGone() {
     }
 }
 
-// @symbol _ZN8daFish_cD1Ev
-// @symbol _ZN8daFish_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline destructor in the header
    emits D1 then D0 -- the cartridge's order -- and no D2. */
 

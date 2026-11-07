@@ -39,6 +39,7 @@ enum daObjCtMecha05_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
+#include "LevelRng.h"
 
 /* File-scope objects at the end of this file construct the two resource
  * handles (model file 0x5c2, collision file 0x5c3). mwcc emits
@@ -62,7 +63,6 @@ extern Mecha05ModelFile TTC_MovingBar_ModelFile;
 extern Mecha05CollisionFilePtr TTC_MovingBar_ClsnFile;
 
 extern u8 data_0209f2c0;
-extern int data_0209e650;
 extern s16 data_02082214[];
 extern s16 data_ov065_0211c0c8[];
 extern s8 data_ov065_0211d26c[];
@@ -72,7 +72,7 @@ extern CLPS_Block data_ov035_02112258;
 extern "C" {
 extern void MulVec3Mat4x3(Vector3 *src, Matrix4x3 *matrix, Vector3 *dst);
 extern void AddVec3(Vector3 *left, Vector3 *right, Vector3 *dst);
-extern void func_020393d4(dBgW *collider, void *callback);
+extern void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
 /* CT_MECHA05 is the literal ROM registry ID. The g_profile spelling is a
@@ -83,14 +83,12 @@ extern "C" SpawnInfo<daObjCtMecha05_c> g_profile_CT_MECHA05 = {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjCtMecha05_c_classInit
 extern "C" daObjCtMecha05_c *daObjCtMecha05_c_classInit() {
     return new daObjCtMecha05_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjCtMecha05_c13InitResourcesEv
 int daObjCtMecha05_c::InitResources() {
     void *modelFile = dExtSimpleModel_c::LoadFile(TTC_MovingBar_ModelFile);
     mModel.SetFile((BMD_File *)modelFile, 1, -1);
@@ -99,7 +97,7 @@ int daObjCtMecha05_c::InitResources() {
     UpdateClsnPosAndRot();
     void *collisionFile = dBgW_Kc::LoadFile(TTC_MovingBar_ClsnFile);
     mMeshCollider.SetFile((KCL_File *)collisionFile, mClsnMat, 0x199, mAngleY, data_ov035_02112258);
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
     mMeshCollider.SetClipRadius(0x1c0000);
     mMeshCollider.SetClipOffsetY(0x1000);
     mPrevAngleY = mAngleY;
@@ -123,7 +121,6 @@ int daObjCtMecha05_c::InitResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjCtMecha05_c8BehaviorEv
 /* mHorzSpeed is reused here as a fix12 travel accumulator rather than a
  * physical speed. */
 int daObjCtMecha05_c::Behavior() {
@@ -149,7 +146,7 @@ int daObjCtMecha05_c::Behavior() {
         if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0)
             goto Lend;
         if (data_0209f2c0 == 2) {
-            int v = (u16)((unsigned)RandomIntInternal(&data_0209e650) >> 16);
+            int v = (u16)((unsigned)RandomIntInternal(&data_0209e650.value) >> 16);
             if (v % 2 == 0) {
                 mStateTimer = v % 100 + 20;
             }
@@ -202,7 +199,7 @@ int daObjCtMecha05_c::Behavior() {
     }
         if (FX_MUL(mTravel, mPrevTravel) >= 0)
             goto Lend;
-        if ((RandomIntInternal(&data_0209e650) & 3) != 0)
+        if ((RandomIntInternal(&data_0209e650.value) & 3) != 0)
             goto Lend;
         ResetToHome();
         goto Lend;
@@ -228,7 +225,6 @@ Lend:
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjCtMecha05_c11ResetToHomeEv
 void daObjCtMecha05_c::ResetToHome() {
     mState = 0;
     mTravel = 0;
@@ -242,12 +238,12 @@ void daObjCtMecha05_c::ResetToHome() {
     if (setting != 2)
         return;
 
-    mStateTimer = data_ov065_0211d26c[(u16)((u32)RandomIntInternal(&data_0209e650) >> 16) & 3];
+    mStateTimer =
+        data_ov065_0211d26c[(u16)((u32)RandomIntInternal(&data_0209e650.value) >> 16) & 3];
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjCtMecha05_c6RenderEv
 int daObjCtMecha05_c::Render() {
     mModel.Render(0);
     return 1;
@@ -255,7 +251,6 @@ int daObjCtMecha05_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjCtMecha05_c16CleanupResourcesEv
 int daObjCtMecha05_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -266,7 +261,6 @@ int daObjCtMecha05_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjCtMecha05_c12UpdateShadowEv
 void daObjCtMecha05_c::UpdateShadow() {
     int distance = mPosY - mGroundY;
     if (distance < 0)
@@ -294,8 +288,6 @@ void daObjCtMecha05_c::UpdateShadow() {
 
     DropShadowScaleXYZ(mShadowModel, mShadowMatrix, 0xdc000, 0x32000, 0x28a000, 0xf);
 }
-// @symbol _ZN16daObjCtMecha05_cD1Ev
-// @symbol _ZN16daObjCtMecha05_cD0Ev
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 /* No separate body lives here. The inline virtual destructor in the class

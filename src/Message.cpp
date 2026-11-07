@@ -57,6 +57,15 @@ u32 GetBG1ScrPtr(void);
 extern "C" {
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
+/* The message system's .bss, 0x0209d64c..0x0209e64c, defined here. mwcc
+   sorts a translation unit's .bss objects by ascending size, and this run
+   climbs without a drop from the u8 state through the 16-bit words, the
+   choice table, the words and pointers, to the two glyph buffers. Its
+   readers are this file, Message2.cpp, Message::SetTextGlobals, LoadFont and
+   Message::LoadText: the five tree files that tile .text 0x0201ab04..
+   0x0201fec8, one original translation unit. Every object below is reached
+   from more than one of them or from outside the run, so all stay global.
+   The address-named objects keep their address names. */
 /* The message box rectangle, set when a box opens (Message.cpp's layout code):
    gMsgBoxLeft/gMsgBoxTop are its final left and top edges and
    gMsgBoxCenterX/gMsgBoxCenterY its centre. The window registers (WIN0H/WIN0V)
@@ -66,61 +75,78 @@ extern u8 gSubScreenLayers;
    opening animation walks them out to gMsgBoxLeft/gMsgBoxTop. At runtime the
    next-page arrow sits at (2 * centre x - 6 - left, 2 * centre y + 2 - top),
    by the box's bottom-right corner. */
-extern u8 gMsgBoxWinTop;
-extern u8 gMsgBoxLeft;
-extern u8 data_0209d654;
-extern u8 gMsgBoxWinLeft;
-extern u8 data_0209d65c;
-extern u8 data_0209d660;
-extern u8 data_0209d664;
-extern u8 data_0209d668;
-extern u8 data_0209d66c;
-extern u8 data_0209d670;
-extern u8 data_0209d674;
-extern u8 data_0209d678;
-extern u8 data_0209d67c;
-extern u8 data_0209d680;
-extern u8 data_0209d684;
-extern u8 gMsgChoiceIndex;
-extern u8 data_0209d690;
-extern u8 data_0209d694;
-extern u8 data_0209d698;
-extern u8 data_0209d69c;
-extern u8 data_0209d6a4;
-extern u8 data_0209d6a8;
-extern u8 data_0209d6ac;
-extern u8 data_0209d6b0;
-extern u8 data_0209d6b4;
-extern u8 data_0209d6b8;
-extern u8 data_0209d6bc;
-extern u8 data_0209d6c0;
-/* Not named yet. Picks the message box's style: the text colour mask
-   (data_0208eecc[it]), which next-page arrow sprite is drawn (at runtime it
-   changes the arrow's colour/style), and the closing sound (0x21 or 5). The
-   Display* entry points set it to 0 or 1. */
-extern u8 data_0209d6c4;
-extern u8 gMsgBoxCenterY;
-extern u8 gMsgBoxTop;
-extern u8 gMsgBoxCenterX;
-extern s16 data_0209d6d4;
-extern u16 data_0209d6e0;
-extern MessageEntry *data_0209d708;
-extern u8 *data_0209d6f0;
-extern int *data_0209d70c;
-extern int data_0209d6fc;
+u8 gMsgBoxWinTop;
+u8 gMsgBoxLeft;
+u8 data_0209d654;
+u8 gMsgBoxWinLeft;
+u8 data_0209d65c;
+u8 data_0209d660;
+u8 data_0209d664;
+u8 data_0209d668;
+u8 data_0209d66c;
+u8 data_0209d670;
+u8 data_0209d674;
+u8 data_0209d678;
+u8 data_0209d67c;
+u8 data_0209d680;
+u8 data_0209d684;
+/* The line a horizontal (mode 1) choice sits on (Message2.cpp). */
+u8 gMsgChoiceLine;
+u8 gMsgChoiceIndex;
+u8 data_0209d690;
+u8 data_0209d694;
+u8 data_0209d698;
+u8 data_0209d69c;
+u8 data_0209d6a0;
+u8 data_0209d6a4;
+u8 data_0209d6a8;
+u8 data_0209d6ac;
+u8 data_0209d6b0;
+u8 data_0209d6b4;
+u8 data_0209d6b8;
+u8 data_0209d6bc;
+u8 data_0209d6c0;
+/* The message box's style: the text colour mask (data_0208eecc[it]), which
+   next-page arrow sprite is drawn, and the closing sound (0x21 or 5). The
+   Display* entry points set it: 1 for a sign (black arrow), 0 for a character
+   talking (white arrow). Under melonDS, flipping it on an open sign box turns
+   the arrow white, and on a Toad's box turns it black. */
+u8 gMsgBoxStyle;
+u8 gMsgBoxCenterY;
+u8 gMsgBoxTop;
+u8 gMsgBoxCenterX;
+s16 data_0209d6d4;
+s16 data_0209d6d8;
+s16 data_0209d6dc;
+u16 data_0209d6e0;
+/* Where each choice's cursor goes, recorded by AddChoice (Message2.cpp). The
+   bound is the 4-byte slot the object occupies. */
+u8 gMsgChoicePositions[4];
+/* The message bank pointers Message::SetTextGlobals splits the loaded bank
+   into; MessageBank.h gives data_0209d6e8, data_0209d6ec, data_0209d6fc,
+   data_0209d708 and data_0209d70c readable aliases. */
+int data_0209d6e8;
+int data_0209d6ec;
+u8 *data_0209d6f0;
 /* byte-forced spelling: the cell is written twice back-to-back in
    DisplayCourseNameForStarSelect and both stores must emit, so it is
    volatile here; plurality decl elsewhere is u8 *. */
-extern volatile int data_0209d6f4;
-extern s32 data_0209d704;
-extern s32 data_0209d74c[];
+volatile int data_0209d6f4;
+int data_0209d6f8;
+int data_0209d6fc;
+int data_0209d700;
+s32 data_0209d704;
+MessageEntry *data_0209d708;
+int *data_0209d70c;
+u8 data_0209d710[0x3c];
+s32 data_0209d74c[0x3c0];
 extern u8 data_0208ee74[];
 extern u8 data_0208f074[];
 extern u8 data_0209f20c;
 extern u8 data_0209f220;
 extern u8 gCollectedStarId;
 extern u8 data_0209f2d8;
-extern int data_0209caa0[3];
+extern SaveBlock data_0209caa0;
 extern s32 gRunningKuppaScript;
 extern s8 data_02092110;
 extern u32 gNextActorUpdateMask;
@@ -164,7 +190,6 @@ void func_0201f138(void);
 void func_0201f32c(int arg0);
 }
 
-// @symbol _ZN10dScStage_c13UpdateMessageEv
 void dScStage_c::UpdateMessage() {
     if (data_0209d660 == 0)
         return;
@@ -208,7 +233,6 @@ void dScStage_c::UpdateMessage() {
     }
 }
 
-// @symbol func_0201cd08
 extern "C" void func_0201cd08(int arg) {
     volatile int li;
     volatile unsigned short ls;
@@ -232,7 +256,6 @@ extern "C" void func_0201cd08(int arg) {
     Message_DrawCenteredLine(0x291, 0xa);
 }
 
-// @symbol _ZN7Message21DisplaySaveStatusTextEt
 void Message::DisplaySaveStatusText(unsigned short n)
 {
     volatile int li;
@@ -253,7 +276,6 @@ void Message::DisplaySaveStatusText(unsigned short n)
     func_0201d418(0x109, 0x70);
 }
 
-// @symbol func_0201cebc
 extern "C" void func_0201cebc(short a0)
 {
     volatile unsigned short v;
@@ -279,7 +301,6 @@ extern "C" void func_0201cebc(short a0)
     Message_DrawCenteredLine(0x1c0, 0x20);
 }
 
-// @symbol _ZN7Message21DisplayLevelClearTextEth
 void Message::DisplayLevelClearText(u16 msgID, u8 course) {
     func_0201d850(course);
     data_0209d6d4 = msgID;
@@ -287,7 +308,6 @@ void Message::DisplayLevelClearText(u16 msgID, u8 course) {
     func_0201e220(1);
 }
 
-// @symbol func_0201cfb8
 extern "C" void func_0201cfb8(int arg0)
 {
     data_0209d6d4 = (u16)arg0;
@@ -298,7 +318,6 @@ extern "C" void func_0201cfb8(int arg0)
     func_0201d418(0xcf, 0x68);
 }
 
-// @symbol _ZN7Message22DisplayOptionsMenuTextEs
 void Message::DisplayOptionsMenuText(s16 n) {
     volatile int li;
     volatile unsigned short ls;
@@ -320,7 +339,10 @@ void Message::DisplayOptionsMenuText(s16 n) {
     Message_DrawCenteredLine(0x280, 0x20);
 }
 
-// @symbol LoadControllerModeText
+/* opt_common_subs stays off: each of the three rows recomputes (n + 7) / 8 for its
+ * loop bound the way the cartridge does, and CSE shares the divide instead
+ * (0x1e0 against 0x20c). Reading the count back from data_0209d6b0 for the second
+ * copy forces the reload but not the same schedule (0x210). */
 #pragma push
 #pragma opt_common_subs off
 extern "C" void LoadControllerModeText(int param0)
@@ -402,7 +424,6 @@ extern "C" void LoadControllerModeText(int param0)
 }
 #pragma pop
 
-// @symbol _ZN7Message25DisplayControllerModeTextEt
 void Message::DisplayControllerModeText(unsigned short n)
 {
     volatile int li;
@@ -430,7 +451,6 @@ void Message::DisplayControllerModeText(unsigned short n)
     Message_DrawCenteredLine(0x280, 0x20);
 }
 
-// @symbol func_0201d418
 extern "C" void func_0201d418(int p0, int p1) {
     volatile int li;
     int i;
@@ -465,7 +485,6 @@ extern "C" void func_0201d418(int p0, int p1) {
     data_0209d6bc = 0;
 }
 
-// @symbol Message_DrawLineBG2
 /* Lays out the current message line into the main BG2 tiles at
    data_0209d674 and advances it. The caller writes the screen map. */
 extern "C" void Message_DrawLineBG2(void) {
@@ -488,7 +507,6 @@ extern "C" void Message_DrawLineBG2(void) {
     data_0209d674 = data_0209d674 + (u8)(((data_0209d6b0 + 7) / 8) << 1);
 }
 
-// @symbol Message_DrawCenteredLine
 extern "C" void Message_DrawCenteredLine(int a, int b)
 {
     int new_var5;
@@ -537,7 +555,6 @@ extern "C" void Message_DrawCenteredLine(int a, int b)
     data_0209d6a8 = data_0209d6a8 + ((u8) (((data_0209d6b0 + 7) / 8) << new_var4));
 }
 
-// @symbol func_0201d850
 extern "C" void func_0201d850(u32 arg0)
 {
     u16 var_r5;
@@ -777,7 +794,6 @@ L_r4_else:
     }
 }
 
-// @symbol _ZN7Message16DisplayPauseTextEth
 void Message::DisplayPauseText(unsigned short n, unsigned char b)
 {
     volatile int li;
@@ -802,7 +818,6 @@ void Message::DisplayPauseText(unsigned short n, unsigned char b)
     Message_DrawCenteredLine(0x1c0, 0x20);
 }
 
-// @symbol _ZN7Message19DisplayDontSaveTextEt
 void Message::DisplayDontSaveText(unsigned short n)
 {
     volatile int li;
@@ -827,7 +842,6 @@ void Message::DisplayDontSaveText(unsigned short n)
     Message_DrawCenteredLine(0x291, 0xa);
 }
 
-// @symbol func_0201e220
 extern "C" void func_0201e220(int arg) {
     volatile int li;
     volatile unsigned short ls;
@@ -853,7 +867,6 @@ extern "C" void func_0201e220(int arg) {
     }
 }
 
-// @symbol _ZN7Message19DisplaySaveMenuTextEt
 void Message::DisplaySaveMenuText(u16 msgID)
 {
     data_0209d6d4 = msgID;
@@ -864,7 +877,6 @@ void Message::DisplaySaveMenuText(u16 msgID)
     func_0201e220(0);
 }
 
-// @symbol _ZN7Message11DisplayTextEi
 void Message::DisplayText(int t) {
     volatile int li;
     volatile unsigned short ls;
@@ -881,7 +893,7 @@ void Message::DisplayText(int t) {
 
     base = data_0209d6fc;
     idx = data_0209d6d4;
-    data_0209d6c4 = 1;
+    gMsgBoxStyle = 1;
     data_0209d6c0 = 0;
     data_0209d668 = 0;
     data_0209d6a8 = 0;
@@ -923,7 +935,6 @@ void Message::DisplayText(int t) {
     func_0201b388(data_0209d6a8);
 }
 
-// @symbol _ZN7Message7DisplayEj
 void Message::Display(unsigned int msg)
 {
     volatile int li;
@@ -941,7 +952,7 @@ void Message::Display(unsigned int msg)
     MultiStore16(ls, (char*)s, 0x800);
     DisplayText(msg);
     data_0209d6d4 = 0x276;
-    data_0209d6c4 = 0;
+    gMsgBoxStyle = 0;
     data_0209d668 = 1;
     data_0209d6a8 = 0;
     p = G2S::GetBG0CharPtr() + 0x4000;
@@ -959,7 +970,6 @@ void Message::Display(unsigned int msg)
     Message_DrawCenteredLine(0x280, 0x20);
 }
 
-// @symbol _ZN7Message28DisplayStarNameForStarSelectEj
 void Message::DisplayStarNameForStarSelect(unsigned int msg)
 {
     volatile int li;
@@ -974,7 +984,7 @@ void Message::DisplayStarNameForStarSelect(unsigned int msg)
 
     idx = data_0209d6d4;
     data_0209d6c0 = 2;
-    data_0209d6c4 = 1;
+    gMsgBoxStyle = 1;
     data_0209d6f0 = (u8*)((char*)data_0209d708 + idx * 8);
     data_0209d6f4 = data_0209d6fc + 0x28 + data_0209d70c[1] +
                     ((MessageEntry *)((char *)data_0209d708 + idx * 8))->textOffset;
@@ -996,7 +1006,6 @@ void Message::DisplayStarNameForStarSelect(unsigned int msg)
     func_0201b388(data_0209d6a8);
 }
 
-// @symbol _ZN7Message30DisplayCourseNameForStarSelectEj
 void Message::DisplayCourseNameForStarSelect(u32 base)
 {
     volatile unsigned short ls;
@@ -1036,10 +1045,10 @@ void Message::DisplayCourseNameForStarSelect(u32 base)
     }
 
     if (data_0209d6d4 >= 0x1a5) {
-        data_0209d6c4 = 0;
+        gMsgBoxStyle = 0;
         q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x400);
     } else {
-        data_0209d6c4 = 1;
+        gMsgBoxStyle = 1;
         q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x4c0);
     }
     div = 0;
@@ -1087,7 +1096,6 @@ void Message::DisplayCourseNameForStarSelect(u32 base)
     func_0201b388(data_0209d6a8);
 }
 
-// @symbol func_0201eaac
 extern "C" void func_0201eaac(void)
 {
     data_0209d6c0 = 0;
@@ -1098,7 +1106,7 @@ extern "C" void func_0201eaac(void)
     gMsgChoiceIndex = 0;
     data_0209d684 = 0;
     data_0209d6b8 = 0;
-    data_0209d6c4 = 0;
+    gMsgBoxStyle = 0;
     data_0209d668 = 0;
     data_0209d654 = 0;
     data_0209d67c = 0;
@@ -1109,7 +1117,6 @@ extern "C" void func_0201eaac(void)
     data_0209d670 = 0;
 }
 
-// @symbol _ZN7Message13DisplaySavingEt
 void Message::DisplaySaving(unsigned short n)
 {
     volatile int li;
@@ -1140,7 +1147,7 @@ void Message::DisplaySaving(unsigned short n)
     data_0209d654 = (u8)one;
     gMsgBoxWinLeft = (u8)v7f;
     gMsgBoxWinTop = (u8)v87;
-    data_0209d6c4 = 0;
+    gMsgBoxStyle = 0;
     func_02012790(4);
 
     idx = data_0209d6d4;
@@ -1217,12 +1224,10 @@ void Message::DisplaySaving(unsigned short n)
     }
 }
 
-// @symbol func_0201ef38
 extern "C" void func_0201ef38(void) {
     gMainScreenLayers &= ~DISPLAY_LAYER_BG3;
 }
 
-// @symbol func_0201ef50
 extern "C" void func_0201ef50(int arg)
 {
     volatile int li;
@@ -1235,7 +1240,7 @@ extern "C" void func_0201ef50(int arg)
     int cp;
     func_0201eaac();
     data_0209d660 = 0;
-    data_0209d6c4 = 0;
+    gMsgBoxStyle = 0;
     data_0209d690 = 1;
     cp = G2S::GetBG0CharPtr();
     li = 0;
@@ -1272,7 +1277,6 @@ extern "C" void func_0201ef50(int arg)
     }
 }
 
-// @symbol func_0201f108
 extern "C" void func_0201f108(void) {
     u16 *scr = (u16 *)G2S::GetBG0ScrPtr();
     int i = 0;
@@ -1282,7 +1286,6 @@ extern "C" void func_0201f108(void) {
     } while (i < 0x400);
 }
 
-// @symbol func_0201f138
 extern "C" void func_0201f138(void)
 {
     volatile int li;
@@ -1300,7 +1303,7 @@ extern "C" void func_0201f138(void)
     gMsgBoxWinLeft = 0x7f;
     gMsgBoxWinTop = 0x87;
     data_0209d660 = 0;
-    data_0209d6c4 = 1;
+    gMsgBoxStyle = 1;
     data_0209d6f0 = (u8*)((char*)data_0209d708 + idx * 8);
     data_0209d6f4 = data_0209d6fc + 0x28 + data_0209d70c[1] +
                     ((MessageEntry *)((char *)data_0209d708 + idx * 8))->textOffset;
@@ -1337,7 +1340,6 @@ extern "C" void func_0201f138(void)
     gMainScreenLayers |= DISPLAY_LAYER_BG3;
 }
 
-// @symbol func_0201f32c
 extern "C" void func_0201f32c(int arg0)
 {
     MessageEntry *entry;
@@ -1368,11 +1370,11 @@ extern "C" void func_0201f32c(int arg0)
     gMsgBoxWinLeft = 0x7f;
     gMsgBoxWinTop = 0x87;
     if (data_0209d6d4 >= 0x2a && data_0209d6d4 < 0x83) {
-        data_0209d6c4 = 1;
+        gMsgBoxStyle = 1;
         func_02012790(0x20);
     } else {
         u32 b0;
-        data_0209d6c4 = 0;
+        gMsgBoxStyle = 0;
         b0 = (data_0209f2d8 == 2);
         if (b0 == 0) {
             func_02012790(4);
@@ -1391,7 +1393,7 @@ extern "C" void func_0201f32c(int arg0)
     f2d8_val = data_0209f2d8;
     {
         u32 b1 = (f2d8_val == 0);
-        if (b1 != 0 && !(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)) {
+        if (b1 != 0 && !(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
             u32 b2 = (gRunningKuppaScript != 0);
             if (b2 == 0) {
                 gMsgBoxLeft = 0x10;
@@ -1550,7 +1552,6 @@ extern "C" void func_0201f32c(int arg0)
 
 /* Course ids that must not open the talk window. data_0209d664 is the byte
    after the shared reset flag at data_0209d660. */
-// @symbol func_0201fb4c
 extern "C" int func_0201fb4c(void)
 {
     short v;
@@ -1581,7 +1582,6 @@ no:
 
 struct Pair { unsigned short v; unsigned short pad; };
 
-// @symbol ObjectMessageIDToActualMessageID
 extern "C" int ObjectMessageIDToActualMessageID(s16 id) {
     int i;
     extern struct Pair data_0208eeec[];
@@ -1594,14 +1594,12 @@ extern "C" int ObjectMessageIDToActualMessageID(s16 id) {
     return id;
 }
 
-// @symbol func_0201fc88
 extern "C" void func_0201fc88(s16 objectMsgID)
 {
     s16 id = (s16)ObjectMessageIDToActualMessageID(objectMsgID);
     func_0201f32c(id);
 }
 
-// @symbol _ZN7Message15ResetAllGlobalsEv
 void Message::ResetAllGlobals()
 {
     func_0201eaac();

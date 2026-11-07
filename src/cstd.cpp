@@ -24,7 +24,6 @@ int func_02052fdc(void);
 void func_02053008(int n);
 }
 
-// @symbol func_02053274
 /* Squared distance |a-b|^2 through the hardware sqrt unit; returns the
    20.12 result. */
 extern "C" {
@@ -54,7 +53,6 @@ int func_02053274(int *a, int *b)
 }
 }
 
-// @symbol _ZN4cstd4fdivEii
 namespace cstd {
 
 s32 fdiv(s32 numerator, s32 denominator)
@@ -65,7 +63,6 @@ s32 fdiv(s32 numerator, s32 denominator)
 
 }
 
-// @symbol _ZN4cstd4ldivEii
 namespace cstd {
 
 long long ldiv(int a, int b)
@@ -78,7 +75,6 @@ long long ldiv(int a, int b)
 
 }
 
-// @symbol func_02053200
 extern "C" {
 s32 func_02053200(s32 x)
 {
@@ -87,7 +83,6 @@ s32 func_02053200(s32 x)
 }
 }
 
-// @symbol func_020531a4
 extern "C" {
 int func_020531a4(int a)
 {
@@ -106,7 +101,6 @@ int func_020531a4(int a)
 }
 }
 
-// @symbol func_02053130
 extern "C" {
 s32 func_02053130(s32 x)
 {
@@ -120,15 +114,13 @@ s32 func_02053130(s32 x)
         while (REG_SQRTCNT & SQRT_CONTROL_BUSY)
             ;
 
-        return (s32)((quotient * (s64)REG_SQRT_RESULT + (s64)0x200 * (s64)(1LL << 32)) >>
-                     (32 + 10));
+        return (s32)((quotient * (s64)REG_SQRT_RESULT + (s64)0x200 * (1LL << 32)) >> (32 + 10));
     }
 
     return 0;
 }
 }
 
-// @symbol _ZN4cstd11ldiv_resultEv
 namespace cstd {
 
 long long ldiv_result(void)
@@ -139,7 +131,6 @@ long long ldiv_result(void)
 
 }
 
-// @symbol _ZN4cstd11fdiv_resultEv
 namespace cstd {
 
 int fdiv_result(void)
@@ -150,7 +141,6 @@ int fdiv_result(void)
 
 }
 
-// @symbol _ZN4cstd16reciprocal_asyncEi
 namespace cstd {
 void reciprocal_async(Fix12i a) {
     *(volatile unsigned short *)0x4000280 = 1;
@@ -159,7 +149,6 @@ void reciprocal_async(Fix12i a) {
 }
 }
 
-// @symbol func_02053008
 extern "C" {
 void func_02053008(int n)
 {
@@ -187,7 +176,6 @@ void func_02053008(int n)
 }
 }
 
-// @symbol func_02052fdc
 extern "C" {
 int func_02052fdc(void) {
     while (*(volatile unsigned short *)0x40002b0 & 0x8000)
@@ -196,7 +184,6 @@ int func_02052fdc(void) {
 }
 }
 
-// @symbol _ZN4cstd10fdiv_asyncEii
 namespace cstd {
 void fdiv_async(Fix12i a, Fix12i b) {
     *(volatile unsigned short *)0x4000280 = 1;
@@ -205,7 +192,6 @@ void fdiv_async(Fix12i a, Fix12i b) {
 }
 }
 
-// @symbol _ZN4cstd3divEii
 namespace cstd {
 
 int div(int a, int b)
@@ -219,7 +205,6 @@ int div(int a, int b)
 
 }
 
-// @symbol _ZN4cstd3modEii
 namespace cstd {
 
 int mod(int a, int b)

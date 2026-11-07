@@ -26,6 +26,7 @@ enum daObjFl_Seesaw_c_AssetId { ASSET_FL_SHISO_BMD = 0x0610, ASSET_FL_SHISO_KCL 
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* File-scope objects at the end of this file construct the two resource
  * handles (model file 0x610, collision file 0x611). mwcc emits
@@ -47,23 +48,19 @@ extern SeesawCollisionFilePtr data_ov022_021145a0;
 extern char data_ov064_0211bacc[];
 
 extern "C" {
-void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 
 /* local extern: stores beforeClsnCallback at dBgW+0x18. d_bg_w.cpp
  * defines it and no header declares it. */
-void func_020393d4(int *mesh, int callback);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
 #pragma defer_codegen off
 
 /* Vtable slots 16 (D1) and 17 (D0). */
-// @symbol _ZN16daObjFl_Seesaw_cD1Ev
-// @symbol _ZN16daObjFl_Seesaw_cD0Ev
 daObjFl_Seesaw_c::~daObjFl_Seesaw_c() {}
 
 /* Writes mModel's transform from mPosX/Y/Z and mAngleX/Y/Z -- the base's
  * UpdateModelPosAndRotY job, on three axes. */
-// @symbol _ZN16daObjFl_Seesaw_c20UpdateModelTransformEv
 void daObjFl_Seesaw_c::UpdateModelTransform() {
     Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3.t.x = mPosX >> 3;
@@ -71,7 +68,6 @@ void daObjFl_Seesaw_c::UpdateModelTransform() {
     mModel.mat4x3.t.z = mPosZ >> 3;
 }
 
-// @symbol _ZN16daObjFl_Seesaw_c16CleanupResourcesEv
 s32 daObjFl_Seesaw_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
@@ -81,14 +77,12 @@ s32 daObjFl_Seesaw_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjFl_Seesaw_c6RenderEv
 s32 daObjFl_Seesaw_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 /* Slot 6. */
-// @symbol _ZN16daObjFl_Seesaw_c8BehaviorEv
 s32 daObjFl_Seesaw_c::Behavior() {
     mMeshCollider.SetClipRadius(0x650000);
     if (DecIfAbove0_Byte(&mSwingCooldown) == 0) {
@@ -106,7 +100,6 @@ s32 daObjFl_Seesaw_c::Behavior() {
 }
 
 /* Slot 0. */
-// @symbol _ZN16daObjFl_Seesaw_c13InitResourcesEv
 s32 daObjFl_Seesaw_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov022_021145a8), 1, -1);
     UpdateModelTransform();
@@ -115,12 +108,11 @@ s32 daObjFl_Seesaw_c::InitResources() {
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), mClsnMat, 0x1000, mAngleY,
                               *(CLPS_Block *)(data_ov064_0211bacc));
-    func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
     mSwingStep = -0x10;
     return 1;
 }
 
-// @symbol daObjFl_Seesaw_c_classInit
 extern "C" daObjFl_Seesaw_c *daObjFl_Seesaw_c_classInit() {
     return new daObjFl_Seesaw_c();
 }

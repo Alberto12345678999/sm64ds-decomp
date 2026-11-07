@@ -17,8 +17,6 @@
 //   - ChangeMusicVolume / IsClsnInRange / KcMbg::SetFile stay computed-spelling
 //     externs: the member form changes codegen under 2004/b56 (Fix12<int> by
 //     value, wall 6az -- noted at use).
-//   - func_020393c4 stores a callback address as a 32-bit word at +0x1c; a
-//     typed callback signature has no byte proof, so the int* decl stays.
 //   - The collision callback func_ov002_020baa98 and its touch helper
 //     func_ov002_020baa2c keep their address names and stay free extern "C"
 //     functions.
@@ -61,7 +59,7 @@ struct SwitchClsnFileHandle : SharedFilePtr {
 };
 
 extern "C" {
-extern int gNextActorUpdateMask;
+extern u32 gNextActorUpdateMask;
 extern signed char gCurrentSublevel;
 extern SharedFilePtr data_ov002_0211092c;
 extern daObjSwitch_c::Resources data_ov002_021098e8[];
@@ -77,8 +75,8 @@ int d_a_obj_switchChangeMusicVolumeHold(unsigned int id, int volume);
 // committed experiment.
 extern void hold_d_a_obj_switch(void *self, void *file, const Matrix4x3 *matrix, int scale,
                                 s16 angle, void *clps);
-// The existing setter stores a callback address as a 32-bit word at +0x1c.
-void func_020393c4(int *self, int callback);
+// The setter stores the collider's stood-on callback at +0x1c.
+void func_020393c4(dBgW *collider, StoodOnCallback callback);
 void func_ov002_020baa2c(daObjSwitch_c *self, dActor_c *other);
 int func_02012310(int handle, int sound, int arg);
 unsigned char IsAreaShowing(int area);
@@ -88,7 +86,6 @@ void UnloadSilverStarAndNumber();
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 }
 
-// @symbol daObjSwitch_c_classInit_HANSWITCH
 /* Reconstructed source-style name: SM64DS proves daObjSwitch_c through RTTI,
  * allocation size, vtable identity, and the HANSWITCH registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -102,7 +99,6 @@ extern "C" daObjSwitch_c *daObjSwitch_c_classInit_HANSWITCH(void)
     return new daObjSwitch_c;
 }
 
-// @symbol daObjSwitch_c_classInit_STAR_SWITCH
 /* Reconstructed source-style name: SM64DS proves daObjSwitch_c through RTTI,
  * allocation size, vtable identity, and the STAR_SWITCH registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -117,14 +113,11 @@ extern "C" daObjSwitch_c *daObjSwitch_c_classInit_STAR_SWITCH(void)
  * long_calls keeps the pooled absolute tail call. */
 #pragma push
 #pragma long_calls on
-// @symbol func_ov002_020baa98
-extern "C" void func_ov002_020baa98(void *collider, daObjSwitch_c *self, dActor_c *other)
-{
-    func_ov002_020baa2c(self, other);
+extern "C" void func_ov002_020baa98(dBgW *collider, dActor_c *owner, dActor_c *other) {
+    func_ov002_020baa2c(static_cast<daObjSwitch_c *>(owner), other);
 }
 #pragma pop
 
-// @symbol func_ov002_020baa2c
 /* The player (actor 0xbf) stepped on the switch: raise mPlayerNearby, which
  * the press states read. Underwater, only a metal or mega player is heavy
  * enough, and the player must be within 0x98 units of the switch. */
@@ -143,7 +136,6 @@ extern "C" void func_ov002_020baa2c(daObjSwitch_c *self, dActor_c *other)
         self->mPlayerNearby = 1;
 }
 
-// @symbol _ZN13daObjSwitch_c13InitResourcesEv
 int daObjSwitch_c::InitResources()
 {
     u8 idx;
@@ -191,8 +183,7 @@ int daObjSwitch_c::InitResources()
         ->dBgW_KcMbg::SetFile((KCL_File *)(f), *(&mClsnMat), 0x199, mAngleY,
                               *(CLPS_Block *)(data_ov002_021098e8[idx].clps));
 
-    func_020393c4(reinterpret_cast<int *>(&mMeshCollider),
-                  reinterpret_cast<int>(&func_ov002_020baa98));
+    func_020393c4(&mMeshCollider, &func_ov002_020baa98);
 
     {
         u16 h = mTimeLimit;
@@ -207,7 +198,6 @@ int daObjSwitch_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN13daObjSwitch_c8BehaviorEv
 int daObjSwitch_c::Behavior()
 {
     dActor_c *a;
@@ -282,14 +272,12 @@ int daObjSwitch_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN13daObjSwitch_c6RenderEv
 int daObjSwitch_c::Render()
 {
     mModel.Render(&mDrawScale);
     return 1;
 }
 
-// @symbol _ZN13daObjSwitch_c16CleanupResourcesEv
 int daObjSwitch_c::CleanupResources()
 {
     int t;
@@ -306,14 +294,12 @@ int daObjSwitch_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba520Ev
 void daObjSwitch_c::func_ov002_020ba520()
 {
     int state = mState;
     (this->*data_ov002_0210e00c[state].exec)();
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba4d8Ei
 void daObjSwitch_c::func_ov002_020ba4d8(int nextState)
 {
     mState = nextState;
@@ -321,14 +307,12 @@ void daObjSwitch_c::func_ov002_020ba4d8(int nextState)
     (this->*data_ov002_0210e00c[state].init)();
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba4c0Ev
 void daObjSwitch_c::func_ov002_020ba4c0()
 {
     mTimer = 0;
     mPressTimer = 5;
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba3fcEv
 void daObjSwitch_c::func_ov002_020ba3fc()
 {
     int ok = 1;
@@ -355,7 +339,6 @@ void daObjSwitch_c::func_ov002_020ba3fc()
     if (ok != 0) mMusicVolume = 0x7f;
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba3a8Ev
 void daObjSwitch_c::func_ov002_020ba3a8()
 {
     if (mPlayerNearby) {
@@ -366,7 +349,6 @@ void daObjSwitch_c::func_ov002_020ba3a8()
     mPressTimer = 5;
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba2d0Ev
 void daObjSwitch_c::func_ov002_020ba2d0()
 {
     func_ov002_020ba01c(2, 3, 0x1000, 0x333);
@@ -387,7 +369,6 @@ void daObjSwitch_c::func_ov002_020ba2d0()
     func_ov002_020ba4d8(2);
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba2acEv
 void daObjSwitch_c::func_ov002_020ba2ac()
 {
     mTimer = 0;
@@ -396,7 +377,6 @@ void daObjSwitch_c::func_ov002_020ba2ac()
     mMusicVolume = 64;
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba1acEv
 void daObjSwitch_c::func_ov002_020ba1ac()
 {
     int diff;
@@ -426,7 +406,6 @@ void daObjSwitch_c::func_ov002_020ba1ac()
     func_ov002_020ba4d8(4);
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba0f8Ev
 void daObjSwitch_c::func_ov002_020ba0f8()
 {
     func_ov002_020ba01c(2, 3, 0x333, 0x1000);
@@ -447,7 +426,6 @@ void daObjSwitch_c::func_ov002_020ba0f8()
     func_ov002_020ba4d8(0);
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba0bcEv
 void daObjSwitch_c::func_ov002_020ba0bc()
 {
     unsigned short v = actorID;
@@ -456,7 +434,6 @@ void daObjSwitch_c::func_ov002_020ba0bc()
     func_ov002_020ba4d8(3);
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020ba01cEiiii
 void daObjSwitch_c::func_ov002_020ba01c(int mask, Fix12i b, Fix12i base, Fix12i target)
 {
     Fix12i d = cstd::fdiv((Fix12i)mTimer, b);
@@ -470,14 +447,12 @@ void daObjSwitch_c::func_ov002_020ba01c(int mask, Fix12i b, Fix12i base, Fix12i 
     if (mask & 4) mDrawScale.z = v;
 }
 
-// @symbol _ZN13daObjSwitch_c15OnGroundPoundedER8dActor_c
 void daObjSwitch_c::OnGroundPounded(dActor_c &other)
 {
     if (mState != 0) return;
     func_ov002_020ba4d8(1);
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020b9f80Ev
 void daObjSwitch_c::func_ov002_020b9f80()
 {
     mClsnMat = mModel.mat4x3;
@@ -487,7 +462,6 @@ void daObjSwitch_c::func_ov002_020b9f80()
     mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 
-// @symbol _ZN13daObjSwitch_c19func_ov002_020b9f00Ev
 int daObjSwitch_c::func_ov002_020b9f00()
 {
     dActor_c *star;

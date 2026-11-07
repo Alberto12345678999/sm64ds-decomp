@@ -15,7 +15,7 @@
 // What stays, and why:
 // - Vec3_Asr, func_02012694 and func_ov002_020ad660 have no shared header,
 //   so they keep a local extern "C" block.
-// - Behavior's position copies use the file-local POD Vec3F. types.h's
+// - Behavior's position copies use the SDK's POD VecFx32. types.h's
 //   Vector3 is not a POD.
 // - The Bool enum and the volatile sparkPos stay. Behavior needs both.
 // - TryDropItem writes a byte at +0x42b on actor 279 so a second
@@ -34,14 +34,9 @@
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
+#include "LevelRng.h"
 
-typedef struct {
-    s32 x, y, z;
-} Vec3;
-
-struct Vec3F {
-    int x, y, z;
-};
 enum Bool { FALSE, TRUE };
 
 /* Actor IDs, from symbols/actor_debug_names.tsv. */
@@ -63,7 +58,6 @@ enum { VARIANT_DROPS_ITEM = 0, VARIANT_KEEPS_HEADING = 3, VARIANT_COIN_DROP = 4 
 /* dCc_c::hitFlags bit, per the table in dCc_c.h. */
 enum { HIT_MEGA_CHARACTER = 0x10 };
 
-extern int data_0209e650;
 extern s32 data_ov002_02100320[];
 extern s32 data_ov002_02100334[];
 extern s32 data_ov002_02100348[];
@@ -76,19 +70,16 @@ int func_ov002_020ad660(void *cc, void *pp, void *r5p, int flags);
 void func_02012694(unsigned int, const Vector3 *);
 }
 
-// @symbol _ZN12daFPknBall_cD1Ev
-// @symbol _ZN12daFPknBall_cD0Ev
 /* D1: own vptr, then the members in reverse declaration order (dExtShadowModel_c,
  * dBgCh_Actr, dCcAc_c), then dEnemyBase_c's destructor. D0 is the same body
  * plus the inherited operator delete; it has no source of its own. */
 daFPknBall_c::~daFPknBall_c() {}
 
-// @symbol _ZN12daFPknBall_c11TryDropCoinEv
 /* Roll 0..9; on 0..3 spawn a coin (actor 288) at the ball's position and zero
  * its velocity words. Called when a variant-4 ball ends by range or water. */
 void daFPknBall_c::TryDropCoin() {
     dActor_c *coin;
-    if (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10 >= 4)
+    if (((unsigned int)RandomIntInternal(&data_0209e650.value) >> 0x10) % 10 >= 4)
         return;
     coin = dActor_c::Spawn(ACTOR_COIN, 0, mPos, 0, mAreaId, -1);
     if (coin != 0) {
@@ -98,14 +89,13 @@ void daFPknBall_c::TryDropCoin() {
     }
 }
 
-// @symbol _ZN12daFPknBall_c11TryDropItemEv
 /* Death drop of a variant-0 ball. Rolls 0..9. On 4..9, gives up if any
  * FPAKUN_BALL already exists. Otherwise, if the closest player's param1 is 3
  * and the actor 279 has not yet handed one out, spawns a cap (actor 269) for a
  * random unlocked character 0..2 and marks actor 279's byte at +0x42b. If none
  * of that happens, a roll below 4 spawns a coin as TryDropCoin does. */
 void daFPknBall_c::TryDropItem() {
-    u8 roll = (u8)(((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 10);
+    u8 roll = (u8)(((u32)RandomIntInternal(&data_0209e650.value) >> 0x10) % 10);
     if (roll >= 4) {
         if (ClosestWithActorID(ACTOR_FPAKUN_BALL) != 0)
             return;
@@ -125,7 +115,7 @@ void daFPknBall_c::TryDropItem() {
                 }
             }
             do {
-                idx = ((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 3;
+                idx = ((u32)RandomIntInternal(&data_0209e650.value) >> 0x10) % 3;
             } while ((unlocked & (1 << idx)) == 0);
             if (dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb, mPos, &mAngle, mAreaId,
                                 -1) != 0) {
@@ -146,13 +136,12 @@ void daFPknBall_c::TryDropItem() {
     }
 }
 
-// @symbol _ZN12daFPknBall_c13UpdateVisualsEv
 /* Per-frame visuals: refresh the two trail particles at the ball's position
  * (x mirrored when mMirrored is set), move the shadow matrix to that
  * position >> 3, and draw the drop shadow. */
 void daFPknBall_c::UpdateVisuals() {
-    Vec3 pos;
-    Vec3 shadowPos;
+    VecFx32 pos;
+    VecFx32 shadowPos;
 
     {
         s32 x = mPosX;
@@ -184,12 +173,10 @@ void daFPknBall_c::UpdateVisuals() {
     DropShadowRadHeight(mShadowModel, mShadowMat, 0x28000, 0x64000, 0xf);
 }
 
-// @symbol _ZN12daFPknBall_c6RenderEv
 int daFPknBall_c::Render() {
     return 1;
 }
 
-// @symbol _ZN12daFPknBall_c8BehaviorEv
 /* _ZN12daFPknBall_c8BehaviorEv at 0x020f8c94.
  *
  * Order of business: with the first Yoshi-mouth flag set only the visuals run;
@@ -198,15 +185,15 @@ int daFPknBall_c::Render() {
  * player unless the variant is 3), handle whatever hit the collider, steer,
  * move, and die on range, wall or water.
  *
- * The file-local POD Vec3F stands in for types.h's Vector3, which is not a
+ * The SDK's POD VecFx32 stands in for types.h's Vector3, which is not a
  * POD: a struct copy of it scalarises differently, and this function needs the
  * POD's. The choice is per function and has to be measured (see the note in
  * d_enemy_base.cpp, where the real Vector3 costs nothing).
  */
 int daFPknBall_c::Behavior() {
-    struct Vec3F dustPos1;
-    volatile struct Vec3F sparkPos;
-    struct Vec3F dustPos2, dustPos3, dustArg1, dustArg2, dustArg3;
+    VecFx32 dustPos1;
+    volatile VecFx32 sparkPos;
+    VecFx32 dustPos2, dustPos3, dustArg1, dustArg2, dustArg3;
     int flags;
     int clsnResult;
     void *hitActor;
@@ -374,7 +361,6 @@ int daFPknBall_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN12daFPknBall_c13InitResourcesEv
 int daFPknBall_c::InitResources() {
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -397,7 +383,6 @@ int daFPknBall_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN12daFPknBall_c13OnYoshiTryEatEv
 s32 daFPknBall_c::OnYoshiTryEat() {
     unsigned char b = mVariant;
     if (b != VARIANT_DROPS_ITEM && b != VARIANT_COIN_DROP)
@@ -406,7 +391,6 @@ s32 daFPknBall_c::OnYoshiTryEat() {
 }
 
 /* FPAKUN_BALL registry factory. */
-// @symbol daFPknBall_c_classInit
 extern "C" daFPknBall_c *daFPknBall_c_classInit() {
     return new daFPknBall_c();
 }

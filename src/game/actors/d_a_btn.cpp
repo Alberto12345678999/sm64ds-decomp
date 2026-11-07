@@ -65,6 +65,7 @@ enum d_a_btn_AssetId {
 };
 
 #include "daBtn_c.h"
+#include "ParticleIds.h"
 #include "math/CalcLib.h"
 #include "daPly_c.h"
 #include "SharedFilePtr.h"
@@ -92,8 +93,8 @@ struct CLPS_Block;
 
 extern "C" {
 /* ---- this TU ---- */
-void func_ov079_02123d4c(int *out, daBtn_c *self);
-void func_ov079_0212522c(void *a, void *b, void *c);
+void func_ov079_02123d4c(Vector3 *out, daBtn_c *self);
+void func_ov079_0212522c(dBgW *collider, dActor_c *owner, dActor_c *other);
 
 /* ---- arm9 / ov002 ---- */
 int AngleDiff(int, int);
@@ -117,12 +118,12 @@ void func_01ffb098(void *collider);
 void func_01ffb0a4(void *collider);
 void func_01ffb0b0(void *collider);
 void func_01ffb0bc(void *);
-int func_0200fa04(void *c, void *v, int b);
+void *func_0200fa04(void *c, void *v, int b);
 void func_02011cfc(void);
 void func_02011d38(void);
 void func_02012694(unsigned int a, void *p);
-void func_020393c4(void *p, int v);
-void func_020393d4(void *p, void *v);
+void func_020393c4(dBgW *collider, StoodOnCallback callback);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 int func_ov002_020dd8b8(void *c);
 
 /* Parameter names keep this TU's @NNN. */
@@ -137,9 +138,10 @@ extern u8 data_0209d660;
 extern u8 data_0209f21c;
 extern u8 data_0209f220;
 extern signed char gCurrentSublevel;
-extern int data_0209f318;
+extern dCamera_c *data_0209f318;
 extern daPly_c *data_0209f394[];
-/* local extern: math/MtxStack.h's helper prototypes clash with this file's */
+/* local extern: math/MtxStack.h's helpers take Matrix4x3 *, and this file
+   hands them mShadowMatrix, which daBtn_c.h keeps as s32[12]. */
 extern Matrix4x3 data_020a0e68;
 /* The king's collision mesh takes Whomp's Fortress's own CLPS block. The
    relocation's target address is shared by 15 level overlays; residency
@@ -180,7 +182,6 @@ struct BtnCollisionFilePtr : SharedFilePtr {
     ~BtnCollisionFilePtr();
 };
 
-// @symbol __sinit_d_a_btn.cpp
 BtnModelFilePtr         data_ov079_02128170(ASSET_BATTAN_BMD);   /* the plain Whomp's BMD */
 BtnModelFilePtr         data_ov079_02128168(ASSET_BATTAN_KING_BMD);   /* the king's BMD */
 BtnTextureSeqFileHandle data_ov079_02128178(ASSET_BATTAN_KING_BTP);   /* the king's face BTP */
@@ -228,19 +229,16 @@ daBtn_c::StateFunc data_ov079_02128280[12] = {
    Vector3-by-value call, so this view lets the virtual forward to it. */
 namespace vecret { extern "C" Vector3 func_ov079_02123d4c(void *thiz); }
 
-// @symbol daBtn_c_classInit_BATAN
 extern "C" daBtn_c *daBtn_c_classInit_BATAN()
 {
     return new daBtn_c();
 }
 
-// @symbol daBtn_c_classInit_BATANKING
 extern "C" daBtn_c *daBtn_c_classInit_BATANKING()
 {
     return new daBtn_c();
 }
 
-// @symbol _ZN7daBtn_c13InitResourcesEv
 /* Load the class's model, animations (and the king's face texture), set up
    the shadow, the collision mesh and the wall probe, record the spawn pose,
    and start waiting (state 0) on the walk animation. The king claims its
@@ -321,7 +319,7 @@ int daBtn_c::InitResources()
     }
 
     func_01ffb0bc(&mMovingMeshCollider);
-    func_020393d4(&mMovingMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
+    func_020393d4(&mMovingMeshCollider, &dBgW::UpdatePosAndAngs);
 
     {
         s32 sp[3];
@@ -400,7 +398,6 @@ int daBtn_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN7daBtn_c8BehaviorEv
 /* Per frame: the king claims the camera's target while a player is within
    0x1770000 (except once beaten), then survey the players, move, keep off
    ledges, collide with the walls, run the state handler, pose the model and
@@ -412,7 +409,7 @@ int daBtn_c::Behavior()
             /* data_0209f318 is the camera (symbols/verified.tsv: CAMERA).
                While the player is within 0x1770000 the king asks the camera
                to frame him each frame, as daBombking_c::Behavior does. */
-            ((dCamera_c *)data_0209f318)->mFramedActor = this;
+            data_0209f318->mFramedActor = this;
         }
     }
 
@@ -468,7 +465,6 @@ int daBtn_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN7daBtn_c6RenderEv
 int daBtn_c::Render()
 {
     if (mShouldRender == 0)
@@ -479,7 +475,6 @@ int daBtn_c::Render()
     return 1;
 }
 
-// @symbol _ZN7daBtn_c16CleanupResourcesEv
 int daBtn_c::CleanupResources()
 {
   int i;
@@ -499,7 +494,6 @@ int daBtn_c::CleanupResources()
   return 1;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02125b44Ev
 /* State 0, waiting. A plain Whomp wakes (state 1) when a player comes
    within 0x3e8000. The king instead holds its introduction: once the
    nearest player stands close (0x190000) and not far below it, start a
@@ -601,7 +595,6 @@ void daBtn_c::func_ov079_02125b44()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021258fcEv
 /* State 1, the plain Whomp's walk: advance on the walk cycle (standing
    still for its first frames), play the footsteps, and head back (state 7)
    once 0x2bc000 from the spawn point -- 0xc8000 in level 0x27. A player
@@ -683,7 +676,6 @@ void daBtn_c::func_ov079_021258fc()
     mAnmModel.Advance();
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021256d4Ev
 /* State 2, the king's walk: turn toward the nearest player and shove them
    aside (func_ov079_02123bcc), speed up within 0x5dc000 and lean (state 3)
    at a non-mega player dead ahead within 0x190000. If the nearest player
@@ -768,7 +760,6 @@ void daBtn_c::func_ov079_021256d4()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02125504Ev
 /* The walk cycle's footfalls: on the walk animation, frames 0..7 and
    0x1e..0x26 are a foot coming down -- stop, and once per footfall play the
    step, shake the camera (unless flag 0x800000 of gNextActorUpdateMask is set) and
@@ -837,13 +828,12 @@ void daBtn_c::func_ov079_02125504()
             v[0].x = px + sn * 0xaa;
             v[0].z = pz + cs * 0xaa;
         }
-        Particle::System::NewSimple(0xb2, v[0].x, v[0].y, v[0].z);
+        Particle::System::NewSimple(kPtclLandingDust, v[0].x, v[0].y, v[0].z);
     } else {
         mStepPlayed = 0;
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021254b4Ev
 /* State 3, the lean: stand still until the topple animation reaches frame
    15, then start falling (state 4). */
 void daBtn_c::func_ov079_021254b4()
@@ -856,7 +846,6 @@ void daBtn_c::func_ov079_021254b4()
     mFlags |= 0x2000000;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_0212538cEv
 /* State 4, the fall: keep the mesh collider live, hop on the first frame,
    and from frame 8 tip forward with a growing mPitchSpeed until the body is
    flat (mAngleX 0x4000), which lands it in state 5. The mesh is raised with
@@ -893,7 +882,6 @@ void daBtn_c::func_ov079_0212538c()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02125240Ev
 /* State 5, the slam: once the face hits the ground, stop falling, freeze
    the mesh collider, shake the camera, start the lying-down animation and
    move to state 6; from then on the collider's contact callback is the
@@ -918,29 +906,26 @@ void daBtn_c::func_ov079_02125240(){
     v.z = mPosZ;
     Earthquake(v, 0x7d0000);
     mState = 6;
-    func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
+    func_020393c4(&mMovingMeshCollider, func_ov079_0212522c);
     if (mIsKing != 0) {
-        func_ov079_02123d4c((int *)&a, this);
+        func_ov079_02123d4c(&a, this);
         func_0200fa04(this, &a, 0);
     } else {
-        func_ov079_02123d4c((int *)&b, this);
+        func_ov079_02123d4c(&b, this);
         LandingDustAt(b, false);
     }
 }
 
-// @symbol func_ov079_0212522c
 /* The mesh collider's contact callback while the body lies flat: drops the
    collider argument and forwards (actor, other). long_calls emits the pooled
    `ldr ip,[pc,#8]; bx ip` absolute tail-call; bracketed closed immediately
    because it is positional. */
 #pragma long_calls on
-extern "C" void func_ov079_0212522c(void *a, void *b, void *c)
-{
-    ((daBtn_c *)b)->func_ov079_02125058((dActor_c *)c);
+extern "C" void func_ov079_0212522c(dBgW *collider, dActor_c *owner, dActor_c *other) {
+    static_cast<daBtn_c *>(owner)->func_ov079_02125058(other);
 }
 #pragma long_calls off
 
-// @symbol _ZN7daBtn_c19func_ov079_02125058EP8dActor_c
 /* Contact from the lying body's back. Only players count. A contact that
    func_ov002_020dd8b8 accepts is a hit: it arms mPounded and remembers the
    player (the king ignores it while a resumed state 0 is pending). Any
@@ -997,7 +982,6 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124ed4Ev
 /* The king's lying-down phase of state 6. A ground-pound on its back
    (mPounded) costs a hit point, with a sound and a burst at the player's
    feet: the last one defeats it (state 8), any other swaps the face texture
@@ -1045,7 +1029,6 @@ void daBtn_c::func_ov079_02124ed4()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124decEv
 /* The plain Whomp's lying-down phase of state 6: a ground-pound on its
    back (mPounded) pays out five coins and defeats it (state 8); a plain
    touch only advances the phase, and letting go resets it. */
@@ -1086,7 +1069,6 @@ void daBtn_c::func_ov079_02124dec()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124b08Ev
 /* State 6, lying flat. Phases below 10 belong to the class's own handler
    (the king's hit counting, the plain Whomp's coin/defeat check); after
    100 frames (120 for the king), or 30 once unk_407 is armed, the body
@@ -1188,7 +1170,6 @@ void daBtn_c::func_ov079_02124b08()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021249f0Ev
 /* State 7, turn back: spin in place 0x400 a frame for 32 frames, then walk
    off at the class's pace and hand over to state 1 after 42. A hit that
    interrupted this state resumes it where it left off. */
@@ -1220,7 +1201,6 @@ void daBtn_c::func_ov079_021249f0()
     mAnmModel.Advance();
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021246dcEv
 /* State 8, defeat. The plain Whomp just bursts into dust and is gone. The
    king first talks: start a conversation with the player that beat it,
    show message 0xa5 beside the nearest player, wait for it to close, then
@@ -1279,7 +1259,7 @@ void daBtn_c::func_ov079_021246dc()
             func_0201267c(0xc6, &mCamSpacePos);
             Sound::StopLoadedMusic_Layer3();
             func_02011cfc();
-            func_ov079_02123d4c((int *)&v, this);
+            func_ov079_02123d4c(&v, this);
             v.y += 0x50000;
             dp.x = v.x;
             dp.y = v.y;
@@ -1295,7 +1275,7 @@ void daBtn_c::func_ov079_021246dc()
         }
     } else {
         func_0201267c(0xc6, &mCamSpacePos);
-        func_ov079_02123d4c((int *)&v2, this);
+        func_ov079_02123d4c(&v2, this);
         v2.y += 0x28000;
         dp2.x = v2.x;
         dp2.y = v2.y;
@@ -1306,13 +1286,11 @@ void daBtn_c::func_ov079_021246dc()
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021246d8Ev
 /* State 9: the king has been beaten and is waiting to be destroyed. */
 void daBtn_c::func_ov079_021246d8()
 {
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124638Ev
 /* State 10, the hit wobble: rock about the pitch axis for 10 of the 90
    frames the hit armed, then sit level, then put back the state the hit
    interrupted. */
@@ -1337,7 +1315,6 @@ void daBtn_c::func_ov079_02124638()
     mResumePending = 0;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124530Ev
 /* State 11, knocked over from behind: finish the hop, then tip forward like
    state 4 with variant-specific pitch acceleration until flat, landing in
    state 5. While the hop plays the body rises. */
@@ -1370,7 +1347,6 @@ void daBtn_c::func_ov079_02124530()
     mPosY += (mIsKing + 1) << 15;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_021243e0Ei
 /* Keep the mesh collider enabled only near a player: always for a hidden
    body it is off, for the king outside state 0 it is on, otherwise it is on
    while the closest player is within `range` (default: eight clip radii
@@ -1417,7 +1393,6 @@ int daBtn_c::func_ov079_021243e0(int range)
     return 0;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124188Ev
 /* Pose the model from the actor (raised by mTipLift), read the first
    bone's rotation back into mBodyPitch/Yaw/Roll, and drop the shadow: its
    matrix sits under the body's centre, pushed out along the tilt, turned
@@ -1479,7 +1454,6 @@ void daBtn_c::func_ov079_02124188()
     return;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02124008Ev
 /* Pose the collision mesh: the model's matrix turned by the body's bone
    rotation (yaw always; pitch and half the roll except while walking,
    states 1 and 7), squashed vertically as the body tilts, and placed at the
@@ -1519,7 +1493,6 @@ void daBtn_c::func_ov079_02124008()
     mMovingMeshCollider.Transform(*(Matrix4x3 *)mMeshMatrix, mBodyYaw);
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02123f34Ev
 /* Survey the watched players: the nearest one (index, distance, bearing into
    mTargetAngle) and the nearest one ahead, within 0x2000 of the heading. */
 void daBtn_c::func_ov079_02123f34()
@@ -1563,14 +1536,13 @@ void daBtn_c::func_ov079_02123f34()
     mTargetAngle = minAngle;
 }
 
-// @symbol _ZN7daBtn_c15OnHitByMegaCharER7daPly_c
 void daBtn_c::OnHitByMegaChar(daPly_c &player) {
     if (mIsKing != 0) return;
     if (mDeathState == 8) return;
     player.IncMegaKillCount();
     func_02012694(0x1e, &mCamSpacePosX);
     Vector3 pos;
-    func_ov079_02123d4c((int *)&pos, this);
+    func_ov079_02123d4c(&pos, this);
     Vector3 dust;
     pos.y = pos.y + 0x28000;
     dust.x = pos.x;
@@ -1583,7 +1555,6 @@ void daBtn_c::OnHitByMegaChar(daPly_c &player) {
         mMovingMeshCollider.Disable();
 }
 
-// @symbol func_ov079_02123d4c
 /* The point eggs aim at and dust bursts from: the body's centre, pushed out
    along the tilt (twice as far for the king) and raised by
    OnAimedAtWithEgg's height. OnAimedAtWithEggReturnVec returns exactly this.
@@ -1591,10 +1562,10 @@ void daBtn_c::OnHitByMegaChar(daPly_c &player) {
    gives the named local its own stack home (no NRVO, +0xc); the (out, this)
    free form is the byte-exact shape, and the callers that need the member
    view reach it through vecret below. */
-extern "C" void func_ov079_02123d4c(int* out, daBtn_c *self){
-    out[0] = self->mPosX;
-    out[1] = self->mPosY;
-    out[2] = self->mPosZ;
+extern "C" void func_ov079_02123d4c(Vector3 *out, daBtn_c *self) {
+    out->x = self->mPosX;
+    out->y = self->mPosY;
+    out->z = self->mPosZ;
     {
         int m;
         int d;
@@ -1603,17 +1574,16 @@ extern "C" void func_ov079_02123d4c(int* out, daBtn_c *self){
         } else {
             m = (s16)data_02082214[((unsigned short)self->mAngleX >> 4) * 2] * (s16)0xc8;
         }
-        out[0] = out[0] + FX_MUL(m, data_02082214[((unsigned short)self->mAngleY >> 4) * 2]);
+        out->x = out->x + FX_MUL(m, data_02082214[((unsigned short)self->mAngleY >> 4) * 2]);
         d = self->OnAimedAtWithEgg();
         {
-            out[1] += d;
-            out[2] =
-                out[2] + FX_MUL(m, data_02082214[((unsigned short)self->mAngleY >> 4) * 2 + 1]);
+            out->y += d;
+            out->z =
+                out->z + FX_MUL(m, data_02082214[((unsigned short)self->mAngleY >> 4) * 2 + 1]);
         }
     }
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02123bccEv
 /* The king shoves the nearest player aside: if that player is no higher
    than the king and stands inside the band ahead of it (within 0x3c000
    sideways and 0xe1000 along the line to them, measured on the bearing
@@ -1659,7 +1629,6 @@ int daBtn_c::func_ov079_02123bcc() {
     return 0;
 }
 
-// @symbol _ZN7daBtn_c16OnAimedAtWithEggEv
 s32 daBtn_c::OnAimedAtWithEgg() {
     int idx;
     if(mIsKing!=0){
@@ -1670,13 +1639,11 @@ s32 daBtn_c::OnAimedAtWithEgg() {
     return data_02082214[idx*2+1] * 0x90 + 0x24000;
 }
 
-// @symbol _ZN7daBtn_c25OnAimedAtWithEggReturnVecEv
 Vector3 daBtn_c::OnAimedAtWithEggReturnVec()
 {
     return vecret::func_ov079_02123d4c(this);
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02123a8cEv
 /* The mesh collider also stays on while the nearest actor of ID 9 is within
    eight clip radii of the egg-aim point. Returns 1 when it did. */
 int daBtn_c::func_ov079_02123a8c()
@@ -1702,7 +1669,6 @@ int daBtn_c::func_ov079_02123a8c()
     return 0;
 }
 
-// @symbol _ZN7daBtn_c19func_ov079_02123804EP8dActor_c
 /* A hit from `other`, judged by where it stood a frame ago (pulled back
    0x50 along its heading) against the body's facing. From the front (within
    0x3c00) the body wobbles (state 10); from behind (beyond 0x4400) it drops
@@ -1790,7 +1756,5 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
     }
 }
 
-// @symbol _ZN7daBtn_cD1Ev
-// @symbol _ZN7daBtn_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline destructor in the header
    emits D1 then D0 -- the cartridge's order -- and no D2. */

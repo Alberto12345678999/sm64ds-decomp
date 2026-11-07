@@ -12,17 +12,12 @@
 // Notes:
 // - States: 0 fall (bounce on landing), 1 carried, 2 in Yoshi's mouth (mFlags
 //   0x20000 / 0x40000). Each row of data_ov080_0212847c is an Init/Main pair.
-// - mShadowMtx stays u8[0x30] and is cast to Matrix4x3. The header names the
-//   array, not a Matrix4x3.
 // - StateYoshiMouthMain stores 0 through *(int *)pad_0d0, the pad in front of
 //   mModel.
 // - StateYoshiMouthMain keeps `goto done` and StateCarriedMain keeps
 //   `goto clear`: early returns reschedule the tail (+48 bytes) and a
 //   keepCrate flag reschedules the break block (+16 bytes), both measured
 //   against the ROM-matching spelling.
-// - Matrix4x3_ApplyInPlaceToTranslation and Matrix4x3_FromRotationY stay
-//   local: the carrier-matrix copy goes through the 12-word Mtx43, which
-//   conflicts with math/MtxStack.h's Matrix4x3 data_020a0e68.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daBttBk_c_AssetId { ASSET_BATTA_BLOCK_BMD = 0x02ac };
@@ -36,23 +31,18 @@ enum daBttBk_c_AssetId { ASSET_BATTA_BLOCK_BMD = 0x02ac };
 #include "nitro/fx/fx.h"
 #include "Particle__System.h"
 
-#include "private/mtx43.h"
+#include "math/MtxStack.h"
 
 /* State-table rows are 8-byte mwcc pointer-to-member pairs. */
 typedef void (daBttBk_c::*PMF)();
 
-/* arm9 C helpers. local extern: the two matrix routines take this TU's Mtx43
- * (see the notes above); the rest have no shared header. */
+/* arm9 C helpers. local extern: no shared header declares these. */
 extern "C" {
-void *func_02010304(void *a, void *b);
-void Matrix4x3_ApplyInPlaceToTranslation(Mtx43 *m, int x, int y, int z);
 int *Vec3_LslInPlace(Vector3 *v, int sh);
-void Matrix4x3_FromRotationY(void *m, int angle);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
 
-extern Mtx43 data_020a0e68;
 extern s16 data_02082214[];
 
 /* dExtSimpleModel_c-file handle. The derived constructor and destructor are the retail
@@ -73,13 +63,10 @@ extern daBttBk_StateRow data_ov080_0212847c[3];
 
 #pragma defer_codegen off
 
-// @symbol _ZN9daBttBk_cD1Ev
-// @symbol _ZN9daBttBk_cD0Ev
 /* Empty on purpose. mwccarm destroys the members, then ~dActor_c, and
  * emits retail D1 followed by D0. */
 daBttBk_c::~daBttBk_c() {}
 
-// @symbol _ZN9daBttBk_c13OnYoshiTryEatEv
 s32 daBttBk_c::OnYoshiTryEat() {
     return 1;
 }
@@ -88,11 +75,10 @@ s32 daBttBk_c::OnYoshiTryEat() {
  * func_02010304 is stored in mCarrier and enters state 1; otherwise, against
  * actor id 0xbf, mFlags bit 17 enters state 2 and a hitFlags bit 4 contact
  * breaks the crate (daPly_c::IncMegaKillCount, dust, five coins). */
-// @symbol _ZN9daBttBk_c15HandleCollisionEv
 void daBttBk_c::HandleCollision() {
     if (mdCcAc_c.otherOwner == 0)
         return;
-    void *p = func_02010304(this, &mdCcAc_c);
+    void *p = func_02010304(&mdCcAc_c);
     if (p != 0) {
         mCarrier = (dActor_c *)p;
         SetState(1);
@@ -140,7 +126,6 @@ void daBttBk_c::HandleCollision() {
 /* dExtSimpleModel_c and shadow matrices: follows the carrier's matrix while carried,
  * then rebuilds the model matrix (mModel.mat4x3) and the drop shadow
  * matrix (mShadowMtx). */
-// @symbol _ZN9daBttBk_c20UpdateModelTransformEv
 void daBttBk_c::UpdateModelTransform() {
     Vector3 t;
     Vector3 pos;
@@ -159,12 +144,12 @@ void daBttBk_c::UpdateModelTransform() {
                 t.y = ty;
                 t.z = tz;
                 carrier = mCarrier;
-                data_020a0e68 = *(Mtx43 *)carrier->mCarryMatrix;
+                data_020a0e68 = *carrier->mCarryMatrix;
                 Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, t.x, t.y, t.z);
 
-                mPosX = data_020a0e68.a[9];
-                mPosY = data_020a0e68.a[10];
-                mPosZ = data_020a0e68.a[11];
+                mPosX = data_020a0e68.m[9];
+                mPosY = data_020a0e68.m[10];
+                mPosZ = data_020a0e68.m[11];
                 Vec3_LslInPlace(&mPos, 3);
             }
         }
@@ -183,24 +168,22 @@ void daBttBk_c::UpdateModelTransform() {
     if (rg.DetectClsn()) {
         groundY = rg.clsnY;
     }
-    Matrix4x3_FromRotationY(mShadowMtx, mAngleY);
-    ((Matrix4x3 *)mShadowMtx)->m[9] = mPosX >> 3;
-    ((Matrix4x3 *)mShadowMtx)->m[10] = groundY >> 3;
-    ((Matrix4x3 *)mShadowMtx)->m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mShadowMtx, mAngleY);
+    mShadowMtx.m[9] = mPosX >> 3;
+    mShadowMtx.m[10] = groundY >> 3;
+    mShadowMtx.m[11] = mPosZ >> 3;
     {
         s16 a = mAngleX;
         int sv = data_02082214[((unsigned short)(short)(a << 1) >> 4) * 2];
         if (sv < 0)
             sv = -sv;
         int result = FX_MUL(sv, 0x28000);
-        DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMtx, 0x96000, 0x32000,
-                           result + 0x96000, 0xf);
+        DropShadowScaleXYZ(mShadowModel, mShadowMtx, 0x96000, 0x32000, result + 0x96000, 0xf);
     }
 }
 
 /* State 2 update: back to state 0 once neither flag bit 17 nor 18 is set.
  * The 0 stored through pad_0d0 is the state passed to SetState. */
-// @symbol _ZN9daBttBk_c19StateYoshiMouthMainEv
 int daBttBk_c::StateYoshiMouthMain() {
     int flags = mFlags;
     int inYoshiMouthA = (flags & 0x20000) ? 1 : 0;
@@ -216,7 +199,6 @@ done:
 }
 
 /* State 2 enter. */
-// @symbol _ZN9daBttBk_c19StateYoshiMouthInitEv
 int daBttBk_c::StateYoshiMouthInit() {
     mHorzSpeed = 0;
     mdCcAc_c.Clear();
@@ -226,7 +208,6 @@ int daBttBk_c::StateYoshiMouthInit() {
 
 /* State 1 update: copies the carrier's angles; breaks the crate unless
  * mFlags bit 8 is set and bit 13 clear. */
-// @symbol _ZN9daBttBk_c16StateCarriedMainEv
 int daBttBk_c::StateCarriedMain() {
     mAngleX = mCarrier->mAngleX;
     mAngleY = mCarrier->mAngleY;
@@ -278,7 +259,6 @@ clear:
 }
 
 /* State 1 enter. */
-// @symbol _ZN9daBttBk_c16StateCarriedInitEv
 int daBttBk_c::StateCarriedInit() {
     u32 *flagsPtr = &mFlags;
     int one = 1;
@@ -288,7 +268,6 @@ int daBttBk_c::StateCarriedInit() {
 }
 
 /* State 0 update: fall, bounce at 60% on landing, collide. */
-// @symbol _ZN9daBttBk_c13StateFallMainEv
 int daBttBk_c::StateFallMain() {
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
     if (mWithMeshClsn.JustHitGround()) {
@@ -305,7 +284,6 @@ int daBttBk_c::StateFallMain() {
 }
 
 /* State 0 enter. */
-// @symbol _ZN9daBttBk_c13StateFallInitEv
 int daBttBk_c::StateFallInit() {
     mVertSpeed = 0xc000;
     mWithMeshClsn.SetLimMovFlag();
@@ -314,38 +292,32 @@ int daBttBk_c::StateFallInit() {
 }
 
 /* Runs the current state row's update function (second PMF). */
-// @symbol _ZN9daBttBk_c11UpdateStateEv
 void daBttBk_c::UpdateState() {
     PMF *p = (PMF *)mStateRow + 1;
     (this->**p)();
 }
 
 /* Runs the current state row's enter function (first PMF). */
-// @symbol _ZN9daBttBk_c10EnterStateEv
 void daBttBk_c::EnterState() {
     PMF *p = (PMF *)mStateRow;
     (this->**p)();
 }
 
 /* Changes state: points mStateRow at row i of the state table, then enters it. */
-// @symbol _ZN9daBttBk_c8SetStateEi
 void daBttBk_c::SetState(int i) {
     mStateRow = (char *)data_ov080_0212847c + (i << 4);
     EnterState();
 }
 
 /* Slot 3: one shared model file handle to give back. */
-// @symbol _ZN9daBttBk_c16CleanupResourcesEv
 s32 daBttBk_c::CleanupResources() {
     gBattaBlockModelFile.Release();
     return 1;
 }
 
 /* Slot 12: empty override. */
-// @symbol _ZN9daBttBk_c16OnPendingDestroyEv
 void daBttBk_c::OnPendingDestroy() {}
 
-// @symbol _ZN9daBttBk_c6RenderEv
 int daBttBk_c::Render() {
     int flags = mFlags;
     flags = flags & 0x40000;
@@ -356,14 +328,12 @@ int daBttBk_c::Render() {
     return 1;
 }
 
-// @symbol _ZN9daBttBk_c8BehaviorEv
 int daBttBk_c::Behavior() {
     UpdateState();
     UpdateModelTransform();
     return 1;
 }
 
-// @symbol _ZN9daBttBk_c13InitResourcesEv
 int daBttBk_c::InitResources() {
     Vector3 pos;
     void *file = dExtSimpleModel_c::LoadFile(gBattaBlockModelFile);
@@ -396,7 +366,6 @@ int daBttBk_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN9daBttBk_c13OnTurnIntoEggER7daPly_c
 void daBttBk_c::OnTurnIntoEgg(daPly_c &player) {
     if (player.IsCollectingCap()) {
         GivePlayerCoins(player, 5, 0);
@@ -418,7 +387,6 @@ void daBttBk_c::OnTurnIntoEgg(daPly_c &player) {
     MarkForDestruction();
 }
 
-// @symbol daBttBk_c_classInit
 extern "C" daBttBk_c *daBttBk_c_classInit() {
     return new daBttBk_c();
 }

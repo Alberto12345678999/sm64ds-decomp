@@ -14,7 +14,7 @@
  * deslop leftovers:
  * - daPly_c::Hurt and daPly_c::Bounce stay mangled extern "C" calls: each
  *   takes a Fix12<int> by value.
- * - UpdatePose still walks the PknVec3 view: spelling those copies as
+ * - UpdatePose still walks VecFx32 views: spelling those copies as
  *   Vector3 is emitted differently.
  * - The shared files keep their address names (d_a_f_pkn.cpp reads them
  *   too); the state table at 0x02130e80 also keeps its address name.
@@ -32,6 +32,8 @@
 #include "Sound.h"
 #include "math/Approach.h"
 #include "SpawnInfo.h"
+#include "math/MtxStack.h"
+#include "nitro/fx/fx.h"
 
 /* Runtime asset handles, distinct from the NitroFS file IDs. */
 enum daPkn_c_AssetId {
@@ -73,13 +75,6 @@ extern SharedFilePtr
 /* Six animation handles, held indirectly: the table is pointers, not objects. */
 extern SharedFilePtr *data_ov084_021302f4[];
 
-/* UpdatePose's own view of the Vector3 fields it walks. The tag is uniquified
-   because the file scope this body shares with the real headers already has a
-   Vector3, and the byte match is in this spelling. The scratch matrix is a
-   plain Matrix4x3: common.h comes first, so it is the flat twelve words and
-   assigning it is one block copy. */
-struct PknVec3 { int x, y, z; };
-
 /* Behavior calls the current state through this actor's member-pointer
    table, indexed by state. */
 typedef void (daPkn_c::*PknStatePMF)();
@@ -103,17 +98,12 @@ extern s16 data_02082214[];              /* the sin/cos table, two shorts a step
 extern int data_ov084_0213030c[];        /* per-frame particle X/Z offset (0212f460, 0xfb) */
 extern int data_ov084_02130334[];        /* per-frame particle Y offset */
 extern u8  data_ov084_021302ec[];        /* five indices {0,3,4,5,6}; 0212ec60 sums s16 at [i]*0x34+0x1c into ang[1] (dead -- later y-adjust reads ang[0]==0, so the offset is constant 0x32000). 0x34 is not BMD_Bone (0x40). */
-/* local extern: math/MtxStack.h's helper prototypes clash with this file's */
-extern Matrix4x3 data_020a0e68; /* the shared scratch matrix */
 
 int   Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
-int *Vec3_LslInPlace(PknVec3 *v, int sh);
+int *Vec3_LslInPlace(int *v, int sh);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
-void  MulMat4x3Mat4x3(void *a, void *b, void *c);
 
 void *d_a_pknNewHold(u32 handle, u32 id, int x, int y, int z, const void *f, void *cb);
 int d_a_pknPlaySubHold(u32 a, u32 b, u32 c, int t, int flag);
@@ -126,7 +116,6 @@ int d_a_pknPlaySubHold(u32 a, u32 b, u32 c, int t, int flag);
  * six member C1s in declaration order.
  * ======================================================================== */
 
-// @symbol daPkn_c_classInit
 extern "C" daPkn_c *daPkn_c_classInit()
 {
     return new daPkn_c();
@@ -146,7 +135,6 @@ SpawnInfo<daPkn_c> g_profile_PAKUN = {
 };
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c13InitResourcesEv
 /*
  * Unlike daFPkn_c's, this one checks its loads: a failed SetFile on either
  * model returns 0.
@@ -217,7 +205,6 @@ int daPkn_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c8BehaviorEv
 int daPkn_c::Behavior()
 {
     int r;
@@ -271,7 +258,6 @@ int daPkn_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c6RenderEv
 /*
  * The bubble is drawn only while the idle animation (data_ov084_02130df4)
  * is playing.
@@ -287,7 +273,6 @@ int daPkn_c::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c16OnPendingDestroyEv
 /*
  * fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`.
  */
@@ -296,7 +281,6 @@ void daPkn_c::OnPendingDestroy()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c16CleanupResourcesEv
 int daPkn_c::CleanupResources()
 {
     int i;
@@ -309,7 +293,6 @@ int daPkn_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c9StateWaitEv
 void daPkn_c::StateWait()
 {
     mScaleX = 0x1000;
@@ -324,7 +307,6 @@ void daPkn_c::StateWait()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c10StateSleepEv
 void daPkn_c::StateSleep()
 {
     mClsnEnabled = 1;
@@ -351,7 +333,6 @@ void daPkn_c::StateSleep()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c9StateBiteEv
 void daPkn_c::StateBite()
 {
     dActor_c *actor;
@@ -484,7 +465,6 @@ void daPkn_c::StateBite()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c9StateWakeEv
 void daPkn_c::StateWake()
 {
     Sound::PlaySub(0x36, 0x7f, 0, 0xcb33, 0);
@@ -498,7 +478,6 @@ void daPkn_c::StateWake()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c9StateDozeEv
 void daPkn_c::StateDoze()
 {
     mClsnEnabled = 1;
@@ -517,7 +496,6 @@ void daPkn_c::StateDoze()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c8StateDieEv
 void daPkn_c::StateDie()
 {
     Vector3 pos;
@@ -542,7 +520,6 @@ void daPkn_c::StateDie()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c11StateShrinkEv
 void daPkn_c::StateShrink()
 {
     int scale;
@@ -576,7 +553,6 @@ void daPkn_c::StateShrink()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c9StateGoneEv
 void daPkn_c::StateGone()
 {
     mClsnEnabled = 0;
@@ -588,7 +564,6 @@ void daPkn_c::StateGone()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c11StateRegrowEv
 void daPkn_c::StateRegrow()
 {
     int v;
@@ -608,7 +583,6 @@ void daPkn_c::StateRegrow()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c18TrackClosestPlayerEv
 /* Tracks the closest player: its distance, the yaw toward it and whether it
    is airborne. */
 void daPkn_c::TrackClosestPlayer()
@@ -632,7 +606,6 @@ void daPkn_c::TrackClosestPlayer()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c16PlayerMovingFastEv
 /* Is the closest player moving fast enough to wake the plant? */
 int daPkn_c::PlayerMovingFast()
 {
@@ -643,7 +616,6 @@ int daPkn_c::PlayerMovingFast()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c9CheckHitsEv
 /* The collision check the idle states share: returns 1 when a hit killed
    the plant. t and u hold the actor-type compares as ints; testing
    `type == 0xbf` directly changes the code. */
@@ -735,16 +707,17 @@ int daPkn_c::CheckHits()
     return 0;
 }
 
-// @symbol _ZN7daPkn_c10UpdatePoseEv
 /* Poses both models and places the head cylinder and the sleep bubble. The
    bone sum into ang[1] is never read. */
 void daPkn_c::UpdatePose()
 {
     volatile s16 ang[3];
+    /* common.h comes first, so Matrix4x3 is the flat twelve words and
+       assigning it is one block copy. */
     struct {
         Matrix4x3 saved;
-        PknVec3 tv;
-        PknVec3 v;
+        VecFx32 tv;
+        VecFx32 v;
     } L;
     int lr;
     int scale;
@@ -771,7 +744,7 @@ void daPkn_c::UpdatePose()
     mHeadClsnOffset.x = data_020a0e68.m[9];
     mHeadClsnOffset.y = data_020a0e68.m[10];
     mHeadClsnOffset.z = data_020a0e68.m[11];
-    Vec3_LslInPlace((PknVec3 *)&mHeadClsnOffset, 3);
+    Vec3_LslInPlace((int *)&mHeadClsnOffset, 3);
     SubVec3((Vector3 *)&mHeadClsnOffset, (Vector3 *)&mPosX, (Vector3 *)&mHeadClsnOffset);
 
     mHeadClsnOffset.y -= data_02082214[((u16)ang[0] >> 4) << 1] * (s16)0x14 + 0x32000;
@@ -807,7 +780,6 @@ void daPkn_c::UpdatePose()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c16OnAimedAtWithEggEv
 /* Vtable slot 29. */
 s32 daPkn_c::OnAimedAtWithEgg()
 {
@@ -815,7 +787,6 @@ s32 daPkn_c::OnAimedAtWithEgg()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c10EnterLungeEi
 /* Enters state 2 with the lunge animation at `frame`. */
 void daPkn_c::EnterLunge(int frame)
 {
@@ -825,7 +796,6 @@ void daPkn_c::EnterLunge(int frame)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN7daPkn_c3DieEv
 /* Kills the plant: death animation and state 5. */
 void daPkn_c::Die()
 {

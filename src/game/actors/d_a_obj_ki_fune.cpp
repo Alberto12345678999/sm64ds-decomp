@@ -43,7 +43,7 @@ typedef char KiFuneClsnFileHandle_size_must_be_8[sizeof(KiFuneClsnFileHandle) ==
 
 /* local extern: no shared header declares these. */
 extern "C" {
-extern void func_020393d4(int *p, int v);
+extern void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 
 extern int IsStarCollected(int a, int b);
 extern short data_02082214[];
@@ -55,17 +55,14 @@ static inline int IsRockingHull(daObjKi_Fune_c *ship) {
     return ship->actorID == 0x39;
 }
 
-// @symbol daObjKi_Fune_c_classInit_KI_FUNE
 extern "C" daObjKi_Fune_c *daObjKi_Fune_c_classInit_KI_FUNE() {
     return new daObjKi_Fune_c();
 }
 
-// @symbol daObjKi_Fune_c_classInit_KI_FUNE_UP
 extern "C" daObjKi_Fune_c *daObjKi_Fune_c_classInit_KI_FUNE_UP() {
     return new daObjKi_Fune_c();
 }
 
-// @symbol _ZN14daObjKi_Fune_c13InitResourcesEv
 int daObjKi_Fune_c::InitResources() {
     void *clpsBlocks[2];
     unsigned int idx;
@@ -86,7 +83,7 @@ int daObjKi_Fune_c::InitResources() {
     mMeshCollider.SetFile((KCL_File *)file, mClsnMat, 0x1000, mAngleY,
                           *(CLPS_Block *)clpsBlocks[idx]);
     if (mModelIndex == 0) {
-        func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
+        func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
     }
     mMeshCollider.Enable(this);
     mSoundHandle = 0;
@@ -100,7 +97,6 @@ int daObjKi_Fune_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN14daObjKi_Fune_c8BehaviorEv
 int daObjKi_Fune_c::Behavior() {
     if (mMeshCollider.IsEnabled() == 0) {
         mMeshCollider.Enable(this);
@@ -118,13 +114,11 @@ int daObjKi_Fune_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN14daObjKi_Fune_c6RenderEv
 int daObjKi_Fune_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN14daObjKi_Fune_c16CleanupResourcesEv
 int daObjKi_Fune_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -133,7 +127,6 @@ int daObjKi_Fune_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN14daObjKi_Fune_c17UpdateModelMatrixEv
 void daObjKi_Fune_c::UpdateModelMatrix() {
     Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3.m[9] = mPosX >> 3;

@@ -36,7 +36,7 @@
  * - Shake_StateLoseTry: the dead `q` (dropping it renumbers @NNN).
  * - Panel_StateBlink: the mAnimTimer[idx] reset through a +0x4e00 split base.
  * - Scene_StateResult: mSolved through a +0x4000 byte base. mResultTimer and
- *   mScrollFrames go through laundered `scene + off` pointers.
+ *   mScrollFrames go through `scene + off` bases cast to int.
  * - ResetRound: 0x4ec2 and 0x466c are pads that only ResetRound writes.
  * - Answer_StateFindSolution keeps the PanelInputView width view, and
  *   DrawPanels a local layout view. Its native-member rewrite grows the body
@@ -64,9 +64,11 @@ enum dScMgPanel_c_AssetId {
 #include "types.h"
 #include "nitro/hw/registers.h"
 #include "dScMgPanel_c.h"
+#include "LevelRng.h"
 #include "SpawnInfo.h"
 
 #include "Sound.h"
+#include "OamAttr.h"
 
 namespace G2 {
 char *GetBG2ScrPtr();
@@ -93,7 +95,8 @@ void SetBg2Offset(int x, int y);
 void SetSubBg2Offset(int x, int y);
 void SetSubBg0Offset(int a, int b);
 void FreeGfxSlotsById(int arg);
-void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
+struct Matrix2x2;
+void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
 void Hud_RenderSprite(void *a, int b, int c, int d, int e);
 void Mg_SubmitScore(int a);
 void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *d);
@@ -109,20 +112,17 @@ void Mg_DrawBigNumber(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
 typedef void (dScMgPanel_c::*PanelStateFn)();
 typedef void (dScMgPanel_c::*PanelStateFnI)(int);
 
-// @symbol _ZN12dScMgPanel_cD1Ev
 /* The complete-object destructor (D1).  Nothing this class owns needs
    destroying, so the whole 0x24 bytes are the compiler's own-vtable write and
    the tail call into ~dScMgBase_c -- the same empty body dScMgCurling_c has. */
 dScMgPanel_c::~dScMgPanel_c() {}
 
-// @symbol _ZN12dScMgPanel_cD0Ev
 /* dScMgPanel_c::~dScMgPanel_c (D0, deleting destructor).  There is no second
    definition to write: mwcc emits D0 from the ONE definition above, and
    dScMgBase_c's own operator delete covers the deallocation.  Under
    `#pragma defer_codegen off` the variants come out D1, D0, D2, which is the
    cartridge order; the trailing D2 is homeless and is deadstripped. */
 
-// @symbol _ZN12dScMgPanel_c16Particle_DrawAllEv
 /* Draw the live particles: 64 slots of 0x18 bytes, sprite chosen by the
    slot's kind byte and positioned from its Fix12 x/y. */
 void dScMgPanel_c::Particle_DrawAll() {
@@ -138,7 +138,6 @@ void dScMgPanel_c::Particle_DrawAll() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c18Particle_UpdateAllEv
 /* Advance the 64 particles one frame: gravity on the free ones, a spin/fade
    counter on all of them, and retire a slot once its counter runs out. */
 void dScMgPanel_c::Particle_UpdateAll() {
@@ -168,11 +167,9 @@ void dScMgPanel_c::Particle_UpdateAll() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c14Particle_SpawnEiii
 /* Spawn one particle in the first free slot, at (x, y).  `mode` picks the
    fixed-drift variant over the random one. */
 void dScMgPanel_c::Particle_Spawn(int x, int y, int mode) {
-    extern int data_0209d4b8;
     int i;
     for (i = 0; i < 0x40; i++) {
         if (mParticles[i].active == 0) {
@@ -190,7 +187,7 @@ void dScMgPanel_c::Particle_Spawn(int x, int y, int mode) {
                 mParticles[i].drift = 0;
             } else {
                 mParticles[i].drift =
-                    ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1) >> 15;
+                    ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) << 1) >> 15;
             }
             if (x >= 0x80000)
                 mParticles[i].vx = -0x100;
@@ -201,7 +198,6 @@ void dScMgPanel_c::Particle_Spawn(int x, int y, int mode) {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c17Particle_ClearAllEv
 /* Retire every particle in the 64-slot pool. */
 void dScMgPanel_c::Particle_ClearAll() {
     char *scene = (char *)this;
@@ -213,10 +209,8 @@ void dScMgPanel_c::Particle_ClearAll() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c13Scroll_UpdateEv
 void dScMgPanel_c::Scroll_Update() {
     char *scene = (char *)this;
-    extern int data_0209d4b8;
     int x;
     int y;
     u32 r;
@@ -232,14 +226,14 @@ void dScMgPanel_c::Scroll_Update() {
         if (mScroll.spawnDelay != 0) {
             mScroll.spawnDelay -= 1;
         } else {
-            r = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+            r = ((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
             x = ((r * 7) >> 15) * 5;
-            r = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+            r = ((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
             y = ((r << 4) >> 15) + 0xb0;
             Particle_Spawn(x << 12, y << 12, 0);
 
-            r = (u32)RandomIntInternal(&data_0209d4b8);
-            r2 = (u32)RandomIntInternal(&data_0209d4b8);
+            r = (u32)RandomIntInternal(&data_0209d4b8.value);
+            r2 = (u32)RandomIntInternal(&data_0209d4b8.value);
             x = (((r >> 16 & 0x7fff) * 7) >> 15) * 5;
             y = ((((r2 >> 16) & 0x7fff) << 4) >> 15) + 0xb0;
             Particle_Spawn((0x100 - x) << 12, y << 12, 0);
@@ -268,9 +262,9 @@ void dScMgPanel_c::Scroll_Update() {
             else if (y >= 0x100)
                 y = (-0x20 - (y - 0x100)) << 12;
 
-            x = (((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 7) >> 15) * 5;
+            x = (((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 7) >> 15) * 5;
             Particle_Spawn(x << 12, y, 1);
-            x = (((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 7) >> 15) * 5;
+            x = (((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 7) >> 15) * 5;
             Particle_Spawn((0x100 - x) << 12, y, 1);
             mScroll.spawnDelay = 2;
         }
@@ -284,7 +278,6 @@ void dScMgPanel_c::Scroll_Update() {
     SetSubBg2Offset(x, y);
 }
 
-// @symbol _ZN12dScMgPanel_c12Scroll_StartEv
 void dScMgPanel_c::Scroll_Start() {
     char *scene = (char *)this;
     mScroll.on = 1;
@@ -298,14 +291,12 @@ void dScMgPanel_c::Scroll_Start() {
     Sound::PlayBank2_2D(0x1fd);
 }
 
-// @symbol _ZN12dScMgPanel_c11Scroll_StopEv
 void dScMgPanel_c::Scroll_Stop() {
     mScroll.on = 0;
     SetBg2Offset(0, 0);
     SetSubBg2Offset(0, 0);
 }
 
-// @symbol _ZN12dScMgPanel_c18EnableOverlayLayerEv
 void dScMgPanel_c::EnableOverlayLayer() {
     u8 *scene = (u8 *)this; /* dead, but dropping it renumbers @NNN */
     extern u8 gSubScreenLayers[];
@@ -316,7 +307,6 @@ void dScMgPanel_c::EnableOverlayLayer() {
     gSubScreenLayers[0] |= 1;
 }
 
-// @symbol _ZN12dScMgPanel_c18Shake_StateLoseTryEi
 void dScMgPanel_c::Shake_StateLoseTry(int index) {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -350,7 +340,6 @@ void dScMgPanel_c::Shake_StateLoseTry(int index) {
     SetSubBg0Offset(0, *(int *)((char *)&s->mShake[0].offset + n));
 }
 
-// @symbol _ZN12dScMgPanel_c16Shake_StateShakeEi
 extern "C" {
 void SetSubBg0Offset(int a, int b);
 }
@@ -382,10 +371,8 @@ void dScMgPanel_c::Shake_StateShake(int index) {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c15Shake_StateIdleEi
 void dScMgPanel_c::Shake_StateIdle(int index) {}
 
-// @symbol _ZN12dScMgPanel_c12Shake_UpdateEv
 void dScMgPanel_c::Shake_Update() {
     extern PanelStateFnI sPanelShakeStateTable[];
     if (mShake[0].active == 0)
@@ -394,7 +381,6 @@ void dScMgPanel_c::Shake_Update() {
     (this->*sPanelShakeStateTable[state])(0);
 }
 
-// @symbol _ZN12dScMgPanel_c11Shake_StartEv
 void dScMgPanel_c::Shake_Start() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -405,12 +391,10 @@ void dScMgPanel_c::Shake_Start() {
     self->mShake[0].state = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c10Shake_StopEv
 void dScMgPanel_c::Shake_Stop() {
     mShake[0].active = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c11Banner_DrawEv
 void dScMgPanel_c::Banner_Draw() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -420,10 +404,8 @@ void dScMgPanel_c::Banner_Draw() {
     Mg_RenderSubSpriteMtx(sPanelBannerSprites[0], self->mBanner.x >> 12, self->mBanner.y >> 12, 0);
 }
 
-// @symbol _ZN12dScMgPanel_c16Banner_StateIdleEv
 void dScMgPanel_c::Banner_StateIdle() {}
 
-// @symbol _ZN12dScMgPanel_c18Banner_StateSettleEv
 void dScMgPanel_c::Banner_StateSettle() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -439,7 +421,6 @@ void dScMgPanel_c::Banner_StateSettle() {
     self->mBanner.state = 2;
 }
 
-// @symbol _ZN12dScMgPanel_c17Banner_StatePopUpEv
 void dScMgPanel_c::Banner_StatePopUp() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -455,7 +436,6 @@ void dScMgPanel_c::Banner_StatePopUp() {
     self->mBanner.state = 1;
 }
 
-// @symbol _ZN12dScMgPanel_c13Banner_UpdateEv
 void dScMgPanel_c::Banner_Update() {
     char *scene = (char *)this;
     extern PanelStateFn sPanelBannerStateTable[];
@@ -476,7 +456,6 @@ void dScMgPanel_c::Banner_Update() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c11Banner_ShowEi
 void dScMgPanel_c::Banner_Show(int i) {
     char *scene = (char *)this;
     char *e = scene + (i << 2);
@@ -490,7 +469,6 @@ void dScMgPanel_c::Banner_Show(int i) {
     mBanner.state = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c10DrawCursorEv
 void dScMgPanel_c::DrawCursor() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -500,7 +478,6 @@ void dScMgPanel_c::DrawCursor() {
     Hud_RenderSprite(sPanelCursorSprites[s->mCredits], 0xf0, 0x24, -1, -1);
 }
 
-// @symbol _ZN12dScMgPanel_c7DrawHudEv
 void dScMgPanel_c::DrawHud() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -523,14 +500,12 @@ void dScMgPanel_c::DrawHud() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c16ReloadSlideDelayEv
 void dScMgPanel_c::ReloadSlideDelay() {
     u8 *scene = (u8 *)this;
     /* Through `scene`: the plain `mSlideLeft = mFlipCount` moves code. */
     ((dScMgPanel_c *)scene)->mSlideLeft = ((dScMgPanel_c *)scene)->mFlipCount;
 }
 
-// @symbol _ZN12dScMgPanel_c14TickSlideDelayEv
 // If mSlideLeft (self+0x4677) is set, decrement it: the ROM's predicated
 // ldrbne/subne/strbne tail.
 void dScMgPanel_c::TickSlideDelay() {
@@ -540,24 +515,20 @@ void dScMgPanel_c::TickSlideDelay() {
         s->mSlideLeft -= 1;
 }
 
-// @symbol _ZN12dScMgPanel_c14ClearSlideFlagEv
 void dScMgPanel_c::ClearSlideFlag() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     s->mSlideFlag = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c12SetSlideFlagEv
 void dScMgPanel_c::SetSlideFlag() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     s->mSlideFlag = 1;
 }
 
-// @symbol _ZN12dScMgPanel_c19IntroCard_StateDoneEv
 void dScMgPanel_c::IntroCard_StateDone() {}
 
-// @symbol _ZN12dScMgPanel_c23IntroCard_StateSlideOutEv
 void dScMgPanel_c::IntroCard_StateSlideOut() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -582,7 +553,6 @@ void dScMgPanel_c::IntroCard_StateSlideOut() {
     Sound::PlayBank2_2D(0x1fb);
 }
 
-// @symbol _ZN12dScMgPanel_c19IntroCard_StateHoldEv
 void dScMgPanel_c::IntroCard_StateHold() {
     u8 *scene = (u8 *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -597,7 +567,6 @@ void dScMgPanel_c::IntroCard_StateHold() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c22IntroCard_StateSlideInEv
 void dScMgPanel_c::IntroCard_StateSlideIn() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -610,7 +579,6 @@ void dScMgPanel_c::IntroCard_StateSlideIn() {
     s->mHold = 0x80;
 }
 
-// @symbol _ZN12dScMgPanel_c20IntroCard_StateStartEv
 void dScMgPanel_c::IntroCard_StateStart() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -621,7 +589,6 @@ void dScMgPanel_c::IntroCard_StateStart() {
     s->mSlideStep = 1;
 }
 
-// @symbol _ZN12dScMgPanel_c16IntroCard_UpdateEv
 void dScMgPanel_c::IntroCard_Update() {
     extern PanelStateFn sPanelIntroCardStateTable[];
     if (!mSlideOn)
@@ -629,14 +596,12 @@ void dScMgPanel_c::IntroCard_Update() {
     (this->*sPanelIntroCardStateTable[mSlideStep])();
 }
 
-// @symbol _ZN12dScMgPanel_c15IntroCard_StartEv
 void dScMgPanel_c::IntroCard_Start() {
     mSlideOn = 1;
     mSlideStep = 0;
     mSlideLeft = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c15StartSolveCheckEv
 void dScMgPanel_c::StartSolveCheck() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -661,7 +626,6 @@ void dScMgPanel_c::StartSolveCheck() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c24Answer_StateFlipSolutionEv
 void dScMgPanel_c::Answer_StateFlipSolution() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -722,7 +686,6 @@ void dScMgPanel_c::Answer_StateFlipSolution() {
     s->mReplayStep++;
 }
 
-// @symbol _ZN12dScMgPanel_c24Answer_StateFindSolutionEv
 
 /* The width view preserves the measured field-load form without a dummy vtable. */
 struct PanelInputView {
@@ -852,7 +815,6 @@ void dScMgPanel_c ::Answer_StateFindSolution() {
     mReplayStep = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c22Answer_StateResetBoardEv
 void dScMgPanel_c::Answer_StateResetBoard() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -874,7 +836,6 @@ void dScMgPanel_c::Answer_StateResetBoard() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c22Answer_StateWaitButtonEv
 extern "C" {
 typedef struct WarpEntry_730 {
     u8 a;
@@ -925,7 +886,6 @@ void dScMgPanel_c::Answer_StateWaitButton() {
     s->mDelay = 0x20;
 }
 
-// @symbol _ZN12dScMgPanel_c13Answer_UpdateEv
 void dScMgPanel_c ::Answer_Update() {
     extern PanelStateFn sPanelAnswerStateTable[];
     if (IsAltVariant() != 0)
@@ -934,7 +894,6 @@ void dScMgPanel_c ::Answer_Update() {
     Banner_Update();
 }
 
-// @symbol _ZN12dScMgPanel_c11UpdateMovesEv
 void dScMgPanel_c::UpdateMoves() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -1011,7 +970,6 @@ void dScMgPanel_c::UpdateMoves() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c10DrawPanelsEv
 /* Native member loads change DrawPanels code generation; retain this layout view. */
 extern "C" {
 typedef struct PanelDrawView {
@@ -1032,7 +990,7 @@ typedef struct PanelDrawView {
 }
 void dScMgPanel_c::DrawPanels() {
     PanelDrawView *scene = (PanelDrawView *)this;
-    extern void *sPanelSprites[];
+    extern OamAttr *sPanelSprites[];
     extern u8 sPanelFlipFrameSprites[];
     int x;
     int y;
@@ -1066,16 +1024,15 @@ void dScMgPanel_c::DrawPanels() {
             if (scene->state == 1) {
                 int goalFace = scene->goal[panel];
                 int goalFrame = scene->goalFrame;
-                DrawOamSprite(sPanelSprites[goalFace * 3 + goalFrame], (void *)x, y, 0);
+                DrawOamSprite(sPanelSprites[goalFace * 3 + goalFrame], x, y, 0);
             } else {
                 int goalFace = scene->goal[panel];
-                DrawOamSprite(sPanelSprites[goalFace * 3], (void *)x, y, 0);
+                DrawOamSprite(sPanelSprites[goalFace * 3], x, y, 0);
             }
         }
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12CountMatchesEv
 void dScMgPanel_c::CountMatches() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -1086,14 +1043,14 @@ void dScMgPanel_c::CountMatches() {
     do {
         if (s->mFace[i] != s->mGoal[i]) {
             s->mKind[i] = 2;
-            /* Stepped: `mAnimTimer[i]` moves code. */
-            ((dScMgPanel_c *)(scene + (int)(((long long)i)) * 2))->mAnimTimer[0] = 0;
+            /* Stepped: `mAnimTimer[i]` moves code, and the index's long long
+               round trip is load-bearing here (measured 2026-11-06). */
+            ((dScMgPanel_c *)(scene + (int)((long long)i) * 2))->mAnimTimer[0] = 0;
         }
         i++;
     } while (i < s->mCount);
 }
 
-// @symbol _ZN12dScMgPanel_c13CountFlippingEv
 void dScMgPanel_c::CountFlipping() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -1117,7 +1074,6 @@ void dScMgPanel_c::CountFlipping() {
     s->mResultTimer = 0x40;
 }
 
-// @symbol _ZN12dScMgPanel_c11CheckSolvedEv
 void dScMgPanel_c::CheckSolved() {
     char *scene = (char *)this;
     int found;
@@ -1151,7 +1107,6 @@ void dScMgPanel_c::CheckSolved() {
     Sound::PlayBank2_2D(0x1cd);
 }
 
-// @symbol _ZN12dScMgPanel_c11UpdateTouchEv
 /* Accept a new touch within 16 pixels of a panel centre, flip its clipped
    3x3 neighbourhood, and record the move. */
 void dScMgPanel_c::UpdateTouch() {
@@ -1235,7 +1190,6 @@ void dScMgPanel_c::UpdateTouch() {
     } while (++i < n);
 }
 
-// @symbol _ZN12dScMgPanel_c13ShowAllPanelsEv
 /* Show every panel (intro end). */
 void dScMgPanel_c::ShowAllPanels() {
     char *scene = (char *)this;
@@ -1246,7 +1200,6 @@ void dScMgPanel_c::ShowAllPanels() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c6FlipAtEi
 /* Flip the faces in the 3x3 neighbourhood centred on panel `idx`, clipped at
    the board edges.  The same walk appears in Answer_StateFlipSolution,
    UpdateMoves and UpdateTouch; only this one touches the face
@@ -1277,7 +1230,6 @@ void dScMgPanel_c::FlipAt(int index) {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c10DealPuzzleEv
 /* Layout pass: reads the panel layout (x and y from the layout tables,
    face from the face table picked by IsAltVariant), draws mFlips random picks
    through FlipAt, and retries the whole thing until
@@ -1292,7 +1244,6 @@ void dScMgPanel_c::FlipAt(int index) {
    rotates loop 2 or loop 1. The pd/pe pointer locals keep the byte tables
    hoisted above the do-loop and the [idx4] reload inside it. */
 void dScMgPanel_c::DealPuzzle() {
-    extern int data_0209d4b8;
     extern u16 *sPanelPuzzleXPerMode[];
     extern u16 *sPanelPuzzleYPerMode[];
     extern u8 *sPanelPuzzlesAlt[];
@@ -1324,7 +1275,7 @@ void dScMgPanel_c::DealPuzzle() {
         }
         cnt2 = mFlips;
         for (j = 0; j < cnt2; j++) {
-            u32 rnd = (u32)RandomIntInternal(&data_0209d4b8);
+            u32 rnd = (u32)RandomIntInternal(&data_0209d4b8.value);
             u32 s = (rnd >> 16) & 0x7fff;
             v = (cnt1 * s) >> 15;
             FlipAt(v);
@@ -1352,12 +1303,10 @@ void dScMgPanel_c::DealPuzzle() {
     } while (HasDuplicateRows() == 0 || mismatch == 0);
 }
 
-// @symbol _ZN12dScMgPanel_c14ScramblePanelsEv
 /* The 15-bit random draw, used a dozen times below. */
-#define PANEL_RAND ((((u32)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff)
+#define PANEL_RAND ((((u32)RandomIntInternal(&data_0209d4b8.value)) >> 16) & 0x7fff)
 
 void dScMgPanel_c::ScramblePanels() {
-    extern int data_0209d4b8;
     extern u8 sPanelScrambleFlipEnabled[];
     extern u8 sPanelScrambleFlips[];
     extern u8 sPanelScrambleWidths[];
@@ -1417,7 +1366,6 @@ void dScMgPanel_c::ScramblePanels() {
 }
 #undef PANEL_RAND
 
-// @symbol _ZN12dScMgPanel_c16HasDuplicateRowsEv
 int dScMgPanel_c::HasDuplicateRows() {
     int i, bad, j;
 
@@ -1448,7 +1396,6 @@ int dScMgPanel_c::HasDuplicateRows() {
     return 1;
 }
 
-// @symbol _ZN12dScMgPanel_c9ClearGridEv
 void dScMgPanel_c::ClearGrid() {
     char *scene = (char *)this;
     int i, j;
@@ -1462,7 +1409,6 @@ void dScMgPanel_c::ClearGrid() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c10ResetRoundEv
 /* Clear the whole board back to its start-of-round state: the 36 parallel
    panel arrays, the state word, the pick list (0xff = no pick) and the
    cursor, then hand off to the three subsystem resets. */
@@ -1518,7 +1464,6 @@ void dScMgPanel_c::ResetRound() {
     Particle_ClearAll();
 }
 
-// @symbol _ZN12dScMgPanel_c14Panel_StartAllEv
 void dScMgPanel_c::Panel_StartAll() {
     char *scene = (char *)this;
     int i;
@@ -1527,7 +1472,6 @@ void dScMgPanel_c::Panel_StartAll() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c15Panel_StateFallEi
 void dScMgPanel_c::Panel_StateFall(int index) {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
@@ -1571,7 +1515,6 @@ void dScMgPanel_c::Panel_StateFall(int index) {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c16Panel_StateBlinkEi
 void dScMgPanel_c::Panel_StateBlink(int idx) {
     char *c = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)c;
@@ -1586,10 +1529,10 @@ void dScMgPanel_c::Panel_StateBlink(int idx) {
         q[idx] = 0;
     }
     {
-        /* b + 0x30 is mAnimTimer[idx]. The `(long long)` round trip on the
-           index and this split base are load-bearing: `s->mAnimTimer[idxL]`
-           moves code. */
-        int idxL = (int)((long long)idx);
+        /* b + 0x30 is mAnimTimer[idx]. The split base is load-bearing:
+           `s->mAnimTimer[idxL]` moves code. The `(long long)` round trip the
+           index went through was measured free on 2026-11-06. */
+        int idxL = idx;
         char *b = c + idxL * 2;
         b += 0x4e00;
         if (((u16 *)b)[0x18] < 0x40)
@@ -1600,7 +1543,6 @@ void dScMgPanel_c::Panel_StateBlink(int idx) {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c15Panel_StateFlipEi
 /*
  * Per-panel flip tick for one panel (index).
  * Bumps mBusy.  If the panel's mFlipDelay is running, count it down and
@@ -1630,7 +1572,6 @@ void dScMgPanel_c::Panel_StateFlip(int index) {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c15Panel_StateIdleEi
 void dScMgPanel_c::Panel_StateIdle(int index) {
     char *scene = (char *)this;
     char *base = scene + index;
@@ -1639,7 +1580,6 @@ void dScMgPanel_c::Panel_StateIdle(int index) {
     ((dScMgPanel_c *)base)->mFastFlip[0] = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c19Scene_StateGameOverEv
 extern "C" {
 struct PanelPmfRec_bc0 {
     int off;
@@ -1676,7 +1616,6 @@ void dScMgPanel_c::Scene_StateGameOver() {
     ClearSlideFlag();
 }
 
-// @symbol _ZN12dScMgPanel_c17Scene_StateResultEv
 void dScMgPanel_c::Scene_StateResult() {
     char *scene = (char *)this;
     extern PanelStateFnI sPanelPanelStateTable[];
@@ -1711,10 +1650,11 @@ void dScMgPanel_c::Scene_StateResult() {
         int off;
         u16 *tp;
         u8 *flags;
-        /* scene + 0x4ec0 is mResultTimer, laundered. `&mResultTimer` in place
-           of `scene + off` leaves `off` dead, and dropping it renumbers @NNN. */
+        /* scene + 0x4ec0 is mResultTimer, reached through an int cast of the byte
+           base. `&mResultTimer` in place of `scene + off` leaves `off` dead, and
+           dropping it renumbers @NNN. */
         off = 0x4ec0;
-        tp = (u16 *)(int)((long long)(int)(scene + off));
+        tp = (u16 *)(int)(scene + off);
         /* flags[0xfe6] is mSolved; `&mSolved` moves this code. */
         flags = (u8 *)(scene + 0x4000);
         *tp = *tp - 1;
@@ -1759,14 +1699,13 @@ void dScMgPanel_c::Scene_StateResult() {
     {
         int inc;
         u16 *ip;
-        /* scene + 0x4ec6 is mScrollFrames, laundered the same way. */
+        /* scene + 0x4ec6 is mScrollFrames, reached the same way. */
         inc = 0x4ec6;
-        ip = (u16 *)(int)((long long)(unsigned)(scene + inc));
+        ip = (u16 *)(int)(scene + inc);
         *ip = *ip + 1;
     }
 }
 
-// @symbol _ZN12dScMgPanel_c21Scene_StateShowAnswerEv
 void dScMgPanel_c::Scene_StateShowAnswer() {
     char *scene = (char *)this;
     extern PanelStateFnI sPanelPanelStateTable[];
@@ -1779,7 +1718,6 @@ void dScMgPanel_c::Scene_StateShowAnswer() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c17Scene_StateRewindEv
 void dScMgPanel_c::Scene_StateRewind() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -1794,7 +1732,6 @@ void dScMgPanel_c::Scene_StateRewind() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c21Scene_StateShowMissesEv
 void dScMgPanel_c::Scene_StateShowMisses() {
     dScMgPanel_c *scene = this;
     extern PanelStateFnI sPanelPanelStateTable[];
@@ -1817,7 +1754,6 @@ void dScMgPanel_c::Scene_StateShowMisses() {
     }
 }
 
-// @symbol _ZN12dScMgPanel_c15Scene_StatePlayEv
 void dScMgPanel_c::Scene_StatePlay() {
     dScMgPanel_c *scene = this;
     extern PanelStateFnI sPanelPanelStateTable[];
@@ -1835,7 +1771,6 @@ void dScMgPanel_c::Scene_StatePlay() {
     StartSolveCheck();
 }
 
-// @symbol _ZN12dScMgPanel_c16Scene_StateIntroEv
 void dScMgPanel_c::Scene_StateIntro() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -1854,7 +1789,6 @@ void dScMgPanel_c::Scene_StateIntro() {
         self->mState = 2;
 }
 
-// @symbol _ZN12dScMgPanel_c15Scene_StateInitEv
 void dScMgPanel_c::Scene_StateInit() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
@@ -1872,8 +1806,8 @@ extern "C" {
 
 extern void Deallocate(void *);
 extern int GetOwnerLanguage(void);
-extern int LoadFile(int handle);
-extern void DecompressLZ16(int src, void *dst);
+extern void *LoadFile(int handle);
+extern void DecompressLZ16(void *src, void *dst);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern void FreeGfxSlotsById(int arg);
 extern void SetSubBg0Offset(int, int);
@@ -1890,7 +1824,6 @@ extern void Mg_DrawScoreTally(void *a, int b, int c, int d);
 
 } /* extern "C" */
 
-// @symbol _ZN12dScMgPanel_c10StartRoundEi
 /* Vtable slot 18, an override of dScMgBase_c::StartRound(int).  The
    signature has to repeat the base declaration exactly or mwcc appends a new
    slot instead of overriding it. */
@@ -1933,7 +1866,6 @@ void dScMgPanel_c::StartRound(int flag) {
     gSubScreenLayers &= ~1;
 }
 
-// @symbol _ZN12dScMgPanel_c6RenderEv
 /* Vtable slot 9. */
 s32 dScMgPanel_c::Render() {
     Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
@@ -1945,7 +1877,6 @@ s32 dScMgPanel_c::Render() {
     return 1;
 }
 
-// @symbol _ZN12dScMgPanel_c8BehaviorEv
 /* Vtable slot 6.  One frame of the current state, dispatched through the
    descriptor pair at sPanelSceneStateTable. */
 /* One row of the state-dispatch table at sPanelSceneStateTable: `a` is either a
@@ -1973,7 +1904,6 @@ s32 dScMgPanel_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN12dScMgPanel_c13InitResourcesEv
 /* Vtable slot 0.  Brings up both screens' backgrounds, loads the panel and
    message graphics for the owner's language, then resets the board. */
 
@@ -1984,8 +1914,8 @@ s32 dScMgPanel_c::InitResources() {
     char *b;
     volatile u16 mainFill;
     volatile u16 subFill;
-    int file;
-    int msgFile;
+    void *file;
+    void *msgFile;
 
     gMainScreenLayers |= DISPLAY_LAYER_BG3;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 1;
@@ -1996,15 +1926,15 @@ s32 dScMgPanel_c::InitResources() {
 
     file = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN);
     DecompressLZ16(file, (void *)(func_02054d88() + 0x4000));
-    Deallocate((void *)file);
+    Deallocate(file);
 
     file = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCL_BIN);
-    GX::LoadBGPltt((const void *)file, 0x1a0, 0x60);
-    Deallocate((void *)file);
+    GX::LoadBGPltt(file, 0x1a0, 0x60);
+    Deallocate(file);
 
     file = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_UP_NSC_BIN);
-    func_02056314((void *)file, 0, 0x800);
-    Deallocate((void *)file);
+    func_02056314(file, 0, 0x800);
+    Deallocate(file);
 
     gMainScreenLayers |= DISPLAY_LAYER_BG2;
     *(volatile u16 *)0x400000c &= ~0x40;
@@ -2017,8 +1947,8 @@ s32 dScMgPanel_c::InitResources() {
     MultiStore16(mainFill, b, 0x1000);
 
     file = LoadFile(ASSET_D_2D_YOSIFINX_NORMAL_NSC_BIN);
-    func_020563d4((const void *)file, 0x800, 0x800);
-    Deallocate((void *)file);
+    func_020563d4(file, 0x800, 0x800);
+    Deallocate(file);
 
     msgFile = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_NCG_BIN);
     if (GetOwnerLanguage() == 5) {
@@ -2033,7 +1963,7 @@ s32 dScMgPanel_c::InitResources() {
 
     file = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_NCL_BIN);
     DecompressLZ16(msgFile, (void *)0x6400000);
-    GX::LoadOBJPltt((const void *)file, 0, 0x100);
+    GX::LoadOBJPltt(file, 0, 0x100);
 
     gSubScreenLayers |= 8;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 1;
@@ -2043,17 +1973,17 @@ s32 dScMgPanel_c::InitResources() {
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x210;
 
     {
-        int subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN);
+        void *subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN);
         DecompressLZ16(subFile, (void *)(G2S::GetBG3CharPtr() + 0x4000));
-        Deallocate((void *)subFile);
+        Deallocate(subFile);
 
         subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCL_BIN);
-        GXS::LoadBGPltt((const void *)subFile, 0x1a0, 0x60);
-        Deallocate((void *)subFile);
+        GXS::LoadBGPltt(subFile, 0x1a0, 0x60);
+        Deallocate(subFile);
 
         subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_DOWN_NSC_BIN);
-        func_020562b4((const void *)subFile, 0, 0x800);
-        Deallocate((void *)subFile);
+        func_020562b4(subFile, 0, 0x800);
+        Deallocate(subFile);
 
         gSubScreenLayers |= 4;
         *(volatile u16 *)0x400100c &= ~0x40;
@@ -2066,21 +1996,21 @@ s32 dScMgPanel_c::InitResources() {
         MultiStore16(subFill, b, 0x1000);
 
         subFile = LoadFile(ASSET_D_2D_YOSIFINX_NORMAL_NSC_BIN);
-        func_02056374((const void *)subFile, 0, 0x800);
-        Deallocate((void *)subFile);
+        func_02056374(subFile, 0, 0x800);
+        Deallocate(subFile);
 
         *(volatile u16 *)0x4001008 &= ~3;
         *(volatile u16 *)0x4001008 = (*(volatile u16 *)0x4001008 & 0x43) | 0x610;
 
         subFile = LoadFile(ASSET_D_2D_YOSIFINX_BIKKURI_NSC_BIN);
-        func_020564f4((const void *)subFile, 0, 0x800);
-        Deallocate((void *)subFile);
+        func_020564f4(subFile, 0, 0x800);
+        Deallocate(subFile);
     }
 
     DecompressLZ16(msgFile, (void *)0x6600000);
-    GXS::LoadOBJPltt((const void *)file, 0, 0x100);
-    Deallocate((void *)msgFile);
-    Deallocate((void *)file);
+    GXS::LoadOBJPltt(file, 0, 0x100);
+    Deallocate(msgFile);
+    Deallocate(file);
 
     FreeGfxSlotsById(0x1d);
     ResetRound();
@@ -2109,19 +2039,18 @@ s32 dScMgPanel_c::InitResources() {
  * allocation size, vtable identity, and the MG_PANEL registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgPuzzlePanelPuzzlePanic_Spawn. */
-// @symbol dScMgPanel_c_classInit
 extern "C" dScMgPanel_c *dScMgPanel_c_classInit() {
     return new dScMgPanel_c;
 }
 
 /* The state tables, in the order the static initializer fills them. Each
    entry's {function, 0} record is a compiler temporary in .data. The two
-   sprite-handle triples are copied whole from data_ov006_02136cf0 and
+   sprite triples (OamAttr lists) are copied whole from data_ov006_02136cf0 and
    data_ov006_02136d1c. */
-extern "C" void *data_ov006_02136cf0[3];
-extern "C" void *data_ov006_02136d1c[3];
+extern "C" OamAttr *data_ov006_02136cf0[3];
+extern "C" OamAttr *data_ov006_02136d1c[3];
 
-void *sPanelSprites[6] = {
+OamAttr *sPanelSprites[6] = {
     data_ov006_02136cf0[0], data_ov006_02136cf0[1], data_ov006_02136cf0[2],
     data_ov006_02136d1c[0], data_ov006_02136d1c[1], data_ov006_02136d1c[2],
 };

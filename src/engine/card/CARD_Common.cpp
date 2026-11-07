@@ -29,7 +29,7 @@ extern "C" {
  * OS_Terminate and MultiStore32Bytes MIi_CpuClearFast. */
 extern void Crash(void);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
-extern void MultiStore32Bytes(unsigned val, int *dst, int len);
+extern void MultiStore32Bytes(unsigned val, void *dst, int len);
 
 #define OS_LOCK_ID_ERROR (-3)
 #define CARD_TARGET_NONE 0
@@ -45,7 +45,6 @@ extern CARDiCommandArg cardi_arg;
  * stack's top. */
 extern int *data_020a8760;
 
-// @symbol CARDi_SetTask
 void CARDi_SetTask(void (*task)(CARDiCommon *)) {
     CARDiCommon *const p = &cardi_common;
     u32 priority = p->priority;
@@ -68,7 +67,6 @@ void CARDi_SetTask(void (*task)(CARDiCommon *)) {
     OS_WakeupThreadDirect(&p->thread);
 }
 
-// @symbol CARDi_LockResource
 void CARDi_LockResource(int owner, int target) {
     CARDiCommon *const p = &cardi_common;
     unsigned int saved = IRQ::Disable();
@@ -86,7 +84,6 @@ void CARDi_LockResource(int owner, int target) {
     IRQ::Restore(saved);
 }
 
-// @symbol CARDi_UnlockResource
 void CARDi_UnlockResource(int owner, int target) {
     CARDiCommon *p = &cardi_common;
     unsigned int saved = IRQ::Disable();
@@ -105,7 +102,6 @@ void CARDi_UnlockResource(int owner, int target) {
     IRQ::Restore(saved);
 }
 
-// @symbol CARDi_InitCommon
 void CARDi_InitCommon(void) {
     CARDiCommon *p = &cardi_common;
     p->lock_owner = OS_LOCK_ID_ERROR;
@@ -115,7 +111,7 @@ void CARDi_InitCommon(void) {
     {
         /* MI_CpuFillFast's value: the ROM passes it through a stack slot. */
         volatile u32 fill = 0;
-        MultiStore32Bytes(fill, (int *)&cardi_arg, sizeof(cardi_arg));
+        MultiStore32Bytes(fill, &cardi_arg, sizeof(cardi_arg));
     }
     CP15::FlushAndInvalidateDataCache((unsigned int)&cardi_arg, sizeof(cardi_arg));
     p->lock_queue = 0;
@@ -126,7 +122,6 @@ void CARDi_InitCommon(void) {
     PXI_SetFifoRecvCallback(0xb, (void *)CARDi_OnFifoRecv);
 }
 
-// @symbol CARDi_WaitAsync
 int CARDi_WaitAsync(void) {
     CARDiCommon *const p = &cardi_common;
     unsigned int saved = IRQ::Disable();
@@ -136,24 +131,20 @@ int CARDi_WaitAsync(void) {
     return p->cmd->result == CARD_RESULT_SUCCESS;
 }
 
-// @symbol CARD_LockRom
 void CARD_LockRom(u16 lockID) {
     CARDi_LockResource(lockID, CARD_TARGET_ROM);
     OS_TryLockCard(lockID);
 }
 
-// @symbol CARD_UnlockRom
 void CARD_UnlockRom(u16 lockID) {
     OS_UnlockCard(lockID);
     CARDi_UnlockResource(lockID, CARD_TARGET_ROM);
 }
 
-// @symbol CARD_LockBackup
 void CARD_LockBackup(u16 lockID) {
     CARDi_LockResource(lockID, CARD_TARGET_BACKUP);
 }
 
-// @symbol CARD_UnlockBackup
 void CARD_UnlockBackup(u16 lockID) {
     CARDi_UnlockResource(lockID, CARD_TARGET_BACKUP);
 }

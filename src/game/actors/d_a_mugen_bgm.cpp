@@ -4,7 +4,7 @@
  *
  * param1 == 1 steers gMusicTrackModeOverride from the rotated offset; otherwise it
  * drives Fog depth/color from the rotated offset, star count and
- * data_0209caa0[0x41], then keeps Sound sub 0x2e playing while
+ * data_0209caa0.file.mCharacter, then keeps Sound sub 0x2e playing while
  * func_ov100_02144f84 gates mHorzSpeed.
  *
  * This TU owns text only: ov002 delinks no .data here, so the _ZTV / _ZTI /
@@ -28,33 +28,36 @@
 #include "decl_common.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "SaveBlock.h"
+#include "dCamera_c.h"
+#include "daPly_c.h"
 
 extern signed char data_ov002_02110af0;
 extern signed char data_02092120;
 extern void *data_ov002_02110af8;
 extern u8 data_0209f250;
-extern char *data_0209f394[];
-extern int data_020a0ebc[];
-extern u8 data_0209caa0[];
-extern char *data_0209f318;
+extern daPly_c *data_0209f394[];
+extern Vector3 data_020a0ebc;
+extern SaveBlock data_0209caa0;
+extern dCamera_c *data_0209f318;
 
 /* arm9 / ov100 C helpers with no shared header. */
 extern "C" {
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
+/* void *: Behavior's diff/rotated scratch stays POD int[3]; a Vector3 local
+   would emit ~Vector3, which this object does not have. */
+void Vec3_RotateYAndTranslate(void *out, void *in, short angle, void *src);
 u8 NumStars(void);
 int func_ov100_02144f84(void);
 }
 /* -------------------------------------------------------------------------- */
 /* Factory: `return new` inherits fBase_c::operator new. */
 /* -------------------------------------------------------------------------- */
-// @symbol daMugenBGM_c_classInit
 extern "C" daMugenBGM_c *daMugenBGM_c_classInit(void) {
     return new daMugenBGM_c;
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_c13InitResourcesEv
 int daMugenBGM_c::InitResources() {
     void *p;
     /* The param1 mask reads through a const view of `this`: `param1 &= 0xf`
@@ -78,7 +81,6 @@ int daMugenBGM_c::InitResources() {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_c8BehaviorEv
 int daMugenBGM_c::Behavior() {
     int vol;
     int flag;
@@ -87,9 +89,8 @@ int daMugenBGM_c::Behavior() {
     int diff[3];
     int rotated[3];
 
-    Vec3_Sub((Vector3 *)diff, (const Vector3 *)(data_0209f394[data_0209f250] + 0x5c),
-             (const Vector3 *)&mPosX);
-    Vec3_RotateYAndTranslate(rotated, data_020a0ebc, mAngleY, diff);
+    Vec3_Sub((Vector3 *)diff, &data_0209f394[data_0209f250]->mPos, (const Vector3 *)&mPosX);
+    Vec3_RotateYAndTranslate(rotated, &data_020a0ebc, mAngleY, diff);
 
     if (param1 == 1) {
         int z = rotated[2];
@@ -110,7 +111,7 @@ int daMugenBGM_c::Behavior() {
     color = depth;
     flag = 0;
 
-    if (NumStars() < 0x50 || data_0209caa0[0x41] != 0) {
+    if (NumStars() < 0x50 || data_0209caa0.file.mCharacter != 0) {
         int x = rotated[0];
         color = 0xd00;
         if (x < 0)
@@ -121,7 +122,7 @@ int daMugenBGM_c::Behavior() {
                 int d;
                 vol = 0;
                 flag = 0x7f;
-                d = AngleDiff(mAngleY, *(s16 *)(data_0209f318 + 0x17c)) - 0x2000;
+                d = AngleDiff(mAngleY, data_0209f318->mAngleY) - 0x2000;
                 if (d < 0)
                     d = 0;
                 else if (d > 0x4000)
@@ -153,23 +154,19 @@ int daMugenBGM_c::Behavior() {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_c6RenderEv
 int daMugenBGM_c::Render() {
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_c16OnPendingDestroyEv
 void daMugenBGM_c::OnPendingDestroy() {}
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_c16CleanupResourcesEv
 int daMugenBGM_c::CleanupResources() {
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_c12GetActiveFogEv
 Fog *daMugenBGM_c::GetActiveFog() {
     if (data_ov002_02110af0 == data_02092120)
         return (Fog *)data_ov002_02110af8;
@@ -177,8 +174,6 @@ Fog *daMugenBGM_c::GetActiveFog() {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daMugenBGM_cD1Ev
-// @symbol _ZN12daMugenBGM_cD0Ev
 /* Both destructors come from the inline `~daMugenBGM_c() {}` in
  * include/daMugenBGM_c.h; the `new daMugenBGM_c` in the factory instantiates
  * them. An out-of-line definition here emits D0 before D1 (the cartridge has

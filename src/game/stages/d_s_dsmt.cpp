@@ -30,8 +30,8 @@
 // func_ov007_020cc600, 020cc168, 020cc118, 020cc0e4, 020cc0cc). data_0209b340
 // is decl_common.h's int[], but it is the Ov007BootArgs table
 // (Ov007Settings.h), so every access goes through the sBootArgs view. The
-// dispatcher's byte 0x328 of data_0209caa0 is the save block's active-file
-// byte; SaveBlock is still local to SaveData.cpp. The overlay operands
+// dispatcher reads the save block's active-file byte
+// (SaveBlock::activeFile). The overlay operands
 // pool-load the absolute linker constants ((int)&OVERLAY_100_ID/102_ID);
 // plain literals would compile to mov, and decl_common.h's overlay_N names
 // do not link.
@@ -54,9 +54,9 @@ extern FileSaveData *data_0209b33c;
 extern u8 data_0209b34b[];
 extern u8 data_0209b34e[];
 extern u8 data_0209b3d8[];
-extern u8 data_0208ee3c[];
-extern int data_0209caa0[];
-extern u8 data_0209cae4[];
+extern u8 data_0208ee3c;
+extern SaveBlock data_0209caa0;
+extern MinigameSaveData data_0209cae4;
 extern u8 gSoftResetPending;
 /* The scene's graph callback: the scene registers its own object here and
    clears it on the way out. The frame calls its four slots: GraphCallback0 at
@@ -91,42 +91,35 @@ void TurnBacklightOff(void);
 #define sBootArgs (*(Ov007BootArgs *)data_0209b340)
 
 /* Factory: the registry's spawn entry point. */
-// @symbol dScDSMT_c_classInit
 extern "C" dScDSMT_c *dScDSMT_c_classInit(void) {
     return new dScDSMT_c;
 }
 
 /* Heap thunks onto the game heap; `bx ip` sibcalls. */
-// @symbol func_ov007_020ccab4
 extern "C" void *func_ov007_020ccab4(u32 a) {
     return ((Heap *)data_020a0ea0)->Allocate(a);
 }
 
-// @symbol func_ov007_020cca98
 extern "C" void func_ov007_020cca98(void *a) {
     ((Heap *)data_020a0ea0)->_Deallocate(a);
 }
 
-// @symbol func_ov007_020cca80
 extern "C" void func_ov007_020cca80(void) {
     (void)((Heap *)data_020a0ea0)->MaxAllocationUnitSize();
 }
 
 /* File-op veneers: `#pragma long_calls` emits the pooled absolute tail call. */
 #pragma long_calls on
-extern "C" int LoadFile(int);
-// @symbol func_ov007_020cca74
-extern "C" int func_ov007_020cca74(int a) {
+extern "C" void *LoadFile(int);
+extern "C" void *func_ov007_020cca74(int a) {
     return LoadFile(a);
 }
-// @symbol func_ov007_020cca68
 extern "C" void func_ov007_020cca68(void *p) {
     Deallocate(p);
 }
 #pragma long_calls off
 
 /* Client command dispatcher: sound/backlight/save-file/minigame codes. */
-// @symbol func_ov007_020cc600
 extern "C" u8 func_ov007_020cc600(s32 command) {
     u8 failed = 0;
 
@@ -142,43 +135,43 @@ extern "C" u8 func_ov007_020cc600(s32 command) {
         TurnBacklightOff();
     } else if (command == 8) {
         SaveData::EraseSaveFile(0, (char *)func_ov007_020cc0cc(0));
-        func_02013c84(0, func_ov007_020cc0cc(0), -1, data_0209caa0);
+        func_02013c84(0, func_ov007_020cc0cc(0), -1, &data_0209caa0.file);
     } else if (command == 9) {
         SaveData::EraseSaveFile(1, (char *)func_ov007_020cc0cc(1));
-        func_02013c84(1, func_ov007_020cc0cc(1), -1, data_0209caa0);
+        func_02013c84(1, func_ov007_020cc0cc(1), -1, &data_0209caa0.file);
     } else if (command == 10) {
         SaveData::EraseSaveFile(2, (char *)func_ov007_020cc0cc(2));
-        func_02013c84(2, func_ov007_020cc0cc(2), -1, data_0209caa0);
+        func_02013c84(2, func_ov007_020cc0cc(2), -1, &data_0209caa0.file);
     } else if (command == 11) {
         FileSaveData *fileBuffer = func_ov007_020cc0cc(0);
         if (func_02013c84(0, fileBuffer, 1, func_ov007_020cc0cc(1)) == 0)
             failed = 1;
-        func_02013c84(1, func_ov007_020cc0cc(1), -1, data_0209caa0);
+        func_02013c84(1, func_ov007_020cc0cc(1), -1, &data_0209caa0.file);
     } else if (command == 12) {
         FileSaveData *fileBuffer = func_ov007_020cc0cc(0);
         if (func_02013c84(0, fileBuffer, 2, func_ov007_020cc0cc(2)) == 0)
             failed = 1;
-        func_02013c84(2, func_ov007_020cc0cc(2), -1, data_0209caa0);
+        func_02013c84(2, func_ov007_020cc0cc(2), -1, &data_0209caa0.file);
     } else if (command == 13) {
         FileSaveData *fileBuffer = func_ov007_020cc0cc(1);
         if (func_02013c84(1, fileBuffer, 0, func_ov007_020cc0cc(0)) == 0)
             failed = 1;
-        func_02013c84(0, func_ov007_020cc0cc(0), -1, data_0209caa0);
+        func_02013c84(0, func_ov007_020cc0cc(0), -1, &data_0209caa0.file);
     } else if (command == 14) {
         FileSaveData *fileBuffer = func_ov007_020cc0cc(1);
         if (func_02013c84(1, fileBuffer, 2, func_ov007_020cc0cc(2)) == 0)
             failed = 1;
-        func_02013c84(2, func_ov007_020cc0cc(2), -1, data_0209caa0);
+        func_02013c84(2, func_ov007_020cc0cc(2), -1, &data_0209caa0.file);
     } else if (command == 15) {
         FileSaveData *fileBuffer = func_ov007_020cc0cc(2);
         if (func_02013c84(2, fileBuffer, 0, func_ov007_020cc0cc(0)) == 0)
             failed = 1;
-        func_02013c84(0, func_ov007_020cc0cc(0), -1, data_0209caa0);
+        func_02013c84(0, func_ov007_020cc0cc(0), -1, &data_0209caa0.file);
     } else if (command == 16) {
         FileSaveData *fileBuffer = func_ov007_020cc0cc(2);
         if (func_02013c84(2, fileBuffer, 1, func_ov007_020cc0cc(1)) == 0)
             failed = 1;
-        func_02013c84(1, func_ov007_020cc0cc(1), -1, data_0209caa0);
+        func_02013c84(1, func_ov007_020cc0cc(1), -1, &data_0209caa0.file);
     } else if (command == 17) {
         func_ov007_020cc118(0x37, 8);
     } else if (command == 18) {
@@ -190,11 +183,11 @@ extern "C" u8 func_ov007_020cc600(s32 command) {
         for (saveSlot = 0; (s32)saveSlot < 3; saveSlot++, fileBytes += 0x44) {
             if (SaveData::ReadFileData(saveSlot, (FileSaveData *)fileBytes) == 0)
                 failed = 1;
-            func_02013c84(saveSlot, fileBytes, -1, data_0209caa0);
+            func_02013c84(saveSlot, fileBytes, -1, &data_0209caa0.file);
             func_ov007_020cc168(saveSlot);
         }
     } else if (command == 21) {
-        if (SaveData::ReadMinigameData((MinigameSaveData *)data_0209cae4) == 0)
+        if (SaveData::ReadMinigameData(&data_0209cae4) == 0)
             failed = 1;
     } else if (command == 22) {
         s32 saveSlot;
@@ -204,16 +197,15 @@ extern "C" u8 func_ov007_020cc600(s32 command) {
                 SaveData::EraseSaveFile(saveSlot, (char *)fileBuffer);
         }
     } else if (command == 23) {
-        SaveData::SaveMinigames((MinigameSaveData *)data_0209cae4);
+        SaveData::SaveMinigames(&data_0209cae4);
     } else if (command == 19) {
         Sound::StopLoadedMusic_Layer1(0x3c);
     }
-    func_ov007_020cc168(((u8 *)data_0209caa0)[0x328]);
+    func_ov007_020cc168(data_0209caa0.activeFile);
     return failed;
 }
 
 /* InitResources (key function): engines on, graph callback registered, session seeded. */
-// @symbol _ZN9dScDSMT_c13InitResourcesEv
 s32 dScDSMT_c::InitResources() {
     if (gSoftResetPending != 0)
         sBootArgs.status = 1;
@@ -244,7 +236,6 @@ s32 dScDSMT_c::InitResources() {
 }
 
 /* CleanupResources: unregister callback, record exit reason, release voice group. */
-// @symbol _ZN9dScDSMT_c16CleanupResourcesEv
 s32 dScDSMT_c::CleanupResources() {
     data_0209d4a8 = 0;
     dScene_c::SetAndStopColorFader();
@@ -257,7 +248,6 @@ s32 dScDSMT_c::CleanupResources() {
 }
 
 /* Behavior: pump the session state machine and dispatch its return code. */
-// @symbol _ZN9dScDSMT_c8BehaviorEv
 s32 dScDSMT_c::Behavior() {
     int result;
 
@@ -279,7 +269,7 @@ s32 dScDSMT_c::Behavior() {
         } else if (result == 5) {
             saveSlot = 2;
         }
-        func_02013c84(saveSlot, data_0209b33c + saveSlot, -1, data_0209caa0);
+        func_02013c84(saveSlot, data_0209b33c + saveSlot, -1, &data_0209caa0.file);
         StartFile(1, 0);
     } else if (result == 6) {
         if (data_0209d524 == 0) {
@@ -304,18 +294,15 @@ s32 dScDSMT_c::Behavior() {
 }
 
 /* Render: forward to the overlay's draw routine. */
-// @symbol _ZN9dScDSMT_c6RenderEv
 s32 dScDSMT_c::Render() {
     func_ov007_020b7040(this);
     return 1;
 }
 
 /* OnPendingDestroy: no unwind; the slot exists for dScene_c's teardown. */
-// @symbol _ZN9dScDSMT_c16OnPendingDestroyEv
 void dScDSMT_c::OnPendingDestroy() {}
 
 /* Fill the selected save slot's download-play summary in the byte-packed table. */
-// @symbol func_ov007_020cc168
 extern "C" void func_ov007_020cc168(u32 saveSlot) {
     int highestUnlockedPlusOne;
     int character;
@@ -329,8 +316,8 @@ extern "C" void func_ov007_020cc168(u32 saveSlot) {
         sBootArgs.soundModeItem = 0;
     }
 
-    sBootArgs.backlightOn = data_0208ee3c[0];
-    data_0209b34b[saveSlot] = (data_0209caa0[1] & 1) != 0;
+    sBootArgs.backlightOn = data_0208ee3c;
+    data_0209b34b[saveSlot] = (data_0209caa0.file.flags1 & 1) != 0;
 
     highestUnlockedPlusOne = 3;
     character = 2;
@@ -352,7 +339,6 @@ extern "C" void func_ov007_020cc168(u32 saveSlot) {
 }
 
 /* Arm the deferred music change Behavior commits. Declines if one is pending. */
-// @symbol func_ov007_020cc118
 extern "C" int func_ov007_020cc118(int musicId, unsigned int delayFrames) {
     if (data_ov007_02103260 >= 0) {
         return 0;
@@ -364,26 +350,22 @@ extern "C" int func_ov007_020cc118(int musicId, unsigned int delayFrames) {
 }
 
 /* graphCallback_c slot 0: decline (`mov r0,#0`), against dGraph_c's default 1. */
-// @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev
 int dScDSMT_c::graphCallback_c::GraphCallback0() {
     return 0;
 }
 
 /* graphCallback_c slot 2: hand the callback object to the ov007 routine. */
-// @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev
 int dScDSMT_c::graphCallback_c::GraphCallback2() {
     func_ov007_020b6eb4();
     return 0;
 }
 
 /* Install the save-slot buffer pointer. */
-// @symbol func_ov007_020cc0e4
 extern "C" void func_ov007_020cc0e4(FileSaveData *files) {
     data_0209b33c = files;
 }
 
 /* Address of save-slot record `idx` (0x44 stride is in the ROM's mla). */
-// @symbol func_ov007_020cc0cc
 extern "C" FileSaveData *func_ov007_020cc0cc(int idx) {
     return &data_0209b33c[idx];
 }

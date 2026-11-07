@@ -61,11 +61,10 @@ extern char data_ov064_0211bb0c[];
 extern "C" {
 /* local extern: stores the callbacks at dBgW+0x18 and +0x1c. d_bg_w.cpp
  * defines them and no header declares them. */
-void func_020393d4(int *mesh, int callback);
-void func_020393c4(int *mesh, int callback);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
+void func_020393c4(dBgW *collider, StoodOnCallback callback);
 }
 
-// @symbol daObjFl_Block_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjFl_Block_c through RTTI,
  * allocation size, vtable identity, and the FL_BLOCK registry profile; later
  * EAD lineage supplies classInit. Exact original spelling is not preserved.
@@ -83,13 +82,11 @@ extern "C" daObjFl_Block_c *daObjFl_Block_c_classInit(void) {
  * long_calls keeps the pooled absolute tail call. */
 #pragma push
 #pragma long_calls on
-// @symbol _ZN15daObjFl_Block_c15StoodOnCallbackEP4dBgWPS_P8dActor_c
-void daObjFl_Block_c::StoodOnCallback(dBgW *collider, daObjFl_Block_c *self, dActor_c *other) {
-    self->OnStoodOn(other);
+void daObjFl_Block_c::StoodOnCallback(dBgW *collider, dActor_c *self, dActor_c *other) {
+    static_cast<daObjFl_Block_c *>(self)->OnStoodOn(other);
 }
 #pragma pop
 
-// @symbol _ZN15daObjFl_Block_c9OnStoodOnEP8dActor_c
 /* The player (actor 0xbf) touched the block: raise mHadClsn, which Behavior
  * reads to decide whether to sink. */
 void daObjFl_Block_c::OnStoodOn(dActor_c *other) {
@@ -98,7 +95,6 @@ void daObjFl_Block_c::OnStoodOn(dActor_c *other) {
         mHadClsn = 1;
 }
 
-// @symbol _ZN15daObjFl_Block_c13InitResourcesEv
 s32 daObjFl_Block_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov022_02114558), 1, -1);
     UpdateModelPosAndRotY();
@@ -109,14 +105,13 @@ s32 daObjFl_Block_c::InitResources() {
         ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), mClsnMat, 0x199, mAngleY,
                               *(CLPS_Block *)(data_ov064_0211bb0c));
 
-    func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithVelocity);
-    func_020393c4((int *)&mMeshCollider, (int)&StoodOnCallback);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithVelocity);
+    func_020393c4(&mMeshCollider, &StoodOnCallback);
 
     mMaxPosY = mPosY;
     return 1;
 }
 
-// @symbol _ZN15daObjFl_Block_c8BehaviorEv
 s32 daObjFl_Block_c::Behavior() {
     mMeshCollider.SetClipRadius(0x150000);
 
@@ -139,13 +134,11 @@ s32 daObjFl_Block_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN15daObjFl_Block_c6RenderEv
 s32 daObjFl_Block_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN15daObjFl_Block_c16CleanupResourcesEv
 s32 daObjFl_Block_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();

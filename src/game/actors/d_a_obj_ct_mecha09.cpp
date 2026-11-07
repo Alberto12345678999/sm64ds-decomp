@@ -34,6 +34,7 @@ enum daObjCtMecha09_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "math/MtxStack.h"
+#include "LevelRng.h"
 
 /* Resource handles constructed by this TU's static initializer. The
  * constructor and destructor bodies stay out of line; mwcc registers them. */
@@ -56,17 +57,13 @@ extern Mecha09ClsnFilePtr data_ov065_0211d9cc;
 extern Mecha09ModelFilePtr data_ov065_0211d9d4;
 extern u8 data_0209f2c0;
 extern s32 data_ov065_0211d520[];
-extern s32 data_0209e650[];
 
 extern CLPS_Block data_ov035_02112118;
 
-// @symbol _ZN16daObjCtMecha09_cD1Ev
-// @symbol _ZN16daObjCtMecha09_cD0Ev
 /* The compiler writes the body: this class's vtable, then dBgActor_c's
  * inlined destructor, then the mesh collider and the model. */
 daObjCtMecha09_c::~daObjCtMecha09_c() {}
 
-// @symbol _ZN16daObjCtMecha09_c12UpdateShadowEv
 /* Drops the beam's shadow when it is close enough to the ground sample. */
 void daObjCtMecha09_c::UpdateShadow() {
     int d = mPosY - mGroundY;
@@ -81,7 +78,6 @@ void daObjCtMecha09_c::UpdateShadow() {
     DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x1e0000, 0x32000, 0xfa000, 0xf);
 }
 
-// @symbol _ZN16daObjCtMecha09_c16CleanupResourcesEv
 int daObjCtMecha09_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -90,13 +86,11 @@ int daObjCtMecha09_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha09_c6RenderEv
 int daObjCtMecha09_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha09_c8BehaviorEv
 /* Clock setting data_0209f2c0 picks a vertical speed from data_ov065_0211d520.
  * Setting 2 rerolls direction and a countdown; the last five frames of a leg
  * hold the beam still. Travel is clamped to [mStartPosY, mEndPosY]. */
@@ -106,7 +100,7 @@ int daObjCtMecha09_c::Behavior() {
 
     if (setting == 2) {
         if (DecIfAbove0_Short(&mLegTimer) == 0) {
-            u16 rnd = (u32)RandomIntInternal(data_0209e650) >> 16;
+            u16 rnd = (u32)RandomIntInternal(&data_0209e650.value) >> 16;
             if (rnd >= 0x7fff)
                 mDirection = 1;
             else
@@ -140,7 +134,6 @@ int daObjCtMecha09_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha09_c13InitResourcesEv
 /* Loads the beam's model and mesh collider, sets the travel range from
  * param1's low byte (0 or 0xff means the default 0x1f4000), and casts a
  * dBgCh_Gnd ray from 0xa000 below the beam for the shadow's ground height.
@@ -183,7 +176,6 @@ int daObjCtMecha09_c::InitResources() {
     return 1;
 }
 
-// @symbol daObjCtMecha09_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjCtMecha09_c through
  * RTTI, allocation size, vtable identity, and the CT_MECHA09 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not

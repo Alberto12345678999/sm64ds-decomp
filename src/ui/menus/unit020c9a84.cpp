@@ -63,13 +63,9 @@ static inline void CopyVec3(Vector3 *dst, const Vector3 *src) {
     *(Vector3Bits *)dst = *(const Vector3Bits *)src;
 }
 
-/* A POD Vector3 for locals. A real Vector3 local emits the vague-linkage
+/* The locals below are VecFx32. A real Vector3 local emits the vague-linkage
    ~Vector3 into this text-only unit, and with Vector3's user-declared
    constructor the zero-initialised locals store differently from the ROM's. */
-struct RawVector3 {
-    int x, y, z;
-};
-
 /* Ov007Swing's side point positions (0x20 xPointPos, 0x38 yPointPos) as
    block-copy rows. Copying into swing->xPointPos[j] through a cast pointer
    shares its address with the func_ov007_020c844c argument; the ROM forms
@@ -85,7 +81,6 @@ struct SwingSideRows {
  * with x/y springs (mode 2) and its first point pinned, and two pairs of
  * side points with a link each, for func_ov007_020c9d90 to tie to the
  * mesh. */
-// @symbol func_ov007_020ca010
 Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params) {
     Ov007Swing *swing;
     int n;
@@ -103,7 +98,7 @@ Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params) {
     swing->chain = func_ov007_020c798c(2, params->chainLength, params->chainPointMass, 1);
     chain = swing->chain;
     for (i = 0; i < params->chainLength; i++) {
-        RawVector3 v = {0, 0, 0};
+        VecFx32 v = {0, 0, 0};
         v.z = i << 12;
         CopyVec3(&swing->chainPositions[i], (Vector3 *)&v);
         chain->items[i]->target = &swing->chainPositions[i];
@@ -112,12 +107,12 @@ Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params) {
     chain->items[0]->flags |= 1;
     for (j = 0; j < 2; j++) {
         {
-            RawVector3 a = {0, 0, 0};
+            VecFx32 a = {0, 0, 0};
             a.x = j << 12;
             ((SwingSideRows *)swing)->x[j] = (Vector3Bits &)a;
         }
         {
-            RawVector3 b = {0, 0, 0};
+            VecFx32 b = {0, 0, 0};
             b.y = j << 12;
             ((SwingSideRows *)swing)->y[j] = (Vector3Bits &)b;
         }
@@ -132,7 +127,6 @@ Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params) {
 /* Frees the swing: its side points (func_ov007_020c8440) and links
  * (func_ov007_020c8098), the chain (func_ov007_020c78dc), the chain's
  * positions and the swing itself. */
-// @symbol func_ov007_020c9fa0
 void func_ov007_020c9fa0(Ov007Swing *self) {
     int i;
     for (i = 0; i < 2; i++) {
@@ -148,7 +142,6 @@ void func_ov007_020c9fa0(Ov007Swing *self) {
 
 /* Places the swing at pos: the anchor there, the x side pair w apart along
  * x and the y side pair h apart along y, both centred on it. */
-// @symbol func_ov007_020c9f10
 void func_ov007_020c9f10(Ov007Swing *self, Vector3 *pos, int w, int h) {
     CopyVec3(&self->yPointPos[1], pos);
     CopyVec3(&self->yPointPos[0], &self->yPointPos[1]);
@@ -166,7 +159,6 @@ void func_ov007_020c9f10(Ov007Swing *self, Vector3 *pos, int w, int h) {
  * bound with that mesh point held at restZ, so its rest offset is taken
  * against the flat mesh. A mesh point's row is taken as its index / rows,
  * not index / columns, as the ROM has it. */
-// @symbol func_ov007_020c9d90
 void func_ov007_020c9d90(Ov007Swing *self, Ov007Mesh *mesh) {
     int count;
     int i;
@@ -209,7 +201,6 @@ void func_ov007_020c9d90(Ov007Swing *self, Ov007Mesh *mesh) {
 /* One simulation step: the side points spring along z, the chain's pinned
  * first point follows the mesh normal under it, then the chain springs and
  * integrates. shift is the integration step's shift. */
-// @symbol func_ov007_020c9c24
 void func_ov007_020c9c24(Ov007Swing *self, int shift) {
     int i;
     Vector3_16 *normal;
@@ -271,7 +262,6 @@ static inline int CapFraction(int size, u16 cap) {
  * half turn less one. Its size over maxRot, held to [0, 1], is eased out
  * as t (2 - t), and the rotation is that share of maxRot with the tilt's
  * sign. */
-// @symbol func_ov007_020c9a84
 void func_ov007_020c9a84(Ov007Swing *self, Vector3 *offset, u16 *rotX, u16 *rotY) {
     Vector3 span;
     int angleX, angleY;

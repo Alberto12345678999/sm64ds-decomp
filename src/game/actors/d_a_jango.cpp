@@ -63,6 +63,7 @@ enum daJango_c_AssetId {
 #include "math/CalcLib.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "LevelRng.h"
 /* decl_common.h deliberately NOT included; AngleDiff is declared locally. */
 extern "C" int AngleDiff(int a, int b);
 #include "PathPtr.h"
@@ -74,6 +75,7 @@ extern "C" int AngleDiff(int a, int b);
 #include "dExtFrameCtrl_c.h"
 #include "daObjMarioCap_c.h"
 #include "Sound.h"
+#include "private/mtx43.h"
 
 /* Static-init ownership (was the handwritten __sinit_ov062_0211d6fc shard).
  * The file-scope objects at the end of this file construct the four
@@ -140,18 +142,14 @@ enum Bool { FALSE, TRUE };
 /* shadow struct 'BCA_File' */
 struct BCA_File;
 
-
-/* shadow typedef 'M48' */
-typedef struct { int w[12]; } M48;
+/* The matrix copies go through Mtx43: assigning this TU's nested
+   Matrix4x3 instead grows .text by 0x38 bytes. */
 
 /* Array-backed position snapshot: mwccarm 2004/b56 copies these three
    words with the retail ldm/stm sequence in C++. A three-scalar-member
    assignment selects separate loads/stores here (notes/mwccarm-codegen.md
    6ay, the struct-copy lever). */
 struct SwoopPositionWords { int w[3]; };
-
-/* shadow struct 'Base' */
-struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(int); };
 
 /* TUBUILD CONFLICT -- alternate body of typedef 'Vector3', from the legacy file for func_ov062_0211b51c, NOT applied:
 typedef struct { int x, y, z; } Vector3;
@@ -176,14 +174,14 @@ typedef struct { int x, y, z; } Vector3;
 extern "C" {
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void* m, short angX);
-extern void MulVec3Mat4x3(const Vector3* v, const void* m, Vector3* res);
-extern int data_020a0e68[];
+/* local extern: no shared math header declares MulVec3Mat4x3. */
+extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
+extern Matrix4x3 data_020a0e68;
 extern signed char gCurrentSublevel;
 extern void func_02012694(unsigned int, void *);
 extern s16 Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
-extern int data_0209e650;
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern int LenVec3(Vector3 *v);
+extern int LenVec3(const Vector3 *v);
 extern void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int s);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void* m, int x, int y, int z);
@@ -194,7 +192,7 @@ typedef void BgchInitAt_(void *self, void *a, Fix12i b, Fix12i c, void *d, void 
 extern SharedFilePtr data_ov002_0210da40;
 extern SharedFilePtr data_ov002_0210d9a0;
 extern SharedFilePtr data_ov002_0210d9c0;
-extern void *data_0209f394;
+extern daPly_c *data_0209f394[];
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211b800, NOT applied: extern void func_ov062_0211c658(void *c, void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov062_0211e17c, from the legacy file for func_ov062_0211b8d8, NOT applied: extern void* data_ov062_0211e17c; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211b8d8, NOT applied: extern "C" int func_ov062_0211c658(unsigned char* c, void* p); */
@@ -214,7 +212,6 @@ extern void *data_0209f394;
 /* TUBUILD CONFLICT -- alternate declaration of _ZNK7PathPtr7GetNodeER7Vector3j, from the legacy file for func_ov062_0211bd10, NOT applied: extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, Vector3 *v, unsigned int i); */
 /* TUBUILD CONFLICT -- alternate declaration of gCurrentSublevel, from the legacy file for func_ov062_0211bd10, NOT applied: extern s8 gCurrentSublevel; */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov062_0211c218, NOT applied: extern int RandomIntInternal(int *seed); */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209e650, from the legacy file for func_ov062_0211c218, NOT applied: extern int data_0209e650; */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov062_0211c2f4, NOT applied: extern s16 Vec3_HorzAngle(const void *a, const void *b); */
 /* TUBUILD CONFLICT -- alternate declaration of ApproachAngle, from the legacy file for func_ov062_0211c2f4, NOT applied: extern int ApproachAngle(void *p, int target, int a, int b, int c); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov062_0211c2f4, NOT applied: extern int RandomIntInternal(int *seed); */
@@ -222,7 +219,6 @@ extern void *data_0209f394;
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov062_0211c2f4, NOT applied: extern void MulVec3Mat4x3(Vector3 *in, void *m, void *out); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211c2f4, NOT applied: extern void func_ov062_0211c658(void *c, void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of gCurrentSublevel, from the legacy file for func_ov062_0211c2f4, NOT applied: extern s8 gCurrentSublevel; */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209e650, from the legacy file for func_ov062_0211c2f4, NOT applied: extern int data_0209e650; */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for func_ov062_0211c594, NOT applied: extern void Matrix4x3_FromRotationY(struct Matrix4x3 *m, short angY); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_ApplyInPlaceToRotationX, from the legacy file for func_ov062_0211c594, NOT applied: extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *m, short angX); */
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov062_0211c594, NOT applied: extern void MulVec3Mat4x3(const Vector3 *v, const struct Matrix4x3 *m, Vector3 *out); */
@@ -287,13 +283,11 @@ static inline int IsNoControl(daPly_c *player) {
     return player->mIsNoControl != 0;
 }
 
-// @symbol daJango_c_classInit
 extern "C" daJango_c *daJango_c_classInit()
 {
     return new daJango_c();
 }
 
-// @symbol _ZN9daJango_c16OnAimedAtWithEggEv
 // recovered name: Klepto_OnAimedAtWithEgg
 /* daJango_c::OnAimedAtWithEgg - recovered from vtable slot identity.
    Returns the constant 458752 (0x70000, which is 112.0 if read as fix12) and
@@ -302,7 +296,6 @@ s32 daJango_c::OnAimedAtWithEgg() {
     return 458752;
 }
 
-// @symbol _ZN9daJango_c13InitResourcesEv
 /* Loads the model and the three animations, decodes the spawn parameter, sets
    up the two cylinders and the wall collider, then picks the first state.
 
@@ -383,7 +376,7 @@ int daJango_c::InitResources()
         mPosZ = mPathNodePosZ;
         func_ov062_0211c658(JANGO_STATE_FLY_PATH);
     } else {
-        pl = (daPly_c *)data_0209f394;
+        pl = data_0209f394[0];
         /* No star: if the player has already lost the cap (and param1 is not 3),
            start out holding a cap object, spawned with the player's mCharacter
            shifted left 8. (func_ov062_0211b51c builds the same shape from
@@ -408,7 +401,6 @@ int daJango_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN9daJango_c8BehaviorEv
 /* A state record, as __sinit_ov062_0211d6fc fills the five JANGO_STATE_*
    records: two pointers-to-member, `enter` (called once by
    func_ov062_0211c658 when the state is selected) and `update` (called here
@@ -512,18 +504,13 @@ int daJango_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN9daJango_c6RenderEv
-/* Draws the model through slot 5 of dExtBlendAnmModel_c's vtable (Render, with a null
-   scale). The call goes through a vtable-shaped view so it dispatches
-   through the table instead of being resolved at compile time. */
+/* Draws the model through dExtBlendAnmModel_c::Render with a null scale. */
 int daJango_c::Render()
 {
-    Base *b = (Base *)&mBlendAnmModel;
-    b->m(0);
+    mBlendAnmModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN9daJango_c16OnPendingDestroyEv
 /* recovered: shared header, real C++ method
  *
  * fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`.
@@ -532,7 +519,6 @@ void daJango_c::OnPendingDestroy()
 {
 }
 
-// @symbol _ZN9daJango_c16CleanupResourcesEv
 /* recovered: shared header, real C++ method
  *
  * Releases the seven shared files InitResources claimed -- three of them from
@@ -553,7 +539,6 @@ int daJango_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211c6a8Ev
 /* Per-frame matrices (called from Behavior).
    1. dExtSimpleModel_c matrix: translation = mPos >> 3, rotation = mAngle X/Y/Z
       (Matrix4x3_ApplyInPlaceToRotationZXYExt), stored in mBlendAnmModel.mat4x3.
@@ -568,9 +553,9 @@ void daJango_c::func_ov062_0211c6a8()
     dActor_c* actor;
 
     Vec3_Asr(&v, &mPos, 3);
-    Matrix4x3_FromTranslation(data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationZXYExt(data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48 *)&mBlendAnmModel.mat4x3 = *(M48 *)data_020a0e68;
+    Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
+    Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    *(Mtx43 *)&mBlendAnmModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
 
     if (mHeldActorID != 0)
     {
@@ -581,41 +566,39 @@ void daJango_c::func_ov062_0211c6a8()
             mHeldPosY = 0;
             mHeldPosZ = 0;
             MulMat4x3Mat4x3(&mBlendAnmModel.data.transforms[6], &mBlendAnmModel.mat4x3, &mHeldMat);
-            mHeldPosX = data_020a0e68[9];
-            mHeldPosY = data_020a0e68[10];
-            mHeldPosZ = data_020a0e68[11];
+            mHeldPosX = data_020a0e68.t.x;
+            mHeldPosY = data_020a0e68.t.y;
+            mHeldPosZ = data_020a0e68.t.z;
             mHeldPosX <<= 3;
             mHeldPosY <<= 3;
             mHeldPosZ <<= 3;
             if (mCarriedItem == CARRIES_STAR)
             {
                 /* Offset (-13.0, 3.0, -4.0), rotation X/Y/Z = 0, -180, -95.6 degrees. */
-                Matrix4x3_FromTranslation(data_020a0e68, -0xd000, 0x3000, -0x4000);
-                Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68, 0, -0x8000, -0x4400);
+                Matrix4x3_FromTranslation(&data_020a0e68, -0xd000, 0x3000, -0x4000);
+                Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0, -0x8000, -0x4400);
             }
             else
             {
                 /* Offset (-7.0, 1.5, 0.0), rotation X/Y/Z = -67.5, -180, -90 degrees. */
-                Matrix4x3_FromTranslation(data_020a0e68, -0x7000, 0x1800, 0);
-                Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68, -0x3000, -0x8000, -0x4000);
+                Matrix4x3_FromTranslation(&data_020a0e68, -0x7000, 0x1800, 0);
+                Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, -0x3000, -0x8000, -0x4000);
             }
-            MulMat4x3Mat4x3(data_020a0e68, &mHeldMat, &mHeldMat);
+            MulMat4x3Mat4x3(&data_020a0e68, &mHeldMat, &mHeldMat);
             actor->mCarryMatrix = (Matrix4x3 *)&mHeldMat;
         }
     }
 
-    Matrix4x3_FromTranslation(data_020a0e68, mPosX >> 3, (mPosY - 0x18000) >> 3, mPosZ >> 3);
-    *(M48*)&mShadowMat = *(M48*)data_020a0e68;
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x18000) >> 3, mPosZ >> 3);
+    *(Mtx43 *)&mShadowMat = *(Mtx43 *)&data_020a0e68;
     DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)&mShadowMat, 0x40000, 0x258000, 0xf);
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211c658EPv
 /* Select a state: store the record (its address) in mState, then call the
    record's first member, `enter`, on the actor if it has one and return its
    result (1 if it has none). */
 int daJango_c::func_ov062_0211c658(void *p) { StateRecord *qq = (StateRecord *)p; mState = qq; StateRecord *q = (StateRecord *)mState; if (*(int *)q == 0) return 1; return (this->*q->enter)(); }
 
-// @symbol _ZN9daJango_c19func_ov062_0211c594Ev
 /* FLY_PATH enter. Clears the three velocity words (mSpeedX, mVertSpeed, mSpeedZ).
    If mRiseToFarNode is 1 -- func_ov062_0211b3ac set it because the node it
    picked is index ^ 2 (assumed to be the far side of the square) -- the vector (0, 0, 20.0) is turned by mAngleY and
@@ -645,7 +628,6 @@ int daJango_c::func_ov062_0211c594() {
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211c2f4Ev
 /* FLY_PATH update: follow the path through its four nodes.
    Each frame it steers mPrevAngleY toward the node at mPathNodeIndex and
    levels the roll. While more than 20 units from the node it is pulled toward
@@ -692,7 +674,7 @@ int daJango_c::func_ov062_0211c2f4() {
             if (mPathNodeIndex >= 4)
                 mPathNodeIndex = 0;
         } else if (func_ov062_0211b3ac() == 0) {
-            u32 r = (u32)RandomIntInternal(&data_0209e650) >> 8 & 3;
+            u32 r = (u32)RandomIntInternal(&data_0209e650.value) >> 8 & 3;
             if (mPathNodeIndex != r) {
                 mPathNodeIndex = r;
             } else {
@@ -712,7 +694,7 @@ int daJango_c::func_ov062_0211c2f4() {
         zero[1] = 0;
         zero[2] = 0x14000;
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-        MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&mSpeedX);
+        MulVec3Mat4x3((Vector3 *)zero, &data_020a0e68, (Vector3 *)&mSpeedX);
         func_ov062_0211c658(JANGO_STATE_CIRCLE);
         return 1;
     }
@@ -734,7 +716,6 @@ int daJango_c::func_ov062_0211c2f4() {
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211c218Ev
 /* CIRCLE enter. Takes the current yaw as the steering target, restarts the
    phase counter (mStateParam = 0) and sets mStateTimer to 300, 400, 500 or 600 frames
    (random, 100 apart) before the actor may leave along the path. If the last thing that happened was a hit on the player
@@ -746,7 +727,7 @@ int daJango_c::func_ov062_0211c218()
 {
     mTargetAngleY = mAngleY;
     mStateParam = 0;
-    mStateTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 3) * 0x64 + 0x12c;
+    mStateTimer = (((unsigned int)RandomIntInternal(&data_0209e650.value) >> 8) & 3) * 0x64 + 0x12c;
     if (mHitPlayer == 1) {
         mStateTimer = 0;
         mHitPlayer = 0;
@@ -761,7 +742,6 @@ int daJango_c::func_ov062_0211c218()
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211bd10Ev
 /* CIRCLE update (Klepto flying a turning loop: constant yaw turn, pitch steered
    toward mSpawnPos when empty-handed or toward mPathNodePos otherwise). gCurrentSublevel is LEVEL_ID in symbols/verified.tsv; this code
    special-cases level 0x10 and levels 0x18 / 0x19.
@@ -923,7 +903,6 @@ int daJango_c::func_ov062_0211bd10()
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211bc54Ev
 /* SWOOP enter. mStateTimer is the swoop length: 50 frames in level 0x10 (the
    LEVEL_ID in gCurrentSublevel), else a random 20 to 35. Clears the velocity words,
    plays sound 0xee at the actor's camera-space position, picks the turn rate in
@@ -939,19 +918,17 @@ int daJango_c::func_ov062_0211bc54()
     if (gCurrentSublevel == 0x10) {
         mStateTimer = 0x32;
     } else {
-        mStateTimer =
-            (((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 0xf) + 0x14;
+        mStateTimer = (((unsigned)RandomIntInternal(&data_0209e650.value) >> 8) & 0xf) + 0x14;
     }
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;
     func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
-    mStateParam = ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
+    mStateParam = ((((unsigned)RandomIntInternal(&data_0209e650.value) >> 8) & 3) << 8) + 0x300;
     mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 
-// @symbol func_ov062_0211ba84
 /* SWOOP update: dive at the nearest player. The position snapshot keeps
    the retail three-word block copy; field access and calls use the actor and
    player interfaces.
@@ -1011,9 +988,9 @@ int func_ov062_0211ba84(char *c)
         ApproachLinear(actor.mPrevAngleX, pitch, (s16)(actor.mStateParam + 0x500));
     }
     v.z = 0x1e000;
-    Matrix4x3_FromRotationY(data_020a0e68, actor.mAngleY);
-    Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, actor.mAngleX);
-    MulVec3Mat4x3(&v, data_020a0e68, (Vector3 *)&actor.mSpeedX);
+    Matrix4x3_FromRotationY(&data_020a0e68, actor.mAngleY);
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, actor.mAngleX);
+    MulVec3Mat4x3(&v, &data_020a0e68, (Vector3 *)&actor.mSpeedX);
     actor.func_ov062_0211b51c();
     /* Retail reads the timer as unsigned here; the inherited field is s16. */
     if ((u16)actor.mStateTimer == 0 || actor.mWithMeshClsn.IsOnWall() != 0) {
@@ -1025,7 +1002,6 @@ int func_ov062_0211ba84(char *c)
 }
 
 
-// @symbol _ZN9daJango_c19func_ov062_0211b930Ev
 /* HURT enter. Starts jango_damage.bca (4 blend frames, flags 0x40000000, speed
    1.0, from frame 0; the animations that run continuously pass flags 0,
    this one passes 0x40000000 and func_ov062_0211b8d8 waits for its last frame). mStateParam = 1.
@@ -1076,7 +1052,6 @@ int daJango_c::func_ov062_0211b930()
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211b8d8Ev
 /* HURT update: when jango_damage.bca has reached its last frame (the integer
    part of the 20.12 frame counter, with its top four bits masked off, against
    the frame count minus 1), set mTimer to 30 and go back to CIRCLE. */
@@ -1090,7 +1065,6 @@ int daJango_c::func_ov062_0211b8d8() {
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211b880Ev
 /* RISE enter (state record data_ov062_0211e16c, which nothing in this file
    selects): doubles the animation speed (0x2000 = 2.0), zeroes the three
    velocity words and mVertAccel, and starts jango_fly.bca (4 blend frames,
@@ -1109,7 +1083,6 @@ int daJango_c::func_ov062_0211b880() {
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211b800Ev
 /* RISE update: climbs at 20 units per frame while pitch (mPrevAngleX) and roll
    (mPrevAngleZ) level off by 0x300 per frame. Once mPosY is within 2 units
    below mPathNodePosY or above it, it stops, snaps to that height, restores
@@ -1129,7 +1102,6 @@ int daJango_c::func_ov062_0211b800() {
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211b51cEv
 /* Contact tests, run by Behavior every frame outside HURT and by the SWOOP
    update every frame. The return value is incidental: the early outs
    return whatever value they just tested (0, a nonzero query result, a held
@@ -1254,7 +1226,6 @@ int daJango_c::func_ov062_0211b51c()
     return func_ov062_0211c658(JANGO_STATE_CIRCLE);
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211b3acEv
 /* Pick which of the four path nodes to fly to next, based on where the player is.
    Called from the circling and path states; does its work on every eighth call
    (mPathPickTick counts 1..7 and wraps; c2f4 sets it to 7 so the next call runs).
@@ -1319,7 +1290,6 @@ int daJango_c::func_ov062_0211b3ac()
     return 1;
 }
 
-// @symbol _ZN9daJango_c19func_ov062_0211b2fcEv
 /* Sets the velocity words (mSpeedX, mVertSpeed, mSpeedZ) for the circling
    state: the vector (0, 0, 20.0) turned by mAngleY then mAngleX. Empty-handed
    (nothing carried or held) it is (0, 0, 40.0) instead, and while mTimer is
@@ -1343,12 +1313,11 @@ void daJango_c::func_ov062_0211b2fc(){
     }
     v[0].z = 0x28000;
   }
-  Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-  Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, mAngleX);
-  MulVec3Mat4x3(&v[0], data_020a0e68, (Vector3 *)&mSpeedX);
+  Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+  Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
+  MulVec3Mat4x3(&v[0], &data_020a0e68, (Vector3 *)&mSpeedX);
 }
 
-// @symbol _ZN9daJango_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
  * D0 is the DELETING destructor: destroy through this class and its bases, then
@@ -1363,7 +1332,6 @@ void daJango_c::func_ov062_0211b2fc(){
  * definition for the merged TU; the compiler emits D0 from the visible body.)
  */
 
-// @symbol _ZN9daJango_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * One vtable store and six destructor calls, every one a consequence of

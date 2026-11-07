@@ -111,14 +111,14 @@ extern unsigned char data_0209f250;
 extern unsigned char gMeterCounterSlideState;
 extern signed char gNumLives;
 struct OamAttr;
-extern void *data_0209f394[];
+extern daPly_c *data_0209f394[];
 extern u8 gZoomButtonActiveTimer;
-extern void *data_0209f318;
+extern dCamera_c *data_0209f318;
 extern ControllerInput data_0209f498[];
 extern int data_0208ee44;
 extern u32 gNextActorUpdateMask;
 extern u8 data_0209d660;
-extern signed char data_0209f310[];
+extern signed char gNumStageStars[];
 /* ov001's OAM::NUMBERS, not ov000's -- ov000 shares this load window with ov002 and
 * so can never be the module this reaches. */
 extern int data_ov001_020abac8[];
@@ -157,11 +157,11 @@ extern struct OamAttr *data_ov002_0210c230[];
 extern struct OamAttr data_ov002_0210d5d0;
 extern struct OamAttr data_ov002_0210d4f0;
 extern struct OamAttr data_ov002_0210c690;
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 extern unsigned char gShowTouchScreenArrows;
 extern dFdBrightness_c *data_0209f5bc;
 void *LoadFile(int handle);
-void DecompressLZ16(void *handle, int addr);
+void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *handle);
 void func_0203da4c(void);
 }
@@ -190,13 +190,11 @@ static inline int StarCountVisible(void) {
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: HUD_Spawn. It was once labelled
  * the dMeter_c constructor, but it takes no `this`: it is the registry factory. */
-// @symbol dMeter_c_classInit
 extern "C" dMeter_c *dMeter_c_classInit() {
     return new dMeter_c();
 }
 
 /* ROM ordinal 18 -- dMeter_c::InitResources(), 0x020fda04, size 0x750 */
-// @symbol _ZN8dMeter_c13InitResourcesEv
 int dMeter_c::InitResources() {
     /* Main and sub engine OBJ VRAM. */
     char *objVramMain = (char *)0x6400000;
@@ -205,47 +203,47 @@ int dMeter_c::InitResources() {
         void *h;
         if (GetOwnerLanguage() == 5) {
             h = LoadFile(0xB003);
-            DecompressLZ16(h, 0x6400000);
-            DecompressLZ16(h, 0x6600000);
+            DecompressLZ16(h, objVramMain);
+            DecompressLZ16(h, objVramSub);
             Deallocate(h);
             h = LoadFile(0xB007);
-            DecompressLZ16(h, (int)(objVramMain + 0x2000));
+            DecompressLZ16(h, objVramMain + 0x2000);
             Deallocate(h);
         } else if (GetOwnerLanguage() == 4) {
             h = LoadFile(0xAC03);
-            DecompressLZ16(h, 0x6400000);
-            DecompressLZ16(h, 0x6600000);
+            DecompressLZ16(h, objVramMain);
+            DecompressLZ16(h, objVramSub);
             Deallocate(h);
             h = LoadFile(0xAC07);
-            DecompressLZ16(h, (int)(objVramMain + 0x2000));
+            DecompressLZ16(h, objVramMain + 0x2000);
             Deallocate(h);
         } else if (GetOwnerLanguage() == 3) {
             h = LoadFile(0xA803);
-            DecompressLZ16(h, 0x6400000);
-            DecompressLZ16(h, 0x6600000);
+            DecompressLZ16(h, objVramMain);
+            DecompressLZ16(h, objVramSub);
             Deallocate(h);
             h = LoadFile(0xA807);
-            DecompressLZ16(h, (int)(objVramMain + 0x2000));
+            DecompressLZ16(h, objVramMain + 0x2000);
             Deallocate(h);
         } else if (GetOwnerLanguage() == 2) {
             h = LoadFile(0xA403);
-            DecompressLZ16(h, 0x6400000);
-            DecompressLZ16(h, 0x6600000);
+            DecompressLZ16(h, objVramMain);
+            DecompressLZ16(h, objVramSub);
             Deallocate(h);
             h = LoadFile(0xA407);
-            DecompressLZ16(h, (int)(objVramMain + 0x2000));
+            DecompressLZ16(h, objVramMain + 0x2000);
             Deallocate(h);
         } else {
             h = LoadFile(0xA003);
-            DecompressLZ16(h, 0x6400000);
-            DecompressLZ16(h, 0x6600000);
+            DecompressLZ16(h, objVramMain);
+            DecompressLZ16(h, objVramSub);
             Deallocate(h);
             h = LoadFile(0xA007);
-            DecompressLZ16(h, (int)(objVramMain + 0x2000));
+            DecompressLZ16(h, objVramMain + 0x2000);
             Deallocate(h);
         }
         h = LoadFile(0x8000);
-        DecompressLZ16(h, (int)(objVramSub + 0x2000));
+        DecompressLZ16(h, objVramSub + 0x2000);
         Deallocate(h);
         h = LoadFile(0x8002);
         GX::LoadOBJPltt(h, 0, 0x120);
@@ -269,8 +267,8 @@ int dMeter_c::InitResources() {
             h = LoadFile(ASSET_D_2D_CMN_ICON_F_NCG_BIN);
         else
             h = LoadFile(ASSET_D_2D_CMN_ICON_E_NCG_BIN);
-        DecompressLZ16(h, 0x6400000);
-        DecompressLZ16(h, 0x6600000);
+        DecompressLZ16(h, objVramMain);
+        DecompressLZ16(h, objVramSub);
         Deallocate(h);
         if (GetOwnerLanguage() == 5)
             h = LoadFile(0xB00E);
@@ -282,10 +280,10 @@ int dMeter_c::InitResources() {
             h = LoadFile(0xA40E);
         else
             h = LoadFile(0xA00E);
-        DecompressLZ16(h, (int)(objVramMain + 0x2000));
+        DecompressLZ16(h, objVramMain + 0x2000);
         Deallocate(h);
         h = LoadFile(ASSET_D_2D_BTM_ICON_NCG_BIN);
-        DecompressLZ16(h, (int)(objVramSub + 0x2000));
+        DecompressLZ16(h, objVramSub + 0x2000);
         Deallocate(h);
         if (GetOwnerLanguage() == 5)
             h = LoadFile(0xB00A);
@@ -356,7 +354,7 @@ int dMeter_c::InitResources() {
         mLifeCountX = 0x10;
         mStarCountX = 0xF0;
         mStarCountSlideIn = 0;
-    } else if (!(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)) {
+    } else if (!(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
         gMeterCounterSlideState = 6;
         mLifeCountX = -0x3A;
         mStarCountX = (s16)(starDigitsWidth + 0x120);
@@ -383,13 +381,12 @@ int dMeter_c::InitResources() {
 }
 
 /* ROM ordinal 17 -- dMeter_c::Behavior(), 0x020fd7a4, size 0x260 */
-// @symbol _ZN8dMeter_c8BehaviorEv
 int dMeter_c::Behavior() {
     int vs;
 
     /* vs is computed only once the first test passes and is reused below. */
     if (data_0209f5bc->IsAtStart() == 0 ||
-        ((vs = IsVsMode()) == 0 && (data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) == 0))
+        ((vs = IsVsMode()) == 0 && (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) == 0))
         return 1;
     if (vs != 0) {
         UpdateVsTimer();
@@ -479,7 +476,6 @@ int dMeter_c::Behavior() {
 }
 
 /* ROM ordinal 16 -- dMeter_c::Render(), 0x020fd5e0, size 0x1c4 */
-// @symbol _ZN8dMeter_c6RenderEv
 int dMeter_c::Render() {
     if (IsVsMode()) {
         if (data_0209fc9c == 0) {
@@ -494,7 +490,7 @@ int dMeter_c::Render() {
                 }
             }
         }
-    } else if ((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) != 0) {
+    } else if ((data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) != 0) {
         unsigned char v = data_0209f20c;
         if (((gGamePaused | v | gVsExitScreenActive) & 0xff) == 0) {
             RenderHealthMeter();
@@ -525,7 +521,6 @@ int dMeter_c::Render() {
 }
 
 /* ROM ordinal 15 -- dMeter_c::OnPendingDestroy(), 0x020fd5dc, size 0x4 */
-// @symbol _ZN8dMeter_c16OnPendingDestroyEv
 /* dMeter_c::OnPendingDestroy() at 0x020fd5dc (ov002) -- vtable slot 12.
  * Empty override; the dMeter_c does nothing when marked for destruction.
  */
@@ -534,7 +529,6 @@ void dMeter_c::OnPendingDestroy() {
 }
 
 /* ROM ordinal 14 -- dMeter_c::CleanupResources(), 0x020fd5d4, size 0x8 */
-// @symbol _ZN8dMeter_c16CleanupResourcesEv
 /* dMeter_c::CleanupResources() at 0x020fd5d4 (ov002) -- vtable slot 3.
  * Returns VS_FAIL (1); the dMeter_c holds no SharedFilePtr/heap resources to
  * release on death. dMeter_c : dBase_c : fBase_c.
@@ -545,10 +539,9 @@ s32 dMeter_c::CleanupResources() {
 }
 
 /* ROM ordinal 13 -- dMeter_c::UpdateHealthMeter(), 0x020fd218, size 0x3bc */
-// @symbol _ZN8dMeter_c17UpdateHealthMeterEv
 void dMeter_c::UpdateHealthMeter() {
     int chr = data_0209f250;
-    daPly_c *player = (daPly_c *)data_0209f394[chr];
+    daPly_c *player = data_0209f394[chr];
     unsigned int health = (gPlayerHealth[chr] >> 8) & 0xff;
     if ((unsigned char)(gGamePaused | data_0209f20c | gVsExitScreenActive) != 0)
         return;
@@ -668,9 +661,8 @@ void dMeter_c::UpdateHealthMeter() {
 }
 
 /* ROM ordinal 12 -- dMeter_c::RenderHealthMeter(), 0x020fcfec, size 0x22c */
-// @symbol _ZN8dMeter_c17RenderHealthMeterEv
 void dMeter_c::RenderHealthMeter() {
-    if (((daPly_c *)data_0209f394[data_0209f250])->IsInsideOfCannon())
+    if (data_0209f394[data_0209f250]->IsInsideOfCannon())
         return;
 
     if (GetOwnerLanguage() == 5) {
@@ -691,7 +683,6 @@ void dMeter_c::RenderHealthMeter() {
 }
 
 /* ROM ordinal 11 -- dMeter_c::UpdateVsTimer(), 0x020fce9c, size 0x150 */
-// @symbol _ZN8dMeter_c13UpdateVsTimerEv
 void dMeter_c::UpdateVsTimer() {
     unsigned int v;
 
@@ -730,7 +721,6 @@ void dMeter_c::UpdateVsTimer() {
 }
 
 /* ROM ordinal 10 -- dMeter_c::RenderVsTimer(), 0x020fca18, size 0x484 */
-// @symbol _ZN8dMeter_c13RenderVsTimerEv
 /* The VS-mode countdown: a localised "TIME" caption, and below it either the
  * remaining seconds or a localised "TIME UP".
  *
@@ -797,7 +787,6 @@ void dMeter_c::RenderVsTimer() {
 }
 
 /* ROM ordinal 9 -- dMeter_c::RenderCoinCount(), 0x020fc81c, size 0x1fc */
-// @symbol _ZN8dMeter_c15RenderCoinCountEv
 void dMeter_c::RenderCoinCount() {
     if (IsVsMode()) {
         int sb = 0xf0;
@@ -830,9 +819,8 @@ void dMeter_c::RenderCoinCount() {
 }
 
 /* ROM ordinal 8 -- dMeter_c::RenderRedCoins(), 0x020fc77c, size 0xa0 */
-// @symbol _ZN8dMeter_c14RenderRedCoinsEv
 /* Draws one sprite per red coin collected so far, stepping 0xb across from
- * x=0x10. Both the count (gNumRedCoins) and the row selector (data_0209f310)
+ * x=0x10. Both the count (gNumRedCoins) and the row selector (gNumStageStars)
  * are indexed by the same data_0209f250.
  *
  * That row selector is the interesting bit: it is the SAME byte
@@ -842,14 +830,14 @@ void dMeter_c::RenderCoinCount() {
  *
  * The count is read through an explicit unsigned char cast off a signed char
  * array -- kept as the ROM spells it. RenderSilverStars does not read this
- * array; it reads data_0209f310.
+ * array; it reads gNumStageStars.
  *
  * TOUCHES NO FIELD; the ROM body takes no `this` and now ignores the one it is
  * passed. Byte-free.
  */
 void dMeter_c::RenderRedCoins() {
     int idx = data_0209f250;
-    int flag = data_0209f310[idx];
+    int flag = gNumStageStars[idx];
     int count = (unsigned char)gNumRedCoins[idx];
     int sl = flag ? 0x1c : 0xa;
     for (int i = 0; i < count; i++) {
@@ -858,7 +846,6 @@ void dMeter_c::RenderRedCoins() {
 }
 
 /* ROM ordinal 7 -- dMeter_c::RenderStarCount(), 0x020fc458, size 0x324 */
-// @symbol _ZN8dMeter_c15RenderStarCountEv
 /* Draws the star counter: the star icon, an "x", and up to three digits laid
  * out RIGHT to LEFT from mStarCountX, skipping the -1 slots CalculateDigits
  * blanked.
@@ -866,7 +853,7 @@ void dMeter_c::RenderRedCoins() {
  * Three paths, and what differs between them is only WHICH count is shown and
  * on WHICH screen:
  *
- *   data_0209f2d8 == 1   a per-slot count out of data_0209f310, main screen
+ *   data_0209f2d8 == 1   a per-slot count out of gNumStageStars, main screen
  *   the middle path      NumStars(), main screen, but only while
  *                        gMeterCounterSlideState has the counter sliding onto,
  *                        resting on or sliding off the main screen, and suppressed
@@ -886,7 +873,7 @@ void dMeter_c::RenderStarCount() {
     int i;
 
     if (IsVsMode()) {
-        CalculateDigits((unsigned short)data_0209f310[data_0209f250]);
+        CalculateDigits((unsigned short)gNumStageStars[data_0209f250]);
         for (i = 2; i >= 0; i--) {
             if (mDigits[i] >= 0) {
                 OAM::Render(false, OAM::NUMBERS[mDigits[i]], x, 2, -1, 1, 0);
@@ -930,9 +917,8 @@ void dMeter_c::RenderStarCount() {
 }
 
 /* ROM ordinal 6 -- dMeter_c::RenderSilverStars(), 0x020fc3c4, size 0x94 */
-// @symbol _ZN8dMeter_c17RenderSilverStarsEv
 /* Draws one sprite per silver star collected, in a row starting at x=0x10 and
- * stepping 0x11 across at y=0xa. The count comes from data_0209f310 indexed by
+ * stepping 0x11 across at y=0xa. The count comes from gNumStageStars indexed by
  * data_0209f250 -- the same byte dMeter_c::RenderRedCoins reads, where a non-zero
  * value instead pushes the red-coin row from y=0xa down to y=0x1c. So this row
  * and that one share a slot, and the red coins move when silver stars occupy it.
@@ -944,7 +930,7 @@ void dMeter_c::RenderStarCount() {
  */
 void dMeter_c::RenderSilverStars() {
     int sl = 0;
-    unsigned short n = (unsigned short)(short)data_0209f310[data_0209f250];
+    unsigned short n = (unsigned short)(short)gNumStageStars[data_0209f250];
     int sb;
     if (sl < n) {
         sb = 0x10;
@@ -957,13 +943,12 @@ void dMeter_c::RenderSilverStars() {
 }
 
 /* ROM ordinal 5 -- dMeter_c::RenderCameraButtons(), 0x020fc04c, size 0x378 */
-// @symbol _ZN8dMeter_c19RenderCameraButtonsEv
 /* Takes the object only because its caller in this TU passes it; the body
  * never reads it, which is why the legacy source could spell it static. */
 void dMeter_c::RenderCameraButtons() {
     int idx = gActivePlayerSlot;
     u8 mode = data_0209f498[idx].mode;
-    dCamera_c *cam = (dCamera_c *)data_0209f318;
+    dCamera_c *cam = data_0209f318;
     u8 t = gZoomButtonActiveTimer;
 
     if (t != 0)
@@ -1024,10 +1009,9 @@ void dMeter_c::RenderCameraButtons() {
 }
 
 /* ROM ordinal 4 -- dMeter_c::RenderLifeCount(), 0x020fbe38, size 0x214 */
-// @symbol _ZN8dMeter_c15RenderLifeCountEv
 void dMeter_c::RenderLifeCount() {
     unsigned char idx = data_0209f250;
-    daPly_c *player = (daPly_c *)data_0209f394[idx];
+    daPly_c *player = data_0209f394[idx];
     unsigned char state = gMeterCounterSlideState;
 
     if (state >= 3 && state < 6) {
@@ -1060,7 +1044,6 @@ void dMeter_c::RenderLifeCount() {
 }
 
 /* ROM ordinal 3 -- dMeter_c::CalculateDigits(unsigned short), 0x020fbdac, size 0x8c */
-// @symbol _ZN8dMeter_c15CalculateDigitsEt
 /* Splits a count into the three decimal digits the dMeter_c draws, most significant
  * first, and blanks leading zeros by writing -1 rather than a digit.
  *
@@ -1088,7 +1071,6 @@ void dMeter_c::CalculateDigits(unsigned short value) {
 }
 
 /* ROM ordinal 2 -- dMeter_c::RenderTimeTimer(), 0x020fb96c, size 0x440 */
-// @symbol _ZN8dMeter_c15RenderTimeTimerEv
 void dMeter_c::RenderTimeTimer() {
     unsigned long long t;
     unsigned long long min;
@@ -1135,7 +1117,6 @@ void dMeter_c::RenderTimeTimer() {
 }
 
 /* ROM ordinal 1 -- dMeter_c::~dMeter_c() (deleting, D0), 0x020fb928, size 0x44 */
-// @symbol _ZN8dMeter_cD0Ev
 /* No body here, and none is possible: D0 is the deleting destructor and the
  * compiler writes all of it. The inline `~dMeter_c() {}` in include/dMeter_c.h
  * is the whole source, and mwccarm emits D1 and D0 from it in that order, which
@@ -1150,7 +1131,6 @@ void dMeter_c::RenderTimeTimer() {
  */
 
 /* ROM ordinal 0 -- dMeter_c::~dMeter_c() (complete, D1), 0x020fb8f8, size 0x30 */
-// @symbol _ZN8dMeter_cD1Ev
 /* No body here either, for the same reason. The cartridge's 0x30 bytes are two
  * vtable stores and one call, and every one of the three follows from
  * `struct dMeter_c : dBase_c`:

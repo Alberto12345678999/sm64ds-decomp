@@ -74,7 +74,7 @@ extern void *data_ov007_02103348[3];           /* data_ov007_020ccc80[set], load
 extern void *data_ov007_02103354[3];           /* data_ov007_020ccc68[figureIndex], loaded */
 
 extern void func_02044efc(void *bmd);
-extern void func_02045ef8(void *model, void *value);
+extern void func_02045ef8(void *model, unsigned int value);
 extern void func_02046234(void *model, void *value);
 extern void func_ov007_020b3edc(int idx);
 extern void *func_ov007_020b3f20(int idx);
@@ -91,7 +91,6 @@ extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 
 void func_ov007_020b283c(void);
 
-// @symbol func_ov007_020b2bd4
 /* Loads figure figureIndex's model at the given stroke stage and returns
  * its model record: the model file, the two sets of three animation files
  * bound with func_ov007_020bc6b4 and func_ov007_020bc5fc, and the overlay's
@@ -120,13 +119,12 @@ Ov007Model *func_ov007_020b2bd4(int figureIndex, int stage) {
     func_ov007_020bc6b4(model, data_ov007_02103348, 3);
     func_ov007_020bc5fc(model, data_ov007_02103354, 3);
     func_ov007_020bc658(model, data_ov007_020d7ee8[set], 3);
-    func_02045ef8(model->model, (void *)0x3def);
+    func_02045ef8(model->model, 0x3def);
     func_02046234(model->model, (void *)2);
     func_ov007_020bbf98(model, 3);
     return model;
 }
 
-// @symbol func_ov007_020b2998
 /* Builds the scene for the work block's figureIndex (see the banner) and
  * sets modelReady. The three quads cover the screen at 256 x 256 pixels on
  * camera 1, each a little nearer than the last: [0] a corner-colour fill,
@@ -181,7 +179,6 @@ void func_ov007_020b2998(void) {
     WORK->modelReady = 1;
 }
 
-// @symbol func_ov007_020b283c
 /* Tears down what func_ov007_020b2998 built, if modelReady is set: releases
  * the files func_ov007_020b2bd4 loaded and frees the model, both figures
  * and the three quads. It indexes both animation tables by set; for set 2
@@ -237,7 +234,6 @@ static inline int MulFx(int a, int b) {
     return (int)(((s64)a * b) >> 12);
 }
 
-// @symbol func_ov007_020b2764
 /* Blends the corner colours of screenSprites[0] and [1] from
  * data_ov007_020ccc50 (t = 0) to data_ov007_020ccc5c (t = 0x1000), and
  * fades [1]'s alpha along a curve: 31 (of 31) at either end, 16 at

@@ -47,10 +47,11 @@ enum daMip_c_AssetId {
 #include "daObj_Mip_Key_c.h"
 #include "Sound.h"
 #include "cstd.h"
-#include "math/Approach.h"
+#include "math/CalcLib.h"
 #include "Particle__System.h"
 #include "LevelRng.h"
 #include "private/mtx43.h"
+#include "nitro/fx/fx.h"
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -78,28 +79,17 @@ int   SurfaceInfo_TestFlag0x20(void *);
 
 
 /* maths and the still-unnamed helpers */
-s16   Vec3_HorzAngle(const void *, const void *);
-s32   Vec3_HorzDist(const void *, const void *);
-s32   Vec3_Dist(const void *, const void *);
 void Vec3_Sub(Vector3 *, const Vector3 *, const Vector3 *);
 void  Vec3_MulScalar(void *, const void *, int);
-void  Vec3_Asr(void *, void *, int);
-/* local extern: CalcLib conflicts with this TU's Vec3_MulScalar spelling. */
-void SubVec3(Vector3 *, Vector3 *, Vector3 *);
-s32   LenVec3(const void *);
+int LenVec3(const Vector3 *);
 int   AngleDiff(int, int);
-int   ApproachAngle(void *, s16, int, int, int);
 void  Matrix4x3_FromTranslation(void *, int, int, int);
 void  Matrix4x3_FromRotationY(void *, int);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *, int, int, int);
 void  MulMat4x3Mat4x3(void *, void *, void *);
 void  MulMat3x3Mat3x3(void *, void *, void *);
-void MulVec3Mat4x3(const void *, const void *, void *);
-/* local extern: CalcLib's int(int *) declaration is kept local because its
-   vector declarations conflict with this TU's other helper signatures. */
-int RandomIntInternal(int *);
+void MulVec3Mat4x3(Vector3 *, Matrix4x3 *, Vector3 *);
 u8 NumStars(void);
-u16 DecIfAbove0_Short(void *);
 int func_02013890(int, int);
 void func_02013944(void);
 void func_02012694(unsigned int id, const Vector3 *pos);
@@ -224,8 +214,6 @@ static inline int IsBitSet(u32 flags, u32 bit) {
 
 #pragma defer_codegen off
 
-// @symbol _ZN7daMip_cD1Ev
-// @symbol _ZN7daMip_cD0Ev
 /* Empty body. The compiler emits the member destructors and, for D0,
    dEnemyBase_c's operator delete. The cartridge has no D2; the one this
    TU emits is compiler-only and deadstripped. */
@@ -233,16 +221,13 @@ daMip_c::~daMip_c()
 {
 }
 
-// @symbol _ZN7daMip_c14TestWaterBelowEv
 /* Probe 0xc8000 above the rabbit. StateFleeMain and StateIdleMain use the
    water flag to pick splash over dust. */
 int daMip_c::TestWaterBelow()
 {
-    /* A POD twin: a real Vector3 local emits the vague-linkage ~Vector3. */
-    typedef struct Vector3 { int x, y, z; } Vector3;
-
+    /* The POD VecFx32: a real Vector3 local emits the vague-linkage ~Vector3. */
     dBgCh_Gnd rg;
-    Vector3 v;
+    VecFx32 v;
     rg.StartDetectingWater();
     int x = mPosX;
     int y = mPosY;
@@ -260,7 +245,6 @@ int daMip_c::TestWaterBelow()
     return 0;
 }
 
-// @symbol _ZN7daMip_c10UpdateGrabEv
 /* Pick-up. otherOwner is the actor touching the cylinder; actor 0xbf is
    daPly_c. hitFlags 0x1000 is the grab bit. A rabbit already caught once
    (mCatchState) goes to Released instead of Caught. */
@@ -287,24 +271,22 @@ void daMip_c::UpdateGrab()
     }
 }
 
-// @symbol _ZN7daMip_c17StateSaveTalkMainEv
 /* Eighth-rabbit epilogue, from StateCaughtMain once all eight glowing
    rabbits are found. Turns toward mSaveTalkPlayer, offers 0x148, then
    Message::DisplaySaving, then Released. */
 int daMip_c::StateSaveTalkMain()
 {
-    /* POD triple. types.h Vector3 has a destructor this function does not emit. */
-    struct V3 { int x, y, z; };
+    /* The POD VecFx32: types.h Vector3 has a destructor this function does not emit. */
     extern unsigned char data_0209d684;
     extern unsigned char data_0209d660;
     extern MipStatePair data_ov085_021306bc;
 
     daPly_c *player = mSaveTalkPlayer;
-    struct V3 vec;
+    VecFx32 vec;
     unsigned char gb;
     int state;
 
-    mTargetAngY = Vec3_HorzAngle((struct V3 *)&mPosX, (struct V3 *)&player->mPosX);
+    mTargetAngY = Vec3_HorzAngle(&mPos, &player->mPos);
     ApproachAngle(&mPrevAngleY, mTargetAngY, 1, 0x500, 0x500);
 
     gb = data_0209d684;
@@ -350,7 +332,6 @@ int daMip_c::StateSaveTalkMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c17StateSaveTalkInitEv
 int daMip_c::StateSaveTalkInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c0;
@@ -361,18 +342,16 @@ int daMip_c::StateSaveTalkInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateTalkMainEv
 /* Ordinary conversation, from StateReleasedMain once StartTalk agrees.
    Faces mSaveTalkPlayer, picks the line from mRabbitId, then Released. */
 int daMip_c::StateTalkMain()
 {
-    struct V3 { int x, y, z; };
     extern MipStatePair data_ov085_021306bc;
 
     daPly_c *player;
     int *pq;
-    struct V3 pos;
-    struct V3 pp;
+    VecFx32 pos;
+    VecFx32 pp;
     s16 angle;
     unsigned int id;
 
@@ -384,7 +363,7 @@ int daMip_c::StateTalkMain()
     pp.x = pq[0];
     pp.y = pq[1];
     pp.z = pq[2];
-    angle = Vec3_HorzAngle((struct V3 *)&mPosX, &pp);
+    angle = Vec3_HorzAngle(&mPos, (const Vector3 *)&pp);
 
     id = 0x139;
     switch (player->GetTalkState()) {
@@ -415,14 +394,12 @@ int daMip_c::StateTalkMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateTalkInitEv
 int daMip_c::StateTalkInit()
 {
     mActionStep = 0;
     return 1;
 }
 
-// @symbol _ZN7daMip_c17StateReleasedMainEv
 /* Standing free. Drops mTalkingPlayer once the carry flags clear, skips
    the frame while the closest player is mid-message (mStateFlags 0x800),
    and re-opens the conversation through StartTalk. */
@@ -484,7 +461,6 @@ int daMip_c::StateReleasedMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c17StateReleasedInitEv
 int daMip_c::StateReleasedInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c0;
@@ -499,14 +475,12 @@ int daMip_c::StateReleasedInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c15StateCaughtMainEv
 /* Held: the caught conversation, the star spawn (actor 0xe5), and the
    branch that runs once all eight glowing rabbits are found. */
 int daMip_c::StateCaughtMain()
 {
-    /* POD triple. The ::Vector3 casts below are the destructor-bearing type
-       ShowMessage and Spawn take by pointer; this local is not that type. */
-    typedef struct { s32 x, y, z; } Vector3;
+    /* POD VecFx32 locals. The ::Vector3 casts below are the destructor-bearing type
+       ShowMessage and Spawn take by pointer; these locals are not that type. */
 
     extern MipStatePair data_ov085_021306cc;
     extern MipStatePair data_ov085_021306bc;
@@ -515,10 +489,10 @@ int daMip_c::StateCaughtMain()
     extern u8 data_0209d6bc;
 
     daPly_c *pl;
-    Vector3 pv;
-    Vector3 pos;
-    Vector3 pos7;
-    Vector3 posR;
+    VecFx32 pv;
+    VecFx32 pos;
+    VecFx32 pos7;
+    VecFx32 posR;
     int soundId;
     int msg;
 
@@ -537,7 +511,7 @@ int daMip_c::StateCaughtMain()
         }
 
         if (mCatchState != 0) {
-            s16 ang = Vec3_HorzAngle(&mPos, &pv);
+            s16 ang = Vec3_HorzAngle(&mPos, (const Vector3 *)&pv);
             ApproachLinear(mPrevAngleY, ang, 0x800);
             if (AngleDiff(mPrevAngleY, ang) > 0x200)
                 return 1;
@@ -719,7 +693,6 @@ int daMip_c::StateCaughtMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c15StateCaughtInitEv
 int daMip_c::StateCaughtInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305b8;
@@ -731,7 +704,6 @@ int daMip_c::StateCaughtInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateRestMainEv
 int daMip_c::StateRestMain()
 {
     extern MipStatePair data_ov085_021306cc;
@@ -742,7 +714,6 @@ int daMip_c::StateRestMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateRestInitEv
 int daMip_c::StateRestInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305b0;
@@ -751,15 +722,11 @@ int daMip_c::StateRestInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateFleeMainEv
 /* Runs the path away from the player. Dust or splash at a node, steps
    mPathDir, and falls back to Rest past 0x4b0000. */
 int daMip_c::StateFleeMain() {
-    /* POD triples. V3Blk's array member is what makes the player-position
+    /* POD VecFx32 locals. V3Blk's array member is what makes the player-position
        copy a block move; a three-scalar struct scalarises. */
-    struct Vector3 {
-        s32 x, y, z;
-    };
     struct V3Blk {
         s32 w[3];
     };
@@ -767,11 +734,11 @@ int daMip_c::StateFleeMain() {
 
     daPly_c *pl;
     struct V3Blk v;
-    struct Vector3 pos;
-    struct Vector3 node;
-    struct Vector3 node2;
-    struct Vector3 delta;
-    struct Vector3 scaled;
+    VecFx32 pos;
+    VecFx32 node;
+    VecFx32 node2;
+    VecFx32 delta;
+    VecFx32 scaled;
     s32 len;
     s32 lim;
     s16 ang;
@@ -780,7 +747,7 @@ int daMip_c::StateFleeMain() {
     pl = ClosestPlayer();
     if (pl != 0) {
         v = *((struct V3Blk *)&pl->mPosX);
-        if (Vec3_Dist(&mPos, &v) > 0x4b0000) {
+        if (Vec3_Dist(&mPos, (const Vector3 *)&v) > 0x4b0000) {
             SetState(&data_ov085_0213069c);
             return 1;
         }
@@ -816,7 +783,7 @@ int daMip_c::StateFleeMain() {
     PathPtr pathptr;
     pathptr.FromID(mPathId);
     pathptr.GetNode(*(::Vector3 *)&node, mPathNodeIndex);
-    ang = Vec3_HorzAngle(&mPos, &node);
+    ang = Vec3_HorzAngle(&mPos, (const Vector3 *)&node);
     ApproachAngle(&mPrevAngleY, ang, 1, 0x1000, 0x1000);
     idx = mPathNodeIndex + mPathDir;
     if (idx < 0) {
@@ -834,7 +801,7 @@ int daMip_c::StateFleeMain() {
         s32 y = mPosY;
         node.y = y;
         Vec3_Sub((::Vector3 *)&delta, (const ::Vector3 *)&mPos, (const ::Vector3 *)&node);
-        len = LenVec3(&delta);
+        len = LenVec3((const Vector3 *)&delta);
     }
     if ((len == 0) || (len <= lim)) {
         mPosX = node.x;
@@ -851,7 +818,7 @@ int daMip_c::StateFleeMain() {
             mPathNodeIndex = mNumPathNodes - 1;
         }
     } else {
-        ang = Vec3_HorzAngle(&mPos, &node);
+        ang = Vec3_HorzAngle(&mPos, (const Vector3 *)&node);
         if (AngleDiff(ang, mPrevAngleY) < 0x2000) {
             ysave = mPosY;
             {
@@ -873,27 +840,23 @@ int daMip_c::StateFleeMain() {
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateFleeInitEv
 /* Whichever neighbouring node is further from the player becomes mPathDir.
-   The scratch triple is a local Vector3 shadow, not types.h Vector3: the
+   The scratch vectors are the POD VecFx32, not types.h Vector3: the
    ROM emits no scope-exit cleanup here. */
 int daMip_c::StateFleeInit()
 {
-    typedef struct Vector3 {
-        int x, y, z;
-    } Vector3;
     extern DaMipAnimationFilePtr gMipRunAnimationFile;
 
-    struct Vector3 v;
-    struct Vector3 nodes[2];
+    VecFx32 v;
+    VecFx32 nodes[2];
     int i;
     int d0;
-    struct Vector3 *src;
+    VecFx32 *src;
 
     daPly_c *p = ClosestPlayer();
     mActionStep = 0;
     if (p) {
-        src = (struct Vector3 *)&p->mPosX;
+        src = (VecFx32 *)&p->mPosX;
         v = *src;
         PathPtr pathptr;
         int indices[2];
@@ -910,8 +873,8 @@ int daMip_c::StateFleeInit()
             pathptr.GetNode(*(::Vector3 *)&nodes[i], indices[i]);
 
         mPathDir = 1;
-        d0 = Vec3_Dist(&v, &nodes[0]);
-        if (d0 > Vec3_Dist(&v, &nodes[1]))
+        d0 = Vec3_Dist((const Vector3 *)&v, (const Vector3 *)&nodes[0]);
+        if (d0 > Vec3_Dist((const Vector3 *)&v, (const Vector3 *)&nodes[1]))
             mPathDir = -1;
     }
 
@@ -919,7 +882,6 @@ int daMip_c::StateFleeInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c16StateStartleMainEv
 int daMip_c::StateStartleMain()
 {
     extern MipStatePair data_ov085_0213067c;
@@ -929,7 +891,6 @@ int daMip_c::StateStartleMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c16StateStartleInitEv
 int daMip_c::StateStartleInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c8;
@@ -938,18 +899,15 @@ int daMip_c::StateStartleInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateIdleMainEv
 /* Startle when the closest player comes inside 0x3e8000 from below.
    Otherwise cycle the idle and drift facing around the spot StateIdleInit
    stored. */
 int daMip_c::StateIdleMain()
 {
-    /* Scratch triples are a local Vector3 shadow, not types.h Vector3: the
+    /* Scratch vectors are the POD VecFx32, not types.h Vector3: the
        ROM emits no scope-exit cleanup here, so the genuine destructor must
        not instantiate (its vague-linkage D1 lived in this TU only for
        these two locals). */
-    typedef struct Vector3 { int x, y, z; } Vector3;
-    extern LevelRng data_0209e650;
     extern MipStatePair data_ov085_0213066c;
     extern DaMipAnimationFilePtr gMipRunAnimationFile;
     extern DaMipAnimationFilePtr data_ov085_021305b0;
@@ -960,7 +918,7 @@ int daMip_c::StateIdleMain()
     if (player == 0) return 1;
 
     if (TestWaterBelow() == 1) {
-        Vector3 sp;
+        VecFx32 sp;
         s32 pair[2];
         pair[0] = mPosX;
         pair[1] = mFloorY;
@@ -974,7 +932,7 @@ int daMip_c::StateIdleMain()
             *((volatile s32*)(&sp.x)), *(&sp.y), z, 0);
     }
 
-    Vector3 pp;
+    VecFx32 pp;
     const ::Vector3 *ppp = &player->mPos;
     pp.x = ppp->x;
     pp.y = ppp->y;
@@ -982,7 +940,7 @@ int daMip_c::StateIdleMain()
     int lim = 0x3e8000;
     if (mRabbitId == 7) lim = 0x2ee000;
 
-    if (Vec3_HorzDist(&mPos, &pp) < lim) {
+    if (Vec3_HorzDist(&mPos, (const Vector3 *)&pp) < lim) {
         int t = mRabbitId;
         int cond = 0;
         if (t == 7 || t == 1 ||
@@ -997,10 +955,10 @@ int daMip_c::StateIdleMain()
         }
     }
 
-    u32 r = (u32)RandomIntInternal((int *)&data_0209e650) >> 8;
+    u32 r = (u32)RandomIntInternal(&data_0209e650.value) >> 8;
     if (mRabbitId == 1) {
-        if (Vec3_HorzDist(&mPos, &pp) < 0x4b0000) {
-            mTargetAngY = Vec3_HorzAngle(&mPos, &pp) + 0x8000;
+        if (Vec3_HorzDist(&mPos, (const Vector3 *)&pp) < 0x4b0000) {
+            mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)&pp) + 0x8000;
             mStateTimer = 0x1e;
         }
     }
@@ -1026,7 +984,7 @@ int daMip_c::StateIdleMain()
     }
 
     if (mActionStep == 0 && *(u16 *)&mStateTimer == 0) {
-        mTargetAngY = Vec3_HorzAngle(&mPos, (Vector3 *)&mIdlePosX);
+        mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)&mIdlePosX);
         {
             s16 *ang = &mTargetAngY;
             *ang = *ang + (0x1800 - ((r & 3) << 12));
@@ -1039,7 +997,6 @@ int daMip_c::StateIdleMain()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13StateIdleInitEv
 int daMip_c::StateIdleInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c0;
@@ -1053,7 +1010,6 @@ int daMip_c::StateIdleInit()
     return 1;
 }
 
-// @symbol _ZN7daMip_c8SetStateEPv
 /* Stores the state record at mState and runs its Init. Behavior runs the
    record's second pointer-to-member every frame. mState stays an s32 because
    Behavior compares the pointer by address, so the call goes through the
@@ -1065,15 +1021,13 @@ int daMip_c::SetState(void *record)
     c->pp = p; daMip_cStateFn *q = c->pp; if (*q == 0) return 1; return (c->**q)();
 }
 
-// @symbol _ZN7daMip_c21UpdateMatrixAndShadowEv
 void daMip_c::UpdateMatrixAndShadow()
 {
-    struct Vector3 { s32 x, y, z; };
     extern Mtx43 data_020a0e68;
 
     char tmp[0x30];
-    struct Vector3 t;
-    Vec3_Asr(&t, &mPos, 3);
+    VecFx32 t;
+    Vec3_Asr((Vector3 *)&t, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     *(Mtx43 *)&mAnmModel.mat4x3 = data_020a0e68;
@@ -1086,7 +1040,6 @@ void daMip_c::UpdateMatrixAndShadow()
     DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)mShadowMtx, 0x46000, 0x258000, 0xf);
 }
 
-// @symbol _ZN7daMip_c19UpdateCarriedMatrixEv
 /* While carried, the matrix comes from UpdateCarry plus one of four hold
    offsets at data_ov085_021306ec. Sliding and param1 == 2 pick the slot. */
 void daMip_c::UpdateCarriedMatrix()
@@ -1113,14 +1066,12 @@ void daMip_c::UpdateCarriedMatrix()
     DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)mShadowMtx, 0x46000, 0x258000, 0xf);
 }
 
-// @symbol _ZN7daMip_c18UpdateMirrorShadowEv
 /* Second shadow, on the far side of the mirror plane at x = 0x1086000.
    The matrix is the 0x30 bytes at this+0x3e8, in the pad after mShadowModel2.
    Naming mPosX and mShadowModel2, with the matrix as its own Mtx43*, stays
    the same size and differs by 34 words. The overlay keeps the block move. */
 void daMip_c::UpdateMirrorShadow()
 {
-    struct Vector3_local { int x; int y; int z; };
     struct Obj {
         char pad5c[0x5c];
         int v5c;
@@ -1134,9 +1085,9 @@ void daMip_c::UpdateMirrorShadow()
 
     struct Obj *c = (struct Obj *)this;
 
-    struct Vector3_local v;
-    struct Vector3_local res;
-    struct Vector3_local vd;
+    VecFx32 v;
+    VecFx32 res;
+    VecFx32 vd;
 
     v.x = 0; v.y = 0; v.z = 0;
     res.x = 0; res.y = 0; res.z = 0;
@@ -1146,9 +1097,10 @@ void daMip_c::UpdateMirrorShadow()
     vd.y = c->v60;
     vd.z = c->v64;
     vd.x = 0x1086000;
-    v.z = Vec3_HorzDist((struct Vector3_local *)&c->v5c, &vd);
-    Matrix4x3_FromRotationY(&data_020a0e68, Vec3_HorzAngle((struct Vector3_local *)&c->v5c, &vd));
-    MulVec3Mat4x3(&v, &data_020a0e68, &res);
+    v.z = Vec3_HorzDist((const Vector3 *)&c->v5c, (const Vector3 *)&vd);
+    Matrix4x3_FromRotationY(&data_020a0e68,
+                            Vec3_HorzAngle((const Vector3 *)&c->v5c, (const Vector3 *)&vd));
+    MulVec3Mat4x3((Vector3 *)&v, (Matrix4x3 *)&data_020a0e68, (Vector3 *)&res);
     {
         int t;
         vd.x = vd.x + res.x;
@@ -1163,7 +1115,6 @@ void daMip_c::UpdateMirrorShadow()
                               0x258000, 0xf);
 }
 
-// @symbol _ZN7daMip_c16CleanupResourcesEv
 /* Seven releases, straight-line. Not address order, so not a table walk.
    data_ov085_021305d8 is the handle the key actor releases too. */
 int daMip_c::CleanupResources()
@@ -1186,13 +1137,11 @@ int daMip_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN7daMip_c16OnPendingDestroyEv
 /* Empty. The override suppresses the base pending-destroy body. */
 void daMip_c::OnPendingDestroy()
 {
 }
 
-// @symbol _ZN7daMip_c6RenderEv
 int daMip_c::Render()
 {
     extern signed char gCurrentSublevel;
@@ -1228,7 +1177,6 @@ int daMip_c::Render()
     return 1;
 }
 
-// @symbol _ZN7daMip_c17RenderMirrorImageEv
 /* Mirrored second copy. mat4x3.t is the translation. 0x421800 is
    (0x1086000 >> 3) << 1, so the subtract reflects X across
    UpdateMirrorShadow's plane. The saved and restored matrix is an Mtx43
@@ -1251,11 +1199,10 @@ void daMip_c::RenderMirrorImage()
     *(Mtx43 *)&mAnmModel.mat4x3 = tmp;
 }
 
-// @symbol _ZN7daMip_c8BehaviorEv
 /* The glowing-rabbit chase, and it is mostly a conversation.
  *
  * The opening gate depends on the mode. Normally mIsDisabled latches the rabbit
- * out of the level until data_0209caa0[2] clears bit 0x20000; in mode 0x32 the
+ * out of the level until data_0209caa0.file.flags2 clears bit 0x20000; in mode 0x32 the
  * test inverts -- the rabbit runs only for the player whose character id matches
  * mCharacterId and latches itself off for everyone else, which is what makes one
  * actor behave differently per player.
@@ -1287,7 +1234,7 @@ int daMip_c::Behavior()
 
     extern s8 gCurrentSublevel;
     extern s8 data_02092120;
-    extern int data_0209caa0[];
+    extern SaveBlock data_0209caa0;
     extern void* data_0209f33c;
     extern DaMipAnimationFilePtr data_ov085_021305c0;
     extern MipStatePair data_ov085_0213068c;
@@ -1300,7 +1247,7 @@ int daMip_c::Behavior()
 
     if (gCurrentSublevel != 0x32) {
         if (mIsDisabled == 1) {
-            if (data_0209caa0[2] & 0x20000)
+            if (data_0209caa0.file.flags2 & 0x20000)
                 mIsDisabled = 0;
             return 1;
         }
@@ -1308,14 +1255,14 @@ int daMip_c::Behavior()
         player = ClosestPlayer();
         if (player == 0)
             return 1;
-        if (!(data_0209caa0[2] & 0x20000) || mCharacterId != player->mCharacter) {
+        if (!(data_0209caa0.file.flags2 & 0x20000) || mCharacterId != player->mCharacter) {
             mIsDisabled = 1;
             return 1;
         }
         mIsDisabled = 0;
     }
 
-    if (mRabbitId == 7 && !(data_0209caa0[1] & 0x40))
+    if (mRabbitId == 7 && !(data_0209caa0.file.flags1 & 0x40))
         data_0209f33c = c;
 
     if (mIsGlowing != 0) {
@@ -1412,7 +1359,7 @@ int daMip_c::Behavior()
         mHorzSpeed = 0;
     }
 
-    DecIfAbove0_Short(&mStateTimer);
+    DecIfAbove0_Short((u16 *)&mStateTimer);
 
     {
         daMip_cSelf *self = (daMip_cSelf *)c;
@@ -1450,7 +1397,6 @@ int daMip_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13InitResourcesEv
 int daMip_c::InitResources()
 {
     extern DaMipAnimationFilePtr data_ov085_021305b8;
@@ -1462,9 +1408,8 @@ int daMip_c::InitResources()
     extern DaMipModelFile data_ov085_021305e0;
     extern MipStatePair data_ov085_021306cc;
     extern s32 data_ov085_021305ac;
-    extern int data_0209caa0[];
+    extern SaveBlock data_0209caa0;
     extern s8 gCurrentSublevel;
-    extern LevelRng data_0209e650;
 
     void* player;
     void* closest;
@@ -1499,13 +1444,13 @@ int daMip_c::InitResources()
 
     rabbitId = mRabbitId;
     if (rabbitId != 7) {
-        if (!(data_0209caa0[1] & 0x40000000))
+        if (!(data_0209caa0.file.flags1 & 0x40000000))
             return 0;
     }
 
     if ((rabbitId == 5 && mCharacterId == 0) || (rabbitId == 1 && mCharacterId == 1) ||
         (rabbitId == 6 && mCharacterId == 3)) {
-        if (!(data_0209caa0[2] & 0x80000))
+        if (!(data_0209caa0.file.flags2 & 0x80000))
             return 0;
     }
 
@@ -1529,7 +1474,7 @@ int daMip_c::InitResources()
     mScaleY = mScaleZ;
 
     if (mRabbitId == 7) {
-        if (data_0209caa0[1] & 0x40)
+        if (data_0209caa0.file.flags1 & 0x40)
             return 0;
         mIsDisabled = 1;
     } else {
@@ -1556,7 +1501,7 @@ int daMip_c::InitResources()
             if (gCurrentSublevel == 0x32)
                 v = 1;
             if (func_02013890(mRabbitId, v) != 0 && data_ov085_021305ac < 8) {
-                u32 rnd = (u32)RandomIntInternal((int *)&data_0209e650) >> 8;
+                u32 rnd = (u32)RandomIntInternal(&data_0209e650.value) >> 8;
                 if (NumStars() >= 0x51) {
                     if ((s32)((daPly_c *)closest)->param1 == 3) {
                         if ((rnd & 0xf) == 0)
@@ -1591,14 +1536,12 @@ int daMip_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN7daMip_c13OnYoshiTryEatEv
 s32 daMip_c::OnYoshiTryEat() {
   unsigned char v = mEatenByYoshi;
   if (v != 0) return 0;
   return 7;
 }
 
-// @symbol daMip_c_classInit
 /* Registry factory for the MIP profile. `return new daMip_c()`. */
 extern "C" daMip_c *daMip_c_classInit(void)
 {

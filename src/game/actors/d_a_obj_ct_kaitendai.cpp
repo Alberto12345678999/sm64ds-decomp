@@ -57,6 +57,7 @@ enum daObjCtKaitendai_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "math/Approach.h"
+#include "LevelRng.h"
 
 struct CLPS_Block;
 
@@ -93,7 +94,6 @@ typedef char
     KaitendaiCollisionFilePtr_size_must_be_0x08[sizeof(KaitendaiCollisionFilePtr) == 0x08 ? 1 : -1];
 
 extern u8 data_0209f2c0;           /* clock setting: 0 slow, 1 fast, 2 random, 3 stopped */
-extern int data_0209e650;          /* shared RNG state */
 extern s16 data_ov065_0211d334[2]; /* yaw speed for the slow and fast hands: 200, 400 */
 extern KaitendaiResources data_ov065_0211d35c[];
 
@@ -101,21 +101,18 @@ extern KaitendaiResources data_ov065_0211d35c[];
  * and has no shared header. RandomIntInternal's named parameter preserves
  * this TU's @NNN static-initializer aliases. */
 extern "C" {
-extern void func_020393d4(void *p, void *v);
+extern void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 extern int RandomIntInternal(int *seed);
 }
 
-// @symbol daObjCtKaitendai_c_classInit_CT_MECHA06
 extern "C" daObjCtKaitendai_c *daObjCtKaitendai_c_classInit_CT_MECHA06() {
     return new daObjCtKaitendai_c();
 }
 
-// @symbol daObjCtKaitendai_c_classInit_CT_MECHA07
 extern "C" daObjCtKaitendai_c *daObjCtKaitendai_c_classInit_CT_MECHA07() {
     return new daObjCtKaitendai_c();
 }
 
-// @symbol _ZN18daObjCtKaitendai_c13InitResourcesEv
 int daObjCtKaitendai_c::InitResources() {
     Vector3 pos;
 
@@ -137,7 +134,7 @@ int daObjCtKaitendai_c::InitResources() {
     mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov065_0211d35c[mVariant].collision),
                           mClsnMat, 0x199, mAngleY, *data_ov065_0211d35c[mVariant].clps);
 
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosAndAngs);
 
     pos.x = mPosX;
     pos.y = mPosY;
@@ -156,7 +153,6 @@ int daObjCtKaitendai_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN18daObjCtKaitendai_c8BehaviorEv
 int daObjCtKaitendai_c::Behavior() {
     switch (data_0209f2c0) {
     case 0: /* slow hand */
@@ -166,7 +162,7 @@ int daObjCtKaitendai_c::Behavior() {
 
     case 2: /* random hand */
         if (ApproachLinear(mPrevAngleZ, mPrevAngleX, 50) != 0) {
-            u16 roll = (u16)((u32)RandomIntInternal(&data_0209e650) >> 16);
+            u16 roll = (u16)((u32)RandomIntInternal(&data_0209e650.value) >> 16);
 
             mPrevAngleX = (s16)((roll % 7) * 200);
             if (roll >= 0x7fff) {
@@ -196,13 +192,11 @@ int daObjCtKaitendai_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN18daObjCtKaitendai_c6RenderEv
 int daObjCtKaitendai_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN18daObjCtKaitendai_c16CleanupResourcesEv
 int daObjCtKaitendai_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -211,7 +205,6 @@ int daObjCtKaitendai_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN18daObjCtKaitendai_c12UpdateShadowEv
 /* Copy the model matrix, plant its translation Y on the floor probe,
  * and drop the shadow. m[10] is that Y in the flat Matrix4x3. */
 void daObjCtKaitendai_c::UpdateShadow() {

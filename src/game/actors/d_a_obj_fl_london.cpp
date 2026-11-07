@@ -31,6 +31,7 @@
 #include "dBgW.h"
 #include "dBgW_Kc.h"
 #include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 struct CLPS_Block;
 
@@ -56,18 +57,15 @@ extern CLPS_Block data_ov064_0211bb2c;
 /* local extern: the arm9 rotation builder and the dBgW callback store,
  * with no shared header yet. */
 extern "C" {
-void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-void func_020393d4(void *p, void *v);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
-// @symbol daObjFl_London_c_classInit
 extern "C" daObjFl_London_c *daObjFl_London_c_classInit() {
     return new daObjFl_London_c();
 }
 
 /* The actor profile the registry points at. Word 0 relocates to the
  * factory above; the rest is the ROM's, read back at 0x02113f4c. */
-// @symbol g_profile_FL_LONDON
 extern "C" SpawnInfo<daObjFl_London_c> g_profile_FL_LONDON = {
     daObjFl_London_c_classInit,
     0x0049,
@@ -79,7 +77,6 @@ extern "C" SpawnInfo<daObjFl_London_c> g_profile_FL_LONDON = {
     0x00000000,
 };
 
-// @symbol _ZN16daObjFl_London_c13InitResourcesEv
 s32 daObjFl_London_c::InitResources() {
     void *f = dExtSimpleModel_c::LoadFile(data_ov022_02114580);
     mModel.SetFile((BMD_File *)f, 1, -1);
@@ -87,13 +84,12 @@ s32 daObjFl_London_c::InitResources() {
     UpdateClsnPosAndRot();
     void *k = dBgW_Kc::LoadFile(data_ov022_02114578);
     mMeshCollider.SetFile((KCL_File *)k, mClsnMat, 0x1000, mAngleY, data_ov064_0211bb2c);
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
     mFlag = 0;
     mCooldown = 0xf;
     return 1;
 }
 
-// @symbol _ZN16daObjFl_London_c8BehaviorEv
 s32 daObjFl_London_c::Behavior() {
     if (DecIfAbove0_Byte(&mCooldown) == 0) {
         if (mFlag == 0) {
@@ -130,13 +126,11 @@ s32 daObjFl_London_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN16daObjFl_London_c6RenderEv
 s32 daObjFl_London_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN16daObjFl_London_c16CleanupResourcesEv
 s32 daObjFl_London_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
@@ -146,7 +140,6 @@ s32 daObjFl_London_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjFl_London_c17UpdateModelMatrixEv
 /* Rebuild the model matrix from the actor's three angles, then publish the
  * position at 1/8 scale. Both callers (InitResources and Behavior) are in
  * this TU. */
@@ -157,8 +150,6 @@ void daObjFl_London_c::UpdateModelMatrix() {
     mModel.mat4x3.m[11] = mPosZ >> 3;
 }
 
-// @symbol _ZN16daObjFl_London_cD1Ev
-// @symbol _ZN16daObjFl_London_cD0Ev
 /* Both destructors are emitted from the INLINE `~daObjFl_London_c() {}` in
  * include/daObjFl_London_c.h -- there is deliberately no body here.
  *

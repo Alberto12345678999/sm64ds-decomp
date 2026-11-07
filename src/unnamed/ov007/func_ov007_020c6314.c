@@ -1,8 +1,7 @@
-// @symbol func_ov007_020c6314
 #include "Ov007Picker.h"
 
 extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern int LenVec3(Vector3 *v);
+extern int LenVec3(const Vector3 *v);
 
 /* Re-measures group idx's links: from restPos to each rest point (flag 0),
  * between their own end points (flag 1), or from restPos to each live point

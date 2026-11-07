@@ -34,6 +34,7 @@ enum daObjCtMecha08_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "math/CalcLib.h"
+#include "LevelRng.h"
 
 struct CLPS_Block;
 
@@ -67,7 +68,6 @@ extern CLPS_Block data_ov035_021121b8;
 extern s32 data_ov065_0211c0d0[][2][2]; /* vertical speed, by setting, by direction */
 extern u16 data_ov065_0211c0d4[][2][4]; /* travel timer, by setting, by direction */
 extern u8 data_0209f2c0;                /* arm9 clock setting */
-extern int data_0209e650;               /* arm9 RNG state */
 
 /* int-returning, so the ROM materializes the 0/1 before testing it. */
 static inline int IsInRange(s32 v, s32 lo, s32 hi) {
@@ -78,17 +78,14 @@ static inline s32 Clamp(s32 v, s32 lo, s32 hi) {
     return v < lo ? lo : (v > hi ? hi : v);
 }
 
-// @symbol daObjCtMecha08_c_classInit_CT_MECHA08A
 extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08A() {
     return new daObjCtMecha08_c();
 }
 
-// @symbol daObjCtMecha08_c_classInit_CT_MECHA08B
 extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08B() {
     return new daObjCtMecha08_c();
 }
 
-// @symbol _ZN16daObjCtMecha08_c13InitResourcesEv
 /* Load both files, remember the placed position as home, and start moving in
    direction 0 with that direction's speed and timer for the current clock
    setting. */
@@ -111,7 +108,6 @@ int daObjCtMecha08_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha08_c8BehaviorEv
 /* Setting 3 parks the lift at the top of its travel. Otherwise it moves under
    its own speed, and each time the timer runs out it clamps back inside
    [mHomePosY, mHomePosY + 0x14a000], turns round, and reloads speed and timer.
@@ -142,7 +138,7 @@ int daObjCtMecha08_c::Behavior() {
                 d = mMoveDir;
                 mVertSpeed = data_ov065_0211c0d0[setting][d][0];
                 if (data_0209f2c0 == CLOCK_SETTING_RANDOM) {
-                    u32 rnd = (u32)RandomIntInternal(&data_0209e650);
+                    u32 rnd = (u32)RandomIntInternal(&data_0209e650.value);
                     mMoveTimer = (u16)((rnd % 6) * 0x14 + 0xa);
                 }
             }
@@ -155,13 +151,11 @@ int daObjCtMecha08_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha08_c6RenderEv
 int daObjCtMecha08_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha08_c16CleanupResourcesEv
 /* Give back exactly what InitResources took: the collider, then both files. */
 int daObjCtMecha08_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())

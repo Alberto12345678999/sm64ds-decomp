@@ -10,28 +10,29 @@
  *   parameter spellings disagree.
  * - data_0209f394 is the player table, data_0209f250 the current player
  *   index. Typed here as dActor_c *: Behavior only uses mPos and mAreaId.
- * - data_020a0ebc is an arm9 scratch transform; the tree disagrees on its
- *   type (char / int / Vector3 / Triple).
+ * - data_020a0ebc is arm9's zero Vector3 (0xc bytes of .bss after
+ *   GAME_HEAP_PTR, constructed (0, 0, 0) in Heap.cpp); here it is the
+ *   translation Vec3_RotateYAndTranslate adds.
  * - D1/D0 come from the header's inline dtor: writing them out of line here
  *   ICEs mwccarm (ELFgen.c:483) beside a real D1, and emits D0 before D1
  *   plus a homeless D2.
  */
 
 #include "daChRoom_c.h"
+#include "daPly_c.h"
 #include "SpawnInfo.h"
 
 /* arm9 C helpers with no shared header. */
 extern "C" {
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-void Vec3_RotateYAndTranslate(Vector3 *out, void *m, s16 ang, Vector3 *in);
+void Vec3_RotateYAndTranslate(Vector3 *out, void *m, s16 ang, const Vector3 *in);
 void ChangeArea(int);
 }
 
 extern u8 data_0209f250;
-extern dActor_c *data_0209f394[];
-extern char data_020a0ebc;
+extern daPly_c *data_0209f394[];
+extern Vector3 data_020a0ebc;
 
-// @symbol daChRoom_c_classInit
 extern "C" daChRoom_c *daChRoom_c_classInit() {
     return new daChRoom_c();
 }
@@ -39,7 +40,6 @@ extern "C" daChRoom_c *daChRoom_c_classInit() {
 extern "C" SpawnInfo<daChRoom_c> g_profile_CH_ROOM = {
     daChRoom_c_classInit, 0x015c, 0x015c, 0, 0, 0, 0, 0};
 
-// @symbol _ZN10daChRoom_c13InitResourcesEv
 int daChRoom_c::InitResources() {
     mScaleX = (((param1 & 0xf) + 1) * 0x64000) >> 1;
     mScaleY = (((param1 >> 4 & 0xf) + 1) * 0x64000);
@@ -47,7 +47,6 @@ int daChRoom_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN10daChRoom_c8BehaviorEv
 int daChRoom_c::Behavior() {
     dActor_c *player;
     Vector3 delta;
@@ -77,15 +76,12 @@ int daChRoom_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN10daChRoom_c6RenderEv
 int daChRoom_c::Render() {
     return 1;
 }
 
-// @symbol _ZN10daChRoom_c16OnPendingDestroyEv
 void daChRoom_c::OnPendingDestroy() {}
 
-// @symbol _ZN10daChRoom_c16CleanupResourcesEv
 int daChRoom_c::CleanupResources() {
     return 1;
 }

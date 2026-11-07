@@ -15,7 +15,6 @@ extern "C" {
 typedef struct Vec3Words {
     Fix12i w[3];
 } Vec3Words;
-// @symbol func_ov007_020b0da0
 /* recovered: shared common types, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: shared common types */
@@ -43,14 +42,14 @@ void func_ov007_020b0da0(Ov007Figure *figure) {
     Ov007MenuState *st = WORK->states[1];
     int counter = st->stateTicks;
     Matrix4x3 *mat = obj->model->transforms;
-    void *ret = func_ov007_020aebac();
+    int noSaveFiles = func_ov007_020aebac();
 
     if (counter == 1) {
         obj->visible = 1;
         st->stateWork = OV007_FIGURE_SWAY;
         data_ov007_02103340 = 0;
         data_ov007_02103344 = 0;
-        if (ret == 0) {
+        if (noSaveFiles == 0) {
             WORK->figure->update = 0;
         }
     }

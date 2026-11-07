@@ -16,8 +16,8 @@
  * edge.
  *
  * leftovers:
- * - gRunningKuppaScript/gSavedKuppaScript keep the shard's `int' spelling: no header
- *   declares the kuppa-script words and the tree's other spellings disagree.
+ * - gRunningKuppaScript keeps the tree's plurality `int' spelling: no header declares
+ *   the kuppa-script words; gSavedKuppaScript takes KuppaScript.cpp's `u8 *'.
  * - dView_c_EmitDestructor/dView_c_EmitDeletingDestructor are byte-required
  *   pins for the header-inline destructor; the wrappers have no cartridge
  *   home (manifest-licensed emit-forcers).
@@ -28,9 +28,9 @@
 
 void CopyToViewMat(const Matrix4x3 *mat);
 
-// @symbol func_0202fd2c
 extern "C" {
-extern int gRunningKuppaScript, gSavedKuppaScript;
+extern int gRunningKuppaScript;
+extern u8 *gSavedKuppaScript;
 void func_0202fd2c(void)
 {
     gRunningKuppaScript = 0;
@@ -38,20 +38,17 @@ void func_0202fd2c(void)
 }
 }
 
-// @symbol _ZN7dView_c6RenderEv
 s32 dView_c::Render()
 {
     CopyToViewMat(&viewMat);
     return 1;
 }
 
-// @symbol _ZN7dView_cD0Ev -- pinned by the delete below
 void dView_c_EmitDeletingDestructor(dView_c *view)
 {
     delete view;
 }
 
-// @symbol _ZN7dView_cD1Ev -- pinned by the qualified call below
 void dView_c_EmitDestructor(dView_c *view)
 {
     view->~dView_c();

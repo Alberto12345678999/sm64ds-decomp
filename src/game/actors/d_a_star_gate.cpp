@@ -21,14 +21,12 @@
  *   (this, player); the body is 0-arg.
  * Leftover: func_02012694 sound at mCamSpacePosX (TalkingToPlayer_Init,
  *   OpenClose_Init / Main).
- * Leftover: StarGateVector3 POD for data_ov100_02148948, messagePos, tmp,
+ * Leftover: POD VecFx32 for data_ov100_02148948, messagePos, tmp,
  *   vec -- Vector3's inline dtor is non-POD; a Vector3 BSS object would
  *   register in sinit.
  * Leftover: data_ov100_02148390 gate table.
  * Leftover: (Vector3 *)&mSpeedX (dActor_c consecutive
  *   s32s; a Vector3 member is not this class).
- * Leftover: data_0209caa0 +0x41 character byte (SaveData.mCharacter).
- *   SaveData.h shifts this TU's @432..@446 PTMF uniquifiers in symbols.txt.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_star_gate_AssetId {
@@ -42,12 +40,14 @@ enum d_a_star_gate_AssetId {
 #include "dExtSimpleModel_c.h"
 #include "dCamera_c.h"
 #include "math/Approach.h"
+#include "nitro/fx/fx.h"
+#include "SaveBlock.h"
 
 extern "C" {
 int func_ov100_02144fcc(...);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_02012694(int soundID, void *position, ...);
-void Vec3_RotateYAndTranslate(Vector3 *out, void *m, short angle, Vector3 *in);
+void Vec3_RotateYAndTranslate(Vector3 *out, void *m, short angle, const Vector3 *in);
 void ChangeArea(int areaID);
 void ShowArea(int areaID);
 int func_ov100_02145014(void);
@@ -65,8 +65,8 @@ void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
 extern u8 data_0209f250;
 extern dCamera_c *data_0209f318;
 extern daPly_c *data_0209f394[];
-extern int data_0209caa0[];
-extern char data_020a0ebc[];
+extern SaveBlock data_0209caa0;
+extern Vector3 data_020a0ebc;
 
 struct StarGateModelFilePtr : SharedFilePtr {
     StarGateModelFilePtr(u32 fileID);
@@ -76,14 +76,8 @@ struct StarGateModelFilePtr : SharedFilePtr {
 extern "C" StarGateModelFilePtr gObjStargateModelFile;
 StarGateModelFilePtr gObjStargateModelFile(ASSET_OBJ_STARGATE_BMD);
 
-struct StarGateVector3 {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-extern "C" StarGateVector3 data_ov100_02148948;
-StarGateVector3 data_ov100_02148948;
+extern "C" VecFx32 data_ov100_02148948;
+VecFx32 data_ov100_02148948;
 
 /* The declaration order in daStarGate_c fixes the BSS layout.  Definition
  * order fixes the compiler-generated initialization sequence recovered at
@@ -134,7 +128,6 @@ static inline int Abs(int v) {
     return v < 0 ? -v : v;
 }
 
-// @symbol daStarGate_c_classInit
 extern "C" daStarGate_c *daStarGate_c_classInit()
 {
     return new daStarGate_c();
@@ -142,7 +135,6 @@ extern "C" daStarGate_c *daStarGate_c_classInit()
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c13InitResourcesEv
 int daStarGate_c::InitResources()
 {
     param1 = (u32)param1 >> 16;
@@ -155,13 +147,12 @@ int daStarGate_c::InitResources()
     mModel.mat4x3.t.x = mPosX >> 3;
     mModel.mat4x3.t.y = mPosY >> 3;
     mModel.mat4x3.t.z = mPosZ >> 3;
-    ChangeState(&ST_WAIT, (daPly_c *)data_0209f394[data_0209f250]);
+    ChangeState(&ST_WAIT, data_0209f394[data_0209f250]);
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c8BehaviorEv
 int daStarGate_c::Behavior()
 {
     daPly_c *player = CalculateRelativePlayerPos();
@@ -172,7 +163,6 @@ int daStarGate_c::Behavior()
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c6RenderEv
 int daStarGate_c::Render()
 {
     if (IsAreaShowing((s8)mAngleX) != 0 ||
@@ -195,14 +185,12 @@ int daStarGate_c::Render()
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c16OnPendingDestroyEv
 void daStarGate_c::OnPendingDestroy()
 {
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c16CleanupResourcesEv
 int daStarGate_c::CleanupResources()
 {
     gObjStargateModelFile.Release();
@@ -211,7 +199,6 @@ int daStarGate_c::CleanupResources()
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c11ChangeStateEPNS_5StateEP7daPly_c
 bool daStarGate_c::ChangeState(State *nextState, daPly_c *player) {
     mState = nextState;
     if (mState->init == 0)
@@ -221,18 +208,16 @@ bool daStarGate_c::ChangeState(State *nextState, daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c26CalculateRelativePlayerPosEv
 daPly_c *daStarGate_c::CalculateRelativePlayerPos() {
-    StarGateVector3 tmp;
+    VecFx32 tmp;
     daPly_c *player = data_0209f394[data_0209f250];
     Vec3_Sub((Vector3 *)&tmp, &player->mPos, &mPos);
-    Vec3_RotateYAndTranslate(&mScale, data_020a0ebc, (short)-mAngleY, (Vector3 *)&tmp);
+    Vec3_RotateYAndTranslate(&mScale, &data_020a0ebc, (short)-mAngleY, (Vector3 *)&tmp);
     return player;
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c17IsInFrontOfPlayerEP7daPly_c
 bool daStarGate_c::IsInFrontOfPlayer(daPly_c *player) {
     int a;
     if (Abs(mScaleX) <= 0x82000 && Abs(mScaleY) <= 0x32000 && Abs(mScaleZ) <= 0x78000) {
@@ -248,7 +233,6 @@ bool daStarGate_c::IsInFrontOfPlayer(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c11TryOpenDoorEP7daPly_c
 void daStarGate_c::TryOpenDoor(daPly_c *player) {
     int a;
     int z = mScaleZ;
@@ -261,24 +245,23 @@ void daStarGate_c::TryOpenDoor(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c12St_Wait_MainEP7daPly_c
 bool daStarGate_c::St_Wait_Main(daPly_c *player) {
     daStarGateInfo *entry;
     int isSpecial, notEnoughStars, isMario, messageID;
-    StarGateVector3 messagePos;
+    VecFx32 messagePos;
 
     if (IsInFrontOfPlayer(player)) {
         entry = &data_ov100_02148390[param1];
         isSpecial = entry->numStars == 0x50;
         notEnoughStars = (int)NumStars() < entry->numStars;
-        isMario = ((unsigned char *)data_0209caa0)[0x41] == 0;
+        isMario = data_0209caa0.file.mCharacter == 0;
 
         /* A door already unlocked in the save just opens. So does the 80-star
            door from behind (mScaleZ <= 0), or for Mario with enough stars.
            Otherwise it shows its message (or, for Mario with enough stars,
            starts the unlock talk) and falls back to TryOpenDoor when that
            call returns 0. */
-        if (!(data_0209caa0[1] & (0x8000 << entry->saveFlag))) {
+        if (!(data_0209caa0.file.flags1 & (0x8000 << entry->saveFlag))) {
             if (!isSpecial || (mScaleZ > 0 && (notEnoughStars || !isMario))) {
                 {
                     int x = mPosX;
@@ -313,7 +296,6 @@ bool daStarGate_c::St_Wait_Main(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c23St_TalkingToPlayer_InitEP7daPly_c
 bool daStarGate_c::St_TalkingToPlayer_Init(daPly_c *) {
     func_02012694(0xb8, &mCamSpacePosX);
     func_ov100_02145070(0x87);
@@ -322,7 +304,6 @@ bool daStarGate_c::St_TalkingToPlayer_Init(daPly_c *) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c23St_TalkingToPlayer_MainEP7daPly_c
 bool daStarGate_c::St_TalkingToPlayer_Main(daPly_c *player) {
     func_ov100_02145014();
     if (player->GetTalkState() == -1) {
@@ -337,7 +318,6 @@ bool daStarGate_c::St_TalkingToPlayer_Main(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c17St_Unlocking_InitEP7daPly_c
 bool daStarGate_c::St_Unlocking_Init(daPly_c *player) {
     player->OpenBigDoor();
     return true;
@@ -345,12 +325,11 @@ bool daStarGate_c::St_Unlocking_Init(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c17St_Unlocking_MainEP7daPly_c
 bool daStarGate_c::St_Unlocking_Main(daPly_c *player) {
     if (!player->IsOpeningDoorWithStar()) {
         daStarGateInfo *entry = &data_ov100_02148390[param1];
         s8 sh = entry->saveFlag;
-        data_0209caa0[1] |= 0x8000 << sh;
+        data_0209caa0.file.flags1 |= 0x8000 << sh;
         TryOpenDoor(player);
     }
     return true;
@@ -358,7 +337,6 @@ bool daStarGate_c::St_Unlocking_Main(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c17St_OpenClose_InitEP7daPly_c
 bool daStarGate_c::St_OpenClose_Init(daPly_c *) {
     ShowArea((s8)mAngleX);
     ShowArea((s8)mAngleZ);
@@ -370,10 +348,9 @@ bool daStarGate_c::St_OpenClose_Init(daPly_c *) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c17St_OpenClose_MainEP7daPly_c
 bool daStarGate_c::St_OpenClose_Main(daPly_c *player) {
     int ready;
-    StarGateVector3 vec;
+    VecFx32 vec;
     int gy, gz, vd;
 
     ready = func_ov100_02144fcc();
@@ -415,7 +392,6 @@ bool daStarGate_c::St_OpenClose_Main(daPly_c *player) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c18St_StayClosed_MainEP7daPly_c
 bool daStarGate_c::St_StayClosed_Main(daPly_c *player) {
     if (func_ov100_02144fcc(this, player))
         ChangeState(&ST_WAIT, player);

@@ -53,6 +53,7 @@ enum daObjCtMecha03_c_AssetId {
 #include "Sound.h"
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
+#include "LevelRng.h"
 
 struct CLPS_Block;
 
@@ -73,7 +74,6 @@ struct Mecha03ClsnFilePtr : SharedFilePtr {
 };
 
 extern u8 data_0209f2c0;
-extern int data_0209e650;
 extern s16 data_ov065_0211c0b0[];
 extern Mecha03ModelFilePtr data_ov065_0211d88c;
 extern Mecha03ClsnFilePtr data_ov065_0211d894;
@@ -82,18 +82,15 @@ extern CLPS_Block data_ov035_02112198;
 /* local extern: arm9 matrix/vector helpers and dBgW stores with no shared
  * header. */
 extern "C" {
-extern void Matrix4x3_FromRotationZXYExt(Matrix4x3 *m, int x, int y, int z);
 extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern void func_020393d4(void *p, void *v);
+extern void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
-// @symbol daObjCtMecha03_c_classInit
 extern "C" daObjCtMecha03_c *daObjCtMecha03_c_classInit() {
     return new daObjCtMecha03_c();
 }
 
-// @symbol _ZN16daObjCtMecha03_c13InitResourcesEv
 int daObjCtMecha03_c::InitResources() {
     void *bmd;
     void *kcl;
@@ -122,7 +119,6 @@ int daObjCtMecha03_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha03_c8BehaviorEv
 int daObjCtMecha03_c::Behavior() {
     if (data_0209f2c0 != 3) {
         if ((u16)mSoundTimer != 0) {
@@ -147,7 +143,7 @@ int daObjCtMecha03_c::Behavior() {
                 }
             }
             if (data_0209f2c0 == 2 && mSwingSpeed == 0) {
-                int roll = RandomIntInternal(&data_0209e650);
+                int roll = RandomIntInternal(&data_0209e650.value);
                 if ((unsigned)roll % 3 != 0)
                     mSwingAccel = 0xd;
                 else
@@ -171,13 +167,11 @@ int daObjCtMecha03_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha03_c6RenderEv
 int daObjCtMecha03_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha03_c16CleanupResourcesEv
 int daObjCtMecha03_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -186,7 +180,6 @@ int daObjCtMecha03_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha03_c17UpdateModelMatrixEv
 /* Writes mModel.mat4x3 from the actor's Y/Z angles and copies the
    actor position into its translation row. */
 int daObjCtMecha03_c::UpdateModelMatrix() {
@@ -198,7 +191,6 @@ int daObjCtMecha03_c::UpdateModelMatrix() {
     return z;
 }
 
-// @symbol _ZN16daObjCtMecha03_c12UpdateShadowEv
 /* Drops the pendulum's shadow: swings a fixed offset through the actor's
    orientation, raycasts the ground under the result, then hands the shadow
    matrix to dActor_c::DropShadowScaleXYZ. */
@@ -234,8 +226,6 @@ void daObjCtMecha03_c::UpdateShadow() {
     mShadowMat.m[11] = bobPos.z >> 3;
     DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x12c000, 0x12c000, 0x78000, 0xf);
 }
-// @symbol _ZN16daObjCtMecha03_cD1Ev
-// @symbol _ZN16daObjCtMecha03_cD0Ev
 /* No separate body lives here. The inline virtual destructor in the directly
  * included class header makes mwccarm emit retail's D1 then D0 order without
  * the otherwise homeless D2 variant. */

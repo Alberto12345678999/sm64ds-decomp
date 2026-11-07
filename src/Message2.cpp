@@ -32,7 +32,7 @@
 extern "C" {
 extern u8 gSubScreenLayers;
 extern u8 gMainScreenLayers;
-/* The message box rectangle: see the comment at Message.cpp's externs. */
+/* The message box rectangle: see the comment at Message.cpp's definitions. */
 extern u8 gMsgBoxWinTop;
 extern u8 gMsgBoxLeft;
 extern u8 gMsgBoxWinLeft;
@@ -66,7 +66,7 @@ extern u8 data_0209d6b4;
 extern u8 data_0209d6b8;
 extern u8 data_0209d6bc;
 extern u8 data_0209d6c0;
-extern u8 data_0209d6c4; /* the box style: see Message.cpp */
+extern u8 gMsgBoxStyle; /* the box style: see Message.cpp */
 extern u8 gMsgBoxCenterY;
 extern u8 gMsgBoxTop;
 extern u8 gMsgBoxCenterX;
@@ -85,15 +85,15 @@ extern int data_0209d704;
 extern u8 data_0209d710[];
 extern int data_0209d74c[];
 extern s32 data_0208ee44;
-extern u16 data_0208ee64[];
-extern u8 data_0208ee6c[];
+extern u16 data_0208ee64[4];
+extern u8 data_0208ee6c[8];
 extern u8 data_0208ee74[];
 extern int data_0208ee8c[];
 extern int data_0208eeac[];
 extern int data_0208eecc[];
 extern u8 data_0208f074[];
 extern u8 data_0208f174[];
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 extern u32 gNextActorUpdateMask;
 extern u8 data_0209f2d8;
 extern s16 data_0209f4a2[];
@@ -134,7 +134,7 @@ unsigned int GetBG1CharPtr();
 
 /* data_0209f2d8 (CURRENT_GAMEMODE) is 2 while the fall-in-front-of-castle
  * cutscene runs: ContinueKuppaScriptIfNecessary stores 2 only when the
- * script it resumes is FALL_IN_FRONT_OF_CASTLE_CUTSCENE (data_02089608),
+ * script it resumes is FALL_IN_FRONT_OF_CASTLE_CUTSCENE (sCutsceneEndingMarioFall),
  * and EndKuppaScript clears it once no script is left to resume. The
  * credits script does not set it. This int-returning predicate is what
  * makes the ROM materialize 0/1 before testing it. */
@@ -142,21 +142,18 @@ static inline int IsCastleFallCutsceneRunning(void) {
     return data_0209f2d8 == 2;
 }
 
-// @symbol _ZN7Message7EndTalkEv
 void Message::EndTalk() {
     /* Restore music to 0x7f. Slower ramp than PrepareTalk. */
     Sound::ChangeMusicVolume(0x7f, 0x000064cc);
     data_0209d664 = 0;
 }
 
-// @symbol _ZN7Message11PrepareTalkEv
 void Message::PrepareTalk() {
     /* Duck the music to 0x40 before dialogue. EndTalk is the inverse. */
     Sound::ChangeMusicVolume(0x40, 0x0000c999);
     data_0209d664 = 1;
 }
 
-// @symbol _ZN7Message9AddChoiceEv
 /* Text code 2: marks an answer choice. Arg 0 sets the cursor row; 1..3 record
    the choice position and set the choice mode Update then drives. */
 void Message::AddChoice() {
@@ -197,7 +194,6 @@ void Message::AddChoice() {
 
 extern "C" {
 
-// @symbol func_0201aca4
 void func_0201aca4(void) {
 
     struct MsgTextChar {
@@ -246,7 +242,6 @@ void func_0201aca4(void) {
 }
 }
 
-// @symbol _ZN7Message11AddCharPairEv
 void Message::AddCharPair() {
     /* Text code 3. Calls AddChar twice with the font byte and the next byte.
        Index is data_0209d6f4 bytes [3] and [4], looked up in data_0208ee6c. */
@@ -266,7 +261,6 @@ void Message::AddCharPair() {
 
 extern "C" {
 
-// @symbol func_0201adfc
 void func_0201adfc(void) {
     int n;
     int i;
@@ -342,7 +336,6 @@ void func_0201adfc(void) {
     data_0209d6a0 += 3;
 }
 
-// @symbol func_0201b100
 void func_0201b100(int mode) {
     int base;
     int opcode;
@@ -431,8 +424,10 @@ void func_0201b100(int mode) {
 }
 
 #pragma push
+/* opt_common_subs stays off: the inner loop reads data_0209d74c[j + i * 16] once
+ * per store the way the cartridge does, and CSE shares the two loads
+ * (0x218 against 0x220). */
 #pragma opt_common_subs off
-// @symbol func_0201b388
 void func_0201b388(int a0) {
     int start;
     int *sl;
@@ -486,7 +481,6 @@ void func_0201b388(int a0) {
 #pragma pop
 }
 
-// @symbol _ZN7Message7AddCharEh
 void Message::AddChar(u8 c) {
     int i;
     int *ip;
@@ -502,7 +496,7 @@ void Message::AddChar(u8 c) {
     else
         ip = (int *)((char *)func_02054d88() + (((c & 0x1f) + ((c & 0xe0) << 1)) << 5));
 
-    mask = data_0208eecc[data_0209d6c4];
+    mask = data_0208eecc[gMsgBoxStyle];
     sh = data_0209d678;
     for (i = 0; i < 0x10; i++) {
         word = *ip++;
@@ -531,7 +525,6 @@ void Message::AddChar(u8 c) {
 
 extern "C" {
 
-// @symbol func_0201b6f8
 void func_0201b6f8(int mode) {
     int i;
     u8 *p = data_0209d6f4;
@@ -562,7 +555,6 @@ void func_0201b6f8(int mode) {
 }
 }
 
-// @symbol _ZN7Message10LayoutLineEv
 /* Lays out the next text line: glyphs until 0xfd (line end) or 0xff (message
    end), 0xfe runs a text code. Then picks the next Update state. */
 void Message::LayoutLine() {
@@ -679,7 +671,6 @@ void Message::LayoutLine() {
     }
 }
 
-// @symbol _ZN7Message12UpdateWindowEv
 int Message::UpdateWindow() {
     if (data_0209d670 == 0) {
         if (gMsgBoxWinLeft > gMsgBoxLeft || gMsgBoxWinTop > gMsgBoxTop) {
@@ -781,7 +772,6 @@ int Message::UpdateWindow() {
     return 0;
 }
 
-// @symbol _ZN7Message6UpdateEv
 void Message::Update() {
     switch (data_0209d6bc) {
     case 1: {
@@ -829,7 +819,7 @@ void Message::Update() {
                 func_02012790(0x96);
             }
             gMsgChoiceIndex = 0;
-        } else if (*((u8 *)data_0209caa0 + 0x42) == 0 &&
+        } else if (data_0209caa0.file.controllerMode == 0 &&
                    (*(u16 *)((u8 *)data_020a0e5a + gActivePlayerSlot * 4) & 0x30)) {
             gMsgChoiceIndex ^= 1;
             func_02012790(0x96);
@@ -865,7 +855,7 @@ void Message::Update() {
                 func_02012790(0x96);
             }
             gMsgChoiceIndex = 0;
-        } else if (*((u8 *)data_0209caa0 + 0x42) == 0 &&
+        } else if (data_0209caa0.file.controllerMode == 0 &&
                    (*(u16 *)((u8 *)data_020a0e5a + gActivePlayerSlot * 4) & 0xC0)) {
             gMsgChoiceIndex ^= 1;
             func_02012790(0x96);
@@ -938,7 +928,7 @@ void Message::Update() {
                 }
                 break;
             }
-        } else if (*((u8 *)data_0209caa0 + 0x42) == 0) {
+        } else if (data_0209caa0.file.controllerMode == 0) {
             u16 mask = data_020a0e5a[idx * 2];
             if (mask & 0xC0) {
                 u8 target = (mask & 0x40) ? 0 : 2;
@@ -966,8 +956,8 @@ void Message::Update() {
         }
     }
     case 7: {
-        if (((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) && !IsCastleFallCutsceneRunning() &&
-             IsButtonInputValid() != 0) ||
+        if (((data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) &&
+             !IsCastleFallCutsceneRunning() && IsButtonInputValid() != 0) ||
             data_0209d66c != 0) {
             data_0209d6f4 += 1;
             data_0209d69c = 1;
@@ -976,7 +966,7 @@ void Message::Update() {
             data_0209d6bc = 1;
             func_02012790(0x14);
         }
-        if (!(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)) {
+        if (!(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
             return;
         }
         {
@@ -985,7 +975,7 @@ void Message::Update() {
             if (!(data_020a0db0 & (0x10 / data_0208ee44))) {
                 return;
             }
-            if (data_0209d6c4 != 0) {
+            if (gMsgBoxStyle != 0) {
                 OAM::Render(0, (OamAttr *)&data_ov002_0210c390, r5, r4, -1, -1, 0x1000, 0x1000, 0,
                             -1);
             } else {
@@ -996,8 +986,8 @@ void Message::Update() {
         }
     }
     case 8: {
-        if (((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) && !IsCastleFallCutsceneRunning() &&
-             IsButtonInputValid() != 0) ||
+        if (((data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) &&
+             !IsCastleFallCutsceneRunning() && IsButtonInputValid() != 0) ||
             data_0209d66c != 0) {
             data_0209d670 = 1;
             data_0209d66c = 0;
@@ -1005,7 +995,7 @@ void Message::Update() {
             if (IsCastleFallCutsceneRunning()) {
                 return;
             }
-            if (data_0209d6c4 != 0) {
+            if (gMsgBoxStyle != 0) {
                 func_02012790(0x21);
                 return;
             }

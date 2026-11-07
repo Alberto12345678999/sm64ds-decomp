@@ -20,6 +20,7 @@ enum d_a_obj_mc_metalnet_AssetId { ASSET_MC_METALNET_BMD = 0x0691, ASSET_MC_META
 
 #include "daObjMc_Metalnet_c.h"
 #include "SharedFilePtr.h"
+#include "SaveBlock.h"
 
 struct McMetalnetModelFilePtr : SharedFilePtr {
     McMetalnetModelFilePtr(u32 fileID);
@@ -40,7 +41,7 @@ extern CLPS_Block data_ov009_02112bf8;
 extern unsigned char data_0209f2d8;
 /* The one global SaveData instance (include/SaveData.h). Indexed as int[] here,
    the way d_a_set_se.cpp does it; [2] is the 0x008 unlock word. */
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 
 extern "C" {
 unsigned char NumStars(void);
@@ -52,7 +53,6 @@ static inline int IsVsMode(void) {
     return data_0209f2d8 == 1;
 }
 
-// @symbol daObjMc_Metalnet_c_classInit
 /* Reconstructed source-style name. Historical alias: MetalNet_Spawn.
  *
  * Every instruction the cartridge has here falls out of the one `new`.
@@ -64,7 +64,6 @@ extern "C" daObjMc_Metalnet_c *daObjMc_Metalnet_c_classInit(void) {
     return new daObjMc_Metalnet_c();
 }
 
-// @symbol _ZN18daObjMc_Metalnet_c13InitResourcesEv
 /* Load the model, place it, hand the collision mesh to the collider -- and then
  * decide whether this net should exist at all. Returning 0 from InitResources
  * destroys the actor before it is ever drawn.
@@ -84,7 +83,7 @@ s32 daObjMc_Metalnet_c::InitResources() {
     mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov009_02112bf8);
 
     if ((param1 & 0xff) == 0xff) {
-        if (!IsVsMode() && (data_0209caa0[2] & 0x80000) != 0)
+        if (!IsVsMode() && (data_0209caa0.file.flags2 & 0x80000) != 0)
             return 0;
     } else {
         if (!IsVsMode() && NumStars() >= 0x96)
@@ -93,7 +92,6 @@ s32 daObjMc_Metalnet_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN18daObjMc_Metalnet_c8BehaviorEv
 /* The net never moves, but it still re-derives its collider transform every
  * frame -- that is what lets a moving parent carry it.
  *
@@ -113,18 +111,15 @@ s32 daObjMc_Metalnet_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN18daObjMc_Metalnet_c6RenderEv
 s32 daObjMc_Metalnet_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN18daObjMc_Metalnet_c16OnPendingDestroyEv
 /* Four bytes: a bare `bx lr`. The override exists to occupy slot 12 so that
  * fBase_c's own OnPendingDestroy does not run for this class. */
 void daObjMc_Metalnet_c::OnPendingDestroy() {}
 
-// @symbol _ZN18daObjMc_Metalnet_c16CleanupResourcesEv
 s32 daObjMc_Metalnet_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -134,8 +129,6 @@ s32 daObjMc_Metalnet_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN18daObjMc_Metalnet_cD1Ev
-// @symbol _ZN18daObjMc_Metalnet_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjMc_Metalnet_c() {}` in the
    header is the whole source of both variants: from an inline body mwcc emits
    D1 and then D0 -- the cartridge's own order -- and no D2. Writing the body

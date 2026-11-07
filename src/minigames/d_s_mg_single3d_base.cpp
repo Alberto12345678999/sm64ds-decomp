@@ -14,10 +14,6 @@
  *   is still declared without the argument and result.
  * - The ov004 registry words stay raw: sMgTopScreenYOffset and the
  *   file-id table sSingle3DCommonNcgByLanguage name no struct this TU can see.
- *   sMgGraphCallback keeps the int[] spelling: the typed
- *   dScMgBase_c::graphCallback_c form matches (9/9 still MATCH) but trips
- *   the decl ratchet against src/minigames/d_s_mg_d3d_base.cpp's banked int[],
- *   and that file is outside this job's area.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -49,7 +45,7 @@ void SetFog(int enable, int, int, int);
 }
 
 extern "C" {
-int LoadFile(int fileId);
+void *LoadFile(int fileId);
 void DecompressLZ16(void *src, void *dst);
 void Ov004_Deallocate(void *p);
 void Mg_ResetBgOffsets(void);
@@ -62,15 +58,14 @@ void Mg_ResetOverlays(void);
 void FreeGfxSlotsById(int id);
 extern u8 gSubScreenLayers;
 extern u8 gMainScreenLayers;
-extern u32 data_020a0db0;
+extern s32 data_020a0db0;
 extern int sMgTopScreenYOffset;
-extern int sMgGraphCallback[];
+extern dScMgBase_c::graphCallback_c sMgGraphCallback;
 extern int sSingle3DCommonNcgByLanguage[];
 extern int data_0208ee44;
-extern void **data_0209d4a8;
+extern dGraph_c::callback_c *data_0209d4a8;
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c11InitEnginesEv
 /* Slot 33 brings up both graphics engines, assigns VRAM banks and loads
  * the language's OBJ characters and the OBJ palettes into both engines
  * before publishing this scene, then sets lights 0 and 1 to white. All
@@ -117,13 +112,12 @@ void dScMgSingle3DBase_c::InitEngines()
     G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
     FreeGfxSlotsById(0x1d);
-    sMgGraphCallback[1] = (int)this;
-    data_0209d4a8 = (void **)sMgGraphCallback;
+    sMgGraphCallback.mScene = this;
+    data_0209d4a8 = &sMgGraphCallback;
     *(vu32 *)0x40004ccu = 0x7fff;
     *(vu32 *)0x40004ccu = 0x40007fff;
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c18AfterInitResourcesEj
 /* Slot 2 runs the base, then initializes particles. */
 void dScMgSingle3DBase_c::AfterInitResources(u32 vfSuccess)
 {
@@ -131,7 +125,6 @@ void dScMgSingle3DBase_c::AfterInitResources(u32 vfSuccess)
     mSysTracker.Initialise();
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c14BeforeBehaviorEv
 /* Slot 7 steps the particle tracker only when the global update flag is set. */
 int dScMgSingle3DBase_c::BeforeBehavior()
 {
@@ -142,7 +135,6 @@ int dScMgSingle3DBase_c::BeforeBehavior()
     return 1;
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c12BeforeRenderEv
 /* Slot 10 renders particles after the common scene is ready. */
 int dScMgSingle3DBase_c::BeforeRender()
 {
@@ -152,7 +144,6 @@ int dScMgSingle3DBase_c::BeforeRender()
     return 1;
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c21AfterCleanupResourcesEj
 /* Slot 5: when vfSuccess is 2, reset light 0's vector and color and free
  * the common model data, then run the base. Keep the hardware stores'
  * width and order. */
@@ -166,27 +157,24 @@ void dScMgSingle3DBase_c::AfterCleanupResources(u32 vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c14GetDisplayModeEv
 /* Slot 26 identifies this branch of minigame scenes with the value 1. */
 int dScMgSingle3DBase_c::GetDisplayMode()
 {
     return 1;
 }
 
-// @symbol LoadCard2SubBg3
 /* Load the sub screen's BG3 characters, palette and map, releasing each
  * buffer. */
-extern "C" void LoadCard2SubBg3(void)
-{
-    void *fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NCG_BIN);
+extern "C" void LoadCard2SubBg3(void *) {
+    void *fileData = LoadFile(ASSET_D_2D_MG_BG_CARD2_NCG_BIN);
     gSubScreenLayers |= 8;
     *(vu16 *)0x400100eu = (*(vu16 *)0x400100eu & 0x43) | 0x214;
     DecompressLZ16(fileData, (void *)G2S::GetBG3CharPtr());
     Ov004_Deallocate(fileData);
-    fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NCL_BIN);
+    fileData = LoadFile(ASSET_D_2D_MG_BG_CARD2_NCL_BIN);
     GXS::LoadBGPltt(fileData, 0xa0, 0x160);
     Deallocate(fileData);
-    fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NSC_BIN);
+    fileData = LoadFile(ASSET_D_2D_MG_BG_CARD2_NSC_BIN);
     func_020562b4(fileData, 0, 0x800);
     Deallocate(fileData);
     *(vu16 *)0x400100eu &= ~0x40;

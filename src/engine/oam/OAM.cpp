@@ -30,9 +30,9 @@
  * - The two Fix12 Render overloads keep mangled `extern "C"` spellings
  *   (wall above); RenderSub's call sites keep them as one-declared
  *   callee.
- * - data_020755a0/data_020755ac stay `unsigned char[]` table externs --
- *   GetObjWidth/GetObjHeight read single bytes out of stride-4 slots and
- *   the double cast is load-bearing.
+ * - GetObjWidth/GetObjHeight read single bytes out of the stride-4
+ *   slots in data_020755a0/data_020755ac, and the double cast is
+ *   load-bearing.
  */
 
 #pragma defer_codegen off
@@ -87,14 +87,14 @@ extern int data_0209e67c[];
 extern int data_0209e694[];
 extern OamAttr data_0209ea74[];  /* sub OAM staging buffer: 128 x 8B */
 extern s16 data_02082214[];      /* sin/cos table, indexed by (angle >> 4) * 2 */
-extern unsigned char data_020755a0[];  /* OBJ width table, stride 4 */
-extern unsigned char data_020755ac[];  /* OBJ height table, stride 4 */
+extern const unsigned char data_020755a0[12]; /* OBJ width, stride 4 */
+extern const unsigned char data_020755ac[12]; /* OBJ height, stride 4 */
 
 extern "C" {
 void func_020566dc(const void *src, unsigned int offset, unsigned int count);
 void func_02056674(const void *src, unsigned int offset, unsigned int count);
 void MultiCopy_Int(int *dst, int *src, int len);
-void MultiCopy32Bytes(int *src, int *dst, int len);
+void MultiCopy32Bytes(const void *src, void *dst, int len);
 
 int func_0202043c(int thiz);
 }
@@ -102,29 +102,23 @@ int func_0202043c(int thiz);
 /* -------------------------------------------------------------------------- */
 extern "C" {
 
-/* @symbol func_02020820 */
-void func_02020820(char *self, int *src, int arg2, int arg3, u8 arg5, u8 arg6)
-{
-    OamAnimation *anim = (OamAnimation *)self;
+void func_02020820(OamAnimation *anim, int *src, int screen, int loops, u8 enabled, u8 affine) {
     anim->frames = (const OamAnimFrame *)src[0];
     anim->frameCount = src[1];
-    func_0202043c((int)self);
+    func_0202043c((int)anim);
     anim->palette = -1;
     anim->priority = -1;
     anim->scaleX = 0x1000;
     anim->scaleY = 0x1000;
     anim->rotation = 0;
-    anim->loops = (u8)arg3;
-    anim->enabled = (u8)arg5;
-    anim->affine = (u8)arg6;
-    /* 0x28: no reader in the tree yet, so its role is unproven. */
-    *(int *)(self + 0x28) = arg2;
+    anim->loops = (u8)loops;
+    anim->enabled = enabled;
+    anim->affine = affine;
+    anim->screen = screen;
 }
-
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2
 /* ROM ordinal 1 -- OAM::LoadAffineParams(OamAttr *, int *, Matrix2x2 *)
  * 0x02020884  size 0xe8 */
 
@@ -167,7 +161,6 @@ int OAM::LoadAffineParams(OamAttr *oam, int *count, Matrix2x2 *mtx)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM12GetObjHeightEii
 /* ROM ordinal 2 -- OAM::GetObjHeight(int, int)
  * 0x0202096c  size 0x14 */
 u8 OAM::GetObjHeight(int shape, int sizeBits)
@@ -178,7 +171,6 @@ u8 OAM::GetObjHeight(int shape, int sizeBits)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM11GetObjWidthEii
 /* ROM ordinal 3 -- OAM::GetObjWidth(int, int)
  * 0x02020980  size 0x14 */
 u8 OAM::GetObjWidth(int shape, int sizeBits)
@@ -190,7 +182,6 @@ u8 OAM::GetObjWidth(int shape, int sizeBits)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM6RenderEbP7OamAttriiiiiiii
 /* ROM ordinal 4 -- OAM::Render(bool, OamAttr *, int, int, int, int, int, int, int, int)
  * 0x02020994  size 0x690 */
 #pragma opt_common_subs off
@@ -415,7 +406,6 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
 #pragma opt_loop_invariants on
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM6RenderEbP7OamAttriiiiii
 /* 0x02021024  size 0x480. One object, one scale, one rotation.
  * Scale and rotation are ints. `OamAttrTpl` is this body's view of the template entry. */
 OamAttr *OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, int scale0,
@@ -611,7 +601,6 @@ OamAttr *OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2
 /* ROM ordinal 6 -- OAM::Render(bool, OamAttr *, int, int, int, int, Matrix2x2 *)
  * 0x020214a4  size 0x2e4 */
 void OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, Matrix2x2 *mtx)
@@ -712,7 +701,6 @@ void OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, Ma
 
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM5ResetEv
 /* ROM ordinal 7 -- OAM::Reset()
  * 0x02021788  size 0xdc */
 void OAM::Reset()
@@ -727,8 +715,8 @@ void OAM::Reset()
         ((OAMEntry *)data_0209e674)[0].a = 0xc0;
         ((OAMEntry *)data_0209e674)[0].b = 0;
         MultiCopy_Int((int*)data_0209e674, data_0209e67c, 0x18);
-        MultiCopy32Bytes((int*)data_0209e674, data_0209e694, 0x3e0);
-        MultiCopy32Bytes((int*)data_0209e674, (int*)data_0209ea74, 0x400);
+        MultiCopy32Bytes(data_0209e674, data_0209e694, 0x3e0);
+        MultiCopy32Bytes(data_0209e674, data_0209ea74, 0x400);
         data_0209e670 = 0;
         data_0209e66c = 0;
     }
@@ -737,7 +725,6 @@ void OAM::Reset()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM5FlushEv
 /* ROM ordinal 8 -- OAM::Flush()
  * 0x02021864  size 0x34 */
 void OAM::Flush()
@@ -750,7 +737,6 @@ void OAM::Flush()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM4LoadEv
 /* ROM ordinal 9 -- OAM::Load()
  * 0x02021898  size 0xb4 */
 void OAM::Load()
@@ -774,7 +760,6 @@ void OAM::Load()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM9RenderSubEP7OamAttrii
 /* ROM ordinal 10 -- OAM::RenderSub(OamAttr *, int, int)
  * 0x0202194c  size 0x50 */
 void OAM::RenderSub(OamAttr *data, s32 x, s32 y)
@@ -788,7 +773,6 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM9RenderSubEP7OamAttriiii
 /* ROM ordinal 11 -- OAM::RenderSub(OamAttr *, int, int, int, int)
  * 0x0202199c  size 0x54 */
 void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
@@ -801,7 +785,6 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM12EnableSubOAMEP6OamTmp
 /* ROM ordinal 12 -- OAM::EnableSubOAM(OamTmp *)
  * 0x020219f0  size 0x14 */
 u32 OAM::EnableSubOAM(OamTmp *tmp) {

@@ -14,23 +14,22 @@
  *   (dScene_c::SpawnIfNecessary) reads r0 as the spawned scene actor -- a
  *   0xc-byte veneer cannot evidence a return value, the same doctrine
  *   include/dBase_c.h records for Spawn.
- * - Spawn's trailing (int, int) stay unnamed: dActor_c::Spawn passes
- *   (spawnParam, 2) and other callers (mode/entranceId, 0), and both words
- *   ride r2/r3 through this veneer into func_02042ffc's factory call, but
- *   their roles belong to the factory's TU (func_02043098), not this one.
+ * - Spawn's trailing (int, int) keep the header's a/b: dActor_c::Spawn
+ *   passes (spawnParam, 2) and other callers (mode/entranceId, 0), and this
+ *   veneer hands both straight on to func_02042ffc's factory call, but their
+ *   roles belong to the factory's TU (func_02043098), not this one.
  * - func_02042ffc / func_02042fe4 keep their ROM labels for the same reason.
  */
 #include "dBase_c.h"
 
 extern "C" {
 extern int func_02042fe4(int a, unsigned int b, int c);
-extern fBase_c *func_02042ffc(u32 actorID, fBase_c *parent);
+extern fBase_c *func_02042ffc(u32 actorID, fBase_c *parent, u32 a, int b);
 /* local extern: no header declares it; the next ROM entry's crash-forward
  * target, called only by the absorbed spin below. */
 extern void func_02013f4c(void);
 }
 
-// @symbol func_02013f28
 /* Absorbed from the retired arm9 helper func_02013f28
  * (arm9 0x02013f28..0x02013f4c): fatal-error spin, IME off then call the
  * next entry forever. Defined first because this file emits in reverse
@@ -43,7 +42,6 @@ extern "C" void func_02013f28(void)
         func_02013f4c();
 }
 
-// @symbol _ZN7dBase_c18AfterInitResourcesEj
 void dBase_c::AfterInitResources(u32 vfSuccess)
 {
     if (vfSuccess == 1)
@@ -51,13 +49,10 @@ void dBase_c::AfterInitResources(u32 vfSuccess)
     fBase_c::AfterInitResources(vfSuccess);
 }
 
-// @symbol _ZN7dBase_c5SpawnEjP7fBase_cii
-fBase_c *dBase_c::Spawn(u32 actorID, fBase_c *parent, int, int)
-{
-    return func_02042ffc(actorID, parent);
+fBase_c *dBase_c::Spawn(u32 actorID, fBase_c *parent, int a, int b) {
+    return func_02042ffc(actorID, parent, a, b);
 }
 
-// @symbol func_02013edc
 extern "C" int func_02013edc(int a, int b, int c) {
     return func_02042fe4(a, b, c);
 }

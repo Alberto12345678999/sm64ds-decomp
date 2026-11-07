@@ -1,11 +1,10 @@
 #include "types.h"
-// @symbol func_ov007_020c5fc8
 /* recovered: shared common types */
 #include "common.h"
 #include "Ov007StrokePath.h"
 #include "Ov007Picker.h"
 extern void SubVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int LenVec3(struct Vector3 *v);
+extern int LenVec3(const Vector3 *v);
 
 /* Re-measures group idx's links at a pose blended between groupPoints
  * (weight t, Q12) and groupPointCopies: x and y blended, z from the copies.

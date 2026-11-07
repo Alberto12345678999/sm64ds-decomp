@@ -14,10 +14,10 @@
  * - data_ov002_0210d9a8 / 0210d9e8 / 0210da08 / 0210da28: this TU
  *   consumes the four handles; overlay .bss owns them. symbols.txt has
  *   no recovered name, so they are not coined.
- * - NumberPos: a local Vector3 would emit vague-linkage ~Vector3.
+ * - VecFx32: a local Vector3 would emit vague-linkage ~Vector3.
  * - volatile mPosY / pos.z: a plain field read CSE's with the add/store
  *   above it (Particle::System::NewSimple and FromTranslation).
- * - The owner's position is read through a NumberPos overlay of its
+ * - The owner's position is read through a VecFx32 overlay of its
  *   mPosX/Y/Z; reading the three fields directly DIFFs Behavior.
  * - Render's star walk keeps the `for (;;)` with a break: a `while`
  *   on the FindWithActorID result DIFFs.
@@ -31,27 +31,20 @@
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
 #include "math/MtxStack.h"
+#include "nitro/fx/fx.h"
 
-/* POD view used only to preserve the three-word position ABI without
- * emitting Vector3's vague-linkage destructor. */
-struct NumberPos {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-typedef char NumberPos_size_must_be_0xc[sizeof(NumberPos) == 0xc ? 1 : -1];
+/* Behavior's position is a VecFx32, preserving the three-word position ABI
+ * without emitting Vector3's vague-linkage destructor. */
 
 extern SharedFilePtr data_ov002_0210da08;
 extern SharedFilePtr data_ov002_0210da28;
 extern SharedFilePtr data_ov002_0210d9e8;
 extern SharedFilePtr data_ov002_0210d9a8;
 
-extern int gNextActorUpdateMask;
+extern u32 gNextActorUpdateMask;
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjNumber_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjNumber_c through RTTI,
  * allocation size, vtable identity, and the OBJ_NUMBER registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -67,7 +60,6 @@ extern "C" daObjNumber_c *daObjNumber_c_classInit(void) {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjNumber_c13InitResourcesEv
 s32 daObjNumber_c::InitResources() {
     if (param1 & 0x10) {
         dExtAnmTexPat_c::LoadFile(data_ov002_0210da08);
@@ -104,9 +96,8 @@ s32 daObjNumber_c::InitResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjNumber_c8BehaviorEv
 s32 daObjNumber_c::Behavior() {
-    NumberPos pos;
+    VecFx32 pos;
 
     if (mDelay != 0)
         return 1;
@@ -139,9 +130,9 @@ s32 daObjNumber_c::Behavior() {
     if (mOwnerUniqueID != 0) {
         dActor_c *other = FindWithID(mOwnerUniqueID);
         if (other != 0) {
-            /* NumberPos overlay of the owner's mPosX/Y/Z; a Vector3
+            /* VecFx32 overlay of the owner's mPosX/Y/Z; a Vector3
                would emit ~Vector3. */
-            NumberPos *op = (NumberPos *)&other->mPosX;
+            VecFx32 *op = (VecFx32 *)&other->mPosX;
             s32 oy;
             pos.x = op->x;
             pos.y = oy = op->y;
@@ -157,7 +148,6 @@ s32 daObjNumber_c::Behavior() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjNumber_c6RenderEv
 s32 daObjNumber_c::Render() {
     /* While gNextActorUpdateMask bit 0x4000000 is set, a power star (0xb2) of
        kind 6 at camera step 0x64 removes the popup. */
@@ -186,7 +176,6 @@ s32 daObjNumber_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjNumber_c16CleanupResourcesEv
 s32 daObjNumber_c::CleanupResources() {
     if (param1 & 0x10) {
         data_ov002_0210da28.Release();
@@ -200,7 +189,6 @@ s32 daObjNumber_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjNumber_c8SetOwnerEP8dActor_c
 /* dActor_c::SpawnNumber's attach step (coined name; formerly
  * func_ov002_020f0918). Follows the owner by uniqueID, at this popup's
  * height above it. Returns this, which SpawnNumber hands back. */

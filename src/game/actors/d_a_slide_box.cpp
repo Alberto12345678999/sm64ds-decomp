@@ -86,7 +86,7 @@ extern void Matrix4x3_FromRotationXYZExt(void *mtx, int angleX, int angleY, int 
 
 extern void hold_d_a_slide_box(void *thiz, void *kcl, void *mtx, int scale, short angleY,
                                void *clps);
-extern void func_020393d4(void *clsn, void *callback);
+extern void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
 /* Radius and height passed to dBgCh_Actr::Init, 20.0 in 20.12. */
@@ -142,15 +142,12 @@ enum {
 
 #pragma defer_codegen off
 
-// @symbol _ZN13daSlide_Box_cD1Ev
-// @symbol _ZN13daSlide_Box_cD0Ev
 /* Empty on purpose. mwccarm destroys mWithMeshClsn, then the inlined
  * dBgActor_c teardown, and emits D1 followed by D0. */
 daSlide_Box_c::~daSlide_Box_c()
 {
 }
 
-// @symbol _ZN13daSlide_Box_c11UpdateModelEv
 void daSlide_Box_c::UpdateModel()
 {
     Matrix4x3_FromRotationXYZExt((void *)&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
@@ -160,7 +157,6 @@ void daSlide_Box_c::UpdateModel()
     mModel.mat4x3.m[11] = mPosZ >> 3;
 }
 
-// @symbol _ZN13daSlide_Box_c16CleanupResourcesEv
 int daSlide_Box_c::CleanupResources()
 {
     if (mMeshCollider.IsEnabled()) {
@@ -171,14 +167,12 @@ int daSlide_Box_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN13daSlide_Box_c6RenderEv
 int daSlide_Box_c::Render()
 {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN13daSlide_Box_c8BehaviorEv
 int daSlide_Box_c::Behavior()
 {
     Vector3 normal;
@@ -251,7 +245,6 @@ int daSlide_Box_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN13daSlide_Box_c13InitResourcesEv
 int daSlide_Box_c::InitResources()
 {
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(ModelFile);
@@ -262,8 +255,8 @@ int daSlide_Box_c::InitResources()
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)(clsnFile), *(const Matrix4x3 *)(&mClsnMat), kMeshScale,
                               mAngleY, *(CLPS_Block *)(data_ov016_02113bac));
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
-    mWithMeshClsn.Init((dActor_c *)(int)this, kClsnRadius, kClsnRadius, 0, 0);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
+    mWithMeshClsn.Init((dActor_c *)this, kClsnRadius, kClsnRadius, 0, 0);
     mVertAccel = kGravity;
     mTerminalVelocity = kTerminalVelocity;
     mShip = 0;
@@ -276,7 +269,6 @@ int daSlide_Box_c::InitResources()
  * allocation size, vtable identity, and the SLIDE_BOX registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: SlidingBox_Spawn. */
-// @symbol daSlide_Box_c_classInit
 extern "C" daSlide_Box_c *daSlide_Box_c_classInit()
 {
     return new daSlide_Box_c();

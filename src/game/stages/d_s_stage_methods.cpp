@@ -42,12 +42,14 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a };
 
+#include "KuppaScript.h"
 #include "types.h"
 #include "G2.h"
 #include "private/controller_input.h"
 #include "dFdBrightness_c.h"
 #include "dFdColor_c.h"
 #include "dScStage_c.h"
+#include "LVL_Overlay.h"
 #include "Timer.h"
 #include "decl_common.h"
 #include "Sound.h"
@@ -82,6 +84,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "math/CalcLib.h"
 #include "dGraph_c.h"
 #include "dClipper.h"
+#include "LevelRng.h"
 
 struct OamAttr;
 
@@ -108,7 +111,7 @@ void SetSubBg1Offset(int x, int y);
 int func_02029408(void);
 void *LoadFile(int handle);
 void SetControllerMode(unsigned char m);
-unsigned int LoadCompressedFileAt(unsigned short id, void *dst);
+unsigned int LoadCompressedFileAt(int id, void *dst);
 int GetSoundMode(void);
 void SetSoundMode(int m);
 void TurnBacklightOn(void);
@@ -249,7 +252,7 @@ extern unsigned int data_02092134;
 extern int data_02092138;
 extern u16 *data_0209214c[];
 extern s32 data_02092208[];
-extern u8 data_0209caa0[];
+extern SaveBlock data_0209caa0;
 extern s32 data_0209cef0;
 /* The scene's graph callback: the scene registers its own object here and
    clears it on the way out. The frame calls its four slots: GraphCallback0 at
@@ -258,7 +261,6 @@ extern s32 data_0209cef0;
    (func_02019144, func_02019100). dGraph_c::callback_c is the ROM-proven base
    of every scene's nested graphCallback_c (include/dGraph_c.h). */
 extern dGraph_c::callback_c *data_0209d4a8;
-extern s32 data_0209e650;
 /* The stage's .bss, 0x0209f1ec..0x0209f5b8: the pause, VS-exit and
    level-clear screens' state, the level and player globals the free
    functions keep, and the per-level tables. mwcc sorts a TU's objects by
@@ -407,17 +409,20 @@ static u16 sPauseInputLockout;
 static u16 data_0209f304;
 static u16 data_0209f308;
 s8 gNumRedCoins[4];
-/* gNumRedCoins + 1 and data_0209f310 + 1: NumRedCoins and NumVsStarsObtained
+/* gNumRedCoins + 1 and gNumStageStars + 1: NumRedCoins and NumVsStarsObtained
    load each sum's second element through its own literal. */
 extern s8 data_0209f30d;
-s8 data_0209f310[4];
+/* Stars collected in this stage, one count per player: the silver stars of a
+   course (shown as that many star icons on the HUD; the next silver star's
+   sound is 0x19 + it) and each player's stars in a VS match. */
+s8 gNumStageStars[4];
 extern s8 data_0209f311;
 static int data_0209f314;
-void *data_0209f318;
+dCamera_c *data_0209f318;
 static char *data_0209f31c;
 static int data_0209f320;
 static void *data_0209f324;
-static int *data_0209f328;
+static LVL_Overlay::StandardEntry *data_0209f328;
 s32 data_0209f32c;
 static void *data_0209f330;
 u16 *data_0209f334;
@@ -443,7 +448,7 @@ u8 gMapCapIconCharacters[9];
    draws no star marker, only a red-coin icon while gShowRedCoinMarkers is
    set. */
 u8 gStarMarkerTypes[12];
-void *data_0209f394[4];
+daPly_c *data_0209f394[4];
 void *data_0209f3a4[8];
 /* The graph callback's minimap descriptor, its +4. */
 extern MinimapDesc data_0209f3c8;
@@ -508,7 +513,7 @@ void DeathTable_SetBit(s32 id);
 u32 DeathTable_GetBit(s32 id);
 void GiveVsStars(int idx, int delta);
 void ClearSpikeBomb(int idx);
-void SetStarMarker(int i, int v1, int v2);
+void SetStarMarker(int i, dActor_c *actor, int v2);
 void CollectStarInCurLevel(s32 starID);
 s32 IsStarCollectedInCurLevel(s32 starID);
 signed char NumRedCoins(void);
@@ -529,14 +534,14 @@ void PrepareVsMode(void);
 int StartWithFarCamera(void);
 unsigned char GetStarCameraSetting(int idx);
 int GetMinimapScale(int idx);
-void func_0202af80(int a, int b);
+void func_0202af80(short *table, int count);
 int GetMinimapID(dActor_c *actor, int arg);
-void func_0202b044(int a, int b);
-void func_0202b060(int a, int b);
+void func_0202b044(u16 *table, int count);
+void func_0202b060(char *table, int count);
 struct ObjTeleport *GetTeleportDestObj(int i);
-void func_0202b090(int a, int b);
-void func_0202b0c4(int a, int b);
-void func_0202b0e0(int a, int b);
+void func_0202b090(void *table, int count);
+void func_0202b0c4(void *table, int count);
+void func_0202b0e0(LVL_Overlay::StandardEntry *entries, int count);
 void SetTouchScreenDelay(void);
 void ResetInput(void);
 int IsLevelTinyHugeIslandOutside(int level);
@@ -576,7 +581,6 @@ void SetMusic(u32 player, u32 music);
 
 #pragma defer_codegen off
 
-// @symbol _ZN10dScStage_cD1Ev, _ZN10dScStage_cD0Ev
 /* Destroy through dScStage_c's own three fields -- dBgW_Kc at 0x91c, dExtSimpleModel_c at
  * 0x86c, Particle::SysTracker at 0x50 -- in reverse declaration order, then
  * dScene_c (now inline-defined in dScene_c.h, so its vptr store and dBase_c's
@@ -588,7 +592,6 @@ void SetMusic(u32 player, u32 music);
  * dScStage_c is dScene_c. One definition emits both. */
 dScStage_c::~dScStage_c() {}
 
-// @symbol _ZN10dScStage_c9VE_UpdateEv
 void dScStage_c::VE_Update() {
     u8 t = sMenuHighlightDelay;
     u8 t2;
@@ -674,7 +677,6 @@ void dScStage_c::VE_Update() {
     }
     }
 }
-// @symbol _ZN10dScStage_c7VE_InitEv
 void dScStage_c::VE_Init() {
     unsigned int a;
     unsigned int b;
@@ -701,7 +703,6 @@ void dScStage_c::VE_Init() {
     G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, a | 0x20, -7);
     G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, b | 0x20, -7);
 }
-// @symbol _ZN10dScStage_c20RenderBouncingArrowsEv
 void dScStage_c::RenderBouncingArrows() {
     int r4;
     unsigned char A;
@@ -721,7 +722,6 @@ void dScStage_c::RenderBouncingArrows() {
         OAM::Render(0, &OAM::BOUNCING_ARROW, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0, -1);
     }
 }
-// @symbol _ZN10dScStage_c9LC_RenderEv
 void dScStage_c::LC_Render() {
     sLevelClearPaletteTimer = sLevelClearPaletteTimer + data_0208ee44;
     if (sLevelClearPaletteTimer >= 0xc)
@@ -795,7 +795,6 @@ void dScStage_c::LC_Render() {
     if (gLevelClearStep == 3)
         RenderBouncingArrows();
 }
-// @symbol _ZN10dScStage_c9LC_UpdateEv
 void dScStage_c::LC_Update() {
     if (sMenuHighlightDelay != 0) {
         sMenuHighlightDelay = sMenuHighlightDelay - data_0208ee44;
@@ -1006,7 +1005,6 @@ void dScStage_c::LC_Update() {
         return;
     }
 }
-// @symbol _ZN10dScStage_c16CheckCameraInputEv
 // kept: the ROM reads data_0209f498[i] by mla beside the cam cursor; strength reduction merges them (0x450)
 #pragma opt_strength_reduction off
 void dScStage_c::CheckCameraInput() {
@@ -1020,7 +1018,7 @@ void dScStage_c::CheckCameraInput() {
                 cam->pressed = 0;
                 cam->held = 0;
                 if (((TouchInfo *)gTouchHeld)[i].held != 0) {
-                    if (((dCamera_c *)data_0209f318)->mFlags & 0x1000) {
+                    if (data_0209f318->mFlags & 0x1000) {
                         // cam->mode here builds 32 bytes shorter; the indexed read is the ROM shape.
                         u8 state = data_0209f498[i].mode;
                         if ((state == 0 && ((((TouchInfo *)gTouchHeld)[i].x <= 0x58 &&
@@ -1121,7 +1119,6 @@ void dScStage_c::CheckCameraInput() {
     }
 }
 #pragma opt_strength_reduction on
-// @symbol _ZN10dScStage_c12RenderNumberEhiibi
 void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5) {
     int leading = 0;
     Matrix2x2 *mtx = 0;
@@ -1141,7 +1138,6 @@ void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5) {
         num = num % data_020755b8[i];
     }
 }
-// @symbol _ZN10dScStage_c9PS_RenderEv
 void dScStage_c::PS_Render() {
     if (func_02029408() != 0 && gPlayerHealth[data_0209f250] != 0 && sPauseState != 0xb &&
         sPauseState != 0xe && sPauseState != 0xf &&
@@ -1312,7 +1308,6 @@ void dScStage_c::PS_Render() {
     }
     OAM::Render(true, &OAM::SMALL_ARROW_POINTING_RIGHT, 0xf4, 0x38, -1, -1, 0);
 }
-// @symbol _ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb
 /* Lever (notes 6au): TWO coupled changes that only work together.
  *   1. the array object is declared `extern volatile int data_02075610[];`
  *   2. there is NO named pointer local -- the array is indexed INLINE in the loop bound.
@@ -1368,7 +1363,6 @@ void dScStage_c::PS_UpdateOkAndBackButtons(bool b) {
         }
     }
 }
-// @symbol _ZN10dScStage_c17PS_UpdateSaveMenuEb
 void dScStage_c::PS_UpdateSaveMenu(bool b) {
     u16 v;
     int i;
@@ -1395,7 +1389,6 @@ void dScStage_c::PS_UpdateSaveMenu(bool b) {
         }
     }
 }
-// @symbol _ZN10dScStage_c20PS_UpdateOptionsMenuEv
 void dScStage_c::PS_UpdateOptionsMenu() {
     int i;
     int j;
@@ -1438,7 +1431,6 @@ void dScStage_c::PS_UpdateOptionsMenu() {
         }
     }
 }
-// @symbol _ZN10dScStage_c17UpdateMenuButtonsEb
 void dScStage_c::UpdateMenuButtons(bool b) {
     int i;
     for (i = 0; i < sNumMenuButtons; i++) {
@@ -1471,7 +1463,6 @@ void dScStage_c::UpdateMenuButtons(bool b) {
         }
     }
 }
-// @symbol _ZN10dScStage_c10PS_CleanupEv
 /* Static, like the rest of the PS_ group: restarts the timer, unpauses or
  * stops the music and clears the blend registers, all through globals. */
 void dScStage_c::PS_Cleanup() {
@@ -1496,7 +1487,6 @@ void dScStage_c::PS_Cleanup() {
 static inline int IsTouchPressed(u8 held, u8 slot) {
     return held != 0 && gTouchEdge[slot * 4] != 0;
 }
-// @symbol _ZN10dScStage_c9PS_UpdateEv
 /* Pause-screen update. Four spellings below are load-bearing for the
  * emitted code: case 3's first row stores gGamePaused (not sNextPauseState);
  * the backlight-on guard reuses the stale tmpv left by the sound-mode
@@ -2695,16 +2685,14 @@ void dScStage_c::PS_Update() {
 }
 #pragma opt_common_subs on
 
-// @symbol func_02029408
 /* Can the current player pause? Forwards to daPly_c::CanPause on the active
  * entry of the live player list (data_0209f394, indexed by data_0209f250).
  * dScStage_c polls it before opening the pause menu. */
 
 extern "C" int func_02029408(void) {
-    return ((daPly_c *)data_0209f394[data_0209f250])->CanPause();
+    return data_0209f394[data_0209f250]->CanPause();
 }
 
-// @symbol _ZN10dScStage_c7PS_InitEv
 /* Open the pause screen: clear the pause-menu state, pick the first page from
  * the level-clear/VS/castle situation, pause the music and darken both
  * screens. Static, like the rest of the pause-screen family -- dScStage_c::
@@ -2767,7 +2755,6 @@ void dScStage_c::PS_Init() {
     G2x::SetBlendBrightness((volatile u16 *)0x04001050, subBlendTargets | 0x20, -7);
 }
 
-// @symbol func_02029600
 extern "C" {
 int func_02029600(int x) {
     int b = (int)(data_0209f2d8 == 2);
@@ -2781,7 +2768,6 @@ int func_02029600(int x) {
 }
 }
 
-// @symbol IsButtonInputValid
 extern "C" {
 int IsButtonInputValid(void) {
     int mode;
@@ -2789,7 +2775,7 @@ int IsButtonInputValid(void) {
 
     if (((gGamePaused | data_0209f20c | gVsExitScreenActive) & 0xff) == 0 && data_0209f204 == 0 &&
         gVsExitScreenActive == 0) {
-        mode = data_0209caa0[0x42];
+        mode = data_0209caa0.file.controllerMode;
         if (mode == 0) {
             val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
             if (val & 0xf)
@@ -2824,7 +2810,6 @@ int IsButtonInputValid(void) {
 }
 }
 
-// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
 /* Vtable slot 2. Every dispatcher calls it as `ldr r1,[r0]; ldr r1,[r1,#8];
    blx r1` with r0 = the callback object. The matrix at +0x4 stays zero until
    UpdateMinimap; the static initializer does not seed it. */
@@ -2834,14 +2819,12 @@ int dScStage_c::graphCallback_c::GraphCallback2() {
     return 1;
 }
 
-// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback1Ev
 /* Vtable slot 1 of dScStage_c::graphCallback_c: render every particle. */
 int dScStage_c::graphCallback_c::GraphCallback1() {
     Particle::RenderAll();
     return 1;
 }
 
-// @symbol UpdateMinimap
 /* Copy a 16-byte descriptor into the callback object's matrix (+0x4) and store
    the four affine params after it. The object is one 0x24-byte object; the
    symbols.txt row data_0209f3c8 at the matrix stays only because dsd needs a
@@ -2857,7 +2840,6 @@ extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
     data_0209f3c4.targetY = d;
 }
 
-// @symbol StartEntranceFaderWipe
 /* The fader wipe array. dScStage_c::InitResources fills data_0209f324 with
    __cxa_vec_new(7, 0x60, 8, &dFdWipe_cC1, &dFdWipe_cD1): seven objects of 0x60,
    which is sizeof(dFdWipe_c). dScStage_c::CleanupResources tears the array
@@ -2868,20 +2850,17 @@ extern "C" void StartEntranceFaderWipe(int index) {
     f->SetToEnd();
 }
 
-// @symbol StartExitCharacterWipe
 /* Start the exit wipe for the current character (per-character wipe table). */
 extern "C" void StartExitCharacterWipe(void) {
-    StartExitFaderWipe(data_020755bc[data_0209caa0[0x41]]);
+    StartExitFaderWipe(data_020755bc[data_0209caa0.file.mCharacter]);
 }
 
-// @symbol StartExitFaderWipe
 extern "C" void StartExitFaderWipe(int index) {
     dFdWipe_c *f = &((dFdWipe_c *)data_0209f324)[index];
     dScene_c::SetFaders(f);
     f->SetToStart();
 }
 
-// @symbol FUN_02029934
 extern "C" void FUN_02029934(void) {
     dFdBrightness_c *o = data_0209f5bc;
     if (o->IsBetweenStartAndEnd() == 0) {
@@ -2890,7 +2869,6 @@ extern "C" void FUN_02029934(void) {
     }
 }
 
-// @symbol FUN_02029980
 /* Wipe slot 6 (data_0209f324 + 0x240) seen through its fader vtable: slots
    3/4 (SetBackwardTime/SetForwardTime) are called here with two arguments,
    slots 8/9 are SetToEnd/SetToStart. */
@@ -2915,7 +2893,6 @@ extern "C" void FUN_02029980(void) {
     o2->w3(0x1e, 0);
 }
 
-// @symbol FUN_020299f4
 extern "C" void FUN_020299f4(void) {
     if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
         return;
@@ -2925,7 +2902,6 @@ extern "C" void FUN_020299f4(void) {
     o2->w4(0x1e, 0);
 }
 
-// @symbol FUN_02029a68
 extern "C" void FUN_02029a68(void) {
     if (data_0209d4b0 == (int)((dFdWipe_c *)data_0209f324 + 6)) {
         data_0209d4b0 = 0;
@@ -2934,7 +2910,6 @@ extern "C" void FUN_02029a68(void) {
     data_0209f274 = 0;
 }
 
-// @symbol FUN_02029ab0
 /* One entry past the six wipes' 0x240 bytes: two words at +0x4/+0x8. */
 typedef struct WipeEntry {
     u32 pad0;
@@ -2952,12 +2927,10 @@ extern "C" void FUN_02029ab0(void) {
     data_0209f274 = 1;
 }
 
-// @symbol EnterBigBoosHaunt
 extern "C" void EnterBigBoosHaunt(void) {
     LoadLevel(0xc, 0, 0, 0, 0);
 }
 
-// @symbol KillPlayer
 /* Kill the player: if lives remain, go to the next level with reason 2,
    otherwise trigger a game-over scene fade. Then play the death sound. */
 extern "C" void KillPlayer(void) {
@@ -2969,7 +2942,6 @@ extern "C" void KillPlayer(void) {
     func_02012790(0x18);
 }
 
-// @symbol HitDeathPlane
 /* The player hit a death plane: either restart (SetNextLevel) or trigger a
    scene fade, then always exit with StartExitFaderWipe. */
 extern "C" void HitDeathPlane(int arg) {
@@ -2980,7 +2952,6 @@ extern "C" void HitDeathPlane(int arg) {
     StartExitFaderWipe(6);
 }
 
-// @symbol ExitLevel
 /* Exit the current level: next level 1 (the castle grounds), then the exit
    wipe. */
 extern "C" void ExitLevel(void) {
@@ -2988,7 +2959,6 @@ extern "C" void ExitLevel(void) {
     StartExitCharacterWipe();
 }
 
-// @symbol SetNextLevel
 extern "C" void SetNextLevel(int arg) {
     int v = gCurrentSublevel;
     unsigned int i;
@@ -3025,7 +2995,6 @@ extern "C" void SetNextLevel(int arg) {
     sReturnState = arg;
 }
 
-// @symbol SetNextStar
 extern "C" void SetNextStar(void) {
     int level = SublevelToLevel(data_02092110);
     int b;
@@ -3043,7 +3012,6 @@ extern "C" void SetNextStar(void) {
     data_0209f1f0 = 1;
 }
 
-// @symbol DeathTable_ClearBit
 /* The actor death table: one 16-word row of bits per level part, indexed by
    an actor's deathTableID. */
 extern "C" void DeathTable_ClearBit(s32 id) {
@@ -3056,7 +3024,6 @@ extern "C" void DeathTable_ClearBit(s32 id) {
     table[word] = table[word] & bitMask;
 }
 
-// @symbol DeathTable_SetBit
 extern "C" void DeathTable_SetBit(s32 id) {
     if (id < 0)
         return;
@@ -3068,7 +3035,6 @@ extern "C" void DeathTable_SetBit(s32 id) {
     table[word] = val | bitMask;
 }
 
-// @symbol DeathTable_GetBit
 extern "C" u32 DeathTable_GetBit(s32 id) {
     if (id < 0)
         return 0;
@@ -3080,7 +3046,6 @@ extern "C" u32 DeathTable_GetBit(s32 id) {
     return table[word] & bitMask;
 }
 
-// @symbol _ZN5Event8ClearBitEj
 /* The event-flag bitfield accessors: Clear/Set/Get over the one-word event
    table sEventFlags. */
 namespace Event {
@@ -3089,19 +3054,16 @@ s32 ClearBit(u32 bit) {
     return sEventFlags &= ~(1 << bit);
 }
 
-// @symbol _ZN5Event6SetBitEj
 void SetBit(u32 bit) {
     sEventFlags |= 1 << bit;
 }
 
-// @symbol _ZN5Event6GetBitEj
 s32 GetBit(u32 bit) {
     return sEventFlags & (1 << bit);
 }
 
 }
 
-// @symbol _ZN10dScStage_c19RenderVsModeNewStarEv
 void dScStage_c::RenderVsModeNewStar() {
     u16 timer = data_0209f308;
     if (timer == 0)
@@ -3133,7 +3095,6 @@ void dScStage_c::RenderVsModeNewStar() {
     data_0209f1f4 = 0;
 }
 
-// @symbol FUN_0202a130
 extern "C" void FUN_0202a130(void) {
     if (data_0209f2bc != 0)
         return;
@@ -3141,13 +3102,12 @@ extern "C" void FUN_0202a130(void) {
     data_0209f1f4 = 0;
 }
 
-// @symbol _ZN10dScStage_c21RenderVsModeCountdownEv
 void dScStage_c::RenderVsModeCountdown() {
     int count = 0;
     int i;
     for (i = 0; i < 4; i++) {
         if (data_0209f394[i]) {
-            int t = (((daPly_c *)data_0209f394[i])->mLevelEntryDone != 0);
+            int t = (data_0209f394[i]->mLevelEntryDone != 0);
             if (t == 1)
                 count++;
         }
@@ -3190,10 +3150,9 @@ void dScStage_c::RenderVsModeCountdown() {
         OAM::Render(0, (OamAttr *)&data_ov002_0210d420, 0x80, 0x50, -1, -1, 0x1000, 0x1000, 0, -1);
 }
 
-// @symbol NumVsStarsObtained
 extern "C" s32 NumVsStarsObtained(void) {
     int i = 1;
-    signed char sum = data_0209f310[0];
+    signed char sum = gNumStageStars[0];
     signed char *p;
     if (i >= (int)data_0209f21c)
         return sum;
@@ -3206,27 +3165,20 @@ extern "C" s32 NumVsStarsObtained(void) {
     return sum;
 }
 
-// @symbol GiveVsStars
 extern "C" void GiveVsStars(int idx, int delta) {
-    data_0209f310[idx] += delta;
+    gNumStageStars[idx] += delta;
 }
 
-// @symbol _ZN10dScStage_c15IsPauseDisabledEv
 /* dScStage_c::IsPauseDisabled() at 0x0202c8f8. Static: reads only globals, and no
  * caller sets up an object. */
 
-extern "C" {
-extern int func_ov002_020bd8ac(unsigned char *p);
-}
-
 int dScStage_c::IsPauseDisabled() {
-    unsigned char *p = *(unsigned char **)data_0209f394;
-    if (p != 0 && func_ov002_020bd8ac(p) == 0)
+    daPly_c *p = data_0209f394[0];
+    if (p != 0 && p->func_ov002_020bd8ac() == 0)
         return 1;
     return 0;
 }
 
-// @symbol ClearSpikeBomb
 /* The level's eight spike-bomb slots (daKirai_c's mSlotIndex). */
 extern "C" void ClearSpikeBomb(int idx) {
     if (idx < 0)
@@ -3235,7 +3187,6 @@ extern "C" void ClearSpikeBomb(int idx) {
         data_0209f3a4[idx] = 0;
 }
 
-// @symbol AddSpikeBomb
 extern "C" int AddSpikeBomb(void *p) {
     int i;
     for (i = 0; i < 8; i++) {
@@ -3247,33 +3198,27 @@ extern "C" int AddSpikeBomb(void *p) {
     return -1;
 }
 
-// @symbol SetStarMarker
-extern "C" void SetStarMarker(int i, int v1, int v2) {
-    STAR_MARKERS[i] = (dActor_c *)v1;
+extern "C" void SetStarMarker(int i, dActor_c *actor, int v2) {
+    STAR_MARKERS[i] = actor;
     gStarMarkerTypes[i] = v2;
 }
 
-// @symbol OpenCannonInCurLevel
 extern "C" void OpenCannonInCurLevel(void) {
     OpenCannonInLevel(gCurrentSublevel);
 }
 
-// @symbol IsCannonOpenInCurLevel
 extern "C" int IsCannonOpenInCurLevel(void) {
     return IsCannonOpenInLevel(gCurrentSublevel);
 }
 
-// @symbol CollectStarInCurLevel
 extern "C" void CollectStarInCurLevel(s32 starID) {
     CollectStarInLevel(gCurrentSublevel, starID);
 }
 
-// @symbol IsStarCollectedInCurLevel
 extern "C" s32 IsStarCollectedInCurLevel(s32 starID) {
     return IsStarCollectedInLevel(gCurrentSublevel, starID);
 }
 
-// @symbol NumRedCoins
 extern "C" signed char NumRedCoins(void) {
     int i = 1;
     signed char sum = gNumRedCoins[0];
@@ -3289,7 +3234,6 @@ extern "C" signed char NumRedCoins(void) {
     return sum;
 }
 
-// @symbol GiveRedCoins
 extern "C" int GiveRedCoins(int i, int amt) {
     signed char *p = &gNumRedCoins[i];
     gNumRedCoins[i] = (signed char)(gNumRedCoins[i] + amt);
@@ -3307,7 +3251,6 @@ extern "C" int GiveRedCoins(int i, int amt) {
     return v;
 }
 
-// @symbol NumCoins
 extern "C" short NumCoins(void) {
     int i = 1;
     int n = data_0209f21c;
@@ -3322,7 +3265,6 @@ extern "C" short NumCoins(void) {
     return sum;
 }
 
-// @symbol GiveCoins
 extern "C" void GiveCoins(int idx, int amount) {
     short *p = gNumCoins;
     short cur = p[idx];
@@ -3337,7 +3279,6 @@ extern "C" void GiveCoins(int idx, int amount) {
     func_ov002_020b18f0((int)data_0209f394[idx]);
 }
 
-// @symbol GiveHealth
 /* Returns the clamped health, which daPly_c::GiveHealth hands straight back. */
 extern "C" int GiveHealth(int idx, int amt) {
     int v;
@@ -3355,7 +3296,6 @@ extern "C" int GiveHealth(int idx, int amt) {
     return v;
 }
 
-// @symbol func_0202a850
 extern "C" void func_0202a850(int a, int b) {
     data_02092138 = a;
     data_0209212c = b;
@@ -3363,23 +3303,20 @@ extern "C" void func_0202a850(int a, int b) {
     data_0209212c += 0x64000;
 }
 
-// @symbol InitControllerMode
 /* The per-controller records at data_0209f498 are 0x18 apart; the mode byte
    is their +0x16, data_0209f4ae. The save file keeps the active player's
-   copy at data_0209caa0+0x42 (FileSaveData::controllerMode, include/SaveData.h). */
+   copy at data_0209caa0+0x42 (FileSaveData::controllerMode, include/SaveBlock.h). */
 extern "C" void InitControllerMode(int idx, u8 val) {
     data_0209f4ae[idx * 0x18] = val;
     if (idx == gActivePlayerSlot)
-        data_0209caa0[0x42] = val;
+        data_0209caa0.file.controllerMode = val;
 }
 
-// @symbol SetControllerMode
 extern "C" void SetControllerMode(unsigned char mode) {
     data_0209f4ae[gActivePlayerSlot * 0x18] = mode;
-    data_0209caa0[0x42] = mode;
+    data_0209caa0.file.controllerMode = mode;
 }
 
-// @symbol func_0202a8e0
 extern "C" int func_0202a8e0(int a, unsigned char b) {
     int i;
     for (i = 0; i < 9; i++) {
@@ -3392,7 +3329,6 @@ extern "C" int func_0202a8e0(int a, unsigned char b) {
     return -1;
 }
 
-// @symbol _ZN10dScStage_c11GetSkyboxIDEv
 /* Member, not static: LoadSkybox reaches it with r0 still holding `this` and
  * no argument set up. The body reads the level record through the global at
  * 0x0209f340 rather than through a field, so the bytes cannot show the
@@ -3402,22 +3338,18 @@ int dScStage_c::GetSkyboxID() {
     return (p[6] >> 4) & 0x1f;
 }
 
-// @symbol func_0202a958
 extern "C" int func_0202a958(void) {
     return ((LevelInfo *)data_0209f340)->minimapScale;
 }
 
-// @symbol func_0202a96c
 extern "C" int func_0202a96c(void) {
     return ((LevelInfo *)data_0209f340)->minimapPaletteFile;
 }
 
-// @symbol func_0202a980
 extern "C" int func_0202a980(void) {
     return ((LevelInfo *)data_0209f340)->minimapTilesFile;
 }
 
-// @symbol _Z23LoadMinimapChangeObjectiia
 /* data_0209f314 points at mAreas (InitResources stores it). In each
    0xc-byte area record, HideArea/ShowArea toggle mShowing, and
    mBlockList heads a sorted list of these minimap-change
@@ -3467,22 +3399,18 @@ void LoadMinimapChangeObject(int idx, Fix12i val, s8 h) {
     }
 }
 
-// @symbol HideArea
 extern "C" void HideArea(int idx) {
     ((StageArea *)data_0209f314)[idx].mShowing = 0;
 }
 
-// @symbol ShowArea
 extern "C" void ShowArea(int idx) {
     ((StageArea *)data_0209f314)[idx].mShowing = 1;
 }
 
-// @symbol IsAreaShowing
 extern "C" unsigned char IsAreaShowing(int idx) {
     return ((StageArea *)data_0209f314)[idx].mShowing;
 }
 
-// @symbol ChangeArea
 extern "C" void ChangeArea(int areaID) {
     if (data_02092120 >= 0)
         HideArea(data_02092120);
@@ -3490,7 +3418,6 @@ extern "C" void ChangeArea(int areaID) {
     ShowArea(areaID);
 }
 
-// @symbol GiveLives
 extern "C" void GiveLives(int delta) {
     int v = gNumLives + delta;
     if (v < 0)
@@ -3500,7 +3427,6 @@ extern "C" void GiveLives(int delta) {
     gNumLives = (signed char)v;
 }
 
-// @symbol LoadLevel
 /* The four register parameters are spelled wide because LoadLevelNoReturn
    (int, u32, u32, u32 in decl_common.h) forwards its own four with no
    narrowing; the stack-passed returnState is read back with ldrsb, so it is
@@ -3548,20 +3474,18 @@ extern "C" void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 
     }
 }
 
-// @symbol LoadLevelNoReturn
 extern "C" void LoadLevelNoReturn(int levelID, u32 arg1, u32 arg2, u32 arg3) {
     LoadLevel(levelID, arg1, arg2, arg3, -1);
     data_0209211c = -1;
     data_02092118 = -1;
 }
 
-// @symbol SetPlayerGlobals
 /* Initialise the player globals: lives, health, controller mode. */
 extern "C" void SetPlayerGlobals(void) {
     gNumLives = 4;
     s32 i = 0;
     do {
-        u8 mode = data_0209caa0[0x42];
+        u8 mode = data_0209caa0.file.controllerMode;
         gPlayerHealth[i] = 0x880;
         InitControllerMode(i, mode);
         i++;
@@ -3571,7 +3495,6 @@ extern "C" void SetPlayerGlobals(void) {
     data_0209f254 = 0;
 }
 
-// @symbol ExitMinigameMenu
 /* Leave the minigame menu, either back to the rec room or fading to the main
    menu. */
 extern "C" void ExitMinigameMenu(void) {
@@ -3584,7 +3507,6 @@ extern "C" void ExitMinigameMenu(void) {
     }
 }
 
-// @symbol StartMinigameMenu
 /* Start the minigame menu scene; the argument says whether to return to the
    rec room afterwards. */
 extern "C" void StartMinigameMenu(u8 returnToRecRoom) {
@@ -3593,22 +3515,19 @@ extern "C" void StartMinigameMenu(u8 returnToRecRoom) {
     dScene_c::StartSceneFade(5, 0, 0x7fff);
 }
 
-// @symbol PrepareVsMode
 /* Set up VS mode: mark the game mode, initialise the player globals, start
    the scene fade, then reset the save data to its defaults. */
 extern "C" void PrepareVsMode(void) {
     data_0209f2d8 = 1;
     SetPlayerGlobals();
     dScene_c::StartSceneFade(3, 0, 0x7fff);
-    SaveData::SetDefaultValues((FileSaveData *)data_0209caa0);
+    SaveData::SetDefaultValues(&data_0209caa0.file);
 }
 
-// @symbol func_0202ae74
 extern "C" void func_0202ae74(void) {
     StartFile(1, 0);
 }
 
-// @symbol StartFile
 /* Start a single-player file: clear the game mode, load the level, set the
    player globals, copy the current character to data_02092128, one player,
    clear the star/level flags, then start the scene fade. */
@@ -3616,24 +3535,21 @@ extern "C" void StartFile(s8 levelID, u8 entranceID) {
     data_0209f2d8 = 0;
     LoadLevelNoReturn(levelID, entranceID, 1, 0);
     SetPlayerGlobals();
-    data_02092128[0] = data_0209caa0[0x41];
+    data_02092128[0] = data_0209caa0.file.mCharacter;
     SetNumPlayers(1);
     gLastCourseSublevel = 6;
     gCollectedStarId = 0;
     dScene_c::StartSceneFade(3, 0, 0x7fff);
 }
 
-// @symbol StartWithFarCamera
 extern "C" int StartWithFarCamera(void) {
     return (((LevelInfo *)data_0209f340)->cameraFlags & 1) != 0;
 }
 
-// @symbol GetStarCameraSetting
 extern "C" unsigned char GetStarCameraSetting(int idx) {
     return (data_02092134 >> (idx * 4)) & 0xf;
 }
 
-// @symbol GetMinimapScale
 extern "C" int GetMinimapScale(int idx) {
     if (idx >= 0) {
         if (idx < (int)data_0209f25c)
@@ -3642,14 +3558,12 @@ extern "C" int GetMinimapScale(int idx) {
     return 0xa00;
 }
 
-// @symbol func_0202af80
 /* The six table setters below each store a pointer and its count. */
-extern "C" void func_0202af80(int a, int b) {
-    data_0209f348 = (short *)a;
-    data_0209f25c = b;
+extern "C" void func_0202af80(short *table, int count) {
+    data_0209f348 = table;
+    data_0209f25c = count;
 }
 
-// @symbol GetMinimapID
 /* The minimap for an actor: its area's height bands, read at the actor's
    height, or the level's own map when the area has none. */
 extern "C" int GetMinimapID(dActor_c *actor, int arg) {
@@ -3680,19 +3594,16 @@ extern "C" int GetMinimapID(dActor_c *actor, int arg) {
     return ((LevelInfo *)data_0209f340)->entries[idx].minimapId;
 }
 
-// @symbol func_0202b044
-extern "C" void func_0202b044(int a, int b) {
-    data_0209f334 = (u16 *)a;
-    data_0209f2e8 = b;
+extern "C" void func_0202b044(u16 *table, int count) {
+    data_0209f334 = table;
+    data_0209f2e8 = count;
 }
 
-// @symbol func_0202b060
-extern "C" void func_0202b060(int a, int b) {
-    data_0209f31c = (char *)a;
-    data_0209f258 = b;
+extern "C" void func_0202b060(char *table, int count) {
+    data_0209f31c = table;
+    data_0209f258 = count;
 }
 
-// @symbol GetTeleportDestObj
 /* The level's teleport destinations, eight bytes apart. */
 struct ObjTeleport {
     int a;
@@ -3702,13 +3613,11 @@ extern "C" struct ObjTeleport *GetTeleportDestObj(int i) {
     return (ObjTeleport *)data_0209f330 + i;
 }
 
-// @symbol func_0202b090
-extern "C" void func_0202b090(int a, int b) {
-    data_0209f330 = (void *)a;
-    data_0209f2d0 = b;
+extern "C" void func_0202b090(void *table, int count) {
+    data_0209f330 = table;
+    data_0209f2d0 = count;
 }
 
-// @symbol GetViewObj
 /* The level's camera view records, 0xe bytes apart. */
 struct ViewObj {
     unsigned char d[0xe];
@@ -3717,19 +3626,16 @@ extern "C" struct ViewObj *GetViewObj(int idx) {
     return &((ViewObj *)data_0209f354)[idx];
 }
 
-// @symbol func_0202b0c4
-extern "C" void func_0202b0c4(int a, int b) {
-    data_0209f354 = (void *)a;
-    data_0209f1f8 = b;
+extern "C" void func_0202b0c4(void *table, int count) {
+    data_0209f354 = table;
+    data_0209f1f8 = count;
 }
 
-// @symbol func_0202b0e0
-extern "C" void func_0202b0e0(int a, int b) {
-    data_0209f328 = (int *)a;
-    data_0209f214 = b;
+extern "C" void func_0202b0e0(LVL_Overlay::StandardEntry *entries, int count) {
+    data_0209f328 = entries;
+    data_0209f214 = count;
 }
 
-// @symbol _ZN10dScStage_c10LoadSkyboxEv
 /* Ask the level record which skybox to use and, if there is one, allocate a
  * dExtSimpleModel_c, construct it and load the file for that ID. mSkyboxModel is typed in
  * include/dScStage_c.h because of this store and the virtual destroy in
@@ -3744,7 +3650,6 @@ void dScStage_c::LoadSkybox() {
     mSkyboxModel->LoadAndSetFile(fileID, 0, 2);
 }
 
-// @symbol _ZN10dScStage_c22RenderModelTransparentEv
 struct Inner {
     char pad[0x30];
     u16 count;
@@ -3790,7 +3695,6 @@ void dScStage_c::RenderModelTransparent() {
     model->Render((const Vector3 *)&data_020755d4);
 }
 
-// @symbol _ZN10dScStage_c11RenderModelEv
 void dScStage_c::RenderModel() {
     ModelComponents *components = &mModel.data;
     BMD_Bone *bone = components->modelFile->bones;
@@ -3836,7 +3740,6 @@ void dScStage_c::RenderModel() {
     model->Render((const Vector3 *)&data_020755d4);
 }
 
-// @symbol CopyTexPalFromLevelModel
 /* Copy each material's texture/palette parameters from the level model's
    material of the same texture and palette names; returns 0 if any material
    found no partner. The level model's pair is the one LoadModel leaves in
@@ -3908,7 +3811,6 @@ extern "C" int CopyTexPalFromLevelModel(void *p) {
     return ret;
 }
 
-// @symbol _ZN10dScStage_c23LoadTextureTransformersEv
 void dScStage_c::LoadTextureTransformers() {
     struct LevelTexAnim *entry = ((LevelInfo *)data_0209f340)->entries;
     StageArea *area = mAreas;
@@ -3925,7 +3827,6 @@ void dScStage_c::LoadTextureTransformers() {
     }
 }
 
-// @symbol _ZN10dScStage_c9LoadModelEv
 void dScStage_c::LoadModel() {
     mModel.LoadAndSetFile(*(unsigned short *)(*(char **)&data_0209f340 + 8), 1, -1);
     BMD_File *modelFile;
@@ -3950,14 +3851,13 @@ void dScStage_c::LoadModel() {
     data_0209f320 = (int)components;
 }
 
-// @symbol _ZN10dScStage_c9RenderFogEv
 
 void dScStage_c::RenderFog() {
     Fog *fog = 0;
     if (gCurrentSublevel == 5)
         fog = daMugenBGM_c::GetActiveFog();
     if (fog == 0) {
-        dCamera_c *camera = (dCamera_c *)data_0209f318;
+        dCamera_c *camera = data_0209f318;
         fog = mFog;
         if (camera->IsUnderwater())
             fog++;
@@ -3967,7 +3867,6 @@ void dScStage_c::RenderFog() {
     G3X::SetFogTable(fog);
 }
 
-// @symbol _ZN10dScStage_c7LoadFogEv
 /* dScStage_c::LoadFog. Lays down two default ramps -- a shallow one in mFog[0] and
    a steeper one in mFog[1] -- then lets the level's own fog records, if it has
    any, overwrite them through Fog::Init. */
@@ -4008,7 +3907,6 @@ void dScStage_c::LoadFog() {
     }
 }
 
-// @symbol _ZN10dScStage_c8CanPauseEv
 /* Static: five globals, no object. */
 int dScStage_c::CanPause() {
     if (((unsigned)(data_0209f2d8 == 1)) == 0)
@@ -4020,7 +3918,6 @@ int dScStage_c::CanPause() {
     return 1;
 }
 
-// @symbol _ZN10dScStage_c16OnPendingDestroyEv
 /* dScStage_c::OnPendingDestroy() at 0x0202b8a0
  * fBase_c vtable slot 12 (0x30), called when the dScStage_c scene is marked for
  * destruction, before CleanupResources(). dScStage_c overrides it with an empty body
@@ -4032,7 +3929,6 @@ void dScStage_c::OnPendingDestroy() {
     (void)this;
 }
 
-// @symbol _ZN10dScStage_c6RenderEv
 extern "C" {
 void func_020391f0(void);
 void func_0203083c(void);
@@ -4056,7 +3952,7 @@ int dScStage_c::Render() {
         dExtSimpleModel_c *skybox = mSkyboxModel;
         if (skybox != 0) {
             Matrix4x3 *transform = &skybox->mat4x3;
-            Vector3 *cameraPosition = &((dCamera_c *)data_0209f318)->pos;
+            Vector3 *cameraPosition = &data_0209f318->pos;
             transform->t.x = cameraPosition->x >> 3;
             transform->t.y = cameraPosition->y >> 3;
             transform->t.z = cameraPosition->z >> 3;
@@ -4086,7 +3982,7 @@ int dScStage_c::Render() {
         int playerIndex = 0;
         int playerCount = data_0209f21c;
         for (; playerIndex < playerCount; playerIndex++) {
-            daPly_c *player = (daPly_c *)data_0209f394[playerIndex];
+            daPly_c *player = data_0209f394[playerIndex];
             if (player != 0) {
                 u8 playerFlags = player->mHasWings;
                 int *position = (int *)(&player->mPosX);
@@ -4111,9 +4007,7 @@ int dScStage_c::Render() {
     return 1;
 }
 
-// @symbol _ZN10dScStage_c8BehaviorEv
 extern "C" {
-void ProcessKuppaScript();
 void func_02032f54();
 void func_020199a4();
 void func_02019a58();
@@ -4137,7 +4031,7 @@ int dScStage_c::Behavior() {
         sPauseInputLockout -= 1;
     if (gGamePaused == 2 && sMenuWaitTimer == 0)
         PS_Cleanup();
-    ProcessKuppaScript();
+    KuppaScript::Process();
     if (data_0209f5bc->IsAtStart() == 0) {
         dExtShadowModel_c::CleanAll();
         return 1;
@@ -4171,9 +4065,9 @@ int dScStage_c::Behavior() {
                 int cnt = 0;
                 int i;
                 for (i = 0; i < 4; i++) {
-                    char *p = (char *)data_0209f394[i];
+                    daPly_c *p = data_0209f394[i];
                     if (p != 0) {
-                        int t = (((daPly_c *)p)->mLevelEntryDone != 0) ? 1 : 0;
+                        int t = (p->mLevelEntryDone != 0) ? 1 : 0;
                         if (t == 1)
                             cnt++;
                     }
@@ -4248,7 +4142,7 @@ int dScStage_c::Behavior() {
             u8 st = data_0209f2d8;
             int b1 = (st == 1);
             if ((b1 && data_0209fc68 == 0) ||
-                (((FileSaveData *)data_0209caa0)->flags2 & FILE_FLAGS2_INTRO_DONE)) {
+                (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
                 int b2 = (st == 2);
                 if (b2 == 0) {
                     int b3 = (gRunningKuppaScript != 0);
@@ -4286,7 +4180,6 @@ int dScStage_c::Behavior() {
 }
 #pragma opt_common_subs on
 
-// @symbol _ZN10dScStage_c10CheckInputEv
 // The ROM reads the touch records through one base pointer (gTouchHeld) plus
 // field offsets, not through the per-lane gTouchX/gTouchY/gTouchEdge symbols.
 #define TOUCH_DATA ((TouchInfo *)gTouchHeld)
@@ -4300,8 +4193,7 @@ void dScStage_c::CheckInput() {
     int isVsMode = (mode == 1);
     if (isVsMode == false) {
         int modeIsTwo = (mode == 2);
-        if (modeIsTwo != false ||
-            !(((FileSaveData *)data_0209caa0)->flags2 & FILE_FLAGS2_INTRO_DONE) ||
+        if (modeIsTwo != false || !(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) ||
             (data_0209d660 == 0 && (int)(gRunningKuppaScript != 0) != false)) {
             {
                 ControllerInput *control = data_0209f498;
@@ -4453,7 +4345,6 @@ void dScStage_c::CheckInput() {
     } while (playerIndex < data_0209f21c);
 }
 
-// @symbol _ZN3Fog4InitEtii
 /* Fills the density ramp from a near/far pair, then writes the fog registers.
    The ramp is walked with a running `p`, not `mDensity[i]`: MEASURED,
    the indexed spelling changes the function's size. */
@@ -4487,7 +4378,6 @@ void Fog::Init(unsigned short color, Fix12i nearv, Fix12i farv) {
     }
 }
 
-// @symbol SetTouchScreenDelay
 extern "C" void SetTouchScreenDelay(void) {
     ControllerInput *p = data_0209f498;
     int i;
@@ -4497,7 +4387,6 @@ extern "C" void SetTouchScreenDelay(void) {
     }
 }
 
-// @symbol ResetInput
 extern "C" u8 GetControllerMode(int a0);
 
 extern "C" void ResetInput(void) {
@@ -4517,13 +4406,11 @@ extern "C" void ResetInput(void) {
     }
 }
 
-// @symbol _ZN10dScStage_c16CleanupResourcesEv
 /* dScStage_c::CleanupResources() @ 0x0202c9a8 (arm9, size 0x264)
  * Releases the level file handles, tears down fader/mesh-collider/message
  * state and unloads the level overlays/archive. Returns 1.
  */
 extern "C" {
-void EndKuppaScript(void);
 void UnloadArchive(int);
 }
 
@@ -4544,7 +4431,7 @@ int dScStage_c::CleanupResources() {
         if (!atEnd)
             Sound::ResetPlayerVoiceGroup();
     }
-    EndKuppaScript();
+    KuppaScript::End();
     data_0209d4a8 = 0;
 
     {
@@ -4612,7 +4499,6 @@ int dScStage_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN10dScStage_c13InitResourcesEv
 // MATCHING. dScStage_c::InitResources @ 0x0202cc0c (arm9, size 0xa84), mwccarm 2004/b56.
 //
 // This function sat at a declared floor of 3-4 words for two campaigns. The residue was
@@ -4648,7 +4534,6 @@ int LoadArchive(int idx);
 void Initialise3dGraphics(int arg);
 void InitialiseVramGlobals(void);
 void func_02039218(void);
-void ResetKuppaScript(void);
 int GetSoundGroupID(int level, int mode);
 void LoadDebugFont(void);
 int IsLevelInsideCastle(int level);
@@ -4707,7 +4592,7 @@ int dScStage_c::InitResources() {
                 int count = data_0209f21c;
                 int idx = 0;
                 u8 *p1 = (u8 *)gNumRedCoins;
-                u8 *vsStars = (u8 *)data_0209f310;
+                u8 *vsStars = (u8 *)gNumStageStars;
                 int vsModeCounters = (mode == 1) ? 1 : 0;
                 u8 loadMode = sReturnState;
                 do {
@@ -4794,7 +4679,7 @@ int dScStage_c::InitResources() {
         data_0209d4a8 = (dGraph_c::callback_c *)&data_0209f3c4;
         gNextActorUpdateMask = 0;
         func_02039218();
-        ResetKuppaScript();
+        KuppaScript::Reset();
 
         int vsModeTimers = (data_0209f2d8 == 1) ? 1 : 0;
         if (vsModeTimers != 0) {
@@ -4837,8 +4722,7 @@ int dScStage_c::InitResources() {
 
         int skipSoundGroup = (data_0209f2d8 == 2) ? 1 : 0;
         if (skipSoundGroup == 0) {
-            s8 sublevel =
-                *(s8 *)(unsigned)(((unsigned long long)(unsigned)&gCurrentSublevel) & ~0ULL);
+            s8 sublevel = gCurrentSublevel;
             int soundGroup = 0;
             u8 bank = 0x36;
             if (data_0209f220 == 2) {
@@ -4903,8 +4787,7 @@ int dScStage_c::InitResources() {
                     !IsLevelInsideCastle(previousSublevel)) {
                     if (!IsLevelTinyHugeIslandOutside(gCurrentSublevel) ||
                         !IsLevelTinyHugeIslandOutside(previousSublevel)) {
-                        if (gCurrentSublevel != 2 ||
-                            (((FileSaveData *)data_0209caa0)->flags2 & 0x200)) {
+                        if (gCurrentSublevel != 2 || (data_0209caa0.file.flags2 & 0x200)) {
                             Sound::LoadAndSetMusic_Layer1(data_0207576a[gCurrentSublevel * 3]);
                             u8 localPlayer = data_0209f250;
                             if (((u8 *)data_0209f394[localPlayer])[0x6ff] != 0) {
@@ -4957,7 +4840,7 @@ int dScStage_c::InitResources() {
     }
 
     data_02092778 = 0;
-    func_0203b9b4(&data_0209e650, func_0203dad4());
+    func_0203b9b4(&data_0209e650.value, func_0203dad4());
     data_0209f208 = 0;
     u32 idx = func_0203dad4() % 6;
     data_0209f344 = (u8 *)VS_STAR_SPAWN_ORDERS[idx];
@@ -4965,7 +4848,6 @@ int dScStage_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN10dScStage_c14LoadGraphics2DEbi
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum ZN10dScStage_c14LoadGraphics2DEbi_AssetId {
     ASSET_D_2D_FRAMEWORK_PAGE_NSC_BIN = 0x022f,
@@ -4983,7 +4865,7 @@ extern "C" {
 void SetBg0Offset(int a, int b);
 void LoadFont(u8 arg);
 int GetOwnerLanguage(void);
-u32 LoadCompressedFileAt(u16 fileID, void *target);
+u32 LoadCompressedFileAt(int fileID, void *target);
 int LoadFileAt(int handle, int dest);
 void LoadControllerModeText(int a);
 void LoadFont3D(void);
@@ -5036,7 +4918,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
     }
 
     if ((int)(data_0209f2d8 == 0) != 0 &&
-        (((FileSaveData *)data_0209caa0)->flags2 & FILE_FLAGS2_INTRO_DONE) == 0 &&
+        (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) == 0 &&
         (int)(gRunningKuppaScript != 0) == 0) {
         BG0CNT_SUB &= ~3;
         BG0CNT_SUB &= ~0x40;
@@ -5153,26 +5035,22 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
     LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap);
 }
 
-// @symbol _ZN10dScStage_c19BeforeInitResourcesEv
 /* Slot 1 keeps the fader/sound reset and skips Scene's graphics setup.
  * The boolean result and this pointer pass through the ROM's tail call. */
 bool dScStage_c::BeforeInitResources() {
     return ResetFadersAndSound();
 }
 
-// @symbol IsLevelTinyHugeIslandOutside
 extern "C" int IsLevelTinyHugeIslandOutside(int level) {
     return level == 0x18 || level == 0x19;
 }
 
-// @symbol IsLevelInsideCastle
 extern "C" int IsLevelInsideCastle(int level) {
     if (level == 2 || level == 4 || level == 5 || level == 0x32)
         return 1;
     return 0;
 }
 
-// @symbol GetSoundGroupID
 extern "C" int GetSoundGroupID(int group, int sub) {
     unsigned char v = data_02075768[group * 3];
     if (group != 6)
@@ -5184,7 +5062,6 @@ extern "C" int GetSoundGroupID(int group, int sub) {
     return v;
 }
 
-// @symbol _Z19UnloadLevelOverlaysi
 /* Unloads the per-level overlay (if any) then the object overlays. A free
  * C++ function: the ROM symbol is the compiler's mangling of
  * UnloadLevelOverlays(int). */
@@ -5198,13 +5075,11 @@ void UnloadLevelOverlays(int levelID) {
     LoadOrUnloadObjectOverlays(UnloadOverlay, levelID);
 }
 
-// @symbol func_0202deac
 extern "C" void func_0202deac(int levelID) {
     LoadLevelOverlays(levelID);
     data_0209f278 = 1;
 }
 
-// @symbol _Z17LoadLevelOverlaysi
 void LoadLevelOverlays(int level) {
     if (data_0209f278) {
         if (data_02092130 != data_020758c8[level])
@@ -5220,7 +5095,6 @@ void LoadLevelOverlays(int level) {
     LoadOrUnloadObjectOverlays(LoadOverlay, level);
 }
 
-// @symbol _Z26LoadOrUnloadObjectOverlaysPFviEi
 void LoadOrUnloadObjectOverlays(void (*fn)(int), int idx) {
     unsigned int i;
     int b = (data_0209f2d8 == 1);
@@ -5253,7 +5127,6 @@ void LoadOrUnloadObjectOverlays(void (*fn)(int), int idx) {
  * mMeshCollider in member order. The null check is `new`'s own.
  * Reconstructed source-style name (later EAD lineage supplies classInit);
  * historical alias Stage_Spawn. */
-// @symbol dScStage_c_classInit
 extern "C" dScStage_c *dScStage_c_classInit() {
     return new dScStage_c();
 }

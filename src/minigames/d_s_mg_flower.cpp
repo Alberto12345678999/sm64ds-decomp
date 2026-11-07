@@ -32,9 +32,11 @@
 #include "nitro/hw/registers.h"
 #include "types.h"
 #include "decl_common.h"
+#include "LevelRng.h"
 #include "Sound.h"
 #include "G2x.h"
 #include "PlayerInput.h"
+#include "Vector2Math.h"
 #include "G2.h"
 #include "CP15.h"
 #include "GX.h"
@@ -50,7 +52,6 @@ extern "C" {
 extern int RandomIntInternal(int *seed);
 extern void func_0203d388(int *p, int angle);
 extern void Mg_SetTopScreenYOffset(int n);
-extern int data_0209d4b8;
 extern s16 data_02082214[];
 void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 int Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5, u16 a6);
@@ -59,11 +60,10 @@ typedef struct V2 {
     int x;
     int y;
 } V2;
-void Vec2_Sub(V2 *out, V2 *a, V2 *b);
-int Vec2_Len(V2 *p);
+void Vec2_Sub(int *out, int *a, int *b);
 void FreeGfxSlotsById(int a);
 void *Ov004_LoadFileByPath(void *arg);
-void DecompressLZ16(int src, void *dst);
+void DecompressLZ16(void *src, void *dst);
 void Ov004_Deallocate(void *ptr);
 extern int data_0208ee44;
 extern u8 gMainScreenLayers;
@@ -76,12 +76,10 @@ extern u8 gSubScreenLayers;
  * destructors. */
 dScMgFlower_c::~dScMgFlower_c() {}
 
-// @symbol _ZN13dScMgFlower_c5PetalD1Ev
 /* The petal record's destructor, which __cxa_vec_cleanup runs on each of
  * mPetals. Empty, like its constructor. */
 dScMgFlower_c::Petal::~Petal() {}
 
-// @symbol _ZN13dScMgFlower_c12UpdatePetalsEv
 /* Per-frame petal update: released petals drift and fall, speeding up to
  * 0x4000, and go inactive once below the screen. mPetalsSettled stays 1 only if
  * no petal is still on the flower, held, or falling. */
@@ -115,7 +113,6 @@ void dScMgFlower_c::UpdatePetals() {
     }
 }
 
-// @symbol _ZN13dScMgFlower_c10DealPetalsEv
 /* Round setup, called by InitResources and by StartRound when a round
  * restarts. Clears the cursor, wipes all 0x16 petal records and rolls the
  * petal count (1-2 when the hold counter reads exactly 0x14, else a 1-in-10
@@ -150,20 +147,20 @@ void dScMgFlower_c::DealPetals() {
         self->mPetals[clearIndex].fallSpeed = 0;
     }
     if (self->mHoldTimer == 0x14) {
-        roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+        roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
         self->mPetalsLeft = ((roll * 2) >> 15) + 1;
     } else {
-        int raw = RandomIntInternal(&data_0209d4b8);
+        int raw = RandomIntInternal(&data_0209d4b8.value);
         roll = ((unsigned int)raw >> 16) & 0x7fff;
         if (((roll * 10) >> 15) == 0) {
-            roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+            roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
             self->mPetalsLeft = ((roll * 2) >> 15) + 0x14;
         } else {
-            roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+            roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
             self->mPetalsLeft = ((roll * 8) >> 15) + 8;
         }
     }
-    roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+    roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
     baseAngle = (roll * 0x10000) >> 15;
     for (petalIndex = 0; petalIndex < self->mPetalsLeft; petalIndex++) {
         self->mPetals[petalIndex].angle = baseAngle + petalIndex * 0x10000 / self->mPetalsLeft;
@@ -176,7 +173,7 @@ void dScMgFlower_c::DealPetals() {
     }
     for (shuffleIndex = 0; shuffleIndex < self->mPetalsLeft; shuffleIndex++) {
         int swapIndex;
-        roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
+        roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
         swapIndex = (self->mPetalsLeft * roll) >> 15;
         if (swapIndex != shuffleIndex) {
             u16 savedAngle;
@@ -204,7 +201,6 @@ void dScMgFlower_c::DealPetals() {
     G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 8, 6, 0xa);
 }
 
-// @symbol _ZN13dScMgFlower_c10StartRoundEi
 /* Slot 18: bump mHoldTimer (reset once it passes 0x14), reset the face
  * object mFace and restart the round. */
 void dScMgFlower_c::StartRound(int /* arg */) {
@@ -217,7 +213,6 @@ void dScMgFlower_c::StartRound(int /* arg */) {
     DealPetals();
 }
 
-// @symbol _ZN13dScMgFlower_c6RenderEv
 /* Slot 9. Scrolls the two sub-screen background layers off the sine table
  * (mBgScrollPhase steps 0xc0 a frame), draws the face, then one sprite per
  * live petal; the held petal gets a different palette. */
@@ -251,12 +246,11 @@ s32 dScMgFlower_c::Render() {
         }
     }
 
-    Camera_InitFlowerView(pad_4660);
+    Camera_InitFlowerView(&mCamera);
     FlowerFace_Draw(&mFace);
     return 1;
 }
 
-// @symbol _ZN13dScMgFlower_c8BehaviorEv
 /* Slot 6, the whole minigame: pick up a petal within the stylus radius, drag it,
  * drop it, flip "loves me" and "loves me not", and run the end-of-round
  * results. */
@@ -320,8 +314,8 @@ s32 dScMgFlower_c::Behavior() {
                     if (mPetals[attachedIndex].active != 0 && mPetals[attachedIndex].held != 1 &&
                         mPetals[attachedIndex].released != 1) {
                         int withinGrabRadius;
-                        Vec2_Sub(&toCursor, (V2 *)&mPetals[attachedIndex].x, (V2 *)&mCursorX);
-                        withinGrabRadius = Vec2_Len(&toCursor) < 0x18000 ? 1 : 0;
+                        Vec2_Sub(&toCursor.x, &mPetals[attachedIndex].x, &mCursorX);
+                        withinGrabRadius = Vec2_Len((const Vector2 *)&toCursor) < 0x18000 ? 1 : 0;
                         if (withinGrabRadius != 0) {
                             Sound::PlayBank2_2D(0x109);
                             mPetals[attachedIndex].held = 1;
@@ -341,8 +335,9 @@ s32 dScMgFlower_c::Behavior() {
                     for (freeIndex = 0; freeIndex < 0x16; freeIndex++) {
                         if (mPetals[freeIndex].active != 0 && mPetals[freeIndex].held != 1) {
                             int withinGrabRadius2;
-                            Vec2_Sub(&toCursor2, (V2 *)&mPetals[freeIndex].x, (V2 *)&mCursorX);
-                            withinGrabRadius2 = Vec2_Len(&toCursor2) < 0x18000 ? 1 : 0;
+                            Vec2_Sub(&toCursor2.x, &mPetals[freeIndex].x, &mCursorX);
+                            withinGrabRadius2 =
+                                Vec2_Len((const Vector2 *)&toCursor2) < 0x18000 ? 1 : 0;
                             if (withinGrabRadius2 != 0) {
                                 mPetals[freeIndex].held = 1;
                                 mPetals[freeIndex].driftX = 0;
@@ -359,7 +354,7 @@ s32 dScMgFlower_c::Behavior() {
         } else {
             newlyCounted = 0;
             if (gTouchHeld[playerSlot * 4] != 0) {
-                Vec2_Sub(&drag, (V2 *)&mCursorX, (V2 *)&mPrevCursorX);
+                Vec2_Sub(&drag.x, &mCursorX, &mPrevCursorX);
                 V2 *pos = (V2 *)&mPetals[mHeldPetal].x;
                 pos->x += drag.x;
                 pos->y += drag.y;
@@ -472,13 +467,12 @@ s32 dScMgFlower_c::Behavior() {
 }
 #pragma opt_common_subs on
 
-// @symbol _ZN13dScMgFlower_c13InitResourcesEv
 /* Slot 0. Sets up BG2 and BG3 on both screens, decompresses their tiles and
  * maps, loads the palettes and the OBJ tiles, then starts the first round.
  * The bare 0x040000xx stores are the BGxCNT and BGxOFS registers, and
  * 0x06400000 and 0x06600000 are the two OBJ VRAM banks. */
 s32 dScMgFlower_c::InitResources() {
-    int fileData;
+    void *fileData;
 
     mScore = Mg_GetSavedRecord0();
 
@@ -499,32 +493,32 @@ s32 dScMgFlower_c::InitResources() {
     *(volatile u32 *)0x400101c = 0;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerBgUpNcgPath);
+    fileData = Ov004_LoadFileByPath(&sFlowerBgUpNcgPath);
     DecompressLZ16(fileData, G2::GetBG2CharPtr());
-    Ov004_Deallocate((void *)fileData);
+    Ov004_Deallocate(fileData);
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerBgDownNcgPath);
+    fileData = Ov004_LoadFileByPath(&sFlowerBgDownNcgPath);
     DecompressLZ16(fileData, G2S::GetBG2CharPtr());
-    Ov004_Deallocate((void *)fileData);
+    Ov004_Deallocate(fileData);
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerBgUpNscPath);
+    fileData = Ov004_LoadFileByPath(&sFlowerBgUpNscPath);
     DecompressLZ16(fileData, G2::GetBG2ScrPtr());
-    Ov004_Deallocate((void *)fileData);
+    Ov004_Deallocate(fileData);
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerBgDownNscPath);
+    fileData = Ov004_LoadFileByPath(&sFlowerBgDownNscPath);
     DecompressLZ16(fileData, G2S::GetBG2ScrPtr());
     DecompressLZ16(fileData, G2S::GetBG3ScrPtr());
-    Ov004_Deallocate((void *)fileData);
+    Ov004_Deallocate(fileData);
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerBgUpNclPath);
-    CP15::FlushAndInvalidateDataCache(fileData, 0x1a0);
-    GX::LoadBGPltt((const void *)fileData, 0x60, 0x1a0);
-    Ov004_Deallocate((void *)fileData);
+    fileData = Ov004_LoadFileByPath(&sFlowerBgUpNclPath);
+    CP15::FlushAndInvalidateDataCache((u32)fileData, 0x1a0);
+    GX::LoadBGPltt(fileData, 0x60, 0x1a0);
+    Ov004_Deallocate(fileData);
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerBgDownNclPath);
-    CP15::FlushAndInvalidateDataCache(fileData, 0x1a0);
-    GXS::LoadBGPltt((const void *)fileData, 0x60, 0x1a0);
-    Ov004_Deallocate((void *)fileData);
+    fileData = Ov004_LoadFileByPath(&sFlowerBgDownNclPath);
+    CP15::FlushAndInvalidateDataCache((u32)fileData, 0x1a0);
+    GXS::LoadBGPltt(fileData, 0x60, 0x1a0);
+    Ov004_Deallocate(fileData);
 
     *(volatile u16 *)0x4000050 = 0;
     G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 8, 6, 0xa);
@@ -532,16 +526,16 @@ s32 dScMgFlower_c::InitResources() {
     gMainScreenLayers |= DISPLAY_LAYER_BG2;
     gSubScreenLayers |= 0xc;
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerNcgPath);
+    fileData = Ov004_LoadFileByPath(&sFlowerNcgPath);
     DecompressLZ16(fileData, (void *)0x6400000);
     DecompressLZ16(fileData, (void *)0x6600000);
-    Ov004_Deallocate((void *)fileData);
+    Ov004_Deallocate(fileData);
 
-    fileData = (int)Ov004_LoadFileByPath(&sFlowerNclPath);
-    CP15::FlushAndInvalidateDataCache(fileData, 0x100);
-    GX::LoadOBJPltt((const void *)fileData, 0, 0x100);
-    GXS::LoadOBJPltt((const void *)fileData, 0, 0x100);
-    Ov004_Deallocate((void *)fileData);
+    fileData = Ov004_LoadFileByPath(&sFlowerNclPath);
+    CP15::FlushAndInvalidateDataCache((u32)fileData, 0x100);
+    GX::LoadOBJPltt(fileData, 0, 0x100);
+    GXS::LoadOBJPltt(fileData, 0, 0x100);
+    Ov004_Deallocate(fileData);
 
     sMgPlayAgainX = 0x40;
     sMgPlayAgainY = 0xa0;
@@ -556,7 +550,7 @@ s32 dScMgFlower_c::InitResources() {
     gMainScreenLayers |= DISPLAY_LAYER_BG0;
     *(volatile u16 *)0x4000008 = (*(volatile u16 *)0x4000008 & ~3) | 1;
     FlowerFace_Load((char *)&mFace);
-    Camera_InitFlowerView(pad_4660);
+    Camera_InitFlowerView(&mCamera);
 
     return 1;
 }
@@ -571,7 +565,6 @@ s32 dScMgFlower_c::InitResources() {
  * constructors. */
 inline dScMgFlower_c::dScMgFlower_c() {}
 
-// @symbol dScMgFlower_c_classInit
 /* Reconstructed source-style name: SM64DS proves dScMgFlower_c through RTTI,
  * allocation size, vtable identity, and the MG_FLOWER registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -580,7 +573,6 @@ extern "C" void *dScMgFlower_c_classInit() {
     return new dScMgFlower_c;
 }
 
-// @symbol _ZN13dScMgFlower_c5PetalC1Ev
 /* The petal record's constructor, which __cxa_vec_ctor runs on each of
  * mPetals. Empty, like its destructor. */
 dScMgFlower_c::Petal::Petal() {}

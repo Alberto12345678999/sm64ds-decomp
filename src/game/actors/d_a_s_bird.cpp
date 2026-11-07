@@ -25,7 +25,7 @@
  *   void * externs. Random() wraps math/CalcLib.h's RandomIntInternal as
  *   unsigned: a signed % 400 / % 4000 or >> 16 changes codegen.
  * - Behavior builds the model matrix through MtxStack (math/MtxStack.h) but
- *   copies it out as twelve plain words (BirdMtx).
+ *   copies it out as twelve plain words (Mtx43).
  * - data_ov009_02113c20 / 02113c28 SharedFilePtr handles: the initializer
  *   constructs them as file IDs 1080 / 1081. symbols.txt has no recovered
  *   names, so they are not coined.
@@ -47,6 +47,8 @@
 #include "math/MtxStack.h"
 #include "math/CalcLib.h"
 #include "cstd.h"
+#include "private/mtx43.h"
+#include "LevelRng.h"
 
 /* Resource handles this TU's static initializer constructs. The wrapper
  * spellings are reconstructed; constructor and destructor addresses, file
@@ -74,17 +76,12 @@ struct SBirdStateTable {
     }
 };
 
-/* Behavior copies the scratch matrix as twelve plain words; a Matrix4x3
-   assignment compiles to a different copy. */
-struct BirdMtx {
-    int w[12];
-};
-
+/* Behavior copies the scratch matrix through the flat Mtx43; a Matrix4x3
+   assignment compiles to a different copy (.text grows by 0x1c bytes). */
 extern SBirdModelFilePtr data_ov009_02113c20;
 extern SBirdAnimationFilePtr data_ov009_02113c28;
 extern SBirdStateTable data_ov009_02113c48;
 extern s16 data_02082214[];
-extern int data_0209e650;
 
 /* local extern: no shared header declares these helpers; Vec3_Sub uses the
    shared Vector3 type, while some callers pass raw position-field addresses. */
@@ -96,17 +93,14 @@ extern s32 LenVec3(void *v);
 
 /* The flock's random draws are unsigned: a signed % or >> changes codegen. */
 static inline u32 Random() {
-    return RandomIntInternal(&data_0209e650);
+    return RandomIntInternal(&data_0209e650.value);
 }
 
 /* Empty body: mShadowModel then mAnmModel teardown, the vptr store and
    dActor_c's teardown are synthesised. */
-// @symbol _ZN9daSBird_cD1Ev
-// @symbol _ZN9daSBird_cD0Ev
 daSBird_c::~daSBird_c() {}
 
 /* Follower attach -- spawn loops store the leader's uniqueID. */
-// @symbol _ZN9daSBird_c14AttachToLeaderEi
 void daSBird_c::AttachToLeader(int ownerID) {
     mIsLeader = 0;
     mOwnerID = ownerID;
@@ -114,7 +108,6 @@ void daSBird_c::AttachToLeader(int ownerID) {
 
 /* Fly state -- data_ov009_02113c48[3]. Steers toward the leader's position
    (or the target point when leading) and derives forward/vertical speed. */
-// @symbol _ZN9daSBird_c8StateFlyEv
 void daSBird_c::StateFly() {
     UpdatePos(0);
     dActor_c *owner = dActor_c::FindWithID(mOwnerID);
@@ -171,7 +164,6 @@ void daSBird_c::StateFly() {
     }
 }
 
-// @symbol _ZN9daSBird_c16StateLaunchFlockEv
 /* State 2. Spawn the flock and take off in one step: when the closest player is
    within 0x7d0, a leader spawns (param1 & 0xf) - 1 followers on its own
    position, aims the flock at the fixed target and chirps; then every bird
@@ -217,7 +209,6 @@ void daSBird_c::StateLaunchFlock() {
     mFlags &= ~0x10000;
 }
 
-// @symbol _ZN9daSBird_c18StateWaitForPlayerEv
 /* State 1. The leader waits for the closest player to come within 0x7d0 and
    chirps; a follower waits for its leader to take off. Then the bird picks a
    random pitch and enters state 3. */
@@ -252,7 +243,6 @@ void daSBird_c::StateWaitForPlayer() {
     mFlags &= ~0x10000;
 }
 
-// @symbol _ZN9daSBird_c15StateSpawnFlockEv
 /* State 0. A leader spawns (param1 & 0xf) - 1 followers scattered around it
    and aims the flock at the fixed target; every bird then waits in state 1. */
 void daSBird_c::StateSpawnFlock() {
@@ -278,23 +268,19 @@ void daSBird_c::StateSpawnFlock() {
     mState = 1;
 }
 
-// @symbol _ZN9daSBird_c16CleanupResourcesEv
 s32 daSBird_c::CleanupResources() {
     data_ov009_02113c28.Release();
     data_ov009_02113c20.Release();
     return 1;
 }
 
-// @symbol _ZN9daSBird_c16OnPendingDestroyEv
 void daSBird_c::OnPendingDestroy() {}
 
-// @symbol _ZN9daSBird_c6RenderEv
 s32 daSBird_c::Render() {
     mAnmModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN9daSBird_c8BehaviorEv
 s32 daSBird_c::Behavior() {
     (this->*data_ov009_02113c48.slots[mState])();
     int tmp[3];
@@ -303,13 +289,12 @@ s32 daSBird_c::Behavior() {
     mAngleY = mPrevAngleY;
     Matrix4x3_ApplyInPlaceToRotationZ(&MtxStack::get(), mAngleZ);
     MtxStack::YrotM(mAngleY);
-    *(BirdMtx *)&mAnmModel.mat4x3 = *(BirdMtx *)&MtxStack::get();
+    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)&MtxStack::get();
     DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x1e000, 0x7d0000, 0xf);
     mAnmModel.Advance();
     return 1;
 }
 
-// @symbol _ZN9daSBird_c13InitResourcesEv
 s32 daSBird_c::InitResources() {
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113c20);
     mAnmModel.SetFile(modelFile, 1, 1);
@@ -333,7 +318,6 @@ s32 daSBird_c::InitResources() {
     return 1;
 }
 
-// @symbol daSBird_c_classInit
 extern "C" daSBird_c *daSBird_c_classInit() {
     return new daSBird_c();
 }

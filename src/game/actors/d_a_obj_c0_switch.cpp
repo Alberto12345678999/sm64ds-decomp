@@ -52,6 +52,7 @@ enum d_a_obj_c0_switch_AssetId { ASSET_C0_SWITCH_BMD = 0x05a9, ASSET_C0_SWITCH_K
 
 #include "daObjC0_Switch_c.h"
 #include "SharedFilePtr.h"
+#include "SaveBlock.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
@@ -72,11 +73,10 @@ struct C0SwitchCollisionFilePtr : SharedFilePtr {
 extern C0SwitchModelFilePtr data_ov012_021124a8;
 extern C0SwitchCollisionFilePtr data_ov012_021124a0;
 extern CLPS_Block data_ov012_02111cd0;
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjC0_Switch_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjC0_Switch_c through RTTI,
  * allocation size, vtable identity, and the C0_SWITCH registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -95,7 +95,6 @@ extern "C" daObjC0_Switch_c *daObjC0_Switch_c_classInit() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjC0_Switch_c13InitResourcesEv
 /* daObjC0_Switch_c::InitResources -- vtable slot 0, ov012 0x02111370.
  *
  * mModel/mMeshCollider/mClsnMat/mAngleY are dBgActor_c's/dActor_c's own named
@@ -103,13 +102,13 @@ extern "C" daObjC0_Switch_c *daObjC0_Switch_c_classInit() {
  * UpdateModelPosAndRotY, UpdateClsnPosAndRot and dBgW_KcMbg::SetFile are
  * real method calls.
  *
- * mPosY -= 0x64000 and mPressed = 1 only run when data_0209caa0[2] & 0x80000
+ * mPosY -= 0x64000 and mPressed = 1 only run when data_0209caa0.file.flags2 & 0x80000
  * is set -- some other pillar in the group already reported pressed (see
  * OnGroundPounded), so this one starts sunk and pre-flagged. */
 int daObjC0_Switch_c::InitResources() {
     void *mdl = dExtSimpleModel_c::LoadFile(data_ov012_021124a8);
     mModel.SetFile((BMD_File *)mdl, 1, -1);
-    if (data_0209caa0[2] & 0x80000) {
+    if (data_0209caa0.file.flags2 & 0x80000) {
         mPosY -= 0x64000;
         mPressed = 1;
     }
@@ -122,7 +121,6 @@ int daObjC0_Switch_c::InitResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjC0_Switch_c8BehaviorEv
 s32 daObjC0_Switch_c::Behavior() {
     IsClsnInRange(0, 0);
     return 1;
@@ -130,7 +128,6 @@ s32 daObjC0_Switch_c::Behavior() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjC0_Switch_c6RenderEv
 s32 daObjC0_Switch_c::Render() {
     mModel.Render(0);
     return 1;
@@ -138,7 +135,6 @@ s32 daObjC0_Switch_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjC0_Switch_c16CleanupResourcesEv
 s32 daObjC0_Switch_c::CleanupResources() {
     mMeshCollider.Disable();
     data_ov012_021124a8.Release();
@@ -148,7 +144,6 @@ s32 daObjC0_Switch_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN16daObjC0_Switch_c15OnGroundPoundedER8dActor_c
 /* daObjC0_Switch_c::OnGroundPounded -- vtable slot 21, ov012 0x0211123c.
  *
  * mPosY and mPressed are the same fields InitResources touches.
@@ -156,7 +151,7 @@ s32 daObjC0_Switch_c::CleanupResources() {
  * class's own -- SWITCH_PILLAR 34). This one no-ops if already pressed;
  * otherwise it sinks, marks itself pressed, then returns at the first
  * non-this actorID-0x22 pillar and, if that one is already pressed, sets
- * the shared group flag in data_0209caa0[2] that InitResources reads. */
+ * the shared group flag in data_0209caa0.file.flags2 that InitResources reads. */
 void daObjC0_Switch_c::OnGroundPounded(dActor_c &other) {
     if (mPressed)
         return;
@@ -168,14 +163,12 @@ void daObjC0_Switch_c::OnGroundPounded(dActor_c &other) {
          p = dActor_c::FindWithActorID(0x22, p)) {
         if (p != (dActor_c *)this) {
             if (((daObjC0_Switch_c *)p)->mPressed) {
-                data_0209caa0[2] |= 0x80000;
+                data_0209caa0.file.flags2 |= 0x80000;
             }
             return;
         }
     }
 }
-// @symbol _ZN16daObjC0_Switch_cD1Ev
-// @symbol _ZN16daObjC0_Switch_cD0Ev
 /* -------------------------------------------------------------------------- */
 /* ROM ordinals 0 and 1 -- _ZN16daObjC0_Switch_cD1Ev 0x021111a0 size 0x44 and   */
 /* _ZN16daObjC0_Switch_cD0Ev 0x021111e4 size 0x58 -- are NOT written here.      */

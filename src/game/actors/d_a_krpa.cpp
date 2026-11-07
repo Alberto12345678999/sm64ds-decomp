@@ -20,7 +20,7 @@
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *   mwcc emits one .text section per ordinary definition in reverse source
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
- *   M48, the array wrapper for InitResources' IDENTITY_MATRIX4X3 copy. This
+ *   Mtx43, the flat type for InitResources' IDENTITY_MATRIX4X3 copy. This
  *   TU uses the nested Matrix4x3 (.t) that math/Matrix.h brings in via
  *   dExtAnmModel_c.h; putting common.h first would drop .t.
  *   ExecuteKnockedAway calls dBgCh_Actr_UpdateDiscreteNoLava_veneer: the
@@ -47,19 +47,13 @@ enum d_a_krpa_AssetId { ASSET_KERONPA_BMD = 0x0351 };
 #include "math/Approach.h"
 #include "math/CalcLib.h"
 #include "Particle__System.h"
+#include "private/mtx43.h"
+#include "math/MtxStack.h"
 
-extern int IDENTITY_MATRIX4X3[];
+extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern int data_0209f32c;
 extern short data_02082214[];
 
-/* local extern: arm9 matrix helpers this TU calls with its nested
-   Matrix4x3; no shared header declares them in that spelling. */
-extern "C" {
-void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
-void Matrix4x3_FromRotationY(void *m, int angle);
-}
-
-// @symbol daKrpa_c_classInit
 /* `return new daKrpa_c()` emits 0x50, calling the inherited
  * fBase_c::operator new (`_ZN7fBase_cnwEm`). Historical aliases:
  * daKrpa_c_Spawn and FlameChomp_Spawn. */
@@ -74,14 +68,12 @@ extern "C" daKrpa_c *daKrpa_c_classInit() {
  * daKrpa_c_SpawnInfo. The descriptor is at ov070:0x0212334c. */
 extern "C" SpawnInfo<daKrpa_c> g_profile_KERONPA = {
     daKrpa_c_classInit, 0x010e, 0x0081, 0x00000003, 0x00000000, 0x0002d000, 0x01000000, 0x00ed8000};
-// @symbol _ZN21daKrpaFrameController9SetFramesEPjjj
 void daKrpaFrameController::SetFrames(u32 *frames, u32 count, u32 mode) {
     this->frames = frames;
     this->count = count;
     this->mode = mode;
     this->cursor = 0;
 }
-// @symbol _ZN21daKrpaFrameController9NextFrameEv
 u32 daKrpaFrameController::NextFrame() {
     switch (this->mode) {
     case 0:
@@ -96,10 +88,6 @@ u32 daKrpaFrameController::NextFrame() {
     return this->frames[this->cursor];
 }
 
-// @symbol _ZN8daKrpa_c13InitResourcesEv
-struct M48 {
-    int w[12];
-};
 struct KrpaModelFilePtr : SharedFilePtr {
     KrpaModelFilePtr(u32 fileID);
     ~KrpaModelFilePtr();
@@ -126,7 +114,7 @@ int daKrpa_c::InitResources() {
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    *(M48 *)&mMatrix = *(M48 *)IDENTITY_MATRIX4X3;
+    *(Mtx43 *)&mMatrix = *(Mtx43 *)&IDENTITY_MATRIX4X3;
 
     dBgCh_Gnd ground;
     ground.SetObjAndPos(mPos, this);
@@ -139,46 +127,38 @@ int daKrpa_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN8daKrpa_c8BehaviorEv
 int daKrpa_c::Behavior() {
     ExecuteState();
     UpdateModelAndShadow();
     return 1;
 }
 
-// @symbol _ZN8daKrpa_c6RenderEv
 int daKrpa_c::Render() {
     mAnmModel.Render(&mScale);
     return 1;
 }
 
-// @symbol _ZN8daKrpa_c16OnPendingDestroyEv
 
 void daKrpa_c::OnPendingDestroy() {}
 
-// @symbol _ZN8daKrpa_c16CleanupResourcesEv
 
 int daKrpa_c::CleanupResources() {
     gKeronpaModelFile.Release();
     return 1;
 }
 extern daKrpaState data_ov070_021236ac[];
-// @symbol _ZN8daKrpa_c11ChangeStateEi
 void daKrpa_c::ChangeState(int state) {
     this->mStateMethods = &data_ov070_021236ac[state];
     this->EnterState();
 }
-// @symbol _ZN8daKrpa_c10EnterStateEv
 void daKrpa_c::EnterState() {
     daKrpaStateMethod *method = &this->mStateMethods->init;
     (this->**method)();
 }
-// @symbol _ZN8daKrpa_c12ExecuteStateEv
 void daKrpa_c::ExecuteState() {
     daKrpaStateMethod *method = &this->mStateMethods->behavior;
     (this->**method)();
 }
-// @symbol _ZN8daKrpa_c9EnterIdleEv
 extern char data_ov070_021234c4[];
 extern char data_ov070_021234dc[];
 extern u32 data_ov070_02122404[];
@@ -191,7 +171,6 @@ int daKrpa_c::EnterIdle() {
     this->mStateIndex = 0;
     return 1;
 }
-// @symbol _ZN8daKrpa_c11ExecuteIdleEv
 int daKrpa_c::ExecuteIdle() {
     if (this->mPlayer) {
         if (this->mPosY > data_0209f32c) {
@@ -212,14 +191,12 @@ int daKrpa_c::ExecuteIdle() {
     this->mdCcAcPos_c.Update();
     return 1;
 }
-// @symbol _ZN8daKrpa_c9EnterSpitEv
 int daKrpa_c::EnterSpit() {
     this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234dc, 0x40000000, 0x1000, 0);
     this->mFrameController.SetFrames(data_ov070_021222e8, 0x47, 0);
     this->mStateIndex = 1;
     return 1;
 }
-// @symbol _ZN8daKrpa_c11ExecuteSpitEv
 int daKrpa_c::ExecuteSpit() {
     if (this->mFrameController.cursor == 0x1e) {
         Vector3 firePos;
@@ -250,13 +227,11 @@ int daKrpa_c::ExecuteSpit() {
     this->mdCcAcPos_c.Update();
     return 1;
 }
-// @symbol _ZN8daKrpa_c10EnterEatenEv
 int daKrpa_c::EnterEaten() {
     this->mdCcAcPos_c.Clear();
     this->mStateIndex = 2;
     return 1;
 }
-// @symbol _ZN8daKrpa_c12ExecuteEatenEv
 int daKrpa_c::ExecuteEaten() {
     int flags = this->mFlags;
     int blocked = (flags & 0x20000) != 0;
@@ -269,7 +244,6 @@ int daKrpa_c::ExecuteEaten() {
     }
     return 1;
 }
-// @symbol _ZN8daKrpa_c16EnterKnockedAwayEv
 int daKrpa_c::EnterKnockedAway() {
     Sound::PlayBank0(9, this->mCamSpacePos);
     this->mFlags &= ~1;
@@ -287,7 +261,6 @@ int daKrpa_c::EnterKnockedAway() {
     this->mStateIndex = 3;
     return 1;
 }
-// @symbol _ZN8daKrpa_c18ExecuteKnockedAwayEv
 /* The collision update veneer is retained because it is the retail call
  * destination; the rest are ordinary real class calls. */
 int daKrpa_c::ExecuteKnockedAway() {
@@ -304,7 +277,6 @@ int daKrpa_c::ExecuteKnockedAway() {
 end:
     return 1;
 }
-// @symbol _ZN8daKrpa_c20UpdateModelAndShadowEv
 void daKrpa_c::UpdateModelAndShadow() {
     if (this->mStateIndex == 3) {
         Matrix4x3_FromRotationXYZExt(&this->mAnmModel.mat4x3, this->mAngleX, this->mAngleY,
@@ -322,7 +294,6 @@ void daKrpa_c::UpdateModelAndShadow() {
                         this->mGroundDistance, 0xf);
 }
 
-// @symbol _ZN8daKrpa_c18TrackClosestPlayerEv
 void daKrpa_c::TrackClosestPlayer() {
     daPly_c *player = this->ClosestNonVanishPlayer();
     if (!player) {
@@ -336,7 +307,6 @@ void daKrpa_c::TrackClosestPlayer() {
     this->mPlayer = player;
     ApproachLinear(this->mAngleY, Vec3_HorzAngle(&this->mPos, &player->mPos), 0x800);
 }
-// @symbol _ZN8daKrpa_c15HandlePlayerHitEv
 void daKrpa_c::HandlePlayerHit() {
     u32 id = this->mdCcAcPos_c.otherOwner;
     if (id == 0)
@@ -361,18 +331,15 @@ void daKrpa_c::HandlePlayerHit() {
     this->ChangeState(3);
 }
 
-// @symbol _ZN8daKrpa_c13OnYoshiTryEatEv
 
 int daKrpa_c::OnYoshiTryEat() {
     return 5;
 }
 
-// @symbol _ZN8daKrpa_cD0Ev
 
 /* No separate body: the inline class destructor plus vtable instantiation
  * makes mwcc emit the retail deleting variant after D1. */
 
-// @symbol _ZN8daKrpa_cD1Ev
 
 /* No separate body: the inline class destructor emits this complete variant
  * first, through the class vtable instantiated in this TU. */

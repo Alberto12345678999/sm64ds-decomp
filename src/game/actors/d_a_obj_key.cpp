@@ -74,6 +74,8 @@ enum daObjKey_c_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
+#include "SaveBlock.h"
 
 #pragma defer_codegen off
 
@@ -100,13 +102,9 @@ struct ObjKeyAnimationFilePtr : ObjKeyFile {
     ~ObjKeyAnimationFilePtr();
 };
 
-/* Plain three-word offset (data_ov089_02132ca4). A Vector3 static would
+/* data_ov089_02132ca4 is a plain VecFx32 offset. A Vector3 static would
  * register a destructor and grow __sinit, which the retail initializer
  * does not do; the zero-init here emits plain BSS. */
-struct ObjKeyVec3 {
-    int x, y, z;
-};
-
 enum {
     ACTOR_OBJ_KEY = 0x11a,
     KEY_KIND_STAR = 7,
@@ -193,13 +191,13 @@ extern ObjKeyStateTable data_ov089_02132cec;
  * temporary size-DIFFs (see the file comment). The ROM calls the
  * UpdateContinuous veneer, not the method. */
 extern "C" {
-extern void *data_0209f318;
-extern int gNextActorUpdateMask;
+extern dCamera_c *data_0209f318;
+extern u32 gNextActorUpdateMask;
 extern void *d_a_obj_keyNewHold(u32 a, u32 b, int c, int d, int e, void *f, void *g);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern void func_ov002_020c3dbc(void *player);
-extern int data_0209caa0[];
-void Matrix4x3_FromRotationY(void *m, short angle);
+extern SaveBlock data_0209caa0;
+void Matrix4x3_FromRotationY(void *m, int angle);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void *data_ov089_021328b4[];
 extern ObjKeyFile data_ov002_02110964;
@@ -212,10 +210,11 @@ extern ObjKeyModelFile gLuigiKeyModelFile;
 extern ObjKeyModelFile gMarioKeyModelFile;
 extern ObjKeyModelFile gWarioKeyModelFile;
 extern Vector3 data_ov089_02132b40;
-extern ObjKeyVec3 data_ov089_02132ca4;
+extern VecFx32 data_ov089_02132ca4;
 extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, int ang);
+/* local extern: math/MtxStack.h clashes with this TU's void * matrix externs. */
+extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short ang);
 extern void MulMat4x3Mat4x3(void *d, void *a, void *b);
 /* local extern: named parameters keep this TU's compiler-numbered aliases. */
 extern void SubVec3(Vector3 *d, Vector3 *a, Vector3 *b);
@@ -244,13 +243,10 @@ extern int data_ov055_02111b68;
 
 /* The key function, defined first. Under defer_codegen off it emits D1, D0 and
  * a D2 the cartridge does not keep, then the vtable and RTTI chain. */
-// @symbol _ZN10daObjKey_cD1Ev
-// @symbol _ZN10daObjKey_cD0Ev
 daObjKey_c::~daObjKey_c()
 {
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_02130fb4EP7Vector3i
 /* Aim a jump at target so it lands in 30 frames with its peak `height` above
  * the higher end. Sets gravity, the launch speed and the heading. */
 void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
@@ -260,9 +256,9 @@ void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
     if (dy < 0)
         dy = -dy;
     {
-        int s0 = cstd::sqrt((unsigned long long)(long long)height);
-        int s1 = cstd::sqrt((unsigned long long)(long long)(height + dy));
-        int s2 = cstd::sqrt((unsigned long long)(long long)height);
+        int s0 = cstd::sqrt((long long)height);
+        int s1 = cstd::sqrt(height + dy);
+        int s2 = cstd::sqrt((long long)height);
         dy = (s0 * JUMP_FRAMES) / (s1 + s2);
     }
     {
@@ -288,7 +284,6 @@ void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
 }
 
 /* UnloadKeyModels, 0x021310cc */
-// @symbol UnloadKeyModels
 /* daDoor_c, daPly_c and the bosses that drop a key call these two by name. */
 extern "C" void UnloadKeyModels(int kind)
 {
@@ -301,7 +296,6 @@ extern "C" void UnloadKeyModels(int kind)
 }
 
 /* LoadKeyModels, 0x02131114 */
-// @symbol LoadKeyModels
 extern "C" void LoadKeyModels(int kind)
 {
     SharedFilePtr *extra;
@@ -314,7 +308,6 @@ extern "C" void LoadKeyModels(int kind)
     dExtSimpleModel_c::LoadFile(*extra);
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_0213115cEi
 /* Start collect animation `anim` (1..4); 0 or anything past 4 clears it. */
 void daObjKey_c::func_ov089_0213115c(int anim)
 {
@@ -326,7 +319,6 @@ void daObjKey_c::func_ov089_0213115c(int anim)
     mAnmModel.SetAnim((BCA_File *)(data_ov089_02132880[anim]->filePtr), ANIM_FLAGS, ANIM_SPEED, 0);
 }
 
-// @symbol _ZN10daObjKey_c16StateFlyToCenterEv
 /* Kind 3. Take the camera, fade the music, then fly toward the room's origin,
  * bounce once on the home height and settle 800 units above it until touched. */
 void daObjKey_c::StateFlyToCenter()
@@ -334,7 +326,7 @@ void daObjKey_c::StateFlyToCenter()
     Vector3 v;
     Vector3 center1;
     Vector3 center2;
-    dCamera_c *cam = (dCamera_c *)data_0209f318;
+    dCamera_c *cam = data_0209f318;
 
     switch (mStep) {
     case 0:
@@ -455,7 +447,6 @@ void daObjKey_c::StateFlyToCenter()
     mParticleID[2] = (u32)Particle::System::New(mParticleID[2], FX_TRAIL_C, v.x, v.y, v.z, 0, 0);
 }
 
-// @symbol _ZN10daObjKey_c13StateStarJumpEv
 /* Kind 7, the power star. Take the camera, jump to a spot beside the nearest
  * player, bounce to rest, hand the camera back and wait to be collected, then
  * ride along with the player while the collect animation plays. */
@@ -463,7 +454,7 @@ void daObjKey_c::StateStarJump()
 {
     Vector3 v;
     Vector3 target;
-    dCamera_c *cam = (dCamera_c *)data_0209f318;
+    dCamera_c *cam = data_0209f318;
 
     if (mStep < 3) {
         v.x = mPosX;
@@ -608,10 +599,9 @@ void daObjKey_c::StateStarJump()
     }
 }
 
-// @symbol _ZN10daObjKey_c9StateDropEv
 void daObjKey_c::StateDrop()
 {
-    dCamera_c *cam = (dCamera_c *)data_0209f318;
+    dCamera_c *cam = data_0209f318;
     Vector3 v;
 
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
@@ -687,7 +677,6 @@ void daObjKey_c::StateDrop()
     }
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_02131dccER7daPly_c
 /* Last-star path. Hands the collector to ov002 and removes the star. */
 void daObjKey_c::func_ov089_02131dcc(daPly_c &player) {
     func_ov002_020c3dbc(&player);
@@ -695,18 +684,17 @@ void daObjKey_c::func_ov089_02131dcc(daPly_c &player) {
     MarkForDestruction();
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_02131df4ER7daPly_c
 void daObjKey_c::func_ov089_02131df4(daPly_c &p) {
     daPly_c *player = &p;
 
     /* Word 1, bit (2 << kind): already collected. 1 asks dScStage_c/dMeter/daPly_c
      * for the new-star fanfare; 0 suppresses it. Kind 7 takes neither arm.
      * One arm is shorter (0x110 -> 0xe8); the ROM has both. */
-    if (data_0209caa0[1] & (2 << mState))
+    if (data_0209caa0.file.flags1 & (2 << mState))
         gNewStarCollected = 0;
     else
         gNewStarCollected = 1;
-    data_0209caa0[1] |= (2 << mState);
+    data_0209caa0.file.flags1 |= (2 << mState);
 
     if (mState <= 1) {
         player->SetNoControlState(3, -1, 0);
@@ -730,7 +718,6 @@ void daObjKey_c::func_ov089_02131df4(daPly_c &p) {
     }
 }
 
-// @symbol _ZN10daObjKey_c13OnTurnIntoEggER7daPly_c
 void daObjKey_c::OnTurnIntoEgg(daPly_c &player) {
     /* The flag keeps the ROM's moveq and movne pair. */
     unsigned isKey = (actorID == ACTOR_OBJ_KEY);
@@ -739,12 +726,10 @@ void daObjKey_c::OnTurnIntoEgg(daPly_c &player) {
     return func_ov089_02131dcc(player);
 }
 
-// @symbol _ZN10daObjKey_c13OnYoshiTryEatEv
 s32 daObjKey_c::OnYoshiTryEat() {
     return 4;
 }
 
-// @symbol _ZN10daObjKey_c20UpdateModelTransformEv
 void daObjKey_c::UpdateModelTransform()
 {
     Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
@@ -766,7 +751,6 @@ void daObjKey_c::UpdateModelTransform()
         DropShadowRadHeight(mShadowModel, mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
-// @symbol _ZN10daObjKey_c16CleanupResourcesEv
 int daObjKey_c::CleanupResources()
 {
     UnloadKeyModels(mState);
@@ -781,7 +765,6 @@ int daObjKey_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN10daObjKey_c6RenderEv
 int daObjKey_c::Render()
 {
     int hidden = (mFlags & FLAG_HIDE) != 0;
@@ -798,7 +781,6 @@ int daObjKey_c::Render()
     return 1;
 }
 
-// @symbol _ZN10daObjKey_c8BehaviorEv
 int daObjKey_c::Behavior()
 {
     Vector3 vec;
@@ -881,7 +863,6 @@ int daObjKey_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN10daObjKey_c13InitResourcesEv
 int daObjKey_c::InitResources()
 {
     Vector3 offset7;
@@ -956,13 +937,11 @@ int daObjKey_c::InitResources()
 /* Both profiles build the same class. fBase_c's inline operator new forwards to
  * _ZN7fBase_cnwEm; the implicit constructor inlines dEnemyBase_c's base step,
  * the vptr store and the five member constructors. */
-// @symbol daObjKey_c_classInit_LAST_STAR
 extern "C" daObjKey_c *daObjKey_c_classInit_LAST_STAR()
 {
     return new daObjKey_c();
 }
 
-// @symbol daObjKey_c_classInit_OBJ_KEY
 extern "C" daObjKey_c *daObjKey_c_classInit_OBJ_KEY()
 {
     return new daObjKey_c();
@@ -982,6 +961,6 @@ ObjKeyAnimationFilePtr data_ov089_02132c40(ASSET_KOOPA_KEY_GET_DEMO_BCA);
 ObjKeyAnimationFilePtr data_ov089_02132c70(ASSET_KOOPA_KEY_OPEN_BCA);
 ObjKeyAnimationFilePtr data_ov089_02132c48(ASSET_KOOPA_KEY_W_GET_BCA);
 
-ObjKeyVec3 data_ov089_02132ca4;
+VecFx32 data_ov089_02132ca4;
 
 ObjKeyStateTable data_ov089_02132cec;

@@ -111,20 +111,15 @@ extern "C" void func_ov075_021160dc(dScEntry_c *scene);
  * body is empty: tearing down the four OamAnimations and the nine icon_c
  * leaves in reverse declaration order, then chaining to dScene_c, is all
  * compiler-generated. */
-// @symbol _ZN10dScEntry_cD1Ev
 dScEntry_c::~dScEntry_c() {}
 
-// @symbol _ZN10dScEntry_cD0Ev
 /* The deleting destructor (D0) has no source of its own: the compiler emits
    it from the definition above. */
 
-// @symbol _ZN10dScEntry_c6icon_cD1Ev
 dScEntry_c::icon_c::~icon_c() {}
 
-// @symbol _ZN12OamAnimationD1Ev
 OamAnimation::~OamAnimation() {}
 
-// @symbol _ZN10dScEntry_c6icon_c6RenderEv
 void dScEntry_c::icon_c::Render() {
     volatile s16 xy[2];
     u16 *screenMap;
@@ -233,7 +228,6 @@ void dScEntry_c::icon_c::Render() {
     OAM ::RenderSub((OamAttr *)sprite, xy[0], xy[1]);
 }
 
-// @symbol _ZN10dScEntry_c6icon_c8BehaviorEv
 void dScEntry_c::icon_c::Behavior() {
     if (unk_01c == 0xd) {
         if (unk_020 == data_0209b2e4) {
@@ -248,7 +242,6 @@ void dScEntry_c::icon_c::Behavior() {
 
 extern "C" {
 
-// @symbol func_ov075_02115e8c
 void func_ov075_02115e8c(char *rawIcon, int iconType, int iconIndex, short x, short y) {
     dScEntry_c::icon_c *icon = (dScEntry_c::icon_c *)rawIcon;
     int touchKind;
@@ -277,18 +270,15 @@ void func_ov075_02115e8c(char *rawIcon, int iconType, int iconIndex, short x, sh
     }
 }
 
-// @symbol func_ov075_0211601c
 void func_ov075_0211601c(dScEntry_c::graphCallback_c *callback, dScEntry_c *scene, int screenBase) {
     callback->entryScene = scene;
     callback->bg2ScreenBase = screenBase;
 }
 
-// @symbol func_ov075_02116028
 void func_ov075_02116028(dScEntry_c::graphCallback_c *callback, int screenBase) {
     callback->bg2ScreenBase = screenBase;
 }
 
-// @symbol func_ov075_02116030
 void func_ov075_02116030(void *object, void *screen) {
     dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
     if (callback->compressedBg2Screen == 0)
@@ -296,7 +286,6 @@ void func_ov075_02116030(void *object, void *screen) {
 }
 }
 
-// @symbol _ZN10dScEntry_c15graphCallback_c14GraphCallback2Ev
 int dScEntry_c::graphCallback_c::GraphCallback2() {
     volatile unsigned short *reg = (volatile unsigned short *)0x400100c;
     unsigned short value = (unsigned short)(*reg & ~0x1f00);
@@ -315,10 +304,8 @@ int dScEntry_c::graphCallback_c::GraphCallback2() {
     return 1;
 }
 
-// @symbol _ZN10dScEntry_c15graphCallback_cC1Ev
 dScEntry_c::graphCallback_c::graphCallback_c() : compressedBg2Screen(0), entryScene(0) {}
 
-// @symbol func_ov075_021160dc
 extern "C" void func_ov075_021160dc(dScEntry_c *scene) {
     int iconCount = scene->mIconCount;
     int iconIndex = 0;
@@ -333,7 +320,6 @@ extern "C" void func_ov075_021160dc(dScEntry_c *scene) {
     } while (iconIndex < iconCount);
 }
 
-// @symbol func_ov075_02116128
 /* recovered: dScEntry_c recolours the border of one VS/wireless entry-menu slot box.
  *
  * G2::GetBG1ScrPtr gives the BG1 screen map and func_02030958 maps the slot index to
@@ -364,7 +350,7 @@ static inline void SetPalette(u16 *entry, u16 pal) {
     *entry = (*entry & 0xfff) | (u16)(pal << 12);
 }
 
-extern "C" void func_ov075_02116128(int unused, int slot, int dim) {
+extern "C" void func_ov075_02116128(dScEntry_c *scene, int slot, int dim) {
     int players = data_0209fc50;
     u16 *map = (u16 *)G2::GetBG1ScrPtr();
     u16 pal = func_02030958(slot) + 10;
@@ -388,7 +374,6 @@ extern "C" void func_ov075_02116128(int unused, int slot, int dim) {
     }
 }
 
-// @symbol func_ov075_0211621c
 /* recovered: dScEntry_c draws the per-player rows of the VS/wireless entry menu.
  *
  * One row per joined player (data_0209fc50 of them). With d = 4 - players, the rows
@@ -420,7 +405,7 @@ extern u8 data_ov075_0211c6e8[];
 extern OamAttr data_ov075_0211c7c0[];
 extern char data_ov075_0211c8b0[];
 extern OamAttr data_ov075_0211c870[];
-extern s8 data_0209f310[];
+extern s8 gNumStageStars[];
 extern s16 gNumCoins[];
 extern char data_0209ee90[];
 }
@@ -429,7 +414,7 @@ static inline int EntryPlayerIndex(int arg0) {
     return func_02030958(arg0);
 }
 
-extern "C" void func_ov075_0211621c(char *c) {
+extern "C" void func_ov075_0211621c(dScEntry_c *scene) {
     int count = data_0209fc50;
     int stride;
     int tens;
@@ -437,7 +422,7 @@ extern "C" void func_ov075_0211621c(char *c) {
     int i = 0;
     int d = 4 - count;
     int xbase;
-    (void)c;
+    (void)scene;
     xbase = data_ov075_0211c6e8[d];
     stride = (d * 16) + 0x38;
     {
@@ -474,7 +459,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                     int *q = p + 1;
                     int val = *q;
                     *q = (val & (~0x3ff)) |
-                         ((data_0209f310[pid] + (((u32)(val << 22)) >> 22)) & 0x3ff);
+                         ((gNumStageStars[pid] + (((u32)(val << 22)) >> 22)) & 0x3ff);
                 }
                 OAM::Render(zB, data_ov075_0211c870, xbase + i * stride, yNum, minus1, minus1,
                             scale, scale, zB, minus1);

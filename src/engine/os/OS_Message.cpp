@@ -13,24 +13,10 @@
  */
 #include "IRQ.h"
 #include "nitro/os/thread.h"
-
-#define OS_MESSAGE_BLOCK 1
-
-typedef void *OSMessage;
-
-/* NitroSDK OSMessageQueue, this SDK's layout. */
-typedef struct OSMessageQueue {
-    u16 queueSend;       /* 0x00 -- OSThreadQueue: senders waiting for room */
-    u16 queueReceive;    /* 0x02 -- receivers waiting for a message */
-    OSMessage *msgArray; /* 0x04 */
-    s32 msgCount;        /* 0x08 */
-    s32 firstIndex;      /* 0x0c */
-    s32 usedCount;       /* 0x10 */
-} OSMessageQueue;
+#include "nitro/os/message.h"
 
 extern "C" {
 
-// @symbol OS_InitMessageQueue
 void OS_InitMessageQueue(OSMessageQueue *mq, OSMessage *msgArray, s32 msgCount) {
     mq->queueSend = 0;
     mq->queueReceive = 0;
@@ -40,7 +26,6 @@ void OS_InitMessageQueue(OSMessageQueue *mq, OSMessage *msgArray, s32 msgCount) 
     mq->usedCount = 0;
 }
 
-// @symbol OS_SendMessage
 int OS_SendMessage(OSMessageQueue *mq, OSMessage msg, s32 flags) {
     u32 enabled = IRQ::Disable();
     while (mq->msgCount <= mq->usedCount) {
@@ -60,7 +45,6 @@ int OS_SendMessage(OSMessageQueue *mq, OSMessage msg, s32 flags) {
     }
 }
 
-// @symbol OS_ReceiveMessage
 int OS_ReceiveMessage(OSMessageQueue *mq, OSMessage *msg, s32 flags) {
     u32 enabled = IRQ::Disable();
     while (mq->usedCount == 0) {

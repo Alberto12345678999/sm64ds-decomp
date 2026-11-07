@@ -29,6 +29,7 @@
 #include "dCamera_c.h"
 #include "dClipper.h"
 #include "Memory.h"
+#include "math/MtxStack.h"
 
 /* One tree instance's list node: the billboard/clip center in
  * matrix-shifted units (>> 3, y lifted by kCanopyLift), its cylinder
@@ -62,11 +63,8 @@ enum {
     kOpacityFull = 0x1f,
 };
 
-/* Shared ABI seams, kept above the first `// @symbol` marker so no member
- * is charged with their mangled spellings. local extern: no shared header
- * declares either helper. */
+/* Shared ABI seams. local extern: no shared header declares this helper. */
 extern "C" {
-void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
 /* Spelled Vector3 * for the object actually passed. The definition in
  * src/Vec3_AsrInPlace.c says int *, and the tree also carries s32 * and a
  * file-local `struct Vec3 { int x, y, z; }` in src/game/actors/d_a_kpa3_bg.cpp --
@@ -82,13 +80,11 @@ extern dClipper data_0209f43c;
 extern Matrix4x3 data_0209b3ec;
 extern dCamera_c *data_0209f318;
 
-// @symbol daTree_c_classInit
 extern "C" daTree_c *daTree_c_classInit()
 {
     return new daTree_c();
 }
 
-// @symbol _ZN8daTree_c13InitResourcesEv
 /* First tree of a variant loads that variant's dExtSimpleModel_c; every tree appends
  * a node to its variant's list. Returns 1 when this tree was first. */
 int daTree_c::InitResources()
@@ -118,7 +114,6 @@ int daTree_c::InitResources()
     }
 }
 
-// @symbol _ZN8daTree_c8BehaviorEv
 int daTree_c::Behavior()
 {
     TreeNode **slot = data_ov002_02110a48;
@@ -136,7 +131,6 @@ int daTree_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN8daTree_c6RenderEv
 int daTree_c::Render()
 {
     dCamera_c *cam = data_0209f318;
@@ -174,13 +168,11 @@ int daTree_c::Render()
     return 1;
 }
 
-// @symbol _ZN8daTree_c16OnPendingDestroyEv
 /* Empty in the ROM: the override exists only to occupy vtable slot 12. */
 void daTree_c::OnPendingDestroy()
 {
 }
 
-// @symbol _ZN8daTree_c16CleanupResourcesEv
 int daTree_c::CleanupResources()
 {
     dExtSimpleModel_c *model = mModel;

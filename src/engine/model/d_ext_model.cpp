@@ -56,11 +56,12 @@
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
+/* func_02046e28 uses these local C-layout views in its implementation TU. */
+struct Model;
+struct MatAnimData;
+
 extern "C" {
 extern Matrix4x3 data_0209b3ec; /* local extern: the camera-space matrix the Render paths use */
-extern Matrix4x3 data_020a0e68; /* local extern: dExtShadowModel_c's shared render matrix scratch */
-/* local extern: no header declares it; data.transforms-bone walk in Virtual10 */
-void func_02045074(ModelComponents *data, BMD_Bone *bones);
 /* local extern: no header declares it; sizes the transforms buffer from the file */
 int func_02046564(BMD_File *file);
 /* local extern: no header declares it; initializes ModelComponents over the file */
@@ -80,9 +81,9 @@ void func_0203cbc0(void *ptr);
    defines this veneer for the host). */
 void *func_0203cc0c(u32 size);
 #endif
-/* local extern: LoadFile.c defines int(int). This is the spelling
-   LoadAndSetFile's shard matched (banked return and parameter rows). */
-void *LoadFile(u16 ov0ID);
+/* local extern: LoadFile.c defines int(int); the file comes back as a
+   pointer here (banked return row). */
+void *LoadFile(int ov0ID);
 /* local extern: func_020469e0.c defines int(int *). The caller's shard
    matched this spelling (banked rows). */
 int func_020469e0(void *ptr);
@@ -108,14 +109,14 @@ extern int data_0208e738;
 void func_02046234(ModelComponents *data, int mode);
 void func_02046008(ModelComponents *data, int id);
 void func_020461b4(ModelComponents *data, u32 a);
-/* local extern: the +8 adjustors the low veneers forward to. The one-param
-   spellings are deliberate under-declarations -- the thunks forward r1/r2
-   untouched, which C cannot express (banked arity rows). */
+/* local extern: the +8 adjustors the low veneers forward to; Model4.cpp
+   defines them and no header declares them. Each veneer passes its own
+   arguments straight through in r1/r2. */
 void func_02045ec4(void *self, unsigned int value, int index);
-void func_02045e70(char *p);
-void func_02045ef8(char *p);
-void func_02045f80(char *p);
-void func_0204605c(char *p);
+void func_02045e70(char *p, unsigned int color);
+void func_02045ef8(char *p, unsigned int color);
+void func_02045f80(char *p, unsigned int color);
+void func_0204605c(char *p, int id, int index);
 /* defined below; LoadAndSetFile calls it */
 int func_02016ff4(dExtModel_c *self, BMD_File *file, int c, int d);
 u32 func_02017060(void *ptr);
@@ -159,7 +160,7 @@ void func_02046bbc(ModelComponents *model, BTP_File *file, unsigned int frame);
 void func_02046b64(BMD_File *model, BTA_File *file);
 void func_020469e8(ModelComponents *model, BTA_File *file, int frame);
 void func_020470e8(BMD_File *model, BMA_File *file);
-void func_02046e28(ModelComponents *model, BMA_File *file, int frame);
+void func_02046e28(struct Model *model, struct MatAnimData *file, unsigned short frame);
 }
 
 namespace cstd {
@@ -183,22 +184,17 @@ struct CommonModelData {
 
 /* One definition emits C1 and C2. The cartridge homes only C2 (nothing
    constructs a complete dExtModel_c), so the manifest deadstrips C1. */
-// @symbol _ZN11dExtModel_cC2Ev
 dExtModel_c::dExtModel_c() : modelFile(0) {}
 
 /* One definition emits D2, D0 and D1, in that order: the vptr store is the
    compiler's; the body releases modelFile. D0 follows with the dExtModel_c
    operator delete (Memory::operator_delete2). */
-// @symbol _ZN11dExtModel_cD2Ev
-// @symbol _ZN11dExtModel_cD0Ev
-// @symbol _ZN11dExtModel_cD1Ev
 dExtModel_c::~dExtModel_c() {
     if (modelFile != 0) {
         Deallocate(modelFile);
     }
 }
 
-// @symbol func_02017060
 extern "C" u32 func_02017060(void *ptr) {
     if (!ptr)
         return 0;
@@ -210,7 +206,6 @@ extern "C" u32 func_02017060(void *ptr) {
 
 /* Loads the file offsets, calls the object's DoSetFile through vtable slot 2,
    and on success reallocs the file down to its reported size. */
-// @symbol func_02016ff4
 extern "C" int func_02016ff4(dExtModel_c *self, BMD_File *file, int c, int d) {
     int ret;
     if (!file)
@@ -222,19 +217,16 @@ extern "C" int func_02016ff4(dExtModel_c *self, BMD_File *file, int c, int d) {
     return ret;
 }
 
-// @symbol _ZN11dExtModel_c7SetFileEP8BMD_Fileii
 int dExtModel_c::SetFile(BMD_File *file, int a, int b) {
     return DoSetFile((char *)file, a, b);
 }
 
-// @symbol _ZN17dExtSimpleModel_c14LoadAndSetFileEtii
 void dExtSimpleModel_c::LoadAndSetFile(u16 ov0ID, int a, int b) {
     BMD_File *file = (BMD_File *)::LoadFile(ov0ID);
     modelFile = file;
     func_02016ff4(this, file, a, b);
 }
 
-// @symbol _ZN17dExtSimpleModel_c23AddToCommonModelDataArrER8BMD_File
 void *dExtSimpleModel_c::AddToCommonModelDataArr(BMD_File &file) {
     CommonModelData *p = (CommonModelData *)data_0209cefc;
     int i = 0;
@@ -257,7 +249,6 @@ void *dExtSimpleModel_c::AddToCommonModelDataArr(BMD_File &file) {
 
 /* Get-or-create the pooled ModelComponents entry for the pointer-holding
    siblings (dExtCommonModel_c/dExtShadowModel_c). */
-// @symbol func_02016e70
 extern "C" ModelComponents *func_02016e70(BMD_File *file) {
     CommonModelData *e;
     void *b;
@@ -283,7 +274,6 @@ extern "C" ModelComponents *func_02016e70(BMD_File *file) {
     return e->components;
 }
 
-// @symbol CleanCommonModelDataArr
 extern "C" void CleanCommonModelDataArr(void) {
     CommonModelData *e = (CommonModelData *)data_0209cefc;
     int i = 0;
@@ -306,8 +296,6 @@ extern "C" void CleanCommonModelDataArr(void) {
 /* One definition emits C1 and C2: the base-chain call to dExtModel_c::C2, the
    _ZTV17dExtSimpleModel_c vptr store, the flat twelve-word identity copy, and the
    transformsBuf zero. The cartridge keeps both variants. */
-// @symbol _ZN17dExtSimpleModel_cC2Ev
-// @symbol _ZN17dExtSimpleModel_cC1Ev
 dExtSimpleModel_c::dExtSimpleModel_c() : transformsBuf(0) {
     mat4x3 = IDENTITY_MATRIX4X3;
 }
@@ -316,18 +304,15 @@ dExtSimpleModel_c::dExtSimpleModel_c() : transformsBuf(0) {
    destructor call are the compiler's; the body is the class's one written
    obligation -- handing transformsBuf back through the delete veneer. D0
    follows with the dExtModel_c operator delete (Memory::operator_delete2). */
-// @symbol _ZN17dExtSimpleModel_cD1Ev
 dExtSimpleModel_c::~dExtSimpleModel_c() {
     if (transformsBuf)
         func_0203cbc0(transformsBuf);
 }
 
-// @symbol _ZN17dExtSimpleModel_c11UpdateVertsEv
 void dExtSimpleModel_c::UpdateVerts() {
     data.UpdateVertsUsingBones();
 }
 
-// @symbol _ZN17dExtSimpleModel_c9DoSetFileEPcii
 int dExtSimpleModel_c::DoSetFile(char *file_, int a, int b) {
     BMD_File *file = (BMD_File *)file_;
     void *buffer;
@@ -346,26 +331,17 @@ int dExtSimpleModel_c::DoSetFile(char *file_, int a, int b) {
     return 1;
 }
 
-// @symbol _ZN17dExtSimpleModel_c9Virtual10ER9Matrix4x3
 void dExtSimpleModel_c::Virtual10(Matrix4x3 &mat) {
-    /* The copy is one flat 12-word ldm/stm run in the ROM. CW copies the
-       nested Matrix4x3 (Matrix3x3 + Vector3) memberwise, which is bigger,
-       so it goes through a flat 12-word view instead. */
-    struct Mtx12w {
-        Fix12i m[12];
-    };
-    *(Mtx12w *)data.transforms = *(const Mtx12w *)&mat;
-    func_02045074(&data, data.modelFile->bones);
+    *data.transforms = mat;
+    data.func_02045074(data.modelFile->bones);
 }
 
-// @symbol _ZN17dExtSimpleModel_c6RenderEPK7Vector3
 void dExtSimpleModel_c::Render(const Vector3 *scale) {
     Matrix4x3 temp;
-    MulMat4x3Mat4x3((const int *)&mat4x3, (const int *)&data_0209b3ec, (int *)&temp);
+    MulMat4x3Mat4x3(&mat4x3, &data_0209b3ec, &temp);
     data.Render(&temp, (Vector3 *)scale);
 }
 
-// @symbol func_02016b24
 extern "C" void func_02016b24(dExtSimpleModel_c *model, u32 mask) {
     u32 count = model->data.modelFile->numMaterials;
     BMD_Material *p = model->data.materials;
@@ -376,7 +352,6 @@ extern "C" void func_02016b24(dExtSimpleModel_c *model, u32 mask) {
     }
 }
 
-// @symbol func_02016acc
 extern "C" void func_02016acc(dExtSimpleModel_c *model, unsigned int mask) {
     BMD_File *file = model->data.modelFile;
     unsigned int n = file->numMaterials;
@@ -389,27 +364,22 @@ extern "C" void func_02016acc(dExtSimpleModel_c *model, unsigned int mask) {
     }
 }
 
-// @symbol _ZN17dExtSimpleModel_c12SetPolygonIDEi
 void dExtSimpleModel_c::SetPolygonID(int id) {
     func_02046008(&data, id);
 }
 
-// @symbol func_02016aac
-extern "C" void func_02016aac(char *self) {
-    func_0204605c(self + 8);
+extern "C" void func_02016aac(char *self, int id, int index) {
+    func_0204605c(self + 8, id, index);
 }
 
-// @symbol _ZN11dExtModel_c12ApplyOpacityEjj
 void dExtModel_c::ApplyOpacity(u32 opacity, u32) {
     func_020461b4(&static_cast<dExtSimpleModel_c *>(this)->data, opacity);
 }
 
-// @symbol _ZN17dExtSimpleModel_c14SetPolygonModeEi
 void dExtSimpleModel_c::SetPolygonMode(int mode) {
     func_02046234(&data, mode);
 }
 
-// @symbol _ZN17dExtSimpleModel_c12HideMaterialEii
 void dExtSimpleModel_c::HideMaterial(int boneID, int listIdx) {
     BMD_File *file = data.modelFile;
     BMD_Material *mats = data.materials;
@@ -417,7 +387,6 @@ void dExtSimpleModel_c::HideMaterial(int boneID, int listIdx) {
     mats[ids[listIdx]].flags |= 0x80000000;
 }
 
-// @symbol _ZN17dExtSimpleModel_c12ShowMaterialEii
 void dExtSimpleModel_c::ShowMaterial(int boneID, int listIdx) {
     BMD_File *file = data.modelFile;
     BMD_Material *mats = data.materials;
@@ -425,22 +394,18 @@ void dExtSimpleModel_c::ShowMaterial(int boneID, int listIdx) {
     mats[ids[listIdx]].flags &= 0x7fffffff;
 }
 
-// @symbol func_02016a14
-extern "C" void func_02016a14(char *self) {
-    func_02045f80(self + 8);
+extern "C" void func_02016a14(char *self, int color) {
+    func_02045f80(self + 8, color);
 }
 
-// @symbol func_02016a04
-extern "C" void func_02016a04(char *self) {
-    func_02045ef8(self + 8);
+extern "C" void func_02016a04(char *self, int color) {
+    func_02045ef8(self + 8, color);
 }
 
-// @symbol func_020169f4
-extern "C" void func_020169f4(char *self) {
-    func_02045e70(self + 8);
+extern "C" void func_020169f4(char *self, int color) {
+    func_02045e70(self + 8, color);
 }
 
-// @symbol func_020169d8
 extern "C" void func_020169d8(char *self, int index, unsigned int value) {
     func_02045ec4(self + 8, value, index);
 }
@@ -452,8 +417,6 @@ extern "C" void func_020169d8(char *self, int index, unsigned int value) {
 
 /* One definition emits C1 and C2: dExtSimpleModel_c::C2, dExtFrameCtrl_c::C2 at +0x50,
    both vptr stores, and file = 0. The cartridge keeps both variants. */
-// @symbol _ZN14dExtAnmModel_cC1Ev
-// @symbol _ZN14dExtAnmModel_cC2Ev
 dExtAnmModel_c::dExtAnmModel_c() {
     file = 0;
 }
@@ -462,32 +425,25 @@ dExtAnmModel_c::dExtAnmModel_c() {
    end of the object. The body is empty: both vptr restores and the base
    destructor calls are the compiler's, and D0 finishes with
    dExtAnmModel_c::operator delete. The cartridge keeps all three. */
-// @symbol _ZN14dExtAnmModel_cD2Ev
-// @symbol _ZN14dExtAnmModel_cD0Ev
-// @symbol _ZN14dExtAnmModel_cD1Ev
 dExtAnmModel_c::~dExtAnmModel_c() {}
 
-// @symbol _ZN14dExtAnmModel_c11UpdateVertsEv
 void dExtAnmModel_c::UpdateVerts() {
     s32 frame = currFrame;
     data.UpdateBones(file, (u32)(frame << 4) >> 0x10);
     data.UpdateVertsUsingBones();
 }
 
-// @symbol _ZN14dExtAnmModel_c9Virtual10ER9Matrix4x3
 void dExtAnmModel_c::Virtual10(Matrix4x3 &mat) {
     s32 frame = currFrame;
     data.UpdateBones(file, (u32)(frame << 4) >> 0x10);
     dExtSimpleModel_c::Virtual10(mat);
 }
 
-// @symbol _ZN14dExtAnmModel_c6RenderEPK7Vector3
 void dExtAnmModel_c::Render(const Vector3 *scale) {
     UpdateVerts();
     dExtSimpleModel_c::Render(scale);
 }
 
-// @symbol _ZN14dExtAnmModel_c9Virtual18EjPK7Vector3
 void dExtAnmModel_c::Virtual18(u32 mat, const Vector3 *scale) {
     Virtual10(*(Matrix4x3 *)mat);
     dExtSimpleModel_c::Render(scale);
@@ -495,13 +451,11 @@ void dExtAnmModel_c::Virtual18(u32 mat, const Vector3 *scale) {
 
 /* Refresh bones without touching verts -- UpdateVerts' first half kept
    file-local; daMoray_c calls it on a dExtBlendAnmModel_c*. */
-// @symbol func_020167a4
 extern "C" void func_020167a4(dExtAnmModel_c *self) {
     s32 frame = self->currFrame;
     self->data.UpdateBones(self->file, (u32)(frame << 4) >> 0x10);
 }
 
-// @symbol _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit
 void dExtAnmModel_c::SetAnim(BCA_File *animFile, int flags, Fix12i speed, u16 startFrame) {
     if (animFile == file) {
         SetFlags(flags);
@@ -515,7 +469,6 @@ void dExtAnmModel_c::SetAnim(BCA_File *animFile, int flags, Fix12i speed, u16 st
 
 /* Both this and src adjust by +0x50 for the base call: the first real
    multiple-inheritance argument conversion in the tree. */
-// @symbol _ZN14dExtAnmModel_c4CopyERKS_Pc
 void dExtAnmModel_c::Copy(const dExtAnmModel_c &src, char *newFile) {
     dExtFrameCtrl_c::Copy(src);
     if (newFile != 0)
@@ -532,19 +485,16 @@ void dExtAnmModel_c::Copy(const dExtAnmModel_c &src, char *newFile) {
 /* One definition emits C1 and C2. C2 has no cartridge home. blendStep stays
    uninitialised: Advance seeds it from SetAnim, and the ROM ctor never stores
    it. Empty body; the two stores are the init list. */
-// @symbol _ZN19dExtBlendAnmModel_cC1Ev
 dExtBlendAnmModel_c::dExtBlendAnmModel_c() : blendWeight(0x1000), mBlendBuffer(0) {}
 
 /* One definition emits D2, D0 and D1, and queues its _ZThn80_ pair. D0 adds
    the class operator delete. The written obligation is the conditional free
    of mBlendBuffer; a bare delete would call operator delete with no test. */
-// @symbol _ZN19dExtBlendAnmModel_cD1Ev
 dExtBlendAnmModel_c::~dExtBlendAnmModel_c() {
     if (mBlendBuffer)
         func_0203cbc0(mBlendBuffer);
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c9DoSetFileEPcii
 int dExtBlendAnmModel_c::DoSetFile(char *file, int a, int b) {
     char *f = file;
     int r = dExtSimpleModel_c::DoSetFile(file, a, b);
@@ -556,7 +506,6 @@ int dExtBlendAnmModel_c::DoSetFile(char *file, int a, int b) {
 /* DoSetFile's tail: allocates the mBlendBuffer blend buffer sized off the file and
    hands it plus the ModelComponents member to func_020462b4. It sits between
    UpdateVerts and DoSetFile in the ROM. */
-// @symbol func_020165c4
 extern "C" int func_020165c4(dExtBlendAnmModel_c *self, char *file) {
     self->mBlendBuffer = Memory::operator_new2(func_020462bc((int *)file));
     void *p = self->mBlendBuffer;
@@ -566,7 +515,6 @@ extern "C" int func_020165c4(dExtBlendAnmModel_c *self, char *file) {
     return 1;
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c11UpdateVertsEv
 void dExtBlendAnmModel_c::UpdateVerts() {
     s32 frame = currFrame;
     data.UpdateBones(file, (u32)(frame << 4) >> 0x10);
@@ -577,7 +525,6 @@ void dExtBlendAnmModel_c::UpdateVerts() {
     }
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c9Virtual10ER9Matrix4x3
 void dExtBlendAnmModel_c::Virtual10(Matrix4x3 &mat) {
     s32 frame = currFrame;
     data.UpdateBones(file, (u32)(frame << 4) >> 0x10);
@@ -588,19 +535,16 @@ void dExtBlendAnmModel_c::Virtual10(Matrix4x3 &mat) {
     }
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c6RenderEPK7Vector3
 void dExtBlendAnmModel_c::Render(const Vector3 *scale) {
     UpdateVerts();
     dExtSimpleModel_c::Render(scale);
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c9Virtual18EjPK7Vector3
 void dExtBlendAnmModel_c::Virtual18(u32 mat, const Vector3 *scale) {
     Virtual10(*(Matrix4x3 *)mat);
     dExtSimpleModel_c::Render(scale);
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c7AdvanceEv
 void dExtBlendAnmModel_c::Advance() {
     dExtFrameCtrl_c::Advance();
     if (blendWeight < 0x1000) {
@@ -610,7 +554,6 @@ void dExtBlendAnmModel_c::Advance() {
     }
 }
 
-// @symbol _ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit
 void dExtBlendAnmModel_c::SetAnim(BCA_File &animFile, int numBlendFrames, int flags, Fix12i speed,
                                   u16 startFrame) {
     if (&animFile == file) {
@@ -638,18 +581,15 @@ void dExtBlendAnmModel_c::SetAnim(BCA_File &animFile, int numBlendFrames, int fl
 /* One definition emits C1 and C2. C2 has no cartridge home. otherFile is
    declared before otherAnim, so the init list stores it before the member
    constructor; a body store would land one call too late. */
-// @symbol _ZN15dExtAnm2Model_cC1Ev
 dExtAnm2Model_c::dExtAnm2Model_c() : otherFile(0) {}
 
 /* One definition emits D2, D0 and D1, and queues the last _ZThn80_ pair. D0
    adds the class operator delete. The body is empty: the vptr stores and the
    base destructor follow from the class. */
-// @symbol _ZN15dExtAnm2Model_cD1Ev
 dExtAnm2Model_c::~dExtAnm2Model_c() {}
 
 /* The second animation's SetAnim, fast path and all: the same body as
    dExtAnmModel_c::SetAnim, run on otherFile and otherAnim. */
-// @symbol _ZN15dExtAnm2Model_c13Func_020162C4Ejiit
 void dExtAnm2Model_c::Func_020162C4(u32 animFile, int flags, Fix12i speed, u16 startFrame) {
     if (animFile == otherFile) {
         otherAnim.SetFlags(flags);
@@ -663,7 +603,6 @@ void dExtAnm2Model_c::Func_020162C4(u32 animFile, int flags, Fix12i speed, u16 s
 /* Pose bone `bone` from the second animation at its current frame. daPly_c
    calls it on a body model with bone 8; the int `self` keeps daPly_c's
    declaration and this definition in agreement. */
-// @symbol func_020162a4
 extern "C" void func_020162a4(int self, int bone) {
     dExtAnm2Model_c *model = (dExtAnm2Model_c *)self;
     s32 frame = model->otherAnim.currFrame;
@@ -671,7 +610,6 @@ extern "C" void func_020162a4(int self, int bone) {
 }
 
 /* Release bone `bone` back to the primary animation (no file, frame 0). */
-// @symbol func_0201628c
 extern "C" void func_0201628c(int self, int bone) {
     dExtAnm2Model_c *model = (dExtAnm2Model_c *)self;
     func_02045e2c((int)&model->data, bone, 0, 0);
@@ -679,7 +617,6 @@ extern "C" void func_0201628c(int self, int bone) {
 
 /* otherAnim.Copy(src) upcasts src to its dExtFrameCtrl_c BASE (+0x50): the
    second animation is seeded from the first one's state. */
-// @symbol _ZN15dExtAnm2Model_c4CopyERKS_Pcj
 void dExtAnm2Model_c::Copy(const dExtAnm2Model_c &src, char *newFile, u32 newOtherFile) {
     dExtAnmModel_c::Copy(src, newFile);
     otherAnim.Copy(src);
@@ -695,7 +632,6 @@ void dExtAnm2Model_c::Copy(const dExtAnm2Model_c &src, char *newFile, u32 newOth
    (func_02016e70) rather than an in-place struct.
    --------------------------------------------------------------------------- */
 
-// @symbol _ZN17dExtCommonModel_cC1Ev
 dExtCommonModel_c::dExtCommonModel_c() : data(0) {
     mat4x3 = IDENTITY_MATRIX4X3;
 }
@@ -705,10 +641,8 @@ dExtCommonModel_c::dExtCommonModel_c() : data(0) {
  * `virtual ~dExtCommonModel_c()` already mean, and the compiler emits them around
  * it. Neither member has a destructor, so the ROM's 0x24 bytes are exactly
  * that. D0 is generated from the same body plus the class operator delete. */
-// @symbol _ZN17dExtCommonModel_cD1Ev
 dExtCommonModel_c::~dExtCommonModel_c() {}
 
-// @symbol _ZN17dExtCommonModel_c9DoSetFileEPcii
 int dExtCommonModel_c::DoSetFile(char *file, int a, int b) {
     data = func_02016e70((BMD_File *)file);
     if (data == 0)
@@ -722,16 +656,14 @@ int dExtCommonModel_c::DoSetFile(char *file, int a, int b) {
     return 1;
 }
 
-// @symbol _ZN17dExtCommonModel_c6RenderEPK7Vector3
 void dExtCommonModel_c::Render(const Vector3 *scale) {
     Matrix4x3 temp;
-    MulMat4x3Mat4x3((const int *)&mat4x3, (const int *)&data_0209b3ec, (int *)&temp);
+    MulMat4x3Mat4x3(&mat4x3, &data_0209b3ec, &temp);
     data->Render(&temp, (Vector3 *)scale);
 }
 
 /* ORs flags into every material; the (u32 *) launder on &p->flags keeps the
    ROM's materialized address for the read-modify-write. */
-// @symbol _ZN17dExtCommonModel_c13Func_020160ACEj
 void dExtCommonModel_c::Func_020160AC(u32 flags) {
     BMD_File *file = data->modelFile;
     u32 n = file->numMaterials;
@@ -745,7 +677,6 @@ void dExtCommonModel_c::Func_020160AC(u32 flags) {
     }
 }
 
-// @symbol _ZN17dExtCommonModel_c12SetPolygonIDEj
 void dExtCommonModel_c::SetPolygonID(u32 id) {
     func_02046008(data, id);
 }
@@ -761,7 +692,6 @@ void dExtCommonModel_c::SetPolygonID(u32 id) {
 /* An empty body; the three null stores after the vptr are exactly the member
  * init list -- mat at +0xc and the live-list links prev/next at +0x20/+0x24,
  * the same links ~dExtShadowModel_c unlinks. */
-// @symbol _ZN17dExtShadowModel_cC1Ev
 dExtShadowModel_c::dExtShadowModel_c() : mat(0), prev(0), next(0) {}
 
 /* Only the unlink is written by hand: the vtable store at the top and the
@@ -770,7 +700,6 @@ dExtShadowModel_c::dExtShadowModel_c() : mat(0), prev(0), next(0) {}
  * compared against `this`; every other node is reached through its
  * predecessor. D0 is generated from the same body plus the class
  * operator delete. */
-// @symbol _ZN17dExtShadowModel_cD1Ev
 dExtShadowModel_c::~dExtShadowModel_c() {
     if (prev)
         prev->next = next;
@@ -787,7 +716,6 @@ dExtShadowModel_c::~dExtShadowModel_c() {
 /* Overrides the base slot, so it takes (char *, int, int) like its
    siblings; the polygon-ID argument is simply never used -- a shadow has
    no polygon ID to set. */
-// @symbol _ZN17dExtShadowModel_c9DoSetFileEPcii
 int dExtShadowModel_c::DoSetFile(char *file, int a, int b) {
     data = func_02016e70((BMD_File *)file);
     if (data == 0)
@@ -808,12 +736,10 @@ int dExtShadowModel_c::DoSetFile(char *file, int a, int b) {
     return 1;
 }
 
-// @symbol _ZN17dExtShadowModel_c10InitCuboidEv
 int dExtShadowModel_c::InitCuboid() {
     return SetFile(&data_ov001_020ad524, 1, -1);
 }
 
-// @symbol _ZN17dExtShadowModel_c12InitCylinderEv
 int dExtShadowModel_c::InitCylinder() {
     return SetFile(&data_ov001_020ad560, 1, -1);
 }
@@ -825,7 +751,6 @@ int dExtShadowModel_c::InitCylinder() {
  * the 5Fix12IiE in the old symbol was OUR spelling of a 20.12 scalar, and
  * nothing about the bytes asked for it. Scalars, a real method, same bytes.
  */
-// @symbol _ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih
 void dExtShadowModel_c::InitModel(Matrix4x3 *m, Fix12i sx, Fix12i sy, Fix12i sz, u8 opacity) {
     mat = m;
     scale.x = sx;
@@ -846,7 +771,6 @@ void dExtShadowModel_c::InitModel(Matrix4x3 *m, Fix12i sx, Fix12i sy, Fix12i sz,
     data_0209cef4 = this;
 }
 
-// @symbol _ZN17dExtShadowModel_c8CleanAllEv
 void dExtShadowModel_c::CleanAll() {
     if (data_0209cef4) {
         do {
@@ -864,18 +788,15 @@ void dExtShadowModel_c::CleanAll() {
 
 /* The scratch matrix is flat in this TU (common.h): m[10] is the
    translation's y, lifted two units so the shadow sits above the ground. */
-// @symbol _ZN17dExtShadowModel_c9RenderAllEv
 void dExtShadowModel_c::RenderAll() {
     dExtShadowModel_c *node = data_0209cef4;
     if (node) {
         do {
             ModelComponents *model = node->data;
             func_0203c178(&data_020a0e68, node->scale.x, node->scale.y, node->scale.z);
-            MulMat4x3Mat4x3((const int *)&data_020a0e68, (const int *)node->mat,
-                            (int *)&data_020a0e68);
+            MulMat4x3Mat4x3(&data_020a0e68, node->mat, &data_020a0e68);
             data_020a0e68.m[10] += 0x2000;
-            MulMat4x3Mat4x3((const int *)&data_020a0e68, (const int *)&data_0209b3ec,
-                            (int *)&data_020a0e68);
+            MulMat4x3Mat4x3(&data_020a0e68, &data_0209b3ec, &data_020a0e68);
             func_02046120(model, node->opacity);
             model->Render(&data_020a0e68, 0);
             func_02046088(model, node->opacity, 1);
@@ -897,8 +818,6 @@ void dExtShadowModel_c::RenderAll() {
  * sets speed (+0xc) to 0x1000 = 1.0, in that order. C1 and C2 are the same
  * code (root class, nothing to chain); every ROM caller of C2 is a derived
  * base step. */
-// @symbol _ZN15dExtFrameCtrl_cC1Ev
-// @symbol _ZN15dExtFrameCtrl_cC2Ev
 dExtFrameCtrl_c::dExtFrameCtrl_c() {
     currFrame = 0;
     speed = 0x1000;
@@ -909,12 +828,8 @@ dExtFrameCtrl_c::dExtFrameCtrl_c() {
  * header defines. dExtFrameCtrl_c has no virtual bases, so D1 and D2 are
  * the same code: a vtable slot reaches D1, a derived destructor's base step
  * reaches D2. */
-// @symbol _ZN15dExtFrameCtrl_cD2Ev
-// @symbol _ZN15dExtFrameCtrl_cD0Ev
-// @symbol _ZN15dExtFrameCtrl_cD1Ev
 dExtFrameCtrl_c::~dExtFrameCtrl_c() {}
 
-// @symbol _ZN15dExtFrameCtrl_c7AdvanceEv
 void dExtFrameCtrl_c::Advance() {
     u32 f = numFramesAndFlags;
     u32 len = f & ~0xc0000000;
@@ -925,7 +840,7 @@ void dExtFrameCtrl_c::Advance() {
            read-modify-write, and reloads currFrame through the member
            afterwards; the launder keeps this store aliasing the member so
            the compiler re-reads it the way the ROM does */
-        int *pFrame = (int *)((long long)((int)this + 8));
+        int *pFrame = (int *)((int)this + 8);
         *pFrame = *pFrame + speed;
         if (currFrame < 0) {
             currFrame = 0;
@@ -935,37 +850,31 @@ void dExtFrameCtrl_c::Advance() {
     }
 }
 
-// @symbol _ZN15dExtFrameCtrl_c12SetAnimationEtiit
 void dExtFrameCtrl_c::SetAnimation(u16 numFrames, int flags, Fix12i speed, u16 startFrame) {
     *(int *)((char *)&this->numFramesAndFlags) = flags | (numFrames << 12);
     *(int *)((char *)&this->currFrame) = startFrame << 12;
     *(int *)((char *)&this->speed) = speed;
 }
 
-// @symbol _ZNK15dExtFrameCtrl_c13GetFrameCountEv
 u32 dExtFrameCtrl_c::GetFrameCount() const {
     u32 v = numFramesAndFlags;
     return ((v & 0x3fffffff) << 4) >> 16;
 }
 
-// @symbol _ZN15dExtFrameCtrl_c8SetFlagsEi
 void dExtFrameCtrl_c::SetFlags(int flags) {
     numFramesAndFlags = (numFramesAndFlags & 0x3fffffff) | flags;
 }
 
-// @symbol _ZN15dExtFrameCtrl_c8GetFlagsEv
 int dExtFrameCtrl_c::GetFlags() {
     return numFramesAndFlags & 0xC0000000;
 }
 
-// @symbol _ZN15dExtFrameCtrl_c8FinishedEv
 int dExtFrameCtrl_c::Finished() {
     u32 f = numFramesAndFlags;
     int cur = currFrame;
     return cur >= (int)((f & 0x3fffffff) - 1);
 }
 
-// @symbol _ZNK15dExtFrameCtrl_c12WillHitFrameEi
 bool dExtFrameCtrl_c::WillHitFrame(int frame) const {
     s32 f = frame << 12;
     s32 next = currFrame + speed;
@@ -1004,7 +913,6 @@ bool dExtFrameCtrl_c::WillHitFrame(int frame) const {
 }
 
 /* Copies the three members and leaves the vptr alone. */
-// @symbol _ZN15dExtFrameCtrl_c4CopyERKS_
 void dExtFrameCtrl_c::Copy(const dExtFrameCtrl_c &anim) {
     numFramesAndFlags = anim.numFramesAndFlags;
     currFrame = anim.currFrame;
@@ -1016,17 +924,14 @@ void dExtFrameCtrl_c::Copy(const dExtFrameCtrl_c &anim) {
    BTP-file playback.
    --------------------------------------------------------------------------- */
 
-// @symbol _ZN15dExtAnmTexPat_cC1Ev
 dExtAnmTexPat_c::dExtAnmTexPat_c() {
     file = 0;
 }
 
-// @symbol _ZN15dExtAnmTexPat_cD1Ev
 dExtAnmTexPat_c::~dExtAnmTexPat_c() {}
 
 /* The header's first word is the frame count handed to SetAnimation, as in
    the sibling BTA. */
-// @symbol _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit
 void dExtAnmTexPat_c::SetFile(BTP_File &animFile, int flags, Fix12i speed, u16 startFrame) {
     if (&animFile == file) {
         SetFlags(flags);
@@ -1037,13 +942,11 @@ void dExtAnmTexPat_c::SetFile(BTP_File &animFile, int flags, Fix12i speed, u16 s
     }
 }
 
-// @symbol _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents
 void dExtAnmTexPat_c::Update(ModelComponents &model) {
     func_02046bbc(&model, file, (u16)((u32)currFrame >> 12));
 }
 
 /* Static: no this. */
-// @symbol _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File
 void dExtAnmTexPat_c::Prepare(BMD_File &model, BTP_File &animFile) {
     func_02046d50(&model, &animFile);
 }
@@ -1053,15 +956,12 @@ void dExtAnmTexPat_c::Prepare(BMD_File &model, BTP_File &animFile) {
    BTA-file playback.
    --------------------------------------------------------------------------- */
 
-// @symbol _ZN15dExtAnmTexSRT_cC1Ev
 dExtAnmTexSRT_c::dExtAnmTexSRT_c() {
     file = 0;
 }
 
-// @symbol _ZN15dExtAnmTexSRT_cD1Ev
 dExtAnmTexSRT_c::~dExtAnmTexSRT_c() {}
 
-// @symbol _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Fileiit
 void dExtAnmTexSRT_c::SetFile(BTA_File &animFile, int flags, Fix12i speed, u16 startFrame) {
     if (&animFile == file) {
         SetFlags(flags);
@@ -1072,13 +972,11 @@ void dExtAnmTexSRT_c::SetFile(BTA_File &animFile, int flags, Fix12i speed, u16 s
     }
 }
 
-// @symbol _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents
 void dExtAnmTexSRT_c::Update(ModelComponents &model) {
     func_020469e8(&model, file, (u16)((u32)currFrame >> 12));
 }
 
 /* Static: no this. */
-// @symbol _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File
 void dExtAnmTexSRT_c::Prepare(BMD_File &model, BTA_File &animFile) {
     func_02046b64(&model, &animFile);
 }
@@ -1088,15 +986,12 @@ void dExtAnmTexSRT_c::Prepare(BMD_File &model, BTA_File &animFile) {
    BMA-file playback. The lowest class in the object, so the last in source.
    --------------------------------------------------------------------------- */
 
-// @symbol _ZN17dExtAnmMaterial_cC1Ev
 dExtAnmMaterial_c::dExtAnmMaterial_c() {
     file = 0;
 }
 
-// @symbol _ZN17dExtAnmMaterial_cD1Ev
 dExtAnmMaterial_c::~dExtAnmMaterial_c() {}
 
-// @symbol _ZN17dExtAnmMaterial_c7SetFileER8BMA_Fileiit
 void dExtAnmMaterial_c::SetFile(BMA_File &animFile, int flags, Fix12i speed, u16 startFrame) {
     if (&animFile == file) {
         SetFlags(flags);
@@ -1107,13 +1002,11 @@ void dExtAnmMaterial_c::SetFile(BMA_File &animFile, int flags, Fix12i speed, u16
     }
 }
 
-// @symbol _ZN17dExtAnmMaterial_c6UpdateER15ModelComponents
 void dExtAnmMaterial_c::Update(ModelComponents &model) {
-    func_02046e28(&model, file, (u16)((u32)currFrame >> 12));
+    func_02046e28((struct Model *)&model, (struct MatAnimData *)file, (u16)((u32)currFrame >> 12));
 }
 
 /* Static: no this. */
-// @symbol _ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File
 void dExtAnmMaterial_c::Prepare(BMD_File &model, BMA_File &animFile) {
     func_020470e8(&model, &animFile);
 }

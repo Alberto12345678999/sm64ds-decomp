@@ -41,6 +41,7 @@ enum daObjCtMecha04_c_AssetId {
 #include "math/Approach.h"
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
+#include "LevelRng.h"
 
 enum {
     ACTOR_CT_MECHA04L = 0x6f,
@@ -74,14 +75,13 @@ extern SharedFilePtr *data_ov065_0211d194[][3];
 extern SharedFilePtr *data_ov065_0211d198[][3];
 extern CLPS_Block *data_ov065_0211d19c[][3];
 extern u8 data_0209f2c0;
-extern int data_0209e650;
 extern int data_ov065_0211c0b8[]; /* per-clock-setting belt speeds */
 extern s16 data_02082214[];       /* sin/cos pair per (angle >> 4) index */
 
 /* local extern: the dBgW+0x1c callback store/load; no shared
  * header. */
 extern "C" {
-extern void func_020393c4(dBgW *collider, void *callback);
+extern void func_020393c4(dBgW *collider, StoodOnCallback callback);
 }
 
 /* mFlags 0x08 is the framework's off-screen bit (dActor_c.h bit table). */
@@ -93,24 +93,20 @@ static inline int IsLargeBelt(dActor_c *actor) {
     return actor->actorID == ACTOR_CT_MECHA04L;
 }
 
-// @symbol daObjCtMecha04_c_classInit_CT_MECHA04S
 extern "C" daObjCtMecha04_c *daObjCtMecha04_c_classInit_CT_MECHA04S() {
     return new daObjCtMecha04_c();
 }
 
-// @symbol daObjCtMecha04_c_classInit_CT_MECHA04L
 extern "C" daObjCtMecha04_c *daObjCtMecha04_c_classInit_CT_MECHA04L() {
     return new daObjCtMecha04_c();
 }
 
-// @symbol _ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_
 /* Inferred descriptive name and observed three-register callback ABI. The
  * wrapper deliberately ignores the collider and tail-calls the owner method. */
 void daObjCtMecha04_c::AfterClsnCallback(dBgW *collider, dActor_c *owner, dActor_c *other) {
     ((daObjCtMecha04_c *)owner)->MoveActorOnBelt(*other);
 }
 
-// @symbol _ZN16daObjCtMecha04_c15MoveActorOnBeltER8dActor_c
 /* Inferred descriptive name. The collision callback supplies this conveyor as
  * owner and the actor whose X/Z position should advance with the belt. Each
  * axis moves by mBeltSpeed * 4 scaled by one sin/cos pair of data_02082214,
@@ -136,7 +132,6 @@ void daObjCtMecha04_c::MoveActorOnBelt(dActor_c &actor) {
     *actorPosZ = oldZ + deltaZ;
 }
 
-// @symbol _ZN16daObjCtMecha04_c13InitResourcesEv
 int daObjCtMecha04_c::InitResources() {
     BTA_File *animationFiles[2];
     Vector3 position;
@@ -174,7 +169,7 @@ int daObjCtMecha04_c::InitResources() {
     mMeshCollider.SetFile((KCL_File *)collisionFile, mClsnMat, 0x199, mAngleY,
                           *data_ov065_0211d19c[variant][0]);
 
-    func_020393c4(&mMeshCollider, (void *)&daObjCtMecha04_c::AfterClsnCallback);
+    func_020393c4(&mMeshCollider, &daObjCtMecha04_c::AfterClsnCallback);
 
     mTargetBeltSpeed = data_ov065_0211c0b8[data_0209f2c0];
     mBeltSpeed = mTargetBeltSpeed;
@@ -198,7 +193,6 @@ int daObjCtMecha04_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha04_c8BehaviorEv
 int daObjCtMecha04_c::Behavior() {
     if (data_0209f2c0 == CLOCK_SETTING_STOPPED) {
         func_020393c4(&mMeshCollider, 0);
@@ -206,14 +200,14 @@ int daObjCtMecha04_c::Behavior() {
     } else {
         if (!IsOffScreen(this)) {
             if (!mMeshCollider.GetStoodOnCallback()) {
-                func_020393c4(&mMeshCollider, (void *)&daObjCtMecha04_c::AfterClsnCallback);
+                func_020393c4(&mMeshCollider, &daObjCtMecha04_c::AfterClsnCallback);
             }
 
             if (data_0209f2c0 == CLOCK_SETTING_RANDOM) {
                 if (ApproachLinear(mBeltSpeed, mTargetBeltSpeed, 0xcc) != 0 &&
                     DecIfAbove0_Short((u16 *)&mDirectionTimer) == 0) {
                     unsigned int randomValue =
-                        (u16)((unsigned int)RandomIntInternal(&data_0209e650) >> 16);
+                        (u16)((unsigned int)RandomIntInternal(&data_0209e650.value) >> 16);
                     /* New direction, held for 0xa + 0x14 * (0..6) ticks. */
                     mDirectionTimer = (s16)(((int)randomValue % 7) * 0x14 + 0xa);
                     if (randomValue >= 0x7fff) {
@@ -241,14 +235,12 @@ int daObjCtMecha04_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha04_c6RenderEv
 int daObjCtMecha04_c::Render() {
     mTextureTransformer.Update(mModel.data);
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha04_c16CleanupResourcesEv
 int daObjCtMecha04_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -257,7 +249,6 @@ int daObjCtMecha04_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha04_c12UpdateShadowEv
 /* Inferred descriptive name. DropShadowScaleXYZ's three sizes are Fix12i
  * (a plain s32); Fix12<int> by value homes arguments absent from the
  * cartridge (6az). */
@@ -280,8 +271,6 @@ void daObjCtMecha04_c::UpdateShadow() {
     DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x1f4000, 0x32000, 0x320000, 0xf);
 }
 
-// @symbol _ZN16daObjCtMecha04_cD1Ev
-// @symbol _ZN16daObjCtMecha04_cD0Ev
 /* No separate body lives here. The inline virtual destructor in the directly
  * included class header makes mwccarm emit retail's D1 then D0 order without
  * the otherwise homeless D2 variant. */

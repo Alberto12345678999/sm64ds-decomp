@@ -20,11 +20,9 @@
 
 /* local extern: no shared header declares it. */
 extern "C" {
-void func_020393d4(dBgW_KcMbg *clsn, void *fn);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
-// @symbol _ZN13daObjKuruma_cD0Ev
-// @symbol _ZN13daObjKuruma_cD1Ev
 /* ROM ordinals 0 and 1 -- ov002 0x020b6814 (D0, 0x58) and 0x020b686c (D1,
  * 0x44). No source here: both destructor variants come from the ONE inline
  * body in include/daObjKuruma_c.h, which the two descendants need visible
@@ -50,7 +48,6 @@ void daObjKuruma_c_EmitDestructor(daObjKuruma_c *p) {
 
 /* ROM ordinal 2 -- ov002 0x020b68b0, size 0x48.
  * Teardown half both leaves call. */
-// @symbol _ZN13daObjKuruma_c20CleanupResourcesFromEPNS_9ResourcesE
 int daObjKuruma_c::CleanupResourcesFrom(Resources *resources) {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -60,14 +57,12 @@ int daObjKuruma_c::CleanupResourcesFrom(Resources *resources) {
 }
 
 /* ROM ordinal 3 -- vtable slot 9, ov002 0x020b68f8. Key function. */
-// @symbol _ZN13daObjKuruma_c6RenderEv
 s32 daObjKuruma_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 /* ROM ordinal 4 -- vtable slot 6, ov002 0x020b6920. */
-// @symbol _ZN13daObjKuruma_c8BehaviorEv
 s32 daObjKuruma_c::Behavior() {
     UpdateModelPosAndRotY();
     if (IsClsnInRange(0, 0))
@@ -79,13 +74,12 @@ s32 daObjKuruma_c::Behavior() {
  * Shared resource setup both leaves call. Slot 0 is dExtSimpleModel_c::LoadFile, slot 1
  * is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then bind the mesh
  * to dBgW::UpdatePosWithVelocity. No field of this class is seeded. */
-// @symbol _ZN13daObjKuruma_c17InitResourcesFromEPNS_9ResourcesE
 int daObjKuruma_c::InitResourcesFrom(Resources *resources) {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*resources->model), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*resources->collision), mClsnMat, 0x199,
                           mAngleY, *resources->clps);
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithVelocity);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithVelocity);
     return 1;
 }

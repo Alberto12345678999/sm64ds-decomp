@@ -33,11 +33,13 @@
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 #include "SpawnInfo.h"
+#include "LevelRng.h"
 
 /* POD views preserve the retail aggregate copies. Matrix4x3 and Vector3 are
    available, but their non-POD copies change these two helpers' codegen; see
    the measured alternatives in the handoff. */
 #include "private/mtx43.h"
+#include "math/MtxStack.h"
 struct V3A { int w[3]; };
 
 /* func_ov065_02116364 builds a five-Vector3 aggregate on the stack. Leaving it
@@ -62,20 +64,13 @@ extern "C" {
  * keeps the TU's compiler-numbered static-initializer aliases stable. */
 extern int RandomIntInternal(int *seed);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern int ApproachAngle(void *p, short target, int a, int b, int limit);
+extern int ApproachAngle(short *p, short target, int a, int b, int limit);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
-extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ax);
-extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
-extern void MulVec3Mat4x3(const void *in, const void *m, void *out);
-extern void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
+extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 extern void func_02012694(unsigned int id, void *v);
-extern int data_020a0e68[];
-extern int data_0209e650[];
 extern short data_02082214[];
 
 /* ov002 -- unnamed particle helper. */
@@ -118,7 +113,6 @@ extern daYurei_Mucho_c::State data_ov065_0211d650;
 extern daYurei_Mucho_c::State data_ov065_0211d660;
 
 /* -------------------------------------------------------------------------- */
-// @symbol daYurei_Mucho_c_classInit
 /* The registry factory behind the YUREI_MUCHO / SNUFIT profile. `return new
    daYurei_Mucho_c()` MATCHES (size 0x50); the synthesized ctor stores
    `_ZTV15daYurei_Mucho_c + 2`. classInit is a reconstructed source-style
@@ -129,7 +123,6 @@ extern "C" daYurei_Mucho_c *daYurei_Mucho_c_classInit(void)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c13OnYoshiTryEatEv
 /* dActor_c vtable slot 18. */
 s32 daYurei_Mucho_c::OnYoshiTryEat()
 {
@@ -137,7 +130,6 @@ s32 daYurei_Mucho_c::OnYoshiTryEat()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c13OnTurnIntoEggER7daPly_c
 /* dActor_c vtable slot 19, confirmed by address: _ZTV15daYurei_Mucho_c
  * (0x0211cba4) + 0x4c -> 0x02116f14.
  *
@@ -150,7 +142,6 @@ void daYurei_Mucho_c::OnTurnIntoEgg(daPly_c &player) {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c16OnAimedAtWithEggEv
 /* dActor_c vtable slot 29. */
 s32 daYurei_Mucho_c::OnAimedAtWithEgg()
 {
@@ -158,7 +149,6 @@ s32 daYurei_Mucho_c::OnAimedAtWithEgg()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c13InitResourcesEv
 /* Both Init methods are declared. The current dCcAc_c fixed-point aggregate
    arguments add 16 bytes here; dBgCh_Actr's scalar declaration emits a name
    absent from symbols.txt. Retain these ABI calls pending interface repair. */
@@ -184,7 +174,6 @@ int daYurei_Mucho_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c8BehaviorEv
 /* dActor_c vtable slot 6. */
 int daYurei_Mucho_c::Behavior()
 {
@@ -268,7 +257,6 @@ int daYurei_Mucho_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c6RenderEv
 /* dActor_c vtable slot 9. */
 int daYurei_Mucho_c::Render()
 {
@@ -279,14 +267,12 @@ int daYurei_Mucho_c::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c16OnPendingDestroyEv
 /* fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`. */
 void daYurei_Mucho_c::OnPendingDestroy()
 {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c16CleanupResourcesEv
 /* dActor_c vtable slot 3. Releases the four files InitResources claimed.
  *
  * The body does not read the incoming object pointer or access instance
@@ -301,7 +287,6 @@ int daYurei_Mucho_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_0211696cEv
 /* Rebuilds the model matrix from the actor's position and Z/X/Y angles, then
    drops the shadow. Called three times from Behavior. */
 void daYurei_Mucho_c::func_ov065_0211696c()
@@ -309,39 +294,33 @@ void daYurei_Mucho_c::func_ov065_0211696c()
     Vector3 v;
 
     Vec3_Asr(&v, (Vector3 *)&mPosX, 3);
-    Matrix4x3_FromTranslation(data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68,
-        mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
 
-    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)data_020a0e68;
+    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
     mShotPosX = 0;
     mShotPosY = 0;
     mShotPosZ = 0;
-    *(Mtx43 *)data_020a0e68 = *(Mtx43 *)&mAnmModel.mat4x3;
+    *(Mtx43 *)&data_020a0e68 = *(Mtx43 *)&mAnmModel.mat4x3;
 
-    MulMat4x3Mat4x3(reinterpret_cast<const int *>(&mAnmModel.data.transforms[4]), data_020a0e68,
-                    data_020a0e68);
+    MulMat4x3Mat4x3(&mAnmModel.data.transforms[4], &data_020a0e68, &data_020a0e68);
 
-    mShotPosX = data_020a0e68[9];
-    mShotPosY = data_020a0e68[10];
-    mShotPosZ = data_020a0e68[11];
+    mShotPosX = data_020a0e68.t.x;
+    mShotPosY = data_020a0e68.t.y;
+    mShotPosZ = data_020a0e68.t.z;
     mShotPosX <<= 3;
     mShotPosY <<= 3;
     mShotPosY -= 0xa000;
     mShotPosZ <<= 3;
 
-    Matrix4x3_FromTranslation(data_020a0e68,
-        mPosX >> 3,
-        (mPosY - 0x18000) >> 3,
-        mPosZ >> 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x18000) >> 3, mPosZ >> 3);
 
-    *(Mtx43 *)mShadowMat = *(Mtx43 *)data_020a0e68;
+    *(Mtx43 *)mShadowMat = *(Mtx43 *)&data_020a0e68;
 
     DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMat, 0x64000, 0x258000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_0211691cEPNS_5StateE
 /* The state setter. Stores the State into mCurrentState, RE-READS it -- the ROM
    really does reload the field it has just written -- null-tests the entry hook
    at +0x00 and calls it through the object. Called eight times inside this run.
@@ -362,21 +341,19 @@ int daYurei_Mucho_c::func_ov065_0211691c(State *s)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_021168a8Ev
 /* State entry hook at 0x0211d670 +0x00: randomise the facing angle and the
    timer, then start the wait animation. The BCA file is read straight out of
    the SharedFilePtr's filePtr -- the ROM does `ldr r1,[r0,#4]` off the
    literal at 0x02116918, not a call, so the field read is what reproduces. */
 int daYurei_Mucho_c::func_ov065_021168a8()
 {
-    mTargetAngle = (short)(((u32)RandomIntInternal(data_0209e650) >> 8) << 0xc);
-    mStateTimer = (short)((((u32)RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
+    mTargetAngle = (short)(((u32)RandomIntInternal(&data_0209e650.value) >> 8) << 0xc);
+    mStateTimer = (short)((((u32)RandomIntInternal(&data_0209e650.value) >> 8) & 0x1f) + 0x32);
     mAnmModel.SetAnim((BCA_File *)gYureiMuchoWaitAnimFile.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_02116744Ev
 /* State main hook at 0x0211d670 +0x08: drift, and switch to the attack state
    when a player comes close enough. */
 int daYurei_Mucho_c::func_ov065_02116744()
@@ -400,8 +377,8 @@ int daYurei_Mucho_c::func_ov065_02116744()
     ApproachAngle(&mPrevAngleX, 0, 1, 0x500, 0x500);
 
     in.z = 0xa000;
-    Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-    MulVec3Mat4x3(&in, data_020a0e68, &mSpeedX);
+    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+    MulVec3Mat4x3(&in, &data_020a0e68, (Vector3 *)&mSpeedX);
 
     if ((u16)mStateTimer == 0) {
         func_ov065_0211691c(&data_ov065_0211d670);
@@ -425,7 +402,6 @@ int daYurei_Mucho_c::func_ov065_02116744()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_0211672cEv
 /* State entry hook at 0x0211d680 +0x00: stop the actor dead. */
 int daYurei_Mucho_c::func_ov065_0211672c()
 {
@@ -436,7 +412,6 @@ int daYurei_Mucho_c::func_ov065_0211672c()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_021165d8Ev
 /* State main hook at 0x0211d680 +0x08: steer toward the nearest non-vanishing
    player.
 
@@ -469,8 +444,8 @@ int daYurei_Mucho_c::func_ov065_021165d8()
             v.z = -0x1000;
             v.x = 0;
             v.y = 0;
-            Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-            MulVec3Mat4x3(&v, data_020a0e68, &mSpeedX);
+            Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+            MulVec3Mat4x3(&v, &data_020a0e68, (Vector3 *)&mSpeedX);
         }
     } else {
         mStateTimer = pitch;
@@ -483,7 +458,6 @@ int daYurei_Mucho_c::func_ov065_021165d8()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_02116588Ev
 /* State entry hook at 0x0211d650 +0x00: start the attack animation. As at
    ordinal 11, the BCA file is the SharedFilePtr's filePtr, read directly
    (`ldr r1,[r0,#4]` at 0x021165a4 off the literal at 0x021165d4). */
@@ -496,7 +470,6 @@ short daYurei_Mucho_c::func_ov065_02116588()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_02116364Ev
 /* State main hook at 0x0211d650 +0x08: aim, and spawn the projectile (profile
    0xe9) up to three times before returning to a wait state. */
 int daYurei_Mucho_c::func_ov065_02116364()
@@ -504,7 +477,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
     V3Quint L;
     daPly_c *pl = ClosestNonVanishPlayer();
     if (pl != 0) {
-        *(V3A *)(int)(&L.pp) = *(V3A *)(int)(&pl->mPosX);
+        *(V3A *)(&L.pp) = *(V3A *)(&pl->mPosX);
         L.tgt = L.pp;
         mTargetAngle = Vec3_HorzAngle(&mPos, &L.tgt);
         ApproachAngle(&mPrevAngleY, mTargetAngle, 1, 0x500, 0x500);
@@ -535,7 +508,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
 
     if (mAnmModel.Finished() != 0) {
         if (pl != 0) {
-            s32 *dsrc = (s32 *)(int)(&pl->mPosX);
+            s32 *dsrc = (s32 *)(&pl->mPosX);
             L.d.x = dsrc[0];
             L.d.y = dsrc[1];
             L.d.z = dsrc[2];
@@ -556,7 +529,6 @@ int daYurei_Mucho_c::func_ov065_02116364()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_02116328Ev
 /* State entry hook at 0x0211d660 +0x00: the bumped-from-below pop. */
 int daYurei_Mucho_c::func_ov065_02116328()
 {
@@ -571,7 +543,6 @@ int daYurei_Mucho_c::func_ov065_02116328()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_021162c0Ev
 /* State main hook at 0x0211d660 +0x08.
  *
  * CORRECTED HERE. The retired shard func_ov065_021162c0.c called `_ZN10daIwante_cD0Ev`, which is
@@ -590,7 +561,6 @@ int daYurei_Mucho_c::func_ov065_021162c0()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_02115ff0Ev
 /* The collision response, called once from Behavior. */
 void daYurei_Mucho_c::func_ov065_02115ff0()
 {
@@ -650,7 +620,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         return;
     }
     {
-        int b = (int)(((long long)(p->actorID == 0xbf)));
+        int b = (int)(p->actorID == 0xbf);
         if (b == 0) return;
     }
     if (p->mIsMetal == 1 || p->IsOnShell() == 1) {
@@ -671,7 +641,6 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_c19func_ov065_02115f84Ev
 /* The death helper: poof, drop the coins, unregister. */
 void daYurei_Mucho_c::func_ov065_02115f84() {
     Vector3 v;
@@ -685,8 +654,6 @@ void daYurei_Mucho_c::func_ov065_02115f84() {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN15daYurei_Mucho_cD1Ev
-// @symbol _ZN15daYurei_Mucho_cD0Ev
 /* No separate body lives here. The inline virtual destructor in the directly
  * included class header makes mwccarm emit retail's D1 then D0 pair without
  * the otherwise homeless D2 variant an out-of-line definition produces.

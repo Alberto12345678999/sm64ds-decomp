@@ -54,6 +54,7 @@ enum dScMgSlots_AssetId {
 #include "dScMgSlot3_c.h"
 #include "Sound.h"
 #include "OAM.h"
+#include "OamAttr.h"
 #include "dScMgBase_c.h"
 #include "decl_common.h"
 #include "types.h"
@@ -62,6 +63,7 @@ enum dScMgSlots_AssetId {
 #include "G2x.h"
 #include "CP15.h"
 #include "GX.h"
+#include "LevelRng.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which is why its
@@ -102,7 +104,6 @@ extern int data_ov006_0213e948[];
 extern void Slot3_ReelDigits(char *c, int i);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
-extern int data_0209e650;
 void OamRender10_d_s_mg_slots(int b, void *attr, int a2, int a3, int a4, int a5, int a6, int a7,
                               int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
@@ -120,13 +121,13 @@ extern SlotState pmf_Slot3_StatePayout_2;
 extern SlotState pmf_Slot3_StateWait;
 extern SlotState pmf_Slot3_StateGameOver;
 extern SlotState pmf_Slot3_StateDone;
-extern int LoadFile(int handle);
+extern void *LoadFile(int handle);
 
 extern u8 gSubScreenLayers;
 extern int data_0208ee44;
-extern void RenderOamMainScreen(void *, int, int, int, int);
-extern void *sSlotsSlotBlinkSprites;
-extern void Mg_LoseCredits(void *c);
+extern void RenderOamMainScreen(OamAttr *, int, int, int, int);
+extern OamAttr sSlotsSlotBlinkSprites[];
+extern void Mg_LoseCredits(int c);
 extern void func_ov001_020ab3f0(void *c);
 void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *m);
 extern void *data_ov006_0213e528[];
@@ -157,30 +158,25 @@ extern s16 sSlotWildBlinkX[][2];
 extern s16 sSlotWildBlinkY[][2];
 extern dWipe_c data_0209f61c;
 
-extern void Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
-                                     unsigned short a6);
+extern int Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
+                                    unsigned short a6);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 }
 
-// @symbol _ZN12dScMgSlot1_cD1Ev
 /* ~dScMgSlot1_c() (D1, complete-object destructor). The empty body is the
    original ownership model: the compiler destroys the typed mBetIcon member,
    emitting betIcon_c's then dThIcon_c's vtable writes, before chaining to the
    dScMgBase_c base destructor. */
 dScMgSlot1_c::~dScMgSlot1_c() {}
 
-// @symbol _ZN12dScMgSlot1_cD0Ev
 /* The compiler emits D0 from the complete-object destructor above. */
 
-// @symbol _ZN12dScMgSlot3_cD1Ev
 /* The compiler destroys mMascot, then the inlined dScMgSingle3DBase_c
    destructor runs. */
 dScMgSlot3_c::~dScMgSlot3_c() {}
 
-// @symbol _ZN12dScMgSlot3_cD0Ev
 /* The compiler emits D0 from the complete-object destructor above. */
 
-// @symbol _ZN12dScMgSlot3_c21RestoreScreenFromMenuEv
 /* dScMgSlot3_c::RestoreScreenFromMenu - slot 30 override: puts BG1CNT
    back, then runs the base restore. This body is the arity witness cited
    in include/dScMgBase_c.h's slot-30 block.  The read-modify-write below clobbers
@@ -192,7 +188,6 @@ void dScMgSlot3_c::RestoreScreenFromMenu() {
     ((dScMgBase_c *)a)->dScMgBase_c::RestoreScreenFromMenu();
 }
 
-// @symbol _ZN12dScMgSlot3_c17SaveScreenForMenuEv
 /* dScMgSlot3_c::SaveScreenForMenu - slot 29 override.
 
    This body is the third and strongest witness that slot 29 takes no
@@ -208,7 +203,6 @@ int dScMgSlot3_c::SaveScreenForMenu() {
     return ((dScMgBase_c *)a)->dScMgBase_c::SaveScreenForMenu();
 }
 
-// @symbol _ZN12dScMgSlot3_c16InitMainScreenBgEv
 /* dScMgSlot3_c::InitMainScreenBg - slot 32, the only override of it in the family.
 
    Not an AfterClsn: the base slot has no ROM name at all, and the one the
@@ -238,7 +232,6 @@ void dScMgSlot3_c::InitMainScreenBg() {
     *(volatile unsigned short *)0x400000a = (*(volatile unsigned short *)0x400000a & 0x43) | 0x1118;
 }
 
-// @symbol Slot3_ReelDigits
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_ReelDigits(char *sceneBytes, int reelIndex);
 // Keep the strided cursors cast back to the class. mStripLength is read by
@@ -257,12 +250,10 @@ void Slot3_ReelDigits(char *c, int reelIndex) {
 }
 }
 
-// @symbol Slot3_StateDone
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateDone(void) {}
 }
 
-// @symbol Slot3_StateGameOver
 extern "C" { /* .c-derived member: C linkage for the whole block */
 
 void Slot3_StateGameOver(char *c) {
@@ -285,12 +276,10 @@ void Slot3_StateGameOver(char *c) {
 }
 }
 
-// @symbol Slot3_StateWait
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateWait(void) {}
 }
 
-// @symbol Slot3_StatePayout
 extern "C" void Slot3_StatePayout(char *c) {
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte(&self->mStateTimer) == 0) {
@@ -335,7 +324,6 @@ extern "C" void Slot3_StatePayout(char *c) {
     Sound::PlayBank2_2D(0x14a);
 }
 
-// @symbol Slot3_StateJudge
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateJudge(char *c) {
     unsigned char columnSymbols[3];
@@ -402,7 +390,6 @@ void Slot3_StateJudge(char *c) {
 }
 }
 
-// @symbol Slot3_StateSpin
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateSpin(char *c) {
     dScMgSlot3_c *scene = (dScMgSlot3_c *)c;
@@ -471,7 +458,6 @@ void Slot3_StateSpin(char *c) {
 }
 }
 
-// @symbol Slot3_StateIntro
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Mascot_LookAt(char *c, int *src);
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
@@ -512,7 +498,6 @@ void Slot3_StateIntro(char *p) {
 }
 }
 
-// @symbol _ZN12dScMgSlot3_c10StartRoundEi
 void dScMgSlot3_c::StartRound(int mode) {
     char *c = (char *)this;
 
@@ -564,7 +549,7 @@ void dScMgSlot3_c::StartRound(int mode) {
             mReelReverse[2] = 1;
         } else {
             for (i = 0; i < 3; i++) {
-                if ((u8)(((u32)RandomIntInternal(&data_0209e650) >> 16) & 1)) {
+                if ((u8)(((u32)RandomIntInternal(&data_0209e650.value) >> 16) & 1)) {
                     mReelReverse[i] = 1;
                 } else {
                     mReelReverse[i] = 0;
@@ -572,7 +557,7 @@ void dScMgSlot3_c::StartRound(int mode) {
             }
         }
 
-        mNextWinSymbol = ((u32)RandomIntInternal(&data_0209e650) >> 16) % mStripLength;
+        mNextWinSymbol = ((u32)RandomIntInternal(&data_0209e650.value) >> 16) % mStripLength;
         if (mode != 4) {
             mReelDrawY = 0;
             mWinSymbol = mNextWinSymbol;
@@ -626,7 +611,6 @@ void dScMgSlot3_c::StartRound(int mode) {
 // the members outside them DIFF with them applied file-wide.
 // Kept: pragma-free member spellings match except the mReelPos[i] load, which needs it.
 #pragma opt_strength_reduction off
-// @symbol _ZN12dScMgSlot3_c6RenderEv
 /* dScMgSlot3_c::Render -- vtable slot 9.
  *
  * Attributed by the ROM's vtable: the second of the two slots where this class's
@@ -647,7 +631,7 @@ s32 dScMgSlot3_c::Render() {
     char *c = (char *)this;
     int i;
 
-    Camera_InitSlotsView((char *)pad_4660);
+    Camera_InitSlotsView((char *)&mCamera);
     Mascot_Draw((char *)&mMascot);
 
     if (mReelDrawY > 0) {
@@ -773,7 +757,6 @@ s32 dScMgSlot3_c::Render() {
 
 #pragma opt_strength_reduction on
 
-// @symbol _ZN12dScMgSlot3_c8BehaviorEv
 /* dScMgSlot3_c::Behavior -- vtable slot 6.
  *
  * Attributed by the ROM's vtable: one of the two slots where this class's table
@@ -812,7 +795,7 @@ s32 dScMgSlot3_c::Behavior() {
         }
     }
 
-    t = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 1;
+    t = ((unsigned int)RandomIntInternal(&data_0209e650.value) >> 16) & 1;
     if (t)
         gMainScreenLayers |= DISPLAY_LAYER_BG1;
     else
@@ -821,7 +804,6 @@ s32 dScMgSlot3_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN12dScMgSlot3_c13InitResourcesEv
 /* Load the reel assets and initialise the scene state. */
 s32 dScMgSlot3_c::InitResources() {
     char *c = (char *)this;
@@ -841,19 +823,19 @@ s32 dScMgSlot3_c::InitResources() {
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NCG_BIN, (void *)func_02054d88());
 
     {
-        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NCL_BIN);
-        GX::LoadBGPltt((const void *)h, 0x60, 0x1a0);
-        GXS::LoadBGPltt((const void *)h, 0x60, 0x1a0);
-        Deallocate((void *)h);
+        void *h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NCL_BIN);
+        GX::LoadBGPltt(h, 0x60, 0x1a0);
+        GXS::LoadBGPltt(h, 0x60, 0x1a0);
+        Deallocate(h);
     }
 
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE02_NSC_BIN, G2::GetBG1ScrPtr());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NUKI_NSC_BIN, G2::GetBG2ScrPtr());
 
     {
-        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NSC_BIN);
-        func_02056314((void *)h, 0, 0x800);
-        Deallocate((void *)h);
+        void *h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NSC_BIN);
+        func_02056314(h, 0, 0x800);
+        Deallocate(h);
     }
 
     LoadCompressedFileAt(ASSET_D_2D_MG_SLOT_FACE_NCG_BIN, (void *)0x6400000);
@@ -869,18 +851,18 @@ s32 dScMgSlot3_c::InitResources() {
     LoadCompressedFileAt(ASSET_D_2D_MG_SLOT_FACE_NCG_BIN, (void *)0x6600000);
 
     {
-        int h = LoadFile(ASSET_D_2D_MG_SLOT_FACE_NCL_BIN);
+        void *h = LoadFile(ASSET_D_2D_MG_SLOT_FACE_NCL_BIN);
         CP15::FlushAndInvalidateDataCache((u32)h, 0xe0);
-        GX::LoadOBJPltt((const void *)h, 0, 0xe0);
-        GXS::LoadOBJPltt((const void *)h, 0, 0xe0);
-        Deallocate((void *)h);
+        GX::LoadOBJPltt(h, 0, 0xe0);
+        GXS::LoadOBJPltt(h, 0, 0xe0);
+        Deallocate(h);
     }
 
     gSubScreenLayers = 0x14;
     G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
     Mascot_Load((char *)&mMascot);
-    Camera_InitSlotsView((char *)pad_4660);
+    Camera_InitSlotsView((char *)&mCamera);
 
     mReelDifficulty = (int)mLevel;
 
@@ -890,7 +872,7 @@ s32 dScMgSlot3_c::InitResources() {
     mReelDrawY = 0;
 
     for (int i = 0; i < 3; i++) {
-        int rnd = RandomIntInternal(&data_0209e650);
+        int rnd = RandomIntInternal(&data_0209e650.value);
         u32 divisor = mStripLength;
         u32 val = ((u32)rnd >> 16) % divisor;
         mReelPos[i] = val * 0x50000;
@@ -918,7 +900,6 @@ s32 dScMgSlot3_c::InitResources() {
    constructors, mSysTracker and mMascot are the compiler's. */
 inline dScMgSlot3_c::dScMgSlot3_c() {}
 
-// @symbol dScMgSlot3_c_classInit
 /* Reconstructed source-style name: SM64DS proves dScMgSlot3_c through RTTI,
  * allocation size, vtable identity, and the MG_SLOT3 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -927,7 +908,6 @@ extern "C" void *dScMgSlot3_c_classInit(void) {
     return new dScMgSlot3_c;
 }
 
-// @symbol SlotLamp_Start
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotLamp_Start(void *raw) {
     SlotLamp *lamp = (SlotLamp *)raw;
@@ -937,7 +917,6 @@ void SlotLamp_Start(void *raw) {
 }
 }
 
-// @symbol SlotLamp_Tick
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotLamp_Tick(void *o_) {
     SlotLamp *lamp = (SlotLamp *)o_;
@@ -954,7 +933,6 @@ void SlotLamp_Tick(void *o_) {
 }
 }
 
-// @symbol SlotLamp_Clear
 /* mPayoutLamp (0x469c, a SlotLamp) blinks bit 1 of gSubScreenLayers the same
  * way: a timer and an on flag. This clears it, 0210c180 starts it and
  * 0210c1a8 ticks it. */
@@ -965,7 +943,6 @@ void SlotLamp_Clear(char *blink) {
 }
 }
 
-// @symbol SlotBlink_Start
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBlink_Start(void *raw, s16 x, s16 y) {
     SlotBlink *sprite = (SlotBlink *)raw;
@@ -976,17 +953,15 @@ void SlotBlink_Start(void *raw, s16 x, s16 y) {
 }
 }
 
-// @symbol SlotBlink_Draw
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBlink_Draw(unsigned char *raw) {
     SlotBlink *sprite = (SlotBlink *)raw;
     if (sprite->mVisible == 0)
         return;
-    RenderOamMainScreen(&sSlotsSlotBlinkSprites, sprite->mX, sprite->mY, -1, -1);
+    RenderOamMainScreen(sSlotsSlotBlinkSprites, sprite->mX, sprite->mY, -1, -1);
 }
 }
 
-// @symbol SlotBlink_Tick
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBlink_Tick(void *o_) {
     SlotBlink *sprite = (SlotBlink *)o_;
@@ -999,7 +974,6 @@ void SlotBlink_Tick(void *o_) {
 }
 }
 
-// @symbol SlotBlink_Clear
 /* mMatchBlink and mWildBlink (0x4684, 0x4690) are SlotBlinks: s16 x and y,
  * a timer and a visible flag. This clears one, 0210c218 starts one, 0210c278
  * ticks it and 0210c234 draws it. */
@@ -1028,7 +1002,6 @@ struct SlotBetIcon {
 typedef char SlotBetIcon_size_must_be_0x24[sizeof(SlotBetIcon) == 0x24 ? 1 : -1];
 #define BET_ICON(p) ((SlotBetIcon *)(p))
 
-// @symbol SlotReel_SetSpeed
 extern "C" { /* .c-derived member: C linkage for the whole block */
 /* The symbol name is a misreading: Behavior state 5 passes &mBetIcon and
  * the payout multiplier, and this arms the bet icon's payout countdown. */
@@ -1037,7 +1010,6 @@ void SlotReel_SetSpeed(void *raw, int value) {
 }
 }
 
-// @symbol SlotBet_OnTouch
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_OnTouch(void *c_) {
     dThIcon_c *icon = (dThIcon_c *)c_;
@@ -1057,14 +1029,13 @@ void SlotBet_OnTouch(void *c_) {
         return;
     }
     BET_ICON(icon)->mBetCount += 1;
-    Mg_LoseCredits((void *)1);
+    Mg_LoseCredits(1);
     func_ov001_020ab3f0(icon);
     sid = 0x163;
     Sound::PlayBank2_2D(sid);
 }
 }
 
-// @symbol SlotBet_Reset
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_Reset(void *raw) {
     dThIcon_c *icon = (dThIcon_c *)raw;
@@ -1075,7 +1046,6 @@ void SlotBet_Reset(void *raw) {
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c9betIcon_c6RenderEv
 void dScMgSlot1_c::betIcon_c::Render() {
     OAM::RenderSub((OamAttr *)data_ov006_0213e528[mOn], mX, mY, -1, 1);
     int i;
@@ -1087,7 +1057,6 @@ void dScMgSlot1_c::betIcon_c::Render() {
     }
 }
 
-// @symbol _ZN12dScMgSlot1_c9betIcon_c8BehaviorEv
 void dScMgSlot1_c::betIcon_c::Behavior() {
     int val;
     if (TouchArea_Update(this, -1))
@@ -1103,7 +1072,6 @@ void dScMgSlot1_c::betIcon_c::Behavior() {
     dThIcon_c::Behavior();
 }
 
-// @symbol SlotBet_Place
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_Place(char *icon) {
     func_ov001_020ab5b0(icon, 1, 0x90, 0xb0, 0x10, 8);
@@ -1111,14 +1079,12 @@ void SlotBet_Place(char *icon) {
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c9CloseMenuEv
 
 int dScMgSlot1_c::CloseMenu() {
     dScMgBase_c::CloseMenu();
     SetSubBg1Offset(0x100, 0);
 }
 
-// @symbol _ZN12dScMgSlot1_c8OpenMenuEv
 /* Slot 27. Takes no argument: the ROM body never reads r1. The qualified
  * base call is the ROM's direct branch. */
 void dScMgSlot1_c::OpenMenu() {
@@ -1126,7 +1092,6 @@ void dScMgSlot1_c::OpenMenu() {
     dScMgBase_c::OpenMenu();
 }
 
-// @symbol SlotReels_CheckStopped
 extern "C" { /* .c-derived member: C linkage for the whole block */
 int SlotReels_CheckStopped(void *self) {
     dScMgSlot1_c *scene = (dScMgSlot1_c *)self;
@@ -1166,7 +1131,6 @@ int SlotReels_CheckStopped(void *self) {
 }
 }
 
-// @symbol Slot1_InitHud
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot1_InitHud(void *self) {
     char *raw = (char *)self;
@@ -1179,7 +1143,6 @@ void Slot1_InitHud(void *self) {
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c10StartRoundEi
 /* Slot 18. */
 void dScMgSlot1_c::StartRound(int i) {
     char *raw = (char *)this;
@@ -1193,7 +1156,6 @@ void dScMgSlot1_c::StartRound(int i) {
     mState = 0;
 }
 
-// @symbol _ZN12dScMgSlot1_c6RenderEv
 /* dScMgSlot1_c::Render -- the recovered symbol at this address
    (_ZN3OAM7SECONDSE, i.e. "OAM::SECONDS") was a name-recovery-heuristic
    artifact, not a real name; this function genuinely is Render (see
@@ -1252,7 +1214,6 @@ s32 dScMgSlot1_c::Render() {
 }
 
 
-// @symbol _ZN12dScMgSlot1_c8BehaviorEv
 /* Mario Slot's per-frame state machine (vtable slot 6). Byte-exact since
  * 2026-10-12; the 19-word residue banked as a compiler floor was a source
  * artefact. The object is spelled ONE way here, through members: a draft
@@ -1470,7 +1431,6 @@ s32 dScMgSlot1_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN12dScMgSlot1_c13InitResourcesEv
 /* The ov004 scroll words (sMgScoreDigitsX..sMgMainBannerX) name
  * no struct; they are stored raw. The reel-table fill keeps a stepped char*
  * cursor over mReelStrip (see leftovers). */
@@ -1489,9 +1449,9 @@ s32 dScMgSlot1_c::InitResources() {
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NCG_BIN, (void *)func_02054d88());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, (char *)G2::GetBG2CharPtr() + 0x7800);
     {
-        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_UP_NCL_BIN);
-        GX::LoadBGPltt((const void *)h, 0x60, 0x1a0);
-        Deallocate((void *)h);
+        void *h = LoadFile(ASSET_D_2D_MG_BG_SLOT_UP_NCL_BIN);
+        GX::LoadBGPltt(h, 0x60, 0x1a0);
+        Deallocate(h);
     }
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_SCORE_UP_NSC_BIN, G2::GetBG2ScrPtr());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NSC_BIN, G2::GetBG3ScrPtr());
@@ -1517,9 +1477,9 @@ s32 dScMgSlot1_c::InitResources() {
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN,
                          (char *)G2S::GetBG0CharPtr() + 0x7800);
     {
-        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_DOWN_NCL_BIN);
-        GXS::LoadBGPltt((const void *)h, 0x60, 0x1a0);
-        Deallocate((void *)h);
+        void *h = LoadFile(ASSET_D_2D_MG_BG_SLOT_DOWN_NCL_BIN);
+        GXS::LoadBGPltt(h, 0x60, 0x1a0);
+        Deallocate(h);
     }
     LoadCompressedFileAt(ASSET_D_2D_GRADE_NSC_BIN, G2S::GetBG0ScrPtr());
     LoadCompressedFileAt(ASSET_D_2D_BADWIZER_NSC_BIN, (char *)G2S::GetBG1ScrPtr() + 0x800);
@@ -1535,10 +1495,10 @@ s32 dScMgSlot1_c::InitResources() {
     LoadCompressedFileAt(sSlotNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
 
     {
-        int h = LoadFile(ASSET_D_2D_MG_SLOT_NCL_BIN);
-        GX::LoadOBJPltt((const void *)h, 0, 0x40);
-        GXS::LoadOBJPltt((const void *)h, 0, 0x40);
-        Deallocate((void *)h);
+        void *h = LoadFile(ASSET_D_2D_MG_SLOT_NCL_BIN);
+        GX::LoadOBJPltt(h, 0, 0x40);
+        GXS::LoadOBJPltt(h, 0, 0x40);
+        Deallocate(h);
     }
 
     gSubScreenLayers = 0x1d;
@@ -1599,7 +1559,6 @@ inline dScMgSlot1_c::dScMgSlot1_c() {
     SlotLamp_Clear((char *)&mPayoutLamp);
 }
 
-// @symbol dScMgSlot1_c_classInit
 /* Reconstructed source-style name. Historical alias: func_ov006_0210d6b8. */
 extern "C" void *dScMgSlot1_c_classInit(void) {
     return new dScMgSlot1_c;

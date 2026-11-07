@@ -45,7 +45,7 @@ extern Ov007QueryHook data_ov007_02104c14;
 extern Ov007FreeHook data_ov007_02103254;
 extern Ov007AllocHook data_ov007_02103258;
 
-extern void MultiStore32Bytes(unsigned val, int *dst, int len);
+extern void MultiStore32Bytes(unsigned val, void *dst, int len);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern void func_0205a588(void *dst, unsigned char value, unsigned int size);
@@ -54,34 +54,28 @@ extern void func_0205a588(void *dst, unsigned char value, unsigned int size);
 extern void *OS_AllocFromHeap(int id, int heap, unsigned int size);
 extern void OS_FreeToHeap(int id, int heap, void *ptr);
 
-// @symbol func_ov007_020c3e64
 /* The alloc hook's default (data_ov007_02103258's initial value). */
 void *func_ov007_020c3e64(unsigned int size) {
     return OS_AllocFromHeap(0, -1, size);
 }
 
-// @symbol func_ov007_020c3e4c
 /* The free hook's default (data_ov007_02103254's initial value). */
 void func_ov007_020c3e4c(void *ptr) {
     OS_FreeToHeap(0, -1, ptr);
 }
 
-// @symbol func_ov007_020c3e3c
 void func_ov007_020c3e3c(int v) {
     data_ov007_02103258 = reinterpret_cast<Ov007AllocHook>(v);
 }
 
-// @symbol func_ov007_020c3e2c
 void func_ov007_020c3e2c(int v) {
     data_ov007_02103254 = reinterpret_cast<Ov007FreeHook>(v);
 }
 
-// @symbol func_ov007_020c3e1c
 void func_ov007_020c3e1c(int v) {
     data_ov007_02104c14 = reinterpret_cast<Ov007QueryHook>(v);
 }
 
-// @symbol func_ov007_020c3df4
 /* The menu's allocator: forwards the size to the alloc hook and returns
  * the block. name tags the allocation ("global data", "pad",
  * "touch_panel", ...; most callers pass 0) and is dropped. */
@@ -89,8 +83,7 @@ void *func_ov007_020c3df4(const char *name, int size) {
     return data_ov007_02103258(size);
 }
 
-// @symbol func_ov007_020c3d40
-int func_ov007_020c3d40(const char *name, int n) {
+void *func_ov007_020c3d40(const char *name, int n) {
     int *r = (int *)func_ov007_020c3df4(name, n);
     volatile unsigned short v16;
     volatile unsigned v32;
@@ -114,16 +107,14 @@ int func_ov007_020c3d40(const char *name, int n) {
         func_0205a588(r, 0, n);
         break;
     }
-    return (int)r;
+    return r;
 }
 
-// @symbol func_ov007_020c3d1c
 /* NOT a daPly_c method: it reads no fields, it only calls the free hook. */
 void func_ov007_020c3d1c(void *self) {
     data_ov007_02103254(self);
 }
 
-// @symbol func_ov007_020c3ce4
 int func_ov007_020c3ce4(void) {
     if (data_ov007_02104c14 == 0)
         return 0;

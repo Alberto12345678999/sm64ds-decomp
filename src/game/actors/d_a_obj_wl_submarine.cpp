@@ -13,7 +13,7 @@
  *
  * NOTES:
  * - data_ov026_02112fd4 is the unnamed CLPS block this TU feeds SetFile.
- * - data_0209caa0[1] is SaveData::flags1; either of its unnamed bits
+ * - data_0209caa0.file.flags1: either of its unnamed bits
  *   0x204 keeps the collider disabled.
  */
 
@@ -25,6 +25,7 @@ enum daObjWlSubmarine_c_AssetId {
 
 #include "daObjWlSubmarine_c.h"
 #include "SharedFilePtr.h"
+#include "SaveBlock.h"
 
 /* BSS file homes (symbols.txt); Init loads them, Cleanup releases them.
  * The ctor/dtor are the ROM's SharedFilePtr veneer pairs (func_02017acc /
@@ -43,20 +44,17 @@ struct SubmarineCollisionFilePtr : SharedFilePtr {
 extern SubmarineCollisionFilePtr Submarine_ClsnFile;
 
 extern CLPS_Block data_ov026_02112fd4;
-extern int data_0209caa0[]; /* SaveData; [1] is flags1 */
+extern SaveBlock data_0209caa0;
 
 /* Emission order is ROM order: the destructor pair must stay first.
  * Do not reorder. */
 #pragma defer_codegen off
 
-// @symbol _ZN18daObjWlSubmarine_cD1Ev
-// @symbol _ZN18daObjWlSubmarine_cD0Ev
 /* One out-of-line definition; mwccarm emits D1 and D0 from it, in that
  * order: its own vptr, then dBgActor_c's inlined, then dBgActor_c's
  * dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. */
 daObjWlSubmarine_c::~daObjWlSubmarine_c() {}
 
-// @symbol _ZN18daObjWlSubmarine_c16CleanupResourcesEv
 s32 daObjWlSubmarine_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
@@ -66,13 +64,11 @@ s32 daObjWlSubmarine_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN18daObjWlSubmarine_c6RenderEv
 s32 daObjWlSubmarine_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN18daObjWlSubmarine_c13InitResourcesEv
 s32 daObjWlSubmarine_c::InitResources() {
     void *m = dExtSimpleModel_c::LoadFile(Submarine_ModelFile);
     mModel.SetFile((BMD_File *)m, 1, -1);
@@ -82,7 +78,7 @@ s32 daObjWlSubmarine_c::InitResources() {
         void *k = dBgW_Kc::LoadFile(Submarine_ClsnFile);
         mMeshCollider.SetFile((KCL_File *)k, mClsnMat, 0x199, mAngleY, data_ov026_02112fd4);
     }
-    if (data_0209caa0[1] & 0x204)
+    if (data_0209caa0.file.flags1 & 0x204)
         return 0;
     mMeshCollider.Enable(this);
     return 1;
@@ -92,12 +88,10 @@ s32 daObjWlSubmarine_c::InitResources() {
  * RTTI, allocation size, vtable identity, and the WL_SUBMARINE registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: Submarine_Spawn. */
-// @symbol daObjWlSubmarine_c_classInit
 extern "C" daObjWlSubmarine_c *daObjWlSubmarine_c_classInit() {
     return new daObjWlSubmarine_c();
 }
 
-// @symbol __sinit_d_a_obj_wl_submarine.cpp
 /* The retail initializer constructs the model first, then the collision
  * file. */
 SubmarineModelFilePtr Submarine_ModelFile(ASSET_WL_SUBMARINE_BMD);    /* model */

@@ -6,13 +6,13 @@
  * - func_ov026_02111234 and func_ov026_021112a4 stay address-named
  *   C-linkage helpers.
  * - data_ov026_02113ea0 is the BMD handle and data_ov026_02113a9c
- *   the collision offset. data_0209caa0 is the stage-state block.
+ *   the collision offset. data_0209caa0 is the save block.
  *   g_profile_WL_POLELIFT is outside this TU.
  *
  * daObjWlPolelift_c, the Wet-Dry World pole lift. It rides the path
  * in param1 at 10.0 a frame, pauses 60 frames at a dead end, and
  * drops a shadow. InitResources requires a bit of 0x204 in
- * data_0209caa0[1]. .text 0x021111a0..0x021116c8. _ZTS17daObjWlPolelift_c
+ * data_0209caa0.file.flags1. .text 0x021111a0..0x021116c8. _ZTS17daObjWlPolelift_c
  * and the vtable at 0x02113ae0 name the class. classInit is
  * reconstructed.
  */
@@ -32,6 +32,8 @@ enum d_a_obj_wl_polelift_AssetId {
 #include "daObjWlPolelift_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "math/MtxStack.h"
+#include "SaveBlock.h"
 
 /* The file-scope object at the end of this file constructs the resource
  * handle (model file 0x6db). mwcc emits __sinit_d_a_obj_wl_polelift.cpp
@@ -50,32 +52,29 @@ int fdiv(int a, int b);
 extern "C" {
 u16 DecIfAbove0_Short(u16 *timer);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-int LenVec3(Vector3 *v);
+int LenVec3(const Vector3 *v);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *a, int scale);
 void SubVec3(Vector3 *out, Vector3 *a, Vector3 *b);
-void Matrix4x3_FromRotationY(void *mtx, int angleY);
 
 void func_ov026_02111234(daObjWlPolelift_c *actor);
 void func_ov026_021112a4(daObjWlPolelift_c *actor);
 
-extern u32 data_0209caa0[];
+extern SaveBlock data_0209caa0;
 extern Vector3 data_ov026_02113a9c;
 extern PoleliftModelFile data_ov026_02113ea0;
 }
 
-// @symbol daObjWlPolelift_c_classInit
 extern "C" daObjWlPolelift_c *daObjWlPolelift_c_classInit()
 {
     return new daObjWlPolelift_c();
 }
 
-// @symbol _ZN17daObjWlPolelift_c13InitResourcesEv
 /* Load the lift model, bind its path and collision state, and initialize the
  * actor-owned shadow and cylinder. */
 s32 daObjWlPolelift_c::InitResources()
 {
     model.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov026_02113ea0), 1, -1);
-    if ((data_0209caa0[1] & 0x204) == 0)
+    if ((data_0209caa0.file.flags1 & 0x204) == 0)
         return 0;
 
     shadow.InitCuboid();
@@ -92,7 +91,6 @@ s32 daObjWlPolelift_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN17daObjWlPolelift_c8BehaviorEv
 /* Move toward the current path node, reverse or wrap at path ends, and keep
  * the owned collision and shadow state aligned with the lift. */
 s32 daObjWlPolelift_c::Behavior()
@@ -182,7 +180,6 @@ s32 daObjWlPolelift_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN17daObjWlPolelift_c6RenderEv
 /* Vtable slot 9. The owned dExtSimpleModel_c renders through its own vtable. */
 s32 daObjWlPolelift_c::Render()
 {
@@ -190,7 +187,6 @@ s32 daObjWlPolelift_c::Render()
     return 1;
 }
 
-// @symbol _ZN17daObjWlPolelift_c16CleanupResourcesEv
 /* Vtable slot 3. Releases the one shared file the class holds and reports
  * success; it never touches the object. */
 s32 daObjWlPolelift_c::CleanupResources()
@@ -199,7 +195,6 @@ s32 daObjWlPolelift_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov026_021112a4
 /* File-local helper: rebuild the model matrix from the actor's Y rotation and
  * position. */
 extern "C" void func_ov026_021112a4(daObjWlPolelift_c *actor)
@@ -210,7 +205,6 @@ extern "C" void func_ov026_021112a4(daObjWlPolelift_c *actor)
     actor->model.mat4x3.m[11] = actor->mPosZ >> 3;
 }
 
-// @symbol func_ov026_02111234
 /* File-local helper: copy the model matrix into the drop-shadow matrix and
  * hand the owned dExtShadowModel_c to dActor_c::DropShadowScaleXYZ. */
 extern "C" void func_ov026_02111234(daObjWlPolelift_c *actor)
@@ -221,7 +215,7 @@ extern "C" void func_ov026_02111234(daObjWlPolelift_c *actor)
 }
 
 /* _ZN17daObjWlPolelift_cD1Ev and _ZN17daObjWlPolelift_cD0Ev are NOT written
- * here on purpose, and carry no @symbol marker: the inline destructor in
+ * here on purpose: the inline destructor in
  * include/daObjWlPolelift_c.h emits D1 then D0 -- the cartridge's order -- and
  * no D2. tools/tiers.py scores both through that inline definition. */
 

@@ -16,8 +16,6 @@
  * leftovers:
  * - Behavior keeps its goto structure, and InitResources keeps one; the
  *   labels are named for the offset in the ROM function (L274 is +0x274).
- * - Vtbl/VtblOwner stay a file-local slice: the object data_0209f5bc points
- *   at is reached through vtable slot 5 alone (dMeter_c cuts the same slice).
  * - The camera's follow word is mTargetPlayer in dCamera_c.h, a dActor_c *;
  *   this TU reads it as the object the map follows.
  * - The player-list copy keeps an (int) launder on &o->mPos: the ROM
@@ -25,8 +23,7 @@
  *   a plain `playerPos = o->mPos` uses [r8,#0x5c] addressing and shortens
  *   Behavior by 4 bytes. The focus copy already goes through a pointer
  *   local, so `&focus->mPos` needs no launder.
- * - struct Vec3 stays the launder for the two projection helpers.
- *   GetPosFromMinimapPos and GetPosOnMinimap are static Fix12i methods;
+ * - GetPosFromMinimapPos and GetPosOnMinimap are static Fix12i methods;
  *   the third parameter is the scalar, not Fix12<int>.
  * - The OAM, G2x and Vec3 helpers stay on C-linkage or hand-mangled
  *   externs for the same reason.
@@ -40,6 +37,7 @@
 #include "daPly_c.h"
 #include "dActor_c.h"
 #include "dCamera_c.h"
+#include "dFdBrightness_c.h"
 #include "SaveData.h"
 #include "OAM.h"
 #include "G2x.h"
@@ -66,12 +64,6 @@ struct Event {
     static int GetBit(unsigned int bit);
 };
 
-struct Vtbl { s32 (*f[8])(void *); };
-
-struct VtblOwner { Vtbl *vt; };
-
-struct Vec3 { int x, y, z; };
-
 /* An icon is drawn when it lies within 16 pixels of the 256x192 screen. */
 #define ICON_X_VISIBLE(x) ((u16)((x) + 0x10) < 0x120)
 #define ICON_Y_VISIBLE(y) ((u16)((y) + 0x10) < 0xe0)
@@ -80,7 +72,7 @@ extern "C" {
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern signed char gCurrentSublevel;
 extern u8 data_0209f220;
-extern u32 data_0209caa0[];
+extern SaveBlock data_0209caa0;
 int SublevelToLevel(int i);
 int IsStarCollected(int level, int star);
 
@@ -90,7 +82,7 @@ extern u8 gVsExitScreenActive;
 extern u8 data_0209f250;
 extern u8 gLevelClearStep;
 extern u8 data_0209f2d8;
-extern void *data_0209f394[];
+extern daPly_c *data_0209f394[];
 extern s16 data_02082214[];
 extern s8 data_ov002_02111148;
 /* Per star-marker slot: the marker type (4 = draw a red-coin icon instead). */
@@ -106,9 +98,9 @@ extern u8 gMapCapIconCharacters[];
 extern void *data_ov002_0210cac8[];
 extern void *data_ov002_0210c748[];
 extern u8 data_0209d660;
-extern u32 data_020a0db0;
-extern VtblOwner *data_0209f5bc;
-extern void *data_0209f318;
+extern s32 data_020a0db0;
+extern dFdBrightness_c *data_0209f5bc;
+extern dCamera_c *data_0209f318;
 extern u32 gNextActorUpdateMask;
 extern s32  data_0209d4b0;
 extern u8   data_0209f350[];
@@ -121,15 +113,15 @@ extern u8   data_ov002_0211114c;
 extern u8   data_ov002_02111144;
 extern dActor_c *STAR_MARKERS[12];
 extern int data_0209f3e8[];
-extern int data_0209f3a4[];
+extern void *data_0209f3a4[];
 extern void SetSubBg2Offset(s32 a, s32 b);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern s32 GetMinimapID(dActor_c *actor, s32 arg);
 extern s32  GetMinimapScale(s32 idx);
 extern void UpdateMinimap(s32 *a, u32 b, u32 c, u32 d, u32 e);
-int *Vec3_DivScalarInPlace(struct Vec3 *v, int s);
-void Vec3_MulScalarInPlace(struct Vec3* v, int s);
-void Vec3_RotateYAndTranslate(struct Vec3* out, struct Vec3* in, short ang, struct Vec3* t);
+Vector3 *Vec3_DivScalarInPlace(Vector3 *v, int s);
+void Vec3_MulScalarInPlace(Vector3 *v, int s);
+void Vec3_RotateYAndTranslate(Vector3 *out, const Vector3 *in, short ang, const Vector3 *t);
 }
 
 /* The centre of the 256x192 touch screen, (128, 96) in 20.12 fixed point:
@@ -138,7 +130,6 @@ void Vec3_RotateYAndTranslate(struct Vec3* out, struct Vec3* in, short ang, stru
  * and register ~Vector3() (was the handwritten __sinit_ov002_0210804c). */
 static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);
 
-// @symbol _ZN6dMap_cD1Ev
 /* The complete-object destructor: store this class's vptr and chain to
  * dBase_c's destructor. dMap_c adds no member with a destructor of its own,
  * so the body is empty and the compiler writes the whole thing.
@@ -146,13 +137,11 @@ static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);
 dMap_c::~dMap_c()
 {
 }
-// @symbol _ZN6dMap_cD0Ev
 /* The deleting destructor has no text of its own: the single ~dMap_c() above
  * emits D1, D0 and D2 together, and D0 is D1 plus the inline operator
  * delete. The cartridge keeps D1 and D0 only; the manifest deadstrips D2.
  */
 
-// @symbol _ZN6dMap_c21FixTHIPaintingRoomPosER7Vector3
 /*
  * Bends a position inside the THI painting room so the minimap draws it in the
  * right place -- the room's real geometry and its map are not the same shape.
@@ -200,7 +189,6 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
     }
 }
 
-// @symbol _ZN6dMap_c19UpdateLevelSpecificEv
 /* Per-sublevel touch-ups to the BG3 buffer that GetBG3CharPtr returns. Each
  * case writes rows of consecutive u16 tile numbers, and only when its
  * condition holds (cases 7 and 8 also need data_0209f220 >= 2): a star collected, an event bit, or a bit in data_0209caa0. */
@@ -248,7 +236,8 @@ void dMap_c::UpdateLevelSpecific()
         u16 tile;
         int i;
         u16* p;
-        if (!(data_0209caa0[1] & 0x204)) return;
+        if (!(data_0209caa0.file.flags1 & 0x204))
+            return;
         p = (u16*)((char*)G2S::GetBG3CharPtr() - 0x748);
         tile = 0x35d;
         for (i = 0; i < 6; i++) {
@@ -264,7 +253,8 @@ void dMap_c::UpdateLevelSpecific()
         u16 tile;
         int i;
         u16* p;
-        if (!(data_0209caa0[2] & 0x80000)) return;
+        if (!(data_0209caa0.file.flags2 & 0x80000))
+            return;
         p = (u16*)((char*)G2S::GetBG3CharPtr() - 0x73a);
         tile = 0x396;
         for (i = 0; i < 4; i++) {
@@ -287,7 +277,8 @@ void dMap_c::UpdateLevelSpecific()
         u16 tile;
         int i;
         u16* p;
-        if (!(data_0209caa0[2] & 0x80000)) return;
+        if (!(data_0209caa0.file.flags2 & 0x80000))
+            return;
         p = (u16*)((char*)G2S::GetBG3CharPtr() - 0x1ca4);
         tile = 0x38e;
         for (i = 0; i < 4; i++) {
@@ -355,7 +346,6 @@ void dMap_c::UpdateLevelSpecific()
     }
 }
 
-// @symbol _ZN6dMap_c16CleanupResourcesEv
 /* dMap_c::CleanupResources() at 0x020f9e8c (ov002) -- vtable slot 3.
  * Returns VS_FAIL (1); the minimap holds no SharedFilePtr/heap resources
  * to release on death. dMap_c : dBase_c : fBase_c.
@@ -366,7 +356,6 @@ s32 dMap_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN6dMap_c16OnPendingDestroyEv
 /* dMap_c::OnPendingDestroy() at 0x020f9e94 (ov002) -- vtable slot 12.
  * Empty override; the minimap does nothing when marked for destruction.
  */
@@ -375,7 +364,6 @@ void dMap_c::OnPendingDestroy()
     (void)this;
 }
 
-// @symbol _ZN6dMap_c6RenderEv
 int dMap_c::Render()
 {
     u8 flag20c = data_0209f20c;
@@ -385,9 +373,10 @@ int dMap_c::Render()
     int j;
     u8 idx = data_0209f250;
 
-    if ((u8)(flag294 | (flag2c4 | flag20c)) == 0 || !(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) ||
+    if ((u8)(flag294 | (flag2c4 | flag20c)) == 0 ||
+        !(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) ||
         (flag20c != 0 && (u32)gLevelClearStep < 3)) {
-        daPly_c *player = (daPly_c *)data_0209f394[idx];
+        daPly_c *player = data_0209f394[idx];
         int vs = (data_0209f2d8 == 1);
         if (vs != 0) {
             OAM::RenderSub(OAM::MM_VS_PLAYER_ICONS[player->param1 + idx * 4],
@@ -413,9 +402,8 @@ int dMap_c::Render()
                             if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
                                     OAM::RenderSub(
-                                        OAM::MM_VS_PLAYER_ICONS_S[j + ((daPly_c *)data_0209f394[i])
-                                                                          ->param1],
-                                        x, y, -1, 2);
+                                        OAM::MM_VS_PLAYER_ICONS_S[j + data_0209f394[i]->param1], x,
+                                        y, -1, 2);
                                 }
                             }
                         }
@@ -436,7 +424,7 @@ int dMap_c::Render()
                     OAM::RenderSub(OAM::MM_PLAYER_ICONS[icon], this->mPlayerIconX[idx],
                                    this->mPlayerIconY[idx], -1, 2);
                 }
-                if (data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) {
+                if (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) {
                     u8 s = this->mArrowType;
                     if (s != 0) {
                         u16 ang;
@@ -523,7 +511,7 @@ int dMap_c::Render()
             }
         }
 
-        if (!(data_0209caa0[1] & 0x40) && (data_0209caa0[2] & 0x20000)) {
+        if (!(data_0209caa0.file.flags1 & 0x40) && (data_0209caa0.file.flags2 & 0x20000)) {
             this->mStarKeyBlinkTimer += 1;
             if ((u32)this->mStarKeyBlinkTimer >= 5)
                 this->mStarKeyBlinkTimer = 0;
@@ -553,7 +541,6 @@ int dMap_c::Render()
 }
 
 
-// @symbol _ZN6dMap_c8BehaviorEv
 /* One frame of the minimap: pick the map for the focus object, scroll and
  * scale the BG, then project every icon onto the screen.
  *
@@ -572,11 +559,12 @@ s32 dMap_c::Behavior()
     u32 flagsOr;
     s32 i;
 
-    cam = (dCamera_c *)data_0209f318;
-    player = (daPly_c *)data_0209f394[data_0209f250];
+    cam = data_0209f318;
+    player = data_0209f394[data_0209f250];
     focus = 0;
 
-    if (data_0209f5bc->vt->f[5](data_0209f5bc) == 0) goto L274;
+    if (data_0209f5bc->IsAtStart() == 0)
+        goto L274;
     if (gNextActorUpdateMask & ACTOR_UPDATE_MASK_STAGE_ENDING)
         goto L274;
     if (data_0209d4b0 != 0) goto L274;
@@ -614,7 +602,7 @@ L200:
     {
         s32 b = (data_0209f2d8 == 1);
         if (b == 0) {
-            if ((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) == 0)
+            if ((data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) == 0)
                 goto L2a4;
         }
         gSubScreenLayers &= ~4;
@@ -628,7 +616,7 @@ L200:
     }
 
 L274:
-    if ((data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE) == 0) {
+    if ((data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) == 0) {
         if (data_0209d4b0 == 0) goto L2a4;
     }
     gSubScreenLayers &= ~4;
@@ -654,7 +642,7 @@ L318:
     {
         s32 b = (data_0209f2d8 == 0);
         if (b == 0) goto L360;
-        if (data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)
+        if (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)
             goto L360;
         if (this->mInIntroCutscene != 0) goto L360;
     }
@@ -784,7 +772,7 @@ L738:
     /* Project each object list onto the map. A missing object gets map id -1. Stars whose
      * kind byte in gStarMarkerTypes is 4 are the ones Render draws as MM_RED_COIN. */
     for (i = 0; i < 4; i++) {
-        daPly_c *o = (daPly_c *)data_0209f394[i];
+        daPly_c *o = data_0209f394[i];
         if (o != 0) {
             /* the (int) launder keeps the ROM's precomputed copy source */
             playerPos = *(Vector3 *)((int)&o->mPos);
@@ -832,8 +820,10 @@ L738:
     }
 
     /* The star key: Render blinks it under the same two flag tests. */
-    if (data_0209caa0[1] & 0x40) goto La64;
-    if ((data_0209caa0[2] & 0x20000) == 0) goto La64;
+    if (data_0209caa0.file.flags1 & 0x40)
+        goto La64;
+    if ((data_0209caa0.file.flags2 & 0x20000) == 0)
+        goto La64;
     {
         dActor_c *o = (dActor_c *)data_0209f33c;
         if (o == 0) { this->mStarKeyMapID = -1; goto La64; }
@@ -909,8 +899,8 @@ Lc30:
 /* What InitResources loads the map graphics with. */
 extern "C" {
 int func_0202a980(void);
-int LoadFile(int handle);
-void DecompressLZ16(int src, void* dst);
+void *LoadFile(int handle);
+void DecompressLZ16(void *src, void *dst);
 void Deallocate(void* ptr);
 int func_0202a96c(void);
 
@@ -923,7 +913,6 @@ extern s32 gRunningKuppaScript;
 #pragma opt_strength_reduction off
 /* Kept: the ROM recomputes i << 11 for each screen block; strength reduction
  * turns it into a running offset and needs one more register. */
-// @symbol _ZN6dMap_c13InitResourcesEv
 int dMap_c::InitResources()
 {
     u16 *p;
@@ -936,30 +925,30 @@ int dMap_c::InitResources()
     {
         int id1 = func_0202a980();
         if (id1 != 0) {
-            int f1 = LoadFile(id1);
+            void *f1 = LoadFile(id1);
             DecompressLZ16(f1, G2S::GetBG3CharPtr());
-            Deallocate((void*)f1);
+            Deallocate(f1);
         }
     }
 
     {
         int id2 = func_0202a96c();
         if (id2 != 0) {
-            int f2 = LoadFile(id2);
+            void *f2 = LoadFile(id2);
             GXS::BeginLoadBGExtPltt();
-            GXS::LoadBGExtPltt((void *)f2, 0x6000, 0x200);
+            GXS::LoadBGExtPltt(f2, 0x6000, 0x200);
             GXS::EndLoadBGExtPltt();
-            GXS::LoadBGPltt((void *)f2, 0, 2);
-            Deallocate((void*)f2);
+            GXS::LoadBGPltt(f2, 0, 2);
+            Deallocate(f2);
         }
     }
 
     p = data_0209f334;
     for (i = 0; i < data_0209f2e8; i++) {
         if (*p != 0) {
-            int f3 = LoadFile(*p);
+            void *f3 = LoadFile(*p);
             DecompressLZ16(f3, (char *)G2S::GetBG3ScrPtr() - (i << 11));
-            Deallocate((void*)f3);
+            Deallocate(f3);
         }
         p++;
     }
@@ -971,7 +960,7 @@ int dMap_c::InitResources()
         }
     }
 
-    data_ov002_02111148 = (signed char)GetMinimapID((dActor_c *)data_0209f394[data_0209f250], -1);
+    data_ov002_02111148 = (signed char)GetMinimapID(data_0209f394[data_0209f250], -1);
 
     if (data_ov002_02111148 >= 0) {
         if ((SublevelToLevel(gCurrentSublevel) == 0x1d && gCurrentSublevel != 1 &&
@@ -1018,7 +1007,7 @@ int dMap_c::InitResources()
     {
         int b1 = (data_0209f2d8 == 0);
         if (b1) {
-            if (!(data_0209caa0[2] & FILE_FLAGS2_INTRO_DONE)) {
+            if (!(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
                 int b3 = (gRunningKuppaScript != 0);
                 if (!b3) {
                     mInvScale = (mTargetInvScale) << 1;
@@ -1057,21 +1046,18 @@ int dMap_c::InitResources()
 
 #pragma opt_strength_reduction on
 
-// @symbol _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_isS1_
 void dMap_c::GetPosFromMinimapPos(Vector3 &a, Vector3 &b, Fix12i c, short d, Vector3 &e) {
-    struct Vec3 local;
-    Vec3_Sub((Vector3 *)&local, &a, &sMapScreenCenter);
+    Vector3 local;
+    Vec3_Sub(&local, &a, &sMapScreenCenter);
     Vec3_DivScalarInPlace(&local, c);
-    Vec3_RotateYAndTranslate((struct Vec3 *)&e, (struct Vec3 *)&b, d, &local);
+    Vec3_RotateYAndTranslate(&e, &b, d, &local);
 }
 
-// @symbol _ZN6dMap_c15GetPosOnMinimapEP7Vector3S1_isS1_
 void dMap_c::GetPosOnMinimap(Vector3 *out, Vector3 *a, Fix12i s, short ang, Vector3 *res) {
-    struct Vec3 v;
-    Vec3_Sub((Vector3*)&v, out, a);
+    Vector3 v;
+    Vec3_Sub(&v, out, a);
     Vec3_MulScalarInPlace(&v, s);
-    Vec3_RotateYAndTranslate((struct Vec3 *)res, (struct Vec3 *)&sMapScreenCenter, (short)(-ang),
-                             &v);
+    Vec3_RotateYAndTranslate(res, &sMapScreenCenter, (short)(-ang), &v);
 }
 
 /* Reconstructed source-style name: SM64DS proves dMap_c through RTTI,
@@ -1079,7 +1065,6 @@ void dMap_c::GetPosOnMinimap(Vector3 *out, Vector3 *a, Fix12i s, short ang, Vect
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Minimap_Spawn. It was once labelled
  * the dMap_c constructor, but it takes no `this`: it is the registry factory. */
-// @symbol dMap_c_classInit
 extern "C" dMap_c *dMap_c_classInit()
 {
     return new dMap_c();

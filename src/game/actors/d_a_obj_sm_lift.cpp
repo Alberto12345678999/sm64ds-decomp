@@ -19,7 +19,7 @@
  * - Vec3_Asr, AngleDiff, Vec3_Sub, LenVec3, Vec3_MulScalar, SubVec3 and
  *   Math_Function_0203b14c are arm9 C helpers no header declares yet.
  * The file ends with the mesh-collider hook HandlePlayerContact, the
- * veneer BeforeClsnCallback that InitResources installs, and the registry
+ * veneer StoodOnCallback that InitResources installs, and the registry
  * factory daObjSm_Lift_c_classInit (0x02111818).
  */
 
@@ -38,12 +38,14 @@ enum daObjSm_Lift_c_AssetId { ASSET_SM_LIFT_BMD = 0x06b3, ASSET_SM_LIFT_KCL = 0x
 #include "Sound.h"
 
 extern s16 data_02082214[];
-extern int data_ov018_02112f48[];
+/* Two CLPS blocks the lift hands to its colliders, back to back. */
+int data_ov018_02112f48[4] = {0x53504c43, 0x00020008, 0x00000fc5, 0x000000ff};
+int data_ov018_02112f58[4] = {0x01000fc5, 0x000000ff, 0xffffffff, 0xffffffff};
 
 extern "C" {
 void Vec3_Asr(Vector3 *d, Vector3 *s, int n);
-void func_020393d4(int *p, int v);
-void func_020393c4(int *p, int v);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
+void func_020393c4(dBgW *collider, StoodOnCallback callback);
 int AngleDiff(int, int);
 int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
@@ -73,18 +75,14 @@ extern SmLiftClsnFileHandle gSmLiftCollisionFile;
 /* Emission order is ROM order. The destructor pair must stay first. */
 #pragma defer_codegen off
 
-// @symbol _ZN14daObjSm_Lift_cD1Ev
-// @symbol _ZN14daObjSm_Lift_cD0Ev
 daObjSm_Lift_c::~daObjSm_Lift_c() {}
 
-// @symbol _ZN14daObjSm_Lift_c15OnHitByMegaCharER7daPly_c
 void daObjSm_Lift_c::OnHitByMegaChar(daPly_c &player) {
     player.IncMegaKillCount();
     KillByMegaChar(player);
     mAngleY = mPrevAngleY + 0x4000;
 }
 
-// @symbol _ZN14daObjSm_Lift_c20UpdateModelTransformEv
 void daObjSm_Lift_c::UpdateModelTransform() {
     Vector3 t;
     Vec3_Asr(&t, &mPos, 3);
@@ -95,7 +93,6 @@ void daObjSm_Lift_c::UpdateModelTransform() {
     mModel.mat4x3 = data_020a0e68;
 }
 
-// @symbol _ZN14daObjSm_Lift_c16CleanupResourcesEv
 s32 daObjSm_Lift_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
@@ -105,13 +102,11 @@ s32 daObjSm_Lift_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN14daObjSm_Lift_c6RenderEv
 s32 daObjSm_Lift_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN14daObjSm_Lift_c8BehaviorEv
 int daObjSm_Lift_c::Behavior() {
     Vector3 nodeA, nodeB, diff, scaled;
     s16 target;
@@ -225,7 +220,6 @@ int daObjSm_Lift_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN14daObjSm_Lift_c13InitResourcesEv
 s32 daObjSm_Lift_c::InitResources() {
     char *c = (char *)this;
     mPathId = *(int *)(c + 8) & 0xff;
@@ -238,8 +232,8 @@ s32 daObjSm_Lift_c::InitResources() {
     void *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);
     mMeshCollider.SetFile((KCL_File *)kf, mClsnMat, 0x1000, mAngleY,
                           *(CLPS_Block *)data_ov018_02112f48);
-    func_020393d4((int *)&mMeshCollider, (int)dBgW::UpdatePosWithTransform);
-    func_020393c4((int *)&mMeshCollider, (int)&daObjSm_Lift_c::BeforeClsnCallback);
+    func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
+    func_020393c4(&mMeshCollider, &StoodOnCallback);
     mPauseTimer = 0x3c;
     mBasePosX = mPosX;
     mBasePosY = mPosY;
@@ -260,7 +254,6 @@ s32 daObjSm_Lift_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN14daObjSm_Lift_c19HandlePlayerContactEP8dActor_c
 /* Remembers the player while the player touches the lift (actor ID 0xbf);
    Behavior clears mTouchingPlayer again at the end of every frame. The
    comparison is materialised into an int before the test, as the ROM does. */
@@ -270,11 +263,10 @@ void daObjSm_Lift_c::HandlePlayerContact(dActor_c *other) {
         mTouchingPlayer = other;
 }
 
-// @symbol _ZN14daObjSm_Lift_c18BeforeClsnCallbackEPvPS_P8dActor_c
 /* dBgW callback veneer, armed by func_020393c4 in InitResources. Drops the
    collider and forwards the touching actor to HandlePlayerContact. */
-void daObjSm_Lift_c::BeforeClsnCallback(void *collider, daObjSm_Lift_c *self, dActor_c *other) {
-    self->HandlePlayerContact(other);
+void daObjSm_Lift_c::StoodOnCallback(dBgW *collider, dActor_c *self, dActor_c *other) {
+    static_cast<daObjSm_Lift_c *>(self)->HandlePlayerContact(other);
 }
 
 /* Reconstructed source-style name: SM64DS proves daObjSm_Lift_c through RTTI,
@@ -285,7 +277,6 @@ void daObjSm_Lift_c::BeforeClsnCallback(void *collider, daObjSm_Lift_c *self, dA
  * `new daObjSm_Lift_c` is the whole sequence the loose factory spelled by
  * hand: fBase_c::operator new(0x354), dBgActor_c's base constructor and the
  * vptr store (the class adds no member with a constructor). */
-// @symbol daObjSm_Lift_c_classInit
 extern "C" daObjSm_Lift_c *daObjSm_Lift_c_classInit(void) {
     return new daObjSm_Lift_c;
 }

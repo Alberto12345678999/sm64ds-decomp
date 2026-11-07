@@ -17,11 +17,14 @@
  * Fifteen category loaders, then LoadObjects, then
  * dScStage_c::LoadClsnAndObjects. ov002 .text 0x020fe190..0x020fea4c.
  */
+#include "KuppaScript.h"
 #include "decl_common.h"
 
 #include "LVL_Overlay.h"
 #include "dScStage_c.h"
 #include "dActor_c.h"
+#include "daPly_c.h"
+#include "dCamera_c.h"
 #include "dBgW.h"
 #include "PathPtr.h"
 #include "Vector3s.h"
@@ -34,7 +37,7 @@ extern "C" {
 /* data_0209caa0 is the live save block; its first 0x44 bytes are the
  * current file. LoadEntranceObjects reads the character, LoadClsnAndObjects
  * flags2. */
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 
 /* data_0209f5c0 is the parent passed to dBase_c::Spawn. */
 extern fBase_c *data_0209f5c0;
@@ -43,11 +46,11 @@ extern u8 data_0209f21c;
 extern u8 data_0209f220;
 extern u8 data_0209f250;
 extern u8 data_0209f2d8;
-extern void *data_0209f318;
+extern dCamera_c *data_0209f318;
 extern void *data_0209f338;
-extern void *data_0209f394[];
+extern daPly_c *data_0209f394[];
 extern u8 data_0209fc5c[];
-extern int data_02092134;
+extern unsigned int data_02092134;
 extern u8 data_02092128[];
 
 extern s8 data_ov002_0210cb5c[];
@@ -66,7 +69,7 @@ void StartEntranceFaderWipe(int index);
 /* dScStage_c::LoadClsnAndObjects' own callees. LoadFile is not in decl_common.h. */
 struct KCL_File;
 struct CLPS_Block;
-KCL_File *LoadFile(int handle);
+void *LoadFile(int handle);
 
 /* LoadObjects dispatches through this table. Its entries are the
  * category loaders. This text-only TU does not define it. */
@@ -107,8 +110,6 @@ struct LVL_Overlay_Layout {
     u8 subCount;  /* 0x14 */
 };
 
-#define sCurrentFile (*(FileSaveData *)data_0209caa0)
-
 /* The loaders test the game mode as a 0/1 value. */
 static inline int IsGameMode(int mode) {
     return data_0209f2d8 == mode;
@@ -116,7 +117,7 @@ static inline int IsGameMode(int mode) {
 
 /* Game mode 0 with bit 0x80 of the current file's flags2 clear. */
 static inline int IntroAllowed() {
-    return IsGameMode(0) && (sCurrentFile.flags2 & FILE_FLAGS2_INTRO_DONE) == 0;
+    return IsGameMode(0) && (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) == 0;
 }
 
 /* Spawn simple actors, or hand a minimap-change sentinel to
@@ -125,7 +126,6 @@ static inline int IntroAllowed() {
  * There is no rotation; spawn passes NULL for it. raw == 0x1ff is the
  * minimap-change special case. The third parameter is part of the shared loader
  * signature and unused here. */
-// @symbol _Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::SimpleEntry *entry = (LVL_Overlay::SimpleEntry *)table.entries;
     int objectIndex;
@@ -159,7 +159,6 @@ void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
  * Vector3s rotation, u16 param. data_ov002_0211118c is a running death-table /
  * spawn-order counter incremented per spawn. The third parameter is part of the
  * shared loader signature and unused here. */
-// @symbol _Z19LoadStandardObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadStandardObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::StandardEntry *entry = (LVL_Overlay::StandardEntry *)table.entries;
     int objectIndex;
@@ -183,7 +182,6 @@ void LoadStandardObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) 
  * StandardEntry records like LoadStandardObjects, but the third argument is an
  * entry index OFFSET into the table rather than a free parameter: the walk
  * starts at `entries + entranceIndex` and runs for data_0209f21c iterations, not table.count. */
-// @symbol _Z19LoadEntranceObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 entranceIndex) {
     u32 entranceKind;
     LVL_Overlay::StandardEntry *entry = (LVL_Overlay::StandardEntry *)table.entries;
@@ -207,7 +205,7 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 entranc
             u16 param = entry->param;
             entranceKind = (param >> 7) & 0xf;
 
-            int savedCharacter = sCurrentFile.mCharacter;
+            int savedCharacter = data_0209caa0.file.mCharacter;
             int playerCharacter = data_02092128[playerIndex];
             if (IsGameMode(1)) {
                 savedCharacter = 3;
@@ -216,7 +214,8 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 entranc
             u32 spawnParam =
                 savedCharacter | (playerCharacter << 3) | (playerIndex << 6) | (entranceKind << 8);
 
-            void *player = dActor_c::Spawn(data_ov002_0210cbf4[entry->raw], spawnParam, pos,
+            daPly_c *player =
+                (daPly_c *)dActor_c::Spawn(data_ov002_0210cbf4[entry->raw], spawnParam, pos,
                                            (const Vector3_16 *)&entry->rot, (s8)(param & 7), -1);
 
             if (data_0209fc5c[playerIndex] == 0)
@@ -232,7 +231,7 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 entranc
         }
     }
 
-    data_0209f318 = dBase_c::Spawn(0x14c, data_0209f5c0, entranceId, 0);
+    data_0209f318 = (dCamera_c *)dBase_c::Spawn(0x14c, data_0209f5c0, entranceId, 0);
 
     if (IsGameMode(2))
         return;
@@ -246,17 +245,14 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 entranc
     StartEntranceFaderWipe(wipeType);
 }
 
-// @symbol _Z19LoadPathNodeObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadPathNodeObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     PathPtr::SetNodeTable(table.entries);
 }
 
-// @symbol _Z15LoadPathObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadPathObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     PathPtr::SetPathTable((PathDef *)table.entries, table.count);
 }
 
-// @symbol _Z15LoadViewObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadViewObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b0c4(table.entries, table.count);
 }
@@ -269,7 +265,6 @@ void LoadViewObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
  * The loop is bottom-tested with a guard rather than top-tested, and that shape
  * is load-bearing: it is what the ROM emits, and a plain `for` reorders the
  * compare. */
-// @symbol _Z25LoadTeleportSourceObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::TeleportSourceEntry *entry = (LVL_Overlay::TeleportSourceEntry *)table.entries;
 
@@ -293,12 +288,10 @@ void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 p
     } while (objectIndex < (int)table.count);
 }
 
-// @symbol _Z23LoadTeleportDestObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadTeleportDestObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b090(table.entries, table.count);
 }
 
-// @symbol _Z14LoadFogObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadFogObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b060(table.entries, table.count);
 }
@@ -307,7 +300,6 @@ void LoadFogObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
  * out of two small ov002 tables indexed by the low five bits of the record's
  * last halfword; the rotation is unpacked from two nibbles of param plus the
  * stored angle. */
-// @symbol _Z15LoadDoorObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadDoorObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     DoorEntry *entry = (DoorEntry *)table.entries;
     for (int objectIndex = 0; objectIndex < table.count; objectIndex++) {
@@ -341,7 +333,6 @@ void LoadDoorObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
  * `(b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]`, which on a little-endian
  * machine is the reverse of a plain load. The ROM really does shift 0x0a by 24,
  * which is why the header keeps the field a four-byte array. */
-// @symbol _Z15LoadExitObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadExitObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::ExitEntry *entry = (LVL_Overlay::ExitEntry *)table.entries;
 
@@ -367,12 +358,10 @@ void LoadExitObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     }
 }
 
-// @symbol _Z22LoadMinimapTileObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadMinimapTileObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b044(table.entries, table.count);
 }
 
-// @symbol _Z23LoadMinimapScaleObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadMinimapScaleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202af80(table.entries, table.count);
 }
@@ -381,16 +370,14 @@ void LoadMinimapScaleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 par
  * recovery: the ROM really does store the pointer rather than walk it. Object
  * type 13 is unused in the shipped game, so the loader was reduced to a stub
  * that keeps the table around, which also explains why it reads no count. */
-// @symbol _Z23LoadUnusedType13ObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadUnusedType13Objects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     data_0209f338 = table.entries;
 }
 
 /* Take the first word of the star-camera table and publish it. Reads no count,
  * unlike most of this family: it wants one value, not a list. */
-// @symbol _Z21LoadStarCameraObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadStarCameraObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
-    data_02092134 = *(int *)table.entries;
+    data_02092134 = *(unsigned int *)table.entries;
 }
 
 /* Walk the outer object table and dispatch each sub-table to the category
@@ -401,7 +388,6 @@ void LoadStarCameraObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param
  * is the 8-byte ObjSubTable its loader takes; its byte 0 packs a star filter in
  * the top three bits and a handler index in the low five. The entry is skipped
  * unless the filter is 0 or equal to the selected star at data_0209f220. */
-// @symbol _Z11LoadObjectsRN11LVL_Overlay8ObjTableEaj
 void LoadObjects(LVL_Overlay::ObjTable &table, s8 areaID, u32 param) {
     LVL_Overlay::ObjSubTable *entry = (LVL_Overlay::ObjSubTable *)table.entries;
     int tableIndex;
@@ -420,7 +406,6 @@ void LoadObjects(LVL_Overlay::ObjTable &table, s8 areaID, u32 param) {
 /* Loads the collision mesh, runs the object tables, then decides
  * whether the intro cutscene plays. LoadObjects is in this TU, so the
  * call is by name. */
-// @symbol _ZN10dScStage_c18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
 void dScStage_c::LoadClsnAndObjects(LVL_Overlay &overlayRef, u32 entranceIndex,
                                     dBgW_Kc &meshColliderRef) {
     LVL_Overlay_Layout *overlay = (LVL_Overlay_Layout *)&overlayRef;
@@ -435,7 +420,7 @@ void dScStage_c::LoadClsnAndObjects(LVL_Overlay &overlayRef, u32 entranceIndex,
     PathPtr::SetPathTable(0, 0);
 
     if (overlay->kclFileId != 0) {
-        collisionFile = LoadFile(overlay->kclFileId);
+        collisionFile = static_cast<KCL_File *>(LoadFile(overlay->kclFileId));
         dBgW_Kc::UpdateFileOffsets(*collisionFile);
         ((dBgW_Kc *)meshCollider)->SetFile(collisionFile, *overlay->clps);
         func_0202a850(((dBgW_Kc *)meshCollider)->GetOctreeOriginY(),
@@ -453,7 +438,7 @@ void dScStage_c::LoadClsnAndObjects(LVL_Overlay &overlayRef, u32 entranceIndex,
         subTable++;
     }
 
-    continuedKuppaScript = ContinueKuppaScriptIfNecessary();
+    continuedKuppaScript = KuppaScript::ContinueIfNecessary();
 
     playIntro = IntroAllowed() && continuedKuppaScript == 0;
 
@@ -464,5 +449,5 @@ void dScStage_c::LoadClsnAndObjects(LVL_Overlay &overlayRef, u32 entranceIndex,
     }
 
     if (playIntro != 0)
-        StartIntroCutscene();
+        KuppaScript::StartIntroCutscene();
 }

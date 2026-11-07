@@ -37,32 +37,8 @@ struct C { char pad[0x5004]; PMF m; };
 
 /* Whole-matrix copies go through this so they stay one block move. */
 #include "private/mtx43.h"
+#include "LevelRng.h"
 struct V3 { int w[3]; };
-
-/* Vtable shim for InitResources' last call, a virtual dispatch through slot
- * 18 of this class's own table. Calling StartRound by name would compile
- * to a direct branch instead. */
-struct Base {
-    virtual void m00();
-    virtual void m04();
-    virtual void m08();
-    virtual void m0c();
-    virtual void m10();
-    virtual void m14();
-    virtual void m18();
-    virtual void m1c();
-    virtual void m20();
-    virtual void m24();
-    virtual void m28();
-    virtual void m2c();
-    virtual void m30();
-    virtual void m34();
-    virtual void m38();
-    virtual void m3c();
-    virtual void m40();
-    virtual void m44();
-    virtual void m48(int x);
-};
 
 /* The two model file handles InitResources swaps between through
  * sJumpBackFile; a declared-only subclass so the static initializer
@@ -81,14 +57,15 @@ extern "C" {
 void Mg_CommitRecords(void);
 void Mg_DrawScoreTally(void *a, int b, int c, int d);
 int  GetGameLanguage(void);
-void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
-void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
+struct OamAttr;
+struct Matrix2x2;
+void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
+void RenderOamMainScreen(OamAttr *a0, int a1, int a2, int a3, int a4);
 void func_0203cd80(int *m, short angle);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void FreeGfxSlotsById(int arg);
-int  LoadFile(int handle);
+void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
-void Camera_UpdateMatrices(void *cam);
 
 void Heyho_ReactAll(void);
 void Heyho_SeparateAll(void);
@@ -103,8 +80,7 @@ int  Jump3D_InitPool(char *base, int count);
 void Jump3D_EnableInput(void);
 int  RandomIntInternal(int *seed);
 
-extern int  data_020a0e68;
-extern int  data_0209e650;
+extern Matrix4x3 data_020a0e68;
 extern int sJumpLastPick;
 extern u8 gMainScreenLayers;
 extern s16  data_02082614;
@@ -128,7 +104,6 @@ namespace cstd {
 s32 fdiv(s32 a, s32 b);
 }
 
-// @symbol _ZN11dScMgJump_c10StartRoundEi
 /* Slot 18. 0 is an eat (one more egg, capped like the HUD score), 0x12 a
  * miss that clears the count and the shared scene's copy of it; anything
  * else just publishes the count. From the fifteenth egg on the next egg is
@@ -169,7 +144,9 @@ void dScMgJump_c::StartRound(int arg)
         idx = mLevel;
     } else {
         do {
-            idx = (int)((u32)(RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13) * 0xa >> 0xc;
+            idx =
+                (int)((u32)(RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13) * 0xa >>
+                0xc;
         } while (idx == (u32)sJumpLastPick);
         sJumpLastPick = idx;
     }
@@ -189,7 +166,6 @@ void dScMgJump_c::StartRound(int arg)
     BeginIntro();
 }
 
-// @symbol _ZN11dScMgJump_c11CanEndStateEi
 /* Slot 19. mStateTimer is the same countdown the state functions below use. */
 int dScMgJump_c::CanEndState(int sel)
 {
@@ -211,12 +187,11 @@ int dScMgJump_c::CanEndState(int sel)
     return 1;
 }
 
-// @symbol _ZN11dScMgJump_c13InitResourcesEv
 /* Slot 0, and the key function (see the banner). */
 s32 dScMgJump_c::InitResources()
 {
     s32 idx;
-    int buf1, buf2;
+    void *buf1, *buf2;
     s32 fov;
     void *modelFile;
     int r;
@@ -224,10 +199,10 @@ s32 dScMgJump_c::InitResources()
     idx = GetGameLanguage();
     buf1 = LoadFile(sJumpNcgByLanguage[idx]);
     buf2 = LoadFile(0xd1);
-    DecompressLZ16((void *)buf1, (void *)0x6400000);
-    GX::LoadOBJPltt((void *)buf2, 0, 0x80);
-    Deallocate((void *)buf1);
-    Deallocate((void *)buf2);
+    DecompressLZ16(buf1, (void *)0x6400000);
+    GX::LoadOBJPltt(buf2, 0, 0x80);
+    Deallocate(buf1);
+    Deallocate(buf2);
 
     gMainScreenLayers = DISPLAY_LAYER_BG0 | DISPLAY_LAYER_OBJ;
     G3X::SetFog(false, 0, 2, 0x1000);
@@ -235,22 +210,22 @@ s32 dScMgJump_c::InitResources()
     *(u16 *)0x4000008 = (*(u16 *)0x4000008 & ~3) | 1;
     fov = cstd::fdiv(0xc0000, (s32)data_02082614);
 
-    this->mCameras[0].mEyeX = 0;
-    this->mCameras[0].mEyeY = -0x64000;
-    this->mCameras[0].mEyeZ = 0;
-    this->mCameras[0].mTargetX = 0;
-    this->mCameras[0].mTargetY = 0;
-    this->mCameras[0].mTargetZ = fov;
-    this->mCameras[0].mAngle = 0x800;
+    this->mCameras[0].mLookAt.x = 0;
+    this->mCameras[0].mLookAt.y = -0x64000;
+    this->mCameras[0].mLookAt.z = 0;
+    this->mCameras[0].mPos.x = 0;
+    this->mCameras[0].mPos.y = 0;
+    this->mCameras[0].mPos.z = fov;
+    this->mCameras[0].mFovAngle = 0x800;
     Camera_UpdateMatrices(&mCameras[0]);
 
-    this->mCameras[1].mEyeX = 0;
-    this->mCameras[1].mEyeY = 0x82000;
-    this->mCameras[1].mEyeZ = 0;
-    this->mCameras[1].mTargetX = 0;
-    this->mCameras[1].mTargetY = 0;
-    this->mCameras[1].mTargetZ = fov;
-    this->mCameras[1].mAngle = 0x800;
+    this->mCameras[1].mLookAt.x = 0;
+    this->mCameras[1].mLookAt.y = 0x82000;
+    this->mCameras[1].mLookAt.z = 0;
+    this->mCameras[1].mPos.x = 0;
+    this->mCameras[1].mPos.y = 0;
+    this->mCameras[1].mPos.z = fov;
+    this->mCameras[1].mFovAngle = 0x800;
     Camera_UpdateMatrices(&mCameras[1]);
 
     if (Heyho_InitPool((char *)mHeyhos, 6) == 0)
@@ -271,11 +246,10 @@ s32 dScMgJump_c::InitResources()
         return 0;
     }
     Mg_SetTopScreenYOffset(0x10);
-    ((Base *)this)->m48(-1);
+    StartRound(-1);
     return 1;
 }
 
-// @symbol _ZN11dScMgJump_c10BeginIntroEv
 /* The state functions below are unnamed in the ROM. mState is the current
  * state (see Behavior), mAccum gains mAccumStep >> 12 each tick and
  * mStateTimer counts down to the change.
@@ -289,7 +263,6 @@ void dScMgJump_c::BeginIntro()
     mState = pmf_dScMgJump_c_State_Intro;
 }
 
-// @symbol _ZN11dScMgJump_c11State_IntroEv
 /* Counts down mStateTimer, then shows the prompt and moves to the next state.
  * The legacy file's `#pragma optimize_for_size on` is not needed here and
  * would leak into every function in this file if carried. */
@@ -314,13 +287,11 @@ void dScMgJump_c::State_Intro()
     Heyho_SeparateAll();
 }
 
-// @symbol _ZN11dScMgJump_c9BeginPlayEv
 void dScMgJump_c::BeginPlay()
 {
     mState = pmf_dScMgJump_c_State_Play;
 }
 
-// @symbol _ZN11dScMgJump_c10State_PlayEv
 void dScMgJump_c::State_Play()
 {
     int *acc = &mAccum;
@@ -339,14 +310,12 @@ void dScMgJump_c::State_Play()
     BeginFinal();
 }
 
-// @symbol _ZN11dScMgJump_c8BeginEndEv
 void dScMgJump_c::BeginEnd()
 {
     mStateTimer = 0x20;
     mState = pmf_dScMgJump_c_State_End;
 }
 
-// @symbol _ZN11dScMgJump_c9State_EndEv
 void dScMgJump_c::State_End()
 {
   int *acc = &mAccum;
@@ -366,7 +335,6 @@ void dScMgJump_c::State_End()
   mState = pmf_dScMgJump_c_State_Result;
 }
 
-// @symbol _ZN11dScMgJump_c12State_ResultEv
 void dScMgJump_c::State_Result()
 {
     int ready = Jump3D_AllIdle();
@@ -383,14 +351,12 @@ void dScMgJump_c::State_Result()
     Jump3D_UpdateAll();
 }
 
-// @symbol _ZN11dScMgJump_c10BeginFinalEv
 void dScMgJump_c::BeginFinal()
 {
     Jump3D_StopGravity();
     mState = pmf_dScMgJump_c_State_Final;
 }
 
-// @symbol _ZN11dScMgJump_c11State_FinalEv
 /* Its writes to 0x5004 and 0x5014 are what bound dScMgD3DBase_c's size
  * from above. `shared` is the ov004 scene data; its type is not recovered. */
 void dScMgJump_c::State_Final()
@@ -416,13 +382,11 @@ void dScMgJump_c::State_Final()
   mState = pmf_dScMgJump_c_State_Idle_2;
 }
 
-// @symbol _ZN11dScMgJump_c10State_IdleEv
 /* An empty state. */
 void dScMgJump_c::State_Idle()
 {
 }
 
-// @symbol _ZN11dScMgJump_c8BehaviorEv
 /* Slot 6: run the current state. */
 s32 dScMgJump_c::Behavior()
 {
@@ -431,7 +395,6 @@ s32 dScMgJump_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN11dScMgJump_c6RenderEv
 /* Slot 9. Draws the instruction rows while mDrawSubScreen == 1, then programs the
  * light vector and light color registers at 0x040004c8 and 0x040004cc
  * (lights 0 and 1, hence volatile) and renders the model. The row
@@ -451,8 +414,7 @@ s32 dScMgJump_c::Render()
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite((void *)sJumpTextSpritesByLanguage[idx][1], (void *)y, 0xc,
-                              (void *)0);
+                DrawOamSprite(sJumpTextSpritesByLanguage[idx][1], y, 0xc, 0);
             } else {
                 RenderOamMainScreen(sJumpLifeIconSprite, y, 0xc, -1, -1);
             }
@@ -512,7 +474,6 @@ s32 dScMgJump_c::Render()
     return 1;
 }
 
-// @symbol _ZN11dScMgJump_c16CleanupResourcesEv
 /* Slot 3. Releases the model file; `this` is never read. */
 s32 dScMgJump_c::CleanupResources()
 {

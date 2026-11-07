@@ -7,22 +7,18 @@
  * not five. */
 #include "types.h"
 #include "CP15.h"
+#include "private/wm_views.h"
 
 extern "C" {
 
 extern int data_020a9440[]; /* the game-info buffer ARM7 reads (pret's UNK_021D68C0) */
-extern int *WM_GetSystemWork(void);
 extern int WMi_CheckIdle(void);
-extern int WM_CheckStateEx(int paramNum, ...);
-extern void WM_SetCallbackTable(int i, int val);
-extern int WM_SendCommand(short id, unsigned short paramNum, ...);
 extern void MultiCopy_Int(int *src, int *dst, int len);
 
 /* NitroSDK WM_SetGameInfo: refuse unless WM is PARENT (7) or MP_PARENT (9),
  * copy the user game info (at most 0x70 bytes) to the buffer ARM7 reads,
  * flush it and send API 0x18 (SET_GAMEINFO) with the buffer, its size and
  * the remaining arguments. */
-// @symbol WM_SetGameInfo
 int WM_SetGameInfo(int callback, int *userGameInfo, int userGameInfoSize, int ggid, u16 arg5,
                    u16 arg6, u8 arg7) {
     int ret = WM_CheckStateEx(2, 7, 9);
@@ -34,7 +30,7 @@ int WM_SetGameInfo(int callback, int *userGameInfo, int userGameInfoSize, int gg
         return 6;
     MultiCopy_Int(userGameInfo, data_020a9440, userGameInfoSize);
     CP15::FlushDataCache((unsigned int)data_020a9440, userGameInfoSize);
-    WM_SetCallbackTable(0x18, callback);
+    WM_SetCallbackTable(0x18, (void *)callback);
     ret = WM_SendCommand(0x18, 6, data_020a9440, userGameInfoSize, ggid, arg5, arg6, arg7);
     if (ret == 0)
         ret = 2;
@@ -43,8 +39,7 @@ int WM_SetGameInfo(int callback, int *userGameInfo, int userGameInfoSize, int gg
 
 /* NitroSDK WM_SetBeaconIndication: with WM idle, send API 0x19
  * (SET_BEACON_IND) with flag, which must be 0 or 1. */
-// @symbol WM_SetBeaconIndication
-int WM_SetBeaconIndication(int callback, int flag) {
+int WM_SetBeaconIndication(void *callback, int flag) {
     int r = WMi_CheckIdle();
     if (r != 0)
         return r;
@@ -59,8 +54,7 @@ int WM_SetBeaconIndication(int callback, int flag) {
 
 /* NitroSDK WM_SetLifeTime: with WM idle, send API 0x1d (SET_LIFETIME) with
  * the three lifetimes. */
-// @symbol WM_SetLifeTime
-int WM_SetLifeTime(int callback, int b, int c, int d) {
+int WM_SetLifeTime(void *callback, int b, int c, int d) {
     int r = WMi_CheckIdle();
     if (r != 0)
         return r;
@@ -75,10 +69,9 @@ int WM_SetLifeTime(int callback, int b, int c, int d) {
  * is IDLE (2), register callback for API 0x1e (MEASURE_CHANNEL), write the
  * request into the ARM9-to-ARM7 FIFO buffer (the API id, then ccaMode,
  * edThreshold, channel and measureTime in milliseconds) and send it. */
-// @symbol WM_MeasureChannel
-int WM_MeasureChannel(int callback, int ccaMode, int edThreshold, int channel,
+int WM_MeasureChannel(void *callback, int ccaMode, int edThreshold, int channel,
                       unsigned short measureTime) {
-    int *sys;
+    WMArm9Buf *sys;
     short *request;
     int result;
 
@@ -87,7 +80,7 @@ int WM_MeasureChannel(int callback, int ccaMode, int edThreshold, int channel,
     if (result != 0)
         return result;
     WM_SetCallbackTable(0x1e, callback);
-    request = (short *)sys[3];
+    request = (short *)sys->fifo9to7;
     request[0] = 0x1e;
     request[1] = ccaMode;
     request[2] = edThreshold;

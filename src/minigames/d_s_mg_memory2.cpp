@@ -14,7 +14,7 @@
  *   the plain reads renumber @NNN. unk_5407 is only cleared.
  * - ResultWait decrements mResultTimer as (int)this + its offset.
  * - MEMORY2_OFF/MEMORY2_HI name the offsets the char* loops add.
- * - Camera_InitDealerView sets the camera at this+0x4660 and tail-calls
+ * - Camera_InitDealerView sets mCamera and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
  * - Mg_DrawScoreTally, Mg_SaveRecordPair and Dealer_Load
  *   stay the linker names. Their bodies are not in this file.
@@ -31,6 +31,7 @@ enum dScMgMemory2_c_AssetId { ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb };
 #include "nitro/fx/fx.h"
 #include "common.h"
 #include "decl_common.h"
+#include "LevelRng.h"
 #include "PlayerInput.h"
 namespace cstd {
 s16 atan2(s32, s32);
@@ -115,32 +116,30 @@ extern void Mg_SaveRecordPair(int a, int b);
 extern u16 *sMemory2CardPositionsPerDifficulty[];
 extern int sMemory2ResultRowsPerDifficulty[];
 extern int sMemory2ResultColsPerDifficulty[];
-extern void MgCoins_StartPayout(char *p);
+extern void MgCoins_StartPayout(int count);
 extern short gMgCoinsStatus;
 extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int);
 extern void Mg_SubmitScore(int self);
 extern void Dealer_PlayWin(void *c);
 extern void Dealer_PlayLose(void *c);
-extern void Dealer_StartShuffle(char *c, int unused, short count, int ready);
+extern void Dealer_StartShuffle(Dealer *dealer, int unused, short count, s16 *counter);
 extern int sMemory2FourthDealsPerDifficulty[];
 extern int sMemory2HardDealsPerMode[];
 extern int sMemory2NormalDealsPerDifficulty[];
 extern int sMemory2EasyDealsPerDifficulty[];
 extern int RandomIntInternal(int *seed);
-extern int data_0209d4b8;
 extern int sMemory2PreviewCountPerDifficulty[];
 extern int sMemory2PreviewTimePerDifficulty[];
 extern void FreeGfxSlotsById(int x);
 extern void Dealer_PlayIdle(char *p);
-extern int Dealer_IsIdle(int *p);
+extern int Dealer_IsIdle(Dealer *dealer);
 extern void MgCoins_Reset(void);
-void Camera_InitDealerView(char *);
 void Mg_DrawCredits(char *, int, int, int);
 void Dealer_Draw(char *);
 extern void MgCoins_Update(void);
 extern void Dealer_Update(Dealer *p);
-void LoadCard2SubBg3(void);
+void LoadCard2SubBg3(void *);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
@@ -166,11 +165,9 @@ extern u8 gSubScreenLayers;
 
 #pragma defer_codegen off
 
-// @symbol _ZN14dScMgMemory2_cD1Ev
 /* Destroys mDealer, then the inherited scene. CodeWarrior emits both D1 and
  * D0 from this one definition. */
 dScMgMemory2_c::~dScMgMemory2_c() {}
-// @symbol _ZN14dScMgMemory2_cD0Ev
 /* Deleting variant, emitted from the destructor above. */
 
 void dScMgMemory2_c::DrawMessage() {
@@ -632,7 +629,7 @@ void dScMgMemory2_c::ResultReward() {
         if (mPairsFound < mTargetPairs) {
             return;
         }
-        MgCoins_StartPayout((char *)(5 * (5 - mMisses)));
+        MgCoins_StartPayout(5 * (5 - mMisses));
         return;
     }
     if (gMgCoinsStatus == 1) {
@@ -917,9 +914,9 @@ void dScMgMemory2_c::RoundStart() {
     mDealSignals = 0;
     mCardsDealt = 0;
     if (mDifficulty == 1)
-        Dealer_StartShuffle((char *)&mDealer, 4, 3, (int)&mDealSignals);
+        Dealer_StartShuffle(&mDealer, 4, 3, &mDealSignals);
     else
-        Dealer_StartShuffle((char *)&mDealer, 4, 4, (int)&mDealSignals);
+        Dealer_StartShuffle(&mDealer, 4, 4, &mDealSignals);
     mDealer.mReserved = 1;
     mSubstate = ROUND_DEAL_EASY;
     if (mPromptBlinkCount == 0) {
@@ -942,7 +939,7 @@ void dScMgMemory2_c::ShuffleCards() {
         char *p = raw;
         for (; cardIndex < 16; cardIndex++, p += 0x18) {
             u32 cardValue =
-                1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 8 >> 15);
+                1 + ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 8 >> 15);
             u8 *valueCount;
         check0:
             valueCount = &MEMORY2(raw + cardValue)->mValueCounts[0];
@@ -951,7 +948,7 @@ void dScMgMemory2_c::ShuffleCards() {
                 (*valueCount)++;
             } else {
                 cardValue =
-                    1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 8 >> 15);
+                    1 + ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 8 >> 15);
                 goto check0;
             }
         }
@@ -971,7 +968,7 @@ void dScMgMemory2_c::ShuffleCards() {
         char *p = raw;
         for (; cardIndex < 18; cardIndex++, p += 0x18) {
             u32 cardValue =
-                1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9 >> 15);
+                1 + ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 9 >> 15);
             u8 *valueCount;
         check1:
             valueCount = &MEMORY2(raw + cardValue)->mValueCounts[0];
@@ -980,7 +977,7 @@ void dScMgMemory2_c::ShuffleCards() {
                 (*valueCount)++;
             } else {
                 cardValue =
-                    1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9 >> 15);
+                    1 + ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 9 >> 15);
                 goto check1;
             }
         }
@@ -1000,7 +997,7 @@ void dScMgMemory2_c::ShuffleCards() {
         char *p = raw;
         for (; cardIndex < 20; cardIndex++, p += 0x18) {
             u32 cardValue =
-                1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 10 >> 15);
+                1 + ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 10 >> 15);
             u8 *valueCount;
         check2:
             valueCount = &MEMORY2(raw + cardValue)->mValueCounts[0];
@@ -1009,7 +1006,8 @@ void dScMgMemory2_c::ShuffleCards() {
                 (*valueCount)++;
             } else {
                 cardValue =
-                    1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 10 >> 15);
+                    1 +
+                    ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 10 >> 15);
                 goto check2;
             }
         }
@@ -1035,8 +1033,9 @@ void dScMgMemory2_c::ChoosePreviewCards() {
     int zero = 0;
     for (previewIndex = 0; previewIndex < previewCount; previewIndex++) {
         int cardIndex;
-        cardIndex =
-            (cardCount * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 15;
+        cardIndex = (cardCount *
+                     (((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff)) >>
+                    15;
         if (previewIndex != 0) {
             int duplicate;
             int previousIndex;
@@ -1050,9 +1049,10 @@ void dScMgMemory2_c::ChoosePreviewCards() {
                 }
                 if (duplicate == 0)
                     break;
-                cardIndex = (cardCount *
-                             (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >>
-                            15;
+                cardIndex =
+                    (cardCount *
+                     (((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff)) >>
+                    15;
             } while (1);
         }
         mPreviewCards[previewIndex] = (unsigned char)cardIndex;
@@ -1175,15 +1175,13 @@ void dScMgMemory2_c::SetupDifficulty() {
     }
 }
 
-// @symbol _ZN14dScMgMemory2_c10OnDealDoneEv
 void dScMgMemory2_c::OnDealDone() {
     MgCoins_PlaceBet(mMaxMisses);
 }
 
-// @symbol _ZN14dScMgMemory2_c11CanEndStateEi
 int dScMgMemory2_c::CanEndState(int /* mode */) {
     if (mState == STATE_RESULT && mSubstate == RESULT_WAIT) {
-        if (Dealer_IsIdle((int *)&mDealer) == 0)
+        if (Dealer_IsIdle(&mDealer) == 0)
             return 0;
         mSubstate = RESULT_REWARD;
         FreeGfxSlotsById(0x1d);
@@ -1191,7 +1189,6 @@ int dScMgMemory2_c::CanEndState(int /* mode */) {
     return mState == STATE_EXIT;
 }
 
-// @symbol _ZN14dScMgMemory2_c10StartRoundEi
 /* Clear the board, go back to StateSetup and reload the miss limit. */
 void dScMgMemory2_c::StartRound(int /* arg */) {
     dScMgBase_c *scene;
@@ -1209,12 +1206,10 @@ void dScMgMemory2_c::StartRound(int /* arg */) {
     mMaxMisses = (unsigned char)missLimit;
 }
 
-// @symbol _ZN14dScMgMemory2_c6RenderEv
 /* Vtable slot 9: set the camera, then draw credits, coins, the message,
  * cursor, cards and dealer. */
 s32 dScMgMemory2_c::Render() {
-    /* pad_4660 is the minigame camera, in dScMgSingle3DBase_c's padding. */
-    Camera_InitDealerView((char *)pad_4660);
+    Camera_InitDealerView(&mCamera);
     Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
     MgCoins_Draw();
     DrawMessage();
@@ -1224,7 +1219,6 @@ s32 dScMgMemory2_c::Render() {
     return 1;
 }
 
-// @symbol _ZN14dScMgMemory2_c8BehaviorEv
 /* Vtable slot 6: run the current state, then the two per-frame calls every
  * minigame in this family makes. __sinit_ov006_021314e4 fills the state table
  * with StateSetup, StatePlay, StateJudge, StateResult and StateExit. */
@@ -1235,7 +1229,6 @@ s32 dScMgMemory2_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN14dScMgMemory2_c13InitResourcesEv
 /* Vtable slot 0: load the language's card art into both OBJ banks with the
  * shared palette, reset the board, then set up the timer and the dMeter_c.
  * LoadCard2SubBg3 is the shared free function that loads the sub-screen
@@ -1245,7 +1238,7 @@ s32 dScMgMemory2_c::InitResources() {
     void *palette;
 
     gMainScreenLayers = DISPLAY_LAYER_BG0 | DISPLAY_LAYER_OBJ;
-    LoadCard2SubBg3();
+    LoadCard2SubBg3(this);
     art = LoadFile(sMemory2CardNcgByLanguage[GetGameLanguage()]);
     palette = LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
     DecompressLZ16(art, (void *)0x6400000);
@@ -1257,7 +1250,7 @@ s32 dScMgMemory2_c::InitResources() {
     gSubScreenLayers = 0x18;
     ResetGame();
     /* 0x4660..0x471c is dScMgSingle3DBase_c's minigame camera. */
-    Camera_InitDealerView((char *)pad_4660);
+    Camera_InitDealerView(&mCamera);
     if (Dealer_Load(&mDealer) == 0)
         return 0;
     mCredits = Mg_GetSavedRecord0();
@@ -1271,7 +1264,6 @@ s32 dScMgMemory2_c::InitResources() {
     return 1;
 }
 
-// @symbol dScMgMemory2_c_classInit
 extern "C" void *dScMgMemory2_c_classInit() {
     return new dScMgMemory2_c;
 }

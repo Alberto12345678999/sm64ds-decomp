@@ -22,19 +22,12 @@
  * reads low-address-first. Do not reorder.
  */
 
-// What stays, and why: InitResources' two matrix copies stay Matrix4x3Copy
-// block copies (C++ struct assignment scalarizes the ROM's ldm/stm sequence).
-
 #pragma defer_codegen off
 
 #include "daObjDorifu_c.h"
 #include "Event.h"
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
-
-typedef struct {
-    s32 words[12];
-} Matrix4x3Copy;
 
 /* Behavior's mState values. What each does is read off the code: 0 and 2 wait
    on Event::GetBit(mEventBit) going set and clear, 1 and 3 step mActivePlank
@@ -46,8 +39,6 @@ enum {
     STATE_STEP_UP = 3
 };
 
-// @symbol _ZN13daObjDorifu_cD0Ev
-// @symbol _ZN13daObjDorifu_cD1Ev
 /* No source here: both destructor variants come from the ONE inline body in
  * include/daObjDorifu_c.h -- the class's descendants inline its vptr store,
  * which the compiler can only do from a visible body, so the definition
@@ -71,7 +62,6 @@ void daObjDorifu_c_EmitDestructor(daObjDorifu_c *p) {
     p->~daObjDorifu_c();
 }
 
-// @symbol _ZN13daObjDorifu_c16CleanupResourcesEP20daObjDorifuResources
 /* ov002 0x020b4b6c. Shared cleanup for the three concrete drifting-platform
  * descendants. Their slot-3 overrides pass their own five-entry resource table here. */
 s32 daObjDorifu_c::CleanupResources(daObjDorifuResources *resources) {
@@ -84,7 +74,6 @@ s32 daObjDorifu_c::CleanupResources(daObjDorifuResources *resources) {
     return 1;
 }
 
-// @symbol _ZN13daObjDorifu_c6RenderEv
 /* daObjDorifu_c::Render -- vtable slot 9, ov002 0x020b4bc4.
  * reloc: _ZTV13daObjDorifu_c+0x24 -> 0x020b4bc4, where
  * _ZTV10dBgActor_c+0x24 -> 0x02043af0, so this is a real override.
@@ -96,7 +85,6 @@ s32 daObjDorifu_c::Render() {
     return 1;
 }
 
-// @symbol _ZN13daObjDorifu_c8BehaviorEv
 /* daObjDorifu_c::Behavior -- vtable slot 6, ov002 0x020b4bfc, and this class's
  * key function: the first non-pure, non-inline virtual the header declares, so
  * this definition is what anchors _ZTV13daObjDorifu_c / _ZTI13daObjDorifu_c
@@ -167,7 +155,6 @@ s32 daObjDorifu_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN13daObjDorifu_c13InitResourcesEP20daObjDorifuResources
 /* ov002 0x020b4d58. Shared initialization for the three concrete
  * drifting-platform descendants. Each passes its own five-entry daObjDorifuResources table. The raw matrix
  * copies are load-bearing: ordinary C++ struct assignment scalarizes them
@@ -198,7 +185,7 @@ s32 daObjDorifu_c::InitResources(daObjDorifuResources *resources) {
     mPlankModels[0].mat4x3.m[9] = mPosX >> 3;
     mPlankModels[0].mat4x3.m[10] = mPosY >> 3;
     mPlankModels[0].mat4x3.m[11] = mPosZ >> 3;
-    *(Matrix4x3Copy *)&mPlatformMat = *(Matrix4x3Copy *)&mPlankModels[0].mat4x3;
+    mPlatformMat = mPlankModels[0].mat4x3;
     mPlatformMat.m[9] = mPosX;
     mPlatformMat.m[10] = mPosY;
     mPlatformMat.m[11] = mPosZ;
@@ -208,7 +195,7 @@ s32 daObjDorifu_c::InitResources(daObjDorifuResources *resources) {
     modelDst = mPlankModels;
     clsn = mPlankClsn;
     for (; j < 5; ++j) {
-        *(Matrix4x3Copy *)&modelDst->mat4x3 = *(Matrix4x3Copy *)sourceMat;
+        modelDst->mat4x3 = *sourceMat;
         clsn->SetFile((KCL_File *)dBgW_Kc::LoadFile(*clsnResource->clsnFile), mPlatformMat, scale,
                       mAngleY, *clsnResource->clps);
         if (j == mActivePlank)

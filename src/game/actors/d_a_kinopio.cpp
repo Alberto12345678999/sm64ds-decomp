@@ -43,6 +43,8 @@
 #include "dBgCh_Gnd.h"
 #include "math/Approach.h"
 #include "SpawnInfo.h"
+#include "math/MtxStack.h"
+#include "SaveBlock.h"
 
 struct BCA_File;
 struct BMD_File;
@@ -94,8 +96,7 @@ extern SharedFilePtr data_ov002_0210d9c0;
 
 /* arm9 statics */
 extern s8 gCurrentSublevel;
-extern int data_0209caa0[];
-extern Matrix4x3 data_020a0e68;
+extern SaveBlock data_0209caa0;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
 /* math / vector helpers. (ApproachLinear, from math/Approach.h, returns whether
@@ -105,12 +106,6 @@ s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 s16 Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s32 AngleDiff(s32 a, s32 b);
-void Matrix4x3_FromRotationY(void *m, int angY);
-void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
-void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
-void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
-void MulMat4x3Mat4x3(void *a, void *b, void *out);
 
 /* game state */
 int func_020138dc(void);
@@ -138,8 +133,6 @@ static inline int IsPlayerActor(dActor_c *actor) {
 
 #pragma defer_codegen off
 
-// @symbol _ZN11daKinopio_cD1Ev
-// @symbol _ZN11daKinopio_cD0Ev
 /* ONE definition, TWO ROM functions (D1 at 0x02129020, D0 at 0x02129060;
  * the D2 the compiler also emits is homeless and discarded). The empty
  * body is one vptr store plus the member destructors in reverse
@@ -149,7 +142,6 @@ daKinopio_c::~daKinopio_c()
 {
 }
 
-// @symbol _ZN11daKinopio_c12GetMessageIDEv
 /* Which line of dialogue this Toad says. The player's param1 (+8) shifts
  * the id per character; the 0x32 mode overrides it entirely. */
 int daKinopio_c::GetMessageID() {
@@ -183,7 +175,6 @@ int daKinopio_c::GetMessageID() {
     return (u16)sum;
 }
 
-// @symbol _ZN11daKinopio_c12St_Talk_MainEv
 void daKinopio_c::St_Talk_Main()
 {
     char *c = (char *)this;
@@ -198,7 +189,7 @@ void daKinopio_c::St_Talk_Main()
     player = (char *)mTalkPlayer;
     messageID = GetMessageID();
     {
-        int *pos = (int *)(int)M(&((daPly_c *)player)->mPos);
+        int *pos = (int *)M(&((daPly_c *)player)->mPos);
         playerPos.x = pos[0];
         playerPos.y = pos[1];
         playerPos.z = pos[2];
@@ -210,8 +201,8 @@ void daKinopio_c::St_Talk_Main()
         if (ApproachLinear(mAngleY, angleToPlayer, 0x800) == 0)
             return;
         if (gCurrentSublevel == 0x32) {
-            if ((data_0209caa0[1] & 0x40000000) == 0)
-                data_0209caa0[1] |= 0x40000000;
+            if ((data_0209caa0.file.flags1 & 0x40000000) == 0)
+                data_0209caa0.file.flags1 |= 0x40000000;
         }
         if (Sound::PlaySub(0x25, 0x14, 0x7f, 0x15666, 1) == 0)
             return;
@@ -241,7 +232,7 @@ void daKinopio_c::St_Talk_Main()
                 starPos.y += 0xc8000;
                 dActor_c::Spawn(
                     0xb2, mStarID | 0x20, starPos, 0, mAreaId, -1);
-                u16 *message = (u16 *)(int)M(&mMessageID);
+                u16 *message = (u16 *)M(&mMessageID);
                 *message = (u16)(*message + 1);
             }
         }
@@ -270,7 +261,6 @@ void daKinopio_c::St_Talk_Main()
     SetState(0);
 }
 
-// @symbol _ZN11daKinopio_c12St_Talk_InitEv
 void daKinopio_c::St_Talk_Init()
 {
     u32 flags = 0;
@@ -278,7 +268,6 @@ void daKinopio_c::St_Talk_Init()
     mAnmModel.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
-// @symbol _ZN11daKinopio_c12St_Idle_MainEv
 void daKinopio_c::St_Idle_Main()
 {
     if ((mCollider.hitFlags & 0x08000000) == 0)
@@ -298,13 +287,11 @@ void daKinopio_c::St_Idle_Main()
     SetState(1);
 }
 
-// @symbol _ZN11daKinopio_c12St_Idle_InitEv
 void daKinopio_c::St_Idle_Init()
 {
     mAnmModel.SetAnim((BCA_File *)gKinopioIdleAnimFile.filePtr, 0, 0x1000, 0);
 }
 
-// @symbol _ZN11daKinopio_c8SetStateEi
 void daKinopio_c::SetState(s32 state)
 {
     mState = state;
@@ -312,14 +299,12 @@ void daKinopio_c::SetState(s32 state)
     (this->*data_ov085_0212fe88[index].init)();
 }
 
-// @symbol _ZN11daKinopio_c8RunStateEv
 void daKinopio_c::RunState()
 {
     s32 index = mState;
     (this->*data_ov085_0212fe88[index].main)();
 }
 
-// @symbol _ZN11daKinopio_c15UpdateModelPoseEv
 /* The matrix assignments are block copies because this TU sees common.h's
  * flat Matrix4x3 first (see the include note above). transforms[5] is the
  * head bone. */
@@ -378,7 +363,6 @@ void daKinopio_c::UpdateModelPose()
     ((dActor_c *)c)->DropShadowRadHeight(mShadowModel, mShadowTransform, 0x50000, 0x64000, 0xf);
 }
 
-// @symbol _ZN11daKinopio_c16CleanupResourcesEv
 /* The three ov002 handles are released only by the variant that took them. The
  * legacy file reached all six through an `int[]` spelling and a cast; they are
  * the real SharedFilePtr objects, which is how InitResources below already
@@ -396,7 +380,6 @@ int daKinopio_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN11daKinopio_c6RenderEv
 /* One call. THE CALL IS QUALIFIED, AND THAT IS LOAD-BEARING. dExtSimpleModel_c::Render is
  * virtual (slot 5 of _ZTV17dExtSimpleModel_c) and dExtAnmModel_c overrides it, so a plain
  * `mAnmModel.Render(0)` emits the vtable dispatch -- three words where the ROM
@@ -410,7 +393,6 @@ int daKinopio_c::Render()
     return 1;
 }
 
-// @symbol _ZN11daKinopio_c8BehaviorEv
 /* This Toad watches the player and turns his head; everything else in the
  * function is bookkeeping around that.
  *
@@ -509,7 +491,6 @@ int daKinopio_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN11daKinopio_c13InitResourcesEv
 /* Spawn-time setup, and most of it is unpacking the spawn parameter.
  *
  * mParam carries three things at once. The low half becomes mMessageID, the
@@ -586,7 +567,6 @@ int daKinopio_c::InitResources()
     return 1;
 }
 
-// @symbol daKinopio_c_classInit
 /* The registry factory behind the KINOPIO profile: `return new` allocates
  * 0x210 (this class's sizeof) and installs this class's vtable.
  * Reconstructed source-style name: SM64DS proves daKinopio_c through RTTI,

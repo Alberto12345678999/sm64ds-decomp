@@ -34,10 +34,9 @@
  * - data_ov002_0210e0d4 / _0210e0dc keep their ROM bss names. The model
  *   handle constructs through func_02017acc; the animation handle
  *   constructs through SharedFilePtr::Construct.
- * - common.h is not included: this file wants math/Matrix.h's Matrix4x3 so
- *   mAnmModel.mat4x3.t is a Vector3, which is also why
- *   Matrix4x3_FromRotationY is declared locally rather than taken from
- *   math/MtxStack.h (that header pulls in common.h).
+ * - This file wants math/Matrix.h's Matrix4x3 so mAnmModel.mat4x3.t is a
+ *   Vector3. daObjWakame_c.h brings that spelling in first, so
+ *   math/MtxStack.h (which pulls in common.h) is included after it.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -45,6 +44,7 @@ enum d_a_obj_wakame_AssetId { ASSET_OBJ_WAKAME_BMD = 0x0495, ASSET_OBJ_WAKAME_WA
 
 #include "daObjWakame_c.h"
 #include "SharedFilePtr.h"
+#include "math/MtxStack.h"
 
 /* dExtSimpleModel_c: func_02017acc / func_02017ab4. Animation: SharedFilePtr::Construct /
  * SharedFilePtr_Destruct_Anim. filePtr is the file LoadFile just filled in. */
@@ -59,9 +59,6 @@ struct WakameAnimationFileHandle : SharedFilePtr {
 typedef char WakameModelFilePtr_size_must_be_8[sizeof(WakameModelFilePtr) == 8 ? 1 : -1];
 typedef char
     WakameAnimationFileHandle_size_must_be_8[sizeof(WakameAnimationFileHandle) == 8 ? 1 : -1];
-
-/* local extern: math/MtxStack.h's spelling needs common.h (see above). */
-extern "C" void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angleY);
 
 extern WakameModelFilePtr data_ov002_0210e0dc;        /* BMD model */
 extern WakameAnimationFileHandle data_ov002_0210e0d4; /* BCA animation */
@@ -78,14 +75,12 @@ extern WakameAnimationFileHandle data_ov002_0210e0d4; /* BCA animation */
  * inline operator new; 0x020bc5bc calls dActor_c's C2, the store at
  * 0x020bc5c8 lays down this class's vptr, and 0x020bc5d0 constructs
  * mAnmModel. The null check is the one `new` itself emits. */
-// @symbol daObjWakame_c_classInit
 extern "C" daObjWakame_c *daObjWakame_c_classInit(void) {
     return new daObjWakame_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjWakame_c13InitResourcesEv
 s32 daObjWakame_c::InitResources() {
     void *m = dExtSimpleModel_c::LoadFile(data_ov002_0210e0dc);
     mAnmModel.SetFile((BMD_File *)m, 1, -1);
@@ -97,7 +92,6 @@ s32 daObjWakame_c::InitResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjWakame_c8BehaviorEv
 /* The ROM's `add r0, r0, #0x124` then `bl 0x02015c3c` is this call and the
    implicit conversion in front of it: Advance is dExtFrameCtrl_c's, dExtFrameCtrl_c sits at
    +0x50 inside a dExtAnmModel_c, and the member is at +0xd4. Nothing else happens --
@@ -109,7 +103,6 @@ s32 daObjWakame_c::Behavior() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjWakame_c6RenderEv
 /* A REAL VIRTUAL DISPATCH, and the ROM insists on it: `ldr r2,[r0,#0xd4]!` loads
    the member's own vptr, `ldr r2,[r2,#0x14]` picks slot 5 -- dExtSimpleModel_c::Render -- and
    `blx r2` calls through it. mwccarm does not devirtualize this even though the
@@ -122,7 +115,6 @@ s32 daObjWakame_c::Render() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjWakame_c16CleanupResourcesEv
 s32 daObjWakame_c::CleanupResources() {
     data_ov002_0210e0dc.Release();
     data_ov002_0210e0d4.Release();
@@ -131,7 +123,6 @@ s32 daObjWakame_c::CleanupResources() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjWakame_c20UpdateModelTransformEv
 /* Posts the actor's placement into the model's transform. Model matrices
    are in eighths of a unit, hence the >> 3. */
 void daObjWakame_c::UpdateModelTransform() {
@@ -151,7 +142,6 @@ void daObjWakame_c::UpdateModelTransform() {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjWakame_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body.
  * Vtable slot 16: one vptr store, the member destroyed, then the tail into
  * ~dActor_c.

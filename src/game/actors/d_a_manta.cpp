@@ -88,7 +88,7 @@ extern unsigned char data_0209f2d8;
 extern "C" {
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-int LenVec3(Vector3 *v);
+int LenVec3(const Vector3 *v);
 short Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 }
@@ -97,13 +97,10 @@ extern MantaState data_ov090_0213454c;
 
 /* One written destructor. The compiler emits D1 then D0 from the
  * members above; D0 adds dEnemyBase_c's inline operator delete. */
-// @symbol _ZN9daManta_cD1Ev
-// @symbol _ZN9daManta_cD0Ev
 daManta_c::~daManta_c() {}
 
 /* Cylinder follows data_ov090_02134200. A PLAYER inside it is hurt
  * from this actor's position. */
-// @symbol _ZN9daManta_c18HurtTouchingPlayerEv
 void daManta_c::HurtTouchingPlayer() {
     Vector3 offset;
     offset.x = data_ov090_02134200.x;
@@ -128,7 +125,6 @@ void daManta_c::HurtTouchingPlayer() {
 
 /* State execute. Advance the swim anim, hurt, drop the next ring,
  * score an in-order pass, and spawn the star once five have landed. */
-// @symbol _ZN9daManta_c11ExecuteSwimEv
 int daManta_c::ExecuteSwim() {
     dActor_c *spawned;
     Vector3 num1;
@@ -204,7 +200,6 @@ int daManta_c::ExecuteSwim() {
 }
 
 /* State init. Swim anim at 1.0, empty ring list. */
-// @symbol _ZN9daManta_c9EnterSwimEv
 int daManta_c::EnterSwim() {
     mAnmModel.SetAnim((BCA_File *)data_ov090_0213452c.filePtr, 0, 0x1000, 0);
     mHitRing = 0;
@@ -218,7 +213,6 @@ int daManta_c::EnterSwim() {
 }
 
 /* Install state and run its init PMF. A null init is "do nothing". */
-// @symbol _ZN9daManta_c11ChangeStateEP10MantaState
 int daManta_c::ChangeState(MantaState *state) {
     mState = state;
     MantaState *current = mState;
@@ -230,7 +224,6 @@ int daManta_c::ChangeState(MantaState *state) {
 /* Position >> 3 and the angle triple become the model matrix. Bone 3's
  * transform is then folded in, and its translation << 3 is where the
  * next ring spawns. */
-// @symbol _ZN9daManta_c21UpdateModelAndRingPosEv
 void daManta_c::UpdateModelAndRingPos() {
     Vector3 scaled;
     Vec3_Asr(&scaled, &mPos, 3);
@@ -241,7 +234,7 @@ void daManta_c::UpdateModelAndRingPos() {
     mRingPos.y = 0;
     mRingPos.z = 0;
     data_020a0e68 = mAnmModel.mat4x3;
-    MulMat4x3Mat4x3((const int *)(mAnmModel.data.transforms + 3), data_020a0e68.m, data_020a0e68.m);
+    MulMat4x3Mat4x3(&mAnmModel.data.transforms[3], &data_020a0e68, &data_020a0e68);
     mRingPos.x = data_020a0e68.m[9];
     mRingPos.y = data_020a0e68.m[10];
     mRingPos.z = data_020a0e68.m[11];
@@ -250,7 +243,6 @@ void daManta_c::UpdateModelAndRingPos() {
     mRingPos.z <<= 3;
 }
 
-// @symbol _ZN9daManta_c16CleanupResourcesEv
 int daManta_c::CleanupResources() {
     data_ov090_02134524.Release();
     data_ov002_0210da10.Release();
@@ -259,16 +251,13 @@ int daManta_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN9daManta_c16OnPendingDestroyEv
 void daManta_c::OnPendingDestroy() {}
 
-// @symbol _ZN9daManta_c6RenderEv
 int daManta_c::Render() {
     mAnmModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN9daManta_c8BehaviorEv
 int daManta_c::Behavior() {
     DecIfAbove0_Short((unsigned short *)&mStateTimer);
     {
@@ -319,7 +308,6 @@ int daManta_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN9daManta_c13InitResourcesEv
 int daManta_c::InitResources() {
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_02134524), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov002_0210da10);
@@ -374,7 +362,6 @@ int daManta_c::InitResources() {
     return 1;
 }
 
-// @symbol daManta_c_classInit
 extern "C" daManta_c *daManta_c_classInit() {
     return new daManta_c();
 }

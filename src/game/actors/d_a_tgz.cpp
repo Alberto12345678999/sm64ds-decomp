@@ -41,6 +41,7 @@
  *   overloading, so those four cast.
  */
 #include "decl_common.h"
+#include "ParticleIds.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
 #include "daTgz_c.h"
@@ -54,6 +55,8 @@
 #include "math/Approach.h"
 #include "math/CalcLib.h"
 #include "SpawnInfo.h"
+#include "math/MtxStack.h"
+#include "LevelRng.h"
 
 #pragma defer_codegen off
 
@@ -115,24 +118,17 @@ void func_ov077_02125e94(daTgz_c *self, int state);
 int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 s16 func_02010844(void *unused, Vector3 *v, s16 angle);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z);
-void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-extern Matrix4x3 data_020a0e68;
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern s16 data_02082214[];
 void func_02035684(int *p, int v);
 int RandomIntInternal(int *seed);
-extern int data_0209e650;
 unsigned int d_a_tgzNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y, int z,
                             const void *dir, void *callback);
 extern int data_0209f32c;
-extern char IDENTITY_MATRIX4X3;
+extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern signed char gCurrentSublevel;
 }
 
-// @symbol _ZN7daTgz_cD1Ev
 /* Vtable slot 16. The compiler writes the whole body: one vtable store, the
  * members in reverse, then ~dActor_c. Slot 17 (D0) is the deleting variant of
  * this same definition. */
@@ -140,21 +136,18 @@ daTgz_c::~daTgz_c()
 {
 }
 
-// @symbol _ZN7daTgz_c13OnYoshiTryEatEv
 /* Vtable slot 18. */
 int daTgz_c::OnYoshiTryEat()
 {
     return 6;
 }
 
-// @symbol _ZN7daTgz_c16OnAimedAtWithEggEv
 /* Vtable slot 29: the height an egg aims at (30.0). */
 int daTgz_c::OnAimedAtWithEgg()
 {
     return 122880;
 }
 
-// @symbol func_ov077_02124c28
 /* Until one is found, probe for a water surface below the Spiny and cache
  * its height in mWaterY. Returns how far above it the Spiny is (0 while
  * nothing has been found). */
@@ -183,7 +176,6 @@ extern "C" int func_ov077_02124c28(daTgz_c *self)
     return self->mPosY - self->mWaterY;
 }
 
-// @symbol func_ov077_02124ce4
 /* Is the Spiny below the cached water surface? */
 extern "C" int func_ov077_02124ce4(void *vc)
 {
@@ -194,7 +186,6 @@ extern "C" int func_ov077_02124ce4(void *vc)
     return waterY > self->mPosY;
 }
 
-// @symbol func_ov077_02124d08
 /* Toxic floor destroys the Spiny. A sloped floor rewrites vertical speed
  * from mSpeedX/mSpeedZ and pitches mAngleX/mAngleZ to the normal. */
 extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
@@ -243,7 +234,6 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
     }
 }
 
-// @symbol func_ov077_02124eb0
 /* Hit response while walking or spinning. Egg and the knock-up destroy or
  * launch; a shell / metal / attack hit in state 1 starts the chase. */
 extern "C" void func_ov077_02124eb0(void *vc)
@@ -315,7 +305,6 @@ extern "C" void func_ov077_02124eb0(void *vc)
     }
 }
 
-// @symbol func_ov077_021250a8
 /* Hit response during the thrown spin. Mega turns it to face away and
  * knocks it up; fire is ignored; anything else hurts the player. */
 extern "C" void func_ov077_021250a8(void *vc)
@@ -353,7 +342,6 @@ extern "C" void func_ov077_021250a8(void *vc)
     player->Hurt(v, 2, 0xc000, 1, 0, 1);
 }
 
-// @symbol func_ov077_021251d0
 /* Tumble matrix: translate to pos>>3, up by the egg-aim height, rotate, then
  * back down by that height, and keep the result on the anim model's matrix. */
 extern "C" void func_ov077_021251d0(daTgz_c *self) {
@@ -369,7 +357,6 @@ extern "C" void func_ov077_021251d0(daTgz_c *self) {
     self->mAnmModel.mat4x3 = data_020a0e68;
 }
 
-// @symbol func_ov077_02125290
 /* Upright matrix on the still model in states 0 and 4, otherwise on the anim. */
 extern "C" void func_ov077_02125290(daTgz_c *self)
 {
@@ -388,7 +375,6 @@ extern "C" void func_ov077_02125290(daTgz_c *self)
     m->m[11] = self->mPosZ >> 3;
 }
 
-// @symbol func_ov077_02125304
 extern "C" void func_ov077_02125304(char *vc)
 {
     daTgz_c *self = (daTgz_c *)vc;
@@ -406,7 +392,6 @@ extern "C" void func_ov077_02125304(char *vc)
                               0x320000, 0xf);
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_021253a4Ev
 /* State 5 update: tumble backward until the ground or the 45-frame timer. */
 int daTgz_c::func_ov077_021253a4() {
     mAngleX = mAngleX - 0x1000;
@@ -431,7 +416,6 @@ int daTgz_c::func_ov077_021253a4() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125480Ev
 /* State 5 entry: launch upward at 40.0 and arm the 45-frame tumble. */
 int daTgz_c::func_ov077_02125480() {
     Sound::PlayBank0(9, mCamSpacePos);
@@ -450,7 +434,6 @@ int daTgz_c::func_ov077_02125480() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125550Ev
 /* State 4 update: the same spin as state 0, after the carrier lets go. */
 int daTgz_c::func_ov077_02125550() {
     Vector3 vec;
@@ -473,7 +456,7 @@ int daTgz_c::func_ov077_02125550() {
             ((int *)&vec)[0] = x;
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
-            Particle::System::NewSimple(0xb2, vec.x, vec.y, vec.z);
+            Particle::System::NewSimple(kPtclLandingDust, vec.x, vec.y, vec.z);
             func_0201267c(0x109, &mCamSpacePos);
         } else {
             mVertSpeed = 0;
@@ -497,7 +480,6 @@ int daTgz_c::func_ov077_02125550() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_021256b4Ev
 /* State 4 entry: leave the carrier, pop up in front of it, and start spinning. */
 int daTgz_c::func_ov077_021256b4() {
     dActor_c *carrier;
@@ -522,7 +504,7 @@ int daTgz_c::func_ov077_021256b4() {
 
     carrier = mCarrier;
     one = 1;
-    int *src = (int *)(int)&carrier->mPosX;
+    int *src = (int *)&carrier->mPosX;
     mPosX = src[0];
     mPosY = src[1];
     mPosZ = src[2];
@@ -555,14 +537,13 @@ int daTgz_c::func_ov077_021256b4() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125830Ev
 /* Held update: stick to the carrier, or on release enter state 4 / the walk. */
 int daTgz_c::func_ov077_02125830() {
     if (((mFlags & 0x40000) ? 1 : 0) != 0) {
         dActor_c *carrier = mCarrier;
         /* Address of the triple, then [0]/[4]/[8]. Three field loads fold the
            0x5c into the ldr and drop the add the ROM kept. */
-        int *src = (int *)(int)&carrier->mPosX;
+        int *src = (int *)&carrier->mPosX;
         mPosX = src[0];
         mPosY = src[1];
         mPosZ = src[2];
@@ -579,7 +560,6 @@ int daTgz_c::func_ov077_02125830() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_021258dcEv
 /* State 3 (held) entry. */
 int daTgz_c::func_ov077_021258dc() {
     mHorzSpeed = 0;
@@ -588,7 +568,6 @@ int daTgz_c::func_ov077_021258dc() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125908Ev
 /* State 2 update: bounce, then stand up into the walk. */
 int daTgz_c::func_ov077_02125908() {
     int v;
@@ -623,7 +602,6 @@ int daTgz_c::func_ov077_02125908() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125a0cEv
 /* State 2 entry: hop toward the player that just hit us. */
 int daTgz_c::func_ov077_02125a0c() {
     mHorzSpeed = 0x5000;
@@ -636,7 +614,6 @@ int daTgz_c::func_ov077_02125a0c() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125a54Ev
 /* State 1 update: walk, turning toward mTurnTarget, until the timer expires. */
 int daTgz_c::func_ov077_02125a54() {
     int d;
@@ -662,7 +639,6 @@ int daTgz_c::func_ov077_02125a54() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125b1cEv
 /* State 1 entry. func_02035684 stores its second argument at int offset 7,
  * which is dBgCh_Actr::mHeight. */
 void daTgz_c::func_ov077_02125b1c() {
@@ -672,12 +648,11 @@ void daTgz_c::func_ov077_02125b1c() {
     mAnmModel.speed = 0x1000;
     func_02035684((int *)&mWithMeshClsn, 0x28000);
     mHorzSpeed = 0x1b33;
-    mTurnTarget = RandomIntInternal(&data_0209e650);
-    mActionTimer = RandomIntInternal(&data_0209e650);
+    mTurnTarget = RandomIntInternal(&data_0209e650.value);
+    mActionTimer = RandomIntInternal(&data_0209e650.value);
     mState = 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125bb4Ev
 /* State 0 update: spin, splash, and settle into the walk. */
 int daTgz_c::func_ov077_02125bb4() {
     int underwater;
@@ -730,7 +705,7 @@ int daTgz_c::func_ov077_02125bb4() {
             ((int *)&vec)[0] = x;
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
-            Particle::System::NewSimple(0xb2, vec.x, vec.y, vec.z);
+            Particle::System::NewSimple(kPtclLandingDust, vec.x, vec.y, vec.z);
             func_0201267c(0x109, &mCamSpacePos);
         }
     }
@@ -740,7 +715,6 @@ int daTgz_c::func_ov077_02125bb4() {
     return 1;
 }
 
-// @symbol _ZN7daTgz_c19func_ov077_02125dd4Ev
 /* State 0 entry. */
 int daTgz_c::func_ov077_02125dd4() {
     mVertAccel = -0x2000;
@@ -752,28 +726,24 @@ int daTgz_c::func_ov077_02125dd4() {
     return 1;
 }
 
-// @symbol func_ov077_02125e20
 extern "C" void func_ov077_02125e20(daTgz_c *self)
 {
     TgzState *p = (TgzState *)self->mStateDesc + 1;
     (self->* *p)();
 }
 
-// @symbol func_ov077_02125e5c
 extern "C" void func_ov077_02125e5c(daTgz_c *self)
 {
     TgzState *p = (TgzState *)self->mStateDesc;
     (self->* *p)();
 }
 
-// @symbol func_ov077_02125e94
 extern "C" void func_ov077_02125e94(daTgz_c *self, int i)
 {
     self->mStateDesc = &gTgzStates[i];
     func_ov077_02125e5c(self);
 }
 
-// @symbol _ZN7daTgz_c16CleanupResourcesEv
 int daTgz_c::CleanupResources()
 {
     data_ov077_02127b48.Release();
@@ -782,12 +752,10 @@ int daTgz_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN7daTgz_c16OnPendingDestroyEv
 void daTgz_c::OnPendingDestroy()
 {
 }
 
-// @symbol _ZN7daTgz_c6RenderEv
 int daTgz_c::Render()
 {
     if ((mFlags & 0x40000) ? 1 : 0)
@@ -800,7 +768,6 @@ int daTgz_c::Render()
     return 1;
 }
 
-// @symbol _ZN7daTgz_c8BehaviorEv
 int daTgz_c::Behavior()
 {
     int s = mState;
@@ -827,7 +794,6 @@ done:
     return 1;
 }
 
-// @symbol _ZN7daTgz_c13InitResourcesEv
 int daTgz_c::InitResources()
 {
     BMD_File *bmd;
@@ -846,12 +812,11 @@ int daTgz_c::InitResources()
     mScaleZ = 0x1000;
     mDespawnTimer = 0x2c;
     func_ov077_02125e94(this, 0);
-    *(Matrix4x3 *)mShadowMatrix = *(Matrix4x3 *)&IDENTITY_MATRIX4X3;
+    *(Matrix4x3 *)mShadowMatrix = IDENTITY_MATRIX4X3;
     func_ov077_02125304((char *)this);
     return 1;
 }
 
-// @symbol _ZN7daTgz_c13OnTurnIntoEggER7daPly_c
 /* Vtable slot 19. Yoshi's egg is worth one coin -- paid directly while the
  * player is collecting a cap, otherwise counted as an egg coin. */
 void daTgz_c::OnTurnIntoEgg(daPly_c &player) {
@@ -862,7 +827,6 @@ void daTgz_c::OnTurnIntoEgg(daPly_c &player) {
     MarkForDestruction();
 }
 
-// @symbol daTgz_c_classInit
 extern "C" daTgz_c *daTgz_c_classInit() {
     return new daTgz_c;
 }

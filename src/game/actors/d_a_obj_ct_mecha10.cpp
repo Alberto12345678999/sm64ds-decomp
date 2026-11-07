@@ -58,6 +58,7 @@ enum daObjCtMecha10_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "math/Approach.h"
+#include "LevelRng.h"
 
 /* Actor ids are the registry profile ids. Clock settings are the byte at
  * data_0209f2c0: 2 re-rolls the dwell, 3 holds the cog still. */
@@ -89,30 +90,25 @@ extern CLPS_Block data_ov035_021121d8;
 extern s16 data_ov035_02111ef0[];    /* |angle step| by rotation state */
 extern s16 data_ov035_02111ef4[][4]; /* dwell by state, by clock setting */
 extern u8 data_0209f2c0;             /* arm9 clock setting */
-extern int data_0209e650;            /* arm9 RNG state */
 
 extern "C" {
 u16 DecIfAbove0_Short(u16 *p);
 int RandomIntInternal(int *state);
-void func_020393d4(dBgW *collider, void *callback);
+void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
-// @symbol daObjCtMecha10_c_classInit_CT_MECHA10
 extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA10() {
     return new daObjCtMecha10_c();
 }
 
-// @symbol daObjCtMecha10_c_classInit_CT_MECHA12L
 extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12L() {
     return new daObjCtMecha10_c();
 }
 
-// @symbol daObjCtMecha10_c_classInit_CT_MECHA12S
 extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12S() {
     return new daObjCtMecha10_c();
 }
 
-// @symbol _ZN16daObjCtMecha10_c13InitResourcesEv
 /* The cog that carries Mario (CT_MECHA10, actor 0x77) is the only one with a
    collision mesh; the other two profiles are scenery and load a model alone.
    Either way the dwell and the step magnitude come out of the same two tables,
@@ -130,7 +126,7 @@ int daObjCtMecha10_c::InitResources() {
             ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(gCtMechaObj10CollisionFile),
                                   mClsnMat, 0x1000, mAngleY, data_ov035_021121d8);
         mMeshCollider.SetEdgeToleranceShift(0);
-        func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
+        func_020393d4(&mMeshCollider, &dBgW::UpdatePosAndAngs);
         mRotationState = 0;
     } else {
         idMatch = (actorID == ACTOR_CT_MECHA12L);
@@ -148,7 +144,6 @@ int daObjCtMecha10_c::InitResources() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha10_c8BehaviorEv
 /* Clock setting 3 stops the cog: hold position and leave. Otherwise turn
    toward the target, and once there and the dwell has run out, advance the
    target one step and re-seed the dwell. Setting 2 also re-rolls the dwell
@@ -170,7 +165,7 @@ int daObjCtMecha10_c::Behavior() {
         u8 setting = data_0209f2c0;
         mStepTimer = data_ov035_02111ef4[mRotationState][setting];
         if (setting == CLOCK_SETTING_RANDOM) {
-            int rnd = RandomIntInternal(&data_0209e650);
+            int rnd = RandomIntInternal(&data_0209e650.value);
             if (DecIfAbove0_Short((u16 *)&mDirTimer) == 0) {
                 if ((unsigned int)rnd % 3 != 0) {
                     mAngleYStep = data_ov035_02111ef0[mRotationState];
@@ -190,13 +185,11 @@ int daObjCtMecha10_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha10_c6RenderEv
 int daObjCtMecha10_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN16daObjCtMecha10_c16CleanupResourcesEv
 /* Give back exactly what InitResources took: the carrying cog frees its
    collider and both of its files, each decorative gear its one model. */
 int daObjCtMecha10_c::CleanupResources() {

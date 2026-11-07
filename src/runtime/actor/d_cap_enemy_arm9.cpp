@@ -19,7 +19,7 @@
  *    flags word have no member names; the measured ldrb/launder forms stay.
  *    AddCap's mFlags &= ~1 and its mCapId store go through plain `&member`
  *    pointers.
- *  - UpdateCapPos keeps the CapVec POD shadow: Vector3's empty destructor
+ *  - UpdateCapPos keeps a POD VecFx32 local: Vector3's empty destructor
  *    changes the frame. Its matrix copy goes through Mtx43; a plain
  *    Matrix4x3 assignment is memberwise and 0x1c bytes longer.
  */
@@ -27,31 +27,27 @@
 #include "daPly_c.h"
 #include "SharedFilePtr.h"
 #include "decl_Enemy.h"
+#include "nitro/fx/fx.h"
 /* _ZTV11dCapEnemy_c is already declared here. A local extern would be a new
  * extern-vtable site; the ov002 half includes this header for the same store. */
 #include "decl_common.h"
 #include "private/mtx43.h"
+#include "math/MtxStack.h"
 
 extern "C" {
 extern SharedFilePtr *data_ov002_020ff028[];
 
 extern unsigned char data_0209f2d8;
 extern unsigned char data_0208a0e0;
-extern void *data_0209f394[];
+extern daPly_c *data_0209f394[];
 
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
 /* UpdateCapPos's stack temps are POD: Vector3's empty destructor changes
    this function's frame. */
-struct CapVec { int x, y, z; };
 extern void Vec3_Asr(Vector3 *vF, Vector3 *v, int amount);
-extern void Matrix4x3_FromTranslation(Matrix4x3 *mF, int x, int y, int z);
-extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *mF, short x, short y, short z);
-/* local extern: math/MtxStack.h's helper prototypes clash with this file's */
-extern Matrix4x3 data_020a0e68;
 }
 
-// @symbol _ZN11dCapEnemy_cC2Ev
 dCapEnemy_c::dCapEnemy_c() {}
 
 /* The call is not in the ROM. It is the odr-use that makes mwcc emit the
@@ -60,12 +56,10 @@ void PinD1(dCapEnemy_c *self) {
     self->~dCapEnemy_c();
 }
 
-// @symbol _ZN11dCapEnemy_cD1Ev
 #pragma never_inline on
 inline dCapEnemy_c::~dCapEnemy_c() {}
 #pragma never_inline off
 
-// @symbol _ZN11dCapEnemy_c14UnloadCapModelEv
 void dCapEnemy_c::UnloadCapModel()
 {
     s32 idx = mCapId & 7;
@@ -73,7 +67,6 @@ void dCapEnemy_c::UnloadCapModel()
     data_ov002_020ff028[idx]->Release();
 }
 
-// @symbol _ZN11dCapEnemy_c6AddCapEj
 int dCapEnemy_c::AddCap(unsigned int param)
 {
     mIsDormant = 0;
@@ -112,7 +105,6 @@ int dCapEnemy_c::AddCap(unsigned int param)
     return result;
 }
 
-// @symbol _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16
 void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
 {
     /* mCapIcon.mFlags (+0x17f) is read through an inline cast on each
@@ -135,7 +127,7 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
     }
     if (mCapId >= 6) return;
 
-    CapVec sum, asr;
+    VecFx32 sum, asr;
     Vec3_Add((Vector3 *)&sum, &mPos, &pos);
     Vec3_Asr((Vector3 *)&asr, (Vector3 *)&sum, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
@@ -143,14 +135,12 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
     *(Mtx43 *)&mModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
 }
 
-// @symbol _ZN11dCapEnemy_c14RenderCapModelEPK7Vector3
 void dCapEnemy_c::RenderCapModel(const Vector3 * v)
 {
     if (mCapId >= 6) return;
     mModel.Render(v);
 }
 
-// @symbol _ZN11dCapEnemy_c10ReleaseCapERK7Vector3
 struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
 {
     const struct Vector3 *v = &v_;
@@ -159,7 +149,7 @@ struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
     if ((mCapId & 7) < 6) {
         func_02005ed8();
         if (mCapId < 6u) {
-            CapVec out;
+            VecFx32 out;
             Vec3_Add((Vector3 *)&out, &mPos, v);
             ret = dActor_c::Spawn(0x10d, 0x1012 | (mCapId << 8), *(const Vector3 *)&out, &mAngle,
                                   mAreaId, -1);
@@ -175,11 +165,10 @@ struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
     return ret;
 }
 
-// @symbol _ZN11dCapEnemy_c16GetCapEatenOffItERK7Vector3
 int dCapEnemy_c::GetCapEatenOffIt(const Vector3 & v_)
 {
     const Vector3 *v = &v_;
-    CapVec local;
+    VecFx32 local;
     unsigned char *p;
     local.x = v->x;
     local.y = v->y;
@@ -201,7 +190,6 @@ int dCapEnemy_c::GetCapEatenOffIt(const Vector3 & v_)
     return 0;
 }
 
-// @symbol _ZN11dCapEnemy_c15RespawnIfHasCapEv
 struct dActor_c * dCapEnemy_c::RespawnIfHasCap()
 {
     struct dActor_c *r;
@@ -223,7 +211,6 @@ struct dActor_c * dCapEnemy_c::RespawnIfHasCap()
    Demoting that load out of its fold-onto-[r4,#0xf4] value-numbering class is
    what lets the RMW-pool chain lead the tail. The masked mCapId RMW is the
    usual 6g launder. */
-// @symbol _ZN11dCapEnemy_c11GetCapStateEv
 int dCapEnemy_c::GetCapState() {
     if (mIsDormant == 0) {
         return 2;
@@ -254,7 +241,6 @@ int dCapEnemy_c::GetCapState() {
     return 1;
 }
 
-// @symbol _ZN11dCapEnemy_c21DestroyIfCapNotNeededEv
 int dCapEnemy_c::DestroyIfCapNotNeeded()
 {
   if (mCapId >= 6) return 1;
@@ -266,14 +252,12 @@ int dCapEnemy_c::DestroyIfCapNotNeeded()
   return 0;
 }
 
-// @symbol _ZN11dCapEnemy_c13func_02005ed8Ev
 void dCapEnemy_c::func_02005ed8() {
     if ( ((unsigned)((unsigned char *)this)[0x17f] << 29) >> 31 )
         return;
     mCapIcon.Unlink();
 }
 
-// @symbol _ZN11dCapEnemy_c13func_02005e28Ev
 int dCapEnemy_c::func_02005e28()
 {
     int b;
@@ -283,7 +267,7 @@ int dCapEnemy_c::func_02005e28()
     if (b != 0) {
         n = data_0208a0e0;
         for (i = 0; i < n; i++) {
-            daPly_c *p = (daPly_c *)data_0209f394[i];
+            daPly_c *p = data_0209f394[i];
             if (p != 0) {
                 if (p->param1 == mCapId) return 1;
             }
@@ -298,7 +282,6 @@ int dCapEnemy_c::func_02005e28()
     }
 }
 
-// @symbol _ZN11dCapEnemy_c12Unk_02005d94Ev
 void dCapEnemy_c::Unk_02005d94()
 {
     int b1;

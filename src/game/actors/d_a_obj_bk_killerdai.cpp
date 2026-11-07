@@ -44,6 +44,7 @@
 #include "Sound.h"
 #include "daPly_c.h"
 #include "Particle__System.h"
+#include "SaveBlock.h"
 
 /* Runtime asset handles, distinct from the NitroFS file IDs. */
 enum daObjBkKillerdai_c_AssetId {
@@ -78,7 +79,7 @@ BkKillerdaiCollisionFile gBkKillerDaiCollisionFile(ASSET_BK_KILLER_DAI_KCL);
 extern void *data_ov079_02127f64[];
 
 extern s8 gCurrentSublevel;
-extern int data_0209caa0[];
+extern SaveBlock data_0209caa0;
 extern u8 data_0209f220;
 
 /* arm9 C helpers with no shared header. */
@@ -90,11 +91,8 @@ extern s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
 #pragma defer_codegen off
 
-// @symbol _ZN18daObjBkKillerdai_cD1Ev
-// @symbol _ZN18daObjBkKillerdai_cD0Ev
 daObjBkKillerdai_c::~daObjBkKillerdai_c() {}
 
-// @symbol _ZN18daObjBkKillerdai_c4KillEv
 /* dustPos is stored memberwise; a Vector3 assignment does not match. */
 void daObjBkKillerdai_c::Kill() {
     Vector3 pos;
@@ -114,14 +112,12 @@ void daObjBkKillerdai_c::Kill() {
     MarkForDestruction();
 }
 
-// @symbol _ZN18daObjBkKillerdai_c15OnHitByMegaCharER7daPly_c
 void daObjBkKillerdai_c::OnHitByMegaChar(daPly_c &player) {
     player.IncMegaKillCount();
     KillByMegaChar(player);
     mAngleY = mPrevAngleY;
 }
 
-// @symbol _ZN18daObjBkKillerdai_c16CleanupResourcesEv
 s32 daObjBkKillerdai_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
@@ -132,13 +128,11 @@ s32 daObjBkKillerdai_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN18daObjBkKillerdai_c6RenderEv
 s32 daObjBkKillerdai_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-// @symbol _ZN18daObjBkKillerdai_c8BehaviorEv
 /* mPosY is widened through a long long before the spawn-height add; a
  * plain add misses. */
 s32 daObjBkKillerdai_c::Behavior() {
@@ -166,7 +160,6 @@ s32 daObjBkKillerdai_c::Behavior() {
     return 1;
 }
 
-// @symbol _ZN18daObjBkKillerdai_c13InitResourcesEv
 s32 daObjBkKillerdai_c::InitResources() {
     void *file;
     s8 course;
@@ -186,7 +179,7 @@ s32 daObjBkKillerdai_c::InitResources() {
 
     course = gCurrentSublevel;
     if (course == 0x12) {
-        if (data_0209caa0[1] & 0x204)
+        if (data_0209caa0.file.flags1 & 0x204)
             return 0;
     }
     if (course == 7) {
@@ -198,7 +191,6 @@ s32 daObjBkKillerdai_c::InitResources() {
     return 1;
 }
 
-// @symbol daObjBkKillerdai_c_classInit
 extern "C" daObjBkKillerdai_c *daObjBkKillerdai_c_classInit() {
     return new daObjBkKillerdai_c();
 }

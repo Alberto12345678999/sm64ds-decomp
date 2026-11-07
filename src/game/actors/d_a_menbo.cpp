@@ -20,7 +20,13 @@
  *
  * common.h is included first so Matrix4x3 is the flat twelve words the two
  * matrix copies were matched under. defer_codegen is off, so the bodies are
- * ROM-ascending. opt_strength_reduction stays off for the file.
+ * ROM-ascending. No optimization pragma: the file used to compile with
+ * opt_strength_reduction off for the sake of func_ov090_02130f94 alone, whose
+ * ripple loop carried a hand-reduced `idx += 3` accumulator. Written as the
+ * real `for (i = 0; i < 4; ++i)` with the bone index spelled `6 + i * 3`, the
+ * loop reproduces with strength reduction on and the other 24 functions never
+ * needed it (measured: with the pragma gone and the accumulator kept, that one
+ * function is 0x124 against the ROM's 0x120).
  *
  * deslop leftovers:
  * - func_ov090_02131ac4: `mStateTimer == 0` is ldrsh. The ROM is ldrh, one
@@ -41,8 +47,9 @@
 #include "dExtFrameCtrl_c.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
+#include "LevelRng.h"
 
-#pragma opt_strength_reduction off
 
 struct BMD_File;
 struct BCA_File;
@@ -67,8 +74,6 @@ struct MenboAnimationFilePtr : SharedFilePtr {
     ~MenboAnimationFilePtr();
 };
 
-struct CoinVec3 { s32 x, y, z; };
-
 /* By-value Fix12<int> in a mangled name; the calls pass a bare word. */
 typedef int LocFix12;
 
@@ -76,17 +81,17 @@ extern "C" {
 
 void MulMat4x3Mat4x3(const Matrix4x3 *a, const Matrix4x3 *b, Matrix4x3 *out);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
-void  Matrix4x3_FromRotationY(void *m, s16 angle);
+void Matrix4x3_FromRotationY(void *m, int angle);
 void  Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
-void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, s16 rx, s16 ry, s16 rz);
+void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int rx, int ry, int rz);
 void  Vec3_Lsl(Vector3 *out, const Vector3 *in, int n);
 void  Vec3_Asr(void *dst, void *src, int n);
 int   Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16   Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 int   AngleDiff(int a, int b);
-int   ApproachAngle(s16 *cur, int target, int divisor, int band, int maxStep);
+int ApproachAngle(s16 *cur, s16 target, int divisor, int band, int maxStep);
 u16   DecIfAbove0_Short(u16 *p);
 int   RandomIntInternal(int *seed);
 void func_02012694(unsigned int id, const Vector3 *pos);
@@ -103,7 +108,6 @@ void  func_ov002_020aea30(void *self, void *actor, void *collision);
 
 extern Matrix4x3     data_020a0e68;
 extern int           data_02092138;
-extern int           data_0209e650;
 extern unsigned char data_0209f2d8;
 extern signed char gCurrentSublevel;
 extern int           data_0209f32c;
@@ -145,13 +149,10 @@ static inline int IsGameMode(int mode) {
     return data_0209f2d8 == mode;
 }
 
-// @symbol _ZN9daMenbo_cD1Ev
-// @symbol _ZN9daMenbo_cD0Ev
 daMenbo_c::~daMenbo_c()
 {
 }
 
-// @symbol func_ov090_02130f94
 /* One ripple under each of four leg bones. Skipped while the actor is off
  * screen. Bone matrices are transforms[6], [9], [12] and [15], multiplied
  * by the model matrix; the ripple sits on the water line. */
@@ -162,7 +163,6 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
     daMenbo_c *c;
     int i;
     Matrix4x3 *src;
-    int idx;
     unsigned int id;
 
     c = c_;
@@ -170,18 +170,16 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         return;
 
     src = &c->mAnmModel.mat4x3;
-    i = 0;
-    idx = 6;
     zero = 0;
     sh = 3;
     id = 0xea;
-    for (; i < 4; ++i) {
+    for (i = 0; i < 4; ++i) {
         Vector3 v;
         Vector3 r;
 
         data_020a0e68 = *src;
-        MulMat4x3Mat4x3((const Matrix4x3 *)c->mAnmModel.data.transforms + idx, &data_020a0e68,
-                        &data_020a0e68);
+        MulMat4x3Mat4x3((const Matrix4x3 *)c->mAnmModel.data.transforms + (6 + i * 3),
+                        &data_020a0e68, &data_020a0e68);
         v.x = *(int *)((char *)&data_020a0e68 + 0x24);
         v.y = *(int *)((char *)&data_020a0e68 + 0x28);
         v.z = *(int *)((char *)&data_020a0e68 + 0x2c);
@@ -193,11 +191,9 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         c->mRippleParticles[i] =
             Particle::System::New(c->mRippleParticles[i], id, v.x, v.y, r.z,
                                   (const Vector3_16f *)(zero), (Particle::Callback *)(zero));
-        idx += 3;
     }
 }
 
-// @symbol func_ov090_021310b4
 /* Contact response, in the order the tests run. A volatile read of the
  * cylinder offset keeps that copy as three loads. */
 void func_ov090_021310b4(daMenbo_c *c)
@@ -284,7 +280,6 @@ void func_ov090_021310b4(daMenbo_c *c)
     ((daPly_c *)p)->Hurt(hurt, 2, 0xc000, 1, 0, 1);
 }
 
-// @symbol func_ov090_02131378
 /* Ground probe. Mode 2 on course 0x12 skips it and only spawns ripples.
  * Otherwise a hit below the published water height (data_0209f32c) means
  * the skeeter is on the water: record that line, mark mOnWater, ripple.
@@ -323,7 +318,6 @@ void func_ov090_02131378(daMenbo_c *c)
     }
 }
 
-// @symbol func_ov090_021314a0
 /* 1 while a player is close and within a quarter turn of the heading.
  * The held target latches; releasing it points the skeeter back at its
  * anchor and sets the patrol speed. */
@@ -354,7 +348,6 @@ int func_ov090_021314a0(daMenbo_c *c)
     return 0;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131584Ev
 /* Idle. Speed stays zero. After a few loops of the idle anim, or as soon
  * as a player is in range, start patrolling. On the water, rest instead. */
 int daMenbo_c::func_ov090_02131584()
@@ -371,7 +364,6 @@ int daMenbo_c::func_ov090_02131584()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131608Ev
 /* Idle entry. */
 int daMenbo_c::func_ov090_02131608()
 {
@@ -381,7 +373,6 @@ int daMenbo_c::func_ov090_02131608()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131648Ev
 /* Patrol. A line probe ahead, the distance back to the anchor, and a wall
  * each turn it around, and each latches so the turn only fires on the edge.
  * A turn reloads the three timers and snaps the position back to last
@@ -400,7 +391,7 @@ int daMenbo_c::func_ov090_02131648()
     s16 ha;
     s32 *p390;
 
-    rnd = (u32)RandomIntInternal(&data_0209e650) >> 8;
+    rnd = (u32)RandomIntInternal(&data_0209e650.value) >> 8;
     dist = Vec3_Dist(&self->mPos, (Vector3 *)&self->mAnchorPosX);
 
     if (((((u32) static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10 & 0xf) ==
@@ -530,7 +521,6 @@ int daMenbo_c::func_ov090_02131648()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131a74Ev
 /* Patrol entry. */
 int daMenbo_c::func_ov090_02131a74()
 {
@@ -542,7 +532,6 @@ int daMenbo_c::func_ov090_02131a74()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131ac4Ev
 /* Water rest. Bleed the speed off. Once it is gone, and the skeeter is not
  * on the water, drop the anchor here, pick a random heading and go idle.
  * When the rest timer expires, start the water chase. The heading keeps
@@ -555,36 +544,34 @@ int daMenbo_c::func_ov090_02131ac4()
         mAnchorPosX = mPosX;
         mAnchorPosY = mPosY;
         mAnchorPosZ = mPosZ;
-        mTargetAngleY = (u16)(((unsigned int)RandomIntInternal(&data_0209e650) >> 8) << 0xd);
+        mTargetAngleY = (u16)(((unsigned int)RandomIntInternal(&data_0209e650.value) >> 8) << 0xd);
         func_ov090_02131e00((MenboState *)this, data_ov090_021344e4);
     }
-    ApproachAngle(&mPrevAngleY, (s16)mTargetAngleY, 1, 0x100, 0x100);
+    ApproachAngle(&mPrevAngleY, mTargetAngleY, 1, 0x100, 0x100);
     if (*(unsigned short *)&mStateTimer == 0)
         func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131b94Ev
 /* Water-rest entry. Two random draws jitter the heading, a third sets how
  * long the rest lasts, then the rest anim starts. */
 int daMenbo_c::func_ov090_02131b94()
 {
     unsigned int r;
     short *s;
-    r = (unsigned)RandomIntInternal(&data_0209e650);
+    r = (unsigned)RandomIntInternal(&data_0209e650.value);
     s = (short *)&mTargetAngleY;
     *s = (short)(*s + ((int)(((r >> 8) & 3) << 0x1e) >> 16));
-    r = (unsigned)RandomIntInternal(&data_0209e650);
+    r = (unsigned)RandomIntInternal(&data_0209e650.value);
     s = (short *)&mTargetAngleY;
     *s = (short)(*s + ((int)(((r >> 8) & 7) << 0x1d) >> 16));
-    r = (unsigned)RandomIntInternal(&data_0209e650);
+    r = (unsigned)RandomIntInternal(&data_0209e650.value);
     mStateTimer = (short)(((r >> 8) & 0x1f) + 0x96);
     mAnimSpeed = 0x1000;
     mAnmModel.SetAnim((BCA_File *)data_ov090_02134490.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131c48Ev
 /* Water chase. Full speed after a few frames, and a wall close to the
  * heading kicks the target by a quarter turn. When the anim has looped
  * enough, go back to water rest. Off the water, drop the anchor and idle. */
@@ -604,7 +591,7 @@ int daMenbo_c::func_ov090_02131c48()
     }
 
     if (mTurnTimer != 0) {
-        ApproachAngle(&mPrevAngleY, (s16)mTargetAngleY, 1, 0x1000, 0x1000);
+        ApproachAngle(&mPrevAngleY, mTargetAngleY, 1, 0x1000, 0x1000);
     } else {
         if (static_cast<dExtFrameCtrl_c &>(mAnmModel).Finished()) {
             s32 *q = &mAnimLoops;
@@ -618,14 +605,13 @@ int daMenbo_c::func_ov090_02131c48()
         mAnchorPosX = mPosX;
         mAnchorPosY = mPosY;
         mAnchorPosZ = mPosZ;
-        mTargetAngleY = (u16)(((unsigned)RandomIntInternal(&data_0209e650) >> 8) << 13);
+        mTargetAngleY = (u16)(((unsigned)RandomIntInternal(&data_0209e650.value) >> 8) << 13);
         func_ov090_02131e00((MenboState *)this, data_ov090_021344e4);
     }
 
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c19func_ov090_02131db0Ev
 /* Water-chase entry. The 0x40000000 flag is passed straight through. */
 int daMenbo_c::func_ov090_02131db0()
 {
@@ -635,7 +621,6 @@ int daMenbo_c::func_ov090_02131db0()
     return 1;
 }
 
-// @symbol func_ov090_02131e00
 /* Install a state and run its entry. A null entry PMF means there is none. */
 int func_ov090_02131e00(MenboState *c, MenboStateFn *p)
 {
@@ -645,7 +630,6 @@ int func_ov090_02131e00(MenboState *c, MenboStateFn *p)
     return ((daMenbo_c *)c->**q)();
 }
 
-// @symbol func_ov090_02131e50
 /* dExtSimpleModel_c matrix from position (shifted down 3, the renderer's scale) and
  * the three rotation halfwords. */
 void func_ov090_02131e50(daMenbo_c *c)
@@ -661,7 +645,6 @@ void func_ov090_02131e50(daMenbo_c *c)
     c->mAnmModel.mat4x3 = data_020a0e68;
 }
 
-// @symbol _ZN9daMenbo_c16CleanupResourcesEv
 /* The model and the four anims, released in this order. */
 int daMenbo_c::CleanupResources()
 {
@@ -673,13 +656,11 @@ int daMenbo_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c16OnPendingDestroyEv
 /* Empty. The override is what keeps the base from running. */
 void daMenbo_c::OnPendingDestroy()
 {
 }
 
-// @symbol _ZN9daMenbo_c6RenderEv
 /* Skip the frame while the Yoshi-mouth flag is set. */
 int daMenbo_c::Render()
 {
@@ -690,7 +671,6 @@ int daMenbo_c::Render()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c8BehaviorEv
 /* Yoshi's mouth, a killing blow, the death tumble, or one ordinary frame.
  * Course 0x15 area 1 treats a water hit on the mesh as a knock into the
  * water: motion zeroed, mDeathState = 1. Dying at or below the water line
@@ -728,7 +708,7 @@ int daMenbo_c::Behavior()
             }
         }
         if (mDeathState != 1 && mPosY <= mSurfaceY) {
-            CoinVec3 v;
+            VecFx32 v;
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
@@ -799,7 +779,6 @@ int daMenbo_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c13InitResourcesEv
 /* dExtSimpleModel_c, four anims, both collision volumes, then the water line.
  * Mode 2 on course 0x12 skips the raycast and starts at water chase with
  * the line equal to the spawn height. A surface whose 0x20 flag is set
@@ -831,7 +810,7 @@ int daMenbo_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    mWithMeshClsn.Init((dActor_c *)(int)this, 0xc8000, 0, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)this, 0xc8000, 0, 0, 0);
     mWithMeshClsn.SetNoUpdatePosYFlag();
 
     mCoinType = 1;
@@ -883,7 +862,7 @@ int daMenbo_c::InitResources()
         }
 
         {
-            r = RandomIntInternal(&data_0209e650);
+            r = RandomIntInternal(&data_0209e650.value);
             short ang = (short)((((unsigned int)r >> 8) & 0xf) << 12);
             *(short *)&mTargetAngleY = ang;
             mPrevAngleY = *(short *)&mTargetAngleY;
@@ -895,20 +874,17 @@ int daMenbo_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN9daMenbo_c16OnAimedAtWithEggEv
 /* How far Yoshi's aim leads this target. */
 s32 daMenbo_c::OnAimedAtWithEgg()
 {
     return 0x20000;
 }
 
-// @symbol _ZN9daMenbo_c13OnTurnIntoEggER7daPly_c
 void daMenbo_c::OnTurnIntoEgg(daPly_c &player) {
     GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 
-// @symbol _ZN9daMenbo_c13OnYoshiTryEatEv
 /* What Yoshi turns this into when he swallows it. */
 s32 daMenbo_c::OnYoshiTryEat()
 {
@@ -948,7 +924,6 @@ MenboStateFn data_ov090_021344e4[2] = {
  * `new daMenbo_c` is the whole sequence the loose factory spelled by hand:
  * fBase_c::operator new(0x3b0), dEnemyBase_c's base constructor, the vptr
  * store, then the dCcAcPos_c, dBgCh_Actr and dExtAnmModel_c member constructors. */
-// @symbol daMenbo_c_classInit
 extern "C" daMenbo_c *daMenbo_c_classInit(void)
 {
     return new daMenbo_c;
