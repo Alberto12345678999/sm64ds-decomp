@@ -95,7 +95,7 @@ extern u8 data_0208f074[];
 extern u8 data_0208f174[];
 extern SaveBlock data_0209caa0;
 extern u32 gNextActorUpdateMask;
-extern u8 data_0209f2d8;
+extern u8 gGameMode;
 extern s16 data_0209f4a2[];
 extern s16 data_0209f4a4[];
 extern u16 data_020a0e5a[];
@@ -114,7 +114,6 @@ extern int IsButtonInputValid(void);
 extern int func_0201fb4c(void);
 extern u8 NumStars(void);
 extern int func_020138dc(void);
-extern int __aeabi_idiv(int, int);
 }
 extern "C" {
 void OamRender10_Message2(int a, void *b, int c, int d, int e, int f, int g, int h, int i, int j);
@@ -132,14 +131,14 @@ unsigned int GetBG0CharPtr();
 unsigned int GetBG1CharPtr();
 }
 
-/* data_0209f2d8 (CURRENT_GAMEMODE) is 2 while the fall-in-front-of-castle
+/* gGameMode (CURRENT_GAMEMODE) is 2 while the fall-in-front-of-castle
  * cutscene runs: ContinueKuppaScriptIfNecessary stores 2 only when the
  * script it resumes is FALL_IN_FRONT_OF_CASTLE_CUTSCENE (sCutsceneEndingMarioFall),
  * and EndKuppaScript clears it once no script is left to resume. The
  * credits script does not set it. This int-returning predicate is what
  * makes the ROM materialize 0/1 before testing it. */
 static inline int IsCastleFallCutsceneRunning(void) {
-    return data_0209f2d8 == 2;
+    return gGameMode == 2;
 }
 
 void Message::EndTalk() {
@@ -227,7 +226,7 @@ void func_0201aca4(void) {
             break;
         }
         for (i = 0; i < 3; i++) {
-            int q = __aeabi_idiv(num, data_0208ee64[i]);
+            int q = num / data_0208ee64[i];
             if (q != 0 || leading != 0 || i == 2) {
                 Message::AddChar(data_0208ee74[q]);
                 leading = 1;

@@ -19,10 +19,13 @@
  *   retyped to BMD_File for numMaterials.
  * - UpdateMirrorShadow keeps its Obj overlay. Spelling the position
  *   and a Mtx43* at pad_3e8 moves 34 words.
- * - StateSaveTalkMain and StateCaughtMain write the player's mStateFlags
- *   through a u16 pointer. The direct member form changes the size.
- *   StateIdleMain updates mTargetAngY through a pointer, and
- *   Behavior increments mEatenTimer through (long long)(int)&.
+ * - The read-modify-writes of the player's mStateFlags, mTargetAngY and
+ *   mEatenTimer are compound assignments (`|=`, `+=`, `++`). An earlier draft
+ *   spelled them through pointer locals and a (long long)(int)& launder
+ *   because the expanded `x = x | y` form changes the size; the compound form
+ *   reproduces (#821).
+ * - StateIdleMain still reads mStateTimer as `*(u16 *)&`: the ROM loads it
+ *   with ldrh, and dEnemyBase_c declares it s16.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daMip_c_AssetId {
@@ -49,6 +52,7 @@ enum daMip_c_AssetId {
 #include "cstd.h"
 #include "math/CalcLib.h"
 #include "Particle__System.h"
+#include "ParticleIds.h"
 #include "LevelRng.h"
 #include "private/mtx43.h"
 #include "nitro/fx/fx.h"
@@ -95,8 +99,6 @@ void func_02013944(void);
 void func_02012694(unsigned int id, const Vector3 *pos);
 void func_02016acc(void *, unsigned int);
 void func_02016b24(void *, unsigned int);
-u32   func_02022a4c(s32, s32, s32);
-u32   func_02022cbc(int, int, s32, s32, s32, const void *);
 void  func_0203c178(void *, int, int, int);
 
 }
@@ -311,10 +313,7 @@ int daMip_c::StateSaveTalkMain()
                 mActionStep++;
             } else if (gb == 2) {
                 func_02012790(0x98);
-                {
-                    unsigned short *hp = &player->mStateFlags;
-                    *hp &= ~0x800;
-                }
+                player->mStateFlags &= ~0x800;
                 Message::EndTalk();
                 SetState(&data_ov085_021306bc);
             }
@@ -322,8 +321,7 @@ int daMip_c::StateSaveTalkMain()
         break;
     case 2:
         if (data_0209d660 == 0) {
-            unsigned short *hp = &player->mStateFlags;
-            *hp &= ~0x800;
+            player->mStateFlags &= ~0x800;
             Message::EndTalk();
             SetState(&data_ov085_021306bc);
         }
@@ -659,17 +657,11 @@ int daMip_c::StateCaughtMain()
             }
             func_02012790(0xa);
             mTalkState = 0;
-            {
-                u16 *pf = &pl->mStateFlags;
-                *pf = (u16)(*pf | 0x800);
-            }
+            pl->mStateFlags |= 0x800;
         }
     } else {
         if (mTalkState == 2) {
-            {
-                u16 *pf = &pl->mStateFlags;
-                *pf = (u16)(*pf & ~0x800);
-            }
+            pl->mStateFlags &= ~0x800;
             mTalkState = 0;
         }
         if (mIsGlowing == 0) {
@@ -683,10 +675,7 @@ int daMip_c::StateCaughtMain()
     if (mIsGlowing == 0 || SaveData::NumGlowingRabbitsFound() == 8) {
         SetState(&data_ov085_021306bc);
     } else {
-        {
-            u16 *pf = &pl->mStateFlags;
-            *pf = (u16)(*pf | 0x800);
-        }
+        pl->mStateFlags |= 0x800;
         mSaveTalkPlayer = pl;
         SetState(&data_ov085_0213068c);
     }
@@ -757,7 +746,7 @@ int daMip_c::StateFleeMain() {
         if (((u16)t) == 0) {
             if (TestWaterBelow() == 1) {
                 func_02012694(0x124, &mCamSpacePos);
-                func_02022a4c(mPosX, mFloorY + 0x3000, mPosZ);
+                Particle::System::NewSplash(mPosX, mFloorY + 0x3000, mPosZ);
             } else {
                 func_02012694(0x123, &mCamSpacePos);
             }
@@ -775,8 +764,8 @@ int daMip_c::StateFleeMain() {
             *((volatile s32 *)(&pos.x)) = x;
             *((volatile s32 *)(&pos.y)) = y;
             *((volatile s32 *)(&pos.z)) = z;
-            mDustParticle =
-                func_02022cbc(mDustParticle, 0xe8, *((volatile s32 *)(&pos.x)), *(&pos.y), z, 0);
+            mDustParticle = Particle::System::NewFitWater(
+                mDustParticle, kPtclWaterSurfaceMove, *((volatile s32 *)(&pos.x)), *(&pos.y), z, 0);
         }
     }
 
@@ -928,8 +917,8 @@ int daMip_c::StateIdleMain()
         *((volatile s32*)(&sp.x)) = x;
         *((volatile s32*)(&sp.y)) = y;
         *((volatile s32*)(&sp.z)) = z;
-        mDustParticle = func_02022cbc(mDustParticle, 0xe8,
-            *((volatile s32*)(&sp.x)), *(&sp.y), z, 0);
+        mDustParticle = Particle::System::NewFitWater(mDustParticle, kPtclWaterSurfaceMove,
+                                                      *((volatile s32 *)(&sp.x)), *(&sp.y), z, 0);
     }
 
     VecFx32 pp;
@@ -985,10 +974,7 @@ int daMip_c::StateIdleMain()
 
     if (mActionStep == 0 && *(u16 *)&mStateTimer == 0) {
         mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)&mIdlePosX);
-        {
-            s16 *ang = &mTargetAngY;
-            *ang = *ang + (0x1800 - ((r & 3) << 12));
-        }
+        mTargetAngY += 0x1800 - ((r & 3) << 12);
         mAnmModel.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
         mActionStep = 1;
     }
@@ -1145,7 +1131,7 @@ void daMip_c::OnPendingDestroy()
 int daMip_c::Render()
 {
     extern signed char gCurrentSublevel;
-    extern signed char data_02092120;
+    extern signed char gCurrentAreaId;
 
     if (mIsDisabled == 1) return 1;
 
@@ -1169,7 +1155,7 @@ int daMip_c::Render()
         }
     }
 
-    if (gCurrentSublevel == 5 && data_02092120 == 3) {
+    if (gCurrentSublevel == 5 && gCurrentAreaId == 3) {
         RenderMirrorImage();
     }
 
@@ -1219,9 +1205,7 @@ void daMip_c::RenderMirrorImage()
  * The block before Advance calls MipStatePair::b, the record's second
  * pointer-to-member, on the daMip_cSelf shadow. mState stays an s32: the four
  * comparisons above identify the states by address. `c` is the char* this.
- *
- * mEatenTimer's increment is a byte update through (long long)(int)&mEatenTimer.
- * `mEatenTimer = mEatenTimer + 1` shrinks Behavior from 0x5cc to 0x5c0. */
+ * */
 int daMip_c::Behavior()
 {
     /* A LOCAL COORDINATE TRIPLE, NOT A Vector3 OBJECT. Vector3 declares a
@@ -1233,7 +1217,7 @@ int daMip_c::Behavior()
     typedef volatile struct { Fix12i x, y, z; } Vec3Scratch;
 
     extern s8 gCurrentSublevel;
-    extern s8 data_02092120;
+    extern s8 gCurrentAreaId;
     extern SaveBlock data_0209caa0;
     extern void* data_0209f33c;
     extern DaMipAnimationFilePtr data_ov085_021305c0;
@@ -1333,7 +1317,7 @@ int daMip_c::Behavior()
                 mdCcAc_c.Update();
         }
         if (mEatenByYoshi == 1) {
-            *(u8 *)((long long)(int)&mEatenTimer) = *(u8 *)((long long)(int)&mEatenTimer) + 1;
+            mEatenTimer++;
             if (mEatenTimer > 0x96) {
                 mEatenByYoshi = 0;
                 mEatenTimer = 0;
@@ -1375,7 +1359,7 @@ int daMip_c::Behavior()
     else
         UpdateMatrixAndShadow();
 
-    if (gCurrentSublevel == 5 && data_02092120 == 3)
+    if (gCurrentSublevel == 5 && gCurrentAreaId == 3)
         UpdateMirrorShadow();
 
     if (!IsFlagSet(this, 0x4000)) {

@@ -56,6 +56,7 @@
 #include "Particle__System.h"
 #include "ParticleIds.h"
 #include "nitro/fx/fx.h"
+#include "nitro/fx/fx_trig.h"
 #include "private/mtx43.h"
 #include "math/MtxStack.h"
 #include "LevelRng.h"
@@ -94,7 +95,7 @@ enum {
 
 /* Particle ids, named by where they are used, not recovered names. 0x9a, 0x9c
    and 0xa6 are passed to func_ov060_02116518, which also starts id + 1 in the
-   second handle. 0x9e goes straight to NewUnkCallback818 (one handle only);
+   second handle. 0x9e goes straight to NewCleanParticle (one handle only);
    0x9c, 0x9e, 0xa4 and 0x9f are kPtclFlame, kPtclFlameSmall, kPtclFlameBlue and
    kPtclFlameOutPuff (ParticleIds.h); 0x9f is a one-shot NewSimple. */
 enum {
@@ -117,8 +118,8 @@ extern Entry data_ov060_0211afb4[];
 extern PMF data_ov060_0211af74[];
 
 /* Fix12<int>-by-value and other mangled-name calls (see the banner). */
-extern u32 d_a_kpa_fireNewUnkCallback818Hold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e,
-                                             const struct Vector3_16f *f);
+extern u32 d_a_kpa_fireNewCleanParticleHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e,
+                                            const struct Vector3_16f *f);
 extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
 void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
 extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
@@ -126,7 +127,6 @@ extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
 extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
 extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern int RandomIntInternal(int* seed);
-extern short data_02082214[];        /* SINE_TABLE: a sin/cos pair per angle >> 4 */
 
 /* ov060 tables indexed by mSubVariant (02119358, 0211934c) and the mouth-pose
  * rows variant 0 reads (02119364); see the handlers below. */
@@ -282,21 +282,19 @@ void daKpaFire_c::func_ov060_02117624() {
  * changes). On every second row (n even) it also spawns a variant 5 fire at
  * its own position, passing its own pitch/heading words as the spawn rotation.
  *
- * Bowser's position goes through v[] first (volatile, so the reads keep their
- * order). Yaw is the unsigned half of mAngleY. Frame count is the
- * dExtFrameCtrl_c inside mAnmModel. */
+ * Bowser's position is copied into kpaPos after the sine entries are read.
+ * Yaw is the unsigned half of mAngleY. Frame count is the dExtFrameCtrl_c
+ * inside mAnmModel. */
 void daKpaFire_c::func_ov060_0211747c() {
     daKpa_c *koopa;
     int n;
     int yaw;
-    int i;
     u16 *t;
     int s1;
     int s0;
-    volatile int v[3];
+    Vector3 kpaPos;
     int side;
     int fwd;
-    int *kpaPos;
 
     koopa = (daKpa_c *)dActor_c::FindWithID(this->mKpaUniqueID);
     if (koopa == 0) {
@@ -311,14 +309,13 @@ void daKpaFire_c::func_ov060_0211747c() {
     if (n < 0)
         return;
 
-    yaw = *(u16 *)&koopa->mAngleY;
-    i = (yaw >> 4) * 2;
-    kpaPos = &koopa->mPosX;
-    v[0] = kpaPos[0];
-    v[1] = kpaPos[1];
-    s1 = data_02082214[i + 1];
-    s0 = data_02082214[i];
-    v[2] = kpaPos[2];
+    yaw = (u16)koopa->mAngleY;
+    s1 = FX_CosIdx(yaw >> 4);
+    s0 = FX_SinIdx(yaw >> 4);
+    {
+        const Vector3 &p = koopa->mPos;
+        kpaPos = p;
+    }
     t = data_ov060_02119364;
 
     if (n == koopa->mAnmModel.GetFrameCount())
@@ -334,9 +331,9 @@ void daKpaFire_c::func_ov060_0211747c() {
 
     side = t[0];
     fwd = t[2] + 0x14;
-    this->mPosX = v[0] + (fwd * s0 + side * s1);
-    this->mPosY = v[1] + ((t[1] - 0x5a) << 12);
-    this->mPosZ = v[2] + (fwd * s1 - side * s0);
+    this->mPosX = kpaPos.x + (fwd * s0 + side * s1);
+    this->mPosY = kpaPos.y + ((t[1] - 0x5a) << 12);
+    this->mPosZ = kpaPos.z + (fwd * s1 - side * s0);
     this->mPrevAngleX = (short)(t[4] + 0x818);
     this->mPrevAngleY = (short)(t[3] + yaw - 0x4700);
 
@@ -488,8 +485,8 @@ void daKpaFire_c::func_ov060_02116f90() {
 
     if (this->mLanded == 0) {
         this->mParticleHandle =
-            Particle::System::NewUnkCallback818(this->mParticleHandle, kPtclFlameSmall, this->mPosX,
-                                                this->mPosY + 0x37000, this->mPosZ, 0);
+            Particle::System::NewCleanParticle(this->mParticleHandle, kPtclFlameSmall, this->mPosX,
+                                               this->mPosY + 0x37000, this->mPosZ, 0);
         this->mdCcAc_c.flags |= 1;
         func_ov060_0211712c();
         if (this->mWithMeshClsn.IsOnGround()) {
@@ -798,7 +795,7 @@ void daKpaFire_c::func_ov060_02116740() {
  * by yOffset (Fix12): `kind` in mParticleHandle and `kind + 1` in
  * mParticleHandle2 (each handle is passed back in, so a live particle is
  * presumably refreshed rather than duplicated). Kinds 0xa2 and 0xa4 start the
- * first one through the NewUnkCallback818 form of Particle::System::New; the rest use
+ * first one through the NewCleanParticle form of Particle::System::New; the rest use
  * the plain New.
  *
  * With resize non-zero each live particle is resized. callbackScale becomes
@@ -810,7 +807,7 @@ void daKpaFire_c::func_ov060_02116518(u32 kind, int resize, int yOffset) {
     Particle::System *sys;
 
     if (kind == 0xa2 || kind == kPtclFlameBlue) {
-        this->mParticleHandle = Particle::System::NewUnkCallback818(
+        this->mParticleHandle = Particle::System::NewCleanParticle(
             this->mParticleHandle, kind, this->mPosX, this->mPosY + yOffset, this->mPosZ, 0);
     } else {
         this->mParticleHandle = Particle::System::New(this->mParticleHandle, kind, this->mPosX,

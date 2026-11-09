@@ -91,6 +91,7 @@
 #include "LevelRng.h"
 #include "dClipper.h"
 #include "nitro/fx/fx.h"
+#include "nitro/fx/fx_trig.h"
 #include "daObjNumber_c.h"
 #include "daCoin_c.h"
 #include "daFPknBall_c.h"
@@ -111,7 +112,7 @@ int func_0203b244(void *list, void *node);
 /* local extern: no header declares it. Actor info table, indexed by actorID. */
 extern void *data_020a4bb8;
 /* local extern: no header declares it. Game mode; 2 pushes the clip distance. */
-extern unsigned char data_0209f2d8;
+extern unsigned char gGameMode;
 /* Defined below as extern "C". Fix12-by-value, so it is not a method. */
 }
 
@@ -161,7 +162,7 @@ dActor_c::dActor_c() : mActorListNode(this) {
         SpawnInfo<void> *info = (SpawnInfo<void> *)table[actorID];
         mFlags = info->actorFlags;
         {
-            int isMode2 = (data_0209f2d8 == 2);
+            int isMode2 = (gGameMode == 2);
             int clipDistance;
             int farDistance = info->farDistance;
             if (isMode2)
@@ -347,7 +348,7 @@ extern fLiNdBa_c *func_02043f98(fLiNdBa_c **head, unsigned int key);
 }
 dActor_c *dActor_c::FindWithID(u32 id)
 {
-    fLiNdBa_c *node = func_02043f98((fLiNdBa_c **)&data_0209b468, id);
+    fLiNdBa_c *node = func_02043f98(&data_0209b468.first, id);
     if (node)
         return static_cast<dActor_c *>(node->owner);
     return 0;
@@ -356,15 +357,12 @@ dActor_c *dActor_c::FindWithID(u32 id)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 81 -- dActor_c::FindWithActorID(unsigned int, dActor_c *)
  * 0x02010ef0  size 0x4c */
-/* func_02043f4c really takes and returns fLiNdBa_c * (ActorBase.cpp), but
-   decl_common.h spells it with ints and this TU includes that. */
 dActor_c *dActor_c::FindWithActorID(u32 actorID, dActor_c *after) {
     fLiNdBa_c *node;
     if (after)
-        node =
-            (fLiNdBa_c *)func_02043f4c((int *)&data_0209b468, actorID, (int)&after->mActorListNode);
+        node = func_02043f4c(&data_0209b468.first, actorID, &after->mActorListNode);
     else
-        node = (fLiNdBa_c *)func_02043f4c((int *)&data_0209b468, actorID, 0);
+        node = func_02043f4c(&data_0209b468.first, actorID, 0);
     if (node)
         return static_cast<dActor_c *>(node->owner);
     return 0;
@@ -379,7 +377,7 @@ dActor_c *dActor_c::Next(const dActor_c *after)
     if (after)
         node = after->mActorListNode.next;
     else
-        node = *(fLiNdBa_c **)&data_0209b468;
+        node = data_0209b468.first;
     if (node)
         return static_cast<dActor_c *>(node->owner);
     return 0;
@@ -407,14 +405,14 @@ extern "C" void func_02010e78(const Vector3 *pos, const Vector3_16 *rot, s8 area
 /* ROM ordinal 78 -- dActor_c::Spawn(unsigned int, unsigned int, Vector3 const &, Vector3_16 const *, signed char, short)
  * 0x02010e2c  size 0x4c */
 extern "C" {
-extern fBase_c *data_0209f5c0;
+extern fBase_c *gCurrentScene;
 void func_02010e78(const Vector3 *pos, const Vector3_16 *rot, s8 areaID, s16 deathTableID);
 }
 dActor_c *dActor_c::Spawn(u32 actorID, u32 spawnParam, const Vector3 &pos,
                     const Vector3_16 *rot, s8 areaID, s16 deathTableID)
 {
     func_02010e78(&pos, rot, areaID, deathTableID);
-    return (dActor_c *)dBase_c::Spawn(actorID, data_0209f5c0, spawnParam, 2);
+    return (dActor_c *)dBase_c::Spawn(actorID, gCurrentScene, spawnParam, 2);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -473,9 +471,6 @@ void dActor_c::UpdatePosWithOnlySpeed(dCc_c *clsn) {
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 74 -- dActor_c::UpdatePosWithHorzSpeedAndAng()
  * 0x02010c5c  size 0xe4 */
-extern "C" {
-extern s16 data_02082214[]; /* NitroSDK FX_SinCosTable_: {sin, cos} per angle >> 4 */
-}
 /* Splits mHorzSpeed along mPrevAngleY (the heading the velocity follows) into
    the x/z velocity words, x by sin and z by cos, and applies mVertAccel to
    mVertSpeed, clamped at mTerminalVelocity. */
@@ -494,13 +489,11 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng() {
         s32 accel;
         s32 terminal;
         s32 speedZ;
-        s32 idx;
         s16 cosv;
         s32 next;
         s16 sinv;
         s32 speedX;
-        idx = ((u16)mPrevAngleY >> 4) * 2;
-        cosv = data_02082214[idx + 1];
+        cosv = FX_CosIdx((u16)mPrevAngleY >> 4);
         vertSpeed = mVertSpeed;
         accel = mVertAccel;
         terminal = mTerminalVelocity;
@@ -508,7 +501,7 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng() {
         next = vertSpeed + accel;
         if (next >= terminal)
             terminal = next;
-        sinv = data_02082214[idx];
+        sinv = FX_SinIdx((u16)mPrevAngleY >> 4);
         speedX = FX_MUL(horzSpeed, sinv);
         mSpeedX = speedX;
         mVertSpeed = terminal;
@@ -551,16 +544,16 @@ void dActor_c::DropShadowScaleXYZ(dExtShadowModel_c &shadow, Matrix4x3 &matrix, 
 extern "C" {
 extern int data_0208e380;           /* distance to the cached closest player */
 extern int data_0208e37c;           /* distance to the cached farthest player */
-extern unsigned char data_0209f21c; /* number of players */
-extern daPly_c *data_0209f394[];    /* the player table */
+extern unsigned char gNumPlayers;   /* number of players */
+extern daPly_c *gPlayers[];         /* the player table */
 }
 daPly_c *dActor_c::ClosestPlayer() {
     if (!data_0209b458) {
         data_0208e380 = 0x7fffffff;
         data_0208e37c = 0x80000000;
         int i;
-        for (i = 0; i < data_0209f21c; i++) {
-            daPly_c *player = data_0209f394[i];
+        for (i = 0; i < gNumPlayers; i++) {
+            daPly_c *player = gPlayers[i];
             if (!player)
                 continue;
             int dist = Vec3_Dist(&mPos, &player->mPos);
@@ -585,8 +578,8 @@ daPly_c *dActor_c::ClosestNonVanishPlayer() {
         data_0208e380 = 0x7fffffff;
         data_0208e37c = 0x80000000;
         int i;
-        for (i = 0; i < data_0209f21c; i++) {
-            daPly_c *player = data_0209f394[i];
+        for (i = 0; i < gNumPlayers; i++) {
+            daPly_c *player = gPlayers[i];
             if (!player)
                 continue;
             if (player->mIsVanish)
@@ -695,7 +688,7 @@ extern "C" s16 func_02010844(void *actor, Vector3 *v, s16 angle) {
     dir = cstd::atan2(v->x, v->z);
     angle = (s16)(dir - angle);
     horzLen = Vec3_HorzLen(v);
-    return cstd::atan2(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]), v->y);
+    return cstd::atan2(FX_MUL(horzLen, FX_CosIdx((u16)angle >> 4)), v->y);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1007,11 +1000,11 @@ Matrix4x3 *dActor_c::UpdateCarry(daPly_c &player, const Vector3 &vec) {
 /* ROM ordinal 46 -- dActor_c::Earthquake(Vector3 const &, int)
  * 0x02010168  size 0x18 */
 extern "C" {
-extern dCamera_c *data_0209f318; /* the camera */
+extern dCamera_c *gCamera; /* the camera */
 }
 /* r1 is the position and r2 the intensity; both are forwarded untouched. */
 void dActor_c::Earthquake(const Vector3 &pos, Fix12i magnitude) {
-    data_0209f318->func_0200d8c8(&pos, magnitude);
+    gCamera->func_0200d8c8(&pos, magnitude);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1137,7 +1130,7 @@ dActor_c *dActor_c::SpawnNumber(const Vector3 &pos, u32 value, bool packLowNibbl
 /* ROM ordinal 31 -- dActor_c::TrackStar(unsigned int, unsigned int)
  * 0x0200ff94  size 0xb0 */
 extern "C" {
-extern u8 data_0209f220[]; /* the star index this mission was entered for */
+extern u8 gCurrentStarId[];        /* the star index this mission was entered for */
 extern s8 gCurrentSublevel[];      /* the current sublevel id */
 extern dActor_c *STAR_MARKERS[12]; /* 0x0209f40c */
 void SetStarMarker(s32 slot, dActor_c *actor, s32 markerType);
@@ -1148,7 +1141,7 @@ s32 dActor_c::TrackStar(u32 starIdx, u32 markerType)
     s32 type = markerType;
 
     if (markerType == 2) {
-        if (starIdx != data_0209f220[0]) {
+        if (starIdx != gCurrentStarId[0]) {
             if (SublevelToLevel(gCurrentSublevel[0]) <= 0xe)
                 return -1;
         }
@@ -1249,8 +1242,8 @@ void dActor_c::PoofDust()
  * 0x0200fdfc  size 0x40 */
 void dActor_c::PoofDustAt(const Vector3 &pos)
 {
-    Particle::System::NewSimple(0x122, pos.x, pos.y, pos.z);
-    Particle::System::NewSimple(0x123, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(kPtclPoofDustA, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(kPtclPoofDustB, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1292,15 +1285,15 @@ void dActor_c::SmallPoofDust()
  * 0x0200fd04  size 0x3c */
 void dActor_c::DisappearPoofDustAt(const Vector3 &pos)
 {
-    Particle::System::NewSimple(0x127, pos.x, pos.y, pos.z);
-    Particle::System::NewSimple(0x128, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(kPtclDisappearPoofA, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(kPtclDisappearPoofB, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 19 -- dActor_c::func_0200fccc(int)
  * 0x0200fccc  size 0x38 */
 extern "C" {
-extern int func_0200fc44(int actor, Vector3 *pos, int doRaycast);
+extern int func_0200fc44(dActor_c *actor, Vector3 *pos, int doRaycast);
 }
 /* func_0200fc44 at this actor's position. */
 int dActor_c::func_0200fccc(int doRaycast) {
@@ -1308,7 +1301,7 @@ int dActor_c::func_0200fccc(int doRaycast) {
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
-    return func_0200fc44((int)this, &pos, doRaycast);
+    return func_0200fc44(this, &pos, doRaycast);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1316,7 +1309,7 @@ int dActor_c::func_0200fccc(int doRaycast) {
  * 0x0200fc44  size 0x88 */
 /* Particle 0xb3 25.0 above pos, optionally first dropping pos onto the
    ground below it; pos is moved. The leading actor argument is unused. */
-extern "C" int func_0200fc44(int actor, Vector3 *pos, int doRaycast) {
+extern "C" int func_0200fc44(dActor_c *actor, Vector3 *pos, int doRaycast) {
     if (doRaycast) {
         dBgCh_Gnd rc;
         pos->y += 0x32000;
@@ -1382,14 +1375,14 @@ void dActor_c::LandingDustAt(Vector3 &pos, bool doRaycast) {
             pos.y = rc.clsnY;
     }
     pos.y += 0x5a000;
-    Particle::System::NewSimple(0xb1, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(kPtclHugeLandingDust, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 13 -- func_0200fa8c
  * 0x0200fa8c  size 0x38 */
 extern "C" {
-extern void *func_0200fa04(int actor, Vector3 *pos, int doRaycast);
+extern void *func_0200fa04(dActor_c *actor, Vector3 *pos, int doRaycast);
 }
 /* func_0200fa04 at this actor's position; void * as decl_common.h spells it. */
 extern "C" void func_0200fa8c(void *actorp, int doRaycast) {
@@ -1398,14 +1391,14 @@ extern "C" void func_0200fa8c(void *actorp, int doRaycast) {
     pos.x = actor->mPosX;
     pos.y = actor->mPosY;
     pos.z = actor->mPosZ;
-    func_0200fa04((int)actor, &pos, doRaycast);
+    func_0200fa04(actor, &pos, doRaycast);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 12 -- func_0200fa04
  * 0x0200fa04  size 0x88 */
 /* As func_0200fc44, with particle 0x1b raised 120.0 instead of 25.0. */
-extern "C" void *func_0200fa04(int actor, Vector3 *pos, int doRaycast) {
+extern "C" void *func_0200fa04(dActor_c *actor, Vector3 *pos, int doRaycast) {
     if (doRaycast) {
         dBgCh_Gnd rc;
         pos->y += 0x32000;
@@ -1414,7 +1407,7 @@ extern "C" void *func_0200fa04(int actor, Vector3 *pos, int doRaycast) {
             pos->y = rc.clsnY;
     }
     pos->y += 0x78000;
-    return Particle::System::NewSimple(0x1b, pos->x, pos->y, pos->z);
+    return Particle::System::NewSimple(kPtclBossLandingDust, pos->x, pos->y, pos->z);
 }
 
 /* -------------------------------------------------------------------------- */

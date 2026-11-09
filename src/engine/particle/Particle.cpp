@@ -1,11 +1,12 @@
 //cpp
 /* engine/particle/Particle.cpp -- Particle TU (arm9 0x020226d4..0x020233d4)
  *
- * The singleton particle engine's core translation unit: SysTracker lifecycle
- * (construct, Initialise, Update, destruct), the System::New front door and
+ * The singleton particle engine's core translation unit: dPa_c's lifecycle
+ * (construct, Initialise, Update, destruct; the tree called the class
+ * Particle::SysTracker until notes/particle-dpa-naming.md), the System::New front door and
  * its fixed-effect-id wrapper family, the Texture VRAM allocators, RenderAll,
- * and SetSelfDestructFlag. The SysTracker object itself is the single global
- * at data_0209ee74; every wrapper reaches it directly.
+ * and SetSelfDestructFlag. The constructor publishes the current dPa_c in the
+ * global pointer gParticleControl; every wrapper reaches it through that.
  *
  * mwccarm emits .text in reverse source order here, so the definitions below
  * run ROM-descending; the roster above reads ROM-ascending. */
@@ -13,10 +14,11 @@
 #include "Heap.h"
 #include "decl_common.h"
 #include "dExtSimpleModel_c.h"
-#include "Particle__SysTracker.h"
+#include "dPa_c.h"
 #include "Particle__Texture.h"
 #include "Particle__Manager.h"
 #include "Particle__System.h"
+#include "ParticleIds.h"
 #include "CP15.h"
 #include "Memory.h"
 #include "private/particle_resource_header.h"
@@ -28,49 +30,43 @@ void DecompressLZ16(const void* src, void* dst);
 }
 
 extern Matrix4x3 data_0209b3ec;
-extern u32 data_0209ee84;
-extern u32 data_0209ee8c;
+extern u32 sParticlePalVramLowCursor;
+extern u32 sParticlePalVramHighCursor;
 extern signed char gCurrentSublevel;
 
-namespace Particle {
-
-SysTracker::SysTracker()
-{
-    data_0209ee74 = this;
+dPa_c::dPa_c() {
+    gParticleControl = this;
     mManager = 0;
     mRunningSlidingDustSystemID = 0;
-    mSystemID_75c = 0;
+    mMegaRunningSlidingDustSystemID = 0;
     mBigSplashSystemID = 0;
-    mSystemID_774 = 0;
-    mSystemID_780 = 0;
+    mSplashSystemID = 0;
+    mBubbleSystemID = 0;
     mRippleSystemID = 0;
-    mSystemID_798 = 0;
-    mSystemID_7a4 = 0;
-    mSystemID_7b0 = 0;
-    mSystemID_7c0 = 0;
-    mCallback_800.waterOffset = 0x4b000;
+    mRedFlameSystemID = 0;
+    mBlueFlameSystemID = 0;
+    mFlamethrowerRedASystemID = 0;
+    mFlamethrowerRedBSystemID = 0;
+    mFitWaterRaisedCallback.waterOffset = 0x4b000;
 }
 
-SysTracker::~SysTracker()
-{
-    if (data_0209ee80 != 0) {
-        mContents.Clear();
-        func_0203cbc0(data_0209ee80);
-        data_0209ee80 = 0;
+dPa_c::~dPa_c() {
+    if (sParticleHeapBase != 0) {
+        mLevel.cleanup();
+        func_0203cbc0(sParticleHeapBase);
+        sParticleHeapBase = 0;
     }
     if (mResourceFile != data_02075f14) {
         Memory::Deallocate(mResourceFile);
     }
-    data_0209ee74 = 0;
-}
-
+    gParticleControl = 0;
 }
 
 extern "C" {
 
 char *func_02023178(int size) {
-    char *block = (char *)data_0209ee78;
-    data_0209ee78 = block + size;
+    char *block = (char *)sParticleHeapCursor;
+    sParticleHeapCursor = block + size;
     return block;
 }
 }
@@ -80,8 +76,8 @@ namespace Particle {
 u32 Texture::AllocTexVram(u32 size, bool isTexel4x4)
 {
     if (isTexel4x4) {
-        u32 address = data_0209ee88;
-        data_0209ee88 = address + size;
+        u32 address = sParticleTex4x4VramCursor;
+        sParticleTex4x4VramCursor = address + size;
         return address;
     }
 
@@ -92,19 +88,20 @@ u32 Texture::AllocPalVram(u32 size, bool fromLowAddress)
 {
     if (fromLowAddress) {
         u32 alignedSize = (size + 7) & ~7;
-        u32 address = data_0209ee84;
-        data_0209ee84 = address + alignedSize;
+        u32 address = sParticlePalVramLowCursor;
+        sParticlePalVramLowCursor = address + alignedSize;
         return address;
     }
 
     u32 alignedSize = (size + 15) & ~15;
-    u32 address = data_0209ee8c - alignedSize;
-    data_0209ee8c = address;
+    u32 address = sParticlePalVramHighCursor - alignedSize;
+    sParticlePalVramHighCursor = address;
     return address;
 }
 
-void SysTracker::Initialise()
-{
+}
+
+void dPa_c::Initialise() {
     signed char v = gCurrentSublevel;
     unsigned int allocSize = 0x8c00;
     int countA = 0x28;
@@ -119,17 +116,16 @@ void SysTracker::Initialise()
     {
         char *base = (char *)Memory::operator_new2(allocSize);
         char* end = base + allocSize;
-        data_0209ee80 = base;
-        data_0209ee78 = base;
-        data_0209ee7c = end;
+        sParticleHeapBase = base;
+        sParticleHeapCursor = base;
+        sParticleHeapEnd = end;
     }
 
-    data_0209ee88 = func_02045d10();
-    data_0209ee84 = func_02045cf0();
-    data_0209ee8c = func_02045ce0();
+    sParticleTex4x4VramCursor = func_02045d10();
+    sParticlePalVramLowCursor = func_02045cf0();
+    sParticlePalVramHighCursor = func_02045ce0();
 
-    mManager = (Manager*)func_0204a4c8(
-        func_02023178, countA, countB, 0x1a, 0x3e);
+    mManager = (Particle::Manager *)func_0204a4c8(func_02023178, countA, countB, 0x1a, 0x3e);
     mManager->mPolygonAttr = 0x8000;
 
     if (func_0206e28c((u8*)data_02075f14, data_0208f668, 4) != 0) {
@@ -148,10 +144,8 @@ void SysTracker::Initialise()
     }
 
     func_0204a17c(mManager, mResourceFile);
-    func_0204a0dc(mManager,
-        (u32 (*)(const void *, u32))Texture::AllocTexVram);
-    func_0204a028(mManager,
-        (u32 (*)(u32, u32))Texture::AllocPalVram);
+    func_0204a0dc(mManager, (u32(*)(const void *, u32))Particle::Texture::AllocTexVram);
+    func_0204a028(mManager, (u32(*)(u32, u32))Particle::Texture::AllocPalVram);
 
     if (mResourceFile != data_02075f14) {
         /* The textures are in VRAM now; keep only the resource's resident
@@ -164,19 +158,20 @@ void SysTracker::Initialise()
     }
 }
 
-void SysTracker::Update()
-{
-    mContents.Update();
+void dPa_c::Update() {
+    mLevel.execute();
     func_02049f58(mManager);
 }
 
+namespace Particle {
+
 void RenderAll()
 {
-    SysTracker *tracker = data_0209ee74;
-    if (!tracker)
+    dPa_c *particle = gParticleControl;
+    if (!particle)
         return;
 
-    func_02049ee8(tracker->mManager, &data_0209b3ec);
+    func_02049ee8(particle->mManager, &data_0209b3ec);
 }
 
 void *System::NewSimple(u32 uniqueID, Fix12i x, Fix12i y, Fix12i z) {
@@ -184,36 +179,34 @@ void *System::NewSimple(u32 uniqueID, Fix12i x, Fix12i y, Fix12i z) {
     pos.x = x >> 3;
     pos.y = y >> 3;
     pos.z = z >> 3;
-    return data_0209ee74->mManager->AddSystem(uniqueID, pos);
+    return gParticleControl->mManager->AddSystem(uniqueID, pos);
 }
 
-System *System::FromUniqueID(u32 uniqueID)
-{
-    SysTracker::Contents::Entry *entry =
-        data_0209ee74->mContents.FindData(uniqueID);
-    return entry->system;
+System *System::FromUniqueID(u32 uniqueID) {
+    dPa_c::level_c::emitter_c *emitter = gParticleControl->mLevel.get(uniqueID);
+    return emitter->mEmitter;
 }
 
 /* A live uniqueID moves its system to the new position (and direction, when
  * one is given) and re-runs the callback's SpawnParticles; anything else
  * starts a fresh system of definitionID. */
 int System::New(u32 uniqueID, u32 definitionID, Fix12i x, Fix12i y, Fix12i z,
-                const Vector3_16f *dir, Callback *callback) {
-    SysTracker::Contents::Entry *found;
-    SysTracker::Contents *contents;
-    SysTracker::Contents::Entry *entry;
+                const Vector3_16f *dir, dPa_c::level_c::callback_c *callback) {
+    dPa_c::level_c::emitter_c *found;
+    dPa_c::level_c *level;
+    dPa_c::level_c::emitter_c *emitter;
     Vector3 pos;
     pos.x = x >> 3;
-    contents = &data_0209ee74->mContents;
+    level = &gParticleControl->mLevel;
     pos.y = y >> 3;
     pos.z = (z >> 1) >> 2;
-    found = contents->FindData(uniqueID);
-    entry = found;
-    if (entry) {
+    found = level->get(uniqueID);
+    emitter = found;
+    if (emitter) {
         System *system;
         dPa_c::level_c::callback_c *entryCallback;
-        entry->active = 1;
-        system = entry->system;
+        emitter->mStatus = 1;
+        system = emitter->mEmitter;
         system->position.x = pos.x;
         system->position.y = pos.y;
         system->position.z = pos.z;
@@ -222,48 +215,43 @@ int System::New(u32 uniqueID, u32 definitionID, Fix12i x, Fix12i y, Fix12i z,
             system->direction.y = dir->y;
             system->direction.z = dir->z;
         }
-        entryCallback = entry->callback;
+        entryCallback = emitter->mCallback;
         if (entryCallback != 0) {
             entryCallback->SpawnParticles(*system);
         }
-        return entry->uniqueID;
+        return emitter->mId;
     }
-    return contents->Create(definitionID, pos, dir, (dPa_c::level_c::callback_c *)callback);
+    return level->entry(definitionID, pos, dir, callback);
 }
 }
 
-extern "C" {
+namespace Particle {
 
-u32 func_02022d44(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir)
-{
-    return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
-                                 (Particle::Callback *)&data_0209ee74->mCallback_7f0);
+u32 System::NewCheckWater(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                          const Vector3_16f *dir) {
+    return New(uniqueID, effectID, x, y, z, dir, &gParticleControl->mCheckWaterCallback);
 }
 
-u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir)
-{
-    return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
-                                 (Particle::Callback *)&data_0209ee74->mCallback_7f4);
+u32 System::NewCheckWaterRipple(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                                const Vector3_16f *dir) {
+    return New(uniqueID, effectID, x, y, z, dir, &gParticleControl->mCheckWaterRippleCallback);
 }
 
-u32 func_02022cbc(int uniqueID, int effectID, s32 x, s32 y, s32 z, int dir)
-{
-    return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
-                                 (Particle::Callback *)&data_0209ee74->mCallback_7f8);
+u32 System::NewFitWater(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                        const Vector3_16f *dir) {
+    return New(uniqueID, effectID, x, y, z, dir, &gParticleControl->mFitWaterCallback);
 }
 
-u32 func_02022c80(
-    u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir)
-{
-    return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
-                                 (Particle::Callback *)&data_0209ee74->mCallback_800);
+u32 System::NewFitWaterRaised(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                              const Vector3_16f *dir) {
+    return New(uniqueID, effectID, x, y, z, dir, &gParticleControl->mFitWaterRaisedCallback);
 }
 
-u32 func_02022c3c(
-    u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir)
-{
-    return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
-                                 (Particle::Callback *)&data_0209ee74->mCallback_808);
+/* System::New with dPa_c's checkYoganCallback_c ("yogan" is lava);
+   daObjLava_c's popping lava bubbles are its one caller. */
+u32 System::NewCheckYogan(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                          const Vector3_16f *dir) {
+    return New(uniqueID, effectID, x, y, z, dir, &gParticleControl->mCheckYoganCallback);
 }
 }
 
@@ -271,60 +259,60 @@ namespace Particle {
 
 u32 System::NewWeather(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
                        const Vector3_16f *dir, u8 numWeatherEffectsNow) {
-    dPa_c::level_c::clipCallback_c *callback = &data_0209ee74->mWeatherCallback;
+    dPa_c::level_c::clipCallback_c *callback = &gParticleControl->mWeatherCallback;
     callback->enabled = numWeatherEffectsNow;
-    return New(uniqueID, effectID, x, y, z, dir, (Callback *)callback);
+    return New(uniqueID, effectID, x, y, z, dir, callback);
 }
 
-u32 System::NewUnkCallback818(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
-                              const Vector3_16f *dir) {
-    return New(uniqueID, effectID, x, y, z, dir, (Callback *)&data_0209ee74->mCallback_818);
+u32 System::NewCleanParticle(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                             const Vector3_16f *dir) {
+    return New(uniqueID, effectID, x, y, z, dir, &gParticleControl->mCleanParticleCallback);
 }
 
 void RunningSlidingDustAt(Fix12i x, Fix12i y, Fix12i z) {
-    data_0209ee74->mRunningSlidingDustSystemID =
-        System::New(data_0209ee74->mRunningSlidingDustSystemID, 0xda, x, y, z, 0,
-                    (Callback *)&data_0209ee74->mRunningSlidingDustCallback);
+    gParticleControl->mRunningSlidingDustSystemID =
+        System::New(gParticleControl->mRunningSlidingDustSystemID, kPtclRunningDust, x, y, z, 0,
+                    &gParticleControl->mRunningSlidingDustCallback);
 }
 
 }
 
-extern "C" {
+namespace Particle {
 
-void func_02022b04(Fix12i x, Fix12i y, Fix12i z)
-{
-    data_0209ee74->mSystemID_75c =
-        Particle::System::New(data_0209ee74->mSystemID_75c, 0x61, x, y, z, 0,
-                              (Particle::Callback *)&data_0209ee74->mCallback_760);
+/* RunningSlidingDustAt for Mega Mario: daPly_c calls this instead whenever
+   mIsMega is set. Effect 0x61 is effect 0xda's dust (same texture, shape,
+   lifetime and animation) at twice the emitter radius. */
+void MegaRunningSlidingDustAt(Fix12i x, Fix12i y, Fix12i z) {
+    gParticleControl->mMegaRunningSlidingDustSystemID =
+        System::New(gParticleControl->mMegaRunningSlidingDustSystemID, kPtclMegaRunningDust, x, y,
+                    z, 0, &gParticleControl->mMegaRunningSlidingDustCallback);
 }
 }
 
 namespace Particle {
 
 void System::NewBigSplash(Fix12i x, Fix12i y, Fix12i z) {
-    data_0209ee74->mBigSplashSystemID = New(data_0209ee74->mBigSplashSystemID, 0xdd, x, y, z, 0,
-                                            (Callback *)&data_0209ee74->mBigSplashCallback);
+    gParticleControl->mBigSplashSystemID = New(gParticleControl->mBigSplashSystemID, kPtclBigSplash,
+                                               x, y, z, 0, &gParticleControl->mBigSplashCallback);
 }
 
 }
 
-extern "C" {
+namespace Particle {
 
-u32 func_02022a4c(Fix12i x, Fix12i y, Fix12i z)
-{
-    Particle::SysTracker *tracker = data_0209ee74;
-    u32 result = Particle::System::New(tracker->mSystemID_774, 0xdf, x, y, z, 0,
-                                       (Particle::Callback *)&tracker->mBigSplashCallback);
-    data_0209ee74->mSystemID_774 = result;
+u32 System::NewSplash(Fix12i x, Fix12i y, Fix12i z) {
+    dPa_c *particle = gParticleControl;
+    u32 result =
+        New(particle->mSplashSystemID, kPtclSplash, x, y, z, 0, &particle->mBigSplashCallback);
+    gParticleControl->mSplashSystemID = result;
     return result;
 }
 
-u32 func_020229f0(Fix12i x, Fix12i y, Fix12i z)
-{
-    Particle::SysTracker *tracker = data_0209ee74;
-    u32 result = Particle::System::New(tracker->mSystemID_780, 0xc4, x, y, z, 0,
-                                       (Particle::Callback *)&tracker->mCallback_784);
-    data_0209ee74->mSystemID_780 = result;
+u32 System::NewBubble(Fix12i x, Fix12i y, Fix12i z) {
+    dPa_c *particle = gParticleControl;
+    u32 result =
+        New(particle->mBubbleSystemID, kPtclBubble, x, y, z, 0, &particle->mBubbleCallback);
+    gParticleControl->mBubbleSystemID = result;
     return result;
 }
 }
@@ -332,65 +320,67 @@ u32 func_020229f0(Fix12i x, Fix12i y, Fix12i z)
 namespace Particle {
 
 u32 System::NewRipple(Fix12i x, Fix12i y, Fix12i z) {
-    SysTracker *tracker = data_0209ee74;
+    dPa_c *particle = gParticleControl;
     u32 result =
-        New(tracker->mRippleSystemID, 0x109, x, y, z, 0, (Callback *)&tracker->mRippleCallback);
-    data_0209ee74->mRippleSystemID = result;
+        New(particle->mRippleSystemID, kPtclRipple, x, y, z, 0, &particle->mRippleCallback);
+    gParticleControl->mRippleSystemID = result;
     return result;
 }
 
 }
 
-extern "C" {
+namespace Particle {
 
-u32 func_0202293c(Fix12i x, Fix12i y, Fix12i z)
-{
-    Particle::SysTracker *tracker = data_0209ee74;
-    u32 result = Particle::System::New(tracker->mSystemID_798, 0x118, x, y, z, 0,
-                                       (Particle::Callback *)&tracker->mCallback_79c);
-    data_0209ee74->mSystemID_798 = result;
+/* daObjFire_c's RED_FLAME. Effect 0x118 is kPtclFlame's red-orange
+   flipbook (textures 14..21) as a continuous emitter. */
+u32 System::NewRedFlame(Fix12i x, Fix12i y, Fix12i z) {
+    dPa_c *particle = gParticleControl;
+    u32 result =
+        New(particle->mRedFlameSystemID, kPtclObjRedFire, x, y, z, 0, &particle->mRedFlameCallback);
+    gParticleControl->mRedFlameSystemID = result;
     return result;
 }
 
-u32 func_020228dc(Fix12i x, Fix12i y, Fix12i z)
-{
-    Particle::SysTracker *tracker = data_0209ee74;
-    u32 result = Particle::System::New(tracker->mSystemID_7a4, 0x117, x, y, z, 0,
-                                       (Particle::Callback *)&tracker->mCallback_7a8);
-    data_0209ee74->mSystemID_7a4 = result;
+/* daObjFire_c's BLUE_FLAME (actor 0x13d): effect 0x117, NewRedFlame's
+   emitter on the other flame flipbook (textures 6..13). */
+u32 System::NewBlueFlame(Fix12i x, Fix12i y, Fix12i z) {
+    dPa_c *particle = gParticleControl;
+    u32 result = New(particle->mBlueFlameSystemID, kPtclObjBlueFire, x, y, z, 0,
+                     &particle->mBlueFlameCallback);
+    gParticleControl->mBlueFlameSystemID = result;
     return result;
 }
 
-void func_02022864(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
-    data_0209ee74->mCallback_7b4.scale = scale;
-    data_0209ee74->mCallback_7b4.velocity = velocity;
-    data_0209ee74->mSystemID_7b0 =
-        Particle::System::New(data_0209ee74->mSystemID_7b0, 0x51, x, y, z, 0,
-                              (Particle::Callback *)&data_0209ee74->mCallback_7b4);
+void System::NewFlamethrowerRedA(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
+    gParticleControl->mFlamethrowerRedACallback.scale = scale;
+    gParticleControl->mFlamethrowerRedACallback.velocity = velocity;
+    gParticleControl->mFlamethrowerRedASystemID =
+        New(gParticleControl->mFlamethrowerRedASystemID, kPtclFlamethrowerRedA, x, y, z, 0,
+            &gParticleControl->mFlamethrowerRedACallback);
 }
 
-void func_020227ec(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
-    data_0209ee74->mCallback_7c4.scale = scale;
-    data_0209ee74->mCallback_7c4.velocity = velocity;
-    data_0209ee74->mSystemID_7c0 =
-        Particle::System::New(data_0209ee74->mSystemID_7c0, 0x52, x, y, z, 0,
-                              (Particle::Callback *)&data_0209ee74->mCallback_7c4);
+void System::NewFlamethrowerRedB(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
+    gParticleControl->mFlamethrowerRedBCallback.scale = scale;
+    gParticleControl->mFlamethrowerRedBCallback.velocity = velocity;
+    gParticleControl->mFlamethrowerRedBSystemID =
+        New(gParticleControl->mFlamethrowerRedBSystemID, kPtclFlamethrowerRedB, x, y, z, 0,
+            &gParticleControl->mFlamethrowerRedBCallback);
 }
 
-void func_02022774(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
-    data_0209ee74->mCallback_7d4.scale = scale;
-    data_0209ee74->mCallback_7d4.velocity = velocity;
-    data_0209ee74->mSystemID_7d0 =
-        Particle::System::New(data_0209ee74->mSystemID_7d0, 0x4f, x, y, z, 0,
-                              (Particle::Callback *)&data_0209ee74->mCallback_7d4);
+void System::NewFlamethrowerBlueA(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
+    gParticleControl->mFlamethrowerBlueACallback.scale = scale;
+    gParticleControl->mFlamethrowerBlueACallback.velocity = velocity;
+    gParticleControl->mFlamethrowerBlueASystemID =
+        New(gParticleControl->mFlamethrowerBlueASystemID, kPtclFlamethrowerBlueA, x, y, z, 0,
+            &gParticleControl->mFlamethrowerBlueACallback);
 }
 
-void func_020226fc(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
-    data_0209ee74->mCallback_7e4.scale = scale;
-    data_0209ee74->mCallback_7e4.velocity = velocity;
-    data_0209ee74->mSystemID_7e0 =
-        Particle::System::New(data_0209ee74->mSystemID_7e0, 0x50, x, y, z, 0,
-                              (Particle::Callback *)&data_0209ee74->mCallback_7e4);
+void System::NewFlamethrowerBlueB(Fix12i x, Fix12i y, Fix12i z, s16 scale, s16 velocity) {
+    gParticleControl->mFlamethrowerBlueBCallback.scale = scale;
+    gParticleControl->mFlamethrowerBlueBCallback.velocity = velocity;
+    gParticleControl->mFlamethrowerBlueBSystemID =
+        New(gParticleControl->mFlamethrowerBlueBSystemID, kPtclFlamethrowerBlueB, x, y, z, 0,
+            &gParticleControl->mFlamethrowerBlueBCallback);
 }
 }
 
@@ -398,7 +388,7 @@ namespace Particle {
 
 void SetSelfDestructFlag(u32 definitionID)
 {
-    data_0209ee74->mManager->mDefinitions[definitionID].data->flags |= 0x4000;
+    gParticleControl->mManager->mDefinitions[definitionID].data->flags |= 0x4000;
 }
 
 }

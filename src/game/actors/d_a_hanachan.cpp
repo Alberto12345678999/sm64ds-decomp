@@ -124,7 +124,7 @@ extern s32 data_ov034_021138d8[];
 extern int func_020092c4(void *arg0, void *out, void *target);
 extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
-extern dCamera_c *data_0209f318;
+extern dCamera_c *gCamera;
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 }
@@ -354,7 +354,7 @@ void daHanachan_c::StateDamageMain()
     if (!talk->StartTalk(*this, true))
         return;
 
-    data_0209f318->SetFlag_3();
+    gCamera->SetFlag_3();
     mDriveCamera = 1;
 
     ApproachLinear(mPlayer->mAngleY, Vec3_HorzAngle(&mSegmentPos[0], &mPlayer->mPos), 0x100);
@@ -505,7 +505,7 @@ void daHanachan_c::StateMoveStartMain()
                         mVertAccel = -0x4000;
                     }
                 }
-                data_0209f318->mFlags &= ~8;
+                gCamera->mFlags &= ~8;
                 mDriveCamera = 0;
                 SetState(4);
             }
@@ -605,7 +605,7 @@ void daHanachan_c::StateDemoCallMain()
     if (player->ShowMessage(*this, data_ov034_02113820[0], &v, 1, 0) == 0)
         return;
     Message::PrepareTalk();
-    data_0209f318->SetFlag_3();
+    gCamera->SetFlag_3();
     mDriveCamera = 1;
     func_0201267c(0x11b, &mCamSpacePos);
     SetState(2);
@@ -718,11 +718,8 @@ void daHanachan_c::ExecState()
 /* True when the actor is falling onto the cylinder from above. */
 int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor)
 {
-    volatile int pad[4];    /* the ROM reserves 0x10 bytes of stack it never touches */
-    s32 pushY = cyl->pushback.y;
-    s32 vy = actor->mVertSpeed;
-    (void)&pad;
-    if (vy < 0 && pushY < 0 && pushY > vy)
+    Vector3 push = cyl->pushback;
+    if (actor->mVertSpeed < 0 && push.y < 0 && push.y > actor->mVertSpeed)
         return 1;
     return 0;
 }
@@ -733,7 +730,7 @@ void daHanachan_c::HandlePlayerHits()
     int i;
     dActor_c *a;
     dCcAcPos_c *cyl;
-    volatile Vector3 playerPos;    /* copied and never read; the ROM keeps the copy */
+    Vector3 playerPos;
     Vector3 v;
     Vector3 hv;
 
@@ -754,9 +751,7 @@ void daHanachan_c::HandlePlayerHits()
         if (isPlayer == 0)
             continue;
         src = &a->mPos;
-        playerPos.x = src->x;
-        playerPos.y = src->y;
-        playerPos.z = src->z;
+        playerPos = *src;
         if (IsStompedBy(cyl, a) != 0) {
             ((daPly_c *)a)->Bounce(0x28000);
             func_0201267c(0x11c, &mCamSpacePos);
@@ -770,9 +765,7 @@ void daHanachan_c::HandlePlayerHits()
             return;
         }
         if (i == 0) {
-            v.x = mPosX;
-            v.y = mPosY;
-            v.z = mPosZ;
+            v = mPos;
             ((daPly_c *)a)->Hurt(v, 2, 0xc000, 1, 0, 1);
             SetState(8);
         }
@@ -793,9 +786,7 @@ void daHanachan_c::HandlePlayerHits()
             isPlayer = type == 0xbf;
             if (isPlayer == 0)
                 continue;
-            hv.x = mPosX;
-            hv.y = mPosY;
-            hv.z = mPosZ;
+            hv = mPos;
             ((daPly_c *)a)->Hurt(hv, 0, 0x5000, 1, 0, 1);
         }
     }
@@ -1023,7 +1014,7 @@ int daHanachan_c::Behavior()
     }
 
     if (mDriveCamera != 0) {
-        dCamera_c *cam = data_0209f318;
+        dCamera_c *cam = gCamera;
         camA.x = 0; camA.y = 0x80000; camA.z = 0;
         camB.x = 0; camB.y = 0x80000; camB.z = 0x1f4000;
         scratch.x = 0; scratch.y = 0; scratch.z = 0;

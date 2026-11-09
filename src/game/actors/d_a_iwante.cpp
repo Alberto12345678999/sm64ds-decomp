@@ -93,6 +93,7 @@ enum Eyerok_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "ParticleIds.h"
 #include "private/mtx43.h"
 #include "nitro/fx/fx.h"
 #include "LevelRng.h"
@@ -334,7 +335,7 @@ extern CLPS_Block data_ov025_02112cc8;
 extern CLPS_Block data_ov025_02112d48;
 
 /* ---- arm9 data ---- */
-extern dCamera_c *data_0209f318;
+extern dCamera_c *gCamera;
 extern Matrix4x3 data_020a0e68;
 
 /* ---- arm9 helpers (unmangled ROM names) ---- */
@@ -357,8 +358,6 @@ extern int func_020092c4(void *cam, void *out, void *target);
 extern void func_02011cfc(void);
 extern void func_02011d2c(void);
 extern void func_02012694(unsigned int a, void *p);
-extern void func_020393c4(dBgW *collider, StoodOnCallback callback);
-extern void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 extern void func_020398fc(void *p);
 
 /* Unreferenced. */
@@ -368,7 +367,7 @@ extern "C" {
 extern u32 d_a_iwanteNewHold(u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
 
 /* ---- the dBgW callback veneer (0x0211a35c), defined at the bottom of this
- *      file; seven call sites pass its address to func_020393c4 ---- */
+ *      file; seven call sites pass its address to dBgW::SetStoodOnCallback ---- */
 extern void func_ov066_0211a35c(dBgW *collider, dActor_c *owner, dActor_c *other);
 }
 
@@ -635,8 +634,8 @@ void daIwante_c::func_ov066_021166c8() {
                                   *(CLPS_Block *)(&data_ov025_02112c88));
     }
 
-    func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-    func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+    mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+    mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
     func_020398fc(&mMeshCollider2);
     mMeshCollider2.Enable(this);
 
@@ -692,11 +691,9 @@ int daIwante_c::func_ov066_021168ec() {
  * (-2896.0) if Z is below that, else 0 if Z is at or above -0xa68000 (-2664.0),
  * else -0xa68000. The decision state tests for the first two values. */
 int daIwante_c::func_ov066_02116a68() {
-    /* Unused; sizes the frame to the ROM's 12 bytes (sub sp,#0xc). */
-    volatile int dummy[3];
-    (void)dummy;
     daPly_c *p = ClosestPlayer();
-    int dist = p->mPosZ;
+    Vector3 playerPos = p->mPos;
+    int dist = playerPos.z;
     int lo = (int)0xff3ae000;
     if (dist < lo) return lo;
     int lo2 = -(int)0xb50000;
@@ -706,20 +703,15 @@ int daIwante_c::func_ov066_02116a68() {
     return hi;
 }
 
-/* Landing effect. Calls dCamera_c::func_0200d8c8 on the camera (data_0209f318) with the hand's
+/* Landing effect. Calls dCamera_c::func_0200d8c8 on the camera (gCamera) with the hand's
  * position and `strength` (every caller in this file passes 0x7d0000 = 2000.0). Then, with
  * mPosX/Z temporarily moved by 0x80000 (128.0) (X by -128.0 for hand 1, +128.0
  * otherwise; Z by +128.0), it spawns the huge landing dust at that shifted spot
  * and plays SE_LANDING at the object's own cached camera-space position
  * (mCamSpacePosX, which the shift does not change), and restores the position. */
 void daIwante_c::func_ov066_02116ac4(int strength) {
-    /* Saved through stack slots; non-volatile locals make this 24 bytes
-       shorter. */
-    volatile int s0, s1, s2;
-    data_0209f318->func_0200d8c8(&mPos, strength);
-    s0 = mPosX;
-    s1 = mPosY;
-    s2 = mPosZ;
+    gCamera->func_0200d8c8(&mPos, strength);
+    Vector3 saved = mPos;
     if (mPartIdx == PART_HAND_1)
         mPosX -= 0x80000;
     else
@@ -727,9 +719,7 @@ void daIwante_c::func_ov066_02116ac4(int strength) {
     mPosZ += 0x80000;
     HugeLandingDust(true);
     func_02012694(SE_LANDING, &mCamSpacePosX);
-    mPosX = s0;
-    mPosY = s1;
-    mPosZ = s2;
+    mPos = saved;
 }
 
 /* Keep a hand inside the arena. Bounds on mPosX (the values are in units and
@@ -787,8 +777,8 @@ int daIwante_c::func_ov066_02116c6c() {
         mHorzSpeed = 0;
     }
     if (mBlendAnmModel.Finished() != 0) {
-        Particle::System::NewSimple(0x7c, mPosX, mPosY, mPosZ);
-        Particle::System::NewSimple(0x7d, mPosX, mPosY, mPosZ);
+        Particle::System::NewSimple(kPtclEyerokDefeatA, mPosX, mPosY, mPosZ);
+        Particle::System::NewSimple(kPtclEyerokDefeatB, mPosX, mPosY, mPosZ);
         {
             VecFx32 v;
             v.x = mPosX;
@@ -914,8 +904,8 @@ int daIwante_c::func_ov066_02116db0() {
                     ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
                                           *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
                                           *(CLPS_Block *)(&data_ov025_02112d48));
-            func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-            func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+            mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+            mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
             mMeshCollider2.Enable(this);
             mSubState = 4;
@@ -1275,8 +1265,8 @@ int daIwante_c::func_ov066_021175e8() {
                     ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
                                           *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
                                           *(CLPS_Block *)(&data_ov025_02112d48));
-            func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-            func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+            mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+            mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
             mMeshCollider2.Enable(this);
             data_ov066_0211ae08 += 1;
@@ -1455,8 +1445,8 @@ int daIwante_c::func_ov066_02117bf0() {
                     ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
                                           *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
                                           *(CLPS_Block *)(&data_ov025_02112d48));
-            func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-            func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+            mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+            mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
             mMeshCollider2.Enable(this);
             data_ov066_0211ae08 += 1;
@@ -1599,8 +1589,8 @@ int daIwante_c::func_ov066_02118188() {
                                       *(CLPS_Block *)(&data_ov025_02112d48));
         }
 
-        func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-        func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+        mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+        mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
         func_020398fc(&mMeshCollider2);
         mMeshCollider2.Enable(this);
 
@@ -2078,7 +2068,7 @@ int daIwante_c::func_ov066_0211903c() {
 
     if (mTimer2) return 1;
 
-    cam = data_0209f318;
+    cam = gCamera;
     if (mSubState == 0) {
         cam->SetFlag_3();
         mTalkPlayer = ClosestPlayer();
@@ -2553,8 +2543,8 @@ int daIwante_c::InitResources() {
             ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae24.filePtr),
                                   *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
                                   *(CLPS_Block *)(&data_ov025_02112ca8));
-        func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-        func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+        mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+        mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
         mMeshCollider2.Enable(this);
         mTimer2 = 0x64;
         func_ov066_02119454(&data_ov066_0211b09c);
@@ -2578,8 +2568,8 @@ int daIwante_c::InitResources() {
                                       *(CLPS_Block *)(&data_ov025_02112d48));
             mRestPosX += 0x31F000;
         }
-        func_020393d4(&mMeshCollider2, &dBgW::UpdatePosWithTransform);
-        func_020393c4(&mMeshCollider2, func_ov066_0211a35c);
+        mMeshCollider2.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
+        mMeshCollider2.SetStoodOnCallback(func_ov066_0211a35c);
         func_020398fc(&mMeshCollider2);
         mRestPosZ -= 0x32000;
         mHitPoints = 3;
@@ -2609,15 +2599,13 @@ extern unsigned char data_ov066_0211ae08;
 
 extern "C" void func_ov066_0211a2e4(void *a, int b)
 {
-    /* Unused; sizes the frame to the ROM's 12 bytes (sub sp,#0xc). */
-    volatile int dummy[3];
-    (void)dummy;
     daPly_c *p;
     if (data_ov066_0211ae04 != PHASE_DORMANT) return;
     if (b == 0) return;
     p = ((dActor_c *)a)->ClosestPlayer();
     if (p == 0) return;
-    if (p->mPosZ < (int)0xff387000) {
+    Vector3 playerPos = p->mPos;
+    if (playerPos.z < (int)0xff387000) {
         data_ov066_0211ae08++;
     }
 }

@@ -74,9 +74,8 @@
  *   The PMF stand-ins (CapStateSelf / CapStateRec / CapEnterSelf). A PMF on
  *   the real dEnemyBase_c makes mwccarm ICE rather than give a diagnostic.
  *
- *   FX_MUL's 64-bit product in Slide's 20.12 multiplies and the
- *   (unsigned long long)&vulnFlags or-into-vulnFlags in InitSlide
- *   are the matching forms; plain member addressing does not match.
+ *   FX_MUL's 64-bit product in Slide's 20.12 multiplies is the matching
+ *   form; plain member addressing does not match.
  *
  *   CheckTouch's angle copy keeps `a = b ? a : a` through a Vector3_16.
  *
@@ -256,7 +255,7 @@ typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void 
 extern Matrix4x3      data_020a0e68;
 extern short          data_02082214[];
 extern int            data_02092138;
-extern u8             data_0209f2d8[];
+extern u8 gGameMode[];
 
 extern daObjMarioCapFileHandle data_ov002_0210de00, data_ov002_0210de08;
 extern daObjMarioCapFileHandle data_ov002_0210de10, data_ov002_0210de18;
@@ -490,7 +489,7 @@ int daObjMarioCap_c::InitResources()
             v = 1;
         else
             v = 0;
-        mCapIcon.func_ov001_020ab228((char *)this, mModelIndex & 0xff, mIconKind, v);
+        mCapIcon.Link((char *)this, mModelIndex & 0xff, mIconKind, v);
     }
 
     /* Keep only the type and character bits (0..11) of param1. This is the
@@ -913,14 +912,12 @@ int daObjMarioCap_c::Fall() {
 int daObjMarioCap_c::InitSlide()
 {
     int state;
-    int* p;
-    int val;
-    int ret;
 
     state = mType;
     if (state == 5 || state == 7 || state == 9) {
         CAP_TIMER(this) = 0xd2;
-        if ((int)(data_0209f2d8[0] == 1) == 0) CAP_TIMER(this) = 0x78;
+        if ((int)(gGameMode[0] == 1) == 0)
+            CAP_TIMER(this) = 0x78;
         mStartTimer = CAP_TIMER(this);
     }
 
@@ -936,13 +933,8 @@ int daObjMarioCap_c::InitSlide()
         mStartTimer = CAP_TIMER(this);
     }
 
-    /* (unsigned long long) is the MATCH form; mdCcAc_c.vulnFlags |= DIFFs. */
-    p = (int *)((unsigned long long)&mdCcAc_c.vulnFlags);
-    val = *p;
-    ret = 1;
-    val |= 0x8000;
-    *p = val;
-    return ret;
+    mdCcAc_c.vulnFlags |= 0x8000;
+    return 1;
 }
 
 /* df34's per-frame function. Types 4, 6, 8, 16 and 17 just run the touch
@@ -1075,7 +1067,7 @@ int daObjMarioCap_c::InitTaken()
     }
 
     {
-        unsigned b = (data_0209f2d8[0] == 1);
+        unsigned b = (gGameMode[0] == 1);
         if (b == 0) {
             daPly_c *p = mPlayer;
             if (p->mCharacter == 3) {

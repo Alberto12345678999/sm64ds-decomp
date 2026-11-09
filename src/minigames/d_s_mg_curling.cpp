@@ -16,9 +16,11 @@
  * - Stone_Slide keeps its angle/speed/position pointer temporaries; the
  *   angle and speed ones stay `&mStone[0].f + offset`, since
  *   &mStone[idx] moves their address math.
- * - Bit_InitAll's second init walk keeps `char *bit`, and its x, y, wait
- *   and texA accesses stay `bit + CURL_OFF(...)`: the member spelling grows
+ * - Bit_InitAll's second init walk keeps `char *bit`, and its x, y, holdTimer
+ *   and spriteA accesses stay `bit + CURL_OFF(...)`: the member spelling grows
  *   the function by one to four words.
+ * - ResolveStoneCollision indexes the sine table by hand; FX_SinIdx and
+ *   FX_CosIdx there reallocate registers across the function.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum dScMgCurling_c_AssetId {
@@ -39,6 +41,7 @@ enum dScMgCurling_c_AssetId {
 #include "dScMgCurling_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "nitro/fx/fx_trig.h"
 #include "G2x.h"
 #include "LevelRng.h"
 
@@ -71,7 +74,10 @@ struct Entry {
 typedef void (C::*PMF0)();
 
 /* B4 is a 4-byte-record view of a touch lane, used by the stone-drag
- * reader; the other readers index the lanes flat. */
+ * reader; the other readers index the lanes flat. Measured: reading all
+ * three through ((TouchInfo *)gTouchHeld)[slot] changes Stone_Drag's size,
+ * and TouchInfo for held with flat gTouchX/gTouchY reads differs by 20+
+ * words. */
 struct B4 {
     unsigned char v;
     unsigned char pad[3];
@@ -80,6 +86,10 @@ struct B4 {
 /* Byte offset of a dScMgCurling_c member, for the sites that must keep
    `pointer + constant` arithmetic because every member spelling moved bytes. */
 #define CURL_OFF(m) ((int)&((dScMgCurling_c *)0)->m)
+
+/* A random integer in [0, n): the top 15 bits of the minigame generator,
+   scaled. */
+#define CURL_RAND(n) (((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * (n)) >> 15)
 
 /* Everything this file calls or reads. Class members cannot go inside an
  * `extern "C"` block, so the C-linkage names are collected here in one. */
@@ -96,7 +106,6 @@ struct Matrix2x2;
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern int RandomIntInternal(int *seed);
-extern int atan2_hold_d_s_mg_curling_1(int y, int x);
 extern int func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
@@ -115,7 +124,6 @@ extern void Ov004_Deallocate(void *p);
 extern void func_020563d4(const void *src, u32 offset, u32 count);
 extern void func_02056374(const void *src, u32 offset, u32 count);
 
-extern s16 data_02082214[];
 extern unsigned char sCurlingBitAStates[];
 extern unsigned char sCurlingBitBStates[];
 extern u8 sCurlingScoreDelays[];
@@ -188,339 +196,244 @@ dScMgCurling_c::~dScMgCurling_c() {}
 void dScMgCurling_c::Bit_DrawAll() {
     int i;
     for (i = 0; i < 0x32; i++) {
-        if (mBit[i].shown) {
+        if (mBit[i].visible) {
             int x = mBit[i].x >> 0xc;
             int y = mBit[i].y >> 0xc;
-            Mg_RenderSubSpriteMtx(sCurlingBitSprites[mBit[i].texA], x, y, 0);
-            DrawOamSprite(sCurlingBitSprites[mBit[i].texB], x, y, 0);
+            Mg_RenderSubSpriteMtx(sCurlingBitSprites[mBit[i].spriteA], x, y, 0);
+            DrawOamSprite(sCurlingBitSprites[mBit[i].spriteB], x, y, 0);
         }
     }
 }
 
 void dScMgCurling_c::Bit_StateFallSlowDown(int index) {
-    if (mBit[index].wait2 != 0) {
-        short *p = (short *)&mBit[index].wait2;
-        *p = (short)(*(unsigned short *)p - 1);
-        if (*p < 0)
-            *p = 0;
-    } else if (mBit[index].vy > 0x100) {
-        int *q = &mBit[index].vy;
-        *q = *q - 0x10;
-        if ((short)*q < 0x100)
-            *q = 0x100;
-    } else {
-        mBit[index].state2 = 0;
+    if (mBit[index].fallTimer != 0) {
+        mBit[index].fallTimer--;
+        if ((s16)mBit[index].fallTimer < 0)
+            mBit[index].fallTimer = 0;
+        return;
     }
+    if (mBit[index].vy > 0x100) {
+        mBit[index].vy -= 0x10;
+        if ((s16)mBit[index].vy < 0x100)
+            mBit[index].vy = 0x100;
+        return;
+    }
+    mBit[index].fallState = 0;
 }
 
 void dScMgCurling_c::Bit_StateFallSpeedUp(int index) {
-    if (mBit[index].vyCap > mBit[index].vy) {
+    if (mBit[index].fallSpeed > mBit[index].vy) {
         mBit[index].vy += 0x10;
-        if (mBit[index].vyCap > mBit[index].vy)
-            mBit[index].vy = mBit[index].vyCap;
+        if (mBit[index].fallSpeed > mBit[index].vy)
+            mBit[index].vy = mBit[index].fallSpeed;
     }
-    if (mBit[index].wait2 != 0) {
-        mBit[index].wait2 = mBit[index].wait2 - 1;
-        if ((s16 &)mBit[index].wait2 < 0)
-            (s16 &)mBit[index].wait2 = 0;
-    } else {
-        mBit[index].state2 = 2;
-        (s16 &)mBit[index].wait2 =
-            (short)(unsigned char)(((0x20 *
-                                     (((unsigned int)RandomIntInternal(&data_0209d4b8.value) >>
-                                       16) &
-                                      0x7fff)) >>
-                                    0xf) +
-                                   0x20);
+    if (mBit[index].fallTimer != 0) {
+        mBit[index].fallTimer--;
+        if ((s16)mBit[index].fallTimer < 0)
+            mBit[index].fallTimer = 0;
+        return;
     }
+    mBit[index].fallState = 2;
+    mBit[index].fallTimer = (u8)(CURL_RAND(0x20) + 0x20);
 }
 
 void dScMgCurling_c::Bit_StateFallStart(int index) {
-    unsigned int roll;
     mBit[index].vy = 0;
-    roll = ((unsigned)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
-    mBit[index].vyCap = (((roll << 4) >> 15) << 4) + 0x300;
-    mBit[index].state2 = 1;
-    roll = ((unsigned)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
-    roll = ((roll << 5) >> 15) + 0x20;
-    (s16 &)mBit[index].wait2 = (unsigned char)roll;
+    mBit[index].fallSpeed = (CURL_RAND(0x10) << 4) + 0x300;
+    mBit[index].fallState = 1;
+    mBit[index].fallTimer = (u8)(CURL_RAND(0x20) + 0x20);
 }
 
 void dScMgCurling_c::BitA_StateDriftStop(int index) {
-    mBit[index].x = mBit[index].x + mBit[index].vx;
-    mBit[index].y = mBit[index].y + mBit[index].vy;
-    if (mBit[index].wait != 0) {
-        mBit[index].timer = mBit[index].timer - 1;
-        if ((s16 &)mBit[index].timer < 0)
-            (s16 &)mBit[index].timer = 0;
+    mBit[index].x += mBit[index].vx;
+    mBit[index].y += mBit[index].vy;
+    if (mBit[index].holdTimer != 0) {
+        mBit[index].driftTimer--;
+        if ((s16)mBit[index].driftTimer < 0)
+            mBit[index].driftTimer = 0;
         return;
     }
     if (mBit[index].vx > 0) {
-        mBit[index].vx = mBit[index].vx - 8;
+        mBit[index].vx -= 8;
         if ((s16)mBit[index].vx < 0)
             mBit[index].vx = 0;
         return;
     }
     if (mBit[index].vx < 0) {
-        mBit[index].vx = mBit[index].vx + 8;
+        mBit[index].vx += 8;
         if (mBit[index].vx > 0)
             mBit[index].vx = 0;
         return;
     }
-    mBit[index].state = 0;
+    mBit[index].driftState = 0;
 }
 
 void dScMgCurling_c::BitA_StateDriftLeft(int index) {
-    unsigned short timer;
-
-    mBit[index].x = mBit[index].x + mBit[index].vx;
-    mBit[index].y = mBit[index].y + mBit[index].vy;
-
-    if (mBit[index].wait != 0) {
-        mBit[index].wait = mBit[index].wait - 1;
-        if ((s16 &)mBit[index].wait < 0)
-            mBit[index].wait = 0;
+    mBit[index].x += mBit[index].vx;
+    mBit[index].y += mBit[index].vy;
+    if (mBit[index].holdTimer != 0) {
+        mBit[index].holdTimer--;
+        if ((s16)mBit[index].holdTimer < 0)
+            mBit[index].holdTimer = 0;
         return;
     }
-
     if (mBit[index].vx > -0x300) {
         mBit[index].vx -= 8;
         if (mBit[index].vx <= -0x300)
             mBit[index].vx = 0x300;
     }
-
-    timer = mBit[index].timer;
-    if (timer != 0) {
-        mBit[index].timer = timer - 1;
-        if ((s16 &)mBit[index].timer < 0)
-            mBit[index].timer = 0;
+    if (mBit[index].driftTimer != 0) {
+        mBit[index].driftTimer--;
+        if ((s16)mBit[index].driftTimer < 0)
+            mBit[index].driftTimer = 0;
         return;
     }
-
-    mBit[index].state = 3;
-    mBit[index].timer =
-        (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff)
-                             << 5 >>
-                         0xf) +
-                        0x20);
+    mBit[index].driftState = 3;
+    mBit[index].driftTimer = (u8)(CURL_RAND(0x20) + 0x20);
 }
 
 void dScMgCurling_c::BitA_StateDriftRight(int index) {
-    unsigned short timer;
-
     mBit[index].x += mBit[index].vx;
     mBit[index].y += mBit[index].vy;
-
-    timer = mBit[index].wait;
-    if (timer != 0) {
-        (s16 &)mBit[index].wait = timer - 1;
-        if ((s16 &)mBit[index].wait < 0)
-            (s16 &)mBit[index].wait = 0;
+    if (mBit[index].holdTimer != 0) {
+        mBit[index].holdTimer--;
+        if ((s16)mBit[index].holdTimer < 0)
+            mBit[index].holdTimer = 0;
         return;
     }
-
     if (mBit[index].vx < 0x300) {
         mBit[index].vx += 8;
         if (mBit[index].vx >= 0x300)
             mBit[index].vx = 0x300;
     }
-
-    timer = mBit[index].timer;
-    if (timer != 0) {
-        (s16 &)mBit[index].timer = timer - 1;
-        if ((s16 &)mBit[index].timer < 0)
-            (s16 &)mBit[index].timer = 0;
+    if (mBit[index].driftTimer != 0) {
+        mBit[index].driftTimer--;
+        if ((s16)mBit[index].driftTimer < 0)
+            mBit[index].driftTimer = 0;
         return;
     }
-
-    mBit[index].state = 3;
-    (s16 &)mBit[index].timer =
-        (((((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) << 5) >> 0xf) +
-            0x20 &
-        0xff;
+    mBit[index].driftState = 3;
+    mBit[index].driftTimer = (u8)(CURL_RAND(0x20) + 0x20);
 }
 
 void dScMgCurling_c::BitA_StatePause(int index) {
-    if (mBit[index].wait != 0) {
-        mBit[index].wait = mBit[index].wait - 1;
-        if ((s16 &)mBit[index].wait < 0)
-            (s16 &)mBit[index].wait = 0;
+    if (mBit[index].holdTimer != 0) {
+        mBit[index].holdTimer--;
+        if ((s16)mBit[index].holdTimer < 0)
+            mBit[index].holdTimer = 0;
         return;
     }
     mBit[index].vx = 0;
-    mBit[index].state =
-        sCurlingBitAStates[(((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff)
-                               << 1 >>
-                           15];
-    mBit[index].wait =
-        (short)(unsigned char)((0x10 *
-                                (((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) &
-                                 0x7fff)) >>
-                               0xf);
-    mBit[index].timer =
-        (short)(unsigned char)(((0x40 *
-                                 (((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) &
-                                  0x7fff)) >>
-                                0xf) +
-                               0x60);
+    mBit[index].driftState = sCurlingBitAStates[CURL_RAND(2)];
+    mBit[index].holdTimer = (u8)CURL_RAND(0x10);
+    mBit[index].driftTimer = (u8)(CURL_RAND(0x40) + 0x60);
 }
 
 void dScMgCurling_c::Bit_RunKindA(int index) {
-    C *self = (C *)this;
-    unsigned char state = mBit[index].state;
-    (self->*sCurlingBitAStateTable[state])(index);
-    unsigned char state2 = mBit[index].state2;
-    (self->*sCurlingBitStateTable[state2])(index);
+    (((C *)this)->*sCurlingBitAStateTable[mBit[index].driftState])(index);
+    (((C *)this)->*sCurlingBitStateTable[mBit[index].fallState])(index);
 }
 
 void dScMgCurling_c::BitB_StateDriftStop(int index) {
-    int *x = &mBit[index].x;
-    int *vx = &mBit[index].vx;
-    int *y = &mBit[index].y;
-    *x += *vx;
-    *y += mBit[index].vy;
-    if (*vx > 0) {
-        *vx -= 0x20;
-        if ((int)(short)*vx < 0)
-            *vx = 0;
-    } else if (*vx < 0) {
-        *vx += 0x20;
-        if (*vx > 0)
-            *vx = 0;
+    mBit[index].x += mBit[index].vx;
+    mBit[index].y += mBit[index].vy;
+    if (mBit[index].vx > 0) {
+        mBit[index].vx -= 0x20;
+        if ((s16)mBit[index].vx < 0)
+            mBit[index].vx = 0;
+    } else if (mBit[index].vx < 0) {
+        mBit[index].vx += 0x20;
+        if (mBit[index].vx > 0)
+            mBit[index].vx = 0;
     } else {
-        mBit[index].state = 0;
+        mBit[index].driftState = 0;
     }
 }
 
 void dScMgCurling_c::BitB_StateDriftLeft(int index) {
-    int off = index * 0x24;
-
     mBit[index].x += mBit[index].vx;
     mBit[index].y += mBit[index].vy;
-
-    u16 *wait = &mBit[index].wait;
-    if (*wait != 0) {
-        *wait = *wait - 1;
-        s16 left = *(s16 *)wait;
-        if (left < 0) {
-            *wait = 0;
-        }
+    if (mBit[index].holdTimer != 0) {
+        mBit[index].holdTimer--;
+        if ((s16)mBit[index].holdTimer < 0)
+            mBit[index].holdTimer = 0;
         return;
     }
-
-    int *vx = &mBit[index].vx;
-    if (*vx > -0x400) {
-        *vx -= 0x20;
-        if (*vx <= -0x400) {
-            *vx = 0x400;
-        }
+    if (mBit[index].vx > -0x400) {
+        mBit[index].vx -= 0x20;
+        if (mBit[index].vx <= -0x400)
+            mBit[index].vx = 0x400;
     }
-
-    u16 *timer = &mBit[index].timer;
-    if (*timer != 0) {
-        *timer = *timer - 1;
-        s16 left = *(s16 *)timer;
-        if (left < 0) {
-            *timer = 0;
-        }
+    if (mBit[index].driftTimer != 0) {
+        mBit[index].driftTimer--;
+        if ((s16)mBit[index].driftTimer < 0)
+            mBit[index].driftTimer = 0;
         return;
     }
-
-    mBit[index].state = 3;
+    mBit[index].driftState = 3;
 }
 
-#pragma push
-#pragma inline_depth(0)
 void dScMgCurling_c::BitB_StateDriftRight(int index) {
-    int off = index * 0x24;
-
     mBit[index].x += mBit[index].vx;
     mBit[index].y += mBit[index].vy;
-
-    unsigned short *wait = &mBit[index].wait;
-    if (*wait != 0) {
-        *wait = *wait - 1;
-        short left = *(short *)wait;
-        if (left < 0) {
-            *wait = 0;
-        }
+    if (mBit[index].holdTimer != 0) {
+        mBit[index].holdTimer--;
+        if ((s16)mBit[index].holdTimer < 0)
+            mBit[index].holdTimer = 0;
         return;
     }
-
-    int *vx = &mBit[index].vx;
-    if (*vx < 0x400) {
-        *vx = *vx + 0x20;
-        if (*vx >= 0x400) {
-            *vx = 0x400;
-        }
+    if (mBit[index].vx < 0x400) {
+        mBit[index].vx += 0x20;
+        if (mBit[index].vx >= 0x400)
+            mBit[index].vx = 0x400;
     }
-
-    unsigned short *timer = &mBit[index].timer;
-    if (*timer != 0) {
-        *timer = *timer - 1;
-        short left = *(short *)timer;
-        if (left < 0) {
-            *timer = 0;
-        }
+    if (mBit[index].driftTimer != 0) {
+        mBit[index].driftTimer--;
+        if ((s16)mBit[index].driftTimer < 0)
+            mBit[index].driftTimer = 0;
         return;
     }
-
-    mBit[index].state = 3;
-#pragma pop
+    mBit[index].driftState = 3;
 }
 
 void dScMgCurling_c::BitB_StatePause(int idx) {
-    unsigned short wait;
-    short left;
-    unsigned int roll;
-    wait = mBit[idx].wait;
-    if (wait != 0) {
-        left = (short)(wait - 1);
-        (s16 &)mBit[idx].wait = left;
-        if ((s16 &)mBit[idx].wait < 0)
-            (s16 &)mBit[idx].wait = 0;
+    if (mBit[idx].holdTimer != 0) {
+        mBit[idx].holdTimer--;
+        if ((s16)mBit[idx].holdTimer < 0)
+            mBit[idx].holdTimer = 0;
         return;
     }
     mBit[idx].vx = 0;
-    roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
-    mBit[idx].vy = (int)(((roll << 5) >> 15) << 4) + 0x600;
-    roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
-    mBit[idx].state = sCurlingBitBStates[(roll << 1) >> 15];
-    roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
-    (s16 &)mBit[idx].wait = (unsigned char)((roll << 4) >> 15);
-    roll = ((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff;
-    (s16 &)mBit[idx].timer = (unsigned char)(((roll * 0x30) >> 15) + 0x30);
+    mBit[idx].vy = (CURL_RAND(0x20) << 4) + 0x600;
+    mBit[idx].driftState = sCurlingBitBStates[CURL_RAND(2)];
+    mBit[idx].holdTimer = (u8)CURL_RAND(0x10);
+    mBit[idx].driftTimer = (u8)(CURL_RAND(0x30) + 0x30);
 }
 
 void dScMgCurling_c::Bit_RunKindB(int idx) {
-    unsigned char state = mBit[idx].state;
-    (((C *)this)->*sCurlingBitBStateTable[state].pmf)(idx);
+    (((C *)this)->*sCurlingBitBStateTable[mBit[idx].driftState].pmf)(idx);
 }
 
 void dScMgCurling_c::Bit_PickKind(int idx) {
-    unsigned roll = (unsigned)RandomIntInternal(&data_0209d4b8.value);
+    unsigned pick = CURL_RAND(8);
     int k = 0;
-    unsigned pick = ((roll >> 16) & 0x7fff) << 3 >> 0xf;
     if (pick == 5)
         k = 1;
     mBit[idx].kind = sCurlingBitKinds[k];
-    mBit[idx].state = 0;
+    mBit[idx].driftState = 0;
 }
 
 void dScMgCurling_c::Bit_UpdateAll() {
     int i;
     for (i = 0; i < 0x32; i++) {
-        if (mBit[i].on != 0) {
-            unsigned char kind = mBit[i].kind;
-            (((C *)this)->*sCurlingBitKindTable[kind])(i);
+        if (mBit[i].active != 0) {
+            (((C *)this)->*sCurlingBitKindTable[mBit[i].kind])(i);
             if ((mBit[i].y >> 0xc) >= 0xc8) {
-                mBit[i].x = (((unsigned int)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff)
-                                << 5 >>
-                            0xf << 0xf;
+                mBit[i].x = CURL_RAND(0x20) << 0xf;
                 mBit[i].y = -0x8000;
-                mBit[i].state = 0;
+                mBit[i].driftState = 0;
                 mBit[i].kind = 0;
-                mBit[i].state2 = 0;
+                mBit[i].fallState = 0;
             }
         }
     }
@@ -529,10 +442,7 @@ void dScMgCurling_c::Bit_UpdateAll() {
 void dScMgCurling_c::Bit_InitAll() {
     int i;
     char *bit;
-    unsigned int roll;
     unsigned int v;
-    int q;
-    unsigned int m;
 
     i = 0;
     for (; i < 0x32; i++) {
@@ -540,56 +450,44 @@ void dScMgCurling_c::Bit_InitAll() {
         mBit[i].y = 0;
         mBit[i].vx = 0;
         mBit[i].vy = 0;
-        mBit[i].wait = 0;
-        mBit[i].timer = 0;
-        mBit[i].wait2 = 0;
-        mBit[i].on = 0;
+        mBit[i].holdTimer = 0;
+        mBit[i].driftTimer = 0;
+        mBit[i].fallTimer = 0;
+        mBit[i].active = 0;
         mBit[i].kind = 0;
-        mBit[i].state = 0;
-        mBit[i].state2 = 0;
-        mBit[i].shown = 0;
-        mBit[i].texA = 0;
-        mBit[i].texB = 1;
+        mBit[i].driftState = 0;
+        mBit[i].fallState = 0;
+        mBit[i].visible = 0;
+        mBit[i].spriteA = 0;
+        mBit[i].spriteB = 1;
     }
 
     /* bit walks `this` one dScMgCurling_bit per pass, so its mBit[0] is
-       mBit[i]. The texA read and the second x/y/wait stores stay raw: spelled
+       mBit[i]. The spriteA read and the second x/y/holdTimer stores stay raw: spelled
        as members they change the generated code. */
     i = 0;
     bit = (char *)this;
     for (; i < 0x32; i++) {
-        roll = (unsigned int)RandomIntInternal(&data_0209d4b8.value);
-        m = ((roll >> 16) & 0x7fff) << 5;
-        ((dScMgCurling_c *)bit)->mBit[0].x = (int)(m >> 0xf) << 0xf;
+        ((dScMgCurling_c *)bit)->mBit[0].x = CURL_RAND(0x20) << 0xf;
         ((dScMgCurling_c *)bit)->mBit[0].y = -0x8000;
-        ((dScMgCurling_c *)bit)->mBit[0].on = 1;
-        ((dScMgCurling_c *)bit)->mBit[0].shown = 1;
+        ((dScMgCurling_c *)bit)->mBit[0].active = 1;
+        ((dScMgCurling_c *)bit)->mBit[0].visible = 1;
         ((dScMgCurling_c *)bit)->mBit[0].kind = 0;
-        ((dScMgCurling_c *)bit)->mBit[0].state = 0;
+        ((dScMgCurling_c *)bit)->mBit[0].driftState = 0;
 
-        roll = (unsigned int)RandomIntInternal(&data_0209d4b8.value);
-        ((dScMgCurling_c *)bit)->mBit[0].texA = (char)(((roll >> 16) & 0x7fff) * 5 >> 0xf);
+        ((dScMgCurling_c *)bit)->mBit[0].spriteA = (u8)CURL_RAND(5);
 
-        roll = (unsigned int)RandomIntInternal(&data_0209d4b8.value);
-        v = *(unsigned char *)(bit + CURL_OFF(mBit[0].texA)) +
-            ((((roll >> 16) & 0x7fff) << 2) >> 0xf) + 1;
+        v = *(unsigned char *)(bit + CURL_OFF(mBit[0].spriteA)) + CURL_RAND(4) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
-        ((dScMgCurling_c *)bit)->mBit[0].texB = (char)v;
+        ((dScMgCurling_c *)bit)->mBit[0].spriteB = (char)v;
 
-        roll = (unsigned int)RandomIntInternal(&data_0209d4b8.value);
-        ((dScMgCurling_c *)bit)->mBit[0].wait =
-            (short)(((i & 7) << 6) + (((roll >> 16) & 0x7fff) * 0x30 >> 0xf));
+        ((dScMgCurling_c *)bit)->mBit[0].holdTimer = (short)(((i & 7) << 6) + CURL_RAND(0x30));
 
-        roll = (unsigned int)RandomIntInternal(&data_0209d4b8.value);
-        m = ((roll >> 16) & 0x7fff) << 5;
-        *(int *)(bit + CURL_OFF(mBit[0].x)) = (int)(m >> 0xf) << 0xf;
-
-        roll = (unsigned int)RandomIntInternal(&data_0209d4b8.value);
-        q = (((roll >> 16) & 0x7fff) * 0x1a) >> 0xf;
-        *(int *)(bit + CURL_OFF(mBit[0].y)) = ((q << 3) - 8) << 0xc;
-        *(short *)(bit + CURL_OFF(mBit[0].wait)) = 0;
+        *(int *)(bit + CURL_OFF(mBit[0].x)) = CURL_RAND(0x20) << 0xf;
+        *(int *)(bit + CURL_OFF(mBit[0].y)) = ((CURL_RAND(0x1a) << 3) - 8) << 0xc;
+        *(short *)(bit + CURL_OFF(mBit[0].holdTimer)) = 0;
         bit += 0x24;
     }
 }
@@ -700,6 +598,8 @@ void dScMgCurling_c::Aim_Swing() {
         int dy2, dy;
 
         int i4 = idx * 4;
+        /* gTouchX is already u8[]; dropping these two casts changes 12
+           words of Aim_Swing. */
         u8 *pa = (u8 *)gTouchX;
         u8 *pb = (u8 *)gTouchY;
         u8 bx = pa[i4];
@@ -789,9 +689,9 @@ void dScMgCurling_c::Aim_Swing() {
             int px = mAimX;
             int py = mAimY;
             int j = gActivePlayerSlot;
-            u8 jx = ((u8 *)gTouchX)[j * 4];
+            u8 jx = gTouchX[j * 4];
             int ax = (px >> 12) - jx;
-            u8 jy = ((u8 *)gTouchY)[j * 4];
+            u8 jy = gTouchY[j * 4];
             int ay = (py >> 12) - jy;
             mGrabX = ax << 12;
             mGrabY = ay << 12;
@@ -810,7 +710,10 @@ void dScMgCurling_c::Aim_WaitTouch() {
     int x;
     int y;
     idx = gActivePlayerSlot;
-    if (gTouchHeld[idx * (4 & 0xFFFFFFFF)] != 0) {
+    /* The held test reads the slot's whole TouchInfo record, the edge test
+       the gTouchEdge lane; with both spelled `lane[idx * 4]` the index is
+       shared and 20 words differ, and both as records grow the function. */
+    if (((TouchInfo *)gTouchHeld)[idx].held != 0) {
         if (gTouchEdge[idx * 4] != 0) {
             touching = 1;
         }
@@ -818,8 +721,8 @@ void dScMgCurling_c::Aim_WaitTouch() {
     if (touching == 0) {
         return;
     }
-    x = (mAimX >> 0xc) - ((u8 *)gTouchX)[idx * 4];
-    y = (mAimY >> 0xc) - ((u8 *)gTouchY)[idx * 4];
+    x = (mAimX >> 0xc) - gTouchX[idx * 4];
+    y = (mAimY >> 0xc) - gTouchY[idx * 4];
     mGrabX = x << 0xc;
     mGrabY = y << 0xc;
     mStylusHeld = 1;
@@ -878,7 +781,6 @@ void dScMgCurling_c::SeparateStones(int stoneIndex) {
     int dy;
     int distance;
     u16 contactAngle;
-    int angleIndex;
 
     for (hitIndex = 0; hitIndex < 5; hitIndex++) {
         if (mStone[hitIndex].active == 0)
@@ -897,11 +799,10 @@ void dScMgCurling_c::SeparateStones(int stoneIndex) {
             int separationX;
             int separationY;
 
-            angleIndex = (contactAngle >> 4) * 2;
-            contactCos = data_02082214[angleIndex + 1];
+            contactCos = FX_CosIdx(contactAngle >> 4);
             separationX = FX_MUL(contactCos, 0x1a);
             mStone[hitIndex].x = mStone[stoneIndex].x + (separationX << 12);
-            contactSin = data_02082214[angleIndex];
+            contactSin = FX_SinIdx(contactAngle >> 4);
             separationY = FX_MUL(contactSin, 0x1a);
             mStone[hitIndex].y = mStone[stoneIndex].y + (separationY << 12);
             for (nextIndex = 0; nextIndex < 5; nextIndex++) {
@@ -926,11 +827,10 @@ void dScMgCurling_c::SeparateStones(int stoneIndex) {
                     int nextSeparationX;
                     int nextSeparationY;
 
-                    angleIndex = (nextContactAngle >> 4) * 2;
-                    nextContactCos = data_02082214[angleIndex + 1];
+                    nextContactCos = FX_CosIdx(nextContactAngle >> 4);
                     nextSeparationX = FX_MUL(nextContactCos, 0x1a);
                     mStone[nextIndex].x = mStone[hitIndex].x + (nextSeparationX << 12);
-                    nextContactSin = data_02082214[angleIndex];
+                    nextContactSin = FX_SinIdx(nextContactAngle >> 4);
                     nextSeparationY = FX_MUL(nextContactSin, 0x1a);
                     mStone[nextIndex].y = mStone[hitIndex].y + (nextSeparationY << 12);
                     func_02012718(0xe8, mStone[stoneIndex].x);
@@ -1007,6 +907,9 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
              * it takes half the moving stone's y velocity before the exchange. */
             pAngle = &mStone[stoneIndex].angle;
             pSpeed = &mStone[stoneIndex].speed;
+            /* The index stays by hand here: FX_SinIdx/FX_CosIdx at these eight
+             * reads, with or without an index local, reallocate registers
+             * across the function (57-99 words). */
             angleIndex = (mStone[stoneIndex].angle >> 4) * 2;
             movingVelocityX = FX_MUL(data_02082214[angleIndex + 1], mStone[stoneIndex].speed);
             movingVelocityY = FX_MUL(data_02082214[angleIndex], mStone[stoneIndex].speed);
@@ -1042,7 +945,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
             hitResultX = FX_MUL(contactCos, movingNormal) - FX_MUL(contactSin, hitTangent);
             hitResultY = FX_MUL(contactSin, movingNormal) + FX_MUL(contactCos, hitTangent);
             *pAngle = cstd::atan2(movingResultY, dx);
-            *pSpeed = cstd ::sqrt(((long long)dx * dx + (long long)movingResultY * movingResultY));
+            *pSpeed = cstd::sqrt(((long long)dx * dx + (long long)movingResultY * movingResultY));
 
             /* Separate the stones along the contact line, then keep the
              * moving one on the board and hand any overshoot to the other. */
@@ -1084,7 +987,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
  * -(cos(angle) * speed) / 4. */
 void dScMgCurling_c::SetStoneSpin(int stoneIndex) {
     int heading = mStone[stoneIndex].angle;
-    int cosHeading = data_02082214[((heading >> 4) << 1) + 1];
+    int cosHeading = FX_CosIdx(heading >> 4);
     int speed = mStone[stoneIndex].speed;
     long long product = (long long)cosHeading * speed;
     int velocityX = (int)((product + 0x800) >> 12);
@@ -1167,9 +1070,9 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
     pX = &mStone[stoneIndex].x;
     pY = &mStone[stoneIndex].y;
 
-    cosAngle = data_02082214[((*pAngle) >> 4) * 2 + 1];
+    cosAngle = FX_CosIdx(*pAngle >> 4);
     *pX += FX_MUL(cosAngle, *pSpeed);
-    sinAngle = data_02082214[((*pAngle) >> 4) * 2];
+    sinAngle = FX_SinIdx(*pAngle >> 4);
     *pY += FX_MUL(sinAngle, *pSpeed);
     mStone[stoneIndex].heading += (u16)mStone[stoneIndex].spin;
 
@@ -1204,7 +1107,7 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
         v = 0x1c;
     for (i2 = 0, sbv = *pY >> 12; i2 < 5; i2++) {
         if (sbv <= -(sCurlingSlideZoneEdges[i2] + 0x20)) {
-            s = data_02082214[(*pAngle >> 4) * 2];
+            s = FX_SinIdx(*pAngle >> 4);
             if (s < 0) {
                 v = zi >> sCurlingSlideShiftLeft[i2];
                 if (v < sCurlingSlideMinLeft[i2])
@@ -1219,7 +1122,7 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
     }
 
     if (sbv > -0x20) {
-        s = data_02082214[(*pAngle >> 4) * 2];
+        s = FX_SinIdx(*pAngle >> 4);
         if (s > 0) {
             v = zi >> 3;
             if (v <= 0x180)
@@ -1304,7 +1207,7 @@ void dScMgCurling_c::BringOutNextStone() {
     if (mNextStone == 0)
         return;
     if (mStoneDelay != 0) {
-        (u16 &)mStoneDelay -= 1;
+        mStoneDelay--;
         if ((short)mStoneDelay <= 0)
             mStoneDelay = 0;
         return;
@@ -1339,8 +1242,8 @@ void dScMgCurling_c::Scene_Idle() {}
 void dScMgCurling_c::Scene_End() {
     int i;
     if (mStateDelay != 0) {
-        (u16 &)mStateDelay -= 1;
-        if ((s16 &)mStateDelay <= 0)
+        mStateDelay--;
+        if ((s16)mStateDelay <= 0)
             mStateDelay = 0;
         return;
     }
@@ -1370,8 +1273,8 @@ void dScMgCurling_c::Scene_Score() {
     Popup_UpdateAll();
 
     if (mStateDelay != 0) {
-        (u16 &)mStateDelay -= 1;
-        if ((s16 &)mStateDelay <= 0)
+        mStateDelay--;
+        if ((s16)mStateDelay <= 0)
             mStateDelay = 0;
         return;
     }
@@ -1408,8 +1311,7 @@ void dScMgCurling_c::Scene_Score() {
 void dScMgCurling_c::Scene_Play() {
     char *c = (char *)this;
     if (mStateDelay != 0) {
-        u16 *q = &mStateDelay;
-        *q = *q - 1;
+        mStateDelay--;
         return;
     }
     if (mPromptBlinkCount == 0) {
@@ -1418,8 +1320,7 @@ void dScMgCurling_c::Scene_Play() {
         mPromptBlinkTimer = 0;
     }
     if (mSwingTimer != 0) {
-        u8 *q = &mSwingTimer;
-        *q = *q - 1;
+        mSwingTimer--;
     }
     (((C *)c)->*sCurlingAimTable[mStylusHeld])();
 
@@ -1453,7 +1354,7 @@ void dScMgCurling_c::Scene_Play() {
 void dScMgCurling_c::Scene_StartRound() {
     ClearStones();
     mNextStone = 1;
-    (s16 &)mStoneDelay = 0;
+    mStoneDelay = 0;
     BringOutNextStone();
     mState = 1;
 }
@@ -1468,9 +1369,9 @@ void dScMgCurling_c::PickHouse() {
     if (mHouse == 0xff) {
         mHouse = 0;
     } else {
-        m = (((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 3 >> 15;
+        m = CURL_RAND(3);
         if (mHouse == m) {
-            m += ((((u32)RandomIntInternal(&data_0209d4b8.value) >> 16) & 0x7fff) * 2 >> 15) + 1;
+            m += CURL_RAND(2) + 1;
             if (m >= 3)
                 m -= 3;
         }
@@ -1523,20 +1424,20 @@ void dScMgCurling_c::ClearStones() {
         mPopup[i].live = 0;
         mPopup[i].shown = 0;
     }
-    (s16 &)mStoneDelay = 0;
+    mStoneDelay = 0;
     mThrown = 0;
     mAimX = 0;
     mAimY = 0;
     mGrabX = 0;
     mGrabY = 0;
     mSwingSpeed = 0;
-    (s16 &)mSwingAng = 0;
+    mSwingAng = 0;
     mStylusHeld = 0;
     mAimShown = 0;
     mNextStone = 0;
     mRoundOver = 0;
-    (s16 &)mStateDelay = 0;
-    (s16 &)unk_4edc = 0;
+    mStateDelay = 0;
+    unk_4edc = 0;
     mSwingTimer = 0;
     Mg_SubmitScore(0);
 }
@@ -1549,8 +1450,8 @@ void dScMgCurling_c::StartRound(int /* arg */) {
     mState = 0;
     ClearStones();
     PickHouse();
-    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
-    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
+    G2x::SetBlendAlpha(&REG_BLDCNT, 0, 0xd, 2, 0x10);
+    G2x::SetBlendAlpha(&REG_DB_BLDCNT, 0, 4, 2, 0x10);
     mTopRecord = Mg_GetTopRecord();
 }
 
@@ -1586,8 +1487,8 @@ s32 dScMgCurling_c::InitResources() {
         return 0;
 
     gMainScreenLayers |= DISPLAY_LAYER_BG2;
-    *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 2;
-    *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x1220;
+    REG_BG2CNT = (REG_BG2CNT & ~3) | 2;
+    REG_BG2CNT = (REG_BG2CNT & 0x43) | 0x1220;
     DecompressLZ16(a, G2::GetBG2CharPtr());
 
     f = LoadFile(ASSET_D_2D_MG_BG_CURLING1_NCL_BIN);
@@ -1605,8 +1506,8 @@ s32 dScMgCurling_c::InitResources() {
         GX::LoadOBJPltt(c8, 0, 0x100);
 
         gSubScreenLayers |= 4;
-        *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & ~3) | 2;
-        *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x814;
+        REG_DB_BG2CNT = (REG_DB_BG2CNT & ~3) | 2;
+        REG_DB_BG2CNT = (REG_DB_BG2CNT & 0x43) | 0x814;
         DecompressLZ16(b, (void *)G2S::GetBG2CharPtr());
 
         f = LoadFile(ASSET_D_2D_MG_BG_CURLING2_NCL_BIN);
@@ -1637,8 +1538,8 @@ s32 dScMgCurling_c::InitResources() {
     Mg_SetTopScreenYOffset(0x20);
     mStateDelay = 0x40;
     mRunDuringFade = 1;
-    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
-    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
+    G2x::SetBlendAlpha(&REG_BLDCNT, 0, 0xd, 2, 0x10);
+    G2x::SetBlendAlpha(&REG_DB_BLDCNT, 0, 4, 2, 0x10);
     mTopRecord = Mg_GetTopRecord();
     return 1;
 }
@@ -1656,7 +1557,7 @@ extern "C" void *dScMgCurling_c_classInit() {
  * The seven PMF state tables plain-copied from the ROM PMF constants, in
  * retail copy order: the five no-arg scene states, the four per-state
  * tables, the two stylus states, the three kind states, the four Entry
- * states, the four reveal states, then the three state2 states. */
+ * states, the four reveal states, then the three fallState states. */
 PMF0 sCurlingSceneTable[5] = {
     pmf_dScMgCurling_c_Scene_StartRound, pmf_dScMgCurling_c_Scene_Play,
     pmf_dScMgCurling_c_Scene_Score,      pmf_dScMgCurling_c_Scene_End,

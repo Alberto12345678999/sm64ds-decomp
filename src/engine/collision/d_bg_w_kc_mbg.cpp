@@ -21,7 +21,6 @@
 extern "C" {
 /* This TU's own free helpers, defined below the members that call them. */
 void func_020398fc(dBgW_KcMbg *self);
-void func_02039db8(dBgW_KcMbg *collider, Vector3 *v, Vector3 *res);
 
 /* Shared math workers.
    local extern: no header in include/ declares them. */
@@ -31,14 +30,6 @@ void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *m, s32 x, s32 y, s32 z);
 int LenVec3(const Vector3 *v);
 void NormalizeVec3(const Vector3 *src, Vector3 *dst);
 int func_02053200(int v);
-
-/* dBgW_Kc's ITCM depth-policy setters and d_bg_w.cpp's threshold setter, run
-   on `this` through base inheritance.
-   local extern: no header in include/ declares them. */
-void func_01ffb0a4(dBgW_Kc *self);
-void func_01ffb07c(dBgW_Kc *self, const Vector3 *v);
-void func_01ffb0b0(dBgW_Kc *self);
-void func_01ffb0bc(dBgW_Kc *self);
 
 /* The scratch line's lineEnd and dBgPi base (both inside data_020a0d0c,
    below), and the scratch scaled matrix.
@@ -161,15 +152,15 @@ void dBgW_KcMbg::Transform(const Matrix4x3 &mtx, s16 angle) {
     GetVelocity(*(Vector3 *)&moveDir);
     moveDir.y = 0;
     if (LenVec3((Vector3 *)&moveDir) != 0) {
-        func_01ffb0a4(this);
+        SetDepthByDir();
         NormalizeVec3((Vector3 *)&moveDir, (Vector3 *)&moveDir);
         VecFx32 localDir;
         WorldToLocalDirection(*(Vector3 *)&moveDir, *(Vector3 *)&localDir);
-        func_01ffb07c(this, (Vector3 *)&localDir);
+        SetDepthDir((Vector3 *)&localDir);
         SetDepthDirMinDot(0xe66);
-        func_01ffb0b0(this);
+        ClearShallowOnly();
     } else {
-        func_01ffb0bc(this);
+        SetShallowOnly();
     }
 }
 
@@ -181,7 +172,7 @@ void dBgW_KcMbg::GetNormal(s16 triID, Vector3 &res) {
     normal.x = packedNormal[0] << 2;
     normal.y = packedNormal[1] << 2;
     normal.z = packedNormal[2] << 2;
-    func_02039db8(this, &normal, &res);
+    LocalToWorldDirection(normal, res);
 }
 
 void dBgW_KcMbg::GetTriangleOrigin(s16 triID, Vector3 &res) {
@@ -208,13 +199,13 @@ void dBgW_KcMbg::WorldToLocalDirection(const Vector3 &direction, Vector3 &result
 }
 
 /* Transform a direction by mat, leaving out the translation. */
-extern "C" void func_02039db8(dBgW_KcMbg *collider, Vector3 *direction, Vector3 *result) {
+void dBgW_KcMbg::LocalToWorldDirection(const Vector3 &direction, Vector3 &result) {
     Matrix4x3 rotation;
-    *(Mtx43 *)&rotation = *(Mtx43 *)&collider->mat;
+    *(Mtx43 *)&rotation = *(Mtx43 *)&mat;
     rotation.t.x = 0;
     rotation.t.y = 0;
     rotation.t.z = 0;
-    MulVec3Mat4x3(direction, &rotation, result);
+    MulVec3Mat4x3((Vector3 *)&direction, &rotation, &result);
 }
 
 int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray) {

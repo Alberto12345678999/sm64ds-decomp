@@ -90,7 +90,6 @@ CLPS_Block data_ov025_02112c28 = {
 /* local extern: arm9 C helpers with no shared header yet. */
 extern "C" {
 void func_02012694(unsigned int, const Vector3 *);
-void func_020393d4(dBgW *collider, BeforeClsnCallback callback);
 }
 
 extern "C" daDgr_c *daDgr_c_classInit() {
@@ -109,7 +108,7 @@ s32 daDgr_c::InitResources() {
         ((dBgW_KcMbg *)(&mMeshCollider))
             ->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov025_02112c28);
     }
-    func_020393d4(&mMeshCollider, &dBgW::UpdatePosAndAngs);
+    mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosAndAngs);
     mAngleY = 0;
     mBasePosY = mPosY;
     mAngleXSpeed = 0;
@@ -218,7 +217,7 @@ s32 daDgr_c::Behavior() {
             loc[2] = along * kDustReach + mPosZ;
             mDustParticle1 = Particle::System::New(mDustParticle1, kDustEffect, loc[0], loc[1],
                                                    loc[2], (const Vector3_16f *)((void *)0),
-                                                   (Particle::Callback *)((void *)0));
+                                                   (dPa_c::level_c::callback_c *)((void *)0));
         }
         {
             s32 along;
@@ -229,7 +228,7 @@ s32 daDgr_c::Behavior() {
             loc[2] = mPosZ - along * kDustReach;
             mDustParticle2 = Particle::System::New(mDustParticle2, kDustEffect, loc[0], loc[1],
                                                    loc[2], (const Vector3_16f *)((void *)0),
-                                                   (Particle::Callback *)((void *)0));
+                                                   (dPa_c::level_c::callback_c *)((void *)0));
         }
     }
 
@@ -272,14 +271,12 @@ void daDgr_c::UpdateClsnMatrix() {
 }
 
 /* Yoshi egg within eight clip-radii: turn the mesh collider on.
- * aimPos is volatile and unused. Its stores, and ~Vector3, are in the bytes. */
+ * aimPos (the egg aim height above the actor) is computed and never read;
+ * the ROM keeps its stores. */
 int daDgr_c::EnableClsnNearEgg() {
     dActor_c *egg = ClosestWithActorID(kYoshiEggActorID);
     if (egg != 0) {
-        volatile struct Vector3 aimPos;
-        aimPos.x = mPosX;
-        aimPos.y = mPosY;
-        aimPos.z = mPosZ;
+        Vector3 aimPos = mPos;
         aimPos.y += OnAimedAtWithEgg();
         if (Vec3_Dist(&mPos, &egg->mPos) < (mClipRadius << 3)) {
             if (!mMeshCollider.IsEnabled()) {

@@ -54,7 +54,6 @@ extern "C" {
 /* Shared collider helpers, defined in the arm9 TU (src/engine/collision/d_bg_w_kc.cpp).
    local extern: they are free functions of that TU and no header declares them. */
 s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri); /* prism -> triangle index */
-int func_02039794(int x);                       /* slope-band classify */
 
 /* CLPS helpers (src/engine/collision/d_bg_ch_sph_crr_query.cpp): the entry
    lookup and the SurfaceInfo write, which takes the entry by value into 0x0
@@ -709,7 +708,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         /* 0 = floor, 1 = wall, 2 = underside -- and those select
                            the 0x74 / 0x9c / 0xc4 result slots and the 4 / 8 / 0x10
                            flag bits respectively. */
-                        cls = func_02039794(sn.y);
+                        cls = ClassifyNormalY(sn.y);
                         /* contactKind (sp+0xa8), seeded per prism at 0x01ffbe8c, set
                            to 3 by the vertex tail and defaulted to 2 by the shared
                            tail. The seed is sp+0x114, which 0x01ffba10 loads from
@@ -1244,35 +1243,29 @@ Fix12i dBgW_Kc::GetUnkOctreeY() const
     return (kclFile->origin.y << 6) + (~kclFile->yMask << 12);
 }
 
-extern "C" KCL_File *func_01ffb0c8(dBgW_Kc *self)
-{
-    return self->kclFile;
+KCL_File *dBgW_Kc::GetFile() const {
+    return kclFile;
 }
 
-extern "C" void func_01ffb0bc(dBgW_Kc *self)
-{
-    self->shallowOnly = true;
+void dBgW_Kc::SetShallowOnly() {
+    shallowOnly = true;
 }
 
-extern "C" void func_01ffb0b0(dBgW_Kc *self)
-{
-    self->shallowOnly = false;
+void dBgW_Kc::ClearShallowOnly() {
+    shallowOnly = false;
 }
 
-extern "C" void func_01ffb0a4(dBgW_Kc *self)
-{
-    self->depthByDir = true;
+void dBgW_Kc::SetDepthByDir() {
+    depthByDir = true;
 }
 
-extern "C" void func_01ffb098(dBgW_Kc *self)
-{
-    self->depthByDir = false;
+void dBgW_Kc::ClearDepthByDir() {
+    depthByDir = false;
 }
 
 /* Copies the depth direction memberwise: three separate word loads and stores. */
-extern "C" void func_01ffb07c(dBgW_Kc *self, const Vector3 *v)
-{
-    self->depthDir.x = v->x;
-    self->depthDir.y = v->y;
-    self->depthDir.z = v->z;
+void dBgW_Kc::SetDepthDir(const Vector3 *v) {
+    depthDir.x = v->x;
+    depthDir.y = v->y;
+    depthDir.z = v->z;
 }
