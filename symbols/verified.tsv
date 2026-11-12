@@ -921,7 +921,7 @@
 0x0204de0c	_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator	function
 0x0204de74	_ZN18NestedHeapIterator7AddLastEP13HeapAllocator	function
 0x0204dee0	_ZN18NestedHeapIterator4InitEP13HeapAllocator	function
-0x0204df20	_ZN18NestedHeapIteratorC1Ej	function
+0x0204df20	NNS_FndInitList	function
 0x0204df38	_ZN13HeapAllocator6RemoveEv	function
 0x0204df54	_ZN13HeapAllocatorC1EjPvPvj	function
 0x0204dfe8	_ZN18NestedHeapIterator10FindNestedEPv	function
@@ -941,7 +941,7 @@
 0x0204e504	_ZN22ExpandingHeapAllocator17AllocateBackwardsEjj	function
 0x0204e5c8	_ZN22ExpandingHeapAllocator16AllocateForwardsEjj	function
 0x0204e690	_ZN22ExpandingHeapAllocator12AllocateNodeEP10MemoryNodeS1_Pvjt	function
-0x0204e828	_ZN22ExpandingHeapAllocatorC1EPvj	function
+0x0204e828	func_0204e828	function
 0x0204e8b0	_ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt	function
 0x0204e8e0	_ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_	function
 0x0204e910	_ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_	function
@@ -958,7 +958,7 @@
 0x0204ec40	_ZN18SolidHeapAllocator10ResetStartEv	function
 0x0204ec58	_ZN18SolidHeapAllocator17AllocateBackwardsEPvjj	function
 0x0204ecd4	_ZN18SolidHeapAllocator16AllocateForwardsEPvjj	function
-0x0204ed54	_ZN18SolidHeapAllocatorC1EPvj	function
+0x0204ed54	func_0204ed54	function
 0x0204fadc	_ZN5Sound6Player19SetPlayableSeqCountEii	function
 0x02050bb0	_ZN5Sound23InfoInstrumentBankEntry9GetWithIDEj	function
 0x02050c78	_ZN5Sound17InfoSequenceEntry9GetWithIDEj	function
@@ -1056,8 +1056,8 @@
 0x02056e18	OS_SetIrqMask	function
 0x02056ee4	OS_GetIrqFunction	function
 0x02056f70	OS_SetIrqFunction	function
-0x020585cc	ARMSaveContext	function
-0x02058618	ARMRestoreContext	function
+0x020585cc	OS_SaveContext	function
+0x02058618	OS_LoadContext	function
 0x02058bb0	DC_StoreAll	function
 0x02058bdc	DC_FlushAll	function
 0x02058c08	DC_InvalidateRange	function
@@ -1093,8 +1093,8 @@
 0x0205a754	DecompressLZ16	function
 0x0205b864	PXIi_HandlerRecvFifoNotEmpty	function
 0x0205b988	IPCSend	function
-0x0205e91c	ARMMathLoadState	function
-0x0205e988	ARMMathSaveState	function
+0x0205e91c	CPi_RestoreContext	function
+0x0205e988	CP_SaveContext	function
 0x020610ac	_ZN3IRQ21GameCardIREQMCHandlerEv	function
 0x0206cd44	_ZN4cstd8__assertEPKciS1_i	function
 0x0206d9dc	_ZN3IRQ11SetFIQStateEb	data
@@ -1217,8 +1217,8 @@
 0x02099edc	_ZTV7fBase_c	data
 0x02099f24	PROCESS_STATE	data
 0x02099fd0	RENDER_DMA_CHANNEL	data
-0x02099fd4	_ZN3IRQ13DmaTimIndicesE	data
-0x02099fe4	_ZN3IRQ12IRQFunctionsE	data
+0x02099fd4	OSi_IrqCallbackInfoIndex	data
+0x02099fe4	OS_IRQTable	data
 0x0209b138	KS_CAMERA_FUNCTIONS	data
 0x0209b270	KS_NUM_PLAYERS	data
 0x0209b274	KS_FRAME_COUNTER	data
@@ -1422,7 +1422,7 @@
 0x020a4d38	_ZN6Memory16rootHeapIteratorE	data
 0x020a4d6c	_ZN5Sound7PLAYERSE	data
 0x020a5bb8	_ZN5Sound8SDAT_RAM3PTRE	data
-0x020a60c4	_ZN3IRQ15DmaTimFunctionsE	data
+0x020a60c4	OSi_IrqCallbackInfo	bss
 0x020ab800	_ZN3OAM13MM_MARIO_ICONE	data
 0x020ab808	_ZN3OAM19MM_MARIO_W_CAP_ICONE	data
 0x020ab820	_ZN3OAM19MM_MARIO_L_CAP_ICONE	data
