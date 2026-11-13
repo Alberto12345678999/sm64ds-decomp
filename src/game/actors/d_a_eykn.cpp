@@ -301,21 +301,14 @@ void daEykn_c::LookForPlayer()
  * with particle systems kDeathPtcl0 and kDeathPtcl1 attached. */
 void daEykn_c::CheckAttacks()
 {
-    /* One || is 6 words off. */
     dActor_c *egg = FindEgg(mdCcAcPos_c);
-    if (egg != 0) {
-        int isEgg9 = (int)(egg->actorID == kYoshiEgg);
-        if (isEgg9) goto playSound;
+    int isEgg9;
+    if ((egg != 0 && (isEgg9 = (int)(egg->actorID == kYoshiEgg), isEgg9 != 0)) ||
+        FindExplosionActor(mdCcAcPos_c) != 0) {
+        Sound::PlayBank0(9, mCamSpacePos);
+        SetState(2);
+        return;
     }
-
-    if (FindExplosionActor(mdCcAcPos_c) == 0) goto idCheck;
-
-playSound:
-    Sound::PlayBank0(9, mCamSpacePos);
-    SetState(2);
-    return;
-
-idCheck:
 
     if (mdCcAcPos_c.otherOwner == 0) return;
 
@@ -729,7 +722,7 @@ s32 daEykn_c::InitResources()
     LoadBlueCoinModel();
 
     dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
-    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(gEyknModelFile);
+    bmd = dExtSimpleModel_c::LoadFile(gEyknModelFile);
     ((dExtModel_c *)&mAnmModel)->SetFile(bmd, 1, 1);
 
     int i;

@@ -60,6 +60,7 @@
 #include "Ov007Item.h"
 #include "Ov007Pad.h"
 #include "nitro/fx/fx_cp.h"
+#include "nitro/gx/g3imm_cmd.h"
 #include "math/ProgressRatio.h"
 
 /* The 0xc-byte item rows at data_ov007_020d77d8, one per item id.
@@ -602,7 +603,7 @@ void ItemView_HandleTouch(void *arg0, void *arg1) {
     Ov007Touch *tp = (Ov007Touch *)arg1;
     int held = 0;
 
-    {
+    do {
         if (elem_selectable(elem) && func_ov007_020c1da0(0) == 0) {
             int armed = 0;
             int fresh = 0;
@@ -648,10 +649,9 @@ void ItemView_HandleTouch(void *arg0, void *arg1) {
                         }
                     }
                 }
-                goto done; /* kept: an !armed test on HOLD (0x4a0) or an inline press helper re-lays it */
+                break;
             }
         }
-    }
 
     if (WORK->states[0]->currentState == 3) {
         /* Through arg0, not elem: reading it through elem lets the compiler
@@ -681,8 +681,8 @@ void ItemView_HandleTouch(void *arg0, void *arg1) {
             }
         }
     }
+    } while (0);
 
-done:
     if (held == 0)
         elem->item->state->stateWork = 0;
     {
@@ -847,7 +847,7 @@ void func_ov007_020b413c(Ov007ItemView *view, int number) {
     int x;
     char digits[4];
 
-    *(volatile int *)0x4000444 = 0; /* MTX_PUSH */
+    G3_PushMtx();
     func_ov007_020c42f8(view->sprite);
     if (number >= 0) {
         char *d;
@@ -887,6 +887,6 @@ void func_ov007_020b413c(Ov007ItemView *view, int number) {
     } else {
         func_ov007_020c4128(view->sprite, WORK->numberSprites[1], WORK->cameras[1]);
     }
-    *(volatile int *)0x4000448 = 1; /* MTX_POP */
+    G3_PopMtx(1);
 }
 }

@@ -46,6 +46,8 @@ enum dScMgRoulette_c_AssetId {
 #include "nitro/fx/fx_trig.h"
 #include "Sound.h"
 #include "math/Approach.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 #include "LevelRng.h"
 #include "nitro/gx/gx_bgcnt.h"
 #include "nitro/gx/gx_load.h"
@@ -108,10 +110,7 @@ int GetGameLanguage(void);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 void Vec2_Sub(int *out, int *a, int *b);
-void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *mF, int x, int y, int z);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 int Sound_PlayIfNotActive(int a, int b, int c, short d);
-int RandomIntInternal(int *seed);
 void *LoadFile(int id);
 void DecompressLZ16(void *src, void *dst);
 void Ov004_Deallocate(void *p);
@@ -126,11 +125,6 @@ void Mg_DrawNumberRotated(int, int, int, int, int, int, u16);
 void MgCoins_StartPayout(int);
 void MgCoins_Update(void);
 void MgCoins_Reset(void);
-int Dealer_IsAnimDone(void *a);
-int Dealer_IsIdle(Dealer *dealer);
-void Dealer_Draw(void *c);
-void Dealer_Update(Dealer *dealer);
-int Dealer_Load(void *c);
 
 int sRouletteResultsTimer;
 extern int sRouletteResultIndex;
@@ -144,7 +138,6 @@ extern void *sRouletteStripSprites[];
 extern void **sRouletteTextSpritesByLanguage[];
 extern int sRoulettePayoutMultipliers[];
 extern void *sRouletteRacerSprites;
-extern Matrix4x3 data_020a0e68;
 /* Bet tiles: 0..0xb are single numbers, 0xc..0x1c pairs of numbers and
  * 0x1d..0x22 groups of four (RouletteRacer_GetPayout checks 1, 2 and 4
  * table entries for them and pays 12, 6 and 3). */
@@ -246,7 +239,7 @@ s32 dScMgRoulette_c::InitResources() {
     G2_SetBG0Priority(1);
 
     Camera_InitDealerView(&mCamera);
-    if (Dealer_Load(&mDealer) == 0)
+    if (mDealer.Load() == 0)
         return 0;
     if (RouletteBoard_LoadModels((char *)&mBoard) == 0)
         return 0;
@@ -267,7 +260,7 @@ s32 dScMgRoulette_c::Behavior() {
     case 0:
         break;
     case 1:
-        if (Dealer_IsAnimDone(&mDealer) != 0) {
+        if (mDealer.IsAnimDone() != 0) {
             if (mBoard.mRollSound == 0) {
                 mBoard.mRollSound = 1;
             }
@@ -277,7 +270,7 @@ s32 dScMgRoulette_c::Behavior() {
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        if (Dealer_IsAnimDone(&mDealer) != 0) {
+        if (mDealer.IsAnimDone() != 0) {
             mPhaseTimer -= 1;
             if (mPhaseTimer == 0) {
                 mCameraPreset = 1;
@@ -300,7 +293,7 @@ s32 dScMgRoulette_c::Behavior() {
                     for (int i = 0; i < mRacerCount; i++)
                         mRacers[i].state = 1;
                     mPhaseTimer = 0x258;
-                    Dealer_PlayIdle((char *)&mDealer);
+                    mDealer.PlayIdle();
                     mPhase += 1;
                     mDealIndex = 0;
                     Sound::PlayBank2_2D(0x15b);
@@ -391,10 +384,10 @@ s32 dScMgRoulette_c::Behavior() {
             short target = mTargetScore;
             short score = mScore;
             if (score > target) {
-                Dealer_PlayWin(&mDealer);
+                mDealer.PlayWin();
                 Mg_SetSharedState(MG_STATE_WIN);
             } else if (score < target) {
-                Dealer_PlayLose(&mDealer);
+                mDealer.PlayLose();
                 Mg_SetSharedState(MG_STATE_LOSE);
             } else {
                 Mg_SetSharedState(MG_STATE_TIE);
@@ -411,7 +404,7 @@ s32 dScMgRoulette_c::Behavior() {
     for (int n = 0; n < mRacerCount; n++)
         RouletteRacer_CheckLandingB(&mRacers[n]);
     RouletteBoard_Update(&mBoard);
-    Dealer_Update(&mDealer);
+    mDealer.Update();
     MgCoins_Update();
     return 1;
 }
@@ -493,7 +486,7 @@ s32 dScMgRoulette_c::Render() {
         if (preset != 0)
             RouletteBoard_Draw((char *)&mBoard);
         else
-            Dealer_Draw(&mDealer);
+            mDealer.Draw();
     }
 
     return 1;
@@ -515,7 +508,7 @@ int dScMgRoulette_c::CanEndState(int /* mode */) {
             (mPhase)++;
         break;
     case 6:
-        if (Dealer_IsIdle(&mDealer) != 0) {
+        if (mDealer.IsIdle() != 0) {
             mPhaseTimer = 0x3c;
             mDealIndex = 0;
             (mPhase)++;
@@ -551,7 +544,7 @@ void dScMgRoulette_c::StartRound(int /* arg */) {
     int count;
 
     RouletteStrip_ResetAll();
-    Dealer_StartSwap((int *)&mDealer);
+    mDealer.StartSwap();
 
     mScore = 0;
     mPhaseTimer = 0xa;

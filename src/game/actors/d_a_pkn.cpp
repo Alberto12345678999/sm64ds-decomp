@@ -34,6 +34,7 @@
 #include "math/Approach.h"
 #include "SpawnInfo.h"
 #include "math/MtxStack.h"
+#include "math/CalcLib.h"
 #include "nitro/fx/fx.h"
 #include "nitro/fx/fx_trig.h"
 
@@ -92,7 +93,6 @@ extern "C" {
 
 /* -- other modules -- */
 void  func_02012694(u32 id, void *pos);
-void  func_020105cc(void *thiz, u32 flags);
 
 
 /* -- shared tables -- */
@@ -100,11 +100,7 @@ extern int data_ov084_0213030c[];        /* per-frame particle X/Z offset (0212f
 extern int data_ov084_02130334[];        /* per-frame particle Y offset */
 extern u8  data_ov084_021302ec[];        /* five indices {0,3,4,5,6}; 0212ec60 sums s16 at [i]*0x34+0x1c into ang[1] (dead -- later y-adjust reads ang[0]==0, so the offset is constant 0x32000). 0x34 is not BMD_Bone (0x40). */
 
-int   Vec3_Dist(const Vector3 *a, const Vector3 *b);
-short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
-void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 int *Vec3_LslInPlace(int *v, int sh);
-void VEC_Subtract(Vector3 *a, Vector3 *b, Vector3 *c);
 
 void *d_a_pknNewHold(u32 handle, u32 id, int x, int y, int z, const void *f, void *cb);
 int d_a_pknPlaySubHold(u32 a, u32 b, u32 c, int t, int flag);
@@ -635,7 +631,7 @@ int daPkn_c::CheckHits()
                         actor->IncMegaKillCount();
                         func_02012694(0x1d, &mCamSpacePosX);
                     }
-                    func_020105cc(this, flags);
+                    func_020105cc(flags);
                     Die();
                 } else if (JumpedOnByPlayer(mdCcAc_c1, *actor) != 0) {
                     actor->Bounce(0x28000);
@@ -678,7 +674,7 @@ int daPkn_c::CheckHits()
                         actor->IncMegaKillCount();
                         func_02012694(0x1d, &mCamSpacePosX);
                     }
-                    func_020105cc(this, flags);
+                    func_020105cc(flags);
                     Die();
                     return 1;
                 }

@@ -17,14 +17,11 @@
 #include "types.h"
 #include "msl/string.h"
 #include "msl/stdlib.h"
-#include "nitro/os/thread.h"
+#include "nitro/os/mutex.h"
 #include "msl/critical_regions.h"
 
 extern "C" {
 extern unsigned int random_next;
-extern int OS_TryLockMutex(void *p);
-extern void OS_LockMutex(void *p);
-extern void OS_UnlockMutex(void *p);
 extern void exit(int status);
 typedef void (*sig_func)(int);
 extern sig_func signal_funcs[];
@@ -146,8 +143,6 @@ int strcmp(const char *a, const char *b) {
         wa = *(unsigned int *)a;
         t = (wa + 0xfefefeff) & 0x80808080;
         wb = *(unsigned int *)b;
-        /* scalar_reload gotos kept, as in MSL's strcmp: a while (t == 0) loop shrinks it
-           (0x12c) and break + retest grows it (0x13c) */
         if (t != 0)
             goto scalar_reload;
         while (wa == wb) {
@@ -160,6 +155,7 @@ int strcmp(const char *a, const char *b) {
         return (wa > wb) ? 1 : -1;
 
     scalar_reload:
+
         ca = *(unsigned char *)a;
         cb = *(unsigned char *)b;
         diff = (int)ca - (int)cb;

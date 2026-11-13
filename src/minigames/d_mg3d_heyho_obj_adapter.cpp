@@ -24,6 +24,7 @@
 #include "common.h"
 #include "Particle__System.h"
 #include "ParticleIds.h"
+#include "MgCamera.h"
 #include "decl_common.h"
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -66,15 +67,11 @@ typedef void (Heyho::*HeyhoMotion)();
 #define HEYHO_RAND(n) ((int)(((u32)(RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 19) * (n)) >> 12)
 
 extern "C" {
-extern int VEC_Mag(const Vector3 *v);
-extern int VEC_DotProduct(const Vector3 *a, const Vector3 *b);
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 extern void Vec3_MulScalarInPlace(Vector3 *v, int s);
 extern int NormalizeVec3IfNonZero(Vector3 *v);
-/* local extern: MgCamera.h declares it on MgCamera *, but the two cameras are void * here. */
-extern void Camera_ProjectToScreen(void *camera, void *pos, int *x, int *y);
 extern void Jump2Popup_Spawn(int a, int b, int c);
 
 extern HeyhoMotion pmf_Heyho_MotionPatrolBob;
@@ -113,7 +110,7 @@ extern void *data_ov006_021402fc;
 extern const HeyhoPath sHeyhoLayoutFlyInPaths[][3];
 extern const HeyhoPath sHeyhoFlyInPaths[][4];
 extern const HeyhoPath sHeyhoSettlePaths[][5];
-extern void *sMgSubCamera;
+extern MgCamera *sMgSubCamera;
 }
 
 /* The Jump scene's three players, seen through the adapter base the Heyhos
@@ -142,8 +139,8 @@ Heyho::~Heyho() {
 
 /* ---- Heyho::LoadResources ---- */
 int Heyho::LoadResources() {
-    BMD_File *m = (BMD_File *)dExtSimpleModel_c::LoadFile(gMgPHeyhoMiniModelFile);
-    BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(gMgPHeyhoWaitAnimFile);
+    BMD_File *m = dExtSimpleModel_c::LoadFile(gMgPHeyhoMiniModelFile);
+    BCA_File *a = dExtFrameCtrl_c::LoadFile(gMgPHeyhoWaitAnimFile);
     if (mAnmModel.SetFile(m, 1, -1) == 0) {
         return 0;
     }
@@ -1091,10 +1088,10 @@ void Heyho::Settle() {
 
     if (sHeyhoScorePopups != 0) {
         if (mPos.y > 0) {
-            Camera_ProjectToScreen(sMgSubCamera, &mPos, &v0, &v1);
+            Camera_ProjectToScreen((MgCamera *)sMgSubCamera, &mPos, &v0, &v1);
             v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
         } else {
-            Camera_ProjectToScreen(sMgMainCamera, &mPos, &v0, &v1);
+            Camera_ProjectToScreen((MgCamera *)sMgMainCamera, &mPos, &v0, &v1);
         }
         v1 = v1 - 0x20;
         Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)sJumpComboCount);

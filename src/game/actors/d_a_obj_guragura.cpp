@@ -33,16 +33,9 @@
 
 extern int data_02092768[4];
 
-/* local extern: arm9 matrix, quaternion and dBgW helpers with no shared
- * header that agrees with these spellings. */
+/* local extern: MTX_Inverse43 has no shared header. */
 extern "C" {
 int MTX_Inverse43(const Matrix4x3 *s, Matrix4x3 *d);
-void MTX_MultVec43(Vector3 *v, Matrix4x3 *m, Vector3 *out);
-void Quaternion_FromVector3(int *q, Vector3 *from, Vector3 *to);
-void Quaternion_Normalize(int *q);
-void Quaternion_SLerp(int *q0, int *q1, int t, int *out);
-void Matrix4x3_FromQuaternion(const Quaternion *q, Matrix4x3 *m);
-void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 }
 
 /* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
@@ -134,11 +127,11 @@ s32 daObjGuragura_c::Behavior() {
  * is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then install
  * StoodOnCallback as the collider callback. */
 s32 daObjGuragura_c::InitResourcesFrom(ResourceDescriptor *descriptor) {
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
+    mModel.SetFile(dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision), mClsnMat, 0x1000,
-                          mAngleY, *descriptor->clps);
+    mMeshCollider.SetFile(dBgW_Kc::LoadFile(*descriptor->collision), mClsnMat, 0x1000, mAngleY,
+                          *descriptor->clps);
     mMeshCollider.SetStoodOnCallback((::StoodOnCallback)&StoodOnCallback);
     return 1;
 }

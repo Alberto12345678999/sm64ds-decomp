@@ -45,6 +45,9 @@ struct DonketuAnimFileHandle : SharedFilePtr {
 typedef char DonketuModelFilePtr_size_must_be_8[sizeof(DonketuModelFilePtr) == 8 ? 1 : -1];
 typedef char DonketuAnimFileHandle_size_must_be_8[sizeof(DonketuAnimFileHandle) == 8 ? 1 : -1];
 
+/* The Big Bully's resource block (daOts_c.h); overlay .data owns the bytes. */
+extern BullyResourceConfig data_ov064_0211b93c;
+
 /* Factory for the BOSS_DONKETU profile. Written first so it emits last. */
 extern "C" daBDonketu_c *daBDonketu_c_classInit() {
     return new daBDonketu_c();
@@ -57,7 +60,7 @@ extern "C" daBDonketu_c *daBDonketu_c_classInit() {
 int daBDonketu_c::InitResources() {
     int result;
 
-    mFileTable = (s32)&data_ov064_0211b93c;
+    mFileTable = &data_ov064_0211b93c;
     result = InitResourcesCommon();
     mStarID = param1 & 0xf;
     mTrackStarID = (u8)TrackStar(mStarID, 2);
@@ -138,7 +141,7 @@ int daBDonketu_c::Behavior() {
         mPosY = mPosY + mVertSpeed;
         UpdateWMClsn(mWithMeshClsn, 0);
         if (mWithMeshClsn.IsOnGround() != 0) {
-            func_0200fa8c(this, 0);
+            func_0200fa8c(0);
             /* Kept as the ROM-matching spelling: a pointer increment. */
             u8 *count = &mNumBulliesKilled;
             *count = *count + 1;

@@ -65,6 +65,7 @@ enum dScMgSlots_AssetId {
 #include "nitro/gx/gx_load.h"
 #include "LevelRng.h"
 #include "nitro/mi/memory.h"
+#include "math/CalcLib.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which is why its
@@ -96,14 +97,12 @@ int GetGameLanguage(void);
 // Retained caller ABI: narrowing to the definition's u16 adds a mask in InitMainScreenBg.
 unsigned int LoadCompressedFileAt(int fileID, void *target);
 extern unsigned char gMainScreenLayers;
-extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 void Mg_AddCredits(void *c, int delta);
 void Mg_SubCredits(void *c, int val);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
 extern void Slot3_ReelDigits(char *c, int i);
 extern int Sound_PlayIfNotActive(int, int, int, short);
-extern int RandomIntInternal(int *seed);
 void OamRender10_d_s_mg_slots(int b, void *attr, int a2, int a3, int a4, int a5, int a6, int a7,
                               int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
@@ -452,15 +451,13 @@ void Slot3_StateSpin(char *c) {
 }
 
 extern "C" { /* .c-derived member: C linkage for the whole block */
-void Mascot_LookAt(char *c, int *src);
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
-void Mascot_StopLooking(int *p);
 void FreeGfxSlotsById(int arg);
 
 void Slot3_StateIntro(char *p) {
     dScMgSlot3_c *scene = (dScMgSlot3_c *)p;
     if (scene->mReelDrawY == 0x50) {
-        Mascot_LookAt((char *)&scene->mMascot, 0);
+        scene->mMascot.LookAt(0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
@@ -469,7 +466,7 @@ void Slot3_StateIntro(char *p) {
         if (scene->mReelDrawY != 0)
             return;
         scene->mWinSymbol = scene->mNextWinSymbol;
-        Mascot_StopLooking((int *)&scene->mMascot);
+        scene->mMascot.StopLooking();
         return;
     }
 
@@ -620,8 +617,8 @@ s32 dScMgSlot3_c::Render() {
     char *c = (char *)this;
     int i;
 
-    Camera_InitSlotsView((char *)&mCamera);
-    Mascot_Draw((char *)&mMascot);
+    Camera_InitSlotsView(&mCamera);
+    mMascot.Draw();
 
     if (mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
@@ -766,7 +763,7 @@ s32 dScMgSlot3_c::Behavior() {
     (this->*sSlot3StateTable[mState])();
 
     mFrameCounter++;
-    Mascot_Update(&mMascot);
+    mMascot.Update();
 
     for (i = 0; i < 3; i++) {
         if (mState == 1) {
@@ -846,8 +843,8 @@ s32 dScMgSlot3_c::InitResources() {
     gSubScreenLayers = 0x14;
     G2_SetBlendAlpha(0, 0xc, 0xc, 4);
 
-    Mascot_Load((char *)&mMascot);
-    Camera_InitSlotsView((char *)&mCamera);
+    mMascot.Load();
+    Camera_InitSlotsView(&mCamera);
 
     mReelDifficulty = (int)mLevel;
 

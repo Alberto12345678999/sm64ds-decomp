@@ -9,7 +9,6 @@
  * leftovers:
  *   - the ov004 helpers and the data_ov006 globals are unnamed in
  *     symbols.txt.
- *   - the Dealer_* helpers are still free functions over mDealer.
  */
 
 #include "dScMgMCarlo2_c.h"
@@ -23,6 +22,7 @@
 #include "LevelRng.h"
 #include "nitro/gx/gx_load.h"
 #include "nitro/gx/gx_bgcnt.h"
+#include "math/CalcLib.h"
 
 /* sMCarlo2Cards is the head of the live card list and _02142568 its
  * tail (SetupBoard builds it); _0214256c heads the list of cleared cards,
@@ -56,7 +56,6 @@ extern int data_020a0db0;
 extern unsigned char gSubScreenLayers;
 extern unsigned char gMainScreenLayers;
 
-int  RandomIntInternal(void* seed);
 void RenderOamMainScreen(OamAttr *a0, int a1, int a2, int a3, int a4);
 void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 int  GetGameLanguage(void);
@@ -67,11 +66,6 @@ int  func_0203d5dc(void* a, void* b);
 void Mg_CommitRecords(void);
 void Mg_SubmitScore(int score);
 void LoadCard2SubBg3(void *);
-void Dealer_StartShuffle(Dealer *dealer, int unused, short count, s16 *counter);
-int Dealer_IsIdle(Dealer *dealer);
-void Dealer_Draw(void* t);
-void Dealer_Update(Dealer *t);
-int  Dealer_Load(void* t);
 
 }
 
@@ -111,7 +105,7 @@ s32 dScMgMCarlo2_c::InitResources()
     G2_SetBG0Priority(1);
     G2S_SetBG1Priority(0);
     Camera_InitDealerView(&mCamera);
-    if (Dealer_Load(&mDealer) == 0)
+    if (mDealer.Load() == 0)
         return 0;
     Mg_PlaceBannersOnTopScreen();
     StartRound(-1);
@@ -129,7 +123,7 @@ void dScMgMCarlo2_c::StartRound(int /* arg */)
     sMCarlo2PickAllowed = 0;
     mDealCount = 0;
     mDealer.mReserved = 1;
-    Dealer_StartShuffle(&mDealer, 4, 4, &mDealCount);
+    mDealer.StartShuffle(4, 4, &mDealCount);
     mDealer.mHand = 1;
     mTimer = 0;
     Mg_SubmitScore(0);
@@ -141,9 +135,8 @@ int dScMgMCarlo2_c::CanEndState(int /* mode */)
     short state = mRoundState;
     switch (state) {
     case 4:
-        if (Dealer_IsIdle(&mDealer) != 0) {
-            short *p = &mRoundState;
-            *p += 1;
+        if (mDealer.IsIdle() != 0) {
+            mRoundState++;
         }
         break;
     case 5: {
@@ -174,17 +167,12 @@ int dScMgMCarlo2_c::CanEndState(int /* mode */)
     return 0;
 }
 
-/* Slot 6. The state at mRoundState is bumped through an int-cast pointer each
- * time: plain `mRoundState++` recomputes the address, and the ROM keeps it in a
- * register. sMCarlo2DealProgress is the dealt-card count, shifted left 12. */
+/* Slot 6. sMCarlo2DealProgress is the dealt-card count, shifted left 12. */
 s32 dScMgMCarlo2_c::Behavior()
 {
     switch (mRoundState) {
     case 1:
-        {
-        s16 *p = &mRoundState;
-        (*p)++;
-        }
+        mRoundState++;
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
             mPromptBlinkCount = 1;
@@ -196,10 +184,7 @@ s32 dScMgMCarlo2_c::Behavior()
         if (mDealCount == 4) {
             if (dScMgMCarlo2_c::BoardBusy() == 0) {
                 mDealCount = 0;
-                {
-                    s16 *p = &mRoundState;
-                    (*p)++;
-                }
+                mRoundState++;
             }
         }
         break;
@@ -209,11 +194,10 @@ s32 dScMgMCarlo2_c::Behavior()
             if (sMCarlo2PickAllowed == 1)
                 sMCarlo2PickAllowed = 0;
             dealt = sMCarlo2DealProgress >> 12;
-            if (sMCarlo2DeckSize != 0 && dealt > 10 && dealt <= 18 &&
-                Dealer_IsIdle(&mDealer) != 0) {
+            if (sMCarlo2DeckSize != 0 && dealt > 10 && dealt <= 18 && mDealer.IsIdle() != 0) {
                 mDealCount = 0;
                 mDealer.mReserved = 0;
-                Dealer_StartReveal(&mDealer, 2, &mDealCount);
+                mDealer.StartReveal(2, &mDealCount);
                 if (sMCarlo2DeckSize == 2)
                     mDealer.mHand = 0;
             } else {
@@ -232,14 +216,11 @@ s32 dScMgMCarlo2_c::Behavior()
                     if (sMCarlo2CardsWanted != 0) {
                         if (mDealer.mHand == 1) {
                             mDealer.mHand = 0;
-                        } else if (Dealer_IsIdleAtRest(&mDealer) != 0) {
-                            Dealer_PlayLose(&mDealer);
+                        } else if (mDealer.IsIdleAtRest() != 0) {
+                            mDealer.PlayLose();
                             Mg_SetSharedState(MG_STATE_GAME_OVER);
                             mPromptEnabled = 0;
-                            {
-                                s16 *p = &mRoundState;
-                                (*p)++;
-                            }
+                            mRoundState++;
                         }
                     }
                     sMCarlo2PickAllowed = 0;
@@ -249,7 +230,7 @@ s32 dScMgMCarlo2_c::Behavior()
         break;
     }
 
-    Dealer_Update(&mDealer);
+    mDealer.Update();
     dScMgMCarlo2_c::UpdateBoard();
     return 1;
 }
@@ -294,7 +275,7 @@ s32 dScMgMCarlo2_c::Render()
         flat = flat->mPrev;
     }
 
-    Dealer_Draw(&mDealer);
+    mDealer.Draw();
     return 1;
 }
 

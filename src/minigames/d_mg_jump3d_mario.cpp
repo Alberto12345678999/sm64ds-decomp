@@ -43,6 +43,7 @@
 #include "common.h"
 #include "Particle__System.h"
 #include "ParticleIds.h"
+#include "MgCamera.h"
 #include "dMgJump3DMario_c.h"
 #include "SharedFilePtr.h"
 #include "OAM.h"
@@ -54,6 +55,7 @@
 #include "math/Approach.h"
 #include "LevelRng.h"
 #include "nitro/fx/fx_cp.h"
+#include "math/CalcLib.h"
 
 static const int kWallX = 0x6c000;   /* mPos.x clamp: the arena walls */
 static const int kScreenYMax = 0xbc; /* past this mScreenY the Mario damps out */
@@ -70,14 +72,10 @@ extern "C" {
 /* Fix12<int> by value in the real signatures; see the banner. */
 void Sound_PlayBank1Panned(int a, int b, int c);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-void VEC_Add(Vector3 *a, Vector3 *b, Vector3 *c);
-int NormalizeVec3IfNonZero(VecFx32 *v);
-int  RandomIntInternal(int *seed);
 void func_02012718(int a, int b);
 void func_02016a14(void *self, int a);
 void func_02016a04(void *self, int a);
 int func_020179b4(SharedFilePtr *f, dExtModel_c *m, int extra);
-void Camera_ProjectToScreen16(void *cam, VecFx32 *pos, short *out);
 int D3D_PlaySeAtX(int a, int b);
 void Puff_Spawn(int a, int b);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -156,7 +154,7 @@ extern int pmf_dMgJump3DMario_c_StateIdle[2];
 
 extern u8  data_ov006_02140400;
 extern u16 sJump3DSpinAngle;
-extern void *sMgMainCamera;
+extern struct MgCamera *sMgMainCamera;
 extern void *sMgCurCamera;
 extern OamAttr *data_ov006_02134d1c;
 extern Vector3 sJump3DMarioScale;
@@ -405,7 +403,7 @@ void dMgJump3DMario_c::Draw()
         return;
 
     if (data_ov006_02140400 != 0) {
-        Camera_ProjectToScreen16(sMgCurCamera, &mPos, screen);
+        Camera_ProjectToScreen16((MgCamera *)sMgCurCamera, &mPos, screen);
 
         wave = FX_SinIdx(sJump3DSpinAngle >> 4);
         screen[1] = screen[1] - (((wave << 2) + 0x30000) >> 12);
@@ -431,7 +429,7 @@ void dMgJump3DMario_c::Update()
     ApproachLinear(mVel.y, sJump3DFallSpeed, sJump3DGravityStep);
     VEC_Add((Vector3 *)&mPos, (Vector3 *)&mVel, (Vector3 *)&mPos);
     (this->*mState)();
-    Camera_ProjectToScreen16(sMgMainCamera, &mPos, &mScreenX);
+    Camera_ProjectToScreen16((MgCamera *)sMgMainCamera, &mPos, &mScreenX);
     UpdateModelMatrix();
     mAnmModel.dExtFrameCtrl_c::Advance();
 }
@@ -537,7 +535,7 @@ void dMgJump3DMario_c::EnterHold()
     VecFx32 v;
 
     Vec3_Sub((Vector3 *)&v, (const Vector3 *)&mPos, (const Vector3 *)&mAnchor);
-    if (NormalizeVec3IfNonZero(&v) != 0) {
+    if (NormalizeVec3IfNonZero((Vector3 *)&v) != 0) {
         mVel.x = v.x;
         mVel.y = v.y;
         mVel.z = v.z;
@@ -866,16 +864,16 @@ int dMgJump3DMario_c::LoadResources()
     if (func_020179b4(&gMarioModelMgModelFile, &mAnmModel, 1) == 0)
         return 0;
 
-    sJump3DAnimJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sJump3DMarioJumpAnimFile);
-    sJump3DAnimDoubleJump1 = (BCA_File *)dExtFrameCtrl_c::LoadFile(sJump3DMarioDoubleJump1AnimFile);
-    sJump3DAnimRollJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sJump3DMarioRollJumpAnimFile);
-    sJump3DAnimWallJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sJump3DMarioWallJumpAnimFile);
-    sJump3DAnimSdown = (BCA_File *)dExtFrameCtrl_c::LoadFile(sJump3DMarioSdownAnimFile);
-    sJump3DAnimStruggle = (BCA_File *)dExtFrameCtrl_c::LoadFile(sJump3DMarioStruggleAnimFile);
+    sJump3DAnimJump = dExtFrameCtrl_c::LoadFile(sJump3DMarioJumpAnimFile);
+    sJump3DAnimDoubleJump1 = dExtFrameCtrl_c::LoadFile(sJump3DMarioDoubleJump1AnimFile);
+    sJump3DAnimRollJump = dExtFrameCtrl_c::LoadFile(sJump3DMarioRollJumpAnimFile);
+    sJump3DAnimWallJump = dExtFrameCtrl_c::LoadFile(sJump3DMarioWallJumpAnimFile);
+    sJump3DAnimSdown = dExtFrameCtrl_c::LoadFile(sJump3DMarioSdownAnimFile);
+    sJump3DAnimStruggle = dExtFrameCtrl_c::LoadFile(sJump3DMarioStruggleAnimFile);
 
     mAnimIdx = 0;
     if (sMgMainCamera != 0)
-        Camera_ProjectToScreen16(sMgMainCamera, &mPos, &mScreenX);
+        Camera_ProjectToScreen16((MgCamera *)sMgMainCamera, &mPos, &mScreenX);
 
     t = gCurrentScene->actorID == 0x175;
     if (t != 0) {

@@ -588,7 +588,7 @@ int daKing_Donketu_c::UpdateDefeat() {
     func_02011cfc();
     Sound::ChangeMusicVolume(0x7f, 0x15666);
     pos.y = pos.y + 0x190000;
-    func_0200fa8c(c, 1);
+    c->func_0200fa8c(1);
 
     {
         unsigned short a = *(unsigned short *)&c->mAngleX;
@@ -1859,7 +1859,7 @@ int daKing_Donketu_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gKingIceDonketuJumpStAnimationFile);
     dExtFrameCtrl_c::LoadFile(gKingIceDonketuWaitAnimationFile);
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_0210da30);
-    f = (BMD_File *)dExtSimpleModel_c::LoadFile(gKingIceDonketuModelModelFile);
+    f = dExtSimpleModel_c::LoadFile(gKingIceDonketuModelModelFile);
     mBlendAnmModel.SetFile(f, 1, -1);
     mShadowModel.InitCylinder();
     mVertAccel = -0x3000;

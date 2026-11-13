@@ -27,6 +27,8 @@ enum dScMgSound_c_AssetId {
 #include "nitro/gx/gx_bgcnt.h"
 #include "nitro/gx/g2.h"
 #include "nitro/gx/gx_load.h"
+#include "math/CalcLib.h"
+#include "nitro/fx/fx_trig.h"
 
 /* The state/phase dispatch tables hold pointer-to-member records: the
    sinit copies {pmf, delta} descriptors into them. */
@@ -105,7 +107,6 @@ extern void *sSoundWinSpriteASprites[];
 /* Stored timing suffixes are retained; WinSpriteA reads only indices 0 and 1. */
 extern const u16 sSoundWinSpriteATimes[4] = {50, 4, 50, 0};
 extern void Mg_DrawStockCounter(int a, int b);
-extern const short FX_SinCosTable_[];
 extern u8 data_ov006_0213f54c[];
 extern u8 data_ov006_0213f544[];
 extern u8 data_ov006_0213f65c[];
@@ -135,8 +136,6 @@ extern const u8 sSoundPop00Dirs[3] = {0, 0, 1};
 /* SpawnPops consumes the first three selectors. The other two stored values
  * are retained; their original grouping is unknown. */
 extern const u8 sSoundPopSpawnKinds[5] = {0, 1, 2, 2, 1};
-extern void Presenter_PlayMatch(void *c);
-extern void Presenter_PlayMiss(void *c);
 extern int sSoundRowLengthAlt[];
 extern int sSoundRowLength[];
 extern int sSoundScrollRowLengthAlt[];
@@ -144,7 +143,6 @@ extern int sSoundScrollRowLength[];
 /* Note frames use indices 0 through 6. The final stored timing value in each
  * array is retained without asserting its original purpose or declared bound. */
 extern const u16 sSoundNoteClosingTimes[8] = {2, 2, 3, 4, 4, 4, 4, 4};
-void Presenter_PlayCheerLoop(void *p);
 unsigned int func_02012174(u32 bank, u32 id);
 extern const u16 sSoundNoteOpeningTimes[8] = {2, 2, 3, 4, 4, 4, 6, 4};
 /* Parallel playback selectors and sound IDs retain all 42 stored entries.
@@ -154,7 +152,6 @@ u16 sSoundNotePlaybackKinds[42] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 
 u16 sSoundNoteSfx[42] = {70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  56,  57,  58,  59,
                          169, 170, 171, 172, 173, 174, 176, 177, 178, 266, 267, 268, 56,  120,
                          184, 248, 57,  121, 185, 249, 58,  122, 186, 250, 59,  123, 187, 251};
-extern int RandomIntInternal(int *seed);
 extern const u8 sSoundPitchCounts[5] = {10, 4, 10, 4, 14};
 extern const u8 sSoundDealCounts[5] = {6, 6, 8, 6, 8};
 extern const u8 sSoundNoteLayoutByPattern[5] = {0, 0, 1, 0, 1};
@@ -170,13 +167,10 @@ u16 sSoundNotePositions8[16] = {32, 32,  96, 32,  160, 32,  224, 32,
 u16 sSoundNotePositions10[20] = {32, 32,  80, 32,  128, 32,  176, 32,  224, 32,
                                  32, 112, 80, 112, 128, 112, 176, 112, 224, 112};
 u16 *sSoundNotePositions[3] = {sSoundNotePositions6, sSoundNotePositions8, sSoundNotePositions10};
-extern void Presenter_ResetPose(void *c);
-extern void Presenter_PlayCheer(void *c);
 extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 void FreeGfxSlotsById(int id);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
-int Presenter_Load(void *p);
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
 }
@@ -311,7 +305,7 @@ s32 dScMgSound_c::InitResources() {
     Deallocate(objPltt);
 
     Camera_InitPresenterView(&mCamera);
-    if (Presenter_Load(&mTable) == 0)
+    if (mTable.Load() == 0)
         return 0;
 
     mTable.mQuiet = 1;
@@ -361,7 +355,7 @@ s32 dScMgSound_c::Behavior() {
             if (mResultTimer == 0) {
                 if (mTries != 0) {
                     mTable.mQuiet = 0;
-                    Presenter_PlayCheer(&mTable);
+                    mTable.PlayCheer();
                     if (mTries == 3)
                         Mg_SetPerfectBanner();
                     Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
@@ -396,7 +390,7 @@ s32 dScMgSound_c::Behavior() {
             mResultTimer--;
             if ((s16)mResultTimer <= 0) {
                 mTable.mQuiet = 0;
-                Presenter_PlayLose((char *)&mTable);
+                mTable.PlayLose();
                 Mg_SetSharedState(MG_STATE_GAME_OVER);
                 mPromptEnabled = 0;
                 mResultTimer = 0;
@@ -405,7 +399,7 @@ s32 dScMgSound_c::Behavior() {
         break;
     }
 
-    Presenter_Update((char *)&mTable);
+    mTable.Update();
     return 1;
 }
 
@@ -417,7 +411,7 @@ s32 dScMgSound_c::Render() {
     DrawTries();
     DrawWinSpriteB();
     DrawWinSpriteA();
-    Presenter_Draw(&mTable);
+    mTable.Draw();
     return 1;
 }
 
@@ -464,7 +458,7 @@ void dScMgSound_c::StartRound(int mode) {
 
 /* Slot 20, OnNewRecord: plays the table model's win animation. */
 void dScMgSound_c::OnNewRecord() {
-    Presenter_PlayCheer(&mTable);
+    mTable.PlayCheer();
 }
 
 void dScMgSound_c::ResetRound() {
@@ -524,7 +518,7 @@ void dScMgSound_c::ResetRound() {
     mTouchCount = 0;
     mResultTimer = 0;
 
-    Presenter_ResetPose(&mTable);
+    mTable.ResetPose();
 }
 
 /* Choose distinct pitches, make one pair of each, then deal the pairs
@@ -731,7 +725,7 @@ void dScMgSound_c::Note_StateOpening(int idx) {
     }
 
     if (mTouchCount == 1)
-        Presenter_PlayCheerLoop(&mTable);
+        mTable.PlayCheerLoop();
 }
 
 void dScMgSound_c::Note_StateOpen(int slot) {
@@ -848,14 +842,14 @@ void dScMgSound_c::CheckPair() {
         mNotes[mQueue[0] >> 8].alive = 0;
         mNotes[mQueue[1] >> 8].alive = 0;
         func_02012790(0x26);
-        Presenter_PlayMatch(&mTable);
+        mTable.PlayMatch();
     } else {
         mNotes[mQueue[0] >> 8].state = 3;
         mNotes[mQueue[1] >> 8].state = 3;
         func_02012790(0xe);
         mTries--;
         func_02012790(0x12f);
-        Presenter_PlayMiss(&mTable);
+        mTable.PlayMiss();
     }
     mQueue[1] = 0;
     mQueue[0] = mQueue[1];

@@ -117,9 +117,6 @@ void func_ov077_02125304(daTgz_c *self);
 
 int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
-s16 func_02010844(void *unused, Vector3 *v, s16 angle);
-unsigned char DecIfAbove0_Byte(unsigned char *p);
-int RandomIntInternal(int *seed);
 unsigned int d_a_tgzNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y, int z,
                             const void *dir, void *callback);
 extern int data_0209f32c;
@@ -220,8 +217,8 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                              normal.y) +
                       0x8000);
             }
-            self->mAngleX = func_02010844(self, &normal, self->mAngleY);
-            self->mAngleZ = func_02010844(self, &normal, (s16)(self->mAngleY - 0x4000));
+            self->mAngleX = self->func_02010844(&normal, self->mAngleY);
+            self->mAngleZ = self->func_02010844(&normal, (s16)(self->mAngleY - 0x4000));
         }
     }
     if (clsn->IsOnWall()) {
@@ -755,35 +752,36 @@ int daTgz_c::Render()
 int daTgz_c::Behavior()
 {
     int s = mState;
-    if (s != 1 || mWithMeshClsn.IsOnGround()) {
-        s = mState;
-        if (s != 4 && s != 5 && IsTooFarAwayFromPlayer(0x5dc000)) {
-            if (DecIfAbove0_Byte(&mDespawnTimer) == 0) {
-                MarkForDestruction();
-                return 1;
+    do {
+        if (s != 1 || mWithMeshClsn.IsOnGround()) {
+            s = mState;
+            if (s != 4 && s != 5 && IsTooFarAwayFromPlayer(0x5dc000)) {
+                if (DecIfAbove0_Byte(&mDespawnTimer) == 0) {
+                    MarkForDestruction();
+                    return 1;
+                }
+                break;
             }
-            goto done;
         }
-    }
-    func_ov077_02124c28(this);
-    func_ov077_02125e20(this);
-    MakeVanishLuigiWork(mdCcAc_c);
-    func_ov077_02125304(this);
-    if (gCurrentSublevel == 0x1c && mPosY <= -0x1600000) {
-        PoofDust();
-        func_02012694(0xc4, &mCamSpacePos);
-        MarkForDestruction();
-    }
-done:
+        func_ov077_02124c28(this);
+        func_ov077_02125e20(this);
+        MakeVanishLuigiWork(mdCcAc_c);
+        func_ov077_02125304(this);
+        if (gCurrentSublevel == 0x1c && mPosY <= -0x1600000) {
+            PoofDust();
+            func_02012694(0xc4, &mCamSpacePos);
+            MarkForDestruction();
+        }
+    } while (0);
     return 1;
 }
 
 int daTgz_c::InitResources()
 {
     BMD_File *bmd;
-    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b48);
+    bmd = dExtSimpleModel_c::LoadFile(data_ov077_02127b48);
     mModel.SetFile(bmd, 1, -1);
-    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
+    bmd = dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
     mAnmModel.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(gTgzWalkAnimFile);
     mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);

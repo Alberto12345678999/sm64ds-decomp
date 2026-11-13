@@ -160,12 +160,11 @@ void daTor_c::State1()
         if (Vec3_HorzDist(&mHomePos, &mPos) < 0xc8000)
             mState = 2;
     }
-    goto cont;
 
+    goto cont;
 null_player:
     mState = 2;
     return;
-
 cont:
     if (Vec3_Dist(&mPos, &playerPos) > 0xbb8000 || mChaseTimer >= 0x384)
         mState = 2;
@@ -265,7 +264,7 @@ int daTor_c::Behavior()
 
 int daTor_c::InitResources()
 {
-    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
+    mAnmModel.SetFile(dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
     func_02016aac(&mAnmModel, 0x16, 1);
     mAnmModel.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);

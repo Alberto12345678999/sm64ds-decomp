@@ -114,12 +114,9 @@ struct JugemVec3 {
 extern "C" {
 
 /* Helpers not declared by the included headers. */
-s16   Vec3_VertAngle(const void *a, const void *b);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 int   Vec3_ApproachHorz(void *cur, const void *tgt, int maxStep);
-int VEC_Mag(const void *v);
 int   AngleDiff(int a, int b);
-void MTX_MultVec43(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 
 /* local extern: each of these real members takes a Fix12<int> BY VALUE,
    which mwccarm passes differently at the call site than the loose scalar
@@ -253,7 +250,7 @@ int daC_Jugem_c::StateApproachMain()
     cam->SetFlag_3();
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
     ApproachLinear(mAngleY, ::Vec3_HorzAngle(&mPos, (const Vector3 *)&data_ov085_0213084c), 0x200);
-    ApproachLinear(mAngleX, Vec3_VertAngle(&mPos, &data_ov085_0213084c), 0x200);
+    ApproachLinear(mAngleX, Vec3_VertAngle(&mPos, (const Vector3 *)&data_ov085_0213084c), 0x200);
     ApproachLinear(mHorzSpeed, 0x28000, 0x2000);
     ApproachLinear(mPrevAngleY, ::Vec3_HorzAngle(&mPos, (const Vector3 *)&data_ov085_0213084c),
                    (s16)mAuxCounter);
@@ -875,7 +872,7 @@ int daC_Jugem_c::Behavior()
 
 int daC_Jugem_c::InitResources()
 {
-    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_0213074c);
+    BMD_File *bmd = dExtSimpleModel_c::LoadFile(data_ov085_0213074c);
     mAnmModel1.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
     dExtAnmTexPat_c::LoadFile(data_ov085_0213073c);

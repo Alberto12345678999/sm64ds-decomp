@@ -68,12 +68,6 @@ extern s16 data_ov065_0211c0c8[];
 extern s8 data_ov065_0211d26c[];
 extern CLPS_Block data_ov035_02112258;
 
-/* local extern: arm9 vector helpers and the dBgW stores; no shared header. */
-extern "C" {
-extern void MTX_MultVec43(Vector3 *src, Matrix4x3 *matrix, Vector3 *dst);
-extern void VEC_Add(Vector3 *left, Vector3 *right, Vector3 *dst);
-}
-
 /* CT_MECHA05 is the literal ROM registry ID. The g_profile spelling is a
  * lineage-supported reconstruction. The descriptor is at ov065:0x0211d290. */
 extern "C" daObjCtMecha05_c *daObjCtMecha05_c_classInit();
@@ -89,13 +83,13 @@ extern "C" daObjCtMecha05_c *daObjCtMecha05_c_classInit() {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 int daObjCtMecha05_c::InitResources() {
-    void *modelFile = dExtSimpleModel_c::LoadFile(TTC_MovingBar_ModelFile);
-    mModel.SetFile((BMD_File *)modelFile, 1, -1);
+    BMD_File *modelFile = dExtSimpleModel_c::LoadFile(TTC_MovingBar_ModelFile);
+    mModel.SetFile(modelFile, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    void *collisionFile = dBgW_Kc::LoadFile(TTC_MovingBar_ClsnFile);
-    mMeshCollider.SetFile((KCL_File *)collisionFile, mClsnMat, 0x199, mAngleY, data_ov035_02112258);
+    KCL_File *collisionFile = dBgW_Kc::LoadFile(TTC_MovingBar_ClsnFile);
+    mMeshCollider.SetFile(collisionFile, mClsnMat, 0x199, mAngleY, data_ov035_02112258);
     mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
     mMeshCollider.SetClipRadius(0x1c0000);
     mMeshCollider.SetClipOffsetY(0x1000);
@@ -143,7 +137,7 @@ int daObjCtMecha05_c::Behavior() {
     switch (mState) {
     case 0:
         if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0)
-            goto Lend;
+            break;
         if (data_0209f2c0 == 2) {
             int v = (u16)((unsigned)RandomIntInternal(&data_0209e650.value) >> 16);
             if (v % 2 == 0) {
@@ -152,39 +146,31 @@ int daObjCtMecha05_c::Behavior() {
         }
         mState++;
         mHorzSpeed = -0x8000;
-        goto Lend;
+        break;
 
     case 1:
         mHorzSpeed += 0xbae;
         if (mHorzSpeed > 0) {
             if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0) {
                 mHorzSpeed = 0;
-                goto Lend;
+                break;
             }
             mState++;
             mHorzSpeed = 0x1d000;
         }
-        goto Lend;
+        break;
 
     case 2: {
         int d = mTravel;
-        if (d != 0xfa000) {
-            int val = FX_MUL((0xfa000 - d), (0xfa000 - mPrevTravel));
-            if (val >= 0)
-                goto L280;
-        }
-        {
+        if (d == 0xfa000 || FX_MUL((0xfa000 - d), (0xfa000 - mPrevTravel)) < 0) {
             int sp = mHorzSpeed;
-            if (sp <= -0x8000)
-                goto L280;
-            if (sp >= 0x8000)
-                goto L280;
-            mState++;
-            mHorzSpeed = 0;
-            mStateTimer = 0x1e;
-            goto Lend;
+            if (sp > -0x8000 && sp < 0x8000) {
+                mState++;
+                mHorzSpeed = 0;
+                mStateTimer = 0x1e;
+                break;
+            }
         }
-    L280: {
         int m = (mTravel < 0xfa000) ? 0x6666 : -0x6666;
         int sp = mHorzSpeed;
         int delta;
@@ -194,26 +180,24 @@ int daObjCtMecha05_c::Behavior() {
             delta = FX_MUL(m, 0x2599);
         mHorzSpeed += delta;
         if (data_0209f2c0 != 2)
-            goto Lend;
-    }
+            break;
         if (FX_MUL(mTravel, mPrevTravel) >= 0)
-            goto Lend;
+            break;
         if ((RandomIntInternal(&data_0209e650.value) & 3) != 0)
-            goto Lend;
+            break;
         ResetToHome();
-        goto Lend;
+        break;
     }
 
     case 3:
         if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0)
-            goto Lend;
+            break;
         mHorzSpeed = -0x5000;
         if (mTravel < 0)
             ResetToHome();
-        goto Lend;
+        break;
     }
 
-Lend:
     UpdatePos(0);
     UpdateModelPosAndRotY();
     UpdateShadow();

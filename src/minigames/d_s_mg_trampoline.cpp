@@ -2,6 +2,7 @@
 #include "dFdBrightness_c.h"
 #include "nitro/hw/registers.h"
 #include "math/Approach.h"
+#include "math/CalcLib.h"
 #include "nitro/gx/g3x.h"
 #include "nitro/fx/fx_cp.h"
 /* dScMgTrampoline_c -- Trampoline Time. Draw a line on the touch screen
@@ -42,8 +43,10 @@ enum d_s_mg_trampoline_AssetId {
 #include "nitro/fx/fx.h"
 #include "LevelRng.h"
 #include "decl_common.h"
+#include "dMgTrmplnShared.h"
 #include "nitro/gx/gx_bgcnt.h"
 #include "nitro/gx/gx_load.h"
+#include "nitro/mi/memory.h"
 
 /* local: UpdateTouchInput only reproduces through a 4-byte-record view of
    each lane; the flat `gTouchHeld[slot * 4]` and TouchInfo forms DIFF there
@@ -66,10 +69,6 @@ extern int sTrmpFxCount;
 extern TrmpScorePopup *sTrmpFxPool;
 
 extern int sTrmpBrushWord[];
-/* local extern: these named parameters hold this TU's @NNN numbering; the
-   switch to nitro/mi/memory.h waits on the manifest re-key in #5252. */
-extern void MIi_CpuCopy32(const void *dst, void *src, unsigned int len);
-extern void MIi_CpuClear16(unsigned short val, void *dst, unsigned int nbytes);
 extern const unsigned char sTrmpBrushPltt[];
 extern dFdBrightness_c *gSceneFader;
 extern int sTrmpTouchBlocked;
@@ -88,20 +87,12 @@ extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern short sTrmpGoalRow;
 
-extern void Trmp3DMario_UpdateAll(void);
-extern int Trmp3DMario_CountFinished(void);
 extern void Mg_SetSharedState(int);
-extern void Trmp3DMario_StartAll(void);
 extern int sTrmpComboCount;
 extern int sTrmp3DLives;
 extern int sTrmpMariosInPlay;
 extern int sTrmpAnyOnLedge;
 extern void TrmpLine_UpdateAll(void);
-extern int Trmp3DMario_IsOffstage(int *r0);
-extern void Trmp3DMario_EnterWalkIn(char *c);
-extern int RandomIntInternal(int *seed);
-extern void Trmp3DMario_SetSpawnHeight(int n);
-extern void Trmp3DMario_SetTuning(int a);
 void TrmpLine_CreateStartLineT1(void);
 extern s16 sTrmpIntroFromX;
 extern s16 sTrmpStartTouchX;
@@ -112,11 +103,9 @@ extern void Deallocate(void *ptr);
 extern int sTrmpNcgByLanguage[];
 extern void InitialiseVramGlobals(void);
 extern s16 data_02082414;
-extern int Trmp3DMario_InitPool(unsigned char *, int);
 extern void TrmpFx_InitPool(void *, int);
 extern void TrmpLine_LoadTextures(void);
 extern void Mg_SetTopScreenYOffset(int);
-extern void Trmp3DMario_ResetAll(unsigned int, int);
 extern void TrmpFx_ClearAll(void);
 extern int sTrmpPuffXByLanguage[];
 extern void Puff_ClearAll(int, int);
@@ -127,7 +116,6 @@ extern void TrmpFx_DrawAll(void);
 extern void Mg_DrawTopRightCounter(int, int);
 extern void *sTrmpDoorSignSprites[];
 extern void *sTrmpArrowSprite;
-extern void Trmp3DMario_DrawAll(void);
 extern void TrmpLine_DrawAll(void);
 
 dScMgTrampoline_c *dScMgTrampoline_c_classInit(void);

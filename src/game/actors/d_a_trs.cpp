@@ -72,6 +72,7 @@ enum daTrs_c_AssetId {
 #include "LevelRng.h"
 #include "SaveBlock.h"
 #include "nitro/fx/fx_trig.h"
+#include "math/MtxStack.h"
 
 /* Views of three classes this Boo reaches through other actors' pointers.
    Their headers are not included because each one renumbers this file's
@@ -118,8 +119,6 @@ void LoadKeyModels(int n);
 void UnloadKeyModels(int n);
 unsigned char NumStars(void);
 int IsStarCollectedInCurLevel(int n);
-void Matrix4x3_FromTranslation(void *m, s32 x, s32 y, s32 z);
-void MTX_Concat43(void *a, void *b, void *dst);
 u8 IsAreaShowing(int idx);
 
 /* ABI seams whose header member forms do not reproduce the ROM (see notes) */
@@ -167,7 +166,6 @@ extern SharedFilePtr data_ov002_0210d9b8;
 /* File-local helpers and engine entry points, with the C-linkage spellings
  * these bodies were matched against. */
 extern "C" {
-void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
 int func_020092c4(void *cam, void *out, void *target);
 void func_02012694(unsigned int a, const Vector3 *p);
@@ -175,13 +173,10 @@ u16 func_0201277c(unsigned int a);
 extern dCamera_c *gCamera;
 void func_ov063_02118f24(daTrsIcon_c *icon, const Vector3 &pos);
 int func_ov063_0211a0a8(int a0, int a1, int a2, int a3, int a4);
-extern void Vec3_MulScalarInPlace(void *v, int s);
 extern void func_020167a4(dExtAnmModel_c *model);
-void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
-extern int VEC_Mag(const Vector3 *v);
 /* The call at 0x02118004 relocates to overlays(27,55). r0 still holds the
    state timer there, so the callee takes no object: ov055's free function at
    0x02111264, not ov027's daObjSlIceBlock_c::CleanupResources. */
@@ -272,7 +267,7 @@ void daTrs_c::func_ov063_021160d4() {
     this->mClsnOff.z = inline_fn(11);
     VEC_Subtract(&this->mClsnOff, &this->mPos, &this->mClsnOff);
     VEC_Subtract(&this->mClsnOff, &this->mClsnBase, &this->mClsnOff);
-    Vec3_MulScalarInPlace((VecFx32 *)&this->mClsnOff.x, 0x6800);
+    Vec3_MulScalarInPlace((Vector3 *)&this->mClsnOff.x, 0x6800);
     p = (int *)&this->mClsnOff.z;
     *p += this->mClsnZBias;
 }
@@ -2359,112 +2354,103 @@ int daTrs_c::GetAttackStatus() {
     VecFx32 v1, v2;
 
     id = this->mdCcAcPos_c.otherOwner;
-    if (id == 0)
-        goto ret0;
+    if (id != 0) {
+        if (this->mdCcAcPos_c.hitFlags & 0x207e0) {
+            void *found;
 
-    if (this->mdCcAcPos_c.hitFlags & 0x207e0) {
-        void* found;
+            this->mdCcAcPos_c.flags |= 1;
+            found = (void *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
+            if (found) {
+                this->mTalkPlayer = (daPly_c *)found;
 
-        this->mdCcAcPos_c.flags |= 1;
-        found = (void *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
-        if (found) {
-            this->mTalkPlayer = (daPly_c *)found;
-
-            {
-                int isBf = (int)(((dActor_c *)found)->actorID == TRS_ID_PLAYER);
-                if (isBf) {
-                    if (((dActor_c *)found)->param1 == 3) {
-                        u16* p = (u16*)&this->mBooFlags;
-                        *p |= TRS_FLAG_HIT_BY_PARAM3_PLAYER;
+                {
+                    int isBf = (int)(((dActor_c *)found)->actorID == TRS_ID_PLAYER);
+                    if (isBf) {
+                        if (((dActor_c *)found)->param1 == 3) {
+                            u16 *p = (u16 *)&this->mBooFlags;
+                            *p |= TRS_FLAG_HIT_BY_PARAM3_PLAYER;
+                        }
                     }
                 }
             }
-        }
-        return 1;
-    }
-
-    actor = dActor_c::FindWithID(id);
-    if (!actor)
-        goto ret0;
-    if (!(this->mdCcAcPos_c.hitFlags & 0x400000))
-        goto ret0;
-    player = static_cast<daPly_c *>(actor);
-    if (player->mIsVanish != 0)
-        return 0;
-
-    if (player->mIsMetal != 0) {
-        this->mdCcAcPos_c.flags |= 1;
-        this->mTalkPlayer = (daPly_c *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
-        return 1;
-    }
-
-    if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *player) != 0) {
-        player->Bounce(0x28000);
-        func_0201267c(0x149, &this->mCamSpacePos);
-        return -1;
-    }
-
-    {
-    int isBigBoo = (int)(this->actorID == TRS_ID_BOSS_TERESA);
-    if (isBigBoo) {
-        if (player->mIsAirborne != 0) {
-            player->Bounce(0x28000);
-            func_0201267c(0x149, &this->mCamSpacePos);
-            return -1;
-        }
-
-        v1.x = this->mPosX;
-        v1.y = this->mPosY;
-        v1.z = this->mPosZ;
-        player->Hurt(*(Vector3 *)&v1, this->mHurtDamage, 0xc000, 1, 0, 1);
-        func_0201267c(0x149, &this->mCamSpacePos);
-        return -1;
-    }
-    }
-
-    if (this->mdCcAcPos_c.hitFlags & 0x10) {
-        u8 kind = this->mVariant;
-
-        if (kind < 2)
-            goto found_kind;
-        if (kind >= 6)
-            goto found_kind;
-        if (kind > 9)
-            goto no_kind;
-
-found_kind:
-        {
-            void* found2;
-            s16 v[3];
-
-            this->mdCcAcPos_c.flags |= 1;
-            found2 = (void *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
-            if (!found2)
-                goto ret0;
-            this->mTalkPlayer = (daPly_c *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
-
-            v[0] = -0x2000;
-            v[1] = 0;
-            v[2] = 0;
-            KillByInvincibleChar(*(Vector3_16 *)v, *(daPly_c *)found2, 0);
-
-            {
-                s16* ap = (s16*)&this->mAngleY;
-                *ap = (s16)(*ap + 0x8000);
-            }
             return 1;
         }
+
+        actor = dActor_c::FindWithID(id);
+        if (actor != 0) {
+            if (this->mdCcAcPos_c.hitFlags & 0x400000) {
+                player = static_cast<daPly_c *>(actor);
+                if (player->mIsVanish != 0)
+                    return 0;
+
+                if (player->mIsMetal != 0) {
+                    this->mdCcAcPos_c.flags |= 1;
+                    this->mTalkPlayer =
+                        (daPly_c *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
+                    return 1;
+                }
+
+                if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *player) != 0) {
+                    player->Bounce(0x28000);
+                    func_0201267c(0x149, &this->mCamSpacePos);
+                    return -1;
+                }
+
+                {
+                    int isBigBoo = (int)(this->actorID == TRS_ID_BOSS_TERESA);
+                    if (isBigBoo) {
+                        if (player->mIsAirborne != 0) {
+                            player->Bounce(0x28000);
+                            func_0201267c(0x149, &this->mCamSpacePos);
+                            return -1;
+                        }
+
+                        v1.x = this->mPosX;
+                        v1.y = this->mPosY;
+                        v1.z = this->mPosZ;
+                        player->Hurt(*(Vector3 *)&v1, this->mHurtDamage, 0xc000, 1, 0, 1);
+                        func_0201267c(0x149, &this->mCamSpacePos);
+                        return -1;
+                    }
+                }
+
+                do {
+                    if ((this->mdCcAcPos_c.hitFlags & 0x10) != 0) {
+                        u8 kind = this->mVariant;
+                        if (kind < 2 || kind >= 6 || kind <= 9) {
+                            void *found2;
+                            s16 v[3];
+
+                            this->mdCcAcPos_c.flags |= 1;
+                            found2 = (void *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
+                            if (found2) {
+                                this->mTalkPlayer =
+                                    (daPly_c *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
+
+                                v[0] = -0x2000;
+                                v[1] = 0;
+                                v[2] = 0;
+                                KillByInvincibleChar(*(Vector3_16 *)v, *(daPly_c *)found2, 0);
+
+                                {
+                                    s16 *ap = (s16 *)&this->mAngleY;
+                                    *ap = (s16)(*ap + 0x8000);
+                                }
+                                return 1;
+                            }
+                            break;
+                        }
+                    }
+                    v2.x = this->mPosX;
+                    v2.y = this->mPosY;
+                    v2.z = this->mPosZ;
+                    player->Hurt(*(Vector3 *)&v2, this->mHurtDamage, 0xc000, 1, 0, 1);
+                    func_0201267c(0x149, &this->mCamSpacePos);
+                    return -1;
+                } while (0);
+            }
+        }
     }
-
-no_kind:
-    v2.x = this->mPosX;
-    v2.y = this->mPosY;
-    v2.z = this->mPosZ;
-    player->Hurt(*(Vector3 *)&v2, this->mHurtDamage, 0xc000, 1, 0, 1);
-    func_0201267c(0x149, &this->mCamSpacePos);
-    return -1;
-
-ret0:
     return 0;
 }
 
@@ -3079,7 +3065,7 @@ block_39:
         v1.x = x;
         v1.y = w;
         v1.z = z;
-        rc1.SetObjAndPos(v1, (dActor_c*)this);
+        rc1.SetObjAndPos(v1, this);
         if (rc1.DetectClsn() != 0) {
             s32 ground = rc1.clsnY + 0x2000;
             if (mPosY < ground)
@@ -3094,7 +3080,7 @@ block_39:
             v2.x = x;
             v2.y = w;
             v2.z = z;
-            rc2.SetObjAndPos(v2, (dActor_c*)this);
+            rc2.SetObjAndPos(v2, this);
             d1 = (int)(actorID == TRS_ID_TERESA);
             if (d1 != 0) {
                 if (mVariant < 8) {
@@ -3147,7 +3133,7 @@ int daTBasket_c::Behavior()
     int secretDone = 1;
 
     if (mMuteSecretSound == 0)
-        secretDone = Sound::PlaySecretSound((dActor_c *)this, (u16 *)&mSoundTimer);
+        secretDone = Sound::PlaySecretSound(this, (u16 *)&mSoundTimer);
 
     if (mWithMeshClsn.JustHitGround()) {
         int vertSpeed = mVertSpeed;
@@ -3209,7 +3195,7 @@ int daTrs_c::InitResources()
             mFoundActor = 0;
         }
         dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
-        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
+        mAnmModel.SetFile(dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
         mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         mHitPoints = 3;
         mClsnRadius = 0xc8;
@@ -3228,7 +3214,7 @@ int daTrs_c::InitResources()
     } else {
         mVariant = param1 & 0xf;
         dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
-        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
+        mAnmModel.SetFile(dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
         mAnmModel.SetAnim((BCA_File *)data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
         mHitPoints = 1;
         if (mVariant == 5) {
@@ -3421,7 +3407,7 @@ int daTrs_c::InitResources()
 
 int daTBasket_c::InitResources()
 {
-    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edec);
+    BMD_File *bmd = dExtSimpleModel_c::LoadFile(data_ov063_0211edec);
     if (mModel.SetFile(bmd, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)

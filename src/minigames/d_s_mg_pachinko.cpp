@@ -48,6 +48,7 @@
 #include "nitro/fx/fx_trig.h"
 #include "dScMgPachinko_c.h"
 #include "LevelRng.h"
+#include "math/CalcLib.h"
 
 /* The five state tables are pointer-to-member tables on the scene. */
 typedef void (dScMgPachinko_c::*PMF)(int);
@@ -101,7 +102,6 @@ extern void Mg_SubmitScore(int self);
 extern int  func_020126e8(int a);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void SetBg2Offset(int a, int b);
-extern int  RandomIntInternal(int *seed);
 struct OamAttr;
 #include "OAM.h"
 #include "nitro/gx/gx_bgcnt.h"
@@ -121,10 +121,9 @@ extern void FreeGfxSlotsById(int arg);
 extern void *LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
 extern void Deallocate(void *p);
+/* local extern: nitro/gx/gx_load.h leaves GX_LoadBG3Scr out until
+ * decl_common.h's non-const spelling of it goes. */
 extern void GX_LoadBG3Scr(void *dst, u32 offset, u32 len);
-extern void GX_LoadBG2Scr(const void *src, u32 offset, u32 count);
-extern void GXS_LoadBG3Scr(const void *src, u32 offset, u32 count);
-extern void GXS_LoadBG0Scr(const void *src, int offset, int count);
 
 /* --- ROM data this TU reads --- */
 extern unsigned char gMainScreenLayers;
@@ -1537,21 +1536,21 @@ void dScMgPachinko_c::Ball_UpdateAll() {
 void dScMgPachinko_c::Ball_CheckHitByBobOmb(int i) {
     int n = i * 0x38;
     char *o = (char *)this;
-    int j = 0;
-    char *walk = o;
+    int j;
+    char *walk;
     int *xp = (int *)((o + n) + BALL_OFF(x));
     int *zp = (int *)((o + n) + BALL_OFF(y));
-    do {
+    for (j = 0, walk = o; j < 0x30; j += 1, walk += 0x38) {
         if (SHOT(walk)->active == 0)
-            goto next;
+            continue;
         if (SHOT(walk)->state < 2)
-            goto next;
+            continue;
         {
             int dy = (*zp - SHOT(walk)->y) >> 12;
             int dx = (*xp - SHOT(walk)->x) >> 12;
             s64 distsq = (s64)dx * dx + (s64)dy * dy;
             if (cstd::sqrt((unsigned long long)distsq) > 0x18)
-                goto next;
+                continue;
         }
         {
             int m = j * 0x38;
@@ -1613,10 +1612,7 @@ void dScMgPachinko_c::Ball_CheckHitByBobOmb(int i) {
             }
             return;
         }
-    next:
-        j += 1;
-        walk += 0x38;
-    } while (j < 0x30);
+    }
 }
 
 void dScMgPachinko_c::SpawnWave() {

@@ -226,7 +226,6 @@ extern "C" {
 
 /* -- other modules -- */
 void  func_02013a88(void);
-short func_02010844(void *self, void *v, short angle);
 void func_020167a4(dExtAnmModel_c *model);
 int func_ov002_020f030c(int x);
 
@@ -353,9 +352,9 @@ int daObjMarioCap_c::InitResources()
         break;
     }
 
-    if (mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
-                              *(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
-                          1, -1) == 0)
+    if (mAnmModel.SetFile(
+            dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]), 1,
+            -1) == 0)
         return 0;
 
     mShadowModel.InitCylinder();
@@ -1025,8 +1024,8 @@ int daObjMarioCap_c::Slide()
     mVertSpeed =
         -(FX_Div(FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ), mFloorNormalY) +
           0x8000);
-    pitch = func_02010844(this, &mFloorNormalX, mAngleY);
-    roll = func_02010844(this, &mFloorNormalX, mAngleY - 0x4000);
+    pitch = func_02010844((Vector3 *)&mFloorNormalX, mAngleY);
+    roll = func_02010844((Vector3 *)&mFloorNormalX, mAngleY - 0x4000);
     UpdateAngle(mAngleX, pitch, 4, 0x1000);
     UpdateAngle(mAngleZ, roll, 4, 0x1000);
     return 1;
@@ -1051,9 +1050,8 @@ int daObjMarioCap_c::InitTaken()
     mCarryMatrix = 0;
     mTaken = 1;
 
-    /* (int)self + off is the MATCH form; mFlags &= / vulnFlags &= CSE. */
-    *(u32 *)((int)&mFlags) &= ~0x40000u;
-    *(u32 *)((int)&mdCcAc_c.vulnFlags) &= ~0x8000u;
+    mFlags &= ~0x40000u;
+    mdCcAc_c.vulnFlags &= ~0x8000u;
 
     if (mPlayer == 0) {
         mPlayer = ClosestPlayer();
