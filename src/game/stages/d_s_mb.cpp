@@ -39,7 +39,6 @@ void DecompressLZ16(void *src, void *dst);
 void func_020308b4(void);
 
 void func_0201a5f8(int t);
-void *func_0201a3e4(void);
 /* Linker-defined overlay IDs: the address is the overlay number. */
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
@@ -57,6 +56,7 @@ extern u8 gSubScreenLayers;
 extern dGraph_c::callback_c *gGraphCallback;
 extern int data_0208ee44;
 }
+void *func_0201a3e4(void);
 
 /* Whether the loader job Behavior waits on has finished: InitResources seeds
    it from func_0201a244's return value (1 when the job ran synchronously) and
@@ -271,9 +271,9 @@ s32 dScMB_c::InitResources() {
 
     /* From OBJ tile 0x94 onwards; a 4bpp tile is 0x20 bytes. */
     DecompressLZ16(&data_0209446c, (u8 *)G2_GetOBJCharPtr() + 0x94 * 0x20);
-    GX_LoadOBJPltt((const void *)&data_0209444c, 0, 0x20);
-    GX_LoadOBJPltt((const void *)&data_020945d0, 0xa0, 0x20);
-    GXS_LoadOBJPltt((const void *)&data_0209444c, 0, 0x20);
+    GX_LoadOBJPltt(&data_0209444c, 0, 0x20);
+    GX_LoadOBJPltt(&data_020945d0, 0xa0, 0x20);
+    GXS_LoadOBJPltt(&data_0209444c, 0, 0x20);
 
     G2_SetBG1Priority(0);
     G2S_SetBG1Priority(0);
@@ -301,6 +301,6 @@ s32 dScMB_c::InitResources() {
     return 1;
 }
 
-extern "C" void *dScMB_c_classInit(void) {
+void *dScMB_c_classInit(void) {
     return new dScMB_c;
 }

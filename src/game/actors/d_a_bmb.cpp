@@ -88,14 +88,11 @@ extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern "C" {
 
 /* -- other modules -- */
-void  GiveCoins(int who, int count);
-int   SurfaceInfo_TestFlag0x20(int *si);
 /* 0x0203b0e8. Not declared in math/CalcLib.h (a shared header); callers spell it int, int. */
 int AngleDiff(int, int);
 /* The out-of-line stores of mWithMeshClsn's radius and height. */
 /* local extern: no header declares these; each is spelled as its
    definition is (d_bg_actor.cpp, d_a_ply_methods.cpp, src/). */
-int func_ov002_020ef228(dBgCh_Actr *clsn, dActor_c *other);
 int func_ov002_020e496c(daPly_c *c);
 int Math_Function_0203b14c(int *out, int a1, int a2, int a3, int a4);
 void Vec3_Lsl(Vector3 *d, const Vector3 *s, int sh);
@@ -107,6 +104,9 @@ extern signed char gCurrentSublevel;
 extern unsigned char gCurrentStarId;
 extern unsigned char gGameMode;
 }
+void GiveCoins(int who, int count);
+int SurfaceInfo_TestFlag0x20(int *si);
+int func_ov002_020ef228(dBgCh_Actr *clsn, dActor_c *other);
 
 /* ==========================================================================
  *
@@ -126,13 +126,9 @@ extern unsigned char gGameMode;
  * Historical alias: BobOmb_Spawn.
  * ======================================================================== */
 
-extern "C" {
-
 daBmb_c *daBmb_c_classInit(void)
 {
     return new daBmb_c();
-}
-
 }
 
 extern "C" SpawnInfo<daBmb_c> g_profile_BOMBHEI = {
@@ -734,7 +730,7 @@ void daBmb_c::func_ov102_0214b53c() {
                 idx = 1;
             }
             if (mCarrier->param1 == 2) {
-                idx = (u8)(idx + 2);
+                idx = (idx + 2);
             }
             Math_Function_0203b14c(mCarryOff, gBmbCarryOffsets[idx].x, 0x800, 0x3e8000, 4);
             Math_Function_0203b14c(&mCarryOff[1], gBmbCarryOffsets[idx].y, 0x800, 0x3e8000, 4);
@@ -862,7 +858,6 @@ do_call:
     mCarrier = (daPly_c *)a1;
     func_ov102_0214bd20();
 }
-
 }
 
 /* ==========================================================================

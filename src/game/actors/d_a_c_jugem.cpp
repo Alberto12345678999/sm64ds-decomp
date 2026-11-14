@@ -115,20 +115,19 @@ extern "C" {
 
 /* Helpers not declared by the included headers. */
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-int   Vec3_ApproachHorz(void *cur, const void *tgt, int maxStep);
-int   AngleDiff(int a, int b);
+int Vec3_ApproachHorz(void *cur, const void *tgt, int maxStep);
+int AngleDiff(int a, int b);
 
 /* local extern: each of these real members takes a Fix12<int> BY VALUE,
    which mwccarm passes differently at the call site than the loose scalar
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
-int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, bool loop);
+int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, fx32 d, bool loop);
 
 /* other overlays / arm9 */
-void  func_ov002_020c3e8c(void *player);
-void  func_ov002_020c3f18(void *p);
-void  func_ov002_020c3f2c(void *p);
-void  func_0201f32c(int a);
+void func_ov002_020c3e8c(void *player);
+void func_ov002_020c3f18(void *p);
+void func_ov002_020c3f2c(void *p);
 
 /* globals */
 extern dCamera_c *gCamera;                  /* the camera object */
@@ -179,8 +178,8 @@ extern daC_Jugem_c::StateFn data_ov085_021302ac;
 extern daC_Jugem_c::StateFn data_ov085_02130284;
 extern daC_Jugem_c::StateFn data_ov085_0213029c;
 extern daC_Jugem_c::StateFn data_ov085_02130274;
-
 }
+void func_0201f32c(int a);
 
 #pragma defer_codegen off
 
@@ -537,7 +536,7 @@ int daC_Jugem_c::StateLeaveMain() {
         Vec3_ApproachHorz(&mPos, &mTarget, 0x1e000);
         ApproachLinear(mPosY, mTarget.y, 0x1e000);
     }
-    if (*(unsigned short *)&mStateTimer == 0) {
+    if (mStateTimer == 0) {
         if (Sound::PlaySub(0x4a, 0x7f, 0, 0x7222, 0) != 0) {
             if (mTalkPlayer->HasFinishedTalking() == 1) {
                 MarkForDestruction();
@@ -614,7 +613,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
     p->mStateTargetY = mPosY;
     p->mStateTargetZ = mPosZ;
 
-    if (*(unsigned short *)&mStateTimer == 0) {
+    if (mStateTimer == 0) {
         Sound::PlaySub(0x4a, 0x14, 0x7f, 0x15666, 0);
     }
 
@@ -628,7 +627,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
     out.z = 0;
     in.z = 0xc8000;
     Matrix4x3_FromRotationY(&data_020a0e68, 0);
-    MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
+    MTX_MultVec43(&in, &data_020a0e68, &out);
     out.x += p->mPosX;
     out.y += p->mPosY + 0x70000;
     out.z += p->mPosZ;
@@ -812,7 +811,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
         short ang = ::Vec3_HorzAngle(&pp, &p);
         Matrix4x3_FromRotationY(&data_020a0e68, ang);
     }
-    MTX_MultVec43((Vector3 *)&z1, &data_020a0e68, (Vector3 *)&off);
+    MTX_MultVec43(&z1, &data_020a0e68, &off);
 
     p.x = p.x + off.x;
     p.y = pp.y;
@@ -850,7 +849,7 @@ int daC_Jugem_c::Render()
 
 int daC_Jugem_c::Behavior()
 {
-    DecIfAbove0_Short((unsigned short *)&mStateTimer);
+    DecIfAbove0_Short(&mStateTimer);
     if (mState[1])
         (this->*mState[1])();
     UpdatePos(0);
@@ -910,8 +909,7 @@ int daC_Jugem_c::InitResources()
    0x2e8 and installs its vtable. Reconstructed source-style name
    (historical alias LakituBro_Spawn); the exact original spelling is not
    preserved. */
-extern "C" daC_Jugem_c *daC_Jugem_c_classInit(void)
-{
+daC_Jugem_c *daC_Jugem_c_classInit(void) {
     return new daC_Jugem_c();
 }
 

@@ -96,15 +96,15 @@ u16 DecIfAbove0_Short(u16 *p);
 int RandomIntInternal(int *state);
 }
 
-extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA10() {
+daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA10() {
     return new daObjCtMecha10_c();
 }
 
-extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12L() {
+daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12L() {
     return new daObjCtMecha10_c();
 }
 
-extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12S() {
+daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12S() {
     return new daObjCtMecha10_c();
 }
 

@@ -91,13 +91,13 @@ enum {
 };
 
 extern "C" {
-extern void func_02012694(unsigned int id, const Vector3 *v);
 extern dCamera_c *gCamera;
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
+typedef void BgchInitAt_(void *self, void *act, fx32 a, fx32 b, void *d, void *e);
 }
+extern void func_02012694(unsigned int id, const Vector3 *v);
 
 daObjPowerUpItem_c::~daObjPowerUpItem_c()
 {
@@ -313,7 +313,7 @@ void daObjPowerUpItem_c::CheckPickup() {
     if (player->IsCollectingCap() != 0) return;
 
     {
-        dActor_c* held = (dActor_c*)player->mHeldObj;
+        dActor_c *held = player->mHeldObj;
         int t = (int)(held != 0);
         if (t != 0) {
             int b = (int)(held->actorID == ACTOR_MONKEY_THIEF);
@@ -348,8 +348,8 @@ void daObjPowerUpItem_c::CheckPickup() {
         MarkForDestruction();
         return;
     case CHARACTER_YOSHI:
-        if ((dActor_c*)player->mObjInMouth != 0) {
-            dActor_c* inMouth = (dActor_c*)player->mObjInMouth;
+        if (player->mObjInMouth != 0) {
+            dActor_c *inMouth = player->mObjInMouth;
             if (inMouth->actorID == ACTOR_MONKEY_STAR) return;
         }
         player->InitFireYoshi();
@@ -497,8 +497,7 @@ s32 daObjPowerUpItem_c::OnYoshiTryEat()
  * RTTI, allocation size, vtable identity, and the POWER_UP_ITEM registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: PowerFlower_Spawn. */
-extern "C" daObjPowerUpItem_c *daObjPowerUpItem_c_classInit()
-{
+daObjPowerUpItem_c *daObjPowerUpItem_c_classInit() {
     return new daObjPowerUpItem_c();
 }
 

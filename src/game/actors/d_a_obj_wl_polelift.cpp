@@ -53,8 +53,7 @@ extern Vector3 data_ov026_02113a9c;
 extern PoleliftModelFile data_ov026_02113ea0;
 }
 
-extern "C" daObjWlPolelift_c *daObjWlPolelift_c_classInit()
-{
+daObjWlPolelift_c *daObjWlPolelift_c_classInit() {
     return new daObjWlPolelift_c();
 }
 

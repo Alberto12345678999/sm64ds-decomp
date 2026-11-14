@@ -56,13 +56,14 @@ struct BasabasaAnimationFileHandle : SharedFilePtr {
 
 /* arm9 C helpers with no shared header. Vec3_Asr's definition takes a
  * file-local struct, so no shared spelling agrees with it yet. */
-extern "C" {
-void func_ov002_020aea30(void *self, void *actor, void *collision);
+struct Aea30C;
+void func_ov002_020aea30(Aea30C *self, dActor_c *actor, dBgCh_Actr *collision);
+
 void func_02012694(unsigned int id, const Vector3 *pos);
+extern "C" {
 void MTX_MultVec43(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 }
-
 
 extern BasabasaAnimationFileHandle data_ov065_0211d690; /* flying animation */
 extern BasabasaModelFilePtr data_ov065_0211d698;        /* flying model */
@@ -96,7 +97,7 @@ void daBasabasa_c::CheckTouch() {
         mIsFlying = 1;
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
-        func_ov002_020aea30(this, p, 0);
+        func_ov002_020aea30((Aea30C *)this, p, 0);
         func_02012694(0x112, &mCamSpacePos);
         return;
     }
@@ -113,7 +114,7 @@ void daBasabasa_c::CheckTouch() {
         mDeathState = 4;
         mIsFlying = 1;
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
-        func_ov002_020aea30(this, p, 0);
+        func_ov002_020aea30((Aea30C *)this, p, 0);
         func_02012694(0x112, &mCamSpacePos);
         return;
     }
@@ -121,7 +122,7 @@ void daBasabasa_c::CheckTouch() {
         mIsFlying = 1;
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 3;
-        func_ov002_020aea30(this, p, 0);
+        func_ov002_020aea30((Aea30C *)this, p, 0);
         func_02012694(0x112, &mCamSpacePos);
         return;
     }
@@ -129,13 +130,13 @@ void daBasabasa_c::CheckTouch() {
         mIsFlying = 1;
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
-        func_ov002_020aea30(this, p, 0);
+        func_ov002_020aea30((Aea30C *)this, p, 0);
         func_02012694(0x112, &mCamSpacePos);
         return;
     }
     if (flags & 0x20) {
         mDeathState = 1;
-        func_ov002_020aea30(this, p, 0);
+        func_ov002_020aea30((Aea30C *)this, p, 0);
         func_02012694(0x112, &mCamSpacePos);
         return;
     }
@@ -160,7 +161,7 @@ void daBasabasa_c::CheckTouch() {
     if (JumpedOnByPlayer(mdCcAc_c, *p) != 0) {
         p->Bounce(0x28000);
         mDeathState = 1;
-        func_ov002_020aea30(this, p, 0);
+        func_ov002_020aea30((Aea30C *)this, p, 0);
         func_02012694(0x112, &mCamSpacePos);
         return;
     }
@@ -184,7 +185,7 @@ int daBasabasa_c::ExecuteReturn() {
     if (dist > 0x1f4000 || mWithMeshClsn.IsOnWall() != 0) {
         mTargetAngleY = Vec3_HorzAngle(&mPos, (Vector3 *)&mHomePosX);
         /* The states read mStateTimer unsigned (ldrh). */
-        if ((u16)mStateTimer < 0x14)
+        if (mStateTimer < 0x14)
             mStateTimer = 0x14;
     }
     if (dist < 0x1f4000 && (mFlags & 8)) {
@@ -210,7 +211,7 @@ int daBasabasa_c::ExecuteReturn() {
     v.z = 0xa000;
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     MTX_MultVec43(&v, &data_020a0e68, (Vector3 *)&mSpeedX);
-    if ((u16)mStateTimer == 0) {
+    if (mStateTimer == 0) {
         SetState(&data_ov065_0211d6f0);
     }
     return 1;
@@ -240,7 +241,7 @@ int daBasabasa_c::ExecuteChase() {
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mPrevAngleX);
     MTX_MultVec43(&v, &data_020a0e68, (Vector3 *)&mSpeedX);
-    if (Vec3_Dist(&mPos, (Vector3 *)&mHomePosX) > 0x5dc000 || (u16)mStateTimer == 0) {
+    if (Vec3_Dist(&mPos, (Vector3 *)&mHomePosX) > 0x5dc000 || mStateTimer == 0) {
         mPerchTimer = 0;
         SetState(&data_ov065_0211d6f0);
     }
@@ -268,7 +269,7 @@ int daBasabasa_c::ExecuteDrop() {
     if (p != 0) {
         floorY = p->mGroundY + 0x50000;
     }
-    if ((u16)mStateTimer == 0 || floorY > posY) {
+    if (mStateTimer == 0 || floorY > posY) {
         SetState(&data_ov065_0211d6e0);
     }
     return 1;
@@ -379,7 +380,7 @@ int daBasabasa_c::Behavior() {
         UpdateModelTransform();
         return 1;
     }
-    DecIfAbove0_Short((unsigned short *)&mStateTimer);
+    DecIfAbove0_Short(&mStateTimer);
     if (mCurrentState->execute != 0)
         (this->*mCurrentState->execute)();
     if (mCurrentState == &data_ov065_0211d6e0 || mCurrentState == &data_ov065_0211d6f0) {
@@ -462,7 +463,7 @@ s32 daBasabasa_c::OnYoshiTryEat() {
     return 4;
 }
 
-extern "C" daBasabasa_c *daBasabasa_c_classInit() {
+daBasabasa_c *daBasabasa_c_classInit() {
     return new daBasabasa_c();
 }
 

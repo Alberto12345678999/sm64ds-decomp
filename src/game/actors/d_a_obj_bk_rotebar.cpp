@@ -51,7 +51,7 @@ extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 }
 
-extern "C" daObjBk_Rotebar_c *daObjBk_Rotebar_c_classInit() {
+daObjBk_Rotebar_c *daObjBk_Rotebar_c_classInit() {
     return new daObjBk_Rotebar_c();
 }
 

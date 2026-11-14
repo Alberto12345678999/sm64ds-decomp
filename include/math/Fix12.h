@@ -17,12 +17,12 @@
  * returned in a single register, bit-identical to an int, and callees that read
  * one read it straight out of that register. Where a class-typed parameter
  * contradicts those bytes, the bytes win and the honest spelling is the scalar
- * Fix12i -- see wall 6az, MEASURED 2026-10-22, where both dExtAnmModel_c::SetAnim
+ * fx32 -- see wall 6az, MEASURED 2026-10-22, where both dExtAnmModel_c::SetAnim
  * and dExtBlendAnmModel_c::SetAnim turned out to be real methods once the name
  * stopped claiming Fix12<int>.
  *
  * include/types.h reserves this name for exactly this reconstruction; the
- * scalar spelling stays Fix12i.
+ * scalar spelling is the SDK's fx32.
  *
  * Layout is a single T (the raw 20.12 bits): every matched function that
  * passes one does so in a single register, bit-identical to an int.
@@ -38,7 +38,7 @@ struct Fix12 {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Fix12i_size_must_be_4[sizeof(Fix12<int>) == 4 ? 1 : -1];
+typedef char Fix12_int_size_must_be_4[sizeof(Fix12<int>) == 4 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */

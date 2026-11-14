@@ -19,9 +19,6 @@
  *   The ROM calls func_0201267c.
  * - Assigning mMeshCollider.beforeClsnCallback is -4 bytes in
  *   InitResources (0x1c8 -> 0x1c4). The ROM calls dBgW::SetBeforeClsnCallback.
- * - Naming mAnmModel.currFrame and .file in StateWalk reorders 6 words (the
- *   straight-walk file loads after the frame). c+0x378 / c+0x380 and the
- *   ternary stay.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -117,7 +114,7 @@ struct PatrolStep {
 };
 extern PatrolStep data_ov027_02113a1c[];
 
-extern "C" daPgDfdr_c *daPgDfdr_c_classInit() {
+daPgDfdr_c *daPgDfdr_c_classInit() {
     return new daPgDfdr_c();
 }
 
@@ -137,7 +134,7 @@ s32 daPgDfdr_c::InitResources() {
                              *(BTP_File *)data_ov027_02113c94.filePtr);
     mTextureSequence.SetFile(*(BTP_File *)data_ov027_02113c94.filePtr, 0, 0x1000, 0);
 
-    mAngleY = (short)0xdd30;
+    mAngleY = 0xdd30;
     mPrevAngleY = mAngleY;
     mPosX = 0x6c4000;
     mPosY = 0xcb2000;
@@ -288,18 +285,12 @@ int daPgDfdr_c::StateWalk() {
     }
     UpdatePos(&mdCcAc_c);
     {
-        /* currFrame is +0x378 and the BCA is +0x380. Naming them reorders
-           6 words; the ternary keeps the straight-walk file in the compare. */
-        char *c = (char *)this;
-        int frameRaw = *(int *)(c + 0x378);
-        int walkAnim = (int)data_ov027_02113c74.filePtr;
-        int curAnim = walkAnim ? *(int *)(c + 0x380) : *(int *)(c + 0x380);
-        unsigned int frame = (unsigned int)(frameRaw << 4) >> 0x10;
-        if (curAnim == walkAnim) {
+        unsigned short frame = (unsigned short)(mAnmModel.currFrame >> 12);
+        if (mAnmModel.file == (BCA_File *)data_ov027_02113c74.filePtr) {
             if (frame == 0xa || frame == 0x16) {
                 func_0201267c(0xf3, &mCamSpacePos);
             }
-        } else if (curAnim == (int)data_ov027_02113c8c.filePtr) {
+        } else if (mAnmModel.file == (BCA_File *)data_ov027_02113c8c.filePtr) {
             if (frame == 9 || frame == 0x16) {
                 func_0201267c(0xf3, &mCamSpacePos);
             }

@@ -28,8 +28,8 @@ struct Vector3_16;
 /* local extern: no header declares these two. */
 extern "C" {
 int AngleDiff(int, int);
-short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 }
+short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 
 /* ov085 statics. data_ov085_0212f280 keeps include/decl_common.h's
  * spelling, so this file adds no new reading of it. */
@@ -202,7 +202,7 @@ int daPeach_c::InitState0() {
 
 int daPeach_c::State0() {
     mAnmModel.SetAnim((BCA_File *)gPeachJumpAnimationFile.filePtr, 0, 0x1000, 0);
-    ((dExtFrameCtrl_c *)&mAnmModel)->SetFlags(0x40000000);
+    mAnmModel.SetFlags(0x40000000);
     mHorzSpeed = 0x4000;
     mVertSpeed = 0xa000;
     mStateValue = 4;
@@ -266,8 +266,8 @@ int daPeach_c::State3() {
 
 int daPeach_c::InitState1() {
     mAnmModel.SetAnim((BCA_File *)gPeachWaitAnimationFile.filePtr, 0, 0x1000, 0);
-    ((dExtFrameCtrl_c *)&mAnmModel)->currFrame = 0;
-    ((dExtFrameCtrl_c *)&mAnmModel)->Advance();
+    mAnmModel.currFrame = 0;
+    mAnmModel.Advance();
     mTalkState = 1;
     mStateValue = 1;
     return 1;
@@ -370,7 +370,7 @@ int daPeach_c::InitResources() {
 }
 
 /* PEACH_PRINCESS factory. */
-extern "C" daPeach_c *daPeach_c_classInit(void) {
+daPeach_c *daPeach_c_classInit(void) {
     return new daPeach_c();
 }
 

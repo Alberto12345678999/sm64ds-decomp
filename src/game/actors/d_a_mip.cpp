@@ -24,8 +24,6 @@
  *   spelled them through pointer locals and a (long long)(int)& launder
  *   because the expanded `x = x | y` form changes the size; the compound form
  *   reproduces (#821).
- * - StateIdleMain still reads mStateTimer as `*(u16 *)&`: the ROM loads it
- *   with ldrh, and dEnemyBase_c declares it s16.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daMip_c_AssetId {
@@ -61,10 +59,8 @@ namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
 }
 
-extern "C" {
-
 /* ground probe / collision */
-int   SurfaceInfo_TestFlag0x20(void *);
+int SurfaceInfo_TestFlag0x20(int *);
 
 /* dActor_c / dEnemyBase_c, reached by their ROM names.
    dActor_c::ClosestPlayer and dActor_c::FindWithID are deliberately NOT here:
@@ -83,22 +79,20 @@ int   SurfaceInfo_TestFlag0x20(void *);
 
 
 /* maths and the still-unnamed helpers */
-void Vec3_Sub(Vector3 *, const Vector3 *, const Vector3 *);
-int VEC_Mag(const Vector3 *);
-int   AngleDiff(int, int);
-void  Matrix4x3_FromTranslation(void *, int, int, int);
-void  Matrix4x3_FromRotationY(void *, int);
-void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *, int, int, int);
-void MTX_Concat43(void *, void *, void *);
-void MTX_Concat33(void *, void *, void *);
-void MTX_MultVec43(Vector3 *, Matrix4x3 *, Vector3 *);
+extern "C" void Vec3_Sub(Vector3 *, const Vector3 *, const Vector3 *);
+extern "C" int VEC_Mag(const Vector3 *);
+extern "C" int AngleDiff(int, int);
+extern "C" void Matrix4x3_FromTranslation(void *, int, int, int);
+extern "C" void Matrix4x3_FromRotationY(void *, int);
+extern "C" void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *, int, int, int);
+extern "C" void MTX_Concat43(void *, void *, void *);
+extern "C" void MTX_Concat33(void *, void *, void *);
+extern "C" void MTX_MultVec43(Vector3 *, Matrix4x3 *, Vector3 *);
 u8 NumStars(void);
-int func_02013890(int, int);
+extern "C" int func_02013890(int, int);
 void func_02013944(void);
 void func_02012694(unsigned int id, const Vector3 *pos);
-void  func_0203c178(void *, int, int, int);
-
-}
+extern "C" void func_0203c178(void *, int, int, int);
 
 /* The state records at 0x0213003c..0x021300bc are 8-byte Itanium
    pointer-to-member-function constants, so SetState reaches one through a real
@@ -238,7 +232,7 @@ int daMip_c::TestWaterBelow()
     rg.SetObjAndPos(*(::Vector3 *)&v, this);
     if (rg.DetectClsn()) {
         mFloorY = rg.clsnY;
-        if (SurfaceInfo_TestFlag0x20(&rg.surface))
+        if (SurfaceInfo_TestFlag0x20((int *)&rg.surface))
             return 1;
     }
     return 0;
@@ -351,7 +345,7 @@ int daMip_c::StateTalkMain()
     unsigned int id;
 
     player = mSaveTalkPlayer;
-    pq = (int *)&player->mPosX;
+    pq = &player->mPosX;
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
@@ -445,7 +439,7 @@ int daMip_c::StateReleasedMain()
         if (o != 0) {
             if (IsPlayerActor(o)) {
                 mSaveTalkPlayer = o;
-                o = static_cast<daPly_c *>(mSaveTalkPlayer);
+                o = mSaveTalkPlayer;
                 if (o->StartTalk(*this, 0) != 0) {
                     SetState(&data_ov085_021306dc);
                 }
@@ -499,7 +493,7 @@ int daMip_c::StateCaughtMain()
 
     if (mActionStep == 0) {
         {
-            int *ps = (int *)&pl->mPosX;
+            int *ps = &pl->mPosX;
             pv.x = ps[0];
             pv.y = ps[1];
             pv.z = ps[2];
@@ -969,7 +963,7 @@ int daMip_c::StateIdleMain()
         }
     }
 
-    if (mActionStep == 0 && *(u16 *)&mStateTimer == 0) {
+    if (mActionStep == 0 && mStateTimer == 0) {
         mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)&mIdlePosX);
         mTargetAngY += 0x1800 - ((r & 3) << 12);
         mAnmModel.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
@@ -1140,12 +1134,13 @@ int daMip_c::Render()
     mScaleY = mScaleZ;
 
     {
-        /* modelFile, then materials.
-           +0x20 of each 0x30-byte material is still pad in BMD_Material;
-           walking it as BMD_Material:: does not match this loop. */
-        int **base = (int **)&mAnmModel.data;
-        BMD_File *modelData = (BMD_File *)base[0];
-        char* mat = (char*)base[1];
+        /* modelFile, then materials. +0x20 is a word of the 0x30-byte runtime
+           material record (MaterialState, still local to
+           src/engine/model/ModelComponents.cpp), not of BMD_Material, whose
+           file layout dExtModel_c gives the pointer. Raw until it has a header. */
+        ModelComponents *components = &mAnmModel.data;
+        BMD_File *modelData = components->modelFile;
+        char *mat = (char *)components->materials;
         for (unsigned int i = 0; i < modelData->numMaterials; i++) {
             *(int*)(mat + 0x20) = mMaterialColor;
             mat += 0x30;
@@ -1211,7 +1206,9 @@ int daMip_c::Behavior()
        function would come out 8 bytes longer. The ROM emits no cleanup for either of
        these, which is itself the evidence that they were never Vector3s: they are
        scratch x/y/z the code fills and reads back. */
-    typedef volatile struct { Fix12i x, y, z; } Vec3Scratch;
+    typedef volatile struct {
+        fx32 x, y, z;
+    } Vec3Scratch;
 
     extern s8 gCurrentSublevel;
     extern s8 gCurrentAreaId;
@@ -1330,8 +1327,8 @@ int daMip_c::Behavior()
 
     if (mCatchState != 0) {
         void* p = *(void**)&mState;
-        if (p != (void*)&data_ov085_021306ac && p != (void*)&data_ov085_0213068c &&
-            p != (void*)&data_ov085_021306bc && p != (void*)&data_ov085_021306dc) {
+        if (p != &data_ov085_021306ac && p != &data_ov085_0213068c && p != &data_ov085_021306bc &&
+            p != &data_ov085_021306dc) {
             SetState(&data_ov085_021306ac);
             mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000,
                               0);
@@ -1339,7 +1336,7 @@ int daMip_c::Behavior()
         mHorzSpeed = 0;
     }
 
-    DecIfAbove0_Short((u16 *)&mStateTimer);
+    DecIfAbove0_Short(&mStateTimer);
 
     {
         daMip_cSelf *self = (daMip_cSelf *)c;
@@ -1359,17 +1356,17 @@ int daMip_c::Behavior()
         UpdateMirrorShadow();
 
     if (!IsFlagSet(this, 0x4000)) {
-        if (*(void **)&mState != (void *)&data_ov085_021306ac || mCatchState != 0)
+        if (*(void **)&mState != &data_ov085_021306ac || mCatchState != 0)
             UpdatePos(&mdCcAc_c);
         mAngleX = mPrevAngleX;
         mAngleY = mPrevAngleY;
         mAngleZ = mPrevAngleZ;
         UpdateWMClsn(mWithMeshClsn, 0);
-        if (*(void **)&mState != (void *)&data_ov085_021306ac)
+        if (*(void **)&mState != &data_ov085_021306ac)
             UpdateGrab();
     }
 
-    if (*(void**)&mState != (void*)&data_ov085_021306ac) {
+    if (*(void **)&mState != &data_ov085_021306ac) {
         mdCcAc_c.Clear();
         mdCcAc_c.Update();
     }
@@ -1521,8 +1518,7 @@ s32 daMip_c::OnYoshiTryEat() {
 }
 
 /* Registry factory for the MIP profile. `return new daMip_c()`. */
-extern "C" daMip_c *daMip_c_classInit(void)
-{
+daMip_c *daMip_c_classInit(void) {
     return new daMip_c();
 }
 

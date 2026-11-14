@@ -43,20 +43,20 @@ typedef char KiFuneClsnFileHandle_size_must_be_8[sizeof(KiFuneClsnFileHandle) ==
 /* local extern: no shared header declares these. */
 extern "C" {
 
-extern int IsStarCollected(int a, int b);
 extern unsigned char gCurrentStarId;
 }
+extern int IsStarCollected(int a, int b);
 
 /* Actor 0x39 is the rocking hull, which uses model/collision index 0. */
 static inline int IsRockingHull(daObjKi_Fune_c *ship) {
     return ship->actorID == 0x39;
 }
 
-extern "C" daObjKi_Fune_c *daObjKi_Fune_c_classInit_KI_FUNE() {
+daObjKi_Fune_c *daObjKi_Fune_c_classInit_KI_FUNE() {
     return new daObjKi_Fune_c();
 }
 
-extern "C" daObjKi_Fune_c *daObjKi_Fune_c_classInit_KI_FUNE_UP() {
+daObjKi_Fune_c *daObjKi_Fune_c_classInit_KI_FUNE_UP() {
     return new daObjKi_Fune_c();
 }
 

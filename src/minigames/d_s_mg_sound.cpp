@@ -143,7 +143,6 @@ extern int sSoundScrollRowLength[];
 /* Note frames use indices 0 through 6. The final stored timing value in each
  * array is retained without asserting its original purpose or declared bound. */
 extern const u16 sSoundNoteClosingTimes[8] = {2, 2, 3, 4, 4, 4, 4, 4};
-unsigned int func_02012174(u32 bank, u32 id);
 extern const u16 sSoundNoteOpeningTimes[8] = {2, 2, 3, 4, 4, 4, 6, 4};
 /* Parallel playback selectors and sound IDs retain all 42 stored entries.
  * Some entries are not exercised by the current deal logic. */
@@ -174,6 +173,7 @@ void DecompressLZ16(void *src, void *dst);
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
 }
+unsigned int func_02012174(u32 bank, u32 id);
 
 /* The note and pop dispatch tables belong to this scene. Declaration
  * order preserves the cartridge static-initialization sequence. */
@@ -266,7 +266,7 @@ inline dScMgSound_c::dScMgSound_c() {}
 
 /* The MG_SOUND registry factory. It sits directly after InitResources and
    installs this class's vtable, so it was compiled with the class. */
-extern "C" void *dScMgSound_c_classInit(void) {
+void *dScMgSound_c_classInit(void) {
     return new dScMgSound_c;
 }
 
@@ -285,7 +285,7 @@ s32 dScMgSound_c::InitResources() {
     file = LoadFile(ASSET_D_2D_MG_BG_SOUND2_NCG_BIN);
     G2S_SetBG2ControlText(GX_BG_SCRSIZE_TEXT_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE_0x1000,
                           GX_BG_CHARBASE_0x14000);
-    DecompressLZ16(file, (void *)G2S_GetBG2CharPtr());
+    DecompressLZ16(file, G2S_GetBG2CharPtr());
     Deallocate(file);
 
     file = LoadFile(ASSET_D_2D_MG_BG_SOUND2_NCL_BIN);

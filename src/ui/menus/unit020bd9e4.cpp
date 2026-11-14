@@ -35,7 +35,6 @@
  * the reverse of source order, so the highest-address function is written
  * first here and the functions come out in ROM order.
  *
- * The functions keep their ROM names under C linkage.
  */
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -43,14 +42,12 @@
 #include "nitro/fx/fx_cp.h"
 #include "math/ProgressRatio.h"
 
-extern "C" {
-
-extern void func_0204f934(NNSSndHandle *);
-extern void func_0204f94c(NNSSndHandle *);
-extern int func_0204fa2c(NNSSndHandle *, int);
-extern int func_02051f1c(void *, unsigned int, int);
-extern void *func_ov007_020c3df4(const char *name, int size);
-extern void func_ov007_020c3d1c(void *);
+extern "C" void func_0204f934(NNSSndHandle *);
+extern "C" void func_0204f94c(NNSSndHandle *);
+extern "C" int func_0204fa2c(NNSSndHandle *, int);
+extern "C" int func_02051f1c(void *, unsigned int, int);
+extern "C" void *func_ov007_020c3df4(const char *name, int size);
+extern "C" void func_ov007_020c3d1c(void *);
 
 extern int data_ov007_02103134[];
 extern char data_ov007_02103218[]; /* "sound" */
@@ -127,7 +124,7 @@ int *MenuSound_UpdateLoops(void) {
 }
 
 /* Tail-call veneer: ldr ip, [pc]; bx ip; .word func_ov007_020be098. */
-int func_ov007_020bdeb0(int idx) {
+extern "C" int func_ov007_020bdeb0(int idx) {
     return func_ov007_020be098(idx);
 }
 
@@ -249,12 +246,11 @@ void func_ov007_020bda38(int v) {
     NNS_SndPlayerSetTrackPitch(handle, 0xf, shift);
 }
 
-void func_ov007_020bd9e4(int arg) {
+extern "C" void func_ov007_020bd9e4(int arg) {
     int i;
     for (i = 0; i < 0x39; i++) {
         if (data_ov007_02104bbc[i].player != 0) {
             func_0204fa2c(&data_ov007_02104bbc[i], arg);
         }
     }
-}
 }

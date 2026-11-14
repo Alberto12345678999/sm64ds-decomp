@@ -149,8 +149,7 @@ int daObjEwmIceBlock_c::InitResources()
     return 1;
 }
 
-extern "C" daObjEwmIceBlock_c *daObjEwmIceBlock_c_classInit()
-{
+daObjEwmIceBlock_c *daObjEwmIceBlock_c_classInit() {
     return new daObjEwmIceBlock_c();
 }
 

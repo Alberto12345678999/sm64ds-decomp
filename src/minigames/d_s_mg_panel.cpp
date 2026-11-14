@@ -23,8 +23,8 @@
  * the member spelling is byte-identical (#821). The named locals those drafts
  * carried shifted the per-TU @NNN uniquifier, which the manifest re-keys.
  *
- * Leftover raw site: ResetRound zeroes 0x4ec2 and 0x466c, pads that nothing
- * else reads or writes, so there is no evidence to name them.
+ * ResetRound zeroes 0x4ec2 and 0x466c and nothing else reads or writes
+ * them, so they keep the neutral names unk_4ec2 and unk_466c.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -196,8 +196,8 @@ void dScMgPanel_c::Scroll_Update() {
             y = ((r << 4) >> 15) + 0xb0;
             Particle_Spawn(x << 12, y << 12, 0);
 
-            r = (u32)RandomIntInternal(&data_0209d4b8.value);
-            r2 = (u32)RandomIntInternal(&data_0209d4b8.value);
+            r = RandomIntInternal(&data_0209d4b8.value);
+            r2 = RandomIntInternal(&data_0209d4b8.value);
             x = (((r >> 16 & 0x7fff) * 7) >> 15) * 5;
             y = ((((r2 >> 16) & 0x7fff) << 4) >> 15) + 0xb0;
             Particle_Spawn((0x100 - x) << 12, y << 12, 0);
@@ -1075,7 +1075,7 @@ void dScMgPanel_c::DealPuzzle() {
         }
         cnt2 = mFlips;
         for (j = 0; j < cnt2; j++) {
-            u32 rnd = (u32)RandomIntInternal(&data_0209d4b8.value);
+            u32 rnd = RandomIntInternal(&data_0209d4b8.value);
             u32 s = (rnd >> 16) & 0x7fff;
             v = (cnt1 * s) >> 15;
             FlipAt(v);
@@ -1113,7 +1113,7 @@ void dScMgPanel_c::ScramblePanels() {
     extern u8 sPanelScrambleFlipEnabledAlt[];
     extern u8 sPanelScrambleFlipsAlt[];
     extern u8 sPanelPuzzleSizes[];
-    int t = (int)mLevel;
+    int t = mLevel;
     if (IsAltVariant() != 0) {
         int nv;
         if (t >= 0xf) {
@@ -1209,8 +1209,6 @@ void dScMgPanel_c::ClearGrid() {
    panel arrays, the state word, the pick list (0xff = no pick) and the
    cursor, then hand off to the three subsystem resets. */
 void dScMgPanel_c::ResetRound() {
-    char *scene = (char *)this;
-    /* 0x4ec2 and 0x466c are pads that only this function writes. */
     int i;
     for (i = 0; i < 0x24; i++) {
         mX[i] = 0;
@@ -1227,7 +1225,7 @@ void dScMgPanel_c::ResetRound() {
     mState = 0;
     mBusy = 0;
     mResultTimer = 0;
-    *(s16 *)(scene + 0x4ec2) = 0;
+    unk_4ec2 = 0;
     mFlipCount = 0;
     mMovesUsed = 0;
     mCredits = 0;
@@ -1242,7 +1240,7 @@ void dScMgPanel_c::ResetRound() {
     mSlide = 0;
     mSlideY = 0;
     mSlideVel = 0;
-    *(int *)(scene + 0x466c) = 0;
+    unk_466c = 0;
     mHold = 0;
     mSlideStep = 0;
     mSlideFlag = 0;
@@ -1668,7 +1666,7 @@ s32 dScMgPanel_c::InitResources() {
 
     {
         void *subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN);
-        DecompressLZ16(subFile, (void *)((char *)G2S_GetBG3CharPtr() + 0x4000));
+        DecompressLZ16(subFile, ((char *)G2S_GetBG3CharPtr() + 0x4000));
         Deallocate(subFile);
 
         subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCL_BIN);
@@ -1735,7 +1733,7 @@ s32 dScMgPanel_c::InitResources() {
  * allocation size, vtable identity, and the MG_PANEL registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgPuzzlePanelPuzzlePanic_Spawn. */
-extern "C" dScMgPanel_c *dScMgPanel_c_classInit() {
+dScMgPanel_c *dScMgPanel_c_classInit() {
     return new dScMgPanel_c;
 }
 

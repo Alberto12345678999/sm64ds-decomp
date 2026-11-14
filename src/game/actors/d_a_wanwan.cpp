@@ -78,7 +78,6 @@ void MTX_MultVec43(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *v, int s);
-short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 int AngleDiff(int a, int b);
 int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 /* local extern: no header this file includes declares it, and it must keep C
@@ -86,6 +85,7 @@ int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
  * the position has reached the target. */
 s32 Vec3_ApproachHorz(Vector3 *out, Vector3 *target, s32 maxStep);
 }
+short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 
 namespace cstd {
 s16 atan2(s32, s32);
@@ -94,7 +94,7 @@ s16 atan2(s32, s32);
 #define SetChompAnim(self, bca) \
     (self)->mAnmModel.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
 
-extern "C" daWanwan_c *daWanwan_c_classInit() {
+daWanwan_c *daWanwan_c_classInit() {
     return new daWanwan_c();
 }
 

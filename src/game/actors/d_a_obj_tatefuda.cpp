@@ -133,7 +133,6 @@ extern char *func_ov002_020e496c(daPly_c *p);
 extern void Vec3_Lsl(Vector3 *d, const Vector3 *s, int sh);
 extern short data_ov002_020ff0d0[];
 extern Vector3 data_ov002_020ff0d4[];
-extern void func_02012694(unsigned int a, void *b);
 
 extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
 extern u8 data_0209d660;
@@ -153,6 +152,7 @@ typedef void BgchInitAt_(void *self, dActor_c *a, s32 radius, s32 height, Vector
                          Vector3_16 *v2);
 extern CLPS_Block data_ov002_0210d714;
 }
+extern void func_02012694(unsigned int a, const Vector3 *b);
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 28 -- daObjTatefuda_c_classInit, 0x020bc3c8, size 0x4c */
@@ -167,8 +167,7 @@ extern CLPS_Block data_ov002_0210d714;
  * hand: fBase_c::operator new(0x5a4), dBgActor_c's base constructor, the
  * vptr store, then the dCcAc_c, dExtShadowModel_c and dBgCh_Actr member
  * constructors in declaration order. */
-extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
-{
+daObjTatefuda_c *daObjTatefuda_c_classInit(void) {
     return new daObjTatefuda_c;
 }
 
@@ -211,7 +210,7 @@ int daObjTatefuda_c::InitResources()
     int py2 = py + 0x64000;
     VecFx32 v = {px, py2, pz};
     dBgCh_Gnd rg;
-    rg.SetObjAndPos(*(Vector3*)&v, (dActor_c*)0);
+    rg.SetObjAndPos(*(Vector3 *)&v, 0);
     if (rg.DetectClsn() != 0)
         mPosY = rg.clsnY;
 
@@ -295,12 +294,12 @@ int daObjTatefuda_c::Behavior()
             u32 *fp;
             AttachToHolder();
             mClipRadius = 0x20000;
-            fp = (u32 *)&mFlags;
+            fp = &mFlags;
             *fp = *fp | 0x4000000;
         } else {
             u32 *fp;
             mClipRadius = 0x10000;
-            fp = (u32 *)&mFlags;
+            fp = &mFlags;
             *fp = *fp & ~0x4000000;
         }
     }
@@ -329,8 +328,8 @@ int daObjTatefuda_c::Behavior()
 
     if (mBreakTimer != 0) {
         int x, y, z;
-        if (((dBgW *)&mMeshCollider)->IsEnabled())
-            ((dBgW *)&mMeshCollider)->Disable();
+        if (mMeshCollider.IsEnabled())
+            mMeshCollider.Disable();
         x = mPosX;
         z = mPosZ;
         y = mPosY + 0x50000;
@@ -338,8 +337,8 @@ int daObjTatefuda_c::Behavior()
         ((int *)&v)[1] = y;
         ((int *)&v)[2] = z;
         if (DecIfAbove0_Byte(&mBreakTimer) != 0) {
-            *(void **)&mParticleHandle1 =
-                (void *)Particle::System::New(mParticleHandle1, kPtclDeathA, v.x, v.y, v.z, 0, 0);
+            mParticleHandle1 =
+                Particle::System::New(mParticleHandle1, kPtclDeathA, v.x, v.y, v.z, 0, 0);
             mParticleHandle2 =
                 Particle::System::NewCleanParticle(mParticleHandle2, kPtclDeathB, v.x, v.y, v.z, 0);
         } else {
@@ -399,8 +398,8 @@ int daObjTatefuda_c::Render() {
 /* recovered: named members + shared header, real C++ method */
 int daObjTatefuda_c::CleanupResources()
 {
-    if (((dBgW *)&mMeshCollider)->IsEnabled()) {
-        ((dBgW *)&mMeshCollider)->Disable();
+    if (mMeshCollider.IsEnabled()) {
+        mMeshCollider.Disable();
     }
     SignPost_ModelFile.Release();
     SignPost_ClsnFile.Release();
@@ -452,8 +451,8 @@ void daObjTatefuda_c::Carried()
         }
     }
 
-    if (((dBgW *)&mMeshCollider)->IsEnabled()) {
-        ((dBgW *)&mMeshCollider)->Disable();
+    if (mMeshCollider.IsEnabled()) {
+        mMeshCollider.Disable();
     }
 }
 
@@ -510,7 +509,7 @@ void daObjTatefuda_c::Thrown()
         found = static_cast<daPly_c *>(dActor_c::FindWithID(id));
         if (found != 0) {
             if (found != mLastHolder) {
-                b = ((dActor_c *)found)->actorID;
+                b = (found)->actorID;
                 b = b == ACTOR_PLAYER;
                 if (b) {
                     vec.x = mPosX;
@@ -524,8 +523,8 @@ void daObjTatefuda_c::Thrown()
 
     ApproachLinear(mHorzSpeed, 0, 0x555);
 
-    if (((dBgW *)&mMeshCollider)->IsEnabled() != 0) {
-        ((dBgW *)&mMeshCollider)->Disable();
+    if (mMeshCollider.IsEnabled() != 0) {
+        mMeshCollider.Disable();
     }
 
     b = mFlags & 8;
@@ -571,8 +570,8 @@ void daObjTatefuda_c::Dropped(){
         Kill();
     } else {
         RebuildModelMatrix();
-        if (((dBgW *)&mMeshCollider)->IsEnabled())
-            ((dBgW *)&mMeshCollider)->Disable();
+        if (mMeshCollider.IsEnabled())
+            mMeshCollider.Disable();
     }
 }
 
@@ -654,7 +653,7 @@ void daObjTatefuda_c::Talk()
     param = param1;
     player = mTalkingPlayer;
     if (param != 0xffff) {
-        msgId = (u16)param;
+        msgId = param;
     }
     /* The raised message anchor. The horizontal pair is read first and the
        raised height last: that order is what puts the 0x60 load in the gap the
@@ -679,13 +678,12 @@ void daObjTatefuda_c::Talk()
     tz = mPosZ;
     tgt.z = tz;
 
-
-    ang = (s32) * (u16 *)&mAngleY;
+    ang = *(u16 *)&mAngleY;
     sinV = FX_SinIdx(ang >> 4);
     tx = tx + FX_MUL(scale, sinV);
     tgt.x = tx;
 
-    ang = (s32) * (u16 *)&mAngleY;
+    ang = *(u16 *)&mAngleY;
     cosV = FX_CosIdx(ang >> 4);
     tz = tz + FX_MUL(scale, cosV);
     tgt.z = tz;
@@ -705,29 +703,25 @@ void daObjTatefuda_c::Talk()
         case 0:
             if (Vec3_HorzDist(&plPos, &tgt) < 0x32000) {
                 talkStep = &mTalkStep;
-                *talkStep = (u8)(*talkStep + 1);
+                *talkStep = (*talkStep + 1);
             } else if (ApproachLinear(
                            player->mAngleY,
                            Vec3_HorzAngle(&plPos, &tgt),
                            0x800)
                        != 0) {
                 talkStep = &mTalkStep;
-                *talkStep = (u8)(*talkStep + 1);
+                *talkStep = (*talkStep + 1);
                 player->func_ov002_020bec9c(1, 0, 0x1000, 0);
             }
             break;
         case 1:
             if (Vec3_ApproachHorz(&player->mPos, &tgt, 0xa000) != 0) {
                 talkStep = &mTalkStep;
-                *talkStep = (u8)(*talkStep + 1);
+                *talkStep = (*talkStep + 1);
             }
             break;
         case 2:
-            if (ApproachLinear(
-                    player->mAngleY,
-                    (s16)(mAngleY + 0x8000),
-                    0x800)
-                != 0) {
+            if (ApproachLinear(player->mAngleY, (mAngleY + 0x8000), 0x800) != 0) {
                 if (mPoundsLeft == 1) {
                     if (func_ov002_020bec84(player, 1) != 0
                         || func_ov002_020bec84(player, 0) != 0) {
@@ -792,7 +786,7 @@ int daObjTatefuda_c::TryStartTalk() {
         if (other == 0)
             goto fail;
         {
-            int b = (int)(other->actorID == ACTOR_PLAYER);
+            int b = (other->actorID == ACTOR_PLAYER);
             if (b != false)
                 goto success;
         }
@@ -831,7 +825,7 @@ void daObjTatefuda_c::CheckGrabOrBreak() {
     if (other == 0)
         return;
     {
-        int b = (int)(other->actorID == ACTOR_PLAYER);
+        int b = (other->actorID == ACTOR_PLAYER);
         if (b == 0)
             return;
     }
@@ -880,9 +874,9 @@ void daObjTatefuda_c::Kill()
 {
     Vector3 pos;
     Vector3 dustPos;
-    Fix12i x = mPosX;
-    Fix12i y = mPosY + 0x28000;
-    Fix12i z = mPosZ;
+    fx32 x = mPosX;
+    fx32 y = mPosY + 0x28000;
+    fx32 z = mPosZ;
     pos.x = x;
     pos.y = y;
     pos.z = z;
@@ -908,7 +902,7 @@ void daObjTatefuda_c::Kill()
  * dActor_c's own field pair (include/dActor_c.h, 0x08e/0x094). */
 void daObjTatefuda_c::OnHitByMegaChar(daPly_c &player) {
     player.IncMegaKillCount();
-    func_02012694(0x1d, &mCamSpacePosX);
+    func_02012694(0x1d, (const Vector3 *)&mCamSpacePosX);
     KillByMegaChar(player);
     mAngleY = mPrevAngleY;
 }
@@ -1090,8 +1084,8 @@ void daObjTatefuda_c::Reset()
   SetState(STATE_IDLE);
   mMegaKnockback = 0;
   mdCcAc_c.Init(this, 0x64000, 0x64000, 0x4800002, 0x41000);
-  if (((dBgW *)&mMeshCollider)->IsEnabled()) {
-      ((dBgW *)&mMeshCollider)->Disable();
+  if (mMeshCollider.IsEnabled()) {
+      mMeshCollider.Disable();
   }
   mdCcAc_c.Clear();
 }

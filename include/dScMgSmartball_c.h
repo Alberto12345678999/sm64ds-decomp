@@ -54,7 +54,7 @@
 #include "MWCPlusLib.h"
 
 extern "C" void NullDestructor_0203d47c(void);
-extern "C" void SmartballObj_ElemDtor(void);
+void SmartballObj_ElemDtor(void);
 
 struct cMgSmartball_spring_c;
 struct cMgSmartball_ball_c;

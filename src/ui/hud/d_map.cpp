@@ -23,7 +23,7 @@
  *   a plain `playerPos = o->mPos` uses [r8,#0x5c] addressing and shortens
  *   Behavior by 4 bytes. The focus copy already goes through a pointer
  *   local, so `&focus->mPos` needs no launder.
- * - GetPosFromMinimapPos and GetPosOnMinimap are static Fix12i methods;
+ * - GetPosFromMinimapPos and GetPosOnMinimap are static fx32 methods;
  *   the third parameter is the scalar, not Fix12<int>.
  * - The OAM and Vec3 helpers stay on C-linkage or hand-mangled
  *   externs for the same reason.
@@ -75,9 +75,11 @@ extern "C" {
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern signed char gCurrentSublevel;
 extern u8 gCurrentStarId;
-int SublevelToLevel(int i);
-int IsStarCollected(int level, int star);
+}
 
+extern "C" int SublevelToLevel(int i);
+int IsStarCollected(int level, int star);
+extern "C" {
 extern u8 data_0209f20c;
 extern u8 gGamePaused;
 extern u8 gVsExitScreenActive;
@@ -114,10 +116,14 @@ extern dActor_c *STAR_MARKERS[12];
 extern int data_0209f3e8[];
 extern void *data_0209f3a4[];
 extern void SetSubBg2Offset(s32 a, s32 b);
+}
+
 extern s32 GetMinimapID(dActor_c *actor, s32 arg);
 extern s32  GetMinimapScale(s32 idx);
-extern void UpdateMinimap(s32 *a, u32 b, u32 c, u32 d, u32 e);
+struct MinimapDesc;
+extern void UpdateMinimap(MinimapDesc *a, u32 b, u32 c, u32 d, u32 e);
 Vector3 *Vec3_DivScalarInPlace(Vector3 *v, int s);
+extern "C" {
 void Vec3_MulScalarInPlace(Vector3 *v, int s);
 void Vec3_RotateYAndTranslate(Vector3 *out, const Vector3 *in, short ang, const Vector3 *t);
 }
@@ -160,12 +166,12 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
     struct Vector3* v = &v_;
     struct Vector3 p0, p1, out, out2;
 
-    p0.x = (int)0xfee30000;
+    p0.x = 0xfee30000;
     p0.y = 0;
-    p0.z = (int)0xff564000;
+    p0.z = 0xff564000;
     p1.x = -0x1440000;
     p1.y = 0;
-    p1.z = (int)0xff741000;
+    p1.z = 0xff741000;
 
     if (SublevelToLevel(gCurrentSublevel) != 0x1d)
         return;
@@ -176,7 +182,7 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
     if (v->z <= p0.z) {
         int factor;
         Vec3_Sub(&out, v, &p0);
-        factor = 0xc00 - (FX_Div(out.z, (int)0xffffd1a0) >> 12);
+        factor = 0xc00 - (FX_Div(out.z, 0xffffd1a0) >> 12);
         v->x = p0.x + FX_MUL(out.x, factor);
         v->z = p0.z + FX_MUL(out.z, 0x200);
     } else {
@@ -352,7 +358,7 @@ void dMap_c::UpdateLevelSpecific()
  */
 s32 dMap_c::CleanupResources()
 {
-    (void)this;
+    this;
     return 1;
 }
 
@@ -361,7 +367,7 @@ s32 dMap_c::CleanupResources()
  */
 void dMap_c::OnPendingDestroy()
 {
-    (void)this;
+    this;
 }
 
 int dMap_c::Render()
@@ -375,7 +381,7 @@ int dMap_c::Render()
 
     if ((u8)(flag294 | (flag2c4 | flag20c)) == 0 ||
         !(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) ||
-        (flag20c != 0 && (u32)gLevelClearStep < 3)) {
+        (flag20c != 0 && gLevelClearStep < 3)) {
         daPly_c *player = gPlayers[idx];
         int vs = (gGameMode == 1);
         if (vs != 0) {
@@ -454,7 +460,7 @@ int dMap_c::Render()
                     if (*p != 4) {
                         if (data_ov002_02111148 == lvl) {
                             this->mStarIconAnimFrame[i] += data_0208ee44;
-                            if ((u32)this->mStarIconAnimFrame[i] >= 0xc)
+                            if (this->mStarIconAnimFrame[i] >= 0xc)
                                 this->mStarIconAnimFrame[i] = 0;
                             {
                                 int flag = 0;
@@ -511,11 +517,11 @@ int dMap_c::Render()
 
         if (!(data_0209caa0.file.flags1 & 0x40) && (data_0209caa0.file.flags2 & 0x20000)) {
             this->mStarKeyBlinkTimer += 1;
-            if ((u32)this->mStarKeyBlinkTimer >= 5)
+            if (this->mStarKeyBlinkTimer >= 5)
                 this->mStarKeyBlinkTimer = 0;
             if (this->mStarKeyMapID >= 0) {
                 if (data_0209d660 == 0 || !(data_020a0db0 & 8)) {
-                    int sel = ((u32)this->mStarKeyBlinkTimer < 2) ? 1 : 0;
+                    int sel = (this->mStarKeyBlinkTimer < 2) ? 1 : 0;
                     OAM::Render(true, OAM::MM_STAR_KEYS[sel], this->mStarKeyIconX,
                                 this->mStarKeyIconY, -1, 2, 0);
                 }
@@ -656,7 +662,7 @@ L360:
     if (gMapIntroRotating == 0)
         goto L3e0;
     *(s16 *)&this->mAngle += 0x40;   // read signed here; the header member is u16
-    if ((u16)this->mAngle >= 0x8000)
+    if (this->mAngle >= 0x8000)
         gMapIntroRotating = 0;
     goto L3e0;
 
@@ -667,7 +673,7 @@ L3a4:
         if (f & 0xc000) goto L3e0;
         if (f & 8) goto L3e0;
     }
-    this->mAngle = (s16)(cam->mAngleY & 0xffe0);
+    this->mAngle = (cam->mAngleY & 0xffe0);
 
 L3e0:
     /* The camera's target player is what the map follows. */
@@ -786,9 +792,9 @@ L738:
             this->mPlayerIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mPlayerIconY[i] = (miniPos.z + 0x800) >> 12;
             if (i != gLocalPlayerId)
-                this->mPlayerMapIDs[i] = (s8)GetMinimapID(o, -1);
+                this->mPlayerMapIDs[i] = GetMinimapID(o, -1);
             else
-                this->mPlayerMapIDs[i] = (s8)GetMinimapID(o, data_ov002_02111148);
+                this->mPlayerMapIDs[i] = GetMinimapID(o, data_ov002_02111148);
         } else {
             this->mPlayerMapIDs[i] = -1;
         }
@@ -802,7 +808,7 @@ L738:
             this->mStarIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mStarIconY[i] = (miniPos.z + 0x800) >> 12;
             if (gStarMarkerTypes[i] != 4)
-                this->mStarMapIDs[i] = (s8)GetMinimapID(o, -1);
+                this->mStarMapIDs[i] = GetMinimapID(o, -1);
             else
                 this->mStarMapIDs[i] = 1;
         } else {
@@ -817,7 +823,7 @@ L738:
                             this->mAngle, &miniPos);
             this->mCapIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mCapIconY[i] = (miniPos.z + 0x800) >> 12;
-            this->mCapMapIDs[i] = (s8)GetMinimapID(o, -1);
+            this->mCapMapIDs[i] = GetMinimapID(o, -1);
         } else {
             this->mCapMapIDs[i] = -1;
         }
@@ -892,23 +898,28 @@ Lbf0:
     gSubScreenLayers &= ~DISPLAY_LAYER_BG3;
 Lc00:
     GXS_SetVisiblePlane(gSubScreenLayers);
-    data_ov002_02111148 = (s8)id;
+    data_ov002_02111148 = id;
     this->mTargetInvScale = GetMinimapScale(id);
     }
-Lc30:
-    UpdateMinimap(&this->mBgMatrixA, this->mMapCenterX, this->mMapCenterY, this->mMapCenterX - 0x80, this->mMapCenterY - 0x60);
-    return 1;
+    Lc30:
+        UpdateMinimap((MinimapDesc *)&this->mBgMatrixA, this->mMapCenterX, this->mMapCenterY,
+                      this->mMapCenterX - 0x80, this->mMapCenterY - 0x60);
+        return 1;
 }
 
 /* What InitResources loads the map graphics with. */
-extern "C" {
+
 int func_0202a980(void);
+extern "C" {
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
-void Deallocate(void* ptr);
+}
+
+extern "C" void Deallocate(void *ptr);
 int func_0202a96c(void);
 
 int func_0202a958(void);
+extern "C" {
 extern u8 gNumMinimapTileObjs;
 extern u16 *gMinimapTileObjs;
 extern s32 gRunningKuppaScript;
@@ -965,7 +976,7 @@ int dMap_c::InitResources()
         }
     }
 
-    data_ov002_02111148 = (signed char)GetMinimapID(gPlayers[gLocalPlayerId], -1);
+    data_ov002_02111148 = GetMinimapID(gPlayers[gLocalPlayerId], -1);
 
     if (data_ov002_02111148 >= 0) {
         if ((SublevelToLevel(gCurrentSublevel) == 0x1d && gCurrentSublevel != 1 &&
@@ -974,7 +985,7 @@ int dMap_c::InitResources()
             (SublevelToLevel(gCurrentSublevel) == 0x13 && gCurrentSublevel == 0x2e) ||
             SublevelToLevel(gCurrentSublevel) == -1) {
             REG_DB_BG3CNT =
-                (u16)(((0x1f - data_ov002_02111148) << 8) | ((REG_DB_BG3CNT & 0x43) | 0x4010));
+                (((0x1f - data_ov002_02111148) << 8) | ((REG_DB_BG3CNT & 0x43) | 0x4010));
             mMapWidth = 0x100;
             mMapCenterOffset = 0x80;
 
@@ -995,8 +1006,7 @@ int dMap_c::InitResources()
             }
             mArrowType = 1;
         } else {
-            REG_DB_BG3CNT =
-                (u16)(((0x1f - data_ov002_02111148) << 8) | ((REG_DB_BG3CNT & 0x43) | 0x10));
+            REG_DB_BG3CNT = (((0x1f - data_ov002_02111148) << 8) | ((REG_DB_BG3CNT & 0x43) | 0x10));
             mMapWidth = 0x80;
             mMapCenterOffset = 0x40;
             mMapOriginX = 0;
@@ -1053,7 +1063,7 @@ int dMap_c::InitResources()
 
 #pragma opt_strength_reduction on
 
-void dMap_c::GetPosFromMinimapPos(Vector3 &minimapPos, Vector3 &center, Fix12i scale, short angle,
+void dMap_c::GetPosFromMinimapPos(Vector3 &minimapPos, Vector3 &center, fx32 scale, short angle,
                                   Vector3 &out) {
     Vector3 offset;
     Vec3_Sub(&offset, &minimapPos, &sMapScreenCenter);
@@ -1061,8 +1071,7 @@ void dMap_c::GetPosFromMinimapPos(Vector3 &minimapPos, Vector3 &center, Fix12i s
     Vec3_RotateYAndTranslate(&out, &center, angle, &offset);
 }
 
-void dMap_c::GetPosOnMinimap(Vector3 *pos, Vector3 *center, Fix12i scale, short angle,
-                             Vector3 *out) {
+void dMap_c::GetPosOnMinimap(Vector3 *pos, Vector3 *center, fx32 scale, short angle, Vector3 *out) {
     Vector3 offset;
     Vec3_Sub(&offset, pos, center);
     Vec3_MulScalarInPlace(&offset, scale);
@@ -1074,7 +1083,6 @@ void dMap_c::GetPosOnMinimap(Vector3 *pos, Vector3 *center, Fix12i scale, short 
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Minimap_Spawn. It was once labelled
  * the dMap_c constructor, but it takes no `this`: it is the registry factory. */
-extern "C" dMap_c *dMap_c_classInit()
-{
+dMap_c *dMap_c_classInit() {
     return new dMap_c();
 }

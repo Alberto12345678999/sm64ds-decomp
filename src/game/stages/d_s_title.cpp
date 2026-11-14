@@ -51,6 +51,7 @@
 #include "nitro/hw/registers.h"
 #include "nitro/mi/memory.h"
 #include "nitro/gx/g2.h"
+#include "nitro/gx/gxcommon.h"
 #include "math/CalcLib.h"
 
 /* SetFaders stores the fade controller here; slot 5 waits for the entrance fade. */
@@ -72,7 +73,7 @@ extern "C" {
  * Behavior's `% 0x36` is an unsigned reduction; the array spelling was only
  * ever read at [0]. */
 extern u32 gTitleCursor;
-extern char data_0209e674[];
+extern GXOamAttr data_0209e674[];
 extern dFdBrightness_c *gSceneFader;
 extern PadData data_020a0e58[];
 extern u8 gGameMode;
@@ -129,8 +130,8 @@ extern const TitleLevelEntry sTitleLevelEntries[] = {
 /* RECONCILED: the two legacy call sites spelt the parameter `int` and
  * `char *`; the body ignores it. `void *` is the spelling neither call site
  * has to cast away from. */
-extern void TitleScrollLevelList(void *self);
 }
+extern void TitleScrollLevelList(void *self);
 
 /* The stylus went down this frame: held, with the held state just changed
  * (see PlayerInput.h). Int-returning, so the ROM materializes the 0/1 it
@@ -149,7 +150,7 @@ static inline int IsTouchStarted() {
  * to column 0x1d. Coined name. Called only from TitleScrollLevelList. Each
  * tile goes through MIi_CpuClear16 from a volatile temporary, five of them;
  * that is the spelling the bytes need. */
-extern "C" void TitlePrintLevelRow(int level, int row, int col) {
+void TitlePrintLevelRow(int level, int row, int col) {
     volatile u16 t0, t1, t2, t3, t4;
     int tens = level / 10;
     int ones = level % 10;
@@ -183,12 +184,12 @@ extern "C" void TitlePrintLevelRow(int level, int row, int col) {
 /* [9] 0x020adc74 -- copies a NUL-terminated string into the BG0 screen map
  * at (row, col), one tile per character. Called only from
  * TitleScrollLevelList, for the caption. Coined name. */
-extern "C" void TitlePrintString(signed char *s, int row, int col) {
+void TitlePrintString(signed char *s, int row, int col) {
     short *p = (short *)G2_GetBG0ScrPtr() + (col + (row << 5));
     if (*s == 0)
         return;
     do {
-        *p++ = (short)*s++;
+        *p++ = *s++;
     } while (*s != 0);
 }
 
@@ -202,7 +203,7 @@ extern "C" void TitlePrintString(signed char *s, int row, int col) {
  * new; the inlined ctor runs fBase_c's C2, stores dBase_c then dScene_c's
  * vptrs, ORs pauseFlags 1 and 4 (dScene_c::dScene_c), then stores this
  * class's vptr. The null check is the one `new` itself emits. */
-extern "C" dScTitle_c *dScTitle_c_classInit(void) {
+dScTitle_c *dScTitle_c_classInit(void) {
     return new dScTitle_c();
 }
 
@@ -314,9 +315,9 @@ s32 dScTitle_c::Render() {
     {
         int idx = data_0209e664;
         unsigned int v = ((gTitleCursor - gTitleListTop + 2) << 3) & 0xff;
-        char *p = data_0209e674 + (idx << 3);
-        *(int *)p = v | 0x80000;
-        *(short *)(p + 4) = 0;
+        GXOamAttr *p = &data_0209e674[idx];
+        p->attr01 = v | 0x80000;
+        p->attr2 = 0;
     }
     return 1;
 }
@@ -334,12 +335,11 @@ void dScTitle_c::OnPendingDestroy() {}
  * RECONCILED: decl_common.h already declares gTitleListTop `extern int`, so
  * the legacy `int[]` spelling is dropped in favour of the header's scalar
  * and the `[0]` subscripts became scalar accesses. */
-extern "C" { /* .c-derived member: C linkage for the whole block */
 void TitleScrollLevelList(void *) {
     int v = gTitleCursor;
     int nv = v - 0xa;
     gTitleListTop = nv;
-    unsigned int t = (unsigned int)(v + 0xb);
+    unsigned int t = (v + 0xb);
     if (t > 0x36) {
         gTitleListTop = nv - (t - 0x36);
     }
@@ -357,7 +357,6 @@ void TitleScrollLevelList(void *) {
         j++;
     }
     TitlePrintString((signed char *)data_020a0d90, 0, 0);
-}
 }
 
 /* [1] [0] 0x020ad69c (D0) and 0x020ad660 (D1) -- neither is written here.

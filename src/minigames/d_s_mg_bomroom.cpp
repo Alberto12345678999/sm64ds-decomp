@@ -39,7 +39,7 @@
 #include "nitro/mi/memory.h"
 
 extern "C" {
-extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
+extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern OamAttr *sBomroomPenGateSprites[];
 extern int sBomroomPenGateX[];
 extern int sBomroomPenGateY[];
@@ -47,11 +47,9 @@ extern OamAttr *sBomroomHatchPanelSprites[];
 extern OamAttr *sBomroomTopDoorSprites[];
 extern int sBomroomHatchPanelX[];
 extern int sBomroomHatchPanelY[];
-extern int func_020126e8(int a);
-extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern unsigned char *sBomroomBombFrameTimes[];
 extern unsigned char sBomroomBombFrameCounts[];
-extern void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
+extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern unsigned char *sBomroomBombSprites[];
 extern unsigned char *sBomroomBombLitSprites[];
 extern void *sBomroomBombsSprites[];
@@ -68,6 +66,8 @@ extern void DecompressLZ16(void *src, void *dst);
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
 }
+extern int func_020126e8(int a);
+extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 
 /* Runtime asset handles resolved through the overlay 0 file table; the names
    are the ROM's MG/ file names (tools/asset_catalog.py resolve). */
@@ -241,11 +241,9 @@ void dScMgBomroom_c::Marker_HideAll() {
     }
 }
 
-extern "C" {
 void Bomroom_DrawScore(void)
 {
     Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 4);
-}
 }
 
 void dScMgBomroom_c::TopDoor_Close() {
@@ -1812,7 +1810,7 @@ s32 dScMgBomroom_c::InitResources() {
 
     {
         void *f7 = LoadFile(ASSET_D_2D_MG_BG_BOMROOM_NCG_BIN);
-        DecompressLZ16(f7, (void *)((char *)G2S_GetBG3CharPtr() + 0x4000));
+        DecompressLZ16(f7, (char *)G2S_GetBG3CharPtr() + 0x4000);
         Deallocate(f7);
 
         f7 = LoadFile(ASSET_D_2D_MG_BG_BOMROOM_NCL_BIN);
@@ -1844,8 +1842,7 @@ s32 dScMgBomroom_c::InitResources() {
  * allocation size, vtable identity, and the MG_BOMROOM registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgSortOrSplode_Spawn. */
-extern "C" void *dScMgBomroom_c_classInit()
-{
+void *dScMgBomroom_c_classInit() {
     return new dScMgBomroom_c;
 }
 

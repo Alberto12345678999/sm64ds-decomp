@@ -225,13 +225,10 @@ enum {
 extern "C" {
 
 /* -- other modules -- */
-void  func_02013a88(void);
-void func_020167a4(dExtAnmModel_c *model);
-int func_ov002_020f030c(int x);
 
 unsigned short DecIfAbove0_Short(unsigned short *p);
 
-Fix12i Vec3_HorzLen(const Vector3 *v);
+fx32 Vec3_HorzLen(const Vector3 *v);
 void  Vec3_MulScalarInPlace(void *v, int s);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Vec3_Asr(Vector3 *out, Vector3 *v, int shift);
@@ -243,10 +240,8 @@ void  Matrix4x3_FromRotationY(void *m, int angle);
 
 short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
 
-
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
-
 
 /* -- data -- */
 extern Matrix4x3      data_020a0e68;
@@ -284,11 +279,12 @@ extern McapStatePmf data_ov002_0210959c, data_ov002_021095a4;
 extern SharedFilePtr *data_ov002_020ff0a0[];
 extern SharedFilePtr *data_ov002_020ff0b8[];
 extern int            *data_ov002_020ff0c4[];
-
 }
+void func_02013a88(void);
+void func_020167a4(dExtAnmModel_c *model);
+int func_ov002_020f030c(int x);
 
-extern "C" daObjMarioCap_c *daObjMarioCap_c_classInit(void)
-{
+daObjMarioCap_c *daObjMarioCap_c_classInit(void) {
     return new daObjMarioCap_c();
 }
 
@@ -788,8 +784,7 @@ int daObjMarioCap_c::InitWait()
 int daObjMarioCap_c::Wait() {
     if (mCarryMatrix == 0 && !SaveData::HasPlayerLostCap()) {
         if (CAP_TIMER(this) == 0 && mWithMeshClsn.IsOnGround()) {
-            if (dActor_c::Spawn(kActorMarioCap, param1 | 0x12, mPos, (const Vector3_16 *)0, mAreaId,
-                                -1)) {
+            if (dActor_c::Spawn(kActorMarioCap, param1 | 0x12, mPos, 0, mAreaId, -1)) {
                 CAP_TIMER(this) = 3;
             }
         }
@@ -821,11 +816,8 @@ int daObjMarioCap_c::InitTimedWait()
  * Returns 1. */
 int daObjMarioCap_c::TimedWait()
 {
-    if (data_02092138 > mPosY
-        || mWithMeshClsn.IsOnGround()
-        || !DecIfAbove0_Short((unsigned short*)&mStateTimer)
-        || (mFlags & 8))
-    {
+    if (data_02092138 > mPosY || mWithMeshClsn.IsOnGround() || !DecIfAbove0_Short(&mStateTimer) ||
+        (mFlags & 8)) {
         MarkForDestruction();
         return 1;
     }
@@ -858,11 +850,8 @@ int daObjMarioCap_c::InitTimedWait2()
  * TimedWait. Returns 1. */
 int daObjMarioCap_c::TimedWait2()
 {
-    if (data_02092138 > mPosY
-        || mWithMeshClsn.IsOnGround()
-        || !DecIfAbove0_Short((unsigned short*)&mStateTimer)
-        || (mFlags & 8))
-    {
+    if (data_02092138 > mPosY || mWithMeshClsn.IsOnGround() || !DecIfAbove0_Short(&mStateTimer) ||
+        (mFlags & 8)) {
         MarkForDestruction();
         return 1;
     }
@@ -972,7 +961,7 @@ int daObjMarioCap_c::Slide()
         CheckTouch();
         return 1;
     }
-    if (DecIfAbove0_Short((unsigned short *)&mStateTimer) == 0)
+    if (DecIfAbove0_Short(&mStateTimer) == 0)
         return 1;
     if (CAP_TIMER(this) == 1) {
         b = (int)((mFlags & 0x60000) != 0);
@@ -1070,7 +1059,7 @@ int daObjMarioCap_c::InitTaken()
                     v.y = mPosY;
                     v.z = mPosZ;
                     v.y += 0x64000;
-                    dActor_c::Spawn(kActor1UpLogo, 8, v, (Vector3_16 *)0, mAreaId, -1);
+                    dActor_c::Spawn(kActor1UpLogo, 8, v, 0, mAreaId, -1);
                 }
             }
         }
@@ -1093,7 +1082,7 @@ int daObjMarioCap_c::InitTaken()
  * daPly_c::Unk_020c9e5c(8) says 1, and when it has finished removes the cap,
  * first spawning a new OBJ_MARIO_CAP at mHomePos if mType is 4. Returns 1. */
 int daObjMarioCap_c::Taken() {
-    if (DecIfAbove0_Short((unsigned short *)&mStateTimer) == 0) {
+    if (DecIfAbove0_Short(&mStateTimer) == 0) {
         MarkForDestruction();
         return 1;
     }
@@ -1152,7 +1141,8 @@ int daObjMarioCap_c::Taken() {
     if (mAnimStarted == 1) {
         if (mAnmModel.Finished() != 0) {
             if (mType == 4) {
-                dActor_c::Spawn(kActorMarioCap, param1, *(const Vector3 *)&mHomePosX, (const Vector3_16 *)0, mAreaId, -1);
+                dActor_c::Spawn(kActorMarioCap, param1, *(const Vector3 *)&mHomePosX, 0, mAreaId,
+                                -1);
             }
             MarkForDestruction();
         }
@@ -1355,8 +1345,8 @@ void daObjMarioCap_c::CheckTouch()
         v.x = a;
         v.y = b;
         v.z = *(u16*)&found->mAngleZ;
-        mPrevAngleX = *(s16*)&v.x;
-        mPrevAngleY = *(s16*)&v.y;
+        mPrevAngleX = v.x;
+        mPrevAngleY = v.y;
         mPrevAngleZ = *(s16*)&v.z;
         mAngleX = mPrevAngleX;
         mAngleY = mPrevAngleY;

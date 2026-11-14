@@ -39,13 +39,11 @@
 #include "nitro/fx/fx_trig.h"
 
 /* arm9 C helpers with no shared header. */
-extern "C" {
 int SurfaceInfo_TestFlag0x20(int *p);
-}
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-extern "C" daObjAbuku_c *daObjAbuku_c_classInit() {
+daObjAbuku_c *daObjAbuku_c_classInit() {
     return new daObjAbuku_c();
 }
 

@@ -121,7 +121,6 @@ extern unsigned char gPrevReturnState;
 extern unsigned char gNewStarCollected;
 extern unsigned char gLevelClearStep;
 extern int data_020a0db0;
-extern unsigned char NumStars(void);
 extern signed char gNumRedCoins[];
 extern signed char gCurrentSublevel;
 extern int SublevelToLevel(int i);
@@ -143,6 +142,7 @@ void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *handle);
 void func_0203da4c(void);
 }
+extern unsigned char NumStars(void);
 
 /* Mode 1 is versus mode. This int-returning predicate is what makes the ROM
    materialize 0/1 before testing it. */
@@ -168,7 +168,7 @@ static inline int StarCountVisible(void) {
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: HUD_Spawn. It was once labelled
  * the dMeter_c constructor, but it takes no `this`: it is the registry factory. */
-extern "C" dMeter_c *dMeter_c_classInit() {
+dMeter_c *dMeter_c_classInit() {
     return new dMeter_c();
 }
 

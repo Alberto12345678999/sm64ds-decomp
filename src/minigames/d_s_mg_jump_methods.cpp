@@ -63,7 +63,7 @@ extern MgJumpModelFilePtr gJumpBack01ModelFile;
 extern "C" {
 void Mg_CommitRecords(void);
 void Mg_DrawScoreTally(void *a, int b, int c, int d);
-int  GetGameLanguage(void);
+int GetGameLanguage(void);
 struct OamAttr;
 struct Matrix2x2;
 void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
@@ -74,22 +74,12 @@ void FreeGfxSlotsById(int arg);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 
-void Heyho_ReactAll(void);
-void Heyho_SeparateAll(void);
-void Jump3D_UpdateAll(void);
-void Jump3D_SetLowGravity(void);
-void Jump3D_StopGravity(void);
-void Jump3D_StartRoundLayout(void);
-int  Jump3D_AllIdle(void);
-int  Heyho_AllIdle(void);
-int Heyho_InitPool(void *ptr, int n);
 int Jump3D_InitPool(void *base, int count);
-void Jump3D_EnableInput(void);
 
 extern Matrix4x3 data_020a0e68;
 extern int sJumpLastPick;
 extern u8 gMainScreenLayers;
-extern s16  data_02082614;
+extern s16 data_02082614;
 extern int sJump3DMarioCount;
 extern int sHeyhoUnsettledCount;
 extern int sJump3DRisenOutCount;
@@ -101,6 +91,16 @@ extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Idle;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Idle_2;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Play;
 }
+void Heyho_ReactAll(void);
+void Heyho_SeparateAll(void);
+void Jump3D_UpdateAll(void);
+void Jump3D_SetLowGravity(void);
+void Jump3D_StopGravity(void);
+void Jump3D_StartRoundLayout(void);
+int Jump3D_AllIdle(void);
+int Heyho_AllIdle(void);
+int Heyho_InitPool(void *ptr, int n);
+void Jump3D_EnableInput(void);
 
 
 /* Slot 18. 0 is an eat (one more egg, capped like the HUD score), 0x12 a
@@ -447,7 +447,8 @@ s32 dScMgJump_c::Render()
         obj = &mModel.data;
         p = obj->materials;
         func_02045e44(obj, 1, 0);
-        /* +0x18 of the first material is inside BMD_Material's unnamed pad_0c. */
+        /* +0x18 is texTransT of the runtime material record (MaterialState, still
+           local to src/engine/model/ModelComponents.cpp), not a BMD_Material field. */
         *(int *)((char *)p + 0x18) = mAccum;
 
         {

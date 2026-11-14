@@ -57,30 +57,28 @@
  * declares the namespace yet; d_s_star_sel_methods.cpp spells it the
  * same way. */
 
-extern "C" {
-void func_020308b4(void);
+extern "C" void func_020308b4(void);
 extern int data_0209fc68;
 
-void Enable3dEngines(void);
-void func_0200f2cc(void);
-int func_0203d9b4(void);
-void LoadTextNarcs(void);
-int LoadArchive(int idx);
-void func_0200f220(void);
-void *LoadFile(int handle);
-void SetBg0Offset(int a, int b);
-void SetBg2Offset(int a, int b);
-void SetBg3Offset(int a, int b);
-void SetSubBg0Offset(int a, int b);
-void SetSubBg2Offset(int a, int b);
-void SetSubBg3Offset(int a, int b);
+extern "C" void Enable3dEngines(void);
+extern "C" void func_0200f2cc(void);
+extern "C" int func_0203d9b4(void);
+extern "C" void LoadTextNarcs(void);
+extern "C" int LoadArchive(int idx);
+extern "C" void func_0200f220(void);
+extern "C" void *LoadFile(int handle);
+extern "C" void SetBg0Offset(int a, int b);
+extern "C" void SetBg2Offset(int a, int b);
+extern "C" void SetBg3Offset(int a, int b);
+extern "C" void SetSubBg0Offset(int a, int b);
+extern "C" void SetSubBg2Offset(int a, int b);
+extern "C" void SetSubBg3Offset(int a, int b);
 void LoadFont3D(void);
-int func_0203da3c(void);
-void UnloadArchive(int i);
-void func_02030aa4(int arg);
-int func_0203da9c(void);
-void func_02020028(int player, unsigned char mode);
-}
+extern "C" int func_0203da3c(void);
+extern "C" void UnloadArchive(int i);
+extern "C" void func_02030aa4(int arg);
+extern "C" int func_0203da9c(void);
+extern "C" void func_02020028(int player, unsigned char mode);
 
 /* The scene's graph callback: the scene registers its own object here and
    clears it on the way out. The frame calls its four slots: GraphCallback0 at
@@ -94,7 +92,7 @@ extern u8 gSubScreenLayers;
 extern s32 data_0208ee44;
 
 /* The scene manager Behavior polls through its slot 5. */
-extern "C" dFdBrightness_c *gSceneFader;
+extern dFdBrightness_c *gSceneFader;
 
 #include "dEntObj_c.h"
 #include "OAM.h"
@@ -107,31 +105,28 @@ extern "C" dFdBrightness_c *gSceneFader;
 #include "nitro/mi/memory.h"
 #include "nitro/fx/fx_trig.h"
 
-extern "C" {
-int func_0203d974(void);
-u8 func_02020168(void);
-void func_02020304(void);
-void func_020200e0(void);
-void func_02020334(void);
-void func_02020124(void);
-int func_0203d890(void);
-u32 LoadCompressedFileAt(int, void *);
+extern "C" int func_0203d974(void);
+extern "C" u8 func_02020168(void);
+extern "C" void func_02020304(void);
+extern "C" void func_020200e0(void);
+extern "C" void func_02020334(void);
+extern "C" void func_02020124(void);
+extern "C" int func_0203d890(void);
+extern "C" u32 LoadCompressedFileAt(int, void *);
 int Sound_PlayIfNotActive(int, int, int, short);
-}
 
 /* The entry scene's one global graph callback, ov075 .bss 0x0211d71c. The
    generated decl_common.h catch-all declares that storage `void *`, so its real
    type is spelled once here instead of at each of the eighteen call sites. */
 #define ENTRY_GRAPH_CALLBACK ((dScEntry_c::graphCallback_c *)&sEntryGraphCallback)
 
-extern "C" {
 void func_020338b0(int, int, short, int);
 void func_02033464(int, int, int);
-void func_02030a38(void);
-void func_02030a78(void);
-void func_02030a6c(void);
+extern "C" void func_02030a38(void);
+extern "C" void func_02030a78(void);
+extern "C" void func_02030a6c(void);
 void func_020337ec(void);
-int TouchArea_Update(char *, int);
+int TouchArea_Update(void *, int);
 void func_ov001_020ab3f0(void *);
 
 extern u8 data_0208f274;
@@ -147,27 +142,25 @@ extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
 extern dScEntry_c::StepSet data_ov075_0211d8a0;
 extern dScEntry_c::StepSet data_ov075_0211d8d0;
-}
 
 /* Course-select and match-loading steps, directly below the player-select
  * run in ROM order. The declarations below are the union of the six shards'
  * extern blocks, minus names this file already declares. */
-extern "C" {
-int func_0203d8fc(void);
-int func_0201a1bc(void);
-void func_0203d930(void);
+
+extern "C" int func_0203d8fc(void);
+extern "C" int func_0201a1bc(void);
+extern "C" void func_0203d930(void);
 extern unsigned char EntryCourseLoadStarted;
 void func_0202deac(int level);
-void func_0203d918();
+extern "C" void func_0203d918();
 extern u8 data_0208a0e0;
-u8 func_020202dc(void);
-u8 func_020200b8(void);
-void func_02020078(u32 flags);
-void func_0202029c(u32 idx);
+extern "C" u8 func_020202dc(void);
+extern "C" u8 func_020200b8(void);
+extern "C" void func_02020078(u32 flags);
+extern "C" void func_0202029c(u32 idx);
 extern s8 data_ov075_0211c6ec[];
 extern u8 gGameMode;
 extern u8 data_0209b2e4;
-}
 
 extern dScEntry_c::StepSet data_ov075_0211d798;
 extern dScEntry_c::StepSet data_ov075_0211d7f8;
@@ -176,7 +169,7 @@ extern struct OamAttr data_ov075_0211cba4[];
 /* Result tally, the two InitResources halves and the settings, quit,
  * rematch and results steps, in ROM order ahead of the course-select
  * steps. */
-extern "C" {
+
 extern s8 gNumStageStars[];
 extern s16 gNumCoins[];
 extern u8 data_0209b2f0[];
@@ -184,6 +177,7 @@ extern u8 data_0209b2ec[];
 extern u8 data_0209b2ed[];
 extern u8 data_0209fc50;
 extern u8 data_0209fc58;
+/* Raw on purpose: data_0209ee90 (untyped arm9 .bss, 8 TUs) has no recovered layout. */
 extern char data_0209ee90[];
 extern u8 data_0208ee3c;
 extern PadData data_020a0e58[];
@@ -213,33 +207,32 @@ extern fBase_c *gCurrentScene;
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
 
-int GetLanguageIndex(void);
-void SetBg1Offset(int a, int b);
+extern "C" int GetLanguageIndex(void);
+extern "C" void SetBg1Offset(int a, int b);
 void func_02033390(int a);
 void func_02032f9c(int a);
-int func_02030958(int val);
-void func_0200f13c(void);
-void DecompressLZ16(void *src, void *dst);
-int GetSoundMode(void);
-void SetSoundMode(int mode);
-void TurnBacklightOn(void);
-void TurnBacklightOff(void);
+extern "C" int func_02030958(int val);
+extern "C" void func_0200f13c(void);
+extern "C" void DecompressLZ16(void *src, void *dst);
+extern "C" int GetSoundMode(void);
+extern "C" void SetSoundMode(int mode);
+extern "C" void TurnBacklightOn(void);
+extern "C" void TurnBacklightOff(void);
 void SetControllerMode(unsigned char mode);
 void func_02033bb8(int a);
-void UnloadOverlay(int id);
-void func_02020190(void);
-void func_02030994(void);
-void func_020201c0(void);
-void func_0202048c(void *dst, int a, int b);
-void func_02020768(char *thiz);
+extern "C" void UnloadOverlay(int id);
+extern "C" void func_02020190(void);
+extern "C" void func_02030994(void);
+extern "C" void func_020201c0(void);
+void func_0202048c(OamAnimation *dst, int a, int b);
+extern "C" void func_02020768(char *thiz);
 void func_02020820(OamAnimation *anim, int *src, int screen, int loops, u8 enabled, u8 affine);
 void func_020331fc(int a, int b, int c);
 void PrepareVsMode(void);
-void LoadLevelNoReturn(int levelID, u32 entranceID, u32 mode, u32 arg3);
+extern "C" void LoadLevelNoReturn(int levelID, u32 entranceID, u32 mode, u32 arg3);
 extern u8 data_02092778;
-u8 func_02020364(int player);
-u8 func_020201f0(int);
-}
+extern "C" u8 func_02020364(int player);
+extern "C" u8 func_020201f0(int);
 
 extern dScEntry_c::StepSet data_ov075_0211d7e0;
 extern dScEntry_c::StepSet data_ov075_0211d810;
@@ -402,7 +395,7 @@ s32 dScEntry_c::InitResultResources() {
         id1 = 0x8411;
     }
     LoadCompressedFileAt(id0, G2_GetBG1ScrPtr());
-    LoadCompressedFileAt(id1, (void *)G2_GetBG2ScrPtr());
+    LoadCompressedFileAt(id1, G2_GetBG2ScrPtr());
 
     i = 0;
     if (n > 0) {
@@ -454,7 +447,7 @@ s32 dScEntry_c::InitResultResources() {
         step = (4 - n) * 0x20 + 0xa0;
         base = (4 - n) * 0x40 + 0xa5;
         do {
-            unsigned char ch = (unsigned char)func_02030958(k);
+            unsigned char ch = func_02030958(k);
             func_02033464((unsigned short)(base + acc), (signed char)ch, 1);
             k = k + 1;
             acc = acc + step;
@@ -679,7 +672,7 @@ void dScEntry_c::UpdateSoundSettings() {
                     func_ov001_020ab3f0(&mIcons[0]);
                 }
                 SetSoundMode(newmode);
-                Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
+                Message::DisplayOptionsMenuTextVS((GetSoundMode() + 9));
                 mIcons[2].Select();
                 func_02012790(100);
             }
@@ -731,15 +724,15 @@ void dScEntry_c::UpdateSoundSettings() {
 void dScEntry_c::EnterSoundSettings() {
     ENTRY_GRAPH_CALLBACK->QueueBg2Screen(LoadFile(data_ov075_0211ca08[GetLanguageIndex()]));
 
-    Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
+    Message::DisplayOptionsMenuTextVS((GetSoundMode() + 9));
 
     gSubScreenLayers |= 5;
     G2_SetBlendBrightness(0xb, ~5);
 
     mSelectedIcon = 0;
 
-    mIcons[6].Place(5, 0, (s16)(SH(data_ov075_0211d72c, GetLanguageIndex()) + 8), 0x38);
-    mIcons[7].Place(6, 0, (s16)(SH(data_ov075_0211d740, GetLanguageIndex()) + 8), 0x68);
+    mIcons[6].Place(5, 0, (SH(data_ov075_0211d72c, GetLanguageIndex()) + 8), 0x38);
+    mIcons[7].Place(6, 0, (SH(data_ov075_0211d740, GetLanguageIndex()) + 8), 0x68);
     mIcons[8].Place(0xc, 0, 0x56, 0xa8);
     mIcons[2].Place(1, 0, 0xac, 0x38);
     mIcons[0].Place(3, 0, 0x64, 0x38);
@@ -872,7 +865,7 @@ void dScEntry_c::EnterControlSettings() {
     mSelectedIcon = data_0209f498[gActivePlayerSlot].mode;
 
     for (; i <= 2; i++) {
-        icon->Place(0, 0, 0x80, (s16)y);
+        icon->Place(0, 0, 0x80, y);
         y += 0x28;
         icon++;
     }
@@ -1076,7 +1069,7 @@ void dScEntry_c::RenderWinCounts() {
                 p = (int *)OAM::Render(zT, (OamAttr *)data_ov075_0211c8b0, xTens, yBase + yOff,
                                        eight, minus1, sz, zT);
                 if (p != 0) {
-                    int *q = (int *)(p + 1);
+                    int *q = (p + 1);
                     int val = *q;
                     *q = (val & ~0x3ff) | ((tens + ((u32)(val << 22) >> 22)) & 0x3ff);
                 }
@@ -1084,7 +1077,7 @@ void dScEntry_c::RenderWinCounts() {
             p = (int *)OAM::Render(zO, (OamAttr *)data_ov075_0211c8b0, xOnes, yBase + yOff, eight,
                                    minus1, sz, zO);
             if (p != 0) {
-                int *q = (int *)(p + 1);
+                int *q = (p + 1);
                 int val = *q;
                 *q = (val & ~0x3ff) | ((((u32)(val << 22) >> 22) + n % 10) & 0x3ff);
             }
@@ -1372,7 +1365,7 @@ void dScEntry_c::LoadCourseResources(int course) {
     int selectedArchive = course + 2;
     unsigned int archive;
     for (archive = 2; archive <= 5; ++archive) {
-        if (archive == (unsigned int)selectedArchive)
+        if (archive == selectedArchive)
             continue;
         UnloadArchive(archive);
     }
@@ -1486,7 +1479,7 @@ void dScEntry_c::EnterCourseSelect() {
     index = 0;
     x = 0x20;
     for (; index < 4; index++) {
-        icon->Place(7, index, (short)x, 0x48);
+        icon->Place(7, index, x, 0x48);
         mIcons[index].mOn = 1;
         mIcons[index].mPressTime = 8;
         x += 0x40;
@@ -1680,7 +1673,7 @@ void dScEntry_c::UpdateSessionStart() {
     mSoundHandle = Sound_PlayIfNotActive(mSoundHandle, 2, 0x11d, 0);
     if (mStepPhase == 0) {
         mEntObj->func_ov075_02115134();
-        mStepPhase = (unsigned char)mEntObj->func_ov075_02115098(func_0203da9c());
+        mStepPhase = mEntObj->func_ov075_02115098(func_0203da9c());
     }
     if (func_0203da3c() != 0)
         return;
@@ -2001,9 +1994,9 @@ void dScEntry_c::SetSteps(const StepSet *steps) {
  * model-data array. */
 s32 dScEntry_c::CleanupResources() {
     func_020308b4();
-    if (data_0209b2e8 != (void *)0) {
+    if (data_0209b2e8 != 0) {
         Deallocate(data_0209b2e8);
-        data_0209b2e8 = (void *)0;
+        data_0209b2e8 = 0;
     }
     gGraphCallback = 0;
     Sound::UnsetPlayerVoiceGroup();
@@ -2169,7 +2162,7 @@ bool dScEntry_c::BeforeInitResources() {
     return ResetFadersAndSound();
 }
 
-extern "C" void *dScEntry_c_classInit_RESULT(void) {
+void *dScEntry_c_classInit_RESULT(void) {
     return new dScEntry_c;
 }
 

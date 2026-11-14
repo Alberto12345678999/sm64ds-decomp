@@ -23,7 +23,7 @@ enum {
     kClsnFlagsHurt = kClsnFlags | kClsnHurtBit
 };
 
-extern "C" daBar_c *daBar_c_classInit() {
+daBar_c *daBar_c_classInit() {
     return new daBar_c();
 }
 

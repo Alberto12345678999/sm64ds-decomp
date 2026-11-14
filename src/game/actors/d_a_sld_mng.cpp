@@ -28,7 +28,7 @@
  * __sinit_d_a_sld_mng.cpp emits the stores. The wrapper is local; the
  * manifest aliases its destructor to the ROM's _ZN7Vector3D1Ev. */
 struct SldMngVec3 : Vector3 {
-    SldMngVec3(Fix12i a, Fix12i b, Fix12i c) {
+    SldMngVec3(fx32 a, fx32 b, fx32 c) {
         x = a;
         y = b;
         z = c;
@@ -42,7 +42,7 @@ SldMngVec3 data_ov019_021135d8(-0x12a0000, 0x700000, -0x200000);
  * allocation size, vtable identity, and the SLIDER_MANAGER registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: daSldMng_c_Spawn. */
-extern "C" daSldMng_c *daSldMng_c_classInit() {
+daSldMng_c *daSldMng_c_classInit() {
     return new daSldMng_c();
 }
 

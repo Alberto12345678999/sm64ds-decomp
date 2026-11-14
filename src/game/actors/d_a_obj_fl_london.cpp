@@ -53,7 +53,7 @@ extern LondonModelFile data_ov022_02114580;
 extern LondonCollisionFilePtr data_ov022_02114578;
 extern CLPS_Block data_ov064_0211bb2c;
 
-extern "C" daObjFl_London_c *daObjFl_London_c_classInit() {
+daObjFl_London_c *daObjFl_London_c_classInit() {
     return new daObjFl_London_c();
 }
 

@@ -61,15 +61,14 @@
    prototypes (math/CalcLib.h, math/MtxStack.h and the two below) still say
    Vector3 (tangosdev/sm64ds-decomp#5207), hence the casts on the VecFx32
    side. */
-extern "C" {
-void VEC_CrossProduct(const Vector3 *a, const Vector3 *b, Vector3 *out);
-void VEC_Normalize(const Vector3 *v, Vector3 *out);
-void G3_LoadMtx43(void *m);
-void  func_02012694(u32 id, void *pos);
-void *func_0201787c(SharedFilePtr *sfp);
+
+extern "C" void VEC_CrossProduct(const Vector3 *a, const Vector3 *b, Vector3 *out);
+extern "C" void VEC_Normalize(const Vector3 *v, Vector3 *out);
+extern "C" void G3_LoadMtx43(void *m);
+void func_02012694(u32 id, const Vector3 *pos);
+extern "C" void *func_0201787c(SharedFilePtr *sfp);
 u32   func_02045ad8(const void *src, u32 size);
 unsigned int func_02045a50(const void *src, unsigned int size);
-}
 
 extern Matrix4x3 data_0209b3ec;
 extern char data_ov080_021277a8[];
@@ -137,13 +136,13 @@ u8 *daPicGate_c::LoadTexture(s32 i) {
         b = o->materials;
         c = o->palettes;
         int sz;
-        e->texAddr = (int)dExtSimpleModel_c::LoadCompressedTextureToVram(a->data, a->size,
-                                                                         a->data + a->size);
+        e->texAddr =
+            dExtSimpleModel_c::LoadCompressedTextureToVram(a->data, a->size, a->data + a->size);
         sz = c->size;
         if (sz <= 8)
-            e->pltAddr = (int)func_02045ad8(c->data, (unsigned int)sz);
+            e->pltAddr = func_02045ad8(c->data, sz);
         else
-            e->pltAddr = (int)func_02045a50(c->data, (unsigned int)sz);
+            e->pltAddr = func_02045a50(c->data, sz);
         e->difAmb = b->diffuseAmbient;
         e->speEmi = b->specularEmission;
         e->param = a->flags;
@@ -224,7 +223,7 @@ void daPicGate_c::HitTest() {
     if (y > lim)
         return;
     BeginWave(x, y, 0);
-    func_02012694(0x7b, &mCamSpacePosX);
+    func_02012694(0x7b, (const Vector3 *)(&mCamSpacePosX));
 }
 
 /* BuildNormals: each cell's normal is the cross product of its column and
@@ -293,7 +292,7 @@ s32 daPicGate_c::RippleHeight(s32 r6) {
     unsigned short r4 = mWaveTimer;
     const WaveParams *wave;
     int r5res, r4res, sum;
-    Fix12i f;
+    fx32 f;
     fx16 tv;
 
     if (r4 == 0)
@@ -336,7 +335,7 @@ s32 daPicGate_c::WaveAmplitude(s32 n) {
 /* The wave's phase at distance dist from the origin: dist * 0xffff /
  * wavelength, 4.12 fixed-point, minus the running phase mWavePhase. */
 s32 daPicGate_c::WavePhase(s32 dist) {
-    Fix12i speed = FX_Div(0xffff, mWaveParams->wavelength);
+    fx32 speed = FX_Div(0xffff, mWaveParams->wavelength);
     int result = FX_MUL(dist, speed);
     s16 cur = mWavePhase;
     return (s16)(result - cur);
@@ -370,7 +369,7 @@ void daPicGate_c::BeginWave(s32 a1, s32 a2, s32 a3) {
     m8 = param1;
     r0 = 0;
     if ((unsigned char)((m8 >> 0xd) & 3) == 1) {
-        f = (unsigned char)((m8 >> 8) & 0x1f);
+        f = ((m8 >> 8) & 0x1f);
         if (f == 4)
             r0 = 0xc;
         else if (f == 7)
@@ -473,10 +472,8 @@ void daPicGate_c::PlaceCorners() {
     mCorners[3].texCoord = GX_ST(0, 0);
 }
 
-extern "C" {
-extern void G3_MultMtx43(void *m);
+extern "C" void G3_MultMtx43(void *m);
 extern int data_ov080_0212771c[];
-}
 
 /* DrawWave. The texture binds with normal-based texture coordinates
  * (GX_TEXGEN_NORMAL) and no repeat or flip, so each vertex sends only

@@ -50,6 +50,7 @@ enum d_s_mg_trampoline2_AssetId {
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
 #include "TrmpItem.h"
+#include "TrmpLine.h"
 #include "Trmp2Spinner.h"
 #include "decl_common.h"
 #include "dMgTrmplnShared.h"
@@ -59,6 +60,7 @@ enum d_s_mg_trampoline2_AssetId {
 #include "LevelRng.h"
 #include "nitro/mi/memory.h"
 #include "math/CalcLib.h"
+
 
 /* local: the ROM re-reads the slot byte at each use here, so keep the read volatile. */
 #define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
@@ -102,39 +104,30 @@ struct Trampoline2WaveDef {
 struct dExtSimpleModel_c { ~dExtSimpleModel_c(); };
 */
 
+void Trmp2Spinner_Update(char *obj);
+void Trmp2Spinner_Init(void *obj, int hitCount);
+void Trmp2Spinner_SetModel(void *self);
+int Trmp2_ColumnForKind(int kind);
+unsigned short Trmp2_OccupancyBits(int column, int side);
+int Trmp2_PickFaceA(int kind);
+int Trmp2_PickFaceB(int kind);
+dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void);
+
 extern "C" {
 extern void Trmp2Spinner_UpdateMatrix(char *c);
 extern Trampoline2ModelFilePtr sTrmp2StarModelFile;
 extern int sTrmp2SpinnerCount;
 extern unsigned char *sTrmp2Spinners;
-extern void Trmp2Spinner_Update(char *obj);
-extern void Trmp2Spinner_Init(void *obj, int hitCount);
-extern void Trmp2Spinner_SetModel(void *self);
 extern int sTrmp2BrushWord[];
 extern const u16 sTrmp2BrushPltt[];
 extern dFdBrightness_c *gSceneFader;
 extern int sTrmp2TouchBlocked;
-int TrmpLine_Create(s16 *a, s16 *b);
-extern void Mg_CommitRecords(void);
 void func_0203cd80(int *m, short angle);
-int GetGameLanguage(void);
-struct OamAttr;
-struct Matrix2x2;
-void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
-void RenderOamMainScreen(OamAttr *a0, int a1, int a2, int a3, int a4);
 unsigned int d_s_mg_trampoline2NewCleanParticleHold(unsigned int a, unsigned int b, int c, int d,
                                                     int e, const Vector3_16f *f);
 void Jump2Popup_UpdateAll(void);
 extern const VecFx32 sTrmp2RandomSpawnPositions[];
-extern int Trmp2_ColumnForKind(int kind);
-extern unsigned short Trmp2_OccupancyBits(int column, int side);
-extern int Trmp2_PickFaceA(int kind);
-extern int Trmp2_PickFaceB(int kind);
 extern void func_0203cc28(int *vector, int angle);
-extern char *TrmpItem_Spawn(int resource, int *up, int variant, int face);
-extern int func_020126e8(int a);
-extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern void TrmpItem_UpdateAll(void);
 extern int sTrmpItemsHit;
 extern int sTrmp2Lives;
 extern int sTrmp2Score;
@@ -142,13 +135,10 @@ extern int sTrmp2MarioCount;
 extern int sTrmpItemsActive;
 extern int sTrmp2ScoreGates[];
 extern const Trampoline2WaveDef sTrmp2SpawnDefs[];
-extern void TrmpLine_UpdateAll(void);
-extern void TrmpLine_CreateStartLineT2(void);
 extern s16 sTrmp2IntroFromX;
 extern s16 sTrmp2IntroToX;
 extern s16 sTrmpStartTouchY;
 extern short sTrmpStartTouchX;
-extern void TrmpLine_ClearAll(u32 a);
 extern volatile s16 data_020a0dbc[];
 extern u8 gMainScreenLayers;
 extern void *LoadFile(int handle);
@@ -165,32 +155,8 @@ extern OamAttr *sMgTextSpritesSpanish[];
 extern OamAttr *sMgTextSpritesFrench[];
 extern OamAttr *sMgTextSpritesGerman[];
 extern OamAttr *sMgTextSpritesItalian[];
-/* TUBUILD CONFLICT -- alternate declaration of Trmp2Spinner_UpdateMatrix, from the legacy file for Trmp2Spinner_UpdateMatricesAll, NOT applied: extern void Trmp2Spinner_UpdateMatrix(char *obj); */
-/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int sTrmp2Spinners; */
-/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *sTrmp2Spinners; */
-/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int sTrmp2Spinners; */
-/* TUBUILD CONFLICT -- alternate declaration of sTrmp2StarModelFile, from the legacy file for Trmp2Spinner_Destruct, NOT applied: extern SharedFilePtr sTrmp2StarModelFile; */
-/* TUBUILD CONFLICT -- alternate declaration of MIi_CpuClear16, from the legacy file for _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev, NOT applied: void MI_CpuFill16(char* dst, u16 val, int nbytes); */
-/* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for Trmp2_PickFaceA, NOT applied: extern int RandomIntInternal(void* seed); */
-/* TUBUILD CONFLICT -- alternate declaration of MIi_CpuClear16, from the legacy file for func_ov006_02123b24, NOT applied: extern void MI_CpuFill16(int b, unsigned short a, int c); */
-/* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_02123bf4, NOT applied: extern int _Z14ApproachLinearRiii(int &v, int a, int b); */
 /* Both callers use the existing ov006 helpers' void(void) contracts. The
  * unrelated daPly_c::St_Null_Init at the same RAM address belongs to ov002. */
-/* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_02123cb4, NOT applied: extern int _Z14ApproachLinearRiii(int *v, int step, int rate); */
-/* TUBUILD CONFLICT -- alternate declaration of func_0203cc28, from the legacy file for func_ov006_02123cb4, NOT applied: extern void func_0203cc28(int *p, int angle); */
-/* TUBUILD CONFLICT -- alternate declaration of TrmpItem_Spawn, from the legacy file for func_ov006_02123cb4, NOT applied: extern char *TrmpItem_Spawn(int a0, int *a1, int a2, int a3); */
-/* TUBUILD CONFLICT -- alternate declaration of MIi_CpuClear16, from the legacy file for func_ov006_02124088, NOT applied: extern void MI_CpuFill16(char *dst, u16 val, int nbytes); */
-/* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02124088, NOT applied: extern void func_02012718(void *a, int b); */
-/* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02124088, NOT applied: extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h); */
-/* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchY, from the legacy file for func_ov006_02124228, NOT applied: extern short sTrmpStartTouchY; */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" s32 GetGameLanguage(void); */
-/* TUBUILD CONFLICT -- alternate declaration of MIi_CpuClear16, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" void MI_CpuFill16(char *dst, u16 val, int nbytes); */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov006_021245a8, NOT applied: extern s32 GetGameLanguage(void); */
-/* TUBUILD CONFLICT -- alternate declaration of MIi_CpuClear16, from the legacy file for func_ov006_021245a8, NOT applied: extern void MI_CpuFill16(char *dst, u16 val, int nbytes); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
-
-dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void);
 
 /* Data owned by this production TU; the original TU grouping is inferred. */
 int sTrmp2TouchBlocked = 1;
@@ -209,6 +175,13 @@ OamAttr **sTrmp2TextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSprites
                                            sMgTextSpritesItalian};
 }
 
+extern "C" void Mg_CommitRecords(void);
+extern "C" int GetGameLanguage(void);
+extern "C" void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
+extern "C" void RenderOamMainScreen(OamAttr *a0, int a1, int a2, int a3, int a4);
+int func_020126e8(int a);
+int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
+
 /* The three models, mTexAnim and mUnusedVec are all built before the
    empty body, in declaration order. */
 TrmpItem::TrmpItem() {}
@@ -217,7 +190,7 @@ TrmpItem::TrmpItem() {}
    constructor (dScMgBase_c's C2, its vtable, mDrawSubScreen, the empty loop
    over the two cameras, mParticle), then this class's vtable and the six
    element arrays. Historical alias: MgTrampolineTerror_Spawn. */
-extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
+dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
     return new dScMgTrampoline2_c;
 }
 
@@ -241,7 +214,7 @@ void dScMgTrampoline2_c::InitDisplay() {
         sp0 = 0;
         MI_CpuFill16(dst, sp0, 0x4000);
     }
-    DecompressLZ16(bgChar, (void *)((char *)G2_GetBG2CharPtr() + 0x4000));
+    DecompressLZ16(bgChar, ((char *)G2_GetBG2CharPtr() + 0x4000));
     DecompressLZ16(bgScr, G2_GetBG2ScrPtr());
     GX_LoadBGPltt(bgPltt, 0x1a0, 0x60);
 
@@ -274,7 +247,7 @@ s32 dScMgTrampoline2_c::InitResources() {
     G3X_AlphaBlend(true);
     InitialiseVramGlobals();
     G2_SetBG0Priority(1);
-    fov = FX_Div(0xc0000, (s32)data_02082414);
+    fov = FX_Div(0xc0000, data_02082414);
     this->mCameras[0].mLookAt.x = 0;
     this->mCameras[0].mLookAt.y = -0x64000;
     this->mCameras[0].mLookAt.z = 0;
@@ -294,8 +267,8 @@ s32 dScMgTrampoline2_c::InitResources() {
     if (Trmp2Mario_InitPool(mMarios, 5) == 0)
         return 0;
     TrmpFx_InitPool(mScorePopups, 5);
-    TrmpLine_LoadTextures();
-    TrmpItem_LoadAll((char *)mItems, 10);
+    TrmpLine::LoadTextures();
+    TrmpItem::LoadAll((char *)mItems, 10);
     Jump2Popup_InitPool((int)mPopups, 10);
     data_ov006_021421b4 = 0;
     Trmp2Spinner_LoadAll((int)mSpinners, 0x14);
@@ -320,8 +293,8 @@ void dScMgTrampoline2_c::StartRound(int /* arg */) {
     Trmp2Mario_SetTuning(0x1000);
     Trmp2Mario_ResetAll(mLevel);
     sTrmp2MarioCount = 1;
-    TrmpLine_ClearAll(mLevel);
-    TrmpItem_HideAll(mLevel);
+    TrmpLine::ClearAll(mLevel);
+    TrmpItem::HideAll(mLevel);
     Jump2Popup_ClearAll();
     Trmp2Spinner_HideAll();
     TrmpFx_ClearAll();
@@ -367,7 +340,7 @@ void dScMgTrampoline2_c::BeginIntro() {
 void dScMgTrampoline2_c::StateIntro() {
     int counter;
 
-    TrmpLine_UpdateAll();
+    TrmpLine::UpdateAll();
     mTimer -= 1;
     counter = mTimer;
 
@@ -384,7 +357,7 @@ void dScMgTrampoline2_c::StateIntro() {
             MI_CpuFill16((void *)dst, tmp, 0x6000);
         }
 
-        TrmpLine_CreateStartLineT2();
+        TrmpLine::CreateStartLineT2();
         func_02012718(0x1af, 0x8000);
         BeginPlay();
         return;
@@ -395,7 +368,7 @@ void dScMgTrampoline2_c::StateIntro() {
         volatile s16 old9c = mTouchX;
         volatile s16 old9e = mTouchY;
         int mixRaw = sTrmp2IntroToX * t + sTrmp2IntroFromX * (0x1000 - t);
-        mTouchX = (s16)(mixRaw >> 12);
+        mTouchX = (mixRaw >> 12);
         mTouchY = sTrmpStartTouchY;
 
         mTouchY +=
@@ -424,8 +397,8 @@ void dScMgTrampoline2_c::StatePlay() {
     int old;
 
     old = sTrmpItemsHit;
-    TrmpLine_UpdateAll();
-    TrmpItem_UpdateAll();
+    TrmpLine::UpdateAll();
+    TrmpItem::UpdateAll();
     Trmp2Mario_UpdateAll();
     if (old < sTrmpItemsHit) {
         int n = sTrmpItemsHit - old;
@@ -470,7 +443,8 @@ void dScMgTrampoline2_c::StatePlay() {
             vecA.y = 0x1000;
             vecA.z = 0;
             func_0203cc28((int *)&vecA, d->angles[i]);
-            TrmpItem_Spawn((int)&d->positions[i], (int *)&vecA, d->itemTypes[i], d->motionTypes[i]);
+            TrmpItem::Spawn((int)&d->positions[i], (int *)&vecA, d->itemTypes[i],
+                            d->motionTypes[i]);
         }
         if (ApproachLinear(mPattern, 6, 1)) {
             mScriptDone = 1;
@@ -487,8 +461,8 @@ void dScMgTrampoline2_c::StatePlay() {
                 vecB.y = 0x1000;
                 vecB.z = 0;
                 func_0203cc28((int *)&vecB, d->angles[i]);
-                TrmpItem_Spawn((int)&d->positions[i], (int *)&vecB, d->itemTypes[i],
-                               d->motionTypes[i]);
+                TrmpItem::Spawn((int)&d->positions[i], (int *)&vecB, d->itemTypes[i],
+                                d->motionTypes[i]);
             }
             mWaveStep = 0;
         } else {
@@ -505,7 +479,7 @@ void dScMgTrampoline2_c::BeginResults() {
 }
 
 void dScMgTrampoline2_c::StateResults() {
-    TrmpItem_UpdateAll();
+    TrmpItem::UpdateAll();
     Trmp2Mario_UpdateAll();
     if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
@@ -573,14 +547,13 @@ void dScMgTrampoline2_c::UpdateTouchInput() {
         mDragSoundHandle =
             func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0, func_020126e8(mTouchX << 12), 0, 0);
     } else {
-        b = (int)(TOUCH_REC(gTouchHeld)[i][0] == 0 && TOUCH_REC(gTouchEdge)[i][0] != 0);
+        b = (TOUCH_REC(gTouchHeld)[i][0] == 0 && TOUCH_REC(gTouchEdge)[i][0] != 0);
         if (b != 0) {
             mTouchReleased = 1;
         }
     }
 }
 
-extern "C" {
 int Trmp2_ColumnForKind(int x) {
     switch (x) {
     case 0:
@@ -602,9 +575,7 @@ int Trmp2_ColumnForKind(int x) {
     }
     return 0;
 }
-}
 
-extern "C" {
 unsigned short Trmp2_OccupancyBits(int sel, int b) {
     unsigned short r = 0;
     switch (sel) {
@@ -635,38 +606,33 @@ unsigned short Trmp2_OccupancyBits(int sel, int b) {
     }
     return r;
 }
-}
 
-extern "C" {
 int Trmp2_PickFaceA(int x) {
     int r;
     if (x < 5) {
-        r = (int)(((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
+        r = (((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
         return r < 0xc00 ? 4 : 5;
     }
-    r = (int)(((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
+    r = (((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
     return r < 0xc00 ? 6 : 7;
 }
-}
 
-extern "C" {
 int Trmp2_PickFaceB(int a) {
     int r;
     if (a < 5) {
-        r = (int)(((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
+        r = (((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
         if (r < 0xc00)
             return 4;
         if (r < 0xe00)
             return 5;
         return 8;
     }
-    r = (int)(((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
+    r = (((unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff) >> 0x13);
     if (r < 0xc00)
         return 6;
     if (r < 0xe00)
         return 8;
     return 7;
-}
 }
 
 void dScMgTrampoline2_c::SpawnWave() {
@@ -727,11 +693,11 @@ void dScMgTrampoline2_c::SpawnWave() {
                     occupancy |= Trmp2_OccupancyBits(column, 1);
                 } else if ((savedOccupancy & leftBit) != 0) {
                     kinds[i] = kind;
-                    faces[i] = (short)Trmp2_PickFaceA(kind);
+                    faces[i] = Trmp2_PickFaceA(kind);
                     occupancy |= Trmp2_OccupancyBits(column, 0);
                 } else {
                     kinds[i] = kind;
-                    faces[i] = (short)Trmp2_PickFaceB(kind);
+                    faces[i] = Trmp2_PickFaceB(kind);
                     switch (faces[i]) {
                     case 4:
                     case 5:
@@ -758,7 +724,7 @@ void dScMgTrampoline2_c::SpawnWave() {
         variant = 1;
         if (faces[i] == 6)
             variant = 2;
-        TrmpItem_Spawn((int)&sTrmp2RandomSpawnPositions[kinds[i]], (int *)&up, variant, faces[i]);
+        TrmpItem::Spawn((int)&sTrmp2RandomSpawnPositions[kinds[i]], (int *)&up, variant, faces[i]);
     }
 }
 
@@ -825,8 +791,8 @@ s32 dScMgTrampoline2_c::Render() {
 
     if (mRoundOver == 0) {
         Trmp2Mario_DrawAll();
-        TrmpLine_DrawAll();
-        TrmpItem_UpdateMatricesAll();
+        TrmpLine::DrawAll();
+        TrmpItem::UpdateMatricesAll();
     }
     Trmp2Spinner_UpdateMatricesAll();
     return 1;
@@ -834,7 +800,7 @@ s32 dScMgTrampoline2_c::Render() {
 
 /* Vtable slot 3: two teardown calls. */
 s32 dScMgTrampoline2_c::CleanupResources() {
-    TrmpItem_ReleaseFiles();
+    TrmpItem::ReleaseFiles();
     Mg_CommitRecords();
     return 1;
 }
@@ -892,7 +858,7 @@ int dScMgTrampoline2_c::OnGraphCallback0() {
             buf[2] = mTouchStartY;
             buf[3] = mTouchX;
             buf[4] = mTouchY;
-            if (TrmpLine_Create((s16 *)&buf[1], (s16 *)&buf[3])) {
+            if (TrmpLine::Create((s16 *)&buf[1], (s16 *)&buf[3])) {
                 func_02012718(0x1af, (mTouchStartX + mTouchX) << 11);
             } else {
                 func_02012790(0xe);
@@ -958,7 +924,7 @@ void dScMgTrampoline2_c::InitBrush(int layer) {
  * into the current touch-screen layer. The same body as dScMgTrampoline_c's,
  * with its own scratch buffer. */
 void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n) {
-    void *obj = (void *)this;
+    void *obj = this;
 
     int half;
     int x0;
@@ -993,7 +959,7 @@ void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n) {
                             ret = (char *)G2_GetBG2CharPtr();
                             break;
                         case 3:
-                            ret = (void *)G2_GetBG3CharPtr();
+                            ret = G2_GetBG3CharPtr();
                             break;
                         default:
                             return;
@@ -1031,7 +997,7 @@ void Trmp2Spinner_LoadAll(int x, int count) {
     sTrmp2Spinners = (unsigned char *)x;
     sTrmp2SpinnerCount = count;
     for (i = 0; i < sTrmp2SpinnerCount; i++) {
-        Trmp2Spinner_SetModel((void *)(sTrmp2Spinners + i * 0x78));
+        Trmp2Spinner_SetModel((sTrmp2Spinners + i * 0x78));
     }
 }
 }
@@ -1096,7 +1062,7 @@ void Trmp2Spinner_UpdateMatricesAll(void) {
 }
 }
 
-extern "C" void Trmp2Spinner_SetModel(void *raw) {
+void Trmp2Spinner_SetModel(void *raw) {
     BMD_File *file = dExtSimpleModel_c::LoadFile(sTrmp2StarModelFile);
     ((dExtModel_c *)raw)->SetFile(file, 1, -1);
 }
@@ -1104,7 +1070,8 @@ extern "C" void Trmp2Spinner_SetModel(void *raw) {
 extern "C" {
 extern struct Tbl sTrmp2SpinnerSpeeds;
 extern const u16 sTrmp2SpinnerColors[];
-extern void func_020169f4(char *self, int kind);
+}
+void func_020169f4(char *self, int kind);
 
 void Trmp2Spinner_Init(void *r0, int value) {
     Trmp2Spinner *spinner = (Trmp2Spinner *)r0;
@@ -1137,30 +1104,27 @@ void Trmp2Spinner_Init(void *r0, int value) {
     spinner->mVel.x = drop;
     spinner->mVel.y = drop;
     spinner->mVel.z = 0;
-    unsigned int rnd2 = (unsigned int)RandomIntInternal(&data_0209e650.value);
+    unsigned int rnd2 = RandomIntInternal(&data_0209e650.value);
     int *p1 = &spinner->mPos.x;
     int v1 = *p1 + ((((rnd2 & 0x7fffffff) >> 0x13) - 0x800) * 0x40);
     *p1 = v1;
     int rnd3 = RandomIntInternal(&data_0209e650.value);
     int *p2 = &spinner->mVel.x;
-    int adj3 = (int)(((unsigned int)rnd3 & 0x7fffffff) >> 0x13);
+    int adj3 = (((unsigned int)rnd3 & 0x7fffffff) >> 0x13);
     *p2 -= adj3 >> 1;
     int rnd4 = RandomIntInternal(&data_0209e650.value);
     int *p3 = &spinner->mVel.y;
-    int adj4 = (int)(((unsigned int)rnd4 & 0x7fffffff) >> 0x13);
+    int adj4 = (((unsigned int)rnd4 & 0x7fffffff) >> 0x13);
     *p3 -= adj4 >> 1;
-    func_02016a14(spinner, 0);
-    func_02016a04(spinner, 0);
-}
+    func_02016a14((char *)spinner, 0);
+    func_02016a04((char *)spinner, 0);
 }
 
-extern "C" {
 void Trmp2Spinner_Update(char *raw) {
     ApproachLinear2(SPINNER(raw)->mLifeTimer, 0, 1);
     short *p = &SPINNER(raw)->mAngleZ;
     *p = *p + 0x400;
     VEC_Add(&SPINNER(raw)->mPos, &SPINNER(raw)->mVel, &SPINNER(raw)->mPos);
-}
 }
 
 extern "C" void Trmp2Spinner_UpdateMatrix(char *raw) {

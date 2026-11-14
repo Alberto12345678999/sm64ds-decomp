@@ -224,7 +224,7 @@ struct Aea30C : dEnemyBase_c {
     void func_ov002_020ae73c(dActor_c *, dBgCh_Actr *);
     void func_ov002_020aea2c(dActor_c *, dBgCh_Actr *);
 };
-extern "C" void func_ov002_020aea30(Aea30C* c, dActor_c* a, dBgCh_Actr* b) {
+void func_ov002_020aea30(Aea30C *c, dActor_c *a, dBgCh_Actr *b) {
     if (c->mDeathState == 0)
         return;
     c->mFlags &= ~0x10000000;
@@ -279,7 +279,7 @@ static inline int IsPlayerActor(dActor_c *actor) {
     return actor->actorID == 0xbf;
 }
 
-extern "C" void func_ov002_020ae968(dEnemyBase_c *c, dActor_c *arg) {
+void func_ov002_020ae968(dEnemyBase_c *c, dActor_c *arg) {
     c->mVertSpeed = 0x14000;
     if (IsPlayerActor(arg)) {
         u16 t = data_ov002_020ff01c[(u16)arg->param1];
@@ -297,10 +297,10 @@ void Aea30C::func_ov002_020ae954(dActor_c* a, dBgCh_Actr*)
     func_ov002_020ae968(this, a);
 }
 
-extern "C" void func_ov002_020ae8b8(dEnemyBase_c *c, dActor_c *arg) {
+void func_ov002_020ae8b8(dEnemyBase_c *c, dActor_c *arg) {
     if (IsPlayerActor(arg)) {
         u16 t = data_ov002_020ff01c[(u16)arg->param1];
-        int scaled = (int)t << 3;
+        int scaled = t << 3;
         int ip = scaled << 12;
         int d1 = ip / 100;
         int d2 = scaled / 100;
@@ -382,7 +382,7 @@ int dEnemyBase_c::UpdateDeath(dBgCh_Actr &clsn) {
    survive the body in a callee-saved register. So both observations are true at
    once: the caller passes it, the callee ignores it, and the definition below
    carries the parameter unused. */
-extern "C" int func_ov002_020ae5c8(dEnemyBase_c *c, int x);
+int func_ov002_020ae5c8(dEnemyBase_c *c, int x);
 
 int EnemyDeathC::func_ov002_020ae64c(dBgCh_Actr &clsn) {
     int x = (int)&clsn;
@@ -407,7 +407,7 @@ int EnemyDeathC::func_ov002_020ae608(dBgCh_Actr &clsn) {
 }
 
 /* `x` is unused on purpose -- see the note on func_ov002_020ae64c, which passes it. */
-extern "C" int func_ov002_020ae5c8(dEnemyBase_c *c, int x) {
+int func_ov002_020ae5c8(dEnemyBase_c *c, int x) {
     if (c->mDeathTimer != 0)
         return 0;
     c->SpawnCoin();
@@ -419,27 +419,27 @@ extern "C" int func_ov002_020ae5c8(dEnemyBase_c *c, int x) {
 extern "C" {
 extern void *d_enemy_baseNewHold(unsigned int a, unsigned int b, int c, int d, int e, const void *f,
                                  void *g);
-extern u32 d_enemy_baseNewCleanParticleHold(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y,
-                                            Fix12i z, const Vector3_16f *dir);
+extern u32 d_enemy_baseNewCleanParticleHold(u32 uniqueID, u32 effectID, fx32 x, fx32 y, fx32 z,
+                                            const Vector3_16f *dir);
 }
 
 int EnemyDeathC::func_ov002_020ae4cc(dBgCh_Actr &clsn) {
-    int v[3];
+    Vector3 v;
     int n = mScaleY;
     if (n == 0) {
         int z = mPosZ;
         int y = mPosY + 0x50000;
         int x = mPosX;
-        v[0] = x;
-        v[1] = y;
-        v[2] = z;
+        v.x = x;
+        v.y = y;
+        v.z = z;
     } else {
         int z = mPosZ;
         int y = mPosY + n * 0x50;
         int x = mPosX;
-        v[0] = x;
-        v[1] = y;
-        v[2] = z;
+        v.x = x;
+        v.y = y;
+        v.z = z;
     }
     if (clsn.IsOnGround()) {
         SpawnCoin();
@@ -447,12 +447,9 @@ int EnemyDeathC::func_ov002_020ae4cc(dBgCh_Actr &clsn) {
         mDeathState = 0;
         return 1;
     }
-    mDeathParticleID0 =
-        (u32)Particle::System::New(mDeathParticleID0, kPtclDeathA, *(int *)((char *)v + 0),
-                                   *(int *)((char *)v + 4), *(int *)((char *)v + 8), 0, 0);
+    mDeathParticleID0 = Particle::System::New(mDeathParticleID0, kPtclDeathA, v.x, v.y, v.z, 0, 0);
     mDeathParticleID1 =
-        Particle::System::NewCleanParticle(mDeathParticleID1, kPtclDeathB, *(int *)((char *)v + 0),
-                                           *(int *)((char *)v + 4), *(int *)((char *)v + 8), 0);
+        Particle::System::NewCleanParticle(mDeathParticleID1, kPtclDeathB, v.x, v.y, v.z, 0);
     return 0;
 }
 
@@ -467,10 +464,10 @@ int EnemyDeathC::func_ov002_020ae454(dBgCh_Actr &clsn) {
 }
 
 /* Written as the real method over the real dBgCh_Lin/dBgPi classes, which is the
-   form the legacy shard recovered and byte-matched. The two by-value Fix12i
+   form the legacy shard recovered and byte-matched. The two by-value fx32
    parameters the mangled name claims are spelled as themselves. */
-int dEnemyBase_c::IsGoingOffCliff(dBgCh_Actr &clsn, Fix12i down, s16 maxSlope, bool detectWater,
-                                  bool allowObjFloor, Fix12i up) {
+int dEnemyBase_c::IsGoingOffCliff(dBgCh_Actr &clsn, fx32 down, s16 maxSlope, bool detectWater,
+                                  bool allowObjFloor, fx32 up) {
     Vector3 start;
     Vector3 end;
     mCliffState = 0;
@@ -743,7 +740,7 @@ void dEnemyBase_c::SpawnMegaCharParticles(dActor_c &other, char *p) {
    arity and this address's overlay; this member spent a long time spelled
    func_ov002_020ada40 because the mangled name was sitting on ov004's unrelated
    function at the same address. */
-void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, daPly_c &player, Fix12i) {
+void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, daPly_c &player, fx32) {
     mFlags &= ~0x10000001;
     mPrevAngleY = Vec3_HorzAngle(&player.mPos, &mPos);
     mHorzSpeed = 0xa000;

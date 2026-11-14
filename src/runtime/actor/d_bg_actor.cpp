@@ -81,7 +81,7 @@ void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern "C" {
 /* dBgCh_Actr queries (src/engine/collision/d_bg_ch_actr.cpp), not yet
    declared in dBgCh_Actr.h. */
-int func_02035638(void *clsn); /* mSphereClsn.flags & 0x10: the ceiling bit */
+int func_02035638(void *clsn);   /* mSphereClsn.flags & 0x10: the ceiling bit */
 void *func_0203564c(void *clsn); /* mSphereClsn.GetUnderResult(): the ceiling hit */
 /* d_a_ply_methods.cpp: sets 0x20 in daPly_c::mStateFlags. */
 void func_ov002_020d8838(void *player);
@@ -93,7 +93,7 @@ static inline int IsActorID(const dActor_c *actor, int id) {
     return actor->actorID == id;
 }
 
-extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
+int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnGround()) {
         dBgPi *hit = clsn->GetFloorResult();
         if (hit->GetClsnID() != -1) {
@@ -107,7 +107,7 @@ extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
     return 0;
 }
 
-extern "C" int func_ov002_020ef228(dBgCh_Actr *clsn, dActor_c *other) {
+int func_ov002_020ef228(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnWall()) {
         dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
@@ -121,7 +121,7 @@ extern "C" int func_ov002_020ef228(dBgCh_Actr *clsn, dActor_c *other) {
     return 0;
 }
 
-extern "C" int func_ov002_020ef070(void *unused, char *moverArg) {
+int func_ov002_020ef070(void *unused, char *moverArg) {
     Vector3 start, end;
 
     dBgCh_Lin line;
@@ -161,7 +161,7 @@ extern "C" int func_ov002_020ef070(void *unused, char *moverArg) {
     return 0;
 }
 
-extern "C" int func_ov002_020eeeb8(void *unused, char *moverArg) {
+int func_ov002_020eeeb8(void *unused, char *moverArg) {
     Vector3 start, end;
 
     dBgCh_Lin line;
@@ -205,7 +205,7 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *moverArg) {
     return 0;
 }
 
-extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
+int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
     dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
     dActor_c *other = (dActor_c *)otherArg;
     if (clsn->IsOnWall()) {
@@ -221,7 +221,7 @@ extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
     return 0;
 }
 
-extern "C" int func_ov002_020eedc0(dBgCh_Actr *clsn, dActor_c *other) {
+int func_ov002_020eedc0(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnWall()) {
         dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
@@ -235,7 +235,7 @@ extern "C" int func_ov002_020eedc0(dBgCh_Actr *clsn, dActor_c *other) {
     return 0;
 }
 
-extern "C" int func_ov002_020eed24(dBgCh_Actr *clsn, daPly_c *player) {
+int func_ov002_020eed24(dBgCh_Actr *clsn, daPly_c *player) {
     dBgPi *hit;
     dActor_c *owner;
     if (clsn->IsOnWall() || clsn->IsOnGround() || func_02035638(clsn)) {
@@ -251,7 +251,7 @@ extern "C" int func_ov002_020eed24(dBgCh_Actr *clsn, daPly_c *player) {
     return 0;
 }
 
-extern "C" int func_ov002_020eeca8(dBgCh_Actr *clsn, dActor_c *other) {
+int func_ov002_020eeca8(dBgCh_Actr *clsn, dActor_c *other) {
     if (func_02035638(clsn)) {
         dBgPi *hit = clsn->GetSphereResult();
         if (hit->GetClsnID() != -1) {
@@ -273,7 +273,7 @@ extern "C" int func_ov002_020eeca8(dBgCh_Actr *clsn, dActor_c *other) {
  * Vector3 scoped to its own branch. The scalar Hurt ABI remains a measured
  * reconstruction boundary. */
 
-extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
+int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
     dActor_c *owner;
 
     if (!IsActorID(player, 0xbf))
@@ -327,7 +327,7 @@ dBgActor_c::dBgActor_c()
 /* Same enable/disable-by-distance as IsClsnInRange, except an off-screen actor
  * (mFlags & 8) always drops its collider, and radius 0 unconditionally enables
  * instead of falling back to the clip volume. */
-int dBgActor_c::IsClsnInRangeOnScreen(Fix12i radius, Fix12i yOffset) {
+int dBgActor_c::IsClsnInRangeOnScreen(fx32 radius, fx32 yOffset) {
     int offScreen = (mFlags & 8) != 0;
     if (offScreen) {
         if (mMeshCollider.IsEnabled())
@@ -347,7 +347,7 @@ int dBgActor_c::IsClsnInRangeOnScreen(Fix12i radius, Fix12i yOffset) {
         else
             center.y += yOffset;
         daPly_c *player = ClosestPlayer();
-        int dist = Vec3_Dist(&center, &((dActor_c *)player)->mPos);
+        int dist = Vec3_Dist(&center, &player->mPos);
         if (dist > radius) {
             if (mMeshCollider.IsEnabled())
                 mMeshCollider.Disable();
@@ -362,7 +362,7 @@ int dBgActor_c::IsClsnInRangeOnScreen(Fix12i radius, Fix12i yOffset) {
 /* Keeps the mesh collider in the world only while the closest player is within
  * radius of (pos + yOffset). Zero radius falls back to the clip volume
  * (mClipRadius, shifted into fix12); zero yOffset to mClipOffsetY. */
-int dBgActor_c::IsClsnInRange(Fix12i radius, Fix12i yOffset) {
+int dBgActor_c::IsClsnInRange(fx32 radius, fx32 yOffset) {
     Vector3 center;
     center.x = mPosX;
     center.y = mPosY;
@@ -374,7 +374,7 @@ int dBgActor_c::IsClsnInRange(Fix12i radius, Fix12i yOffset) {
     else
         center.y += yOffset;
     daPly_c *player = ClosestPlayer();
-    int dist = Vec3_Dist(&center, &((dActor_c *)player)->mPos);
+    int dist = Vec3_Dist(&center, &player->mPos);
     if (dist > radius) {
         if (mMeshCollider.IsEnabled())
             mMeshCollider.Disable();
@@ -411,7 +411,7 @@ void dBgActor_c::UpdateClsnPosAndRot()
  * the per-frame angle steps, integrate, and Kill() when the fuse runs out.
  * Callers (pushblock, signpost, ski lift, Bill Blaster) pass the X step and a
  * model-pivot height; nonzero return means "still flying". */
-int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12i pivotY) {
+int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, fx32 pivotY) {
     Vector3 probe;
     Vector3 rayEnd;
     Vector3 sum;
@@ -467,9 +467,9 @@ void dBgActor_c::Kill()
 {
     Vector3 pos;
     Vector3 dustPos;
-    Fix12i x = mPosX;
-    Fix12i y = mPosY + 0x64000;
-    Fix12i z = mPosZ;
+    fx32 x = mPosX;
+    fx32 y = mPosY + 0x64000;
+    fx32 z = mPosZ;
     pos.x = x;
     pos.y = y;
     pos.z = z;
@@ -496,7 +496,7 @@ void dBgActor_c::KillByMegaChar(daPly_c &player) {
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x14000;
     mVertSpeed = 0x1e000;
-    mPrevAngleY = Vec3_HorzAngle(&((dActor_c *)&player)->mPos, &mPos);
+    mPrevAngleY = Vec3_HorzAngle(&player.mPos, &mPos);
     mMegaKnockbackTimer = 0x1e;
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();

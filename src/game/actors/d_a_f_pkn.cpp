@@ -40,6 +40,7 @@
 #include "math/Approach.h"
 #include "math/MtxStack.h"
 #include "nitro/fx/fx_trig.h"
+#include "math/CalcLib.h"
 
 #pragma defer_codegen off
 
@@ -105,18 +106,16 @@ enum {
 /* daPkn_c::EnterLunge, declared on the class's own header: hands the
    spawned PAKUN the grow-in frame. */
 
-extern "C" {
 void func_02012694(u32 id, const Vector3 *pos);
-short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int IsStarCollectedInCurLevel(s32 flag);
-void SetStarMarker(int i, void *self, int v);
-void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
-int *Vec3_LslInPlace(void *v, int sh);
-void VEC_Subtract(Vector3 *a, Vector3 *b, Vector3 *c);
+void SetStarMarker(int i, dActor_c *self, int v);
+extern "C" void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
+extern "C" int *Vec3_LslInPlace(void *v, int sh);
+extern "C" void VEC_Subtract(Vector3 *a, Vector3 *b, Vector3 *c);
 
 /* Called by their mangled names: each carries a Fix12<int> by value and
    the member spelling DIFFs. */
-u32 d_a_f_pknNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
+extern "C" u32 d_a_f_pknNewHold(u32 a, u32 b, fx32 c, fx32 d, fx32 e, const void *f, void *g);
 
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's model */
 extern SharedFilePtr *data_ov084_021302f4[];/* the six shared animation handles */
@@ -129,7 +128,6 @@ extern SharedFilePtr data_ov084_02130e24;   /* death animation */
 extern int data_ov084_0213029c[];           /* SpawnDeathBurst reach per frame */
 extern int data_ov084_021302c4[];           /* SpawnDeathBurst height per frame */
 extern u8 data_ov084_02130294[];            /* UpdateClsnOffset's five bone indices */
-}
 
 /* One vtable store and four destructor calls, every one a consequence of
  * `struct daFPkn_c : dEnemyBase_c` and the members that declaration types,
@@ -447,7 +445,7 @@ void daFPkn_c::StateSpit()
         mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov084_02130e1c)->filePtr), 0, 0x1000,
                           0);
     } else {
-        if ((u16)mStateTimer < 0x3a) {
+        if (mStateTimer < 0x3a) {
             targetAngle = mAngleY;
             player = ClosestPlayer();
             if (player != 0)
@@ -568,7 +566,7 @@ void daFPkn_c::StateWait()
         if (leader == 0)
             return;
     }
-    if ((u16)mStateTimer <= 0x64)
+    if (mStateTimer <= 0x64)
         return;
     if (dist <= 0x64000)
         return;
@@ -694,7 +692,7 @@ int daFPkn_c::Behavior()
     }
     /* mStateTimer is s16; the ROM counts it unsigned, and `(u16)mStateTimer + 1` DIFFs. */
     {
-        unsigned short *timer = (unsigned short *)&mStateTimer;
+        unsigned short *timer = &mStateTimer;
         *timer = *timer + 1;
         if (prevState != mState)
             *timer = 0;
@@ -819,17 +817,14 @@ s32 daFPkn_c::OnYoshiTryEat() {
     return r;
 }
 
-extern "C" daFPkn_c *daFPkn_c_classInit_PAKUN2()
-{
+daFPkn_c *daFPkn_c_classInit_PAKUN2() {
     return new daFPkn_c();
 }
 
-extern "C" daFPkn_c *daFPkn_c_classInit_FIREPAKUN_S()
-{
+daFPkn_c *daFPkn_c_classInit_FIREPAKUN_S() {
     return new daFPkn_c();
 }
 
-extern "C" daFPkn_c *daFPkn_c_classInit_FIREPAKUN()
-{
+daFPkn_c *daFPkn_c_classInit_FIREPAKUN() {
     return new daFPkn_c();
 }

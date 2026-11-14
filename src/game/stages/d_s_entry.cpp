@@ -80,7 +80,6 @@ extern void OamRender10_d_s_entry(int a, void *oam, int b, int c, int d, int e, 
 extern int func_0203d974(void);
 
 int GetLanguageIndex(void);
-void func_ov001_020ab5b0(char *r0, int r1, short r2, short r3, short s4, short s5);
 
 extern OamAttr *data_ov075_0211cb64[];
 extern OamAttr data_ov075_0211c720[];
@@ -91,6 +90,7 @@ extern short data_ov075_0211d742[];
 extern short data_ov075_0211d756[];
 extern short data_ov075_0211d94a[];
 }
+void func_ov001_020ab5b0(char *r0, int r1, short r2, short r3, short s4, short s5);
 
 #define SH(base, i) (*(short*)((char*)(base) + (i)*4))
 

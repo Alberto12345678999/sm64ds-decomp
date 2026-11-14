@@ -48,6 +48,7 @@
 #include "Particle__System.h"
 #include "ParticleIds.h"
 #include "LevelRng.h"
+#include "math/CalcLib.h"
 
 /* Actor IDs this TU compares. No header vocabulary exists (cleaned callers
  * pass raw hex), so they live here, cited to the ROM's own debug table. */
@@ -82,9 +83,7 @@ struct DsnCycle {
 extern "C" {
 extern u8 DecIfAbove0_Byte(u8 *);
 extern int RandomIntInternal(int *);
-extern int Vec3_Dist(const Vector3 *, const Vector3 *);
 }
-
 
 /* ROM ordinals 0 and 1 -- ov091 0x02132d04 (D0, 0x68) and 0x02132d6c (D1,
  * 0x54). No source here: both destructor variants come from the ONE
@@ -153,7 +152,7 @@ void daDsnBase_c::StateRest() {
     self->state = 4;
     unsigned int roll = RandomIntInternal(&data_0209e650.value);
     unsigned int rollHigh = roll >> 16;
-    self->timer = (char)(rollHigh % 10 + 0x14);
+    self->timer = (rollHigh % 10 + 0x14);
 }
 
 /* State 2, the slam. Integrates the fall at 0x4000 a frame; on reaching the
@@ -208,8 +207,7 @@ void daDsnBase_c::StateRise() {
         return;
     self->posY = self->riseY;
     self->state = 1;
-    self->timer =
-        (u8)(((unsigned int)RandomIntInternal(&data_0209e650.value) >> 0x10) % 0x1e + 0xa);
+    self->timer = (((unsigned int)RandomIntInternal(&data_0209e650.value) >> 0x10) % 0x1e + 0xa);
 }
 
 /* The per-frame shadow refresh both Behaviors run after the state step.

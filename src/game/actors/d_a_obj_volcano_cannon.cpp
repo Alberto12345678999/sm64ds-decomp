@@ -136,7 +136,7 @@ int daObj_volcanoCannon_c::InitResources() {
     return 1;
 }
 
-extern "C" daObj_volcanoCannon_c *daObj_volcanoCannon_c_classInit(void) {
+daObj_volcanoCannon_c *daObj_volcanoCannon_c_classInit(void) {
     return new daObj_volcanoCannon_c;
 }
 

@@ -36,30 +36,33 @@
 #include "nitro/cp/sqrt.h"
 #include "private/sound_positional.h"
 
-extern "C" {
-
 /* A playing sound is an NNSSndHandle. Its NNSSndSeqPlayer carries the
    (seqNo, seqArcIndex) pair Sound.cpp passes to func_02048a1c as (kind, id),
    and the voice priority (prio). The voice slots are SoundSlots
    (private/sound_positional.h). */
 
-extern u16 data_02099fa4;   /* pan channel */
-extern u32 data_02099fa8;   /* near range: full volume inside it */
-extern u32 data_02099fac;   /* far range: silent beyond it */
-extern int data_02099fb0;   /* slot-9 voice count */
+extern u16 data_02099fa4;
+/* pan channel */
+extern u32 data_02099fa8;
+/* near range: full volume inside it */
+extern u32 data_02099fac;
+/* far range: silent beyond it */
+extern int data_02099fb0;
+/* slot-9 voice count */
 extern const u32 data_020821c0[16];
-extern void *data_020a4bec; /* the registry owner */
+extern void *data_020a4bec;
+/* the registry owner */
 extern SoundSlot data_020a4c18[];
 extern SoundSlot data_020a4c08[];
 extern SoundSlot data_020a4bf8[];
 extern SoundSlot data_020a4bf0;
 
-extern int func_0204fa2c(NNSSndHandle *handle, int v);
-extern void func_0204f934(NNSSndHandle *handle);
-extern void func_0204f94c(NNSSndHandle *handle);
-extern void *func_02050cdc(int kind, int id);
+extern "C" int func_0204fa2c(NNSSndHandle *handle, int v);
+extern "C" void func_0204f934(NNSSndHandle *handle);
+extern "C" void func_0204f94c(NNSSndHandle *handle);
+extern "C" void *func_02050cdc(int kind, int id);
 
-int func_02049018(const Vector3 *v) {
+extern "C" int func_02049018(const Vector3 *v) {
     int tx = v->x >> 12;
     int ty = (v->y >> 12) * 2;
     int tz = v->z >> 12;
@@ -84,7 +87,7 @@ void SetSoundRange(int mode) {
     data_02099fac = tbl[j];
 }
 
-void func_02048f34(void *owner) {
+extern "C" void func_02048f34(void *owner) {
     int i;
     data_020a4bec = owner;
     for (i = 0; i < 6; i++)
@@ -97,21 +100,20 @@ void func_02048f34(void *owner) {
     SetSoundRange(0);
 }
 
-void func_02048f24(void) {
+extern "C" void func_02048f24(void) {
     SetSoundRange(1);
 }
 
-void func_02048f14(void) {
+extern "C" void func_02048f14(void) {
     SetSoundRange(2);
 }
 
-void func_02048f04(void) {
+extern "C" void func_02048f04(void) {
     SetSoundRange(3);
 }
 
-void func_02048ef4(void) {
+extern "C" void func_02048ef4(void) {
     SetSoundRange(4);
-}
 }
 
 namespace Sound {
@@ -138,24 +140,22 @@ void Func_02048eb4() {
 
 }
 
-extern "C" {
-
-void func_02048e94(void) {
+extern "C" void func_02048e94(void) {
     data_02099fb0 = 4;
     Sound::Player::SetPlayableSeqCount(9, 4);
 }
 
-void func_02048e74(void) {
+extern "C" void func_02048e74(void) {
     data_02099fb0 = 4;
     Sound::Player::SetPlayableSeqCount(9, 4);
 }
 
-void func_02048e54(void) {
+extern "C" void func_02048e54(void) {
     data_02099fb0 = 4;
     Sound::Player::SetPlayableSeqCount(9, 4);
 }
 
-void func_02048d80(NNSSndHandle *handle, const Vector3 *p) {
+extern "C" void func_02048d80(NNSSndHandle *handle, const Vector3 *p) {
     int pan = p->x >> 12;
     int farRange = data_02099fac;
     int nearRange = data_02099fa8;
@@ -181,7 +181,7 @@ void func_02048d80(NNSSndHandle *handle, const Vector3 *p) {
     NNS_SndPlayerSetTrackPan(handle, data_02099fa4, pan);
 }
 
-void func_02048c30(NNSSndHandle *handle, const Vector3 *p, int q) {
+extern "C" void func_02048c30(NNSSndHandle *handle, const Vector3 *p, int q) {
     int t;
     int a;
     int b = q >> 12;
@@ -223,7 +223,7 @@ void func_02048c30(NNSSndHandle *handle, const Vector3 *p, int q) {
     NNS_SndPlayerSetTrackPan(handle, data_02099fa4, a);
 }
 
-void func_02048af4(NNSSndHandle *handle, const Vector3 *p, int q) {
+extern "C" void func_02048af4(NNSSndHandle *handle, const Vector3 *p, int q) {
     int a = p->x >> 12;
     int b = q >> 12;
     unsigned int n, lo, hi;
@@ -260,7 +260,7 @@ void func_02048af4(NNSSndHandle *handle, const Vector3 *p, int q) {
     func_0204fa2c(handle, 0);
 }
 
-int func_02048a1c(const Vector3 *pos, int kind, int id) {
+extern "C" int func_02048a1c(const Vector3 *pos, int kind, int id) {
     u32 lim = data_02099fac;
     u32 dist;
     if (kind == 3) {
@@ -294,11 +294,11 @@ int func_02048a1c(const Vector3 *pos, int kind, int id) {
     return 1;
 }
 
-int func_02048a18(int a, int b) {
+extern "C" int func_02048a18(int a, int b) {
     return a;
 }
 
-void func_02048908(SoundSlot *slot, const Vector3 *p) {
+extern "C" void func_02048908(SoundSlot *slot, const Vector3 *p) {
     int num = data_02099fac;
     int den = data_02099fa8;
     int a = 0x7f;
@@ -349,7 +349,7 @@ void func_02048908(SoundSlot *slot, const Vector3 *p) {
     NNS_SndPlayerSetTrackPan(&slot->handle, data_02099fa4, half);
 }
 
-SoundSlot *func_02048720(const Vector3 *v, int kind, int id) {
+extern "C" SoundSlot *func_02048720(const Vector3 *v, int kind, int id) {
     u32 lim;
     void *elem;
     u8 typ;
@@ -439,7 +439,7 @@ SoundSlot *func_02048720(const Vector3 *v, int kind, int id) {
     return 0;
 }
 
-void func_020485f0(NNSSndHandle *handle, const Vector3 *pos) {
+extern "C" void func_020485f0(NNSSndHandle *handle, const Vector3 *pos) {
     int pan = pos->x >> 12;
     unsigned int dist;
     u16 id;
@@ -478,7 +478,7 @@ void func_020485f0(NNSSndHandle *handle, const Vector3 *pos) {
     }
 }
 
-void func_02048528(NNSSndHandle *handle, const Vector3 *pos) {
+extern "C" void func_02048528(NNSSndHandle *handle, const Vector3 *pos) {
     int pan = pos->x >> 12;
     unsigned int dist;
     int volume;
@@ -501,5 +501,4 @@ void func_02048528(NNSSndHandle *handle, const Vector3 *pos) {
     else if (pan < -0x40)
         pan = -0x40;
     NNS_SndPlayerSetTrackPan(handle, data_02099fa4, pan);
-}
 }

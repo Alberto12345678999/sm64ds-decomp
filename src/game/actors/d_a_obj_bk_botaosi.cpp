@@ -80,10 +80,10 @@ extern u8 gCurrentStarId;
 /* local extern: arm9 C helpers with no shared header yet. */
 extern "C" {
 int AngleDiff(int a, int b);
-int IsStarCollectedInCurLevel(int starID);
 void MTX_MultVec43(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 }
+int IsStarCollectedInCurLevel(int starID);
 
 /* -------------------------------------------------------------------------- */
 /* Empty on purpose. mwccarm destroys the dExtShadowModel_c member, then runs
@@ -341,7 +341,7 @@ int daObjBk_Botaosi_c::InitResources() {
     mFrontPosY = d.y;
     mFrontPosZ = d.z;
     mOriginalPosY = mPosY;
-    mKnockDir = (s8)one;
+    mKnockDir = one;
 
     if (gCurrentSublevel == 7 && (gCurrentStarId == 1 || IsStarCollectedInCurLevel(one) == 0) &&
         mPosY >= 0xdac000) {
@@ -357,7 +357,7 @@ int daObjBk_Botaosi_c::InitResources() {
    0x320 -- are exactly what the implicit default constructor of
    `struct daObjBk_Botaosi_c : dBgActor_c` with a dExtShadowModel_c member
    generates. Same shape as daObjBk_Lift_c_classInit in this overlay. */
-extern "C" daObjBk_Botaosi_c *daObjBk_Botaosi_c_classInit() {
+daObjBk_Botaosi_c *daObjBk_Botaosi_c_classInit() {
     return new daObjBk_Botaosi_c();
 }
 

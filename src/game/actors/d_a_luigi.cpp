@@ -115,7 +115,7 @@ void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
  * allocation size, vtable identity, and the LUIGI registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MirrorLuigi_Spawn. */
-extern "C" daLuigi_c *daLuigi_c_classInit() {
+daLuigi_c *daLuigi_c_classInit() {
     return new daLuigi_c();
 }
 
@@ -264,7 +264,7 @@ int daLuigi_c::ExecuteMirror(daPly_c *player) {
 
 /* One candidate caller, ov063 0x02118004, relocates to ov027 or ov055, so
  * the owner is unknown. */
-extern "C" void func_ov055_02111264(void) {
+void func_ov055_02111264(void) {
     data_ov055_02111b68 = kReqFade;
     func_0201277c(kAppearSound);
 }

@@ -21,7 +21,9 @@ distinction is computed and printed rather than assumed -- see changed_paths.
 """
 import re, subprocess, sys, pathlib
 SZ = {"u8":1,"s8":1,"char":1,"bool":1,"u16":2,"s16":2,"short":2,"u32":4,"s32":4,"int":4,
-      "unsigned":4,"long":4,"Fix12i":4,"float":4,"u64":8,"s64":8,"double":8}
+      "unsigned":4,"long":4,"float":4,"u64":8,"s64":8,"double":8,
+      # NitroSDK fixed-point scalars (nitro/fx/fx.h, also declared in types.h).
+      "fx16":2,"fx32":4,"fx64":8,"fx64c":8}
 # Alignment is NOT the same as width once aggregates are in play: a Vector3 is 12
 # bytes wide but 4-aligned, and using the width for the padding test would invent
 # padding before every one.
@@ -38,7 +40,7 @@ ALIGN = {t: min(w, 4) for t, w in SZ.items()}
 REPO = pathlib.Path(__file__).resolve().parent.parent
 # A simple aggregate body: no nested braces, no methods.
 AGG = re.compile(r"(?:typedef\s+)?struct\s+(\w+)\s*\{([^{}]*)\}", re.S)
-# `Fix12i x, y, z;` -- one type, several declarators, optional array bounds.
+# `fx32 x, y, z;` -- one type, several declarators, optional array bounds.
 MEMBERS = re.compile(r"^\s*([A-Za-z_]\w*)\s+([^;]+);", re.M)
 
 
@@ -732,7 +734,7 @@ def main(argv, repo=None):
         all_lines = txt.splitlines()
         nested_names = _nested_names(all_lines)
         # Brace-free aggregates declared in THIS header (dClipper.h's
-        # `struct ClipperPlane { Fix12i x, y, z; };`) size the fields that use
+        # `struct ClipperPlane { fx32 x, y, z; };`) size the fields that use
         # them. Learned for this file only and forgotten after it: two headers
         # may each declare a local helper of the same name and a different size.
         learn_aggregates(fp)
@@ -946,7 +948,16 @@ def main(argv, repo=None):
             method_code, _ = _code_without_comments_or_strings(line)
             allocation_method = ALLOCATION_METHOD.match(method_code)
             inline_method = INLINE_METHOD.match(method_code)
-            if allocation_method or inline_method or re.match(r"^\s*(virtual\b|~\w+\s*\([^;]*\)\s*;|[A-Za-z_][\w:<>, &*]*\([^;]*\)\s*(const)?\s*;)", line):
+            # A method declared before any field may wrap after a comma
+            # (`void ProjectOnLine(TrampolineObjectCallbacks *jumper, V2 *currentProjection,`
+            # / `V2 *previousProjection);`). The one-line pattern needs `);` on
+            # this line, so both lines were UNPARSED and the walk's offsets after
+            # them were no longer trusted. An unclosed `(` at end of line is that
+            # wrap; a later method still ends the field list.
+            open_signature = n == 0 and re.match(
+                r"^\s*~?[A-Za-z_][\w:<>, &]*\([^);]*$", method_code)
+            if (allocation_method or inline_method or open_signature
+                    or re.match(r"^\s*(virtual\b|~\w+\s*\([^;]*\)\s*;|[A-Za-z_][\w:<>, &*]*\([^;]*\)\s*(const)?\s*;)", line)):
                 # ...unless we started from a base whose size is asserted. A derived
                 # class places no vptr of its own -- it inherits the base's, and the
                 # base's asserted size already counts it. The running offset is sound,

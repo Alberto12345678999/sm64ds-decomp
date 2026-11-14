@@ -82,16 +82,16 @@ enum KuppaScriptCommand {
 
 extern "C" {
 /* The camera's command dispatcher. */
-int RunCameraCommand(dCamera_c *camera, u8 *command, int first, int last);
-void func_0201f32c(int messageID);
 void LoadLevelNoReturn(int levelID, u32 entrance, u32 arg2, u32 arg3);
-void func_02011c8c();
 int GetSoundMode();
 void SetSoundMode(int mode);
+}
+int RunCameraCommand(dCamera_c *camera, u8 *command, int first, int last);
+void func_0201f32c(int messageID);
+void func_02011c8c();
 void CollectStarInLevel(s8 levelID, s32 starID);
 void DisableSoundPlayersForCredits();
 u8 GetStarCameraSetting(s32 star);
-}
 
 /* Script state. */
 extern u8 *gRunningKuppaScript;
@@ -119,7 +119,7 @@ extern int data_ov002_02110aec;        /* WATERFALL_SOUNDS_DISABLED */
 /* Record fields are unaligned little-endian, so a script spells them byte by
  * byte. A pointer argument cannot be a constant byte, so each KS_PTR becomes a
  * store in this file's static initializer. */
-#define KS_S16(v) (u8)(v), (u8)((v) >> 8)
+#define KS_S16(v) (v), ((v) >> 8)
 #define KS_PTR(p) (u32) & (p) & 0xff, ((u32) & (p) >> 8) & 0xff, ((u32) & (p) >> 16) & 0xff, ((u32) & (p) >> 24) & 0xff
 
 /* The camera paths below are CutsceneSpline objects (CutsceneSpline.h).
@@ -4570,11 +4570,11 @@ u32 ReadUnalignedInt(u8 *p) {
 }
 
 s16 ReadUnalignedShort(u8 *p) {
-    return (s16)(p[0] | (p[1] << 8));
+    return (p[0] | (p[1] << 8));
 }
 
 u16 ReadUnalignedUshort(u8 *p) {
-    return (u16)(p[0] | (p[1] << 8));
+    return (p[0] | (p[1] << 8));
 }
 
 /* Undoes what the script set up: the scene-specific sound state, every

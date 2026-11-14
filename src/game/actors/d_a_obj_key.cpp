@@ -20,7 +20,7 @@
  *   0x32c -> 0x344 (+0x18).
  * - InitResources: mWithMeshClsn.Init(...) links to the undefined
  *   _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_: dBgCh_Actr.h spells
- *   the radii Fix12i, a plain s32, so the ROM's Fix12<int> mangling is
+ *   the radii fx32, a plain s32, so the ROM's Fix12<int> mangling is
  *   called by name.
  * - func_ov089_02131df4: one control arm (mState != 7) size 0x110 -> 0xe8
  *   (-0x28). The ROM has both copies.
@@ -196,7 +196,6 @@ extern "C" {
 extern dCamera_c *gCamera;
 extern u32 gNextActorUpdateMask;
 extern void *d_a_obj_keyNewHold(u32 a, u32 b, int c, int d, int e, void *f, void *g);
-extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern void func_ov002_020c3dbc(void *player);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void *data_ov089_021328b4[];
@@ -212,7 +211,6 @@ extern ObjKeyModelFile gWarioKeyModelFile;
 extern Vector3 data_ov089_02132b40;
 extern VecFx32 data_ov089_02132ca4;
 extern int *Vec3_LslInPlace(void *v, int sh);
-extern void LoadKeyModels(int idx);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int a, int b, void *v, void *w);
 /* An ObjKeyFile in layout, but daDemo_c::InitResources declares it `char`;
@@ -228,6 +226,8 @@ extern int d_a_obj_keyChangeMusicVolumeHold(unsigned int id, int vol);
    (the func_ov002_020e3e00 precedent for its neighbours 0x02111b64/6c). */
 extern int data_ov055_02111b68;
 }
+extern void func_02012694(unsigned int id, const Vector3 *pos);
+extern void LoadKeyModels(int idx);
 
 /* The key function, defined first. Under defer_codegen off it emits D1, D0 and
  * a D2 the cartridge does not keep, then the vtable and RTTI chain. */
@@ -244,9 +244,9 @@ void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
     if (dy < 0)
         dy = -dy;
     {
-        int s0 = cstd::sqrt((long long)height);
+        int s0 = cstd::sqrt(height);
         int s1 = cstd::sqrt(height + dy);
-        int s2 = cstd::sqrt((long long)height);
+        int s2 = cstd::sqrt(height);
         dy = (s0 * JUMP_FRAMES) / (s1 + s2);
     }
     {
@@ -273,8 +273,7 @@ void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
 
 /* UnloadKeyModels, 0x021310cc */
 /* daDoor_c, daPly_c and the bosses that drop a key call these two by name. */
-extern "C" void UnloadKeyModels(int kind)
-{
+void UnloadKeyModels(int kind) {
     if (kind >= 8)
         return;
     ((SharedFilePtr *)data_ov089_02132894[kind])->Release();
@@ -284,8 +283,7 @@ extern "C" void UnloadKeyModels(int kind)
 }
 
 /* LoadKeyModels, 0x02131114 */
-extern "C" void LoadKeyModels(int kind)
-{
+void LoadKeyModels(int kind) {
     SharedFilePtr *extra;
     if (kind >= 8)
         return;
@@ -345,23 +343,23 @@ void daObjKey_c::StateFlyToCenter()
 
     case 1:
         {
-            u16 *timer = (u16 *)&mStateTimer;
-            *timer = *timer + 1;
-            if (*timer < 70)
-                break;
-            mStep++;
-            *timer = 0;
-            Sound::PlayBank3(SND_FLY, mCamSpacePos);
-            center1.x = 0;
-            center1.y = 0;
-            center1.z = 0;
-            mVertSpeed = FLY_VY;
-            mHorzSpeed = Vec3_HorzDist(&mPos, &center1) / 80;
-            mPrevAngleY = Vec3_HorzAngle(&mPos, &center1);
-            mBounceCount = 0;
-            mVertAccel = GRAVITY;
-            Message::EndTalk();
+        u16 *timer = &mStateTimer;
+        *timer = *timer + 1;
+        if (*timer < 70)
             break;
+        mStep++;
+        *timer = 0;
+        Sound::PlayBank3(SND_FLY, mCamSpacePos);
+        center1.x = 0;
+        center1.y = 0;
+        center1.z = 0;
+        mVertSpeed = FLY_VY;
+        mHorzSpeed = Vec3_HorzDist(&mPos, &center1) / 80;
+        mPrevAngleY = Vec3_HorzAngle(&mPos, &center1);
+        mBounceCount = 0;
+        mVertAccel = GRAVITY;
+        Message::EndTalk();
+        break;
         }
 
     case 2:
@@ -430,9 +428,9 @@ void daObjKey_c::StateFlyToCenter()
     Vec3_LslInPlace(&v, 3);
     VEC_Add(&v, &mPos, &v);
     v.y = mScaleX * 13 + v.y;
-    mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_TRAIL_A, v.x, v.y, v.z, 0, 0);
-    mParticleID[1] = (u32)Particle::System::New(mParticleID[1], FX_TRAIL_B, v.x, v.y, v.z, 0, 0);
-    mParticleID[2] = (u32)Particle::System::New(mParticleID[2], FX_TRAIL_C, v.x, v.y, v.z, 0, 0);
+    mParticleID[0] = Particle::System::New(mParticleID[0], FX_TRAIL_A, v.x, v.y, v.z, 0, 0);
+    mParticleID[1] = Particle::System::New(mParticleID[1], FX_TRAIL_B, v.x, v.y, v.z, 0, 0);
+    mParticleID[2] = Particle::System::New(mParticleID[2], FX_TRAIL_C, v.x, v.y, v.z, 0, 0);
 }
 
 /* Kind 7, the power star. Take the camera, jump to a spot beside the nearest
@@ -449,7 +447,7 @@ void daObjKey_c::StateStarJump()
         v.y = mPosY;
         v.z = mPosZ;
         v.y = v.y + Y_SPARK;
-        mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
+        mParticleID[0] = Particle::System::New(mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
     }
     if (mStep >= 2)
         dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
@@ -543,17 +541,17 @@ void daObjKey_c::StateStarJump()
 
     case 3:
         {
-            u16 *timer = (u16 *)&mStateTimer;
-            *timer = *timer + 1;
-            if (*timer < 30)
-                return;
-            cam->SetLookAt(mSavedCamLookAt);
-            cam->SetPos(mSavedCamPos);
-            cam->mFlags &= ~8;
-            mFlags &= ~FLAG_CAM_TAKEOVER;
-            gNextActorUpdateMask &= ~FLAG_CAM_TAKEOVER;
-            mStep++;
+        u16 *timer = &mStateTimer;
+        *timer = *timer + 1;
+        if (*timer < 30)
             return;
+        cam->SetLookAt(mSavedCamLookAt);
+        cam->SetPos(mSavedCamPos);
+        cam->mFlags &= ~8;
+        mFlags &= ~FLAG_CAM_TAKEOVER;
+        gNextActorUpdateMask &= ~FLAG_CAM_TAKEOVER;
+        mStep++;
+        return;
         }
 
     case 4:
@@ -629,7 +627,7 @@ void daObjKey_c::StateDrop()
         v.y = mPosY;
         v.z = mPosZ;
         v.y = v.y + Y_SPARK;
-        mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
+        mParticleID[0] = Particle::System::New(mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
         if (mWithMeshClsn.JustHitGround()) {
             mVertSpeed = -mVertSpeed >> 1;
             func_02012694(SND_LAND, &mCamSpacePos);
@@ -735,19 +733,19 @@ void daObjKey_c::UpdateModelTransform()
     mShadowMatrix.m[10] = mPosY >> 3;
     mShadowMatrix.m[11] = mPosZ >> 3;
     /* Shadow only while the idle anim (file 0x801b) is showing. */
-    if (mAnmModel.file == (BCA_File *)data_ov002_02110964.filePtr)
+    if (mAnmModel.file == data_ov002_02110964.filePtr)
         DropShadowRadHeight(mShadowModel, mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
 int daObjKey_c::CleanupResources()
 {
     UnloadKeyModels(mState);
-    ((SharedFilePtr *)&data_ov002_02110964)->Release();
+    (&data_ov002_02110964)->Release();
     if (mState != KEY_KIND_STAR) {
-        ((SharedFilePtr *)&data_ov089_02132c60)->Release();
-        ((SharedFilePtr *)&data_ov089_02132c40)->Release();
-        ((SharedFilePtr *)&data_ov089_02132c70)->Release();
-        ((SharedFilePtr *)&data_ov089_02132c48)->Release();
+        (&data_ov089_02132c60)->Release();
+        (&data_ov089_02132c40)->Release();
+        (&data_ov089_02132c70)->Release();
+        (&data_ov089_02132c48)->Release();
     }
     Event::ClearBit(EVENT_KEY);
     return 1;
@@ -800,10 +798,10 @@ int daObjKey_c::Behavior()
                 /* First bone, word at +0xc. BMD_Bone has no field there. */
                 vec.y = *(int *)((char *)mAnmModel.data.bones + 0xc) * BONE_Y_MUL + vec.y;
                 vec.y = vec.y - Y_BONE;
-                mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_BURST_A, vec.x,
-                                                            vec.y, vec.z, 0, 0);
-                mParticleID[1] = (u32)Particle::System::New(mParticleID[1], FX_BURST_B, vec.x,
-                                                            vec.y, vec.z, 0, 0);
+                mParticleID[0] =
+                    Particle::System::New(mParticleID[0], FX_BURST_A, vec.x, vec.y, vec.z, 0, 0);
+                mParticleID[1] =
+                    Particle::System::New(mParticleID[1], FX_BURST_B, vec.x, vec.y, vec.z, 0, 0);
             }
         }
 
@@ -814,7 +812,7 @@ int daObjKey_c::Behavior()
             int isKey = (actorID == ACTOR_OBJ_KEY);
             if (isKey != 0) {
                 /* Anim 3's file (data_ov089_02132c40, id 0x44f) stays; the others die. */
-                if (mAnmModel.file != (BCA_File *)data_ov089_02132c40.filePtr)
+                if (mAnmModel.file != data_ov089_02132c40.filePtr)
                     MarkForDestruction();
             }
         }
@@ -858,7 +856,7 @@ int daObjKey_c::InitResources()
     int kind = param1 & 7;
     mState = kind;
     LoadKeyModels(mState);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
+    dExtFrameCtrl_c::LoadFile(*&data_ov002_02110964);
 
     if (mState == KEY_KIND_STAR) {
         if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->filePtr, 1, 1) == 0)
@@ -876,10 +874,10 @@ int daObjKey_c::InitResources()
         mVertAccel = 0;
         Sound::PlayBank3(SND_APPEAR, mCamSpacePos);
     } else {
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c60);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
+        dExtFrameCtrl_c::LoadFile(*&data_ov089_02132c60);
+        dExtFrameCtrl_c::LoadFile(*&data_ov089_02132c40);
+        dExtFrameCtrl_c::LoadFile(*&data_ov089_02132c70);
+        dExtFrameCtrl_c::LoadFile(*&data_ov089_02132c48);
         if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->filePtr, 1,
                               1) == 0)
             return 0;
@@ -925,13 +923,11 @@ int daObjKey_c::InitResources()
 /* Both profiles build the same class. fBase_c's inline operator new forwards to
  * _ZN7fBase_cnwEm; the implicit constructor inlines dEnemyBase_c's base step,
  * the vptr store and the five member constructors. */
-extern "C" daObjKey_c *daObjKey_c_classInit_LAST_STAR()
-{
+daObjKey_c *daObjKey_c_classInit_LAST_STAR() {
     return new daObjKey_c();
 }
 
-extern "C" daObjKey_c *daObjKey_c_classInit_OBJ_KEY()
-{
+daObjKey_c *daObjKey_c_classInit_OBJ_KEY() {
     return new daObjKey_c();
 }
 

@@ -90,10 +90,10 @@ struct BtflyAnimationFilePtr : SharedFilePtr {
 #define L(p) ((int)(p))
 
 extern "C" {
-s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 // local extern: CalcLib.h also conflicts with this TU's retained Vec3_Asr and Vec3_HorzLen prototypes.
 s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
+/* local extern: CalcLib.h clashes with this TU's C Vec3_HorzLen (int) and Vec3_Asr (void *) */
 int Vec3_HorzLen(const Vector3 *v);
 void Vec3_Asr(void *d, void *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -113,6 +113,7 @@ extern ButterflyState data_ov100_02148628[];
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
 }
+s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 
 /* One ~daBtfly_c() emits both D1 and D0. */
 daBtfly_c::~daBtfly_c()
@@ -531,8 +532,7 @@ int daBtfly_c::InitResources()
     return 1;
 }
 
-extern "C" daBtfly_c *daBtfly_c_classInit()
-{
+daBtfly_c *daBtfly_c_classInit() {
     return new daBtfly_c();
 }
 

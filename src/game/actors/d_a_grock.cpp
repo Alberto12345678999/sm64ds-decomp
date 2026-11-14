@@ -77,9 +77,8 @@ struct GrockModelFilePtr : SharedFilePtr {
 
 /* arm9 C helper with no shared header. func_02012694 has the same body as
  * Sound::PlayBank3 (0x02012664); the ROM calls this copy. */
-extern "C" {
-extern void func_02012694(unsigned int id, void *pos);
-}
+
+extern void func_02012694(unsigned int id, const Vector3 *pos);
 
 extern GrockModelFilePtr data_ov021_02114a50;
 
@@ -196,14 +195,14 @@ void daGrock_c::HandleMeshCollision() {
             Particle::System::NewSimple(kPtclBigSteelieBounce, pos.x, pos.y, pos.z);
             func_0201267c(0x48, &mCamSpacePos);
         } else {
-            mDustParticleID = (int)Particle::System::New(mDustParticleID, kPtclBigSteelieRollDust,
-                                                         pos.x, pos.y, pos.z, 0, 0);
+            mDustParticleID = Particle::System::New(mDustParticleID, kPtclBigSteelieRollDust, pos.x,
+                                                    pos.y, pos.z, 0, 0);
             mRollSoundID = Sound::PlayLong(mRollSoundID, 3, 0x8a, mCamSpacePos, 0);
         }
         mSpeedX += normal.x * 5;
         mSpeedZ += normal.z * 5;
         mHorzSpeed = Vec3_HorzLen(reinterpret_cast<const Vector3 *>(&mSpeedX));
-        mPrevAngleY = (s16)cstd::atan2(mSpeedX, mSpeedZ);
+        mPrevAngleY = cstd::atan2(mSpeedX, mSpeedZ);
         if (mHorzSpeed >= 0x22000) {
             mHorzSpeed = 0x22000;
             mSpeedX = FX_SinIdx((u16)mPrevAngleY >> 4) * 0x22;
@@ -389,7 +388,7 @@ int daGrock_c::InitResources() {
  * allocation size, vtable identity, and the GORO_ROCK registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: RollingRock_Spawn. */
-extern "C" daGrock_c *daGrock_c_classInit() {
+daGrock_c *daGrock_c_classInit() {
     return new daGrock_c();
 }
 

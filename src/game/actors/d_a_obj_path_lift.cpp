@@ -56,7 +56,7 @@ struct PathLiftCollisionFilePtr : SharedFilePtr {
 extern PathLiftModelFile data_ov100_02148a54;
 extern PathLiftCollisionFilePtr data_ov100_02148a5c;
 
-extern "C" daObjPathLift_c *daObjPathLift_c_classInit() {
+daObjPathLift_c *daObjPathLift_c_classInit() {
     return new daObjPathLift_c();
 }
 
@@ -106,7 +106,7 @@ int daObjPathLift_c::Behavior() {
     UpdateShadow();
     mMeshCollider.SetClipRadius(0x150000);
     mMeshCollider.SetClipOffsetY(0x1000);
-    int b = (int)(gGameMode == 1);
+    int b = (gGameMode == 1);
     if (b != 0) {
         if (mMeshCollider.IsEnabled() == 0) {
             mMeshCollider.Enable(this);

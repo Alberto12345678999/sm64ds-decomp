@@ -124,7 +124,6 @@ u32 PlayBank2_2D(u32);
 extern "C" {
 extern void FreeGfxSlotsById(int arg);
 extern int GetGameLanguage(void);
-extern void func_02012dd0(void *c);
 extern void Mg_CommitRecords(void);
 extern int Mg_GetSubmittedScore(void);
 extern int Mg_IsNewRecord(void);
@@ -139,8 +138,9 @@ extern void Mg_DrawBlinkSprite(void *, int, int);
 extern void Mg_DrawRecordTable(void *);
 extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Mg_CallStartRound(void *c, void *arg);
-extern void Mg_SetNextBanner(int);
 }
+extern void func_02012dd0(void *c);
+extern void Mg_SetNextBanner(int);
 
 struct W2 {
     int w[2];
@@ -238,7 +238,7 @@ extern dMgState_c::Callback pmf_dMgState_c_ResultsNewRecord_Enter;
 extern dMgState_c::Callback pmf_dMgState_c_GameOver_Enter;
 extern dMgState_c::Callback pmf_dMgState_c_Finished_Enter;
 
-extern "C" void Mg_ResetBannerLayout(void) {
+void Mg_ResetBannerLayout(void) {
     sMgClearBannerX = 0x80;
     sMgRecordBannerX = 0x80;
     sMgClearBannerY = 0x60;
@@ -1013,7 +1013,7 @@ void dMgState_c::DrawRecordTable() {
     Mg_DrawBlinkSprite(g, 0xe0, 0xa0);
 }
 
-extern "C" void Mg_PlaceBannersOnTopScreen(void) {
+void Mg_PlaceBannersOnTopScreen(void) {
     int v1 = -0x1c - Mg_GetTopScreenYOffset();
     sMgWinBannerX = 0x80;
     sMgWinBannerY = v1;
@@ -1033,15 +1033,15 @@ extern "C" void Mg_PlaceBannersOnTopScreen(void) {
     }
 }
 
-extern "C" void Mg_ResetRecordBannerPos(void) {
+void Mg_ResetRecordBannerPos(void) {
     sMgResultsBannerX = 0x80;
     sMgResultsBannerY = -0x1c;
 }
 
-extern "C" void Mg_SetPerfectBanner(void) {
+void Mg_SetPerfectBanner(void) {
     Mg_SetNextBanner(6);
 }
 
-extern "C" void Mg_SetNextBanner(int v) {
+void Mg_SetNextBanner(int v) {
     sMgNextBanner = v;
 }

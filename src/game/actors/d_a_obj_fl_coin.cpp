@@ -109,7 +109,7 @@ extern int data_ov064_0211c198[];
  * `new daObjFl_Puzzle_c` is the whole sequence the loose factory spelled by
  * hand: fBase_c::operator new(0x33c), dBgActor_c's base constructor, then the
  * vptr store. */
-extern "C" daObjFl_Puzzle_c *daObjFl_Puzzle_c_classInit(void) {
+daObjFl_Puzzle_c *daObjFl_Puzzle_c_classInit(void) {
     return new daObjFl_Puzzle_c;
 }
 
@@ -122,7 +122,7 @@ extern "C" daObjFl_Puzzle_c *daObjFl_Puzzle_c_classInit(void) {
  * `new daObjFl_Coin_c` is the whole sequence the loose factory spelled by
  * hand: fBase_c::operator new(0xd8), dActor_c's base constructor, then the
  * vptr store. */
-extern "C" daObjFl_Coin_c *daObjFl_Coin_c_classInit(void) {
+daObjFl_Coin_c *daObjFl_Coin_c_classInit(void) {
     return new daObjFl_Coin_c;
 }
 
@@ -304,7 +304,7 @@ void daObjFl_Puzzle_c::ShakeThenSlide(int dx, int dz, int slideTicks) {
         Sound::PlayBank3(0xe7, mCamSpacePos);
     }
 
-    if ((int)mStepTimer >= slideTicks + 0x14) {
+    if (mStepTimer >= slideTicks + 0x14) {
         mState = PIECE_STATE_WAIT;
         mStepActive = 0;
         return;

@@ -69,34 +69,34 @@ extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 /* Unused. Deleting this named prototype renumbers @NNN later in the file. */
 extern short atan2_hold_d_s_mg_memory_1(int y, int x);
-void MgCoins_StartLoseOneMore(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 sMemoryCardFrameSprites[];
 extern void *sMemoryCardSprites[];
 extern unsigned short sMemoryFlipFrameTimes[];
 extern void Mg_SaveRecordPair(int a, int b);
 extern u16 *sMemoryCardPositionsPerDifficulty[];
-extern void MgCoins_StartPayout(int);
 extern short gMgCoinsStatus;
-extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int c);
 extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int x);
 void Mg_DrawCredits(char *c, int a, int b, int d);
-void MgCoins_Update(void);
-void LoadCard2SubBg3(void *);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *ptr);
 int Mg_GetSavedRecord0(void);
 int Mg_GetSavedRecord1(void);
-void MgCoins_Reset(void);
 void Mg_SetTopScreenYOffset(int v);
-void Mg_PlaceBannersOnTopScreen(void);
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
 }
+void MgCoins_StartLoseOneMore(void);
+extern void MgCoins_StartPayout(int);
+extern void Mg_SetPerfectBanner(void);
+void MgCoins_Update(void);
+void LoadCard2SubBg3(void *);
+void MgCoins_Reset(void);
+void Mg_PlaceBannersOnTopScreen(void);
 
 /* Load-bearing: source order, and the opt pragmas on DrawCards and
  * CardFlyAway. Under deferred emission the last pragma setting wins for the
@@ -125,7 +125,7 @@ void dScMgMemory_c::UpdateCursor() {
         return;
 
     {
-        unsigned short *timer = (unsigned short *)&mCursor.blinkTimer;
+        unsigned short *timer = &mCursor.blinkTimer;
         *timer = *timer + 1;
         if (*timer < 0x14)
             return;
@@ -1005,7 +1005,7 @@ s32 dScMgMemory_c::InitResources() {
 
 /* `new` inlines the implicit constructor: the base chain, this class's
    vptr, then mDealer. */
-extern "C" dScMgMemory_c *dScMgMemory_c_classInit() {
+dScMgMemory_c *dScMgMemory_c_classInit() {
     return new dScMgMemory_c;
 }
 

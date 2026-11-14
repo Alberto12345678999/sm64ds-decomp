@@ -78,10 +78,7 @@ extern u16 sPsOptSoundPrevSprite[];
 extern u16 sPsOptSoundNextSprite[];
 extern int GetGameLanguage(void);
 /* Writes the icon center, half extents, touch kind, and clears the blink. */
-extern void func_ov001_020ab5b0(char *icon, int kind, short x, short y, short halfW, short halfH);
-int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mPressTimer from mPressTime. */
-void func_ov001_020ab3f0(void *icon);
 /* Sound::Play2D(2, id). The ROM calls this thunk, not Play2D. */
 int GetSoundMode(void);
 void SetSoundMode(int mode);
@@ -91,8 +88,11 @@ void TurnBacklightOff(void);
 extern unsigned char gSubScreenLayers;
 /* 1 while the backlight is on. TurnBacklightOn / Off write it. */
 extern unsigned char data_0208ee3c;
-void PsOpt_PlaceIcon(dMgPsOpt_c::TouchIcon_c *icon, int style, int variant, short x, short y);
 }
+extern void func_ov001_020ab5b0(char *icon, int kind, short x, short y, short halfW, short halfH);
+int TouchArea_Update(void *icon, int touch);
+void func_ov001_020ab3f0(void *icon);
+void PsOpt_PlaceIcon(dMgPsOpt_c::TouchIcon_c *icon, int style, int variant, short x, short y);
 
 /* One icon's half extents. The destructor is the shared empty arm9 one
    (NoOpDestructor, 0x0203b98c), so it is declared here and not defined. */
@@ -317,8 +317,7 @@ int dMgPsOpt_c::IsIdle() {
    (kind 2); the back button is a held hit (kind 1). TouchArea_Update is
    what reads that kind. The two captions take their half extents from the
    per-language records; every other style shares the flat table. */
-extern "C" void PsOpt_PlaceIcon(dMgPsOpt_c::TouchIcon_c *icon, int style, int variant, short x,
-                                short y) {
+void PsOpt_PlaceIcon(dMgPsOpt_c::TouchIcon_c *icon, int style, int variant, short x, short y) {
     int kind;
     int lang, lang2;
 
@@ -367,22 +366,22 @@ void dMgPsOpt_c::TouchIcon_c::Render() {
     switch (mStyle) {
     case kStyleSoundPrev:
         if (mOn != 0)
-            xy[0] = (s16)(xy[0] - 2);
+            xy[0] = (xy[0] - 2);
         sprites = sPsOptSoundPrevSprite;
         break;
 
     case kStyleSoundNext:
         if (mOn != 0)
-            xy[0] = (s16)(xy[0] + 2);
+            xy[0] = (xy[0] + 2);
         sprites = sPsOptSoundNextSprite;
         break;
 
     case kStyleSoundMode:
         scr = (u16 *)((char *)G2S_GetBG1ScrPtr() + 0x19e);
-        tile = (u16)((mVariant << 6) + 0x13);
+        tile = ((mVariant << 6) + 0x13);
         for (i = 0; i < 13; i++) {
             scr[0] = tile;
-            scr[0x20] = (u16)(tile + 0x20);
+            scr[0x20] = (tile + 0x20);
             scr++;
             tile++;
         }
@@ -403,7 +402,7 @@ void dMgPsOpt_c::TouchIcon_c::Render() {
         scr += (y >> 3) << 5;
         for (row = 0; row < mHalfH >> 2; row++) {
             for (col = 0; col < w >> 2; col++) {
-                scr[col] = (u16)(mask | (scr[col] & 0xfff));
+                scr[col] = (mask | (scr[col] & 0xfff));
                 w = mHalfW;
             }
             scr += 0x20;

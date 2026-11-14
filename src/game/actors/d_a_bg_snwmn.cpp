@@ -28,7 +28,7 @@ enum daBgSnwmn_c_AssetId {
 #include "math/MtxStack.h"
 
 /* arm9 C helper with no shared header. */
-extern "C" int IsStarCollectedInLevel(s8 levelID, int starID);
+int IsStarCollectedInLevel(s8 levelID, int starID);
 
 /* Four file-scope objects. mwcc emits __sinit_d_a_bg_snwmn.cpp from them.
  * The two model handles share one veneer pair, the BTP handle is the texseq
@@ -50,7 +50,7 @@ extern Vector3 data_ov072_02122c70;
 
 /* Reconstructed source-style names. SM64DS directly preserves the class RTTI,
  * BIG_SNOWMAN ID, descriptor relationship, and factory behavior. */
-extern "C" daBgSnwmn_c *daBgSnwmn_c_classInit() {
+daBgSnwmn_c *daBgSnwmn_c_classInit() {
     return new daBgSnwmn_c();
 }
 

@@ -11,8 +11,8 @@
  * CleanupResources, InitResources, LoadGraphics2D); the level-overlay loaders;
  * and the factory dScStage_c_classInit last, the way every scene TU ends.
  * UpdateMessage (0x0201cb7c) sits with the message code and is not part of
- * this range. The free functions keep their unmangled C names via
- * `extern "C"`, so no caller changes.
+ * this range. The free functions are C++ linkage; symbols.txt records
+ * the Itanium names.
  *
  * _ZTS10dScStage_c 0x02092170. _ZTI10dScStage_c 0x02092158, base word
  * _ZTI8dScene_c. _ZTV10dScStage_c 0x020921c0. The out-of-line destructor is
@@ -24,7 +24,7 @@
 
 // leftovers:
 // - OAM::Render, OAM::RenderSub, Sound::PlaySub and cstd::atan2
-//   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method.
+//   stay mangled (Fix12 by value). Fog::Init is the scalar fx32 method.
 //   RenderNumber keeps a local extern spelled over the member's mask-emitting
 //   parameter conversions. InitResources calls LoadGraphics2D with the comparison
 //   itself as the bool, which is what the ROM passes.
@@ -101,28 +101,26 @@ struct OamAttr;
 dScStage_c::graphCallback_c sStageGraphCallback;
 dClipper data_0209f43c;
 
+extern "C" int IsButtonInputValid(void);
+extern "C" int SublevelToLevel(int lv);
+extern "C" int GetOwnerLanguage(void);
+extern "C" void GiveLives(int n);
+extern "C" void Deallocate(void *ptr);
+int func_02029408(void);
+void SetControllerMode(unsigned char m);
+int IsStarCollected(int lv, int star);
 extern "C" {
-int IsButtonInputValid(void);
-int SublevelToLevel(int lv);
-int GetOwnerLanguage(void);
-void GiveLives(int n);
-/* local extern: the plain ROM Deallocate at 0x02018144, not Memory::Deallocate;
-   only decl_common.h's catch-all declares it, and that is not a header home. */
-void Deallocate(void *ptr);
 void SetBg2Offset(int x, int y);
 void SetBg3Offset(int x, int y);
 void SetBg1Offset(int x, int y);
 void SetSubBg0Offset(int x, int y);
 void SetSubBg1Offset(int x, int y);
-int func_02029408(void);
 void *LoadFile(int handle);
-void SetControllerMode(unsigned char m);
 unsigned int LoadCompressedFileAt(int id, void *dst);
 int GetSoundMode(void);
 void SetSoundMode(int m);
 void TurnBacklightOn(void);
 void TurnBacklightOff(void);
-int IsStarCollected(int lv, int star);
 
 bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
 
@@ -523,7 +521,6 @@ extern u16 data_ov002_02111188;
    (the ones decl_common.h and the block above already declare are not
    repeated). */
 struct ObjTeleport;
-extern "C" {
 int func_02029600(int x);
 void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d);
 void StartEntranceFaderWipe(int index);
@@ -575,14 +572,11 @@ int IsLevelInsideCastle(int level);
 int GetSoundGroupID(int group, int sub);
 void func_0202deac(int levelID);
 s8 GetLevelPart(s32 level);
-
-/* Defined elsewhere. */
 void OpenCannonInLevel(s8 levelID);
 int IsCannonOpenInLevel(s8 levelID);
 void CollectStarInLevel(s8 levelID, s32 starID);
 int IsStarCollectedInLevel(s8 levelID, s32 starID);
-void func_ov002_020b18f0(int a);
-}
+void func_ov002_020b18f0(char *a);
 void UnloadLevelOverlays(int levelID);
 void LoadLevelOverlays(int level);
 void LoadOrUnloadObjectOverlays(void (*fn)(int), int levelID);
@@ -758,8 +752,8 @@ void dScStage_c::LC_Render() {
 
     {
         void *p = LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
-        GX_LoadOBJPltt((void *)((char *)p + (((unsigned int)sLevelClearPaletteTimer >> 2) << 5)),
-                       0x1c0, 0x10);
+        GX_LoadOBJPltt(((char *)p + (((unsigned int)sLevelClearPaletteTimer >> 2) << 5)), 0x1c0,
+                       0x10);
         Deallocate(p);
     }
 
@@ -1169,17 +1163,15 @@ void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5) {
 }
 void dScStage_c::PS_Render() {
     if (func_02029408() != 0 && gPlayerHealth[gLocalPlayerId] != 0 && sPauseState != 0xb &&
-        sPauseState != 0xe && sPauseState != 0xf &&
-        ((unsigned int)sPauseState < 7U || (unsigned int)sPauseState > 8U)) {
+        sPauseState != 0xe && sPauseState != 0xf && (sPauseState < 7U || sPauseState > 8U)) {
         dScStage_c::RenderBouncingArrows();
     }
 
     int r0v = (gGameMode == 1);
     if (r0v != 0 && data_0209fc68 == 0) {
         OAM::Render(0, &OAM::VS_PAUSE, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
-    } else if (sPauseState == 1 ||
-               (SublevelToLevel(gCurrentSublevel) == 0x1d &&
-                ((unsigned int)sPauseState < 7U || (unsigned int)sPauseState > 8U))) {
+    } else if (sPauseState == 1 || (SublevelToLevel(gCurrentSublevel) == 0x1d &&
+                                    (sPauseState < 7U || sPauseState > 8U))) {
         int var_sl;
         unsigned char var_sb;
         unsigned char var_r8;
@@ -1243,7 +1235,7 @@ void dScStage_c::PS_Render() {
             RenderNumber(CountStarsCollectedInLevelToDisplay(0x1d), 0x88, 0x58, 1, 8);
         }
     } else if (gMainScreenLayers & DISPLAY_LAYER_BG3) {
-        if ((unsigned int)sPauseDisplayedCourse < 0xfU) {
+        if (sPauseDisplayedCourse < 0xfU) {
             unsigned char r4v = CountStarsCollectedInLevelToDisplay(sPauseDisplayedCourse);
             OAM::Render(false, &OAM::MM_SMALL_STAR, 0x58, 0x8c, -1, -1, 0);
             OAM::Render(false, &OAM::TIMES, 0x68, 0x8c, -1, -1, 0);
@@ -1406,7 +1398,7 @@ void dScStage_c::PS_UpdateSaveMenu(bool b) {
                 t = 0x2000;
             else
                 t = 0x1000;
-            v = (u16)t;
+            v = t;
         }
         p = (u16 *)G2S_GetBG1ScrPtr() + data_020755c8[i];
         for (j = 0; j < 10; j++) {
@@ -1478,7 +1470,7 @@ void dScStage_c::UpdateMenuButtons(bool b) {
             v = 0x1000;
         }
         if (gGamePaused != 0) {
-            u8 t = (u8)(sPauseState + 0xf9);
+            u8 t = (sPauseState + 0xf9);
             if (t <= 1) {
                 v = (u16)(v + 0x4000);
             }
@@ -1590,7 +1582,7 @@ void dScStage_c::PS_Update() {
         do {
             if (CountStarsCollectedInLevelToDisplay(i) != 0)
                 break;
-            i = (u8)(i + 1);
+            i = (i + 1);
         } while (i < 0xf);
         if (i == 0xf) {
             sPauseDisplayedCourse = i;
@@ -1728,10 +1720,10 @@ void dScStage_c::PS_Update() {
                 if ((a != 0) && (TOUCHP(de_off)->edge != 0)) {
                     var_r0 = 1;
                 }
-                if ((var_r0 != 0) && ((u32)(vx = TOUCHP(sl2 * 4)->x) < 0x38U) &&
-                    ((u32)TOUCHP(sl2 * 4)->y < 0x20U)) {
+                if ((var_r0 != 0) && ((vx = TOUCHP(sl2 * 4)->x) < 0x38U) &&
+                    (TOUCHP(sl2 * 4)->y < 0x20U)) {
                     u8 t;
-                    sPauseDisplayedCourse = (u8)(sPauseDisplayedCourse - 1);
+                    sPauseDisplayedCourse = (sPauseDisplayedCourse - 1);
                     var_fp = 1;
                     t = sPauseDisplayedCourse;
                     if (t == 0xFF)
@@ -1739,9 +1731,9 @@ void dScStage_c::PS_Update() {
                     {
                         u8 *p0 = &sPauseArrowPressTimer;
                         u8 *p1 = &sPauseArrowPressTimer;
-                        u8 *p = ((u8)(vx & 0xff) < 0x38) ? p0 : p1;
+                        u8 *p = ((vx & 0xff) < 0x38) ? p0 : p1;
                         sPressedPauseArrow = 1;
-                        *p = (u8)(data_0208ee44 * 3);
+                        *p = (data_0208ee44 * 3);
                     }
                 } else {
                     s32 var_r0_2;
@@ -1751,15 +1743,15 @@ void dScStage_c::PS_Update() {
                         var_r0_2 = sp4;
                     }
                     if (var_r0_2 != 0) {
-                        if (((u32)(u8)(TOUCHP(sl2 * 4)->x - 0xC8) < 0x38U) &&
-                            ((u32)TOUCHP(sl2 * 4)->y < 0x20U)) {
-                            sPauseDisplayedCourse = (u8)(sPauseDisplayedCourse + 1);
+                        if (((u8)(TOUCHP(sl2 * 4)->x - 0xC8) < 0x38U) &&
+                            (TOUCHP(sl2 * 4)->y < 0x20U)) {
+                            sPauseDisplayedCourse = (sPauseDisplayedCourse + 1);
                             sPressedPauseArrow = 2;
                             var_fp = 1;
                             if (sPauseDisplayedCourse == 0x10) {
-                                sPauseDisplayedCourse = (u8)sp8;
+                                sPauseDisplayedCourse = sp8;
                             }
-                            sPauseArrowPressTimer = (u8)(data_0208ee44 * 3);
+                            sPauseArrowPressTimer = (data_0208ee44 * 3);
                         }
                     }
                 }
@@ -2053,17 +2045,17 @@ void dScStage_c::PS_Update() {
             slot = gActivePlayerSlot;
             firstw = 0x64;
             tx = gTouchX[slot * 4];
-            relx = (u8)(tx - 0x44);
+            relx = (tx - 0x44);
         } else if (GetOwnerLanguage() == 3) {
             slot = gActivePlayerSlot;
             firstw = 0x74;
             tx = gTouchX[slot * 4];
-            relx = (u8)(tx - 0x3c);
+            relx = (tx - 0x3c);
         } else {
             slot = gActivePlayerSlot;
             firstw = 0x54;
             tx = gTouchX[slot * 4];
-            relx = (u8)(tx - 0x4c);
+            relx = (tx - 0x4c);
         }
         idxa = slot * 4;
         ty = gTouchY[slot * 4];
@@ -2251,17 +2243,17 @@ void dScStage_c::PS_Update() {
             slot = gActivePlayerSlot;
             firstw = 0x70;
             tx = gTouchX[slot * 4];
-            relx = (u8)(tx - 0x40);
+            relx = (tx - 0x40);
         } else if (GetOwnerLanguage() == 3) {
             slot = gActivePlayerSlot;
             firstw = 0x60;
             tx = gTouchX[slot * 4];
-            relx = (u8)(tx - 0x48);
+            relx = (tx - 0x48);
         } else {
             slot = gActivePlayerSlot;
             firstw = 0x50;
             tx = gTouchX[slot * 4];
-            relx = (u8)(tx - 0x50);
+            relx = (tx - 0x50);
         }
         if ((u8)(tx - 0x5a) < 0x14) {
             ty = gTouchY[slot * 4];
@@ -2721,7 +2713,7 @@ void dScStage_c::PS_Update() {
  * entry of the live player list (gPlayers, indexed by gLocalPlayerId).
  * dScStage_c polls it before opening the pause menu. */
 
-extern "C" int func_02029408(void) {
+int func_02029408(void) {
     return gPlayers[gLocalPlayerId]->CanPause();
 }
 
@@ -2787,21 +2779,18 @@ void dScStage_c::PS_Init() {
     G2S_SetBlendBrightness(subBlendTargets | 0x20, -7);
 }
 
-extern "C" {
 int func_02029600(int x) {
-    int b = (int)(gGameMode == 2);
+    int b = (gGameMode == 2);
     if (b == 0) {
-        unsigned char saved = *(u8 *)&data_ov002_02111148;
+        unsigned char saved = *&data_ov002_02111148;
         int r = GetMinimapID((dActor_c *)x, -1);
         if (r == saved)
             return 1;
     }
     return 0;
 }
-}
 
-extern "C" {
-int IsButtonInputValid(void) {
+extern "C" int IsButtonInputValid(void) {
     int mode;
     int val;
 
@@ -2840,7 +2829,6 @@ int IsButtonInputValid(void) {
     }
     return 0;
 }
-}
 
 /* Vtable slot 2. Every dispatcher calls it as `ldr r1,[r0]; ldr r1,[r1,#8];
    blx r1` with r0 = the callback object. The matrix at +0x4 stays zero until
@@ -2863,7 +2851,7 @@ int dScStage_c::graphCallback_c::GraphCallback1() {
    The MinimapDesc cast stays because the ROM's copy is
    a single ldm/stm block move and a struct copy of four named fields
    scalarizes. */
-extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
+void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
     *(MinimapDesc *)(&sStageGraphCallback.matrix) = *desc;
     sStageGraphCallback.originX = a;
     sStageGraphCallback.originY = b;
@@ -2875,14 +2863,14 @@ extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
    __cxa_vec_new(7, 0x60, 8, &dFdWipe_cC1, &dFdWipe_cD1): seven objects of 0x60,
    which is sizeof(dFdWipe_c). dScStage_c::CleanupResources tears the array
    down and zeroes it. */
-extern "C" void StartEntranceFaderWipe(int index) {
+void StartEntranceFaderWipe(int index) {
     dFdWipe_c *f = &((dFdWipe_c *)data_0209f324)[index];
     dScene_c::SetFaders(f);
     f->SetToEnd();
 }
 
 /* Start the exit wipe for the current character (per-character wipe table). */
-extern "C" void StartExitCharacterWipe(void) {
+void StartExitCharacterWipe(void) {
     StartExitFaderWipe(data_020755bc[data_0209caa0.file.mCharacter]);
 }
 
@@ -2924,7 +2912,7 @@ extern "C" void FUN_02029980(void) {
     o2->w3(0x1e, 0);
 }
 
-extern "C" void FUN_020299f4(void) {
+void FUN_020299f4(void) {
     if (gSceneFader->IsBetweenStartAndEnd() != 0)
         return;
     WipeFader *o2 = (WipeFader *)((dFdWipe_c *)data_0209f324 + 6);
@@ -2948,7 +2936,7 @@ typedef struct WipeEntry {
     u32 field8;
 } WipeEntry;
 
-extern "C" void FUN_02029ab0(void) {
+void FUN_02029ab0(void) {
     WipeEntry *entry;
     dScene_c::SetAndStopColorFader();
     entry = (WipeEntry *)((dFdWipe_c *)data_0209f324 + 6);
@@ -2958,7 +2946,7 @@ extern "C" void FUN_02029ab0(void) {
     data_0209f274 = 1;
 }
 
-extern "C" void EnterBigBoosHaunt(void) {
+void EnterBigBoosHaunt(void) {
     LoadLevel(0xc, 0, 0, 0, 0);
 }
 
@@ -2975,7 +2963,7 @@ extern "C" void KillPlayer(void) {
 
 /* The player hit a death plane: either restart (SetNextLevel) or trigger a
    scene fade, then always exit with StartExitFaderWipe. */
-extern "C" void HitDeathPlane(int arg) {
+void HitDeathPlane(int arg) {
     if (gNumLives != 0 || arg == 0)
         SetNextLevel(arg);
     else
@@ -2985,12 +2973,12 @@ extern "C" void HitDeathPlane(int arg) {
 
 /* Exit the current level: next level 1 (the castle grounds), then the exit
    wipe. */
-extern "C" void ExitLevel(void) {
+void ExitLevel(void) {
     SetNextLevel(1);
     StartExitCharacterWipe();
 }
 
-extern "C" void SetNextLevel(int arg) {
+void SetNextLevel(int arg) {
     int v = gCurrentSublevel;
     unsigned int i;
     struct LevelReturnEntry *p;
@@ -3026,12 +3014,12 @@ extern "C" void SetNextLevel(int arg) {
     sReturnState = arg;
 }
 
-extern "C" void SetNextStar(void) {
+void SetNextStar(void) {
     int level = SublevelToLevel(gNextSublevel);
     int b;
     if (gNextStarId == 1)
         return;
-    b = (int)(gGameMode == 1);
+    b = (gGameMode == 1);
     if (b != 0)
         return;
     if (level != -1) {
@@ -3048,17 +3036,17 @@ extern "C" void SetNextStar(void) {
 extern "C" void DeathTable_ClearBit(s32 id) {
     if (id < 0)
         return;
-    s32 level = GetLevelPart((s32)gCurrentSublevel);
+    s32 level = GetLevelPart(gCurrentSublevel);
     u32 *table = sActorDeathTable[level];
     u32 bitMask = ~(1u << (id & 0x1f));
     s32 word = id >> 5;
     table[word] = table[word] & bitMask;
 }
 
-extern "C" void DeathTable_SetBit(s32 id) {
+void DeathTable_SetBit(s32 id) {
     if (id < 0)
         return;
-    s32 level = GetLevelPart((s32)gCurrentSublevel);
+    s32 level = GetLevelPart(gCurrentSublevel);
     u32 *table = sActorDeathTable[level];
     s32 word = id >> 5;
     u32 val = table[word];
@@ -3066,10 +3054,10 @@ extern "C" void DeathTable_SetBit(s32 id) {
     table[word] = val | bitMask;
 }
 
-extern "C" u32 DeathTable_GetBit(s32 id) {
+u32 DeathTable_GetBit(s32 id) {
     if (id < 0)
         return 0;
-    s32 level = GetLevelPart((s32)gCurrentSublevel);
+    s32 level = GetLevelPart(gCurrentSublevel);
     u32 *table = sActorDeathTable[level];
     s32 word = id >> 5;
     s32 bit = id & 0x1f;
@@ -3143,7 +3131,7 @@ void dScStage_c::RenderVsModeCountdown() {
                 count++;
         }
     }
-    if (((dFdBrightness_c *)gSceneFader)->IsAtStart() == 0)
+    if ((gSceneFader)->IsAtStart() == 0)
         return;
     if (count < data_0209fc50)
         return;
@@ -3185,18 +3173,18 @@ extern "C" s32 NumVsStarsObtained(void) {
     int i = 1;
     signed char sum = gNumStageStars[0];
     signed char *p;
-    if (i >= (int)gNumPlayers)
+    if (i >= gNumPlayers)
         return sum;
     p = &data_0209f311;
     do {
-        sum = (signed char)(sum + *p);
+        sum = (sum + *p);
         i++;
         p++;
-    } while (i < (int)gNumPlayers);
+    } while (i < gNumPlayers);
     return sum;
 }
 
-extern "C" void GiveVsStars(int idx, int delta) {
+void GiveVsStars(int idx, int delta) {
     gNumStageStars[idx] += delta;
 }
 
@@ -3211,7 +3199,7 @@ int dScStage_c::IsPauseDisabled() {
 }
 
 /* The level's eight spike-bomb slots (daKirai_c's mSlotIndex). */
-extern "C" void ClearSpikeBomb(int idx) {
+void ClearSpikeBomb(int idx) {
     if (idx < 0)
         return;
     if (idx < 8)
@@ -3229,7 +3217,7 @@ extern "C" int AddSpikeBomb(void *p) {
     return -1;
 }
 
-extern "C" void SetStarMarker(int i, dActor_c *actor, int v2) {
+void SetStarMarker(int i, dActor_c *actor, int v2) {
     STAR_MARKERS[i] = actor;
     gStarMarkerTypes[i] = v2;
 }
@@ -3242,47 +3230,47 @@ extern "C" int IsCannonOpenInCurLevel(void) {
     return IsCannonOpenInLevel(gCurrentSublevel);
 }
 
-extern "C" void CollectStarInCurLevel(s32 starID) {
+void CollectStarInCurLevel(s32 starID) {
     CollectStarInLevel(gCurrentSublevel, starID);
 }
 
-extern "C" s32 IsStarCollectedInCurLevel(s32 starID) {
+s32 IsStarCollectedInCurLevel(s32 starID) {
     return IsStarCollectedInLevel(gCurrentSublevel, starID);
 }
 
-extern "C" signed char NumRedCoins(void) {
+signed char NumRedCoins(void) {
     int i = 1;
     signed char sum = gNumRedCoins[0];
     signed char *p;
-    if (i >= (int)gNumPlayers)
+    if (i >= gNumPlayers)
         return sum;
     p = &data_0209f30d;
     do {
-        sum = (signed char)(sum + *p);
+        sum = (sum + *p);
         i++;
         p++;
-    } while (i < (int)gNumPlayers);
+    } while (i < gNumPlayers);
     return sum;
 }
 
-extern "C" int GiveRedCoins(int i, int amt) {
+int GiveRedCoins(int i, int amt) {
     signed char *p = &gNumRedCoins[i];
-    gNumRedCoins[i] = (signed char)(gNumRedCoins[i] + amt);
+    gNumRedCoins[i] = (gNumRedCoins[i] + amt);
     int v = gNumRedCoins[i];
     if (v > 0x63) {
         v = 0x63;
-        *p = (signed char)v;
+        *p = v;
         return v;
     }
     if (v < 0) {
         v = 0;
-        *p = (signed char)v;
+        *p = v;
         return v;
     }
     return v;
 }
 
-extern "C" short NumCoins(void) {
+short NumCoins(void) {
     int i = 1;
     int n = gNumPlayers;
     short *p = gNumCoins;
@@ -3296,7 +3284,7 @@ extern "C" short NumCoins(void) {
     return sum;
 }
 
-extern "C" void GiveCoins(int idx, int amount) {
+void GiveCoins(int idx, int amount) {
     short *p = gNumCoins;
     short cur = p[idx];
     short v = cur + amount;
@@ -3307,7 +3295,7 @@ extern "C" void GiveCoins(int idx, int amount) {
     } else if (v < 0) {
         p[idx] = 0;
     }
-    func_ov002_020b18f0((int)gPlayers[idx]);
+    func_ov002_020b18f0((char *)gPlayers[idx]);
 }
 
 /* Returns the clamped health, which daPly_c::GiveHealth hands straight back. */
@@ -3337,18 +3325,18 @@ extern "C" void func_0202a850(int a, int b) {
 /* The per-controller records at data_0209f498 are 0x18 apart; the mode byte
    is their +0x16, data_0209f4ae. The save file keeps the active player's
    copy at data_0209caa0+0x42 (FileSaveData::controllerMode, include/SaveBlock.h). */
-extern "C" void InitControllerMode(int idx, u8 val) {
+void InitControllerMode(int idx, u8 val) {
     data_0209f4ae[idx * 0x18] = val;
     if (idx == gActivePlayerSlot)
         data_0209caa0.file.controllerMode = val;
 }
 
-extern "C" void SetControllerMode(unsigned char mode) {
+void SetControllerMode(unsigned char mode) {
     data_0209f4ae[gActivePlayerSlot * 0x18] = mode;
     data_0209caa0.file.controllerMode = mode;
 }
 
-extern "C" int func_0202a8e0(int a, unsigned char b) {
+int func_0202a8e0(int a, unsigned char b) {
     int i;
     for (i = 0; i < 9; i++) {
         if (data_0209f3e8[i] == 0) {
@@ -3369,15 +3357,15 @@ int dScStage_c::GetSkyboxID() {
     return (p[6] >> 4) & 0x1f;
 }
 
-extern "C" int func_0202a958(void) {
+int func_0202a958(void) {
     return ((LevelInfo *)data_0209f340)->minimapScale;
 }
 
-extern "C" int func_0202a96c(void) {
+int func_0202a96c(void) {
     return ((LevelInfo *)data_0209f340)->minimapPaletteFile;
 }
 
-extern "C" int func_0202a980(void) {
+int func_0202a980(void) {
     return ((LevelInfo *)data_0209f340)->minimapTilesFile;
 }
 
@@ -3397,7 +3385,7 @@ struct MinimapChangeNode {
     struct MinimapChangeNode *next; /* 0x0c */
 };
 
-void LoadMinimapChangeObject(int idx, Fix12i val, s8 h) {
+void LoadMinimapChangeObject(int idx, fx32 val, s8 h) {
     struct MinimapChangeNode *nn = (MinimapChangeNode *)::operator new(sizeof(MinimapChangeNode));
     StageArea *e = &((StageArea *)data_0209f314)[idx];
     struct MinimapChangeNode *cur = (MinimapChangeNode *)e->mBlockList;
@@ -3426,26 +3414,26 @@ void LoadMinimapChangeObject(int idx, Fix12i val, s8 h) {
         nn->height = val;
         if (hh == 0xf)
             hh = -1;
-        nn->minimapId = (u8)hh;
+        nn->minimapId = hh;
     }
 }
 
-extern "C" void HideArea(int idx) {
+void HideArea(int idx) {
     ((StageArea *)data_0209f314)[idx].mShowing = 0;
 }
 
-extern "C" void ShowArea(int idx) {
+void ShowArea(int idx) {
     ((StageArea *)data_0209f314)[idx].mShowing = 1;
 }
 
-extern "C" unsigned char IsAreaShowing(int idx) {
+unsigned char IsAreaShowing(int idx) {
     return ((StageArea *)data_0209f314)[idx].mShowing;
 }
 
 extern "C" void ChangeArea(int areaID) {
     if (gCurrentAreaId >= 0)
         HideArea(gCurrentAreaId);
-    gCurrentAreaId = (s8)areaID;
+    gCurrentAreaId = areaID;
     ShowArea(areaID);
 }
 
@@ -3455,14 +3443,14 @@ extern "C" void GiveLives(int delta) {
         v = 0;
     else if (v > 0x64)
         v = 0x64;
-    gNumLives = (signed char)v;
+    gNumLives = v;
 }
 
 /* The four register parameters are spelled wide because LoadLevelNoReturn
    (int, u32, u32, u32 in decl_common.h) forwards its own four with no
    narrowing; the stack-passed returnState is read back with ldrsb, so it is
    a signed byte. */
-extern "C" void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 returnState) {
+void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 returnState) {
     int cur;
     int chk;
 
@@ -3475,12 +3463,12 @@ extern "C" void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 
     if (starID < 0)
         gNextStarId = gCurrentStarId;
     else
-        gNextStarId = (u8)starID;
+        gNextStarId = starID;
     SetNextStar();
     sReturnState = arg3;
     if (returnState >= 0) {
         gReturnSublevel = gCurrentSublevel;
-        gReturnEntranceId = (u8)returnState;
+        gReturnEntranceId = returnState;
         chk = gCheckpointSublevel;
         if (chk < 0)
             return;
@@ -3540,7 +3528,7 @@ extern "C" void ExitMinigameMenu(void) {
 
 /* Start the minigame menu scene; the argument says whether to return to the
    rec room afterwards. */
-extern "C" void StartMinigameMenu(u8 returnToRecRoom) {
+void StartMinigameMenu(u8 returnToRecRoom) {
     data_0209f298 = returnToRecRoom;
     dScene_c::SetAndStopColorFader();
     dScene_c::StartSceneFade(5, 0, 0x7fff);
@@ -3548,7 +3536,7 @@ extern "C" void StartMinigameMenu(u8 returnToRecRoom) {
 
 /* Set up VS mode: mark the game mode, initialise the player globals, start
    the scene fade, then reset the save data to its defaults. */
-extern "C" void PrepareVsMode(void) {
+void PrepareVsMode(void) {
     gGameMode = 1;
     SetPlayerGlobals();
     dScene_c::StartSceneFade(3, 0, 0x7fff);
@@ -3573,17 +3561,17 @@ extern "C" void StartFile(s8 levelID, u8 entranceID) {
     dScene_c::StartSceneFade(3, 0, 0x7fff);
 }
 
-extern "C" int StartWithFarCamera(void) {
+int StartWithFarCamera(void) {
     return (((LevelInfo *)data_0209f340)->cameraFlags & 1) != 0;
 }
 
-extern "C" unsigned char GetStarCameraSetting(int idx) {
+unsigned char GetStarCameraSetting(int idx) {
     return (data_02092134 >> (idx * 4)) & 0xf;
 }
 
-extern "C" int GetMinimapScale(int idx) {
+int GetMinimapScale(int idx) {
     if (idx >= 0) {
-        if (idx < (int)sNumMinimapScaleObjs)
+        if (idx < sNumMinimapScaleObjs)
             return sMinimapScaleObjs[idx];
     }
     return 0xa00;
@@ -3595,14 +3583,14 @@ extern "C" int GetMinimapScale(int idx) {
    LoadTeleportDestObjects, LoadViewObjects and LoadEntranceObjects.
    InitResources zeroes every count but the entrances' before the level's
    objects load. */
-extern "C" void func_0202af80(short *table, int count) {
+void func_0202af80(short *table, int count) {
     sMinimapScaleObjs = table;
     sNumMinimapScaleObjs = count;
 }
 
 /* The minimap for an actor: its area's height bands, read at the actor's
    height, or the level's own map when the area has none. */
-extern "C" int GetMinimapID(dActor_c *actor, int arg) {
+int GetMinimapID(dActor_c *actor, int arg) {
     int idx = actor->mAreaId;
     char *g;
     int val;
@@ -3630,12 +3618,12 @@ extern "C" int GetMinimapID(dActor_c *actor, int arg) {
     return ((LevelInfo *)data_0209f340)->entries[idx].minimapId;
 }
 
-extern "C" void func_0202b044(u16 *table, int count) {
+void func_0202b044(u16 *table, int count) {
     gMinimapTileObjs = table;
     gNumMinimapTileObjs = count;
 }
 
-extern "C" void func_0202b060(char *table, int count) {
+void func_0202b060(char *table, int count) {
     sFogObjs = table;
     sNumFogObjs = count;
 }
@@ -3645,11 +3633,11 @@ struct ObjTeleport {
     int a;
     int b;
 };
-extern "C" struct ObjTeleport *GetTeleportDestObj(int i) {
+struct ObjTeleport *GetTeleportDestObj(int i) {
     return (ObjTeleport *)sTeleportDestObjs + i;
 }
 
-extern "C" void func_0202b090(void *table, int count) {
+void func_0202b090(void *table, int count) {
     sTeleportDestObjs = table;
     sNumTeleportDestObjs = count;
 }
@@ -3658,16 +3646,16 @@ extern "C" void func_0202b090(void *table, int count) {
 struct ViewObj {
     unsigned char d[0xe];
 };
-extern "C" struct ViewObj *GetViewObj(int idx) {
+struct ViewObj *GetViewObj(int idx) {
     return &((ViewObj *)sViewObjs)[idx];
 }
 
-extern "C" void func_0202b0c4(void *table, int count) {
+void func_0202b0c4(void *table, int count) {
     sViewObjs = table;
     gNumViewObjs = count;
 }
 
-extern "C" void func_0202b0e0(LVL_Overlay::StandardEntry *entries, int count) {
+void func_0202b0e0(LVL_Overlay::StandardEntry *entries, int count) {
     sEntranceObjs = entries;
     sNumEntranceObjs = count;
 }
@@ -3852,7 +3840,7 @@ void dScStage_c::LoadTextureTransformers() {
     StageArea *area = mAreas;
     BMD_File *modelFile = mModel.data.modelFile;
     int areaIndex;
-    for (areaIndex = 0; areaIndex < (int)((LevelInfo *)data_0209f340)->count; areaIndex++) {
+    for (areaIndex = 0; areaIndex < ((LevelInfo *)data_0209f340)->count; areaIndex++) {
         if (entry->bta) {
             dExtAnmTexSRT_c::Prepare(*modelFile, *(BTA_File *)entry->bta);
             area->mTransformer = new dExtAnmTexSRT_c;
@@ -3864,7 +3852,7 @@ void dScStage_c::LoadTextureTransformers() {
 }
 
 void dScStage_c::LoadModel() {
-    mModel.LoadAndSetFile(*(unsigned short *)(*(char **)&data_0209f340 + 8), 1, -1);
+    mModel.LoadAndSetFile(*(unsigned short *)(*&data_0209f340 + 8), 1, -1);
     BMD_File *modelFile;
     unsigned int materialCount;
     BMD_Material *material;
@@ -3961,16 +3949,13 @@ int dScStage_c::CanPause() {
  */
 
 void dScStage_c::OnPendingDestroy() {
-    (void)this;
+    this;
 }
 
-extern "C" {
 void func_020391f0(void);
-void func_0203083c(void);
+extern "C" void func_0203083c(void);
 void func_ov001_020aaf40(void);
-void func_0203db3c(int i, int v);
-}
-
+extern "C" void func_0203db3c(int i, int v);
 int dScStage_c::Render() {
     if (((gVsExitScreenActive | (gGamePaused | data_0209f20c)) & 0xff) == 0) {
         StageArea *area = mAreas;
@@ -4020,7 +4005,7 @@ int dScStage_c::Render() {
             daPly_c *player = gPlayers[playerIndex];
             if (player != 0) {
                 u8 playerFlags = player->mHasWings;
-                int *position = (int *)(&player->mPosX);
+                int *position = (&player->mPosX);
                 positionXor ^= (u8)(position[2] ^ (position[0] ^ position[1]));
                 playerFlagBits |= (u8)((playerFlags & 1) << playerIndex);
             }
@@ -4042,13 +4027,13 @@ int dScStage_c::Render() {
     return 1;
 }
 
-extern "C" {
 void func_02032f54();
+void func_02011c24();
+void func_020345b0(int a);
+extern "C" {
 void func_020199a4();
 void func_02019a58();
-void func_02011c24();
 void func_02030a78();
-void func_020345b0(int a);
 }
 
 static inline u32 MaskOff(u32 x, u32 m) {
@@ -4381,7 +4366,7 @@ void dScStage_c::CheckInput() {
 /* Fills the density ramp from a near/far pair, then writes the fog registers.
    The ramp is walked with a running `p`, not `mDensity[i]`: MEASURED,
    the indexed spelling changes the function's size. */
-void Fog::Init(unsigned short color, Fix12i nearv, Fix12i farv) {
+void Fog::Init(unsigned short color, fx32 nearv, fx32 farv) {
     int dist;
     int step;
     int i;
@@ -4403,7 +4388,7 @@ void Fog::Init(unsigned short color, Fix12i nearv, Fix12i farv) {
         } else if (dist > 0x80000) {
             *p = 0x7f;
         } else {
-            *p = (unsigned char)(dist >> 12);
+            *p = (dist >> 12);
         }
         i++;
         p++;
@@ -4411,7 +4396,7 @@ void Fog::Init(unsigned short color, Fix12i nearv, Fix12i farv) {
     }
 }
 
-extern "C" void SetTouchScreenDelay(void) {
+void SetTouchScreenDelay(void) {
     ControllerInput *p = data_0209f498;
     int i;
     for (i = 0; i < gNumPlayers; i++) {
@@ -4422,12 +4407,12 @@ extern "C" void SetTouchScreenDelay(void) {
 
 extern "C" u8 GetControllerMode(int a0);
 
-extern "C" void ResetInput(void) {
+void ResetInput(void) {
     ControllerInput *p = data_0209f498;
     int i;
     for (i = 0; i < gNumPlayers; i++) {
         u8 mode;
-        int m = (int)(gGameMode == 1);
+        int m = (gGameMode == 1);
         if (m == 0)
             mode = p->mode;
         else
@@ -4450,7 +4435,7 @@ void UnloadArchive(int);
 /* Destroy through vtable slot 1 (D0). */
 static inline void DestroyVirt(void **o) {
     if (o)
-        ((void (*)(void *))((void **)o[0])[1])((void *)o);
+        ((void (*)(void *))((void **)o[0])[1])(o);
 }
 
 int dScStage_c::CleanupResources() {
@@ -4556,28 +4541,28 @@ int dScStage_c::CleanupResources() {
 // Swapping either pair is byte-identical -- the literal-pool words are relocations and
 // therefore wildcards to the byte gate -- but sends each address to the wrong pool slot.
 // match.py --strict-relocs is what distinguishes them; keep this order.
+void ResetInput(void);
+extern "C" int SublevelToLevel(int i);
+extern "C" void Initialise3dGraphics(int arg);
+extern "C" void InitialiseVramGlobals(void);
+void func_02039218(void);
+int GetSoundGroupID(int level, int mode);
+extern "C" void LoadDebugFont(void);
+int IsLevelInsideCastle(int level);
+int IsLevelTinyHugeIslandOutside(int level);
+extern "C" int func_0203da9c(void);
+extern "C" int func_0203da3c(void);
+extern "C" u32 func_0203dad4(void);
 extern "C" {
 
 void Enable3dEngines(void);
-void ResetInput(void);
-int SublevelToLevel(int i);
 void UnloadArchive(int i);
 void LoadTextNarcs(void);
 int LoadArchive(int idx);
-void Initialise3dGraphics(int arg);
-void InitialiseVramGlobals(void);
-void func_02039218(void);
-int GetSoundGroupID(int level, int mode);
-void LoadDebugFont(void);
-int IsLevelInsideCastle(int level);
-int IsLevelTinyHugeIslandOutside(int level);
 int func_020308a8(void);
-int func_0203da9c(void);
-int func_0203da3c(void);
-u32 func_0203dad4(void);
 void func_0203b9b4(int *p, int v);
-void func_ov001_020ab2e4(void);
 }
+void func_ov001_020ab2e4(void);
 
 int dScStage_c::InitResources() {
     dScStage_c *scene = this;
@@ -4593,7 +4578,7 @@ int dScStage_c::InitResources() {
         dScene_c::Initialise3dGraphics();
         Enable3dEngines();
         gNumPlayers = data_0208a0e0;
-        gLocalPlayerId = (u8)func_0203da9c();
+        gLocalPlayerId = func_0203da9c();
         ResetInput();
         gGamePaused = 0;
 
@@ -4669,7 +4654,7 @@ int dScStage_c::InitResources() {
 
         u32 archiveToUnload = 2;
         do {
-            if (archiveToUnload != (u32)levelArchive) {
+            if (archiveToUnload != levelArchive) {
                 UnloadArchive(archiveToUnload);
             }
             archiveToUnload += 1;
@@ -4706,7 +4691,7 @@ int dScStage_c::InitResources() {
         G2_BG1Mosaic(false);
         gSubScreenLayers = 0x18;
         data_0209f204 = 0;
-        gGraphCallback = (dGraph_c::callback_c *)&sStageGraphCallback;
+        gGraphCallback = &sStageGraphCallback;
         gNextActorUpdateMask = 0;
         func_02039218();
         KuppaScript::Reset();
@@ -4891,14 +4876,14 @@ enum ZN10dScStage_c14LoadGraphics2DEbi_AssetId {
     ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN = 0x025c
 };
 
-extern "C" {
-void SetBg0Offset(int a, int b);
-void LoadFont(u8 arg);
-int GetOwnerLanguage(void);
-u32 LoadCompressedFileAt(int fileID, void *target);
-int LoadFileAt(int handle, int dest);
+extern "C" void LoadFont(u8 arg);
+extern "C" int GetOwnerLanguage(void);
 void LoadControllerModeText(int a);
 void LoadFont3D(void);
+extern "C" {
+void SetBg0Offset(int a, int b);
+u32 LoadCompressedFileAt(int fileID, void *target);
+int LoadFileAt(int handle, int dest);
 void SetSubBg0Offset(int a, int b);
 void SetSubBg1Offset(int a, int b);
 void SetSubBg2Offset(int a, int b);
@@ -4960,7 +4945,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         LoadCompressedFileAt(ASSET_D_2D_OP_BG_CL01_NCG_BIN, G2S_GetBG0CharPtr());
         LoadFileAt(ASSET_D_2D_OP_BG_CL_NCL_BIN, 0x5000400);
         LoadCompressedFileAt(ASSET_D_2D_OP_BG_CL02_NSC_BIN, G2S_GetBG0ScrPtr());
-        LoadCompressedFileAt(ASSET_D_2D_OP_BG_CL01_NSC_BIN, (char *)G2S_GetBG1ScrPtr());
+        LoadCompressedFileAt(ASSET_D_2D_OP_BG_CL01_NSC_BIN, G2S_GetBG1ScrPtr());
         LoadCompressedFileAt(ASSET_D_2D_OP_OBJ_CL_NCG_BIN, G2S_GetOBJCharPtr());
         LoadFileAt(ASSET_D_2D_OP_OBJ_CL_NCL_BIN, 0x5000600);
         {
@@ -5070,17 +5055,17 @@ bool dScStage_c::BeforeInitResources() {
     return ResetFadersAndSound();
 }
 
-extern "C" int IsLevelTinyHugeIslandOutside(int level) {
+int IsLevelTinyHugeIslandOutside(int level) {
     return level == 0x18 || level == 0x19;
 }
 
-extern "C" int IsLevelInsideCastle(int level) {
+int IsLevelInsideCastle(int level) {
     if (level == 2 || level == 4 || level == 5 || level == 0x32)
         return 1;
     return 0;
 }
 
-extern "C" int GetSoundGroupID(int group, int sub) {
+int GetSoundGroupID(int group, int sub) {
     unsigned char v = data_02075768[group * 3];
     if (group != 6)
         return v;
@@ -5104,7 +5089,7 @@ void UnloadLevelOverlays(int levelID) {
     LoadOrUnloadObjectOverlays(UnloadOverlay, levelID);
 }
 
-extern "C" void func_0202deac(int levelID) {
+void func_0202deac(int levelID) {
     LoadLevelOverlays(levelID);
     data_0209f278 = 1;
 }
@@ -5156,6 +5141,6 @@ void LoadOrUnloadObjectOverlays(void (*fn)(int), int idx) {
  * mMeshCollider in member order. The null check is `new`'s own.
  * Reconstructed source-style name (later EAD lineage supplies classInit);
  * historical alias Stage_Spawn. */
-extern "C" dScStage_c *dScStage_c_classInit() {
+dScStage_c *dScStage_c_classInit() {
     return new dScStage_c();
 }

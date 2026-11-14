@@ -60,6 +60,7 @@
 #include "private/mtx43.h"
 #include "math/MtxStack.h"
 #include "LevelRng.h"
+#include "math/CalcLib.h"
 
 /* The shadow update copies its matrix through Mtx43: the plain word union
  * keeps the block copy in C++ with Vector3's user-declared constructor in
@@ -118,15 +119,13 @@ extern Entry data_ov060_0211afb4[];
 extern PMF data_ov060_0211af74[];
 
 /* Fix12<int>-by-value and other mangled-name calls (see the banner). */
-extern u32 d_a_kpa_fireNewCleanParticleHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e,
+extern u32 d_a_kpa_fireNewCleanParticleHold(u32 a, u32 b, fx32 c, fx32 d, fx32 e,
                                             const struct Vector3_16f *f);
-extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
-void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
+extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, fx32 c, fx32 d, fx32 e, const void *f, void *g);
+void d_a_kpa_fireNewSimpleHold(u32 id, fx32 x, fx32 y, fx32 z);
 extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
 
-extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
-extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-extern int RandomIntInternal(int* seed);
+extern int RandomIntInternal(int *seed);
 
 /* ov060 tables indexed by mSubVariant (02119358, 0211934c) and the mouth-pose
  * rows variant 0 reads (02119364); see the handlers below. */
@@ -136,8 +135,7 @@ extern u16 data_ov060_02119364[];
 }
 
 /* Historical alias BowserFire_Spawn. First in source because codegen is deferred. */
-extern "C" daKpaFire_c *daKpaFire_c_classInit(void)
-{
+daKpaFire_c *daKpaFire_c_classInit(void) {
     return new daKpaFire_c;
 }
 
@@ -171,7 +169,7 @@ int daKpaFire_c::InitResources()
     else
         this->mDropsShadow = 1;
     this->mLanded = 0;
-    this->mSubVariant = ((unsigned int)this->param1 >> 4) & 3;
+    this->mSubVariant = (this->param1 >> 4) & 3;
     /* flags bit 0 set = this cylinder is disabled (dCc_c::flags). */
     if (this->mVariant == VARIANT_MOUTH)
         this->mdCcAc_c.flags |= 1;
@@ -356,8 +354,7 @@ void daKpaFire_c::func_ov060_0211747c() {
  *     and stops -- this branch returns whether or not the spawn worked;
  *   - otherwise it spawns a coin and zeroes the coin's three velocity words. */
 void daKpaFire_c::func_ov060_021172e0() {
-    Particle::System::NewSimple(kPtclFlameOutPuff, *(Fix12i *)&this->mPosX, *(Fix12i *)&this->mPosY,
-                                *(Fix12i *)&this->mPosZ);
+    Particle::System::NewSimple(kPtclFlameOutPuff, mPos.x, mPos.y, mPos.z);
     this->MarkForDestruction();
 
     if ((((u32)RandomIntInternal(&data_0209e650.value) >> 0x10) % 10) >= 2) {
@@ -858,10 +855,8 @@ daKpaFire_c::~daKpaFire_c() {}
 /* Behavior handler table (mVariant 0..7); one Entry{PMF} per slot. */
 extern "C" Entry data_ov060_0211afb4[8] = {
     {data_ov060_0211a794}, {data_ov060_0211a78c}, {data_ov060_0211a76c}, {data_ov060_0211a77c},
-    {data_ov060_0211a764}, {data_ov060_0211a774}, {data_ov060_0211a744}, {data_ov060_0211a784}
-};
+    {data_ov060_0211a764}, {data_ov060_0211a774}, {data_ov060_0211a744}, {data_ov060_0211a784}};
 /* InitResources handler table (mVariant 0..7); one PMF per slot. */
 extern "C" PMF data_ov060_0211af74[8] = {
     data_ov060_0211a75c, data_ov060_0211a754, data_ov060_0211a73c, data_ov060_0211a74c,
-    data_ov060_0211a734, data_ov060_0211a7ac, data_ov060_0211a7a4, data_ov060_0211a79c
-};
+    data_ov060_0211a734, data_ov060_0211a7ac, data_ov060_0211a7a4, data_ov060_0211a79c};

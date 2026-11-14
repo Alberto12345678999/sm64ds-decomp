@@ -70,19 +70,17 @@ struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
 /* Everything this file calls or reads that decl_common.h does not declare. */
 extern "C" {
 
-extern void  RenderOamMainScreen(void*, int, int, int, int);
+extern void RenderOamMainScreen(void *, int, int, int, int);
 extern void *LoadFile(int handle);
 extern void DecompressLZ16(const void *src, void *dst);
-extern void  FreeGfxSlotsById(int arg);
-extern int   GetGameLanguage(void);
+extern void FreeGfxSlotsById(int arg);
+extern int GetGameLanguage(void);
 struct Matrix2x2;
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
-extern void  Hud_RenderSprite(void *fn, int a, int b, int c, int d);
+extern void Hud_RenderSprite(void *fn, int a, int b, int c, int d);
 extern void Mg_DrawNumberRotated(int, int, int, int, int, int, u16);
-extern void  Mg_DrawScoreTally(void *, int, int, int);
-extern int   Mg_IsNewRecord(void);
-extern int   func_020126e8(int a);
-extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
+extern void Mg_DrawScoreTally(void *, int, int, int);
+extern int Mg_IsNewRecord(void);
 #include "OAM.h"
 #include "nitro/mi/memory.h"
 extern void OamRender10_d_s_mg_teresa(int sub, struct OamAttr *data, s32 x, s32 y, s32 palette,
@@ -151,7 +149,9 @@ extern Pmf pmf_dScMgTeresa_c_BigBoo_StateRemove;
 extern Pmf pmf_dScMgTeresa_c_BigBoo_StateGone;
 extern Pmf pmf_dScMgTeresa_c_BigBoo_StateResult;
 
-}  /* extern "C" */
+} /* extern "C" */
+extern int func_020126e8(int a);
+extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 
 namespace Sound { void PlayBank2_2D(unsigned int id); }
 
@@ -517,7 +517,7 @@ void dScMgTeresa_c::Reveal_StateFinish(int idx) {
     Sound::PlayBank2_2D(0x1f5);
 }
 
-#define AT(p,off) ((void*)(int)((char*)(p)+(off)))
+#define AT(p, off) (((p)+(off)))
 void dScMgTeresa_c::Reveal_StateDipAndRise(int i) {
     u8 flag;
 
@@ -641,7 +641,7 @@ void dScMgTeresa_c::FoundNumber_DrawAll() {
             int a = mFoundNumbers[i].x >> 12;
             if (b <= 8) b = 8;
             if (b >= 0xb8) b = 0xb8;
-            Mg_RenderSubSpriteMtx(sMgDigitSprites[mFoundNumbers[i].sprite + 1], a, b, (void *)0);
+            Mg_RenderSubSpriteMtx(sMgDigitSprites[mFoundNumbers[i].sprite + 1], a, b, 0);
         }
     }
 }
@@ -961,7 +961,7 @@ void dScMgTeresa_c::AreBoosSettled()
                 mBoos[i].mSettled = 1;
                 mBoos[i].mFrame = 3;
                 mBoos[i].mPlaySettleSound = 0;
-                mLastSettledBoo = (unsigned char)i;
+                mLastSettledBoo = i;
                 mBoos[i].mDelay = 1;
                 found++;
             }
@@ -976,7 +976,7 @@ void dScMgTeresa_c::AreBoosSettled()
     }
 }
 
-#define A(a) (*(u8*)(a))
+#define A(a) (*(a))
 void dScMgTeresa_c::TouchTestBoo(int idx)
 {
     int x;
@@ -995,7 +995,7 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     for (i = 0; i < 5; i++) {
         x = (mBoos[idx].mX >> 12) - sTeresaBooTouchOffsets[i * 2];
         y = (mBoos[idx].mY >> 12) - sTeresaBooTouchOffsets[i * 2 + 1];
-        r = ((int(*)[8])(char *)G2S_GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
+        r = ((int(*)[8])G2S_GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
         word = r[y & 7];
         if (((word >> ((x & 7) << 2)) & 0xf) == 0) {
             count++;
@@ -1018,7 +1018,7 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     Exclaim_Spawn(idx);
     func_02012718(0x1f0, mBoos[idx].mX);
     if (mFirstFoundBoo == 0xff)
-        mFirstFoundBoo = (u8)idx;
+        mFirstFoundBoo = idx;
 }
 #undef A
 
@@ -1412,20 +1412,20 @@ void dScMgTeresa_c::UpdateRubbing() {
 
 void dScMgTeresa_c::ReadRubTouch() {
     int i = gActivePlayerSlot;
-    if (gTouchHeld[(unsigned int)i * 4] != 0 && mRubTouching == 0) {
+    if (gTouchHeld[i * 4] != 0 && mRubTouching == 0) {
         mRubX = gTouchX[i * 4];
         mRubY = gTouchY[i * 4];
         mRubPrevX = mRubX;
         mRubPrevY = mRubY;
         mRubTouching += 1;
     }
-    if (gTouchHeld[(unsigned int)gActivePlayerSlot * 4] == 0) {
+    if (gTouchHeld[gActivePlayerSlot * 4] == 0) {
         mRubTouching = 0;
     }
     if (mRubTouching == 0)
         return;
-    mRubX = gTouchX[(unsigned int)gActivePlayerSlot * 4];
-    mRubY = gTouchY[(unsigned int)gActivePlayerSlot * 4];
+    mRubX = gTouchX[gActivePlayerSlot * 4];
+    mRubY = gTouchY[gActivePlayerSlot * 4];
 }
 
 void dScMgTeresa_c::ResetRound() {
@@ -1768,7 +1768,7 @@ s32 dScMgTeresa_c::InitResources()
     }
     Mg_InitBrush((char *)this, 0, 0, 0);
     {
-        void *p = (char *)G2S_GetBG0CharPtr();
+        void *p = G2S_GetBG0CharPtr();
         fc = 0x1111;
         MI_CpuFill16(p, fc, 0x6000);
     }
@@ -1810,8 +1810,7 @@ s32 dScMgTeresa_c::InitResources()
  * allocation size, vtable identity, and the MG_TERESA registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgHideAndBooSeek_Spawn. */
-extern "C" void *dScMgTeresa_c_classInit()
-{
+void *dScMgTeresa_c_classInit() {
     return new dScMgTeresa_c;
 }
 

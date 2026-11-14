@@ -42,11 +42,11 @@ static inline int IsPlayerActor(dActor_c *actor) {
     return actor->actorID == 0xbf;
 }
 
-extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_RED_FIRE() {
+daObjFire_c *daObjFire_c_classInit_OBJ_RED_FIRE() {
     return new daObjFire_c();
 }
 
-extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_BLUE_FIRE() {
+daObjFire_c *daObjFire_c_classInit_OBJ_BLUE_FIRE() {
     return new daObjFire_c();
 }
 

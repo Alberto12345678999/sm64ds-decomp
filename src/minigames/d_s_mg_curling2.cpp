@@ -74,9 +74,6 @@ extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Mg_RenderSpriteBoth(void *a, int b, int c, int d, int e);
 extern void func_02012718(int id, int v);
-extern int func_020126e8(int a);
-extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, s16 h);
-extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 struct OamAttr;
 struct Matrix2x2;
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
@@ -149,6 +146,9 @@ extern PMF pmf_dScMgCurling2_c_StepYRampUp;
 extern PMF pmf_dScMgCurling2_c_StepYRampDown;
 
 } /* extern "C" */
+extern int func_020126e8(int a);
+extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, s16 h);
+extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 
 namespace cstd {
 s16 atan2(s32, s32);
@@ -435,7 +435,7 @@ void dScMgCurling2_c::StepXSettleFast(int entry) {
     *y += mPiece[entry].yInc;
     if (*xInc > 0) {
         *xInc -= 0x20;
-        if ((int)(short)*xInc < 0)
+        if ((short)*xInc < 0)
             *xInc = 0;
     } else if (*xInc < 0) {
         *xInc += 0x20;
@@ -598,9 +598,9 @@ void dScMgCurling2_c::SeedPieces() {
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
-        mPiece[i].sprite1 = (char)v;
+        mPiece[i].sprite1 = v;
 
-        mPiece[i].countdown = (short)(((i & 7) << 6) + MG_RAND(0x30));
+        mPiece[i].countdown = (((i & 7) << 6) + MG_RAND(0x30));
 
         mPiece[i].x = MG_RAND(32) << 15;
 
@@ -682,7 +682,7 @@ void dScMgCurling2_c::DragUpdate() {
     if (gTouchHeld[idx * 4] != 0) {
         int dy2;
         int dy;
-        u8 bx = ((u8 *)gTouchX)[idx * 4];
+        u8 bx = (gTouchX)[idx * 4];
         u8 by = ((u8 *)gTouchY)[idx * 4];
 
         oldx = mDragX;
@@ -951,7 +951,7 @@ void dScMgCurling2_c::ResolveStoneCollision(int stoneIndex) {
         dy = mStone[hitIndex].y;
         dx = mStone[hitIndex].x - mStone[stoneIndex].x;
         dy -= mStone[stoneIndex].y;
-        if ((cstd::sqrt((u64)((long long)dx * dx + (long long)dy * dy)) >> 12) >= 0x18)
+        if ((cstd::sqrt(((long long)dx * dx + (long long)dy * dy)) >> 12) >= 0x18)
             continue;
         {
             int hitVelocityX;
@@ -1551,7 +1551,7 @@ s32 dScMgCurling2_c::InitResources() {
     G2_SetBG3Priority(2);
     G2_SetBG3ControlText(GX_BG_SCRSIZE_TEXT_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE_0x9000,
                          GX_BG_CHARBASE_0x20000);
-    DecompressLZ16(r6, (void *)G2_GetBG3CharPtr());
+    DecompressLZ16(r6, G2_GetBG3CharPtr());
 
     f = LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING_NCL_BIN);
     GX_LoadBGPltt(f, 0x60, 0x1a0);
@@ -1594,7 +1594,7 @@ s32 dScMgCurling2_c::InitResources() {
     G2S_SetBG2Priority(2);
     G2S_SetBG2ControlText(GX_BG_SCRSIZE_TEXT_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE_0x4000,
                           GX_BG_CHARBASE_0x14000);
-    DecompressLZ16(r6, (void *)G2S_GetBG2CharPtr());
+    DecompressLZ16(r6, G2S_GetBG2CharPtr());
 
     f = LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING_NCL_BIN);
     GXS_LoadBGPltt(f, 0x60, 0x1a0);
@@ -1634,7 +1634,7 @@ s32 dScMgCurling2_c::InitResources() {
  * allocation size, and vtable identity; later EAD lineage supplies the
  * classInit spelling prior. Exact original SM64DS spelling is not preserved.
  * Historical project alias: func_ov006_020e6bf4. */
-extern "C" void *dScMgCurling2_c_classInit() {
+void *dScMgCurling2_c_classInit() {
     return new dScMgCurling2_c;
 }
 

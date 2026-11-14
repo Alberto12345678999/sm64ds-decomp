@@ -38,6 +38,7 @@ enum d_a_pg_mthr_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 #include "nitro/fx/fx_cp.h"
+#include "math/CalcLib.h"
 
 enum {
     ACTOR_PLAYER = 0xbf,
@@ -95,13 +96,11 @@ struct PgMthrState {
     int (daPgMthr_c::*update)();
 };
 extern "C" {
-extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
+extern fx32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern int AngleDiff(int a, int b);
-extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 /* 0x0201267c plays Sound::Play(3, id, pos). Sound::PlayBank3 is the
    previous function (0x02012664); this TU's bl is not that one. */
-extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
@@ -120,9 +119,9 @@ extern SharedFilePtr *data_ov018_02112c04[2];
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, int a, int b, void *c2, void *d);
 }
+extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 
-extern "C" daPgMthr_c *daPgMthr_c_classInit()
-{
+daPgMthr_c *daPgMthr_c_classInit() {
     return new daPgMthr_c();
 }
 
@@ -238,7 +237,7 @@ int daPgMthr_c::StateStandUpdate() {
     if (toucher != 0) {
         /* Yoshi's baby is in his mouth; this path does not count it. */
         if (toucher->param1 != CHAR_YOSHI)
-            held = (dActor_c *)toucher->mHeldObj;
+            held = toucher->mHeldObj;
         BeginTalk(toucher, (char *)held);
     }
     near = ClosestPlayer();
@@ -422,13 +421,13 @@ void daPgMthr_c::CheckFollow() {
 
 void daPgMthr_c::TurnHeadToward(char *b) {
     dActor_c *who;
-    Fix12i dist;
+    fx32 dist;
     s16 horzAngle;
     s16 delta, vert;
     Vector3 lookTarget;
     Vector3 nodePos;
     Matrix4x3 *bone;
-    Fix12i tx, ty, tz;
+    fx32 tx, ty, tz;
 
     if (b == 0)
         return;

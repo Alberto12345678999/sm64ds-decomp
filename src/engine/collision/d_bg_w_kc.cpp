@@ -32,10 +32,9 @@ bool dBgW_Kc::IsNearZeroDivisor(int value) {
 }
 
 /* True when a face normal's y lies strictly inside the wall band. */
-bool dBgW_Kc::IsWallNormal(Fix12i normalY) {
+bool dBgW_Kc::IsWallNormal(fx32 normalY) {
     return normalY < 0x600 && normalY > -0xccc;
 }
-
 
 /* Slope band of a face normal's y: 0 floor, 1 wall, 2 underside. */
 int dBgW_Kc::ClassifyNormalY(int normalY) {
@@ -74,7 +73,7 @@ void dBgW_Kc::SetFile(KCL_File *file, CLPS_Block &clpsBlock) {
 }
 
 /* A prism record's index in the file's triangle table (records are 0x10). */
-extern "C" unsigned func_020396dc(dBgW_Kc *self, KCL_Tri *tri) {
+unsigned func_020396dc(dBgW_Kc *self, KCL_Tri *tri) {
     return ((unsigned)tri - (unsigned)self->kclFile->tris) >> 4;
 }
 

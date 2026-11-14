@@ -46,13 +46,16 @@ void VEC_Subtract(Vector3 *, Vector3 *, Vector3 *);
 /* Length of v. */
 int VEC_Mag(const Vector3 *);
 /* a . b, in fx32. */
-Fix12i VEC_DotProduct(const Vector3 *, const Vector3 *);
+fx32 VEC_DotProduct(const Vector3 *, const Vector3 *);
+/* Cross product and in-place normalizer. */
+void VEC_CrossProduct(const Vector3 *, const Vector3 *, Vector3 *);
+void VEC_Normalize(const Vector3 *, Vector3 *);
 /* The same two add/subtract routines under the name the newer TUs use. */
 void Vec3_Add(Vector3 *, const Vector3 *, const Vector3 *);
 void Vec3_Sub(Vector3 *, const Vector3 *, const Vector3 *);
 
 short Vec3_HorzAngle(const Vector3 *, const Vector3 *);
-Fix12i Vec3_HorzLen(const Vector3 *);
+fx32 Vec3_HorzLen(const Vector3 *);
 int Vec3_Dist(const Vector3 *, const Vector3 *);
 int Vec3_Equal(const Vector3 *, const Vector3 *);
 int Vec3_HorzDist(const Vector3 *, const Vector3 *);
@@ -64,9 +67,11 @@ int NormalizeVec3IfNonZero(Vector3 *);
 void Vec3_MulScalar(Vector3 *, const Vector3 *, int);
 void Vec3_MulScalarInPlace(Vector3 *, int);
 
-short Vec3_VertAngle(const Vector3 *, const Vector3 *);
 #ifdef __cplusplus
 }
 #endif
+
+/* C++ linkage: defined in a C++ file and called only from C++. */
+short Vec3_VertAngle(const Vector3 *, const Vector3 *);
 
 #endif

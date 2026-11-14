@@ -66,16 +66,16 @@ extern PathStuff data_ov002_0210d9f0;
 /* ROM symbols with no header of their own. */
 extern "C" {
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern short Vec3_VertAngle(const Vector3 *from, const Vector3 *to);
 extern void Vec3_MulScalar(Vector3 *out, const Vector3 *v, int s);
 /* Sound.cpp: plays sound `id' at a camera-space position. */
-void func_02012694(unsigned int id, const Vector3 *camSpacePos);
 /* dBgW.cpp: sets a collider's stoodOnCallback. */
 
 /* Defined last: the ROM-ascending order puts the collider callback after
    BaseInitResources, which stores its address. */
-void func_ov002_020eff90(dBgW *collider, dActor_c *lift, dActor_c *rider);
 }
+extern short Vec3_VertAngle(const Vector3 *from, const Vector3 *to);
+void func_02012694(unsigned int id, const Vector3 *camSpacePos);
+void func_ov002_020eff90(dBgW *collider, dActor_c *lift, dActor_c *rider);
 
 extern PathLiftState data_ov002_0210af2c[];
 
@@ -258,7 +258,7 @@ void dPathLiftActor_c::StatePath()
 
     yawDiff = AngleDiff(mPrevPathAngle.y, targetYaw);
     pitchDiff = AngleDiff(mPrevPathAngle.x, targetPitch);
-    pitchStep = (short)(pitchDiff / segFrames);
+    pitchStep = (pitchDiff / segFrames);
     ApproachLinear(mAngleY, targetYaw, (short)(yawDiff / segFrames));
     if (HasNonzeroAngleZ() != 0) {
         ApproachLinear(mAngleX, targetPitch, pitchStep);
@@ -489,7 +489,7 @@ void dPathLiftActor_c::AfterClsn(int)
 // 0x020eff90 (0x28)
 /* The mesh collider's stoodOnCallback: the actor that landed on the lift
    arrives as AfterClsn's word argument. */
-extern "C" void func_ov002_020eff90(dBgW *collider, dActor_c *lift, dActor_c *rider) {
+void func_ov002_020eff90(dBgW *collider, dActor_c *lift, dActor_c *rider) {
     static_cast<dPathLiftActor_c *>(lift)->AfterClsn((int)rider);
 }
 

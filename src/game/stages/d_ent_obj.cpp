@@ -22,7 +22,7 @@
  *  - The Fix12-by-value dExtShadowModel_c::InitModel call keeps its measured
  *    scalar-extern spelling: spelled as
  *    the real member types, mwccarm homes the register arguments and the
- *    callers grow. G3i_PerspectiveW_ is the Fix12i method.
+ *    callers grow. G3i_PerspectiveW_ takes the SDK's fx32 scalars.
  *  - The Matrix4x3 copies go through the flat Mtx43; assigning Matrix4x3
  *    itself grows .text by 0x6c bytes.
  *  - Behavior's mFellOffThisFrame probe keeps the second `walk` induction variable
@@ -96,8 +96,6 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 int Math_Function_0203b14c(int *p, int target, int a, int b, int c);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-unsigned int func_02012174(unsigned int a, unsigned int b);
-void func_020167a4(dExtAnmModel_c *model);
 
 extern Matrix4x3 data_020a0e68;
 extern dClipper data_0209f43c;
@@ -149,6 +147,8 @@ extern const int sVsPlayerExitX[16] = {0,       1843200, 1843200, 1843200, -2048
                                        1843200, 1843200, -368640, 0,       368640,  1843200,
                                        -491520, -163840, 163840,  491520};
 }
+unsigned int func_02012174(unsigned int a, unsigned int b);
+void func_020167a4(dExtAnmModel_c *model);
 
 /* A pointer-to-member row: the two per-figure state tables are arrays of
  * these. __sinit_ov075_0211b5e0 fills them, which fixes each index:
@@ -262,9 +262,9 @@ void UnknownVsPlayer::MovePoseParticles() {
     MTX_MultVec43(&bone->t, &mModel.mat4x3, &pos);
     Vec3_MulScalarInPlace(&pos, 0x8000);
     pos.y += 0x28000;
-    mParticleHandle = Particle::System::New(mParticleHandle, 0x140, pos.x, pos.y, pos.z,
-                                            (const Vector3_16f *)((Vector3_16 *)0),
-                                            (dPa_c::level_c::callback_c *)((void *)0));
+    mParticleHandle =
+        Particle::System::New(mParticleHandle, 0x140, pos.x, pos.y, pos.z, (const Vector3_16f *)0,
+                              (dPa_c::level_c::callback_c *)0);
 }
 
 /* Movement state 8: frame 0x14 of the animation comes round twice; the
@@ -747,7 +747,7 @@ int dEntObj_c::GetStandingX(int playerNo) {
 void dEntObj_c::SetCamera() {
     Matrix4x3 view;
     G3i_PerspectiveW_(data_02082614[0xa], data_02082614[0xb], 0x1555, 0x1000, 0x1388000, 0x1000,
-                      true, (Matrix4x3 *)0);
+                      true, 0);
     G3i_LookAt_((Vector3 *)&mCamPosX, (Vector3 *)&data_ov075_0211c660, (Vector3 *)&mCamTargetX,
                 true, &view);
     CopyToViewMat(&view);
@@ -962,7 +962,7 @@ int dEntObj_c::InitResources() {
  * preserved. The array runtime passes each element address and ignores
  * lifecycle results; explicit function-pointer casts mark that runtime ABI
  * boundary. */
-extern "C" dEntObj_c *dEntObj_c_classInit(void) {
+dEntObj_c *dEntObj_c_classInit(void) {
     return new dEntObj_c;
 }
 

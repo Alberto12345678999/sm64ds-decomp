@@ -57,34 +57,33 @@ extern dScMgBase_c::graphCallback_c sMgGraphCallback;
 
 /* arm9 / ov004 helpers with no project header. */
 void GXS_LoadOAM(const void *src, unsigned int offset, unsigned int count);
-int   func_020126e8(int a);
-void  func_020126ac(int a0, int a1, int a2, int a3, int s0);
-void  func_020127ec(int a0, int a1, int a2, int a3, int a4, int a5);
 void *Ov004_LoadFile(int id);
-void  Mg_ResetOverlays(void);
-void  Mg_ResetBgOffsets(void);
-void  Mg_DisableAllBanks(void);
-int   GetGameLanguage(void);
+void Mg_ResetOverlays(void);
+void Mg_ResetBgOffsets(void);
+void Mg_DisableAllBanks(void);
+int GetGameLanguage(void);
 void  DecompressLZ16(void *src, void *dst);
 /* The file ID is really u16, but passing it narrowed grows InitSubScreenBg by
  * 16 bytes. Keep it wide. */
 u32 LoadCompressedFileAt(int fileID, void *target);
-void  Ov004_Deallocate(void *x);
+void Ov004_Deallocate(void *x);
 
 /* Defined below. */
+}
+int func_020126e8(int a);
+void func_020126ac(int a0, int a1, int a2, int a3, int s0);
+void func_020127ec(int a0, int a1, int a2, int a3, int a4, int a5);
 void D3D_InitDualScreen(void);
 void D3D_ClearCaptureTable(void);
 void D3D_DrawSpriteTable(void);
 void D3D_CaptureToSub(void);
 void D3D_CaptureToMain(void);
 void D3D_ReleaseSubBg1(void *self);
-int  D3D_PanForX(int a);
-
-}
+int D3D_PanForX(int a);
 
 namespace Particle { void RenderAll(); }
 
-extern "C" void D3D_CaptureToMain(void) {
+void D3D_CaptureToMain(void) {
     GX_SetDispSelect(GX_DISP_SELECT_MAIN_SUB);
     GX_ResetBankForSubOBJ();
     GX_SetBankForSubBG(GX_VRAM_SUB_BG_128_C);
@@ -99,8 +98,7 @@ extern "C" void D3D_CaptureToMain(void) {
     G2S_BG2Mosaic(false);
 }
 
-extern "C" void D3D_CaptureToSub(void)
-{
+void D3D_CaptureToSub(void) {
     GX_SetDispSelect(GX_DISP_SELECT_SUB_MAIN);
     GX_ResetBankForSubBG();
     GX_SetBankForSubOBJ(GX_VRAM_SUB_OBJ_128_D);
@@ -112,8 +110,7 @@ extern "C" void D3D_CaptureToSub(void)
     *(volatile int *)0x4001000 = (*(volatile int *)0x4001000 & ~0x1f00) | (gSubScreenLayers << 8);
 }
 
-extern "C" void D3D_DrawSpriteTable(void)
-{
+void D3D_DrawSpriteTable(void) {
     int entry;
     int x;
     int y;
@@ -130,7 +127,7 @@ extern "C" void D3D_DrawSpriteTable(void)
     sprite = 0;
     for (entry = 0; entry < 0x80; entry++) {
         sD3DOamShadow[entry].attr01 = 0;
-        *(u32 *)&sD3DOamShadow[(int)(((long long)entry))].attr2 = 0;
+        *(u32 *)&sD3DOamShadow[(((long long)entry))].attr2 = 0;
     }
 
     y = 0;
@@ -141,7 +138,7 @@ extern "C" void D3D_DrawSpriteTable(void)
         for (; x < 0x100; x += 0x40) {
             sD3DOamShadow[sprite].attr01 = ((y & 0xff) | 0xc0000c00) | ((x & 0x1ff) << 16);
             sD3DOamShadow[sprite].attr2 =
-                (u16)(((int)(((long long)tileX)) + ((int)(((long long)tileY)) << 5)) | 0xf000);
+                (((int)(((long long)tileX)) + ((int)(((long long)tileY)) << 5)) | 0xf000);
             tileX += 8;
             sprite++;
         }
@@ -152,13 +149,11 @@ extern "C" void D3D_DrawSpriteTable(void)
     GXS_LoadOAM(sD3DOamShadow, 0, 0x400);
 }
 
-extern "C" void D3D_ClearCaptureTable(void)
-{
+void D3D_ClearCaptureTable(void) {
     GXS_LoadOAM(sD3DOamShadow, 0, 0x400u);
 }
 
-extern "C" void D3D_InitDualScreen(void)
-{
+void D3D_InitDualScreen(void) {
     GX_ResetBankForSubBG();
     GX_ResetBankForSubOBJ();
     GX_SetBankForSubOBJ(GX_VRAM_SUB_OBJ_128_D);
@@ -187,9 +182,9 @@ int dScMgD3DBase_c::InitSubScreenBg()
     gSubScreenLayers &= ~2;
     {
         s32 language = GetGameLanguage();
-        LoadCompressedFileAt(sD3DOptionNcgByLanguage[language], (void *)G2S_GetBG1CharPtr());
+        LoadCompressedFileAt(sD3DOptionNcgByLanguage[language], G2S_GetBG1CharPtr());
     }
-    LoadCompressedFileAt(0x5b, (void *)G2S_GetBG1ScrPtr());
+    LoadCompressedFileAt(0x5b, G2S_GetBG1ScrPtr());
     GX_SetBankForSubBG(mSubBgBank);
 }
 
@@ -237,7 +232,9 @@ void dScMgD3DBase_c::InitEngines()
 
 /* Clears the sub-screen BG1 claim. The caller passes this, which is
  * unused. */
-extern "C" void D3D_ReleaseSubBg1(void *) { data_0209e660 = 0; }
+void D3D_ReleaseSubBg1(void *) {
+    data_0209e660 = 0;
+}
 
 /* The key function: the first virtual declared but not defined inline, so
    defining it here emits the vtable, the RTTI and the D1 and D0 pair. */
@@ -342,25 +339,23 @@ int dScMgD3DBase_c::GetDisplayMode()
 
 /* Returns whatever func_02012718 leaves in r0; decl_common.h declares it
    void, so there is no return statement. */
-extern "C" int D3D_PlaySeAtX(int a, int b)
-{
+int D3D_PlaySeAtX(int a, int b) {
     func_02012718(a, b + 0x80000);
 }
 
-extern "C" void Sound_PlayBank1Panned(int a0, int a1, int a2) {
+void Sound_PlayBank1Panned(int a0, int a1, int a2) {
     a1 += sD3DSoundPanOffsets[a0];
     int pan = D3D_PanForX(a2);
     func_020127ec(1, a1, 4, 0, 0, pan);
 }
 
-extern "C" void D3D_PlaySePannedLoop(int a0, int a1, int a2) {
+void D3D_PlaySePannedLoop(int a0, int a1, int a2) {
     int pan = func_020126e8(a1 + 0x80000);
     func_020126ac(a0, 6, 0, a2, pan);
 }
 
 /* Thunk: func_020126e8(a + 0x80000). */
-extern "C" int D3D_PanForX(int a)
-{
+int D3D_PanForX(int a) {
     return func_020126e8(a + 0x80000);
 }
 

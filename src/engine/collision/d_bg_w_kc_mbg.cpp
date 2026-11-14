@@ -1,7 +1,7 @@
 //cpp
 /* The constructor/destructor order retains all five lifecycle variants used
  * by dBgW_KcMbgSclY. The direction-to-world and movement-filter helpers retain C linkage.
- * SetFile and dBgCh_SphCrr::SetObjAndSphere are scalar Fix12i methods.
+ * SetFile and dBgCh_SphCrr::SetObjAndSphere are scalar fx32 methods.
  * Flat matrix copies use Mtx43;
  * the shared Matrix4x3 copy changes the retail instruction sequence.
  */
@@ -53,7 +53,7 @@ dBgW_KcMbg::~dBgW_KcMbg() {}
  * Matrix words are copied through Mtx43; a Matrix4x3 assignment
  * scalarizes.
  */
-void dBgW_KcMbg::SetFile(KCL_File *file, const Matrix4x3 &mtx, Fix12i scale, s16 angY,
+void dBgW_KcMbg::SetFile(KCL_File *file, const Matrix4x3 &mtx, fx32 scale, s16 angY,
                          CLPS_Block &clps) {
     dBgW_KcMbg *self = this;
     struct Scratch {
@@ -229,7 +229,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray) {
     int hit = dBgW_Kc::DetectClsn(data_020a0d0c);
     if (hit != 0) {
         LocalToWorldPosition(data_020a0d0c.lineEnd, worldPos);
-        (dBgPi &)ray = static_cast<dBgPi &>(data_020a0d0c);
+        (dBgPi &)ray = (data_020a0d0c);
         ray.clsnY = worldPos.y;
         ray.hasClsn = 1;
     }
@@ -263,7 +263,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere) {
         bounds.scaledMax.z = FX_MUL(bounds.localMax.z, scale);
         sphere.ExpandPushOutBounds(bounds.scaledMin.x, bounds.scaledMin.y, bounds.scaledMin.z,
                                    bounds.scaledMax.x, bounds.scaledMax.y, bounds.scaledMax.z);
-        (dBgPi &)sphere = (dBgPi &)localSphere;
+        (dBgPi &)sphere = localSphere;
         sphere.flags |= 1;
         if (localSphere.flags & 4) {
             if (sphere.flags & 4) {
@@ -305,7 +305,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Lin &ray) {
 
     int hit = dBgW_Kc::DetectClsn(data_020a0d0c);
     if (hit != 0) {
-        Fix12i distance = data_020a0d0c.clsnDist;
+        fx32 distance = data_020a0d0c.clsnDist;
         LocalToWorldPosition(data_020a0d60, worldPos);
         ray.SetClsnPos(worldPos);
         ray.clsnDist = distance;

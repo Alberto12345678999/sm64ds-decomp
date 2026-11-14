@@ -73,10 +73,10 @@ extern SoundObjRow data_ov002_0210c080[]; /* 7 rows; row 7 is the _ZTV12daSoundO
 extern int gSubSoundID;                   /* current sub-sound ID, owned by Sound::PlaySub */
 extern int gMusicVolume;                  /* MUSIC_VOLUME_LSL_12 */
 extern int gSubVolume;                    /* MESSAGE_SOUND_VOLUME_LSL_12 */
+}
 extern int func_0200f7f0(dActor_c *actor, u16 *counter);
 int func_ov002_020f9468(daSoundObj_c *self, u16 *counter);
 int func_ov002_020f93a8(daSoundObj_c *self, u16 *counter);
-}
 
 namespace Sound {
 int PlaySecretSound(dActor_c *actor, u16 *counter);
@@ -105,8 +105,7 @@ SoundObjectCallback data_ov002_0211110c[7] = {
     *(SoundObjectCallback *)&data_ov002_0210c028,
 };
 
-extern "C" daSoundObj_c *daSoundObj_c_classInit()
-{
+daSoundObj_c *daSoundObj_c_classInit() {
     return new daSoundObj_c();
 }
 
@@ -175,7 +174,7 @@ int daSoundObj_c::Behavior()
    precedent and is left bare. */
 static const int kPoolDist = 0x8777;
 
-extern "C" int func_ov002_020f9468(daSoundObj_c *self, u16 *counter) {
+int func_ov002_020f9468(daSoundObj_c *self, u16 *counter) {
     /* The starter shape PlaySecretSound, PlaySmallSecretSound and
        func_0200f7f0 share: the pool fallback is an else-if, so the
        steady-state branch falls through to the one `return 0`. */
@@ -189,8 +188,7 @@ extern "C" int func_ov002_020f9468(daSoundObj_c *self, u16 *counter) {
     return 0;
 }
 
-extern "C" int func_ov002_020f93a8(daSoundObj_c *self, u16 *counter)
-{
+int func_ov002_020f93a8(daSoundObj_c *self, u16 *counter) {
     if (counter[0] < self->mCounterLimit) {
         int vol = self->mVolume;
         if (Sound::PlaySub(self->mSoundID, vol, 0x7f, ((0x7f - vol) << 12) / 5, 1) != 0)

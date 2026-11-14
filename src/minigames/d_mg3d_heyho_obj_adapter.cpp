@@ -72,7 +72,6 @@ extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 extern void Vec3_MulScalarInPlace(Vector3 *v, int s);
 extern int NormalizeVec3IfNonZero(Vector3 *v);
-extern void Jump2Popup_Spawn(int a, int b, int c);
 
 extern HeyhoMotion pmf_Heyho_MotionPatrolBob;
 extern HeyhoMotion pmf_Heyho_MotionBounceNear;
@@ -112,6 +111,7 @@ extern const HeyhoPath sHeyhoFlyInPaths[][4];
 extern const HeyhoPath sHeyhoSettlePaths[][5];
 extern MgCamera *sMgSubCamera;
 }
+extern void Jump2Popup_Spawn(int a, int b, int c);
 
 /* The Jump scene's three players, seen through the adapter base the Heyhos
    test against. */
@@ -1088,10 +1088,10 @@ void Heyho::Settle() {
 
     if (sHeyhoScorePopups != 0) {
         if (mPos.y > 0) {
-            Camera_ProjectToScreen((MgCamera *)sMgSubCamera, &mPos, &v0, &v1);
+            Camera_ProjectToScreen(sMgSubCamera, &mPos, &v0, &v1);
             v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
         } else {
-            Camera_ProjectToScreen((MgCamera *)sMgMainCamera, &mPos, &v0, &v1);
+            Camera_ProjectToScreen(sMgMainCamera, &mPos, &v0, &v1);
         }
         v1 = v1 - 0x20;
         Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)sJumpComboCount);
@@ -1250,8 +1250,6 @@ int Heyho::IsChasing() {
     return mMotion != pmf_Heyho_MotionLeave && (mMotion != pmf_Heyho_MotionChase_2 || mLean == 0);
 }
 
-extern "C" {
-
 /* ---- Heyho_InitPool ---- */
 int Heyho_InitPool(void *heyhos, int count) {
     int i;
@@ -1375,7 +1373,6 @@ int Heyho_AllIdle(void) {
             return 0;
     }
     return 1;
-}
 }
 
 dMg3DHeyhoObjAdapter_c::dMg3DHeyhoObjAdapter_c() : mCommand(0)

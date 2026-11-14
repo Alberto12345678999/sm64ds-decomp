@@ -57,8 +57,8 @@ extern C1HikariModelFilePtr gC1HikariModelFile;
 extern "C" {
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern int AngleDiff(int a, int b);
-extern unsigned char NumStars(void);
 }
+extern unsigned char NumStars(void);
 
 namespace Sound {
 int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
@@ -73,7 +73,7 @@ int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
  * fBase_c::operator new(unsigned long) keeps the allocation on
  * _ZN7fBase_cnwEm; without it the call relocates to the unavailable global
  * `_Znwm`. */
-extern "C" daObjC1Hikari_c *daObjC1Hikari_c_classInit() {
+daObjC1Hikari_c *daObjC1Hikari_c_classInit() {
     return new daObjC1Hikari_c();
 }
 
@@ -130,7 +130,7 @@ int daObjC1Hikari_c::Behavior() {
         if (mCylinder.hitFlags & 0x8000000) {
             dActor_c *o = dActor_c::FindWithID(mCylinder.otherOwner);
             if (o) {
-                int b = (int)(o->actorID == 0xbf);
+                int b = (o->actorID == 0xbf);
                 if (b) {
                     Vector3 *op = &o->mPos;
                     hv = *op;

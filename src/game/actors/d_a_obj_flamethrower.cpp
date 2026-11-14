@@ -37,7 +37,7 @@
  *   +0x104 / +0xf8). Those two spellings together were 0x454 against
  *   0x470.
  * - InitResources: dCcPos_c::Init with by-value Fix12<int> was 0x18c
- *   against 0x174. The call is the scalar Fix12i method.
+ *   against 0x174. The call is the scalar fx32 method.
  */
 
 #include "daObjFlamethrower_c.h"
@@ -84,7 +84,7 @@ extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 /* The implicit constructor builds twelve collision cylinders and twelve
  * flame positions in member order. Vector3's empty default constructor
  * is the original array callback at arm9 0x0203d384. */
-extern "C" daObjFlamethrower_c *daObjFlamethrower_c_classInit() {
+daObjFlamethrower_c *daObjFlamethrower_c_classInit() {
     return new daObjFlamethrower_c;
 }
 
@@ -189,7 +189,7 @@ int daObjFlamethrower_c::Behavior() {
         if (mActiveFlames != 0) {
             /* Through its address. mActiveFlames-- is ldrb [this, #0x465]. */
             active = &mActiveFlames;
-            *active = (u8)(*active - 1);
+            *active = (*active - 1);
         }
         if (DecIfAbove0_Short(&mTimer) == 0) {
             mState = 1;
@@ -199,7 +199,7 @@ int daObjFlamethrower_c::Behavior() {
     case 1:
         if ((int)mActiveFlames < (count - 1)) {
             active = &mActiveFlames;
-            *active = (u8)(*active + 1);
+            *active = (*active + 1);
         }
         if (DecIfAbove0_Short(&mTimer) == 0) {
             mState = 0;

@@ -16,7 +16,7 @@
  */
 
 // Notes: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange are header member
-// calls whose headers spell Fix12 as Fix12i, a plain s32 (Fix12<int> by value
+// calls whose headers take Fix12 as the scalar fx32, a plain s32 (Fix12<int> by value
 // homes the argument and size-DIFFs, 6az). The data_ov065_0211c0d0 motion
 // table, data_0209f2c0 clock byte, data_0209e650 RNG, and the
 // ov035 CLPS block stay linker-named. g_profile_CT_MECHA08A/B live outside
@@ -82,11 +82,11 @@ static inline s32 Clamp(s32 v, s32 lo, s32 hi) {
     return v < lo ? lo : (v > hi ? hi : v);
 }
 
-extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08A() {
+daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08A() {
     return new daObjCtMecha08_c();
 }
 
-extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08B() {
+daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08B() {
     return new daObjCtMecha08_c();
 }
 

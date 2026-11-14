@@ -27,12 +27,10 @@ static inline int IsPlayerActor(dActor_c *actor) {
     return actor->actorID == kPlayerActorID;
 }
 
-extern "C" {
 
 /* ROM ordinal 7 -- actor-table C ABI factory. */
 daWarpkun_c *daWarpkun_c_classInit() {
     return new daWarpkun_c();
-}
 }
 
 /* ROM ordinal 6 -- key function: sizes the clip volume and the trigger
@@ -45,9 +43,9 @@ s32 daWarpkun_c::InitResources() {
        assignment (r5/r6) and DIFFs. height reads the local because the
        SetRanges call below may clobber this->param1. */
     u32 spawnParam = param1;
-    Fix12i radius = ((param1 & 0xf) + 1) << 0x12;
+    fx32 radius = ((param1 & 0xf) + 1) << 0x12;
     SetRanges(0, radius, radius + 0x7d0000, 0);
-    Fix12i height = (((spawnParam >> 4) & 0xf) + 1) << 0x12;
+    fx32 height = (((spawnParam >> 4) & 0xf) + 1) << 0x12;
     mdCcAc_c.Init(this, radius, height, 2, 0x400000);
     return 1;
 }

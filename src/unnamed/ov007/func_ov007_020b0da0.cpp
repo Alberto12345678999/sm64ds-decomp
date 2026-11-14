@@ -7,8 +7,6 @@
 #include "Ov007Model.h"
 #include "nitro/fx/fx_cp.h"
 
-extern "C" {
-
 #include "decl_common.h"
 #include "common.h"
 #include "nitro/fx/fx.h"
@@ -22,7 +20,7 @@ extern "C" {
  * assignment copy word by word. The ROM copies these with C's ldm/stm block
  * move, which C++ keeps for a struct with an array member. */
 typedef struct Vec3Words {
-    Fix12i w[3];
+    fx32 w[3];
 } Vec3Words;
 
 
@@ -117,5 +115,4 @@ void func_ov007_020b0da0(Ov007Figure *figure) {
 
         *(Vec3Words *)&mat->t = *(Vec3Words *)&out;
     }
-}
 }

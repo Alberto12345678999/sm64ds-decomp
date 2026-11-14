@@ -32,9 +32,7 @@
 #include "nitro/gx/gx.h"
 #include "nitro/mi/memory.h"
 
-extern "C" {
 void Wipe_HBlankHandler(void);
-}
 
 extern u8           data_0209f5f8;   /* which display engine the wipe covers */
 extern volatile u8  data_0209f5fc;   /* the next HBlank has a fresh line */
@@ -79,7 +77,7 @@ void dWipe_c::DisableWindows() {
     GX_HBlankIntr(0);
     OS_SetIrqFunction(OS_IE_H_BLANK, 0);
     if (enabled)
-        (void)OS_EnableIrq();
+        OS_EnableIrq();
     GX_SetVisibleWnd(GX_WNDMASK_NONE);
     GXS_SetVisibleWnd(GX_WNDMASK_NONE);
     if (typePending == 1) {
@@ -133,7 +131,7 @@ int dWipe_c::SetBackwardTime(u32 frames, u32 extra) {
             OS_EnableIrqMask(OS_IE_H_BLANK);
             GX_HBlankIntr(1);
             if (enabled)
-                (void)OS_EnableIrq();
+                OS_EnableIrq();
         }
 
         needsCleanup = 1;
@@ -193,7 +191,7 @@ int dWipe_c::SetForwardTime(u32 frames, u32 extra) {
         OS_EnableIrqMask(OS_IE_H_BLANK);
         GX_HBlankIntr(1);
         if (enabled)
-            (void)OS_EnableIrq();
+            OS_EnableIrq();
 
         needsCleanup = 1;
         return 0;
@@ -301,7 +299,7 @@ void dWipe_c::AdvanceFade()
 
 /* Latch the staged table into the IRQ-visible index and seed both engines'
    line-0 windows from it. */
-extern "C" void Wipe_LatchTable(void) {
+void Wipe_LatchTable(void) {
     data_0209f608 = data_0209f60c;
     MI_CpuCopy32(data_0209f648 + data_0209f608 * 0x300u, (int *)0x4000040, 4);
     MI_CpuCopy32(data_0209f648 + data_0209f608 * 0x300u, (int *)0x4001040, 4);
@@ -312,7 +310,7 @@ extern "C" void Wipe_LatchTable(void) {
    last visible line it latches the next table, once per frame; on a visible
    line it copies that scanline's 4-byte entry into both engines' WIN0H and
    WIN1H. */
-extern "C" void Wipe_HBlankHandler(void) {
+void Wipe_HBlankHandler(void) {
     int line;
 
     OS_SetIrqCheckFlag(OS_IE_H_BLANK);
@@ -536,7 +534,7 @@ dWipe_c data_0209f61c;
 
 /* Scene-side wipe reset: disarm live windows, then return the singleton to
    its idle state. */
-extern "C" void Wipe_Reset(void) {
+void Wipe_Reset(void) {
     if (data_0209f61c.needsCleanup == 1)
         data_0209f61c.DisableWindows();
     data_0209f61c.Reset();

@@ -70,14 +70,13 @@ struct OamAttr;
 #include "math/CalcLib.h"
 
 extern "C" {
-int CupFx_FindFree(CupFx *fx, int kind, int x, int y);
 struct OamAttr;
 extern int sCupFxScales[];
 extern unsigned char sCupFxFrameSprites[];
 extern OamAttr *sCupFxSprites[];
 extern int OamRender8_d_s_mg_cup(int show, struct OamAttr *attr, int a, int b, int c, int d, int e,
                                  int f);
-extern int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
+extern int Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
                                     unsigned short a6);
 extern RoundRow sCupRoundTable[];
 extern s16 sCupShuffleSpeeds[];
@@ -87,16 +86,10 @@ extern void Mg_SetSharedState(int c);
 extern void Mg_SubCredits(void *c, int val);
 extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
-extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-void CupFx_MoveForCup(CupFx *fx, int cup, int dx, int dy);
-int CupFx_Spawn(CupFx *fx, int kind, int x, int y, signed char cup);
 struct CupShuffleOffset {
     s8 x, y;
 };
 extern CupShuffleOffset sCupShuffleOffsets[];
-void CupFx_DrawForCup(CupFx *fx, int cup);
-void CupFx_UpdateAll(CupFx *fx);
-void CupFx_ClearAll(CupFx *fx);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawStockCounter(int arg0, int arg1);
 void Mg_DrawScoreTally(void *a, int b, int c, int d);
@@ -108,9 +101,16 @@ extern u8 gSubScreenLayers;
 extern int data_0208ee44;
 extern unsigned int LoadCompressedFileAt(int, void *);
 extern void *LoadFile(int);
-void Cup_Nothing(void);
 void func_0203d738(void);
 }
+int CupFx_FindFree(CupFx *fx, int kind, int x, int y);
+extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
+void CupFx_MoveForCup(CupFx *fx, int cup, int dx, int dy);
+int CupFx_Spawn(CupFx *fx, int kind, int x, int y, signed char cup);
+void CupFx_DrawForCup(CupFx *fx, int cup);
+void CupFx_UpdateAll(CupFx *fx);
+void CupFx_ClearAll(CupFx *fx);
+void Cup_Nothing(void);
 
 #pragma defer_codegen off
 /* Emit each function as it is read, so D1 lands ahead of D0. */
@@ -119,13 +119,13 @@ void func_0203d738(void);
    compiler destroys as a member. The tracker and the base chain are the
    inlined dScMgSingle3DBase_c destructor. */
 dScMgCup_c::~dScMgCup_c() {
-    __cxa_vec_cleanup(mCup, 3, 8, (dtor_t)(void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mFx, 0x20, 0x18, (dtor_t)(void *)CupFx_ElemDtor);
+    __cxa_vec_cleanup(mCup, 3, 8, (dtor_t)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mFx, 0x20, 0x18, (dtor_t)CupFx_ElemDtor);
 }
 
-extern "C" void CupFx_ElemDtor(void) {}
+void CupFx_ElemDtor(void) {}
 
-extern "C" int CupFx_FindFree(CupFx *fx, int, int, int) {
+int CupFx_FindFree(CupFx *fx, int, int, int) {
     int slot;
     for (slot = 0; slot < 0x20; slot++) {
         if (fx[slot].active == 0)
@@ -134,7 +134,7 @@ extern "C" int CupFx_FindFree(CupFx *fx, int, int, int) {
     return slot;
 }
 
-extern "C" void CupFx_MoveForCup(CupFx *fx, int cup, int dx, int dy) {
+void CupFx_MoveForCup(CupFx *fx, int cup, int dx, int dy) {
     int i;
     for (i = 0; i < 0x20; i++) {
         if (fx[i].active != 0 && cup == fx[i].cup)
@@ -142,7 +142,7 @@ extern "C" void CupFx_MoveForCup(CupFx *fx, int cup, int dx, int dy) {
     }
 }
 
-extern "C" int CupFx_Spawn(CupFx *fx, int kind, int x, int y, signed char cup) {
+int CupFx_Spawn(CupFx *fx, int kind, int x, int y, signed char cup) {
     int slot = CupFx_FindFree(fx, kind, x, y);
     if (slot >= 0 && slot < 0x20) {
         fx[slot].Init(kind, x, y, cup);
@@ -151,7 +151,7 @@ extern "C" int CupFx_Spawn(CupFx *fx, int kind, int x, int y, signed char cup) {
     return -1;
 }
 
-extern "C" void CupFx_DrawForCup(CupFx *fx, int cup) {
+void CupFx_DrawForCup(CupFx *fx, int cup) {
     int i;
     for (i = 0; i < 0x20; i++) {
         if (fx[i].active != 0 && cup == fx[i].cup)
@@ -159,7 +159,7 @@ extern "C" void CupFx_DrawForCup(CupFx *fx, int cup) {
     }
 }
 
-extern "C" void CupFx_UpdateAll(CupFx *fx) {
+void CupFx_UpdateAll(CupFx *fx) {
     int i;
     for (i = 0; i < 0x20; i++) {
         if (fx[i].active)
@@ -167,7 +167,7 @@ extern "C" void CupFx_UpdateAll(CupFx *fx) {
     }
 }
 
-extern "C" void CupFx_ClearAll(CupFx *fx) {
+void CupFx_ClearAll(CupFx *fx) {
     int i;
     for (i = 0; i < 0x20; i++)
         fx[i].active = 0;
@@ -252,7 +252,7 @@ void dScMgCup_c::DrawOamList(OamAttr *list, int x, int y, int scale, int cupCont
 
     for (;;) {
         GXOamAttr *oam =
-            (GXOamAttr *)Mg_RenderSubSpriteScaled((int)entry, screenX, screenY, -1, -1, scale, 0);
+            (GXOamAttr *)Mg_RenderSubSpriteScaled(entry, screenX, screenY, -1, -1, scale, 0);
         if (oam != 0) {
             if (content == 2) {
                 if (entry->cParam == 3) {
@@ -811,13 +811,12 @@ s32 dScMgCup_c::InitResources() {
 
     gSubScreenLayers |= 4;
 
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP_NCG_BIN,
-                         (void *)((char *)G2S_GetBG2CharPtr() + 0x4000));
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP_NCG_BIN, (char *)G2S_GetBG2CharPtr() + 0x4000);
     file = LoadFile(ASSET_D_2D_MG_BG_CUP_NCL_BIN);
     GXS_LoadBGPltt(file, 0x60, 0x1a0);
     Deallocate(file);
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP2_2_NSC_BIN, (void *)G2S_GetBG0ScrPtr());
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP2_1_NSC_BIN, (void *)G2S_GetBG2ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP2_2_NSC_BIN, G2S_GetBG0ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP2_1_NSC_BIN, G2S_GetBG2ScrPtr());
     LoadCompressedFileAt(ASSET_D_2D_MG_CUP_NCG_BIN, G2S_GetOBJCharPtr());
     file = LoadFile(ASSET_D_2D_MG_CUP_NCL_BIN);
     GXS_LoadOBJPltt(file, 0, 0xa0);
@@ -851,16 +850,15 @@ s32 dScMgCup_c::InitResources() {
    constructors, mParticle and mModel are the compiler's, then the two
    arrays of element records. */
 inline dScMgCup_c::dScMgCup_c() {
-    __cxa_vec_ctor(mFx, 0x20, 0x18, (ctor_t)(void *)Cup_Nothing, (dtor_t)(void *)CupFx_ElemDtor);
-    __cxa_vec_ctor(mCup, 3, 8, (ctor_t)(void *)func_0203d738,
-                   (dtor_t)(void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(mFx, 0x20, 0x18, (ctor_t)Cup_Nothing, (dtor_t)CupFx_ElemDtor);
+    __cxa_vec_ctor(mCup, 3, 8, (ctor_t)func_0203d738, (dtor_t)NullDestructor_0203d47c);
 }
 
-extern "C" void *dScMgCup_c_classInit() {
+void *dScMgCup_c_classInit() {
     return new dScMgCup_c;
 }
 
-extern "C" void Cup_Nothing() {}
+void Cup_Nothing() {}
 
 /* Static-init globals (was the handwritten __sinit_ov006_021303d0 shard).
  * The compiler materializes and copies eight native member-pointer constants;

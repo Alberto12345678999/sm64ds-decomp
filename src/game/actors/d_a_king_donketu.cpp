@@ -224,8 +224,6 @@ int PlayLong(u32, u32, u32, const Vector3 &, s16);
 
 extern "C" {
 
-int ChiefChilly_ChangeState(C *c, PMF *p);
-
 extern struct BCA_File *data_ov002_0210da30[2];
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern void Matrix4x3_FromRotationY(void* m, short ang);
@@ -237,18 +235,19 @@ extern dCamera_c *gCamera;
 extern struct Matrix4x3 data_020a0e68;
 /* Vec3_Sub is not declared by math/CalcLib.h. */
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern int atan2_hold_d_a_king_donketu_1(Fix12i y, Fix12i x);
-extern Fix12i Vec3_HorzLen(const Vector3 *v);
+extern int atan2_hold_d_a_king_donketu_1(fx32 y, fx32 x);
+/* local extern: CalcLib.h clashes with this TU's C DecIfAbove0_Short and Vec3_Lsl (void *) */
+extern fx32 Vec3_HorzLen(const Vector3 *v);
 
 extern u16 DecIfAbove0_Short(void* p);
-extern void func_02012694(unsigned int a, void *b);
 /* local extern: CalcLib.h conflicts with DecIfAbove0_Short(void *). */
 extern int RandomIntInternal(int *seed);
 }
+int ChiefChilly_ChangeState(C *c, PMF *p);
+extern void func_02012694(unsigned int a, const Vector3 *b);
 extern "C" {
 extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
                                          struct Vector3 *v, unsigned int d);
-extern s16 Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *m, short angX);
 extern void d_a_king_donketuRunningSlidingDustAtHold(int a, int b, int c);
 /* local extern: the Vector3 spelling math/CalcLib.h declares. This TU's
@@ -256,8 +255,9 @@ extern void d_a_king_donketuRunningSlidingDustAtHold(int a, int b, int c);
 extern void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void UnloadKeyModels(int i);
 }
+extern s16 Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
+extern void UnloadKeyModels(int i);
 
 daKing_Donketu_c::~daKing_Donketu_c()
 {
@@ -284,7 +284,7 @@ void daKing_Donketu_c::RenewLoopedParticles() {
     in.z = 0; in.z = 0xc8000; in.x = 0; in.y = 0;
     out.x = 0; out.y = 0; out.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, c->mPrevAngleY);
-    MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
+    MTX_MultVec43(&in, &data_020a0e68, &out);
     pos.x = pos.x + out.x;
     pos.z = pos.z + out.z;
     c->mParticleId0 = Particle::System::New(c->mParticleId0, 0x77, pos.x, pos.y, pos.z, 0, 0);
@@ -479,7 +479,7 @@ s32 daKing_Donketu_c::HandleHit() {
         s32 rnd;
 
         c->mHitCooldown = 0x10;
-        func_02012694(SND_HIT_REGISTERED, &c->mCamSpacePosX);
+        func_02012694(SND_HIT_REGISTERED, (const Vector3 *)(&c->mCamSpacePosX));
         rnd = RandomIntInternal(&data_0209e650.value);
         if (((rnd >> 8) & 7) == 0) {
             v.x = c->mPosX;
@@ -540,14 +540,14 @@ s32 daKing_Donketu_c::HandleHit() {
         Particle::System::NewSimple(kPtclChiefChillyHitPlayer, pv[0], pv[1], pv[2]);
     }
     if (c->mState == &data_ov073_021233d0) {
-        func_02012694(SND_HIT_REGISTERED, &c->mCamSpacePosX);
+        func_02012694(SND_HIT_REGISTERED, (const Vector3 *)(&c->mCamSpacePosX));
         return 1;
     }
     {
         s16* py = &c->mPrevAngleY;
-        *py = (s16)(*py + 0x8000);
+        *py = (*py + 0x8000);
     }
-    func_02012694(SND_REVERSE_AFTER_HURT, &c->mCamSpacePosX);
+    func_02012694(SND_REVERSE_AFTER_HURT, (const Vector3 *)(&c->mCamSpacePosX));
     ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
     c->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuHitAnimationFile.filePtr), 4,
                               0x40000000, 0x1000, 0);
@@ -601,7 +601,7 @@ int daKing_Donketu_c::UpdateDefeat() {
 
     spawned = dActor_c::Spawn(ACTOR_OBJ_KEY, 4, pos, 0, c->mAreaId, -1);
     found = dActor_c::FindWithActorID(ACTOR_OBJ_BLUE_FIRE, 0);
-    func_02012694(SND_POOF, &c->mCamSpacePosX);
+    func_02012694(SND_POOF, (const Vector3 *)(&c->mCamSpacePosX));
     if (found != 0) {
         struct Vector3 fp;
         const s32* pv = &found->mPosX;
@@ -691,7 +691,7 @@ int daKing_Donketu_c::UpdateDefeatCutscene2() {
     in.z = -0x55e000;
 
     Matrix4x3_FromRotationY(&data_020a0e68, c->mAngleY);
-    MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
+    MTX_MultVec43(&in, &data_020a0e68, &out);
 
     ps.x = ps.x + out.x;
     ps.y = ps.y + 0x200000;
@@ -709,7 +709,7 @@ int daKing_Donketu_c::UpdateDefeatCutscene2() {
         if (c->mTalkPlayer->StartTalk(*c, 1)) {
             cam->SetFlag_3();
             if (c->mTalkPlayer->ShowMessage(*c, msg, &msgpos[1], 0, 2)) {
-                func_02012694(SND_TALK_DONE, (void*)&c->mCamSpacePosX);
+                func_02012694(SND_TALK_DONE, (const Vector3 *)(&c->mCamSpacePosX));
                 ChiefChilly_ChangeState((C *)(c), (PMF *)(&data_ov073_02123410));
             }
         }
@@ -766,7 +766,7 @@ int daKing_Donketu_c::UpdateDefeatCutscene1() {
     in.z = -0x59c000;
 
     Matrix4x3_FromRotationY(&data_020a0e68, c->mAngleY);
-    MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
+    MTX_MultVec43(&in, &data_020a0e68, &out);
 
     pos.y -= 0x100000;
     pos.x = pos.x + out.x;
@@ -775,7 +775,7 @@ int daKing_Donketu_c::UpdateDefeatCutscene1() {
     cam->SetLookAt(look);
     cam->SetPos(pos);
 
-    if ((unsigned short)c->mStateTimer == 0) {
+    if (c->mStateTimer == 0) {
         ChiefChilly_ChangeState((C *)(c), (PMF *)(&data_ov073_021233e0));
     }
     return 1;
@@ -837,7 +837,7 @@ int daKing_Donketu_c::UpdateLeapToSpawn() {
             mLandedWaypoint = 0xff;
             mVertAccel = -0x3000;
             if (mEdgeRecovered != 0) {
-                func_02012694(SND_HOP_LAUNCH, &mCamSpacePosX);
+                func_02012694(SND_HOP_LAUNCH, (const Vector3 *)(&mCamSpacePosX));
             }
         }
         return 1;
@@ -869,7 +869,7 @@ int daKing_Donketu_c::UpdateLeapToSpawn() {
         if (mVertSpeed < 0) {
             int id = mdCcAcPos_c.otherOwner;
             if (id != 0) {
-                dActor_c* actor = dActor_c::FindWithID((u32)id);
+                dActor_c *actor = dActor_c::FindWithID(id);
                 if (actor != 0) {
                     enum Bool eq = (enum Bool)(actor->actorID == ACTOR_PLAYER);
                     if (eq != FALSE) {
@@ -889,7 +889,7 @@ int daKing_Donketu_c::UpdateLeapToSpawn() {
             mVertSpeed = 0;
             mSpeedZ = 0;
             SpawnLandingEffects(0x1388000);
-            func_02012694(SND_HOP_LANDING, &mCamSpacePosX);
+            func_02012694(SND_HOP_LANDING, (const Vector3 *)(&mCamSpacePosX));
         }
         if (mHitsRemaining == 1 && mEdgeRecovered == 0) {
             mLandedWaypoint = 0;
@@ -931,16 +931,16 @@ int daKing_Donketu_c::UpdateWaypointHop() {
     int *src;
     Vector3 v;
 
-    if ((unsigned short)c->mStateTimer == 0)
+    if (c->mStateTimer == 0)
         goto mainblock;
 
-    if ((unsigned short)c->mStateTimer == 1) {
+    if (c->mStateTimer == 1) {
 
         int neg = 0x5000;
         c->mVertSpeed = 0x5a000;
         c->mVertAccel = -neg;
         {
-            unsigned char *p = (unsigned char *)&c->mWaypointCursor;
+            unsigned char *p = &c->mWaypointCursor;
             *p = *p + 1;
             *p = *p & 7;
         }
@@ -985,9 +985,9 @@ mainblock:
         c->mVertSpeed = 0;
         c->mSpeedZ = 0;
         c->SpawnLandingEffects(0x7d0000);
-        func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
+        func_02012694(SND_HOP_LANDING, (const Vector3 *)(&c->mCamSpacePosX));
         {
-            int *cnt = (int *)&c->mJumpCount;
+            int *cnt = &c->mJumpCount;
             *cnt = *cnt + 1;
         }
         if (c->mJumpCount > 7) {
@@ -1021,10 +1021,10 @@ int daKing_Donketu_c::func_ov073_02120610() {
     int *src;
     Vector3 v;
 
-    if ((unsigned short)c->mStateTimer == 0)
+    if (c->mStateTimer == 0)
         goto mainblock;
 
-    if ((unsigned short)c->mStateTimer == 1) {
+    if (c->mStateTimer == 1) {
         c->mVertSpeed = 0x5a000;
         c->mBlendAnmModel.SetAnim(
             *(BCA_File *)((BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr), 4, 0, 0x1000, 0);
@@ -1074,7 +1074,7 @@ mainblock:
         c->mVertSpeed = 0;
         c->mSpeedZ = 0;
         c->SpawnLandingEffects(0x7d0000);
-        func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
+        func_02012694(SND_HOP_LANDING, (const Vector3 *)(&c->mCamSpacePosX));
         c->mJumpCount = 1;
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123320);
     }
@@ -1104,7 +1104,7 @@ int daKing_Donketu_c::func_ov073_02120844()
     t->mSoundHandle = Sound::PlayLong(t->mSoundHandle, 3, 0x170, *(Vector3 *)&t->mCamSpacePos, 0);
     if (t->mSpawnPos.y > t->mPosY && t->mWithMeshClsn.IsOnGround()) {
         t->SpawnLandingEffects(0x7d0000);
-        func_02012694(SND_BIG_LANDING, &t->mCamSpacePosX);
+        func_02012694(SND_BIG_LANDING, (const Vector3 *)(&t->mCamSpacePosX));
         t->mHorzSpeed = 0;
         ChiefChilly_ChangeState((C *)(t), (PMF *)&data_ov073_021233b0);
     }
@@ -1143,7 +1143,7 @@ int daKing_Donketu_c::UpdateEdgeWobble() {
     c->mVertSpeed = 0;
     c->mSpeedZ = 0;
 
-    if ((unsigned short)c->mStateTimer == 0) {
+    if (c->mStateTimer == 0) {
         *&c->mHitsRemaining = 1;
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123340);
         *&c->mEdgeRecovered = 1;
@@ -1161,7 +1161,7 @@ int daKing_Donketu_c::UpdateEdgeWobble() {
     out.y = 0;
     out.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, c->mAngleY + 0x8000);
-    MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
+    MTX_MultVec43(&in, &data_020a0e68, &out);
     in.x = c->mEdgePosX + out.x;
     in.y = c->mEdgePosY;
     in.z = c->mEdgePosZ + out.z;
@@ -1215,7 +1215,7 @@ int daKing_Donketu_c::func_ov073_02120b78() {
             c->mHorzSpeed = 0;
             c->mPrevAngleY = Vec3_HorzAngle(&c->mPos, &c->mSpawnPos);
             c->mAngleY = c->mPrevAngleY;
-            func_02012694(SND_BIG_LANDING, &c->mCamSpacePosX);
+            func_02012694(SND_BIG_LANDING, (const Vector3 *)(&c->mCamSpacePosX));
             ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123400);
         }
     }
@@ -1355,7 +1355,7 @@ int daKing_Donketu_c::UpdateChase() {
 
     switch (c->mPhase) {
     case 0:
-        if ((unsigned short)c->mStateTimer == 0) {
+        if (c->mStateTimer == 0) {
             c->mTargetAngle = c->HorzAngleToCPlayer();
             c->mStateScratch = 0;
             if (AngleDiff(c->mPrevAngleY, c->mTargetAngle) <= 0x2000) {
@@ -1365,7 +1365,7 @@ int daKing_Donketu_c::UpdateChase() {
                 c->mStateTimer = 0;
                 c->mStateParam = 0x1000;
                 (c->mPhase)++;
-                func_02012694(SND_CHASE_BRAKE, &c->mCamSpacePosX);
+                func_02012694(SND_CHASE_BRAKE, (const Vector3 *)(&c->mCamSpacePosX));
                 break;
             }
         } else {
@@ -1389,7 +1389,7 @@ int daKing_Donketu_c::UpdateChase() {
         }
 
     case 3:
-        if ((unsigned short)c->mStateTimer == 0) {
+        if (c->mStateTimer == 0) {
             c->mStateParam = 0x1000;
             c->mPhase = 1;
         }
@@ -1421,7 +1421,7 @@ int daKing_Donketu_c::UpdateChase() {
             d = -d;
         if (d >= 0xa)
             break;
-        if ((unsigned short)c->mStateTimer != 0)
+        if (c->mStateTimer != 0)
             break;
         if (c->mPhase == 2) {
             daPly_c *p = c->ClosestPlayer();
@@ -1455,7 +1455,7 @@ int daKing_Donketu_c::UpdateChase() {
     if (c->mPhase == 0) {
         if (c->mBlendAnmModel.WillHitFrame(0) != 0 || c->mBlendAnmModel.WillHitFrame(0xe) != 0) {
             c->SpawnLandingEffects(0x3e8000);
-            func_02012694(SND_CHASE_STEP, &c->mCamSpacePosX);
+            func_02012694(SND_CHASE_STEP, (const Vector3 *)(&c->mCamSpacePosX));
         }
     }
     return 1;
@@ -1583,7 +1583,7 @@ int daKing_Donketu_c::UpdateIntroTalk() {
         }
 
         if (c->mTalkPlayer->ShowMessage(*c, msg, &vmsg, 0, 2)) {
-            func_02012694(SND_TALK_DONE, &c->mCamSpacePosX);
+            func_02012694(SND_TALK_DONE, (const Vector3 *)(&c->mCamSpacePosX));
             ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123350);
         }
     }
@@ -1602,7 +1602,13 @@ int daKing_Donketu_c::EnterIntroTalk() {
 /* Stores the state record in mState (the shadow struct's pp, at +0x37c) and
    calls the enter member held in the record's first pointer-to-member; returns
    1 without calling if that pointer is null. */
-extern "C" int ChiefChilly_ChangeState(C *c, PMF *p) { c->pp = p; PMF *q = c->pp; if (*q == 0) return 1; return (c->**q)(); }
+int ChiefChilly_ChangeState(C *c, PMF *p) {
+    c->pp = p;
+    PMF *q = c->pp;
+    if (*q == 0)
+        return 1;
+    return (c->**q)();
+}
 
 /* Called at the end of every Behavior. Builds the model matrix (mPos >> 3,
    rotated by mAngleX/Y/Z) into mBlendAnmModel.mat4x3, then sets mFootPos[0..1]
@@ -1644,11 +1650,16 @@ void daKing_Donketu_c::UpdateModelAndShadow() {
     }
 
     m = c->mState;
-    if (m == (void*)&data_ov073_021233b0) return;
-    if (m == (void*)&data_ov073_021233e0) return;
-    if (m == (void*)&data_ov073_02123410) return;
-    if (m == (void*)&data_ov073_021233f0) return;
-    if (m == (void*)&data_ov073_02123370) return;
+    if (m == &data_ov073_021233b0)
+        return;
+    if (m == &data_ov073_021233e0)
+        return;
+    if (m == &data_ov073_02123410)
+        return;
+    if (m == &data_ov073_021233f0)
+        return;
+    if (m == &data_ov073_02123370)
+        return;
 
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     c->mShadowMtx = data_020a0e68;
@@ -1758,7 +1769,7 @@ int daKing_Donketu_c::Behavior()
         v0.z = data_020a0e68.m[11];
         Vec3_Lsl(&v3C, &v0, 3);
         v0 = v3C;
-        func_02012694(SND_ANIM_FRAME_STOMP, &mCamSpacePosX);
+        func_02012694(SND_ANIM_FRAME_STOMP, (const Vector3 *)(&mCamSpacePosX));
         v48 = v0;
         HugeLandingDustAt(v48, 1);
     }
@@ -1787,7 +1798,7 @@ int daKing_Donketu_c::Behavior()
             Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
             Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, angx);
         }
-        MTX_MultVec43((Vector3 *)&rp.in, &data_020a0e68, (Vector3 *)&rp.out);
+        MTX_MultVec43(&rp.in, &data_020a0e68, &rp.out);
         {
             int sx = rp.start.x;
             int ox = rp.out.x;
@@ -1838,10 +1849,10 @@ int daKing_Donketu_c::Behavior()
 }
 
 extern "C" {
-extern void LoadKeyModels(int idx);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, dActor_c *a, Fix12i r, Fix12i h, Vector3_16 *p, Vector3_16 *q);
+typedef void BgchInitAt_(void *self, dActor_c *a, fx32 r, fx32 h, Vector3_16 *p, Vector3_16 *q);
 }
+extern void LoadKeyModels(int idx);
 
 #pragma pop
 
@@ -1900,8 +1911,7 @@ s32 daKing_Donketu_c::OnAimedAtWithEgg()
 }
 
 /* Construct the KING_DONKETU actor and its members in declaration order. */
-extern "C" daKing_Donketu_c *daKing_Donketu_c_classInit()
-{
+daKing_Donketu_c *daKing_Donketu_c_classInit() {
     return new daKing_Donketu_c;
 }
 

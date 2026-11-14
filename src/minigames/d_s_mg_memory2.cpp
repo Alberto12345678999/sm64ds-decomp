@@ -100,7 +100,6 @@ extern "C" {
 extern void Mg_DrawScoreTally(void *thiz, int a, int b, int c);
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 extern s16 atan2_hold_d_s_mg_memory2_1(int y, int x);
-extern void MgCoins_StartLoseOneMore(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 sMemory2CardFrameSprites[];
 extern void *sMemory2CardSprites[];
@@ -110,9 +109,7 @@ extern void Mg_SaveRecordPair(int a, int b);
 extern u16 *sMemory2CardPositionsPerDifficulty[];
 extern int sMemory2ResultRowsPerDifficulty[];
 extern int sMemory2ResultColsPerDifficulty[];
-extern void MgCoins_StartPayout(int count);
 extern short gMgCoinsStatus;
-extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int);
 extern void Mg_SubmitScore(int self);
 extern int sMemory2FourthDealsPerDifficulty[];
@@ -122,10 +119,7 @@ extern int sMemory2EasyDealsPerDifficulty[];
 extern int sMemory2PreviewCountPerDifficulty[];
 extern int sMemory2PreviewTimePerDifficulty[];
 extern void FreeGfxSlotsById(int x);
-extern void MgCoins_Reset(void);
 void Mg_DrawCredits(void *, int, int, int);
-extern void MgCoins_Update(void);
-void LoadCard2SubBg3(void *);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
@@ -133,10 +127,16 @@ void Deallocate(void *ptr);
 int Mg_GetSavedRecord0(void);
 int Mg_GetSavedRecord1(void);
 void Mg_SetTopScreenYOffset(int v);
-void Mg_PlaceBannersOnTopScreen(void);
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
 }
+extern void MgCoins_StartLoseOneMore(void);
+extern void MgCoins_StartPayout(int count);
+extern void Mg_SetPerfectBanner(void);
+extern void MgCoins_Reset(void);
+extern void MgCoins_Update(void);
+void LoadCard2SubBg3(void *);
+void Mg_PlaceBannersOnTopScreen(void);
 
 /* The scene seen through a pointer stepped one card at a time, for the
  * DrawCards walk. */
@@ -468,7 +468,7 @@ void dScMgMemory2_c::CardSelect(int cardIndex) {
         return;
 
     mSelectedValues[selectionIndex] = mCards[cardIndex].value;
-    mSelectedCards[mSelectedCount] = (u8)cardIndex;
+    mSelectedCards[mSelectedCount] = cardIndex;
     mSelectedCount++;
     mCards[cardIndex].state = CARD_FLIP_UP;
     func_02012718(0x143, mCards[cardIndex].x);
@@ -955,7 +955,7 @@ void dScMgMemory2_c::ChoosePreviewCards() {
                 cardIndex = MG_RAND(cardCount);
             } while (1);
         }
-        mPreviewCards[previewIndex] = (unsigned char)cardIndex;
+        mPreviewCards[previewIndex] = cardIndex;
     }
 }
 
@@ -1082,7 +1082,7 @@ void dScMgMemory2_c::StartRound(int /* arg */) {
         missLimit = 5;
     MgCoins_Reset();
     gMgCoinsShowDelta = 1;
-    mMaxMisses = (unsigned char)missLimit;
+    mMaxMisses = missLimit;
 }
 
 /* Vtable slot 9: set the camera, then draw credits, coins, the message,
@@ -1143,7 +1143,7 @@ s32 dScMgMemory2_c::InitResources() {
     return 1;
 }
 
-extern "C" void *dScMgMemory2_c_classInit() {
+void *dScMgMemory2_c_classInit() {
     return new dScMgMemory2_c;
 }
 

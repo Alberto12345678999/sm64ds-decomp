@@ -94,16 +94,15 @@ extern char *Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, i
 struct Matrix2x2;
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
 extern void Mg_DrawNumberRotated(int a, int b, int c, int d, int e, int f, u16 g);
-extern void func_020127a4(int a0, int a1, int a2, int a3);
 extern void Hud_RenderSprite(void *sprite, int b, int c, int d, int e);
-extern int Sound_PlayIfNotActive(int a, int b, int c, short d);
 extern void FreeGfxSlotsById(int arg);
 extern void Mg_SetSharedState(int c);
-
+}
+extern void func_020127a4(int a0, int a1, int a2, int a3);
+extern int Sound_PlayIfNotActive(int a, int b, int c, short d);
 extern void Luigi_PrepareScanlines(void);
 extern void Luigi_PushScanlineRecord(void);
 extern dScMgLuigi_c *dScMgLuigi_c_classInit(void);
-}
 #include "nitro/os/cache.h"
 #include "nitro/mi/memory.h"
 
@@ -132,7 +131,6 @@ void dScMgLuigi_c::AfterCleanupResources(u32 vfSuccess) {
 
 /* The HBlank handler (OS_IE_H_BLANK) StartIris installs as a void(*)() callback.
  * It accesses shared scanline state and remains a free function. */
-extern "C" {
 void Luigi_PrepareScanlines(void) {
     extern int data_0209f608;
     extern int data_0209f648[][192];
@@ -147,9 +145,7 @@ void Luigi_PrepareScanlines(void) {
         }
     }
 }
-}
 
-extern "C" {
 /* Latches the pending table index and copies its first four-byte scanline
    entry to 0x04000040. The record type retains the table stride. */
 void Luigi_PushScanlineRecord(void) {
@@ -158,7 +154,6 @@ void Luigi_PushScanlineRecord(void) {
     extern struct IrisScanlineTable data_0209f648[];
     data_0209f608 = data_0209f60c;
     MI_CpuCopy32((int *)&data_0209f648[data_0209f608], (int *)0x04000040, 4);
-}
 }
 
 void dScMgLuigi_c::BuildIrisTable(int irisIndex) {
@@ -1641,7 +1636,7 @@ s32 dScMgLuigi_c::InitResources() {
                          GX_BG_CHARBASE_0x10000);
 
     fileData = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NCG_BIN);
-    DecompressLZ16(fileData, (void *)((char *)G2_GetBG2CharPtr() + 0x4000));
+    DecompressLZ16(fileData, ((char *)G2_GetBG2CharPtr() + 0x4000));
     Deallocate(fileData);
 
     fileData = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NCL_BIN);
@@ -1710,11 +1705,9 @@ s32 dScMgLuigi_c::InitResources() {
     return 1;
 }
 
-extern "C" {
 /* Allocates the scene. The ROM has no spelling for this factory. */
 dScMgLuigi_c *dScMgLuigi_c_classInit(void) {
     return new dScMgLuigi_c;
-}
 }
 
 /* The state tables, in the order the static initializer fills them. Each

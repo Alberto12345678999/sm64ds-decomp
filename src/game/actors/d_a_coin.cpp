@@ -45,6 +45,7 @@
 #include "Particle__System.h"
 #include "ParticleIds.h"
 #include "nitro/fx/fx_cp.h"
+#include "math/CalcLib.h"
 
 /* Views of daObjBC_Switch_c.h and daObjFl_Coin_c.h, same member names and
    offsets: including either header renumbers this TU's @NNN labels. */
@@ -90,19 +91,20 @@ struct CoinFlagBits {
 
 /* ROM symbols. Mangled spellings live inside extern "C" so the C++ front end
  * does not mangle them a second time. */
+
+extern "C" int SublevelToLevel(int i);
 extern "C" {
-extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
-extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-extern int Vec3_HorzLen(void *v);
 extern int VEC_Mag(const Vector3 *v);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
+}
+
 extern void GiveCoins(int idx, int amount);
 extern int GiveRedCoins(int i, int amt);
 extern s8 NumRedCoins(void);
 extern void func_02012694(unsigned int id, const Vector3 *v);
-extern int SurfaceInfo_TestFlag0x20(void* p);
-}
+extern int SurfaceInfo_TestFlag0x20(int *p);
+
 extern "C" {
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern short atan2_hold_d_a_coin_1(int a, int b);
@@ -155,7 +157,7 @@ void daCoin_c::ProbeFloor() {
     int offScreen;
     dActor_c* platform;
 
-    offScreen = (int)((mFlags & 8) != 0);
+    offScreen = ((mFlags & 8) != 0);
     if (offScreen) return;
 
     if (((CoinFlagBits*)&mCoinFlags)->floorState != FLOOR_UNPROBED) return;
@@ -276,7 +278,7 @@ void daCoin_c::Step() {
     else
         dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
     if (!mWithMeshClsn.IsOnGround()) return;
-    if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0)
+    if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) == 0)
         return;
     if (mVertSpeed > 0) return;
     func_02012694(0xe2, &mCamSpacePos);
@@ -304,7 +306,7 @@ void daCoin_c::UpdateModelMatrix() {
     mCommonModel1.mat4x3.m[10] = mPosY >> 3;
     mCommonModel1.mat4x3.m[11] = mPosZ >> 3;
     mCommonModel2.mat4x3 = mCommonModel1.mat4x3;
-    *(struct Matrix4x3*)&mShadowMat = *(struct Matrix4x3*)IDENTITY_MATRIX4X3;
+    mShadowMat = *(struct Matrix4x3 *)IDENTITY_MATRIX4X3;
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mPosY >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
@@ -411,12 +413,10 @@ void daCoin_c::CollectYellowCoin(daPly_c *player) {
  * below 0xf and the player's coin total has reached 100, spawns a STAR (0xb2,
  * param 0x20) 300 units above the player, sets the event bit and gives the
  * star a marker. */
-extern "C" {
 void func_ov002_020b18f0(char* self)
 {
     extern signed char gCurrentSublevel;
     extern short gNumCoins[];
-    extern int SublevelToLevel(int);
 
     daPly_c *player = (daPly_c *)self;
     daStar_c* star;
@@ -439,7 +439,6 @@ void func_ov002_020b18f0(char* self)
     if (star == 0) return;
     Event::SetBit(0x1f);
     star->AddStarMarker();
-}
 }
 
 /* Collection by the player: if the coin was hit by a player (hitFlags 0x400000)
@@ -517,7 +516,7 @@ void daCoin_c::StateLaunchNearPlayer() {
         mDisappearTimer = 0x1c2;
     }
     if (mWithMeshClsn.JustHitGround()) {
-        if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
+        if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) == 0) {
             Sound::PlayBank3(0x52, mCamSpacePos);
             mVertSpeed = 0x19000;
         }
@@ -535,7 +534,7 @@ void daCoin_c::StateSlideAwayFromMario() {
     Step();
     BounceOffWall();
     if (!mWithMeshClsn.JustHitGround()) return;
-    if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) != 0)
+    if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) != 0)
         return;
     Sound::PlayBank3(0x52, mCamSpacePos);
     if (mHorzSpeed == 0) {
@@ -610,7 +609,7 @@ void daCoin_c::StateBounce() {
     ((SurfaceInfo*)(floor + 4))->CopyNormalTo(normal);
 
     if (mWithMeshClsn.JustHitGround() != 0) {
-        if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
+        if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) == 0) {
             if (mDisappearTimer > 0xf000)
                 mDisappearTimer = 0xf;
             Sound::PlayBank3(0x52, mCamSpacePos);
@@ -628,10 +627,10 @@ void daCoin_c::StateBounce() {
 
     if (normal.x != 0 || normal.z != 0) {
         int slide = data_ov002_020ff078[floorClass];
-        int *velocity = (int *)&mSpeedX;
+        int *velocity = &mSpeedX;
         *velocity += normal.x * slide;
         mSpeedZ += normal.z * slide;
-        mHorzSpeed = Vec3_HorzLen(velocity);
+        mHorzSpeed = Vec3_HorzLen((const Vector3 *)velocity);
         if (mHorzSpeed > 0x1c000) {
             mHorzSpeed = 0x1c000;
             UpdatePosWithHorzSpeedAndAng();
@@ -641,7 +640,7 @@ void daCoin_c::StateBounce() {
 
     if (mWithMeshClsn.JustHitGround() != 0)
         return;
-    if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) != 0)
+    if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) != 0)
         return;
 
     if (normal.y != 0) {
@@ -685,7 +684,7 @@ void daCoin_c::StateIdle() {
     if (Event::GetBit(mSpawnFilter) == 0) return;
     ((CoinFlagBits *)&mCoinFlags)->active = 1;
     mBehaviorType = BEHAVIOR_RESTING;
-    *(u32 *)&mdCc_c.flags &= ~1;
+    mdCc_c.flags &= ~1;
     found = dActor_c::FindWithActorID(0xa, 0);
     if (found) {
         mDisappearTimer = ((daObjBC_Switch_cView *)found)->mCoinTimerSeed;
@@ -718,7 +717,7 @@ s32 daCoin_c::CleanupResources()
     extern char *data_ov002_020ff060[];
 
     dActor_c *manager;
-    int isRed = (int)(actorID == 0x121);
+    int isRed = (actorID == 0x121);
     if (isRed != 0) ((SharedFilePtr *)&data_ov002_0210d9a8)->Release();
     if (mCoinType == COIN_BLUE) {
         ((SharedFilePtr *)data_ov002_020ff06c[mCoinType])->Release();
@@ -727,7 +726,7 @@ s32 daCoin_c::CleanupResources()
     UntrackStar(mTrackStarID);
     manager = dActor_c::FindWithID(mPuzzleManagerID);
     if (manager != 0) {
-        int isFlCoin = (int)(manager->actorID == 0x4f);
+        int isFlCoin = (manager->actorID == 0x4f);
         if (isFlCoin != 0) {
             if (((daObjFl_Coin_cView *)manager)->mLiveCoinCount != 0) {
                 unsigned char *count = &((daObjFl_Coin_cView *)manager)->mLiveCoinCount;
@@ -808,12 +807,10 @@ int daCoin_c::Behavior()
     return 1;
 }
 
-extern "C" {
-extern int SublevelToLevel(int i);
-extern void SetStarMarker(int i, void* actor, int v2);
+extern void SetStarMarker(int i, dActor_c *actor, int v2);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, s32 f3);
-}
+
 s32 daCoin_c::InitResources()
 {
     /* Vtable slot 0. mBehaviorType is the low nibble of param1 (9..15 become 1)
@@ -897,12 +894,12 @@ s32 daCoin_c::InitResources()
         isRed = id;
         isRed = (isRed == 0x121);
         if (isRed) {
-            mSpawnFilter = (u8)((param1 >> 4) & 7);
+            mSpawnFilter = ((param1 >> 4) & 7);
             dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210d9a8);
             mCoinType = COIN_RED;
             if (SublevelToLevel(gCurrentSublevel) == 0x13 || mSpawnFilter == gCurrentStarId) {
                 if (GetBitInDeathTable() == 0) {
-                    for (slot = 0; slot < 0xc; slot = (s8)(slot + 1)) {
+                    for (slot = 0; slot < 0xc; slot = (slot + 1)) {
                         if (STAR_MARKERS[slot] == 0) {
                             SetStarMarker(slot, this, 4);
                             mTrackStarID = slot;
@@ -916,7 +913,7 @@ s32 daCoin_c::InitResources()
             isBlue = id;
             isBlue = (isBlue == 0x122);
             if (isBlue) {
-                mSpawnFilter = (u8)((param1 >> 4) & 7);
+                mSpawnFilter = ((param1 >> 4) & 7);
                 mCoinType = COIN_BLUE;
             } else {
                 mCoinType = COIN_YELLOW;
@@ -1014,18 +1011,15 @@ s32 daCoin_c::OnYoshiTryEat()
 }
 
 /* Blue, red and yellow coin factories, in ROM order. */
-extern "C" daCoin_c *daCoin_c_classInit_BLUE_COIN()
-{
+daCoin_c *daCoin_c_classInit_BLUE_COIN() {
     return new daCoin_c();
 }
 
-extern "C" daCoin_c *daCoin_c_classInit_RED_COIN()
-{
+daCoin_c *daCoin_c_classInit_RED_COIN() {
     return new daCoin_c();
 }
 
-extern "C" daCoin_c *daCoin_c_classInit_COIN()
-{
+daCoin_c *daCoin_c_classInit_COIN() {
     return new daCoin_c();
 }
 

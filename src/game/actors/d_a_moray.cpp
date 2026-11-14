@@ -95,24 +95,24 @@ extern daMoray_c::State data_ov016_02114dbc;
 extern "C" {
 extern VecFx32 data_ov016_02114d4c; /* cylinder offset, bss */
 
-extern unsigned char gCurrentStarId;        /* the selected star */
+extern unsigned char gCurrentStarId; /* the selected star */
 
 int AngleDiff(int a, int b);
 int SublevelToLevel(int sub);
-int IsStarCollected(int level, int star);
 /* Sound::Play(3, id, pos). Calling Play directly is one word larger
    (StateLungeInit 0x54 -> 0x58). */
-void func_02012694(unsigned int id, const Vector3 *pos);
 /* UpdateBones(model.data, model.file, frame). Inlining that grows Render
    0x8c -> 0x9c. */
-void func_020167a4(dExtAnmModel_c *model);
 /* Blend the posed bones by blendWeight. No named method. */
 void func_0204531c(ModelComponents *data, s32 weight);
 
-short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *v, int s);
 }
+int IsStarCollected(int level, int star);
+void func_02012694(unsigned int id, const Vector3 *pos);
+void func_020167a4(dExtAnmModel_c *model);
+short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 
 /* Render's per-segment bend table, one 0xc record per body bone.
  * The six ROM records are {0, 0, scale} with scales 1,1,1,1,-1,0.
@@ -122,7 +122,6 @@ struct MorayRenderStep {
     s32 pad_04;
     s32 angleScale;
 };
-
 
 extern "C" MorayRenderStep data_ov016_02114908[];
 
@@ -803,8 +802,7 @@ s32 daMoray_c::InitResources()
  * The implicit constructor builds the base, collision cylinders, background
  * checker, model animation, and seven segment positions in declaration order.
  * Vector3's empty default constructor is the array callback at 0x0203d384. */
-extern "C" daMoray_c *daMoray_c_classInit()
-{
+daMoray_c *daMoray_c_classInit() {
     return new daMoray_c;
 }
 

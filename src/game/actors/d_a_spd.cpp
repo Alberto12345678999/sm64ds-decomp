@@ -63,18 +63,19 @@ typedef struct { PMF enter, run; } ScuttlebugStateRow;
  * plain words / pointers on purpose -- the true types are passed differently
  * and break the register convention.
  * ------------------------------------------------------------------------ */
-extern "C" {
 
-int AngleDiff(int a, int b);
-unsigned short DecIfAbove0_Short(void *p);
-int   Vec3_Dist(const Vector3 *a, const Vector3 *b);
-short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
+extern "C" int AngleDiff(int a, int b);
+extern "C" unsigned short DecIfAbove0_Short(void *p);
+/* local extern: CalcLib.h clashes with this TU's C DecIfAbove0_Short (void *) */
+extern "C" int Vec3_Dist(const Vector3 *a, const Vector3 *b);
+/* local extern: CalcLib.h clashes with this TU's C DecIfAbove0_Short (void *) */
+extern "C" short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
-void  Matrix4x3_FromRotationY(void *m, int angle);
-void  Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
+extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
+extern "C" void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
+extern "C" void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 
-void func_02012694(unsigned int id, void *pos);
+void func_02012694(unsigned int id, const Vector3 *pos);
 
 /* dBgCh_Actr::Init's last two parameters are Vector3_16* (the S5_
  * back-references the pointer type). */
@@ -88,7 +89,6 @@ extern Matrix4x3 data_020a0e68;           /* scratch matrix        */
 /* Intra-TU forward declarations.  mwccarm lays .text down in reverse source
  * order, so this file is written ROM-descending and nearly every intra-TU call
  * is a forward reference. */
-}
 
 /* The bug's file-scope SharedFilePtr objects, spelled through the same
    wrapper idiom the landed folds use: the handles' code is the veneer pair
@@ -147,7 +147,7 @@ PMF data_ov071_02122fa8[18] = {
     data_ov071_02122ba8, data_ov071_02122ba0, data_ov071_02122b98,
 };
 
-extern "C" daSpd_c *daSpd_c_classInit(void) {
+daSpd_c *daSpd_c_classInit(void) {
     return new daSpd_c();
 }
 
@@ -177,9 +177,9 @@ void daSpd_c::OnTurnIntoEgg(daPly_c &player) {
 
 int daSpd_c::InitResources() {
     BMD_File *mf = dExtSimpleModel_c::LoadFile(data_ov071_02122f80);
-    ((dExtModel_c *)(&mAnmModel))->SetFile(mf, 1, -1);
+    mAnmModel.SetFile(mf, 1, -1);
     dExtFrameCtrl_c::LoadFile(gSpiderWalkAnimationFile);
-    if (((dExtShadowModel_c *)(&mShadowModel))->InitCylinder() == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
     mdCcAc_c.Init(this, 0x46000, 0x64000, 0x200000, 0x6eff0);
     mWithMeshClsn.Init(this, 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
@@ -348,11 +348,11 @@ int daSpd_c::func_ov071_0211fee4() {
         func_0201267c(0xf0, &mCamSpacePos);
     }
     func_ov071_0211f0b4();
-    UpdatePos((dCc_c *)(&mdCcAc_c));
+    UpdatePos(&mdCcAc_c);
     func_ov071_0211f148(&mWithMeshClsn);
     func_ov071_0211f29c();
-    ((dCc_c *)(&mdCcAc_c))->Clear();
-    ((dCc_c *)(&mdCcAc_c))->Update();
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
     return 1;
 }
 
@@ -459,7 +459,7 @@ int daSpd_c::func_ov071_0211fb0c() {
 int daSpd_c::func_ov071_0211fa54() {
     int b0 = (int)((mFlags & 0x40000) != 0);
     if (b0 != 0) {
-        int *src = &((dActor_c *)mParent)->mPosX;
+        int *src = &mParent->mPosX;
         mPosX = src[0];
         mPosY = src[1];
         mPosZ = src[2];
@@ -523,7 +523,7 @@ int daSpd_c::func_ov071_0211f7d4() {
         mAngleZ = z;
         SetState(2);
     }
-    UpdatePos((dCc_c *)(&mdCcAc_c));
+    UpdatePos(&mdCcAc_c);
     func_ov071_0211f29c();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -593,7 +593,7 @@ void daSpd_c::func_ov071_0211f498() {
     v.z = mPosZ;
     SpawnCoins(v, mCoinCount, 0xf000, 0);
     PoofDust();
-    func_02012694(0xc4, &mCamSpacePosX);
+    func_02012694(0xc4, (const Vector3 *)(&mCamSpacePosX));
     if (param1) {
         mCoinCount = 0;
         SetState(0);
@@ -706,7 +706,7 @@ void daSpd_c::func_ov071_0211f148(dBgCh_Actr *w) {
 
 void daSpd_c::func_ov071_0211f0b4() {
     dActor_c *p;
-    Fix12i d;
+    fx32 d;
     short ang;
     if (mTimer != 0) return;
     p = (dActor_c *)ClosestNonVanishPlayer();

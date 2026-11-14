@@ -556,7 +556,7 @@ inline dScMgFlower_c::dScMgFlower_c() {}
  * allocation size, vtable identity, and the MG_FLOWER registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: func_ov006_0212b7f8. */
-extern "C" void *dScMgFlower_c_classInit() {
+void *dScMgFlower_c_classInit() {
     return new dScMgFlower_c;
 }
 

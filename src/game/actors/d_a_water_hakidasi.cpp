@@ -73,8 +73,8 @@ extern HakPmfTable data_ov064_0211c934;
 
 extern "C" {
 extern int SublevelToLevel(int);
-extern int IsStarCollected(int r0, int r1);
 }
+extern int IsStarCollected(int r0, int r1);
 
 extern SharedFilePtr data_ov002_0210da10;
 extern SharedFilePtr data_ov002_0210d9a8;
@@ -309,7 +309,7 @@ s32 daWater_Hakidasi_c::InitResources() {
  * RTTI, allocation size, vtable identity, and the WATER_HAKIDASI registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: JetStream_Spawn. */
-extern "C" daWater_Hakidasi_c *daWater_Hakidasi_c_classInit() {
+daWater_Hakidasi_c *daWater_Hakidasi_c_classInit() {
     return new daWater_Hakidasi_c();
 }
 

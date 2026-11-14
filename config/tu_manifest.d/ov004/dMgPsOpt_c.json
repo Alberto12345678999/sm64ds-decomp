@@ -48,7 +48,7 @@
       "ordinal": 0
     },
     {
-      "symbol": "PsOpt_PlaceIcon",
+      "symbol": "_Z15PsOpt_PlaceIconPN10dMgPsOpt_c11TouchIcon_cEiiss",
       "address": "0x020b8dc0",
       "size": "0x00000120",
       "legacy_source": "src/func_ov004_020b8dc0.c",

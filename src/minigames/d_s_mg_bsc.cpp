@@ -46,8 +46,6 @@ extern "C" {
 extern short gMgCoinsStatus;
 extern int Math_Function_0203b14c(int *ptr, int target, int rate, int limit, int step);
 extern void Mg_ResumeSharedState(void);
-extern void MgCoins_StartPayout(int x);
-extern void MgCoins_StartLose(void);
 extern int gMgCoinsInPlay;
 extern void Mg_SubmitScore(int self);
 extern void Mg_SetSharedState(int v);
@@ -55,18 +53,20 @@ extern void Mg_SaveRecordPair(int a, int b);
 extern int sBscLaneX[];
 extern int sMgCoinsBetPlaced;
 extern void FreeGfxSlotsById(int arg);
-extern void MgCoins_Reset(void);
 void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 void Mg_DrawCredits(void *scene, int a1, int a2, int a3);
 void Mg_DrawScoreTally(void *scene, int a1, int a2, int a3);
-void MgCoins_Update(void);
 extern unsigned char gMainScreenLayers;
 extern int data_0208ee44;
-extern void LoadCard2SubBg3(void *);
 extern s32 GetGameLanguage(void);
 extern u32 LoadCompressedFileAt(int fileID, void *target);
 extern void *LoadFile(int handle);
 }
+extern void MgCoins_StartPayout(int x);
+extern void MgCoins_StartLose(void);
+extern void MgCoins_Reset(void);
+void MgCoins_Update(void);
+extern void LoadCard2SubBg3(void *);
 
 /* Real C++ declarations for the engine calls below; the namespaces and the
  * reference parameter are what give the ROM's mangled names. */
@@ -78,7 +78,7 @@ void PlayBank2_2D(u32 id);
 
 /* `new` inlines the implicit constructor: the base chain, this class's
    vptr, then mDealer and mCardPos in declaration order. */
-extern "C" void *dScMgBSC_c_classInit() {
+void *dScMgBSC_c_classInit() {
     return new dScMgBSC_c;
 }
 

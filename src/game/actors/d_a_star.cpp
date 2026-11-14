@@ -36,8 +36,8 @@
  * - Render keeps its gotos, and mStateTimer keeps its (u16) casts.
  * - func_ov002_020e8244 stays a free function; its first parameter is the
  *   output vector, not the star.
- * - Still unnamed: the dActor_c word at +0xc8, the bone word at +0xc and
- *   the table entry at data_02082714 + 0x56.
+ * - Still unnamed: the dActor_c word at +0xc8 and the halfword at
+ *   data_02082714 + 0x56, which lands mid-word in an untyped arm9 table.
  * - Fix12-by-value callees stay as mangled extern "C" names, and `this`
  *   goes to some externs as (char *)this to keep their declared signatures.
  * - The Kind names are numbers (KIND_n): only what the code evidences is
@@ -126,20 +126,34 @@ extern "C" {
 /* dExtAnmModel_c::SetAnim, called with a scalar speed. */
 extern char data_02082714[];
 extern int func_0203d024(struct Vector3*, struct Vector3*);
-extern void DeathTable_ClearBit(int);
-extern void FUN_0202a130(void);
+}
+
+extern "C" void DeathTable_ClearBit(int);
+extern "C" void FUN_0202a130(void);
+
 extern void UnloadSilverStarAndNumber(void);
+extern "C" {
 extern StarAnimationFileHandle data_ov002_02110934;
 extern unsigned int gNextActorUpdateMask;
 extern int data_ov002_0210da28[];
 extern signed char gNumStageStars[];
+}
+
 extern signed char NumRedCoins(void);
+extern "C" {
 extern unsigned char gGameMode;
-extern void func_02035860(void* o, void* src);
+}
+
+extern void func_02035860(dBgCh_Actr *o, const Vector3 *src);
+extern "C" {
 extern dCamera_c *gCamera;
+}
+
 extern unsigned char IsAreaShowing(int idx);
-extern void func_02012694(unsigned int a, void *p);
+extern void func_02012694(unsigned int a, const Vector3 *p);
+
 extern void func_ov002_020e8244(void *out, daStar_c *b);
+extern "C" {
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void* mF, s16 angY);
 /* local extern: math/MtxStack.h takes Matrix4x3 pointers, and
@@ -150,25 +164,38 @@ extern int *Vec3_LslInPlace(void *v, int sh);
 extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern int SurfaceInfo_TestFlag0x20(void* p);
+}
+
+extern int SurfaceInfo_TestFlag0x20(int *p);
+extern "C" {
 extern int data_0209f32c;
 extern signed char gCurrentSublevel;
+}
+
 extern void SetStarMarker(int i, dActor_c *actor, int v2);
 extern int IsStarCollectedInCurLevel(int starID);
+extern "C" {
 extern dActor_c *STAR_MARKERS[12];
 extern u8 data_0209f208;
 extern unsigned char gCurrentEntranceId;
+}
+
 void GiveVsStars(int idx, int delta);
 void CollectStarInCurLevel(int i);
-int SublevelToLevel(int i);
+extern "C" int SublevelToLevel(int i);
 s16 NumCoins(void);
+extern "C" {
 extern u8 gCollectedStarId;
 extern u8 gNewStarCollected;
 extern s16 gNumCoins[];
 extern u8 data_0209d684;
-extern s16 GetAngleToCamera(int i);
+}
+
+extern "C" s16 GetAngleToCamera(int i);
+extern "C" {
 extern u8 *data_0209f344;
 }
+
 /* local extern: the header KuppaScript.h would renumber this TU's compiler temps (@NNN pins in its manifest) */
 namespace KuppaScript {
 void End(void);
@@ -177,7 +204,10 @@ extern "C" {
 extern u8 data_0209d660;
 extern s8 gNumStageStars[];
 extern signed char gNumStageStars[];
-extern int NumVsStarsObtained(void);
+}
+
+extern "C" int NumVsStarsObtained(void);
+extern "C" {
 extern StarModelFilePtr data_ov002_0211092c;
 extern StarModelFilePtr data_ov002_0211093c;
 extern StarAnimationFileHandle data_ov002_02110924;
@@ -197,11 +227,13 @@ extern s32 data_02092138;
 extern StarModelFilePtr data_ov002_0211094c;
 extern StarModelFilePtr data_ov002_02110954;
 extern StarModelFilePtr data_ov002_0211095c;
+}
+
 extern void LoadSilverStarAndNumber(void);
+
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
 extern s32 IsStarCollected(s32 level, s32 idx);
-}
 
 /* The two destructor bodies are defined first so their D1/D0 groups lead the
  * object in ROM order. Under defer_codegen off each out-of-line destructor
@@ -431,7 +463,7 @@ s32 daStar_c::InitResources()
         }
     }
 
-    sp = (char *)dActor_c::FindWithID((u32)mMarkerID);
+    sp = (char *)dActor_c::FindWithID(mMarkerID);
     if (sp != 0)
         ((daStarBase_c *)(sp))->LinkSilverStarAndStarMarker((char *)this);
     if (gCurrentSublevel == 8 && mStarID == 7) {
@@ -448,7 +480,7 @@ s32 daStar_c::InitResources()
     }
     if (GetBitInDeathTable() != 0 && mStarID == 1 && gCurrentSublevel == 0x2e) {
         KillAndTrackInDeathTable();
-        sp = (char *)dActor_c::FindWithID((u32)mMarkerID);
+        sp = (char *)dActor_c::FindWithID(mMarkerID);
         if (sp != 0)
             ((daStarBase_c *)(sp))->LinkSilverStarAndStarMarker(0);
     }
@@ -472,7 +504,7 @@ int daStarBase_c::InitResources()
     u8 kind;
     int r3;
 
-    raw = ((u32)param1 >> 4) & 0xf;
+    raw = (param1 >> 4) & 0xf;
     kind = (u8)raw;
     mFlags = 0;
     v0.x = 0;
@@ -501,7 +533,7 @@ int daStarBase_c::InitResources()
 
     if (kind == 6) {
         void *sp;
-        sp = dActor_c::Spawn(ACTOR_STAR, mStarID | 0x60, mPos, 0, (s8)mAreaId, -1);
+        sp = dActor_c::Spawn(ACTOR_STAR, mStarID | 0x60, mPos, 0, mAreaId, -1);
         if (sp != 0) {
             ((daStar_c *)sp)->mBits.switchStar = 1;
         }
@@ -680,9 +712,7 @@ int daStarBase_c::Behavior()
             int rad = 0xa0000;
             if (mState != 0)
                 rad = 0xc8000;
-            ((dActor_c *)this)
-                ->DropShadowRadHeight(*(dExtShadowModel_c *)&mShadowModel,
-                                      *(Matrix4x3 *)&mShadowMtx, rad, d + 0x28000, 0xf);
+            this->DropShadowRadHeight(mShadowModel, mShadowMtx, rad, d + 0x28000, 0xf);
         }
     }
     if (mState != 0) {
@@ -748,7 +778,7 @@ int daStar_c::CleanupResources()
         UntrackStar(mMarkerSlot);
         UnloadSilverStarAndNumber();
     }
-    ((SharedFilePtr *)(&data_ov002_02110944))->Release();
+    data_ov002_02110944.Release();
     ((SharedFilePtr *)(&data_ov002_02110924))->Release();
     ((SharedFilePtr *)(&data_ov002_02110964))->Release();
     ((SharedFilePtr *)(&data_ov002_02110934))->Release();
@@ -809,7 +839,7 @@ void daStar_c::StateLaunch() {
     mFlags |= CUTSCENE_FLAG;
     gNextActorUpdateMask |= CUTSCENE_FLAG;
     mCamSeq = 0;
-    func_02012694(0x57, &mCamSpacePosX);
+    func_02012694(0x57, (const Vector3 *)&mCamSpacePosX);
     mVertSpeed = 0x20000;
     SetDefaultGravity();
     other = dActor_c::FindWithID(mMarkerID);
@@ -904,8 +934,8 @@ void daStar_c::StateFlyToMarker() {
     dActor_c *o = dActor_c::FindWithID(mMarkerID);
     if (o == 0) { MarkForDestruction(); return; }
     if (Vec3_HorzDist(&mPos, &o->mPos) < mHorzSpeed) {
-        int* src = (int*)&o->mPosX;
-        int* yp = (int*)&mPosY;
+        int *src = &o->mPosX;
+        int *yp = &mPosY;
         mPosX = src[0];
         mPosY = src[1];
         mPosZ = src[2];
@@ -1027,11 +1057,11 @@ void daStar_c::StateIdle() {
                 mAppearTimer -= 1;
             } else if (mScaleX != 0) {
                 int step2;
-                if ((u16)mStateTimer == 0)
+                if (mStateTimer == 0)
                     func_02012790(0x42);
                 spd2 = mScaleX;
-                if (*(u16 *)&mStateTimer <= 0xf) {
-                    *(u16 *)&mStateTimer += 1;
+                if (mStateTimer <= 0xf) {
+                    mStateTimer += 1;
                     step2 = 0;
                 } else {
                     step2 = 0x100;
@@ -1074,7 +1104,7 @@ void daStar_c::StateIdle() {
 /* STATE_TOUCHED: hands mPlayer to Collect. */
 /* StateTouched @ 0x20ea410 (ov002) -- veneer: ldr r1,[r0,#0x438]; b Collect. */
 void daStar_c::StateTouched() {
-    Collect((void *)mPlayer);
+    Collect(mPlayer);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1130,7 +1160,7 @@ void daStar_c::StateCollectBegin() {
             mSoundObjMode = 2;
         }
 
-        int *posY = (int *)&mPosY;
+        int *posY = &mPosY;
 
         mState = STATE_COLLECT_HOLD;
         mBits.collectedModel = 0;
@@ -1138,8 +1168,8 @@ void daStar_c::StateCollectBegin() {
         mSeqTimer = 0;
 
         {
-            int *src = (int *)&mPlayer->mPosX;
-            int *cache = (int *)&mHomePosX;
+            int *src = &mPlayer->mPosX;
+            int *cache = &mHomePosX;
             mHomePosX = src[0];
             mHomePosY = src[1];
             mHomePosZ = src[2];
@@ -1180,8 +1210,8 @@ void daStar_c::StateCollectBegin() {
         }
     } else {
         if (func_ov002_020ca0f4(common) != 0) {
-            int *posY2 = (int *)&mPosY;
-            int *s = (int *)&mPlayer->mPosX;
+            int *posY2 = &mPosY;
+            int *s = &mPlayer->mPosX;
             mPosX = s[0];
             mPosY = s[1];
             mPosZ = s[2];
@@ -1212,7 +1242,7 @@ void daStar_c::StateCollectBegin() {
 /* STATE_COLLECT_HOLD: copies the player's position and facing, starts the pose
  * animation and becomes STATE_COLLECT_TALK. */
 void daStar_c::StateCollectHold() {
-    int *s = (int *)&mPlayer->mPosX;
+    int *s = &mPlayer->mPosX;
     mPosX = s[0];
     mPosY = s[1];
     mPosZ = s[2];
@@ -1253,7 +1283,7 @@ void daStar_c::StateCollectTalk() {
     int *src;
     u8 st2;
 
-    src = (int *)&mPlayer->mPosX;
+    src = &mPlayer->mPosX;
     mPosX = src[0];
     mPosY = src[1];
     mPosZ = src[2];
@@ -1426,7 +1456,7 @@ void daStar_c::StateBounce() {
             mVertSpeed = 0x17000;
     }
     {
-        unsigned short *ctr = (unsigned short *)&mStateTimer;
+        unsigned short *ctr = &mStateTimer;
         if (*ctr == 0) {
             if (!mBits.noPickup)
                 CheckPickup();
@@ -1537,7 +1567,7 @@ void daStar_c::StateSpinAndEnd() {
             KillAndTrackInDeathTable();
         }
     } else {
-        src = (int *)&mPlayer->mPosX;
+        src = &mPlayer->mPosX;
         mPosX = src[0];
         mPosY = src[1];
         mPosZ = src[2];
@@ -1980,7 +2010,7 @@ void daStar_c::ReturnToHome() {
         mPosX = mHomePosX;
         mPosY = mHomePosY;
         mPosZ = mHomePosZ;
-        func_02035860(&mWithMeshClsn, &mPosX);
+        func_02035860((dBgCh_Actr *)(void *)&mWithMeshClsn, (const Vector3 *)&mPosX);
         mState = mHomeState;
         StopMotion();
         mdCc_c.flags |= 1;
@@ -2008,7 +2038,7 @@ void daStar_c::ReturnToHome() {
     mPosX = mHomePosX;
     mPosY = mHomePosY;
     mPosZ = mHomePosZ;
-    func_02035860(&mWithMeshClsn, &mPosX);
+    func_02035860((dBgCh_Actr *)(void *)&mWithMeshClsn, (const Vector3 *)&mPosX);
     mState = mHomeState;
     mVertSpeed = 0x20000;
     SetDefaultGravity();
@@ -2036,7 +2066,7 @@ void daStar_c::OnBounceLand() {
         mBits.noPickup = 0;
         mStateTimer = 0;
     }
-    func_02012694(0x55, &mCamSpacePosX);
+    func_02012694(0x55, (const Vector3 *)&mCamSpacePosX);
     if (mBits.water == WATER_IN) {
         mHorzSpeed = 0xc000;
         mVertSpeed = 0xe000;
@@ -2063,7 +2093,7 @@ void daStar_c::OnBounceLand() {
     p = (dActor_c *)ClosestPlayer();
     if (p == 0) return;
     {
-        int *s = (int *)&p->mPosX;
+        int *s = &p->mPosX;
         v.x = s[0];
         v.y = s[1];
         v.z = s[2];
@@ -2077,7 +2107,7 @@ void daStar_c::OnBounceLand() {
                 return;
         }
         {
-            short *a = (short *)&mPrevAngleY;
+            short *a = &mPrevAngleY;
             *a = *a + 0x8000;
         }
     } else {
@@ -2121,9 +2151,9 @@ void daStar_c::UpdateWater() {
         v.x = tx;
         v.y = ta;
         v.z = tz;
-        rc.SetObjAndPos(*(Vector3 *)&v, this);
+        rc.SetObjAndPos(v, this);
         if (rc.DetectClsn() != 0) {
-            if (SurfaceInfo_TestFlag0x20(&rc.surface) != 0) {
+            if (SurfaceInfo_TestFlag0x20((int *)&rc.surface) != 0) {
                 mWaterHeight = rc.clsnY;
                 data_0209f32c = mWaterHeight;
                 if (mWaterHeight >= mPosY + 0x3c000) {
@@ -2192,7 +2222,7 @@ void daStar_c::UpdateModelMatrix() {
          * same 12 words; proven byte-identical in isolation. */
         *(Mtx43 *)&mAnmModel1.mat4x3 = *(Mtx43 *)mCarryMatrix;
     } else if (!mBits.noSpin) {
-        ang = (s16 *)&mAngleY;
+        ang = &mAngleY;
         t = *ang + 0xc00;
         *ang = t;
         Matrix4x3_FromRotationY(&mAnmModel1.mat4x3, mAngleY);
@@ -2254,9 +2284,7 @@ void daStar_c::DrawShadow() {
     mShadowMtx.ty = mPosY >> 3;
     mShadowMtx.tz = mPosZ >> 3;
 
-    ((dActor_c *)c)
-        ->DropShadowRadHeight(*(dExtShadowModel_c *)&mShadowModel, *(Matrix4x3 *)&mShadowMtx, r8, t,
-                              0xf);
+    ((dActor_c *)c)->DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)&mShadowMtx, r8, t, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2266,7 +2294,7 @@ void daStar_c::DrawShadow() {
  * the cache each frame). Otherwise it multiplies the first bone's matrix with
  * a translation and Y rotation of the star, scales the result about the star's
  * position (<< 3) and raises Y by 13 times a word of the bone data at +0xc. */
-extern "C" {  /* C linkage: the ROM symbol is a bare name, not a mangled member */
+
 void func_ov002_020e8244(void *out, daStar_c *b)
 {
     Mtx43 local;
@@ -2288,7 +2316,7 @@ void func_ov002_020e8244(void *out, daStar_c *b)
     b->mCenterY = data_020a0e68.t.y;
     b->mCenterZ = data_020a0e68.t.z;
     VEC_Subtract((struct Vector3 *)&b->mCenterX, &b->mPos, (struct Vector3 *)&b->mCenterX);
-    Vec3_LslInPlace((void *)&b->mCenterX, 3);
+    Vec3_LslInPlace(&b->mCenterX, 3);
     VEC_Add((struct Vector3 *)&b->mCenterX, &b->mPos, (struct Vector3 *)&b->mCenterX);
     {
         int *p = &b->mCenterY;
@@ -2297,7 +2325,6 @@ void func_ov002_020e8244(void *out, daStar_c *b)
     ((int *)out)[0] = b->mCenterX;
     ((int *)out)[1] = b->mCenterY;
     ((int *)out)[2] = b->mCenterZ;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2351,14 +2378,14 @@ void daStar_c::SpawnCollectEffects() {
  * plays from frame 2 on, and a one-shot effect 0x30 when frame 0x75 is
  * reached. */
 void daStar_c::SpawnPoseEffects() {
-    void* obj;
+    ModelBone *root;
     struct Vector3 v1;
     struct Vector3 v2;
 
-    obj = mAnmModel1.data.bones;
+    root = mAnmModel1.data.bones;
 
     if (!mAnmModel1.Finished() && (u32)((*(u32 *)&mAnmModel1.currFrame << 4) >> 0x10) >= 2 &&
-        *(int *)((char *)obj + 0xc) != 0) {
+        root->scaleX != 0) {
         func_ov002_020e8244(&v1, this);
         mParticle[0] =
             (u32)Particle::System::New(mParticle[0], kPtclStarPose, v1.x, v1.y, v1.z, 0, 0);
@@ -2462,7 +2489,7 @@ int daStar_c::RearmSoundObj6() {
  * hides it, clears its touch volume and bursts effects 0x12c, 0x12d and 0x12e. */
 void daStarBase_c::Collect()
 {
-    func_02012694(0x53, &mCamSpacePosX);
+    func_02012694(0x53, (const Vector3 *)&mCamSpacePosX);
     {
         mBits.hold = 1;
         mBits.visible = 0;
@@ -2725,11 +2752,11 @@ void daStar_c::RelinkMarker() {
     daStarBase_c *a = (daStarBase_c *)dActor_c::FindWithID(mMarkerID);
     int* s;
     mBits.water = WATER_NONE;
-    s = (int *)&a->mPosX;
+    s = &a->mPosX;
     mPosX = s[0];
     mPosY = s[1];
     mPosZ = s[2];
-    func_02035860(&mWithMeshClsn, &mPosX);
+    func_02035860((dBgCh_Actr *)(void *)&mWithMeshClsn, (const Vector3 *)&mPosX);
     if (a->mState == STATE_LAND) {
         mHomeState = a->mLinkedStarState;
         mState = mHomeState;
@@ -2801,7 +2828,7 @@ void daStar_c::SeekNewMarker(char *player, int gate) {
         struct Vector3 pos[2];
         bool b;
         int* v;
-        v = (int *)&a->mPosX;
+        v = &a->mPosX;
         pos[0].x = v[0];
         pos[0].y = v[1];
         pos[0].z = v[2];
@@ -2839,24 +2866,22 @@ void daStarBase_c::LinkSilverStarAndStarMarker(char* b) {
 /* ROM ordinal 12 -- LoadSilverStarAndNumber, 0x020e71a8, size 0x2c */
 /* -------------------------------------------------------------------------- */
 /* Loads the silver star and score-number model files. */
-extern "C" {  /* C linkage: the ROM symbol is a bare name, not a mangled member */
+
 void LoadSilverStarAndNumber(void)
 {
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_0210da28);
     dExtSimpleModel_c::LoadFile(data_ov002_02110954);
-}
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 11 -- UnloadSilverStarAndNumber, 0x020e717c, size 0x2c */
 /* -------------------------------------------------------------------------- */
 /* Releases the silver star and score-number model files. */
-extern "C" {  /* C linkage: the ROM symbol is a bare name, not a mangled member */
+
 void UnloadSilverStarAndNumber(void)
 {
     ((SharedFilePtr *)data_ov002_0210da28)->Release();
     data_ov002_02110954.Release();
-}
 }
 
 /* -------------------------------------------------------------------------- */

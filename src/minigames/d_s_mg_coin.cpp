@@ -124,7 +124,6 @@ extern void *sCoinValuesSprites[];
 extern void *sCoinSparkleSprites[];
 extern void *sCoinBagSprites[];
 extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
-extern void func_020127a4(int a, int b, int c, int d);
 extern const int sCoinRowY[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern void RenderOamMainScreen(OamAttr *a, int b, int c, int d, int e);
@@ -149,6 +148,7 @@ extern u8 gSubScreenLayers;
 extern int data_0208ee44;
 extern void func_0203b9b4(int *p, int v);
 }
+extern void func_020127a4(int a, int b, int c, int d);
 
 /* The per-state handler tables: {pmf, delta} records indexed by the
    record's own state byte. Static initialisation fills each one from the
@@ -1356,7 +1356,7 @@ int dScMgCoin_c::InitResources() {
                           GX_BG_CHARBASE_0x10000);
 
     d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCG_BIN);
-    DecompressLZ16(d, (void *)((char *)G2S_GetBG3CharPtr() + 0x4000));
+    DecompressLZ16(d, ((char *)G2S_GetBG3CharPtr() + 0x4000));
     Deallocate(d);
 
     d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCL_BIN);
@@ -1397,7 +1397,7 @@ inline dScMgCoin_c::dScMgCoin_c() {
  * allocation size, vtable identity, and the MG_COIN registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgCoincentration_Spawn. */
-extern "C" void *dScMgCoin_c_classInit() {
+void *dScMgCoin_c_classInit() {
     return new dScMgCoin_c;
 }
 

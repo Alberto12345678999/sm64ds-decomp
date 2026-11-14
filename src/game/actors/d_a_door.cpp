@@ -187,7 +187,6 @@ struct daDoor_StateRecord {
 
 struct Vector3_16;
 
-extern "C" {
 /* Defined below, called before their definitions. These four are the shared
    countdown helpers -- free functions, not members: d_a_ply_methods.cpp, daMugenBGM_c
    and d_a_star_gate.cpp call them too, and none takes the door. */
@@ -195,12 +194,16 @@ int func_ov100_02144f84(void);
 int func_ov100_02144fcc(void);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
-}
+extern "C" unsigned int func_0201277c(unsigned int a);
+void func_02012694(unsigned int a, const Vector3 *b);
+unsigned char NumStars(void);
+extern "C" void ChangeArea(int areaID);
+void ShowArea(int idx);
+unsigned char IsAreaShowing(int idx);
+void SetTouchScreenDelay(void);
+void LoadKeyModels(int idx);
+void UnloadKeyModels(int idx);
 extern "C" {
-/* func_0201277c(id) plays a sound id with no position, as func_02012790
-   does (Sound.h); func_02012694(id, pos) plays it at a position. */
-unsigned int func_0201277c(unsigned int a);
-void func_02012694(unsigned int a, void *b);
 int func_ov002_020ca78c(void *p);
 void Vec3_RotateYAndTranslate(Vector3 *res, const Vector3 *translation, short angY,
                               const Vector3 *v);
@@ -208,13 +211,7 @@ void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 int AngleDiff(int a, int b);
-unsigned char NumStars(void);
-void ChangeArea(int areaID);
-void ShowArea(int idx);
-unsigned char IsAreaShowing(int idx);
-void SetTouchScreenDelay(void);
-void LoadKeyModels(int idx);
-void UnloadKeyModels(int idx);
+}
 
 extern DoorEntry data_ov100_02148204[];
 /* Indexed by mKeyModelIdx - 1: the character func_ov100_02144528 switches the
@@ -270,7 +267,6 @@ extern SharedFilePtr data_ov089_02132c50;
    LoadKeyModels and UnloadKeyModels, declares it under this name with this
    element type. */
 extern void *data_ov089_02132894[];
-}
 
 /* The door's file-scope SharedFilePtr objects, spelled through the same
    wrapper idiom the landed folds use: the handles' code is the veneer pair
@@ -411,10 +407,10 @@ int daDoor_c::func_ov100_02144528(daPly_c *pl) {
                 Sound::ChangeMusicVolume(0, 0x19666);
             }
             func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END,
-                          &mCamSpacePosX);
+                          (const Vector3 *)(&mCamSpacePosX));
         }
         if (DecIfAbove0_Byte(&mTimer) == 0) {
-            void *r1 = data_ov100_02148704 != 0 ? 0 : (void *)&data_ov100_021488f4;
+            void *r1 = data_ov100_02148704 != 0 ? 0 : &data_ov100_021488f4;
             if (func_ov100_021451c4(r1, pl) != 0) {
                 if (data_ov100_02148704 != 0)
                     pl->OpenBigDoor();
@@ -482,7 +478,8 @@ int daDoor_c::func_ov100_02144730(daPly_c *arg1) {
         {
             gCamera->mFlags &= ~DOOR_CAMERA_FLAGS;
         }
-        func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END, &mCamSpacePosX);
+        func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END,
+                      (const Vector3 *)(&mCamSpacePosX));
     } else if (mKeyModelIdx != 0) {
         if (mModel.WillHitFrame((u16)(mModel.GetFrameCount() - 0x1c)) != 0) {
             gCamera->mFlags &= ~DOOR_CAMERA_FLAGS;
@@ -510,7 +507,7 @@ int daDoor_c::func_ov100_02144730(daPly_c *arg1) {
    Was a C source. */
 int daDoor_c::func_ov100_0214491c() {
     int n = mModel.GetFrameCount();
-    int f = (int)((unsigned short)(n - 0x18)) << 12;
+    int f = ((unsigned short)(n - 0x18)) << 12;
     mModel.currFrame = f;
     mTimer = 0;
     return 1;
@@ -531,7 +528,7 @@ int daDoor_c::func_ov100_02144950(daPly_c *pl, int unused) {
     ShowArea((signed char)mAngleZ);
     gCamera->mFlags |= DOOR_CAMERA_FLAGS;
     func_02012694((param1 == DOOR_ALT_SOUND) ? SND_SWING_START_ALT : SND_SWING_START,
-                  &mCamSpacePosX);
+                  (const Vector3 *)(&mCamSpacePosX));
     mTimer = 0;
     return 1;
 }
@@ -584,8 +581,7 @@ int daDoor_c::func_ov100_02144a38(daPly_c *p) {
     Vec3_RotateYAndTranslate(&pos, &p->mPos, p->mAngleY, &sKeyOff);
 
     {
-        void *actor =
-            dActor_c::Spawn(ACTOR_OBJ_KEY, (u32)e->keyIndex, pos, &p->mAngle, p->mAreaId, -1);
+        void *actor = dActor_c::Spawn(ACTOR_OBJ_KEY, e->keyIndex, pos, &p->mAngle, p->mAreaId, -1);
         if (actor != 0) {
             ((daObjKey_c *)actor)->func_ov089_0213115c(2);
         }
@@ -646,7 +642,7 @@ int daDoor_c::func_ov100_02144c6c(daPly_c *r1) {
 /* State 021488c4, enter member. Play sound 0xb8 at the door and start the
    shared countdown at 0x87 (135). Was a C source. */
 int daDoor_c::func_ov100_02144ccc() {
-    func_02012694(0xb8, &mCamSpacePosX);
+    func_02012694(0xb8, (const Vector3 *)(&mCamSpacePosX));
     func_ov100_02145070(0x87);
     return 1;
 }
@@ -730,8 +726,7 @@ int daDoor_c::func_ov100_02144cf8(daPly_c *b) {
                 }
             }
         }
-        func_ov100_021451c4(
-            (mKeyModelIdx != 0) ? (void *)&data_ov100_02148904 : (void *)&data_ov100_021488f4, b);
+        func_ov100_021451c4((mKeyModelIdx != 0) ? &data_ov100_02148904 : &data_ov100_021488f4, b);
     }
     return 1;
 }
@@ -742,7 +737,7 @@ int daDoor_c::func_ov100_02144cf8(daPly_c *b) {
 /* 1 when the shared countdown is zero, the music volume gMusicVolume is at
    0x7f000 (127.0 as Fix12) and the sub-channel volume gSubVolume is
    zero. Was a C source. */
-extern "C" int func_ov100_02144f84(void) {
+int func_ov100_02144f84(void) {
     if (*data_ov100_02148708 != 0)
         goto fail;
     if (gMusicVolume != 0x7f000)
@@ -759,7 +754,7 @@ fail:
 /* Tick the shared countdown (func_ov100_02145014); when it is done, call
    Sound::PlaySub(0x24, 0x7f, 0, 0x7222 = 7.13 as Fix12, 0) and return its
    result, else 0. */
-extern "C" int func_ov100_02144fcc(void) {
+int func_ov100_02144fcc(void) {
     int r = func_ov100_02145014();
     if (r == 0)
         return 0;
@@ -773,7 +768,7 @@ extern "C" int func_ov100_02144fcc(void) {
    the ticked value is still nonzero, call Sound::PlaySub(0x24, 0x14, 0x7f,
    0x15666 = 21.4 as Fix12, 0). Returns 1 once the countdown is zero. Was a C
    source. */
-extern "C" int func_ov100_02145014(void) {
+int func_ov100_02145014(void) {
     int r = DecIfAbove0_Short(data_ov100_02148708);
     if (r) {
         Sound::PlaySub(0x24, 0x14, 0x7f, 0x15666, 0);
@@ -785,7 +780,7 @@ extern "C" int func_ov100_02145014(void) {
 /* ROM ordinal 19 -- func_ov100_02145070, 0x02145070, size 0x10 */
 /* -------------------------------------------------------------------------- */
 /* Start the shared countdown at v. Was a C source. */
-extern "C" void func_ov100_02145070(int v) {
+void func_ov100_02145070(int v) {
     data_ov100_02148708[0] = v;
 }
 
@@ -909,7 +904,7 @@ daPly_c *daDoor_c::func_ov100_02145370() {
     Vector3 v;
     daPly_c *r5 = gPlayers[gLocalPlayerId];
     Vec3_Sub(&v, &r5->mPos, &mPos);
-    Vec3_RotateYAndTranslate(&mScale, &data_020a0ebc, (short)(-mAngleY), &v);
+    Vec3_RotateYAndTranslate(&mScale, &data_020a0ebc, (-mAngleY), &v);
     return r5;
 }
 
@@ -919,7 +914,7 @@ daPly_c *daDoor_c::func_ov100_02145370() {
 /* Enter a state: store the address of the state table at +0x140 (mState) and
    call its enter member with the player, if it has one. */
 int daDoor_c::func_ov100_021453d8(void *p, int a2) {
-    mState = (daDoor_StateRecord *)p;
+    mState = p;
     daDoor_StateRecord *q = (daDoor_StateRecord *)mState;
     if (*(int *)q == 0)
         return 1;
@@ -996,7 +991,7 @@ s32 daDoor_c::Render() {
 s32 daDoor_c::Behavior() {
     int res = (int)func_ov100_02145370();
     daDoor_StateRecord *node = (daDoor_StateRecord *)mState;
-    if (*(int *)&node->execute != 0) {
+    if (*&node->execute != 0) {
         (this->*(node->execute))(res);
     }
     return 1;
@@ -1067,7 +1062,7 @@ s32 daDoor_c::InitResources() {
         } else if (e->keyIndex >= 0) {
             unsigned int t = param1;
             if (t >= DOOR_FIRST_KEY_MODEL && t <= DOOR_LAST_KEY_MODEL) {
-                mKeyModelIdx = (signed char)(t - 8);
+                mKeyModelIdx = (t - 8);
                 LoadKeyModels(mKeyModelIdx + 1);
                 mKeyFile = data_ov089_02132894[mKeyModelIdx + 1];
                 if (param1 == 0xc)
@@ -1141,6 +1136,6 @@ done:
  * allocation size, vtable identity, and the DOOR registry profile; later
  * EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Door_Spawn. */
-extern "C" daDoor_c *daDoor_c_classInit() {
+daDoor_c *daDoor_c_classInit() {
     return new daDoor_c;
 }

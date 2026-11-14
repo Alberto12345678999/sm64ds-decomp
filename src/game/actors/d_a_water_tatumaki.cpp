@@ -272,7 +272,7 @@ int daWater_Tatumaki_c::SetState(const State *state) {
 /* Rebuild the model matrix from the position and angles. */
 void daWater_Tatumaki_c::UpdateModelMatrix() {
     Vector3 pos;
-    Vec3_Asr((Vector3 *)&pos, &mPos, 3);
+    Vec3_Asr(&pos, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, pos.x, pos.y, pos.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     /* Twelve flat words. A Matrix4x3 assignment copies r and t separately. */
@@ -341,7 +341,7 @@ int daWater_Tatumaki_c::InitResources() {
  * RTTI, allocation size, vtable identity, and the WATER_TATUMAKI registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: Whirlpool_Spawn. */
-extern "C" daWater_Tatumaki_c *daWater_Tatumaki_c_classInit() {
+daWater_Tatumaki_c *daWater_Tatumaki_c_classInit() {
     return new daWater_Tatumaki_c();
 }
 

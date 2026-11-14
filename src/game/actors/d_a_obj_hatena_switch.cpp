@@ -94,7 +94,7 @@ extern u8 data_0209d660;
  * Every instruction the cartridge has here falls out of the one `new`.
  * Reconstructed spelling from ROM RTTI plus later EAD lineage; historical
  * alias QuestionSwitch_Spawn. */
-extern "C" daObjHatenaSwitch_c *daObjHatenaSwitch_c_classInit() {
+daObjHatenaSwitch_c *daObjHatenaSwitch_c_classInit() {
     return new daObjHatenaSwitch_c();
 }
 

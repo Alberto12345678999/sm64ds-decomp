@@ -118,7 +118,7 @@ daObjSeesaw_c::~daObjSeesaw_c() {}
  * replaces it with kMegaPoundScale. */
 int daObjSeesaw_c::GetActorWeight(dActor_c *other) {
     int scale = data_ov095_02136f58[(int)other->param1 & 3];
-    unsigned isPlayer = (unsigned)(other->actorID == ACTOR_PLAYER);
+    unsigned isPlayer = (other->actorID == ACTOR_PLAYER);
     if (isPlayer == 0)
         return scale;
     if (((daPly_c *)other)->mIsMega != 0)
@@ -196,7 +196,7 @@ int daObjSeesaw_c::Render() {
 int daObjSeesaw_c::Behavior() {
     /* The 0/1 temporary is the ROM's movne/moveq/cmp. A direct test
      * of the bit is three instructions shorter. */
-    int offScreen = (int)((mFlags & kFlagOffScreen) != 0);
+    int offScreen = ((mFlags & kFlagOffScreen) != 0);
     if (offScreen != 0) {
         if (mMeshCollider.IsEnabled())
             mMeshCollider.Disable();
@@ -310,31 +310,31 @@ void daObjSeesaw_c::StoodOnCallback(void *collider, daObjSeesaw_c *self, dActor_
 }
 #pragma pop
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_RC_SEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_RC_SEESAW() {
     return new daObjSeesaw_c();
 }
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM3_YOKOSEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_KM3_YOKOSEESAW() {
     return new daObjSeesaw_c();
 }
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM3_SEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_KM3_SEESAW() {
     return new daObjSeesaw_c();
 }
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM2_YOKOSEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_KM2_YOKOSEESAW() {
     return new daObjSeesaw_c();
 }
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM1_SEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_KM1_SEESAW() {
     return new daObjSeesaw_c();
 }
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_BOMB_SEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_BOMB_SEESAW() {
     return new daObjSeesaw_c();
 }
 
-extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_SEESAW() {
+daObjSeesaw_c *daObjSeesaw_c_classInit_SEESAW() {
     return new daObjSeesaw_c();
 }
 

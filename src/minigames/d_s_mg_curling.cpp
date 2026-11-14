@@ -80,9 +80,6 @@ struct OamAttr;
 struct Matrix2x2;
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
-extern int func_020126e8(int a);
-extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
-extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern int Mg_IsNewRecord(void);
 extern void Mg_SetSharedState(int state);
 extern void Mg_SubmitScore(int score);
@@ -153,6 +150,9 @@ extern PMF pmf_dScMgCurling_c_Bit_StateFallSpeedUp;
 extern PMF pmf_dScMgCurling_c_Bit_StateFallSlowDown;
 
 } /* extern "C" */
+extern int func_020126e8(int a);
+extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
+extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 
 namespace cstd {
 s16 atan2(s32, s32);
@@ -1463,7 +1463,7 @@ s32 dScMgCurling_c::InitResources() {
         G2S_SetBG2Priority(2);
         G2S_SetBG2ControlText(GX_BG_SCRSIZE_TEXT_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE_0x4000,
                               GX_BG_CHARBASE_0x14000);
-        DecompressLZ16(b, (void *)G2S_GetBG2CharPtr());
+        DecompressLZ16(b, G2S_GetBG2CharPtr());
 
         f = LoadFile(ASSET_D_2D_MG_BG_CURLING2_NCL_BIN);
         GXS_LoadBGPltt(f, 0x60, 0x1a0);
@@ -1504,7 +1504,7 @@ s32 dScMgCurling_c::InitResources() {
  * allocation size, and vtable identity; later EAD lineage supplies the
  * classInit spelling prior. Exact original SM64DS spelling is not preserved.
  * Historical project alias: MgShuffleShell_Spawn. */
-extern "C" void *dScMgCurling_c_classInit() {
+void *dScMgCurling_c_classInit() {
     return new dScMgCurling_c;
 }
 

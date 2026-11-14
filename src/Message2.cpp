@@ -25,6 +25,7 @@
 #include "types.h"
 #include "nitro/hw/registers.h"
 #include "Message.h"
+#include "MessageBank.h"
 #include "PlayerInput.h"
 #include "SaveData.h"
 #include "Sound.h"
@@ -106,10 +107,10 @@ extern u8 data_ov002_0210c3a8;
 extern void (*MSG_GEN_TEXT_FUNCS[])(void);
 
 extern int IsButtonInputValid(void);
+}
 extern int func_0201fb4c(void);
 extern u8 NumStars(void);
 extern int func_020138dc(void);
-}
 extern "C" {
 void OamRender10_Message2(int a, void *b, int c, int d, int e, int f, int g, int h, int i, int j);
 }
@@ -181,8 +182,6 @@ void Message::AddChoice() {
     }
 }
 
-extern "C" {
-
 void func_0201aca4(void) {
 
     struct MsgTextChar {
@@ -229,7 +228,6 @@ void func_0201aca4(void) {
         break;
     }
 }
-}
 
 void Message::AddCharPair() {
     /* Text code 3. Calls AddChar twice with the font byte and the next byte.
@@ -247,8 +245,6 @@ void Message::AddCharPair() {
     AddChar(data_0208ee6c[idx]);
     AddChar((data_0208ee6c[idx] + 1) & 0xff);
 }
-
-extern "C" {
 
 void func_0201adfc(void) {
     int n;
@@ -468,7 +464,6 @@ void func_0201b388(int a0) {
     data_0209d6c0 = data_0209d6c0 + 1;
 }
 #pragma pop
-}
 
 void Message::AddChar(u8 c) {
     int i;
@@ -512,8 +507,6 @@ void Message::AddChar(u8 c) {
     }
 }
 
-extern "C" {
-
 void func_0201b6f8(int mode) {
     int i;
     u8 *p = data_0209d6f4;
@@ -541,7 +534,6 @@ void func_0201b6f8(int mode) {
             break;
         }
     }
-}
 }
 
 /* Lays out the next text line: glyphs until 0xfd (line end) or 0xff (message
@@ -762,7 +754,7 @@ void Message::Update() {
             data_0209d65c = 0;
         } else {
             func_0201b6f8(0);
-            data_0209d65c = (u8)((*(u16 *)(data_0209d6f0 + 4) - data_0209d6b0) >> 1);
+            data_0209d65c = (u8)((((MessageEntry *)data_0209d6f0)->width - data_0209d6b0) >> 1);
         }
         LayoutLine();
         return;

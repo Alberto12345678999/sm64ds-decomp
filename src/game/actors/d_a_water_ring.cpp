@@ -45,9 +45,9 @@ extern char data_ov002_0210d6dc[];  /* the ring's BTA */
 
 /* local extern: no shared header declares these. */
 extern "C" {
-s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 int AngleDiff(int a, int b);
 }
+s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 
 extern SharedFilePtr data_ov002_0210da10; /* the ring's BMD */
 
@@ -240,7 +240,7 @@ int daWater_Ring_c::InitResources() {
  * RTTI, allocation size, vtable identity, and the WATER_RING registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: WaterRing_Spawn. */
-extern "C" daWater_Ring_c *daWater_Ring_c_classInit() {
+daWater_Ring_c *daWater_Ring_c_classInit() {
     return new daWater_Ring_c();
 }
 

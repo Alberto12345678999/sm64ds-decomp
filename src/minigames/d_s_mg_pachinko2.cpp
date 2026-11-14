@@ -87,9 +87,6 @@ extern void Mg_InitBrush(char *, char, int, int);
 extern void Mg_SetTopScreenYOffset(int);
 extern void Mg_SetSharedState(int);
 extern void FreeGfxSlotsById(int n);
-extern int Sound_PlayIfNotActive(int a, int b, int c, short d);
-extern int func_020126e8(int a);
-extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void func_02012718(int, int);
 extern void *LoadFile(int handle);
 extern void Deallocate(void *);
@@ -162,6 +159,9 @@ extern PMF pmf_dScMgPachinko2_c_Cup_StateHopRight;
 extern PMF pmf_dScMgPachinko2_c_Cup_StateDecide;
 
 } /* extern "C" */
+extern int Sound_PlayIfNotActive(int a, int b, int c, short d);
+extern int func_020126e8(int a);
+extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 
 /* Both variants come from this one definition: D1 stores this class's
    vtable and calls dScMgBase_c's D2; D0 adds dScMgBase_c::operator delete. */
@@ -546,7 +546,7 @@ void dScMgPachinko2_c::Popup_Spawn(int ballX, int ballY, int value) {
             mScorePops[i].y = ballY + 0x48000;
             mScorePops[i].unk_0c = 0;
             mScorePops[i].vy = 0;
-            mScorePops[i].score = (u8)value;
+            mScorePops[i].score = value;
             mScorePops[i].settled = 0;
             mScorePops[i].life = 0x40;
             return;
@@ -2243,7 +2243,7 @@ s32 dScMgPachinko2_c::InitResources() {
                          GX_BG_CHARBASE_0x10000);
 
     f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_UP_NCG_BIN);
-    DecompressLZ16(f, (void *)G2_GetBG3CharPtr());
+    DecompressLZ16(f, G2_GetBG3CharPtr());
     Deallocate(f);
 
     f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_UP_NCL_BIN);
@@ -2289,7 +2289,7 @@ s32 dScMgPachinko2_c::InitResources() {
                           GX_BG_CHARBASE_0x08000);
 
     f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_DOWN_NCG_BIN);
-    DecompressLZ16(f, (void *)G2S_GetBG3CharPtr());
+    DecompressLZ16(f, G2S_GetBG3CharPtr());
     Deallocate(f);
 
     f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_DOWN_NCL_BIN);
@@ -2331,7 +2331,7 @@ s32 dScMgPachinko2_c::InitResources() {
    bytes, dScMgBase_c's C2, then this class's vtable. The classInit
    spelling follows later EAD lineage; the historical alias is
    MgLakituLaunch_Spawn. */
-extern "C" dScMgPachinko2_c *dScMgPachinko2_c_classInit(void) {
+dScMgPachinko2_c *dScMgPachinko2_c_classInit(void) {
     return new dScMgPachinko2_c;
 }
 

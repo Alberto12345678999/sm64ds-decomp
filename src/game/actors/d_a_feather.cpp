@@ -66,11 +66,8 @@ extern dCamera_c *gCamera;
  * Historical alias: daFeather_c_Spawn.
  * ======================================================================== */
 
-extern "C" {
-
 daFeather_c *daFeather_c_classInit(void) {
     return new daFeather_c();
-}
 }
 
 /* ==========================================================================
@@ -124,7 +121,7 @@ int daFeather_c::Behavior() {
 
     mParticle = Particle::System::New(mParticle, kPtclFeather, mPosX, mPosY, mPosZ, 0, 0);
 
-    UpdatePos((dCc_c *)0);
+    UpdatePos(0);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     if (mWithMeshClsn.IsOnGround() != 0) {

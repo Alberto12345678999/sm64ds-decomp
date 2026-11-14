@@ -58,7 +58,7 @@ extern int data_0209f32c;
 /* `return new daKrpa_c()` emits 0x50, calling the inherited
  * fBase_c::operator new (`_ZN7fBase_cnwEm`). Historical aliases:
  * daKrpa_c_Spawn and FlameChomp_Spawn. */
-extern "C" daKrpa_c *daKrpa_c_classInit() {
+daKrpa_c *daKrpa_c_classInit() {
     return new daKrpa_c();
 }
 

@@ -184,9 +184,9 @@ short Vec3_HorzAngle(const Vector3 *, const Vector3 *);
 void Vec3_Asr(Vector3 *, Vector3 *, int);
 void Matrix4x3_FromRotationY(void*, int);
 void Matrix4x3_FromTranslation(void*, int, int, int);
-void GiveCoins(int, int);
 short atan2_hold_d_a_1up_1(int, int);
 }
+void GiveCoins(int, int);
 /* ONE definition, both variants. The complete-object destructor (D1) tears the
    four members down in exact reverse of the factories' construction order --
    dExtShadowModel_c at 0x350, dExtSimpleModel_c at 0x300, dBgCh_Actr at 0x144, dCcAc_c at 0x110,
@@ -468,7 +468,7 @@ void da1up_c::CollectOnTouch() {
    degrees): mVertSpeed = 30 units (0x1e) times the cosine of mPrevAngleX plus
    2 units (0x2000); mHorzSpeed = -30 units times its sine. */
 void da1up_c::UpdateLaunchArc() {
-    if ((u16)mStateTimer < 5) {
+    if (mStateTimer < 5) {
         mVertSpeed = 0x28000;
         return;
     }
@@ -624,7 +624,7 @@ void da1up_c::UpdateRiseThenPopOut() {
     mPosY = mSpawnPosY + 0x64000;
     mMushroomType = 0;
     mState = 0;
-    *(unsigned short*)&mStateTimer = 0xffff;
+    mStateTimer = 0xffff;
     mStateFrames = 0xffff;
 }
 
@@ -707,10 +707,10 @@ void da1up_c::UpdateHiddenChase() {
 
     case 3:
         UpdatePhysics();
-        if (*(unsigned short *)&mStateTimer > 0x11)
+        if (mStateTimer > 0x11)
             UpdateTrailEffect();
         UpdateLaunchArc();
-        if (*(unsigned short *)&mStateTimer != 0x25)
+        if (mStateTimer != 0x25)
             return;
 
         mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
@@ -775,11 +775,11 @@ void da1up_c::UpdateHiddenFlee() {
         return;
     case 3:
         UpdatePhysics();
-        if (*(u16 *)&mStateTimer > 0x11) {
+        if (mStateTimer > 0x11) {
             UpdateTrailEffect();
         }
         UpdateLaunchArc();
-        if (*(u16 *)&mStateTimer != 0x25)
+        if (mStateTimer != 0x25)
             return;
         mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
         mState = 1;
@@ -918,11 +918,11 @@ void da1up_c::UpdatePopOutFlee() {
     UpdatePhysics();
     switch (mState) {
     case 0:
-        if (*(unsigned short*)&mStateTimer == 0) {
+        if (mStateTimer == 0) {
             Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
         }
         UpdateLaunchArc();
-        if (*(unsigned short*)&mStateTimer == 0x25) {
+        if (mStateTimer == 0x25) {
             mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
             mState = 1;
             mHorzSpeed = 0x8000;
@@ -952,17 +952,17 @@ void da1up_c::UpdatePopOutDrift() {
     UpdatePhysics();
     switch (mState) {
     case 0:
-        if (*(unsigned short *)&mStateTimer == 0)
+        if (mStateTimer == 0)
             Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
         UpdateLaunchArc();
-        if (*(unsigned short *)&mStateTimer != 0x25)
+        if (mStateTimer != 0x25)
             break;
         mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
         mState = 1;
         mHorzSpeed = 0x2000;
         break;
     case 1:
-        if (*(unsigned short *)&mStateTimer > 0x12c)
+        if (mStateTimer > 0x12c)
             mState = 2;
         CollectOnTouch();
         break;
@@ -981,8 +981,8 @@ void da1up_c::UpdatePopOutDrift() {
 extern "C" {
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, dActor_c *a, int r, int h, Vector3_16 *p, int q);
-int IsStarCollectedInCurLevel(int a);
 }
+int IsStarCollectedInCurLevel(int a);
 
 /* Ordinal 34 dispatches through this pointer-to-member-function type: the
    fourteen descriptors at 0x02108300..0x02108370 are {function pointer, 0}
@@ -1059,11 +1059,11 @@ int da1up_c::Behavior()
     (this->*data_ov002_0210dc00[mMushroomType])();
     /* Named ++mStateTimer / mStateTimer = 0 size-DIFF vs this recovered
        unsigned-short launder; keep MATCH form. */
-    ++*(unsigned short*)&mStateTimer;
+    ++mStateTimer;
     ++mStateFrames;
     if(old != mState){
-      *(unsigned short*)&mStateTimer = 0;
-      mStateFrames = 0;
+        mStateTimer = 0;
+        mStateFrames = 0;
     }
   }
   mdCcAc_c.Clear();
@@ -1157,7 +1157,7 @@ int da1up_c::InitResources()
         mShown = 0;
     }
     mBlinkOn = 1;
-    mUnlockCount = ((unsigned int)param1 >> 4) & 0xf;
+    mUnlockCount = (param1 >> 4) & 0xf;
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
@@ -1180,15 +1180,13 @@ int da1up_c::InitResources()
 /* MEGA_MUSHROOM (277 / SCALEUP_KINOKO). `new` calls the inherited
    fBase_c::operator new; the implicit constructor inlines the dEnemyBase_c
    base step, vptr store, and the four member constructors. */
-extern "C" da1up_c *da1up_c_classInit_SCALEUP_KINOKO()
-{
+da1up_c *da1up_c_classInit_SCALEUP_KINOKO() {
     return new da1up_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* ONE_UP_MUSHROOM (276 / ONEUPKINOKO). Same class, second profile. */
-extern "C" da1up_c *da1up_c_classInit_ONEUPKINOKO()
-{
+da1up_c *da1up_c_classInit_ONEUPKINOKO() {
     return new da1up_c();
 }
 

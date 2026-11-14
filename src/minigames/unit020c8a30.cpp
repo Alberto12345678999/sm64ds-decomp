@@ -47,8 +47,6 @@ int sPuffNextIndex;
 void **sPuffXTable;
 Puff sPuffs[3];
 
-extern "C" {
-
 void Puff_Spawn(int x, int y) {
     int i;
     int v;
@@ -142,7 +140,6 @@ void Puff_DrawAll(void) {
     for (i = 2; i >= 0; i--) {
         Puff_Draw(&sPuffs[i]);
     }
-}
 }
 
 inline Puff::~Puff() {}

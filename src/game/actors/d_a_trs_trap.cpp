@@ -147,8 +147,8 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-u8 IsAreaShowing(int idx);
 }
+u8 IsAreaShowing(int idx);
 
 /* InitResources tests the profile's actor id as a 0/1 value. */
 static inline int IsActorType(u16 actorType, int id) {
@@ -201,7 +201,7 @@ void daTrsTrap_c::UpdateMerryGoRound() {
     }
     mAngVelY = 0x80;
     t = &mAngleY;
-    *t = (short)(*t + mAngVelY);
+    *t = (*t + mAngVelY);
     UpdateOccupiedFlag();
     mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8f, mCamSpacePos, 0);
 }
@@ -292,7 +292,7 @@ void daTrsTrap_c::UpdateBookshelf() {
 
 /* Book-switch callback: ORs switch bit m into mBookFlags, then the right or
    wrong chime -- the order is 1, then 1|2, then all three. */
-extern "C" void func_ov063_0211cae8(daTrsTrap_c *c, int m) {
+void func_ov063_0211cae8(daTrsTrap_c *c, int m) {
     unsigned char *p = &c->mBookFlags;
     *p |= m;
     unsigned char v = c->mBookFlags & 7;
@@ -443,7 +443,6 @@ int daTrsTrap_c::Behavior()
  *     swaps the two strh at +0x2a0/+0x2a4. */
 int daTrsTrap_c::InitResources()
 {
-    char *c = (char *)this;
     u16 actorType;
     s32 param;
     s32 dx;
@@ -491,7 +490,7 @@ int daTrsTrap_c::InitResources()
     mStandingActor = 0;
     mInitLatch = 0;
     mOccupiedFlag = 0;
-    *(u8 *)(c + 0x154) = 0;
+    mUnk154 = 0;
     mTriggered = 0;
     mSoundHandle = 0;
     mSoundTimer = 0;
@@ -506,10 +505,10 @@ int daTrsTrap_c::InitResources()
         int m = mIndex;
         if (m == 3) {
             mMovingMeshCollider.SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), mClsnMat,
-                                        0x1000, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
+                                        0x1000, mAngleY, *(data_ov063_0211e9e8[m]));
         } else {
             mMovingMeshCollider.SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), mClsnMat,
-                                        0x199, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
+                                        0x199, mAngleY, *(data_ov063_0211e9e8[m]));
         }
     }
 

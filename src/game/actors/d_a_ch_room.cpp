@@ -33,7 +33,7 @@ extern u8 gLocalPlayerId;
 extern daPly_c *gPlayers[];
 extern Vector3 data_020a0ebc;
 
-extern "C" daChRoom_c *daChRoom_c_classInit() {
+daChRoom_c *daChRoom_c_classInit() {
     return new daChRoom_c();
 }
 

@@ -35,7 +35,7 @@ Kb1BillboardModelFilePtr gKb1BallModelFile(ASSET_KB1_BALL_BMD);
 /* Every instruction the cartridge has here falls out of the one `new`.
  * The header's inline operator new keeps the allocation on fBase_c::operator
  * new; without it the call relocates to the unavailable global `_Znwm`. */
-extern "C" daObjKb1Billboard_c *daObjKb1Billboard_c_classInit() {
+daObjKb1Billboard_c *daObjKb1Billboard_c_classInit() {
     return new daObjKb1Billboard_c();
 }
 

@@ -76,7 +76,7 @@ static inline int IsPlayerActor(dActor_c *actor) {
 
 /* `new` calls the inherited fBase_c::operator new; the implicit constructor
  * emits the measured dActor_c C2, vptr store, and three member C1s. */
-extern "C" daEyBm_c *daEyBm_c_classInit() {
+daEyBm_c *daEyBm_c_classInit() {
     return new daEyBm_c();
 }
 
@@ -157,7 +157,7 @@ void daEyBm_c::UpdateShadow() {
 
     dBgCh_Gnd ground;
     ground.SetObjAndPos(mPos, this);
-    Fix12i depth;
+    fx32 depth;
     if (ground.DetectClsn())
         depth = (mPosY - ground.clsnY) + 0x1e000;
     else
