@@ -48,7 +48,7 @@ static inline u32 RandVal(void) {
 }
 
 static inline int RandScale(void) {
-    return (int)(((RandVal() >> 0x17) << 0xc) - 0x100000) >> 8;
+    return (int)(((RandVal() >> 0x17) << 12) - 0x100000) >> 8;
 }
 
 static inline int FMul(int a, int b) {
@@ -77,27 +77,27 @@ void func_0204cebc(ParticleSystem *sys) {
     sys->basisV.z = (s16)(FX_MUL(vecB.x, sys->basisU.y) - FX_MUL(vecB.y, sys->basisU.x));
 }
 
-void func_0204cd5c(int *out, int *in, int sel, ParticleSystem *sys) {
+void func_0204cd5c(Vector3 *out, Vector3 *in, int sel, ParticleSystem *sys) {
     switch (sel) {
     case 2:
-        out[0] = 0;
-        out[1] = in[0];
-        out[2] = in[1];
+        out->x = 0;
+        out->y = in->x;
+        out->z = in->y;
         break;
     case 1:
-        out[0] = in[1];
-        out[1] = 0;
-        out[2] = in[0];
+        out->x = in->y;
+        out->y = 0;
+        out->z = in->x;
         break;
     case 0:
-        out[0] = in[0];
-        out[1] = in[1];
-        out[2] = 0;
+        out->x = in->x;
+        out->y = in->y;
+        out->z = 0;
         break;
     case 3:
-        out[0] = FX_MUL(in[0], sys->basisU.x) + FX_MUL(in[1], sys->basisV.x);
-        out[1] = FX_MUL(in[0], sys->basisU.y) + FX_MUL(in[1], sys->basisV.y);
-        out[2] = FX_MUL(in[0], sys->basisU.z) + FX_MUL(in[1], sys->basisV.z);
+        out->x = FX_MUL(in->x, sys->basisU.x) + FX_MUL(in->y, sys->basisV.x);
+        out->y = FX_MUL(in->x, sys->basisU.y) + FX_MUL(in->y, sys->basisV.y);
+        out->z = FX_MUL(in->x, sys->basisU.z) + FX_MUL(in->y, sys->basisV.z);
         break;
     }
 }
@@ -122,7 +122,7 @@ void func_0204c584(ParticleSystem *sys, List *list) {
     def = emitter->data;
     acc = def->rate + sys->callbackValue;
     sys->callbackValue = acc & 0xfff;
-    count = acc >> 0xc;
+    count = acc >> 12;
     {
         u32 t = def->emissionType;
         if ((t == 2 || t == 3 || t == 5) && def->circleAxis == 3)
@@ -151,7 +151,7 @@ void func_0204c584(ParticleSystem *sys, List *list) {
             SPLRandom_VecFx32_XY(&vecB);
             vecB.x = FX_MUL(vecB.x, sys->emitRadius);
             vecB.y = FX_MUL(vecB.y, sys->emitRadius);
-            func_0204cd5c((int *)&p->offset, (int *)&vecB, def->circleAxis, sys);
+            func_0204cd5c(&p->offset, &vecB, def->circleAxis, sys);
             break;
         case 3: {
             int q = ringAngle / count;
@@ -162,7 +162,7 @@ void func_0204c584(ParticleSystem *sys, List *list) {
             vecC.x = FMul(s, sys->emitRadius);
             vecC.y = FMul(c, sys->emitRadius);
             vecC.z = 0;
-            func_0204cd5c((int *)&p->offset, (int *)&vecC, def->circleAxis, sys);
+            func_0204cd5c(&p->offset, &vecC, def->circleAxis, sys);
             break;
         }
         case 4:
@@ -175,7 +175,7 @@ void func_0204c584(ParticleSystem *sys, List *list) {
             SPLRandom_VecFx32_XY(&vecE);
             vecE.x = FMul(FMul(vecE.x, sys->emitRadius), RandScale());
             vecE.y = FMul(FMul(vecE.y, sys->emitRadius), RandScale());
-            func_0204cd5c((int *)&p->offset, (int *)&vecE, def->circleAxis, sys);
+            func_0204cd5c(&p->offset, &vecE, def->circleAxis, sys);
             break;
         }
         {
@@ -194,9 +194,9 @@ void func_0204c584(ParticleSystem *sys, List *list) {
             SPLRandom_VecFx32(&nrm);
         else
             VEC_Normalize(&p->offset, &nrm);
-        p->velocity.x = (nrm.x * mag1 + sys->direction[0] * mag2) >> 0xc;
-        p->velocity.y = (nrm.y * mag1 + sys->direction[1] * mag2) >> 0xc;
-        p->velocity.z = (nrm.z * mag1 + sys->direction[2] * mag2) >> 0xc;
+        p->velocity.x = (nrm.x * mag1 + sys->direction[0] * mag2) >> 12;
+        p->velocity.y = (nrm.y * mag1 + sys->direction[1] * mag2) >> 12;
+        p->velocity.z = (nrm.z * mag1 + sys->direction[2] * mag2) >> 12;
         p->basePosition = sys->position;
         {
             u32 s;
@@ -235,8 +235,8 @@ void func_0204c584(ParticleSystem *sys, List *list) {
         if (def->hasRotation) {
             p->angularSpeed =
                 (s16)((u32)((def->maxRotation - def->minRotation) * (int)(RandVal() >> 0x14) +
-                            (def->minRotation << 0xc)) >>
-                      0xc);
+                            (def->minRotation << 12)) >>
+                      12);
         } else {
             p->angularSpeed = 0;
         }

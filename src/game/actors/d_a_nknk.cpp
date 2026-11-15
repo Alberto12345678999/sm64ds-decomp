@@ -11,12 +11,7 @@
  */
 
 // leftovers:
-// - Particle::System::New / SetSelfDestructFlag, dExtAnmModel_c::SetAnim,
-//   dBgCh_Actr::Init, dActor_c::IsTooFarAwayFromPlayer, daPly_c::Bounce /
-//   Hurt and Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
-//   by value (notes/mwccarm-codegen.md 6az), or the header declaration
-//   does not mangle to the ROM symbol. func_0201267c is the bank-3
-//   Sound::Play wrapper.
+// - func_0201267c is the bank-3 Sound::Play wrapper.
 // - GetFloorResult is still called through its local extern (the wall
 //   lookup uses the dBgCh_Actr method). Deleting that prototype shifts the
 //   static initializer's @NNN temps, which the intact-object manifest pins
@@ -88,8 +83,6 @@ extern "C" int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, 
                                void *callback);
 extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
-/* The called scalar definition takes u16 startFrame. The unused dExtAnmModel_c
- * member declaration takes Fix12<int>/u32; its measured form grew this helper. */
 /* Reconstructed receiver/attacker/nullable collision interface; the original
  * source prototype is not uniquely recoverable from the register traffic. */
 extern "C" struct Aea30C;
@@ -231,8 +224,7 @@ int daNknk_c::Behavior()
     MakeVanishLuigiWork(mdCc_c);
 
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
-        int *pb0 = (int *)&mFlags;
-        *pb0 = *pb0 & ~0x10000000;
+        mFlags = mFlags & ~0x10000000;
         if (SpawnParticlesIfHitOtherObj(mdCc_c) != 0) {
             PoofDust();
             SpawnBlueCoin();
@@ -261,10 +253,9 @@ int daNknk_c::Behavior()
             return 1;
 
         {
-            int *pb0 = (int *)&mFlags;
             if (mLandingDustTimer != 0)
                 mLandingDustTimer -= 1;
-            *pb0 = *pb0 | 0x10000000;
+            mFlags = mFlags | 0x10000000;
         }
         UpdateClosestPlayer(0x3e8000);
 
@@ -287,7 +278,7 @@ int daNknk_c::Behavior()
             int ang = mPrevAngleY;
             mAngleY = (s16)ang;
             {
-                u16 *p100 = (u16 *)&mStateTimer;
+                u16 *p100 = &mStateTimer;
                 *p100 = (*p100 + 1);
             }
         }
@@ -437,7 +428,7 @@ void daNknk_c::func_ov062_02118b4c() {
         SpawnFootstepDust(2, 5, 8, 0xb);
 
     if (mModelIndex != 0) {
-        if ((u16)mStateTimer > 0x1e && DistToClosestPlayer() > 0x320000) {
+        if ((u16)mStateTimer > 30 && DistToClosestPlayer() > 0x320000) {
             if (ApproachLinear(mHorzSpeed, 0, 0x1000) == 0)
                 return;
             mState = 1;
@@ -454,7 +445,7 @@ void daNknk_c::func_ov062_02118b4c() {
         *aim = (*aim + 0x8000);
         mPlayerDist = 0;
     }
-    if ((u16)mStateTimer > 0x1e && mPlayerDist > 0x320000) {
+    if ((u16)mStateTimer > 30 && mPlayerDist > 0x320000) {
         if (ApproachLinear(mHorzSpeed, 0, 0x1000) == 0)
             return;
         mState = 1;
@@ -538,14 +529,13 @@ void daNknk_c::func_ov062_02118718()
                     u16 *turn = &mTurnTimer;
                     *turn = (*turn - 1);
                 } else {
-                    /* (int)& forces the pool add. mTargetAngle -= folds to mAnmModel+0xc2. */
                     if (((unsigned)RandomIntInternal(&data_0209e650.value) >> 16) & 0x8000)
-                        *(s16 *)((int)&mTargetAngle) -=
+                        mTargetAngle -=
                             ((unsigned)RandomIntInternal(&data_0209e650.value) >> 16) & 0x1fff;
                     else
-                        *(s16 *)((int)&mTargetAngle) +=
+                        mTargetAngle +=
                             ((unsigned)RandomIntInternal(&data_0209e650.value) >> 16) & 0x1fff;
-                    mTurnTimer = 0x14;
+                    mTurnTimer = 20;
                 }
             }
         }
@@ -573,7 +563,7 @@ void daNknk_c::func_ov062_02118718()
     mHorzSpeed += mHorzSpeed / 5;
     mVertSpeed = dist / 30;
     SetAnimByIndex(6);
-    mTimer = 0x14;
+    mTimer = 20;
 }
 
 void daNknk_c::func_ov062_02118588()
@@ -656,7 +646,7 @@ void daNknk_c::func_ov062_021183e0()
         mHorzSpeed = 0x18000;
         mVertSpeed = dist / 30;
         SetAnimByIndex(6);
-        mTimer = 0x14;
+        mTimer = 20;
         return;
     }
 
@@ -765,10 +755,6 @@ void daNknk_c::func_ov062_02118058() {
     SetAnimByIndex(3);
 }
 
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 void daNknk_c::SlideToStop(int a1) {
     int r = mWithMeshClsn.IsOnGround();
     if (r == 0) return;
@@ -929,7 +915,7 @@ void daNknk_c::DropShell() {
         v.z = z;
         dActor_c::Spawn(0x11d /* SHELL */, mModelIndex, v, 0, mAreaId, -1);
     }
-    mInvincibleTimer = 0xa;
+    mInvincibleTimer = 10;
     func_0201267c(1, &mCamSpacePos);
 }
 
@@ -1051,7 +1037,7 @@ void daNknk_c::SpawnFootstepDust(
 }
 
 void daNknk_c::SpawnLandingDust() {
-    volatile Vector3 pos;
+    Vector3 pos;
     int t;
     u32 spawned;
     Particle::System *particle;
@@ -1079,7 +1065,7 @@ void daNknk_c::SpawnLandingDust() {
 
     Particle::SetSelfDestructFlag(kPtclLandingDust);
 
-    mLandingDustTimer = 0xa;
+    mLandingDustTimer = 10;
     if (spawned == 0) return;
 
     particle = Particle::System::FromUniqueID(spawned);

@@ -118,10 +118,10 @@ enum {
     ACTOR_KING_DONKETU = 0xda,
 
     kReportFrames = 3,
-    kArenaFrames = 0x64,
-    kSinkFrames = 0x190,
-    kSinkQuietBelow = 0x18d,
-    kSinkSoundAt = 0x183,
+    kArenaFrames = 100,
+    kSinkFrames = 400,
+    kSinkQuietBelow = 397,
+    kSinkSoundAt = 387,
 
     kWobbleAmp = 0x400,
     kWobbleStep = 0x800,
@@ -366,9 +366,8 @@ int daObjEwbIce_c::InitResources() {
     {
         u8 variant = mVariant;
         kcl = dBgW_Kc::LoadFile(*((EwbIceFileSlot *)data_ov073_021231c0)[variant].file);
-        mMeshCollider.SetFile(
-            kcl, mClsnMat, 0x1000, mAngleY,
-            *(CLPS_Block *)(((EwbIceClpsSlot *)data_ov073_021231c4)[variant].clps));
+        mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY,
+                              *(((EwbIceClpsSlot *)data_ov073_021231c4)[variant].clps));
     }
     mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
     mMeshCollider.SetStoodOnCallback((::StoodOnCallback)&StoodOnCallback);

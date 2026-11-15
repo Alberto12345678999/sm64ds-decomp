@@ -2,9 +2,6 @@
 /* Production translation unit for ov065/daObjCtMecha05_c.
  *
  * What stays, and why:
- * - dBgW_KcMbg::SetFile / DropShadowScaleXYZ / dBgActor_c::IsClsnInRange
- *   are header member calls whose headers take Fix12 as the scalar fx32, a plain
- *   s32 (6az)
  * - dBgW::SetBeforeClsnCallback stores dBgW+0x18 (beforeClsnCallback); dBgW::SetClipRadius
  *   stores +0x0c; dBgW::SetClipOffsetY stores +0x10
  * - data_ov065_0211c0c8 / data_ov065_0211d26c; TTC_MovingBar_ModelFile /
@@ -120,9 +117,9 @@ int daObjCtMecha05_c::Behavior() {
     if (data_0209f2c0 == 3) {
         int ang;
         /* ldrh, not the ldrsh a plain s16 mPrevAngleY read would emit. */
-        ang = *(u16 *)&mPrevAngleY;
+        ang = (u16)mPrevAngleY;
         mPosX = mHomePosX + FX_MUL(FX_SinIdx(ang >> 4), 0xfa000);
-        ang = *(u16 *)&mPrevAngleY;
+        ang = (u16)mPrevAngleY;
         mPosZ = mHomePosZ + FX_MUL(FX_CosIdx(ang >> 4), 0xfa000);
         UpdateModelPosAndRotY();
         UpdateShadow();
@@ -136,7 +133,7 @@ int daObjCtMecha05_c::Behavior() {
 
     switch (mState) {
     case 0:
-        if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0)
+        if (DecIfAbove0_Short(&mStateTimer) != 0)
             break;
         if (data_0209f2c0 == 2) {
             int v = (u16)((unsigned)RandomIntInternal(&data_0209e650.value) >> 16);
@@ -151,7 +148,7 @@ int daObjCtMecha05_c::Behavior() {
     case 1:
         mHorzSpeed += 0xbae;
         if (mHorzSpeed > 0) {
-            if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0) {
+            if (DecIfAbove0_Short(&mStateTimer) != 0) {
                 mHorzSpeed = 0;
                 break;
             }
@@ -167,7 +164,7 @@ int daObjCtMecha05_c::Behavior() {
             if (sp > -0x8000 && sp < 0x8000) {
                 mState++;
                 mHorzSpeed = 0;
-                mStateTimer = 0x1e;
+                mStateTimer = 30;
                 break;
             }
         }
@@ -190,7 +187,7 @@ int daObjCtMecha05_c::Behavior() {
     }
 
     case 3:
-        if (DecIfAbove0_Short((u16 *)&mStateTimer) != 0)
+        if (DecIfAbove0_Short(&mStateTimer) != 0)
             break;
         mHorzSpeed = -0x5000;
         if (mTravel < 0)

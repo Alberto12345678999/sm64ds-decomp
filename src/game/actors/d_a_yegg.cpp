@@ -47,20 +47,13 @@
  * names are reconstructed; this slice does not recover original method names.
  *
  * deslop leftovers:
- * - the callees with Fix12<int> parameters (dExtAnmModel_c::SetAnim,
- *   dBgCh_Actr::Init, Particle::System::New) stay spelled as mangled
- *   extern-C free functions. A real method call homes
- *   a class-typed by-value argument and size-DIFFs the caller
- *   (notes/mwccarm-codegen.md 6az).
  * - the DOSUN byte at +0x3a2 in HandleWallHit remains a raw offset.
  *   Spawned coins use dActor_c's existing previous-angle and horizontal-speed fields.
  * - mSpawnPos is named in daYegg_c.h but its purpose is not known
  *   (written once, never read here); the 4-byte gap at 0x3f8 is unnamed.
  * - this list is representative, not exhaustive: the flag and mask
  *   literals (mFlags 0x40000/0x10000000/0x8, the hit flags 0x8000/0x26fe0,
- *   the cylinder words 0x202000/0x200002/0xa08000) are also left numeric, and
- *   the extern-C Fix12 callees include SpawnCoins, daPly_c::Hurt,
- *   Particle::NewSimple and RunningSlidingDustAt as well.
+ *   the cylinder words 0x202000/0x200002/0xa08000) are also left numeric.
  * - the particle, sound, shadow and animation-file arguments are
  *   numeric (0x3f..0x42, 0x2c, 0x93, 0x103, the two shared animation files)
  *   and the egg's flag bits 0x100/0x400/0x2000 are named by use only. The IDs'
@@ -237,7 +230,7 @@ int daYegg_c::func_ov002_020ec654() {
 /* What the egg did to the wall it hit. `arg` is the egg's dBgCh_Actr as an
  * integer; dBgCh_Actr::GetSphereResult turns it into a dBgPi, whose collision ID names the
  * actor owning the surface hit. Returns without doing anything if there is no
- * such ID or actor. A DOSUN gets its byte at +0x3a2 set to 1; a BATAN or
+ * such ID or actor. A DOSUN gets mTriggered set; a BATAN or
  * BATANKING is handed the egg through daBtn_c's hit reaction. Any other actor
  * is left alone. */
 void daYegg_c::HandleWallHit(int arg) {
@@ -281,7 +274,7 @@ void daYegg_c::HandleWallHit(int arg) {
  * the coin count from GetCoinPayoutCount as coins, and one blue coin if
  * HasBlueCoinPayout says so, both at the egg's position raised by 0x28000
  * (40 units), then marks the slot paid. The 0x2000 handed on is 2.0 in
- * Fix12; what that argument controls is not recovered here. */
+ * fx32; what that argument controls is not recovered here. */
 void daYegg_c::PayOut() {
     unsigned int idx = mPayoutIdx;
     unsigned int n;
@@ -306,9 +299,9 @@ void daYegg_c::PayOut() {
     }
     if (HasBlueCoinPayout()) {
         struct Vector3 v3;
-        v3.x = *(int*)&vec.x;
-        v3.y = *(int*)&vec.y;
-        v3.z = *(int*)&vec.z;
+        v3.x = vec.x;
+        v3.y = vec.y;
+        v3.z = vec.z;
         SpawnBlueCoins(&v3, 1, 0x2000, 0);
     }
     mPayoutDone[mPayoutIdx] = 1;
@@ -462,7 +455,7 @@ void daYegg_c::SeekStraight() {
     s32 b;
     u32 fb0;
     s32 onwall;
-    Vector3_16 rot;
+    Vector3_16f rot;
 
     id = mTargetId;
     o = 0;
@@ -491,7 +484,7 @@ void daYegg_c::SeekStraight() {
                 rot.y = 0;
                 rot.z = FX_CosIdx((u16)mAngleY >> 4);
                 mParticleHandle = Particle::System::New(mParticleHandle, kPtclYoshiEggTrail, pos.x,
-                                                        pos.y, pos.z, (const Vector3_16f *)&rot, 0);
+                                                        pos.y, pos.z, &rot, 0);
                 mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x93, mCamSpacePos, 0);
                 flag = 1;
                 UpdateTilt();
@@ -762,7 +755,7 @@ void daYegg_c::ExecuteFollowPlayer() {
     }
 
     {
-        /* 0x1000 / 0x3000 as Fix12: a third. */
+        /* 0x1000 / 0x3000 as fx32: a third. */
         int fd = FX_Div(0x1000, 0x3000);
         Math_Function_0203b14c(&mPosX, mHoldTargetX, fd, 0x3e8000, 4);
         Math_Function_0203b14c(&mPosY, mHoldTargetY, fd, 0x3e8000, 4);
@@ -908,7 +901,7 @@ int daYegg_c::IsStalled() {
         if (DecIfAbove0_Byte(&mStallTimer) == 0)
             return 1;
     } else {
-        mStallTimer = 0xf;
+        mStallTimer = 15;
     }
     return 0;
 }
@@ -1016,9 +1009,9 @@ void daYegg_c::UpdateModelMatrix() {
         *(Mtx43 *)&data_020a0e68 = *(Mtx43 *)mPlayer->mCarryMatrix;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0x3f, 9, 0xb);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, 0xffffb60b, 0xfffff3e9, 0xffffd6c1);
-        v.x = ((Mtx43 *)&data_020a0e68)->r[3].x;
-        v.y = ((Mtx43 *)&data_020a0e68)->r[3].y;
-        v.z = ((Mtx43 *)&data_020a0e68)->r[3].z;
+        v.x = data_020a0e68.t.x;
+        v.y = data_020a0e68.t.y;
+        v.z = data_020a0e68.t.z;
         mPosX = v.x << 3;
         mPosY = v.y << 3;
         mPosZ = v.z << 3;
@@ -1051,7 +1044,7 @@ int daYegg_c::FindTarget(int a1, int best) {
     int b;
     struct P { int a, b, c, d; };
     volatile struct P _p;
-    struct P *_q = (struct P *)&_p;
+    struct P *_q = const_cast<struct P *>(&_p);
 
     if (mTargetedCount >= 5) {
         if (func_ov002_020ec654() == 0) {
@@ -1168,7 +1161,7 @@ void func_ov002_020edca4(daYegg_c* self)
  * if the cylinder's hit flags (mdCcAc_c.hitFlags, +0x130) have bit 0x8000 the
  * egg enters state 3 and returns 1; if none of the bits 0x26fe0 are set, the
  * daPly_c is hurt (daPly_c::Hurt at the egg's position with 1, 12 units in
- * Fix12, 1, 0, 1). When the touched actor is one of the six burst actors
+ * fx32, 1, 0, 1). When the touched actor is one of the six burst actors
  * (BOMBKING, HOLHEI, KURIKING, KURIBO_L, WANWAN, WANWAN2) the egg bursts and
  * returns 1. When it is the actor currently sought (mTargetId) the egg pays
  * out, re-enters state 1 and returns 1. Any other case returns 0. */
@@ -1350,7 +1343,8 @@ int daYegg_c::InitResources()
 
     dExtFrameCtrl_c::LoadFile(data_ov002_0210e6b0);
     dExtFrameCtrl_c::LoadFile(data_ov002_0210eb78);
-    if (mAnmModel.SetFile(*(BMD_File **)(data_ov002_021000a0[idx] + 4), 1, -1) == 0)
+    if (mAnmModel.SetFile((BMD_File *)((SharedFilePtr *)data_ov002_021000a0[idx])->filePtr, 1,
+                          -1) == 0)
         return 0;
 
     /* The predicate is asked a SECOND time rather than reusing idx: the ROM calls
@@ -1402,7 +1396,7 @@ int daYegg_c::InitResources()
     mGoalAngleX = mAngleX;
     mGoalAngleY = mAngleY;
     mGoalAngleZ = mAngleZ;
-    mStallTimer = 0xf;
+    mStallTimer = 15;
 
     if (HasBlueCoinPayout() != 0)
         LoadBlueCoinModel();

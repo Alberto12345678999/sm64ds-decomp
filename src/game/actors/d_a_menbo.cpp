@@ -27,13 +27,6 @@
  * loop reproduces with strength reduction on and the other 24 functions never
  * needed it (measured: with the pragma gone and the accumulator kept, that one
  * function is 0x124 against the ROM's 0x120).
- *
- * deslop leftovers:
- * - func_ov090_02131ac4: `mStateTimer == 0` is ldrsh. The ROM is ldrh, one
- *   word. `*(unsigned short *)&mStateTimer` matches.
- * - func_ov090_02131608: dExtAnmModel_c::SetAnim with a Fix12<int> rate is 0x4c
- *   against 0x40 and emits 4 bytes of .rodata. The scalar SetAnim call
- *   matches. The patrol, water-rest and water-chase entries keep it.
  */
 
 #pragma defer_codegen off
@@ -74,9 +67,6 @@ struct MenboAnimationFilePtr : SharedFilePtr {
     ~MenboAnimationFilePtr();
 };
 
-/* By-value Fix12<int> in a mangled name; the calls pass a bare word. */
-typedef int LocFix12;
-
 extern "C" void MTX_Concat43(const Matrix4x3 *a, const Matrix4x3 *b, Matrix4x3 *out);
 extern "C" void MTX_MultVec43(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
@@ -97,13 +87,6 @@ extern "C" u16 DecIfAbove0_Short(u16 *p);
 extern "C" int RandomIntInternal(int *seed);
 void func_02012694(unsigned int id, const Vector3 *pos);
 
-extern "C" int d_a_menboNewHold(unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5,
-                                int a6);
-
-/* Parameter names keep this TU's @NNN. */
-extern "C" {
-typedef void BgchInitAt_(dBgCh_Actr *self, int a, LocFix12 r, LocFix12 h, int p, int q);
-}
 int SurfaceInfo_TestFlag0x20(int *p);
 extern "C" int func_02035638(u8 *p);
 
@@ -178,9 +161,9 @@ void func_ov090_02130f94(daMenbo_c *c_) {
         data_020a0e68 = *src;
         MTX_Concat43((const Matrix4x3 *)c->mAnmModel.data.transforms + (6 + i * 3), &data_020a0e68,
                      &data_020a0e68);
-        v.x = *(int *)((char *)&data_020a0e68 + 0x24);
-        v.y = *(int *)((char *)&data_020a0e68 + 0x28);
-        v.z = *(int *)((char *)&data_020a0e68 + 0x2c);
+        v.x = data_020a0e68.m[9];
+        v.y = data_020a0e68.m[10];
+        v.z = data_020a0e68.m[11];
         Vec3_Lsl(&r, &v, sh);
         v.x = r.x;
         v.y = r.y;
@@ -194,7 +177,7 @@ void func_ov090_02130f94(daMenbo_c *c_) {
 
 /* Contact response, in the order the tests run. */
 void daMenbo_c::func_ov090_021310b4() {
-    short hv[3];
+    Vector3_16 hv;
     Vector3 sv;
     Vector3 cv;
     Vector3 hurt;
@@ -224,7 +207,7 @@ void daMenbo_c::func_ov090_021310b4() {
         func_ov002_020aea30((Aea30C *)this, p, 0);
         return;
     }
-    if (JumpedOnByPlayer(*(dCc_c *)&mdCcAcPos_c, *(daPly_c *)p)) {
+    if (JumpedOnByPlayer(mdCcAcPos_c, *(daPly_c *)p)) {
         ((daPly_c *)p)->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30((Aea30C *)this, p, 0);
@@ -240,10 +223,10 @@ void daMenbo_c::func_ov090_021310b4() {
         return;
     }
     if (flags & 0x10) {
-        hv[0] = 0x1000;
-        hv[1] = 0;
-        hv[2] = 0;
-        KillByInvincibleChar(*(Vector3_16 *)hv, *(daPly_c *)p, 0);
+        hv.x = 0x1000;
+        hv.y = 0;
+        hv.z = 0;
+        KillByInvincibleChar(hv, *(daPly_c *)p, 0);
         func_02012694(0x1d, &mCamSpacePos);
         return;
     }
@@ -466,15 +449,15 @@ int daMenbo_c::func_ov090_02131648()
 
     if (self->mWanderTimer == 0 && self->mWallLatch == 0 && self->mFarLatch == 0 &&
         self->mProbeLatch == 0) {
-        self->mWanderTimer = (u16)((rnd + 0x32) & 0x3f);
+        self->mWanderTimer = (u16)((rnd + 50) & 0x3f);
         p39a = (s16 *)&self->mTargetAngleY;
         *p39a = *p39a + (0x1800 - ((rnd & 3) << 0xc));
     }
 
     if (angleSet == 1) {
-        self->mTurnTimer = 0xa;
-        self->mWanderTimer = 0x32;
-        self->mSpeedHoldTimer = 0x1e;
+        self->mTurnTimer = 10;
+        self->mWanderTimer = 50;
+        self->mSpeedHoldTimer = 30;
         self->mHorzSpeed = 0x9000;
         self->mAnimSpeed = 0x1000;
     }
@@ -485,8 +468,8 @@ int daMenbo_c::func_ov090_02131648()
         self->mAnimSpeed = 0x1000;
         self->mHorzSpeed = 0x9000;
         if (func_ov090_021314a0(self) == 1) {
-            self->mSpeedHoldTimer = 0x1e;
-            self->mWanderTimer = 0x1e;
+            self->mSpeedHoldTimer = 30;
+            self->mWanderTimer = 30;
             self->mAnimSpeed = 0x2000;
             self->mHorzSpeed = 0xe000;
         }
@@ -513,7 +496,7 @@ int daMenbo_c::func_ov090_02131a74()
 {
     mAnimSpeed = 0x1000;
     mSpeedHoldTimer = 0;
-    mWanderTimer = 0x32;
+    mWanderTimer = 50;
     mAnimLoops = 0;
     mAnmModel.SetAnim((BCA_File *)data_ov090_02134480.filePtr, 0, 0x1000, 0);
     return 1;
@@ -535,7 +518,7 @@ int daMenbo_c::func_ov090_02131ac4()
         func_ov090_02131e00((MenboState *)this, data_ov090_021344e4);
     }
     ApproachAngle(&mPrevAngleY, mTargetAngleY, 1, 0x100, 0x100);
-    if (*(unsigned short *)&mStateTimer == 0)
+    if (mStateTimer == 0)
         func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
     return 1;
 }
@@ -553,7 +536,7 @@ int daMenbo_c::func_ov090_02131b94()
     s = (short *)&mTargetAngleY;
     *s = (*s + ((int)(((r >> 8) & 7) << 0x1d) >> 16));
     r = (unsigned)RandomIntInternal(&data_0209e650.value);
-    mStateTimer = (short)(((r >> 8) & 0x1f) + 0x96);
+    mStateTimer = (short)(((r >> 8) & 0x1f) + 150);
     mAnimSpeed = 0x1000;
     mAnmModel.SetAnim((BCA_File *)data_ov090_02134490.filePtr, 0, 0x1000, 0);
     return 1;

@@ -8,7 +8,6 @@
  * - common.h stays before daGmch_c.h. InitResources assigns
  *   IDENTITY_MATRIX4X3 into mMatrix; the .r/.t Matrix4x3 spelling is
  *   0x1f0 against the ROM's 0x1d4. decl_common.h is not included.
- * - daPly_c::Bounce and daPly_c::Hurt stay mangled (Fix12<int> by value).
  * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
  *   disagrees with the definitions, so the callers still cast.
  *   TouchesWater and FX_Div are the const method and the divide.
@@ -398,7 +397,7 @@ int daGmch_c::EnterState8()
     mFlags &= ~1;
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
-    mTimer = 0x2d;
+    mTimer = 45;
     mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
     mAnmModel.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
@@ -434,7 +433,7 @@ int daGmch_c::UpdateState7()
     return 1;
 }
 
-/* mHolder is re-read before each use, as the ROM reloads it: the stores in
+/* mEatingPlayer is re-read before each use, as the ROM reloads it: the stores in
    between go to this object's own fields, but the shards were written with the
    reload and the bytes keep it. */
 int daGmch_c::EnterState7()
@@ -450,16 +449,16 @@ int daGmch_c::EnterState7()
 
     mFlags &= ~0x80000;
     zero = 0;
-    holder = mHolder;
+    holder = mEatingPlayer;
     mHorzSpeed = holder->mHorzSpeed + 0x7000;
     mVertSpeed = zero;
-    holder = mHolder;
+    holder = mEatingPlayer;
     holderAngle = holder->mAngleY;
     mAngleY = holderAngle;
     mPrevAngleY = mAngleY;
 
     /* Word triple through &mPosX. Naming the three fields is 0x178 vs 0x17c. */
-    holder = mHolder;
+    holder = mEatingPlayer;
     holderPos = &holder->mPosX;
     mPosX = holderPos[0];
     mPosY = holderPos[1];
@@ -473,7 +472,7 @@ int daGmch_c::EnterState7()
     trig = FX_CosIdx(angleIdx);
     mPosZ = mPosZ + FX_MUL(trig, 0x50000);
 
-    holder = mHolder;
+    holder = mEatingPlayer;
     {
         int y = holder->mPosY;
         int z = holder->mPosZ;
@@ -485,7 +484,7 @@ int daGmch_c::EnterState7()
     }
 
     DetectRaycastClsn(rayStart, mPos, 1);
-    mHolder = (dActor_c *)zero;
+    mEatingPlayer = (daPly_c *)zero;
     mWithMeshClsn.SetLimMovFlag();
     mStateIndex = 7;
     return 1;
@@ -497,7 +496,7 @@ int daGmch_c::UpdateState6()
     flagSet = (mFlags & MFLAG_YOSHI_MOUTH_B) != 0;
     if (flagSet) {
         /* Same word triple. Naming the three fields is 0x9c vs 0xa0. */
-        s32 *sv = &mHolder->mPosX;
+        s32 *sv = &mEatingPlayer->mPosX;
         mPosX = sv[0];
         mPosY = sv[1];
         mPosZ = sv[2];
@@ -674,7 +673,7 @@ void daGmch_c::EnterState1()
     mAnmModel.speed = 0x1000;
     mHorzSpeed = 0xa000;
     mTargetAngleY = (short)RandomIntInternal(data_0209e650);
-    mTimer = (unsigned char)((unsigned int)RandomIntInternal(data_0209e650) % 0x78);
+    mTimer = (unsigned char)((unsigned int)RandomIntInternal(data_0209e650) % 120);
     mStateIndex = 1;
 }
 
@@ -758,11 +757,11 @@ void daGmch_c::SetState(int n)
 int daGmch_c::CleanupResources()
 {
     extern GmchModelFileHandle data_ov081_02128ed4;
-    extern void *data_ov081_021280d8[];
+    extern SharedFilePtr *data_ov081_021280d8[];
 
-    ((SharedFilePtr *)&data_ov081_02128ed4)->Release();
+    data_ov081_02128ed4.Release();
     for (int i = 0; i < 4; i++) {
-        ((SharedFilePtr *)data_ov081_021280d8[i])->Release();
+        data_ov081_021280d8[i]->Release();
     }
     return 1;
 }
@@ -809,17 +808,17 @@ int daGmch_c::Behavior()
 int daGmch_c::InitResources()
 {
     extern GmchModelFileHandle data_ov081_02128ed4;
-    extern void *data_ov081_021280d8[];
+    extern SharedFilePtr *data_ov081_021280d8[];
     extern SharedFilePtr data_ov002_0210d9b8;
     extern Matrix4x3 IDENTITY_MATRIX4X3;
 
     Vector3 pos;
-    BMD_File *modelFile = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov081_02128ed4);
+    BMD_File *modelFile = dExtSimpleModel_c::LoadFile(data_ov081_02128ed4);
     mAnmModel.SetFile(modelFile, 1, 1);
     if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
         return 0;
     for (int i = 0; i < 4; i++)
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov081_021280d8[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0x6eff0);

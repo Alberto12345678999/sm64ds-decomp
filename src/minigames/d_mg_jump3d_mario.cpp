@@ -26,8 +26,6 @@
  * this TU. They were one-function shards, one per function.
  *
  * leftovers:
- * - dExtAnmModel_c::SetAnim takes Fix12<int> by value; its real spelling makes
- *   the compiler home the argument and the size changes. It stays mangled.
  * - The helper functions and data_ov006_ tables have no header or name yet.
  * - The five gTouch-lane and gActivePlayerSlot externs keep the file-local record
  *   spellings (u8 [][4] lanes) because the ROM scales the slot in the
@@ -52,6 +50,7 @@
 #include "Sound.h"
 #include "nitro/fx/fx.h"
 #include "nitro/fx/fx_trig.h"
+#include "Matrix2x2.h"
 #include "math/Approach.h"
 #include "LevelRng.h"
 #include "nitro/fx/fx_cp.h"
@@ -61,15 +60,10 @@ static const int kWallX = 0x6c000;   /* mPos.x clamp: the arena walls */
 static const int kScreenYMax = 0xbc; /* past this mScreenY the Mario damps out */
 static const int kAnimSpeed = 0x800; /* SetAnim speed every install uses */
 
-/* OAM.h forward-declares Matrix2x2 and says the files that pass one keep
- * their own 4 x s32 definition; this is that definition. */
-struct Mtx { int a, b, c, d; };
-
 /* Everything this file calls or reads that no header declares. Keep it
  * above the first function. */
 extern "C" {
 
-/* Fix12<int> by value in the real signatures; see the banner. */
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void func_02012718(int a, int b);
 void func_02016a14(void *self, int a);
@@ -242,7 +236,7 @@ int Jump3D_AllIdle(void) {
     int i;
     for (i = 0; i < sJump3DMarioCount; i++) {
         int *v = (&((Jump3DEnt *)sJump3DMarioPool)[i].x);
-        volatile int *q = (volatile int *)pmf_dMgJump3DMario_c_StateIdle;
+        volatile int *q = (int *)pmf_dMgJump3DMario_c_StateIdle;
         if (v[0] != pmf_dMgJump3DMario_c_StateIdle[0] ||
             (v[1] != q[1] && ((Jump3DEnt *)sJump3DMarioPool)[i].x != 0))
             return 0;
@@ -391,7 +385,7 @@ void dMgJump3DMario_c::Draw()
     int scaleX;
     int scaleY;
     int wave;
-    Mtx mtx;
+    Matrix2x2 mtx;
 
     if (mVisible == 0)
         return;
@@ -409,9 +403,9 @@ void dMgJump3DMario_c::Draw()
            (notes/experiments/jump3d-2711-mtx-intptr-zeroing.md). */
         int *mp = (int *)&mtx;
         mp[0] = 0; mp[1] = 0; mp[2] = 0; mp[3] = 0;
-        mtx.d = scaleY;
-        mtx.a = scaleX;
-        OAM::Render(false, data_ov006_02134d1c, screen[0], screen[1], -1, -1, (Matrix2x2 *)&mtx);
+        mtx.m11 = scaleY;
+        mtx.m00 = scaleX;
+        OAM::Render(false, data_ov006_02134d1c, screen[0], screen[1], -1, -1, &mtx);
     }
 
     mAnmModel.Render(&sJump3DMarioScale);
@@ -455,7 +449,7 @@ void dMgJump3DMario_c::EnterDamp()
     else
         Sound::PlayBank2_2D(0x1c9);
     mAnmModel.SetAnim(sJump3DAnimStruggle, 0, kAnimSpeed, 0);
-    mTimer = 0x28;
+    mTimer = 40;
     mState = pmf_dMgJump3DMario_c_StateDamp;
 }
 
@@ -540,7 +534,7 @@ void dMgJump3DMario_c::EnterHold()
     mAnmModel.SetAnim(sJump3DAnimSdown, 0x40000000, kAnimSpeed, 0);
     mAnmModel.dExtFrameCtrl_c::currFrame = 0;
     Sound_PlayBank1Panned(0, 6, mPos.x);
-    mTimer = 0x20;
+    mTimer = 32;
     mState = pmf_dMgJump3DMario_c_StateHold;
 }
 
@@ -836,7 +830,7 @@ void dMgJump3DMario_c::StateRespawn()
 
 void dMgJump3DMario_c::EnterRespawn()
 {
-    mTimer = 0x3c;
+    mTimer = 60;
     mPos.y = 0x100000;
     mVel.y = 0;
     mAnmModel.SetAnim(sJump3DAnimWallJump, 0x40000000, kAnimSpeed, 0);

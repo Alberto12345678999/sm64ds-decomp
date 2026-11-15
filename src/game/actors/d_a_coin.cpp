@@ -14,8 +14,7 @@
 // leftovers:
 // - The FL_COIN puzzle manager (actor 0x4f) has no header, so its live-coin
 //   count at +0xd6 stays a raw offset.
-// - ReflectAngle and DropShadowRadHeight stay mangled (Fix12<int> by value).
-//   GetClsnPos keeps the free (res, self) spelling: the real member returns
+// - GetClsnPos keeps the free (res, self) spelling: the real member returns
 //   Vector3 by value. GetWallResult and GetFloorResult have no header member.
 //   dBgCh_Lin and dBgPi C1/D1 run on raw char buffers.
 // - func_ov002_020b18f0 stays a free extern "C": GiveCoins passes a daPly_c,
@@ -228,7 +227,7 @@ int daCoin_c::CheckInYoshiMouth() {
         return 1;
     }
     zero = 0;
-    mEatingPlayer = zero;
+    mEatingPlayer = (daPly_c *)zero;
     flagsPtr = &mFlags;
     flagsNow = *flagsPtr;
     flagsNow &= ~0xe0000u;
@@ -296,7 +295,7 @@ void daCoin_c::Step() {
  * FLOOR_DYNAMIC drops it 500 units with a fixed radius; FLOOR_FIXED sizes it
  * from the distance down to mFloorPosY. */
 void daCoin_c::UpdateModelMatrix() {
-    extern int IDENTITY_MATRIX4X3[];
+    extern Matrix4x3 IDENTITY_MATRIX4X3;
 
     int inYoshiMouth;
     int floorState;
@@ -306,7 +305,7 @@ void daCoin_c::UpdateModelMatrix() {
     mCommonModel1.mat4x3.m[10] = mPosY >> 3;
     mCommonModel1.mat4x3.m[11] = mPosZ >> 3;
     mCommonModel2.mat4x3 = mCommonModel1.mat4x3;
-    mShadowMat = *(struct Matrix4x3 *)IDENTITY_MATRIX4X3;
+    mShadowMat = IDENTITY_MATRIX4X3;
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mPosY >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
@@ -427,7 +426,7 @@ void func_ov002_020b18f0(char* self)
     if (SublevelToLevel(gCurrentSublevel) >= 0xf)
         return;
     if (player == 0) return;
-    if (gNumCoins[player->mPlayerNo] < 0x64)
+    if (gNumCoins[player->mPlayerNo] < 100)
         return;
     playerPos = &player->mPos;
     spawnPos.x = playerPos->x;
@@ -480,7 +479,8 @@ void daCoin_c::StateFollowTarget() {
         int *posY = &mPosY;
         *posY += 0xc8000;
     }
-    if (mDisappearTimer < 0x41) return;
+    if (mDisappearTimer < 65)
+        return;
     MarkForDestruction();
     mDisappearTimer = 0;
 }
@@ -513,7 +513,7 @@ void daCoin_c::StateLaunchNearPlayer() {
         mVertSpeed = 0x14000;
         ((CoinFlagBits *)&mCoinFlags)->bounces++;
         mWithMeshClsn.SetLimMovFlag();
-        mDisappearTimer = 0x1c2;
+        mDisappearTimer = 450;
     }
     if (mWithMeshClsn.JustHitGround()) {
         if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) == 0) {
@@ -539,7 +539,7 @@ void daCoin_c::StateSlideAwayFromMario() {
     Sound::PlayBank3(0x52, mCamSpacePos);
     if (mHorzSpeed == 0) {
         mHorzSpeed = 0x13000;
-        mDisappearTimer = 0x12c;
+        mDisappearTimer = 300;
     } else {
         if (mHorzSpeed > 0x13000) mHorzSpeed = 0x13000;
     }
@@ -554,7 +554,7 @@ void daCoin_c::StateSlideAwayFromMario() {
 /* Tumbling handler for the coins that bounce and slide: bounces off an FL_COIN
  * (0x4f) puzzle manager found through mPuzzleManagerID once the coin has fallen
  * to its height, and otherwise off the floor. Each bounce bumps the bounce
- * count and scales the vertical speed by a fix12 factor that shrinks with it
+ * count and scales the vertical speed by an fx32 factor that shrinks with it
  * (2/3, 1/3, then 0x555/0x1000) and halves the horizontal speed. On a sloped
  * floor it accelerates along the surface normal by data_ov002_020ff078 for the
  * floor's class, caps the speed at 0x1c000 and steers toward the slope. The
@@ -611,7 +611,7 @@ void daCoin_c::StateBounce() {
     if (mWithMeshClsn.JustHitGround() != 0) {
         if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) == 0) {
             if (mDisappearTimer > 0xf000)
-                mDisappearTimer = 0xf;
+                mDisappearTimer = 15;
             Sound::PlayBank3(0x52, mCamSpacePos);
             bits = (CoinFlagBits *)&mCoinFlags;
             bits->bounces++;
@@ -689,7 +689,7 @@ void daCoin_c::StateIdle() {
     if (found) {
         mDisappearTimer = ((daObjBC_Switch_cView *)found)->mCoinTimerSeed;
     } else {
-        mDisappearTimer = 0xfa;
+        mDisappearTimer = 250;
     }
 }
 
@@ -712,16 +712,17 @@ s32 daCoin_c::CleanupResources()
      * star-tracking slot, decrements the live-coin count on the FL_COIN puzzle
      * manager that spawned it and, unless it is disappearing on a timer, puts up
      * the collection sparkle a little above itself. */
-    extern char data_ov002_0210d9a8;
-    extern char *data_ov002_020ff06c[];
-    extern char *data_ov002_020ff060[];
+    extern SharedFilePtr data_ov002_0210d9a8;
+    extern SharedFilePtr *data_ov002_020ff06c[];
+    extern SharedFilePtr *data_ov002_020ff060[];
 
     dActor_c *manager;
     int isRed = (actorID == 0x121);
-    if (isRed != 0) ((SharedFilePtr *)&data_ov002_0210d9a8)->Release();
+    if (isRed != 0)
+        data_ov002_0210d9a8.Release();
     if (mCoinType == COIN_BLUE) {
-        ((SharedFilePtr *)data_ov002_020ff06c[mCoinType])->Release();
-        ((SharedFilePtr *)data_ov002_020ff060[mCoinType])->Release();
+        data_ov002_020ff06c[mCoinType]->Release();
+        data_ov002_020ff060[mCoinType]->Release();
     }
     UntrackStar(mTrackStarID);
     manager = dActor_c::FindWithID(mPuzzleManagerID);
@@ -751,7 +752,8 @@ int daCoin_c::Render()
     {
         /* blinks while the disappear timer is below 0x2d */
         unsigned short timer = mDisappearTimer;
-        if (timer < 0x2d && (timer & 1)) return 1;
+        if (timer < 45 && (timer & 1))
+            return 1;
     }
     if (!(flags & 0x10))
         mCommonModel1.Render(0);
@@ -826,15 +828,14 @@ s32 daCoin_c::InitResources()
      * each one changes the code (measured per site); the plain `&=`/`|=`
      * sites take the member as is. */
 
-    typedef struct { void* sfp; void* bmd; } FileEntry;
     extern Matrix4x3 IDENTITY_MATRIX4X3;
     extern s8 gCurrentSublevel;
     extern u8 gCurrentStarId;
     extern dActor_c *STAR_MARKERS[12];
     extern u8 gGameMode;
-    extern FileEntry* data_ov002_020ff06c[];
-    extern FileEntry* data_ov002_020ff060[];
-    extern void* data_ov002_0210d9a8;
+    extern SharedFilePtr *data_ov002_020ff06c[];
+    extern SharedFilePtr *data_ov002_020ff060[];
+    extern SharedFilePtr data_ov002_0210d9a8;
 
     s32 ccRadius;
     s32 ccHeight;
@@ -895,11 +896,11 @@ s32 daCoin_c::InitResources()
         isRed = (isRed == 0x121);
         if (isRed) {
             mSpawnFilter = ((param1 >> 4) & 7);
-            dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210d9a8);
+            dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
             mCoinType = COIN_RED;
             if (SublevelToLevel(gCurrentSublevel) == 0x13 || mSpawnFilter == gCurrentStarId) {
                 if (GetBitInDeathTable() == 0) {
-                    for (slot = 0; slot < 0xc; slot = (slot + 1)) {
+                    for (slot = 0; slot < 12; slot = (slot + 1)) {
                         if (STAR_MARKERS[slot] == 0) {
                             SetStarMarker(slot, this, 4);
                             mTrackStarID = slot;
@@ -923,19 +924,19 @@ s32 daCoin_c::InitResources()
 
     type = mCoinType;
     if (type < COIN_BLUE) {
-        if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[type]->bmd, 1, 1) == 0) {
+        if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[type]->filePtr, 1, 1) == 0) {
             return 0;
         }
-        if (mCommonModel2.SetFile((BMD_File *)data_ov002_020ff060[mCoinType]->bmd, 1, 1) == 0) {
+        if (mCommonModel2.SetFile((BMD_File *)data_ov002_020ff060[mCoinType]->filePtr, 1, 1) == 0) {
             return 0;
         }
     } else {
-        dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_020ff06c[type]);
-        dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_020ff060[mCoinType]);
-        if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[mCoinType]->bmd, 1, 1) == 0) {
+        dExtSimpleModel_c::LoadFile(*data_ov002_020ff06c[type]);
+        dExtSimpleModel_c::LoadFile(*data_ov002_020ff060[mCoinType]);
+        if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[mCoinType]->filePtr, 1, 1) == 0) {
             return 0;
         }
-        if (mCommonModel2.SetFile((BMD_File *)data_ov002_020ff060[mCoinType]->bmd, 1, 1) == 0) {
+        if (mCommonModel2.SetFile((BMD_File *)data_ov002_020ff060[mCoinType]->filePtr, 1, 1) == 0) {
             return 0;
         }
     }
@@ -952,7 +953,7 @@ s32 daCoin_c::InitResources()
     behavior = mBehaviorType;
     do {
         if (behavior == 8) {
-            mDisappearTimer = 0x2d;
+            mDisappearTimer = 45;
             mdCc_c.flags |= 1;
             break;
         }
@@ -966,7 +967,7 @@ s32 daCoin_c::InitResources()
                 break;
             }
         }
-        mDisappearTimer = 0xd2;
+        mDisappearTimer = 210;
     } while (0);
 
     *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~1) | 1;
@@ -976,7 +977,7 @@ s32 daCoin_c::InitResources()
         if (behavior == 5) {
             mNoClsnTimer = 0;
         } else {
-            mNoClsnTimer = 0xf;
+            mNoClsnTimer = 15;
         }
     } else {
         mNoClsnTimer = 0;

@@ -48,8 +48,6 @@
  *   include/decl_common.h declares them that way and check_decl_agreement
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
- * - daPly_c::Hurt, which takes a Fix12<int> parameter, stays spelled as a
- *   mangled extern-C free function.
  * - func_ov100_02143b68 reaches the link positions and the link models'
  *   translations through two raw char pointers that start at the chomp,
  *   and InitResources' link seeding loop does the same. Written as
@@ -115,7 +113,7 @@ enum {
     daWanwan2_SND_COIN_SPAWN  = 0x3a    /* Behavior's COIN spawn (played whether or not Spawn returned an actor) */
 };
 
-/* The daPly_c::Hurt ABI bridge and chain-link arithmetic below use NitroSDK
+/* The daPly_c::Hurt call and chain-link arithmetic below use NitroSDK
    VecFx32; the collision offset uses the real Vector3 interface. */
 
 /* func_ov100_02143b68 copies its identity matrix through the flat Mtx43: a
@@ -289,11 +287,11 @@ void func_ov100_0214344c(daWanwan2_c *self) {
     if (other->mIsVanish != 0)
         return;
     {
-        VecFx32 pos;
+        Vector3 pos;
         pos.x = self->mPosX;
         pos.y = self->mPosY;
         pos.z = self->mPosZ;
-        other->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
+        other->Hurt(pos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -379,23 +377,23 @@ void func_ov100_021435e8(daWanwan2_c *c) {
    materialised mChainTimer address and the `added` copy are the shapes the ROM
    carries. */
 void func_ov100_021437d4(daWanwan2_c *thisx) {
-    VecFx32 in, out, cur, delta, added, v48, v54, v60;
-    VecFx32 *pos, *vel, *src;
+    Vector3 in, out, cur, delta, added, v48, v54, v60;
+    Vector3 *pos, *vel, *src;
     int *heights;
     int loop;
     int angOff;
     int idx, val, ang, hlen, angz;
 
-    pos = (VecFx32 *)thisx->mLinkPos;
-    vel = (VecFx32 *)thisx->mLinkVel;
+    pos = thisx->mLinkPos;
+    vel = thisx->mLinkVel;
     heights = thisx->mLinkMinY;
 
     in.z = -0xfa000; in.x = 0; in.y = 0;    /* 250 units behind */
     out.x = 0; out.y = 0; out.z = 0;
 
     Matrix4x3_FromRotationXYZExt(&data_020a0e68, thisx->mAngleX, thisx->mAngleY, thisx->mAngleZ);
-    MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
-    Vec3_Add((Vector3 *)&added, &thisx->mPos, (const Vector3 *)&out);
+    MTX_MultVec43(&in, &data_020a0e68, &out);
+    Vec3_Add(&added, &thisx->mPos, &out);
 
     {
         int ax = added.x, ay = added.y, az = added.z;
@@ -438,12 +436,12 @@ void func_ov100_021437d4(daWanwan2_c *thisx) {
         angz = (s16)(-cstd::atan2(delta.y, hlen));
         Matrix4x3_FromRotationY(&data_020a0e68, ang);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, angz);
-        MTX_MultVec43((Vector3 *)&in, &data_020a0e68, (Vector3 *)&out);
+        MTX_MultVec43(&in, &data_020a0e68, &out);
         vel->x = pos->x; vel->y = pos->y; vel->z = pos->z;
-        Vec3_Add((Vector3 *)&v48, (const Vector3 *)src, (const Vector3 *)&out);
+        Vec3_Add(&v48, src, &out);
         pos->x = v48.x; pos->y = v48.y; pos->z = v48.z;
-        Vec3_Sub((Vector3 *)&v54, (const Vector3 *)pos, (const Vector3 *)vel);
-        Vec3_MulScalar((Vector3 *)&v60, (const Vector3 *)&v54, 0xbb8);
+        Vec3_Sub(&v54, pos, vel);
+        Vec3_MulScalar(&v60, &v54, 0xbb8);
         vel->x = v60.x; vel->y = v60.y; vel->z = v60.z;
         *heights = thisx->mPosY - 0xc8000;     /* 200 units below the chomp */
         if (*heights - pos->y > 0xc8000) *heights = pos->y;
@@ -463,7 +461,7 @@ void func_ov100_021437d4(daWanwan2_c *thisx) {
    identity": the pointer-to-member constant that holds it follows daIbl_c's
    vtable directly, and that is the whole of the old claim. Was a C source. */
 int func_ov100_02143aa4(daWanwan2_c *c) {
-    c->mAnmModel.speed = 4096; /* 1.0 */
+    c->mAnmModel.speed = 0x1000; /* 1.0 */
     c->mAnmModel.Advance();
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
@@ -602,7 +600,7 @@ int daWanwan2_c::Behavior()
 
     if (func_ov100_02143370() != 0) {
         if (unk_6a8 == 0) {
-            func_02012694(daWanwan2_SND_FLOOR_HIT, (const Vector3 *)(&mCamSpacePosX));
+            func_02012694(daWanwan2_SND_FLOOR_HIT, &mCamSpacePos);
         }
         mVertSpeed = 0x14000;
         HugeLandingDust(true);
@@ -620,7 +618,7 @@ int daWanwan2_c::Behavior()
         dActor_c *sp =
             dActor_c::Spawn(daWanwan2_ACTOR_COIN, 2, mPos, (const Vector3_16 *)0, mAreaId, -1);
         if (unk_6a8 == 0) {
-            func_02012694(daWanwan2_SND_COIN_SPAWN, (const Vector3 *)(&mCamSpacePosX));
+            func_02012694(daWanwan2_SND_COIN_SPAWN, &mCamSpacePos);
         }
         if (sp != 0) {
             sp->mPrevAngleX = 0;
@@ -632,7 +630,7 @@ int daWanwan2_c::Behavior()
             sp->mVertSpeed = vy << 12;
             sp->mSpeedZ = vx << 12;
         }
-        mCoinTimer = 0xc8;
+        mCoinTimer = 200;
     }
 
     {
@@ -753,7 +751,7 @@ int daWanwan2_c::InitResources()
         } while (i < daWanwan2_NUM_LINKS);
     }
 
-    mCoinTimer = 0xc8;
+    mCoinTimer = 200;
 
     /* Start at node 1: GetNode writes that node's position over mPosX/Y/Z,
        after the links were seeded above from the placed position. */

@@ -11,8 +11,7 @@
  * - StateDemoWaitInit, UpdateSegmentModels and InitResources walk
  *   segment rows through char* bases. Indexing mSegmentPos[seg] /
  *   &mAnmModels[i].mat4x3 changes those sizes.
- * - func_ov002_020c51d0 is ov002's. daPly_c::Hurt and daPly_c::Bounce
- *   stay mangled (Fix12<int> by value).
+ * - func_ov002_020c51d0 is ov002's.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -415,8 +414,8 @@ void daHanachan_c::StateMoveMain()
             }
         }
         mStateTimer = ((unsigned int)(rnd + 0x1e) >> 0x1b);
-        mStateTimer = (mStateTimer - (4 - mHealth) * 0x1e);
-        if (mStateTimer >= 0x40)
+        mStateTimer = (mStateTimer - (4 - mHealth) * 30);
+        if (mStateTimer >= 64)
             mStateTimer = 0;
     }
 
@@ -424,8 +423,8 @@ void daHanachan_c::StateMoveMain()
         rnd = RandomIntInternal(&data_0209e650.value);
         mTargetAngleY = Vec3_HorzAngle(&mPos, &mHomePos);
         mStateTimer = ((unsigned int)(rnd + 0x1e) >> 0x1b);
-        mStateTimer = (mStateTimer - (4 - mHealth) * 0x1e);
-        if (mStateTimer >= 0x40)
+        mStateTimer = (mStateTimer - (4 - mHealth) * 30);
+        if (mStateTimer >= 64)
             mStateTimer = 0;
     }
 
@@ -446,7 +445,7 @@ void daHanachan_c::StateMoveInit()
 {
     mPlayer = 0;
     if (mDefeated != 0)
-        mStateTimer = 0x96;
+        mStateTimer = 150;
 }
 
 /* MOVE_START: stagger the walk animation down the body; when the talk ends, hop by remaining health and enter MOVE. */
@@ -822,15 +821,14 @@ void daHanachan_c::UpdateSegmentModels()
        the base and drops that add; a dExtSimpleModel_c* walk keeps it. */
     int i;
     char *rot = (char *)this;
-    char *model = (char *)&mAnmModels[0];
+    dExtSimpleModel_c *model = &mAnmModels[0];
     for (i = 0; i < 5; i++) {
-        Matrix4x3_FromRotationY(&((dExtSimpleModel_c *)model)->mat4x3,
-                                ((daHanachan_c *)rot)->mSegmentRot[0].y);
+        Matrix4x3_FromRotationY(&model->mat4x3, ((daHanachan_c *)rot)->mSegmentRot[0].y);
         mAnmModels[i].mat4x3.t.x = mSegmentPos[i].x >> 3;
         mAnmModels[i].mat4x3.t.y = mSegmentPos[i].y >> 3;
         mAnmModels[i].mat4x3.t.z = mSegmentPos[i].z >> 3;
         rot += sizeof(Vector3s);
-        model += sizeof(dExtAnmModel_c);
+        model = (dExtSimpleModel_c *)((char *)model + sizeof(dExtAnmModel_c));
     }
 }
 
@@ -872,9 +870,7 @@ int daHanachan_c::Render()
  * set, the camera. */
 int daHanachan_c::Behavior()
 {
-    /* void ** like the table it comes from: typed SharedFilePtr * here,
-     * the .bss @NNN labels move down by four. */
-    void **animFile;
+    SharedFilePtr *animFile;
     s32 i;
     Vector3 head;
     Vector3 part;
@@ -916,7 +912,7 @@ int daHanachan_c::Behavior()
         }
     }
 
-    animFile = data_ov034_021138b0[0];
+    animFile = (SharedFilePtr *)data_ov034_021138b0[0];
     if (mAnmModels[0].file == ((SharedFilePtr *)animFile)->filePtr &&
         (((u32)mAnmModels[0].currFrame << 4) >> 16) == 0xf) {
         func_0201267c(0x11e, &mCamSpacePos);

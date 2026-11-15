@@ -22,16 +22,9 @@
  * real argument lands in r1 either way.
  *
  * deslop leftovers:
- *   - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight and
- *   IsTooFarAwayFromPlayer take Fix12 by value, so the calls stay
- *   computed names (InitResources, Behavior, UpdateModelAndShadow).
  *   - func_02038414 is the veneer onto
  *   dBgCh_Actr::UpdateDiscreteNoLava_2 (UpdateKnockback,
  *   UpdateMegaKill, UpdateFloorAndWalls).
- *   - Particle::System::New, NewCleanParticle, NewSimple,
- *   RunningSlidingDustAt and daPly_c::Hurt take Fix12 by value
- *   (UpdateKnockback, HandleAttacks, EnterMegaKill,
- *   UpdateLeader).
  *   - UpdateFloorAndWalls copies the floor and wall collision normals;
  *   the wall normal is unused.
  *   - gSanboHeadModelFile and gSanboBodyModelFile are the head
@@ -195,7 +188,7 @@ int daSanbo_c::Render()
 
 void daSanbo_c::OnPendingDestroy()
 {
-    int isBody = *(unsigned short *)((char *)&actorID);
+    int isBody = actorID;
     isBody = (isBody == SANBO_BODY);
     if (isBody) return;
     daSanbo_c *p = mNextSegment;
@@ -310,7 +303,7 @@ int daSanbo_c::EnterLeader() {
     if (timer != 0)
         timer = 0;
     else
-        timer = 0x5a;
+        timer = 90;
     mTimer = timer;
     timer = mTimer;
     if (timer == 0) {
@@ -389,9 +382,9 @@ int daSanbo_c::UpdateKnockback() {
         x = mPosX;
         z = mPosZ;
         y = mPosY + 0x3c000;
-        ((int *)&pos)[0] = x;
-        ((int *)&pos)[1] = y;
-        ((int *)&pos)[2] = z;
+        pos.x = x;
+        pos.y = y;
+        pos.z = z;
         mParticle0 = Particle::System::New(mParticle0, kPtclDeathA, pos.x, pos.y, pos.z, 0, 0);
         mParticle1 =
             Particle::System::NewCleanParticle(mParticle1, kPtclDeathB, pos.x, pos.y, pos.z, 0);
@@ -489,7 +482,7 @@ int daSanbo_c::EnterMegaKill() {
     mAngleY = (mPrevAngleY + 0x8000);
     mVertSpeed = 0x28000;
     mHorzSpeed = 0xa000;
-    mTimer = 0x2d;
+    mTimer = 45;
     Particle::System::NewSimple(kPtclKnockAwayA, mPosX, mPosY + OnAimedAtWithEgg(), mPosZ);
     Particle::System::NewSimple(kPtclKnockAwayB, mPosX, mPosY + OnAimedAtWithEgg(), mPosZ);
     mState = 5;
@@ -647,9 +640,9 @@ void daSanbo_c::HandleAttacks() {
             x = mPosX;
             z = mPosZ;
             y = mPosY + 0x3c000;
-            ((int *)&pos)[0] = x;
-            ((int *)&pos)[1] = y;
-            ((int *)&pos)[2] = z;
+            pos.x = x;
+            pos.y = y;
+            pos.z = z;
             mParticle0 = Particle::System::New(mParticle0, kPtclDeathA, pos.x, pos.y, pos.z, 0, 0);
             mParticle1 =
                 Particle::System::NewCleanParticle(mParticle1, kPtclDeathB, pos.x, pos.y, pos.z, 0);

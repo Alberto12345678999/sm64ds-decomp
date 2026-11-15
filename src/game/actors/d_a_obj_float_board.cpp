@@ -161,7 +161,7 @@ int daObjFloatBoard_c::Behavior() {
             short *ctr = &mBobPhase;
             short cval = *ctr;
             *ctr = (short)(cval + 0xa00);
-            mBobOffset = 10 * FX_SinIdx(*(unsigned short *)&mBobPhase >> 4);
+            mBobOffset = 10 * FX_SinIdx((unsigned short)mBobPhase >> 4);
         }
 
         if (mRider == 0) {
@@ -175,7 +175,7 @@ int daObjFloatBoard_c::Behavior() {
             tpos.x = riderPos->x;
             tpos.y = riderPos->y;
             tpos.z = riderPos->z;
-            dist = Vec3_HorzDist(&mPos, &tpos) >> 0xc;
+            dist = Vec3_HorzDist(&mPos, &tpos) >> 12;
             atanRes = cstd::atan2(mPosX - tpos.x, mPosZ - tpos.z);
             angleDiff = atanRes - mAngleY;
             s = FX_SinIdx((u16)angleDiff >> 4);

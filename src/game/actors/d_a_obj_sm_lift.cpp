@@ -125,7 +125,7 @@ int daObjSm_Lift_c::Behavior() {
         if (mNodeStep > 0 && mNodeIndex == 1) {
             if (Vec3_HorzDist(&mPos, (Vector3 *)&mBasePosX) < 0x10000) {
                 mMoving = 0;
-                mPauseTimer = 0x3c;
+                mPauseTimer = 60;
             }
         }
         target = 0;
@@ -181,7 +181,7 @@ int daObjSm_Lift_c::Behavior() {
                 if (path.Loops() != 0) {
                     mNodeIndex = mNodeCount - 1;
                 } else {
-                    mPauseTimer = 0x3c;
+                    mPauseTimer = 60;
                     mMoving = 0;
                     mNodeStep = 1;
                     int *pIdx2 = &mNodeIndex;
@@ -192,10 +192,10 @@ int daObjSm_Lift_c::Behavior() {
                 if (path.Loops() != 0) {
                     mNodeIndex = 0;
                 } else {
-                    mPauseTimer = 0x3c;
+                    mPauseTimer = 60;
                     mMoving = 0;
                     mNodeStep = -1;
-                    int *pIdx3 = (int *)((unsigned)(int)&mNodeIndex);
+                    int *pIdx3 = &mNodeIndex;
                     *pIdx3 = *pIdx3 + (mNodeStep * 2);
                 }
             }
@@ -218,14 +218,14 @@ s32 daObjSm_Lift_c::InitResources() {
     if (mPathId == 0xff)
         return 0;
     BMD_File *f = dExtSimpleModel_c::LoadFile(gSmLiftModelFile);
-    ((dExtModel_c *)&mModel)->SetFile(f, 1, -1);
+    mModel.SetFile(f, 1, -1);
     UpdateModelTransform();
     UpdateClsnPosAndRot();
     KCL_File *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);
     mMeshCollider.SetFile(kf, mClsnMat, 0x1000, mAngleY, *(CLPS_Block *)data_ov018_02112f48);
     mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
     mMeshCollider.SetStoodOnCallback(&StoodOnCallback);
-    mPauseTimer = 0x3c;
+    mPauseTimer = 60;
     mBasePosX = mPosX;
     mBasePosY = mPosY;
     mBasePosZ = mPosZ;

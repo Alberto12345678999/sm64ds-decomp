@@ -129,8 +129,7 @@ void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 }
 
-
-extern int sEsp3DMaterialAnim;
+extern BMA_File sEsp3DMaterialAnim;
 
 extern int pmf_dMg3DEspModel_c_Idle_2[];
 
@@ -245,11 +244,11 @@ void dMg3DEspAnimSet_c::InitResources()
     mSpeed = 0x800;
     bmd = dExtSimpleModel_c::LoadFile(gEspHamonModelFile);
     bca = dExtFrameCtrl_c::LoadFile(gEspHamonAnimFile);
-    dExtAnmMaterial_c::Prepare(*bmd, *(BMA_File *)&sEsp3DMaterialAnim);
+    dExtAnmMaterial_c::Prepare(*bmd, sEsp3DMaterialAnim);
     for (i = 0; i < 3; i++) {
         mModels[i].SetFile(bmd, 1, -1);
         mModels[i].SetAnim(bca, 0x40000000, mSpeed, 0);
-        mMaterialChangers[i].SetFile(*(BMA_File *)&sEsp3DMaterialAnim, 0x40000000, mSpeed, 0);
+        mMaterialChangers[i].SetFile(sEsp3DMaterialAnim, 0x40000000, mSpeed, 0);
         mModels[i].SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
     }
@@ -278,11 +277,11 @@ void dMg3DEspModel_c::Render()
     int* d = pmf_dMg3DEspModel_c_Idle_2;
     if (p[0] == d[0]) {
         if (p[1] == d[1]) return;
-        if (*(int *)&mState == 0)
+        if (mState == 0)
             return;
     }
 
-    func_02046208((char *)&mAnmModel.data, mPolygonID, 0);
+    func_02046208(&mAnmModel.data, mPolygonID, 0);
 
     mTextureSequence.currFrame = (unsigned)((mTextureFrame) << 0x11) >> 4;
     mTextureSequence.Update(mAnmModel.data);
@@ -303,7 +302,7 @@ void dMg3DEspModel_c::Behavior()
     s32* idleState = (s32*)&pmf_dMg3DEspModel_c_Idle;
     if (state[0] == idleState[0]) {
         if (state[1] == idleState[1]) return;
-        if (*(s32 *)&mState == 0)
+        if (mState == 0)
             return;
     }
 
@@ -377,9 +376,6 @@ void dMg3DEspModel_c::Wait()
     Sound::PlayBank2_2D(0x18f);
 }
 
-/* Keep the scalar-speed boundary used by the existing SetAnim definition.
-   The measured native Fix12-by-value call grows this function by eight
-   bytes. */
 void dMg3DEspModel_c::StartWait()
 {
     mAnmModel.SetAnim((BCA_File *)gEspCardWaitAnimFile.filePtr, 0, 0x800, 0);
@@ -406,10 +402,10 @@ int dMg3DEspModel_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gEspCardWaitAnimFile);
     dExtFrameCtrl_c::LoadFile(gEspCardOpenAnimFile);
     dExtFrameCtrl_c::LoadFile(gEspCardOpenWaitAnimFile);
-    dExtAnmTexPat_c::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
-                             **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
-    mTextureSequence.SetFile(**(BTP_File **)((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
-    mAnmModel.SetAnim(*((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)gEspCardModelFile.filePtr,
+                             *(BTP_File *)gEspCardTexSeqFile.filePtr);
+    mTextureSequence.SetFile(*(BTP_File *)gEspCardTexSeqFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gEspCardStartAnimFile.filePtr, 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
     ResetTransform();
     Reset();
@@ -571,7 +567,7 @@ void dScMg3DEsp_c::SlotKick(int i)
             mSlots[i].mPushTime = 0;
         return;
     }
-    mSlots[i].mDelay = (u8)(MG_RAND(16) + 0x10);
+    mSlots[i].mDelay = (u8)(MG_RAND(16) + 16);
     mSlots[i].mType = 3;
 }
 
@@ -611,7 +607,7 @@ void dScMg3DEsp_c::SlotRise(int i)
         return;
     }
 
-    mSlots[i].mDelay = (u8)(MG_RAND(16) + 0x10);
+    mSlots[i].mDelay = (u8)(MG_RAND(16) + 16);
     mSlots[i].mType = 3;
 }
 
@@ -623,7 +619,7 @@ void dScMg3DEsp_c::SlotSetup(int idx) {
     mSlots[idx].mGravity = MG_RAND(8);
     mSlots[idx].mVisible = 1;
     mSlots[idx].mDelay = (u8)(MG_RAND(16) + 8);
-    mSlots[idx].mPushTime = (u8)(MG_RAND(32) + 0x10);
+    mSlots[idx].mPushTime = (u8)(MG_RAND(32) + 16);
     mSlots[idx].mType = data_ov006_0212e57c[MG_RAND(2)];
 }
 
@@ -654,7 +650,7 @@ void dScMg3DEsp_c::SlotWait(int idx)
         if ((s16)mSlots[idx].mWait < 0)
             mSlots[idx].mWait = 0;
     } else {
-        mSlots[idx].mLife = MG_RAND(32) + 0x40;
+        mSlots[idx].mLife = MG_RAND(32) + 64;
         mSlots[idx].mState = 1;
         mSlots[idx].mType = 0;
         mSlots[idx].mVisible = 0;
@@ -666,7 +662,7 @@ void dScMg3DEsp_c::SlotWait(int idx)
 }
 
 void dScMg3DEsp_c::UpdateSlots() {
-    for (int i = 0; i < 0x14; i++) {
+    for (int i = 0; i < 20; i++) {
         if (mSlots[i].mActive) {
             u8 k = mSlots[i].mState;
             (this->*s3DEspSlotFallTable[k])(i);
@@ -676,12 +672,12 @@ void dScMg3DEsp_c::UpdateSlots() {
 
 void dScMg3DEsp_c::ResetSlots() {
     int i;
-    for (i = 0; i < 0x14; i++) {
+    for (i = 0; i < 20; i++) {
         mSlots[i].mActive = 0;
         mSlots[i].mVisible = 0;
     }
 
-    for (i = 0; i < 0x14; i++) {
+    for (i = 0; i < 20; i++) {
         mSlots[i].mActive = 1;
         mSlots[i].mState = 0;
         mSlots[i].mType = 0;
@@ -865,9 +861,9 @@ void dScMg3DEsp_c::CardSeek(int i) {
 
     mRoundState = 2;
     mPhase = 0;
-    mTimer = 0x90;
+    mTimer = 144;
     if (mCorrect == 0) {
-        mTimer += 0x40;
+        mTimer += 64;
     }
 
     mEspModel.StartHit();
@@ -894,7 +890,7 @@ void dScMg3DEsp_c::CardTouch(int idx) {
     if (w > 0x18) return;
 
     mTouched += 1;
-    mCards[idx].mTimer = 0x20;
+    mCards[idx].mTimer = 32;
     mCards[idx].mSpeed = 0;
     mCards[idx].mState = 2;
 
@@ -1089,7 +1085,7 @@ void dScMg3DEsp_c::Results() {
     UpdateRows();
     if (mTimer != 0) {
         mTimer--;
-        if (mTimer == 0x40) {
+        if (mTimer == 64) {
             if (mCorrect != 0) {
                 int idx = gMgScene != 0 ? gMgScene->mHudScore : 0;
                 while (idx >= 5)
@@ -1153,10 +1149,10 @@ void dScMg3DEsp_c::Results() {
         if (b != 0)
             ClearCards();
         mIdleTimer++;
-        if (mIdleTimer == 0xb4)
+        if (mIdleTimer == 180)
             ClearCards();
-        if (mIdleTimer >= 0xb5)
-            mIdleTimer = 0xb5;
+        if (mIdleTimer >= 181)
+            mIdleTimer = 181;
     }
 }
 
@@ -1175,7 +1171,7 @@ void dScMg3DEsp_c::Wait()
         return;
     }
     mRoundState = 1;
-    mTimer = 0x40;
+    mTimer = 64;
 }
 
 /* ---- dScMg3DEsp_c ------------------------------------------------------ */
@@ -1283,7 +1279,7 @@ s32 dScMg3DEsp_c::InitResources()
     if (func_020179b4(&gEspIrieModelFile, &mModel1, 1) == 0)
         return 0;
 
-    dExtAnmTexSRT_c::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)gEspIrieModelFile.filePtr,
                              *(BTA_File *)&sEsp3DTextureAnim);
     mTextureTransformer.SetFile(*(BTA_File *)&sEsp3DTextureAnim, 0, 0x1000, 0);
 
@@ -1328,7 +1324,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     StartRound(-1);
 
-    mTimer = 0x40;
+    mTimer = 64;
 
     mCredits = 3;
     mCreditsShown = mCredits;

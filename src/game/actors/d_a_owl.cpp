@@ -140,8 +140,7 @@ enum {
 #define OWL_STATE_CARRY     OWL_STATE(data_ov094_02136b70)
 #define OWL_STATE_RETURN    OWL_STATE(data_ov094_02136b30)
 
-/* mStateTimer is s16 but every read in the ROM is an unsigned halfword load. */
-#define OWL_TIMER(o)        (*(u16 *)&(o)->mStateTimer)
+#define OWL_TIMER(o)        ((o)->mStateTimer)
 
 /* Whole animation frame of the dExtAnmModel_c, as the ROM extracts it. */
 #define OWL_FRAME(o)        ((u16)((o)->mAnmModel.currFrame >> 12))
@@ -313,7 +312,7 @@ int daOwl_c::UpdateCarrying() {
 
 /* Enter of the carry state: 30-frame timer, animation data_ov094_02136af8[1] at double speed. */
 int daOwl_c::EnterCarrying() {
-    mStateTimer = 0x1e;
+    mStateTimer = 30;
     unk_3e8 = 0;
     mAnmModel.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     mAnimSpeed = 0x2000;
@@ -347,11 +346,11 @@ int daOwl_c::UpdateHover() {
     }
 
     if (Vec3_Dist(&mPos, &mAnchor) > 0x190000) {
-        mStateTimer = 0x32;
+        mStateTimer = 50;
         mWanderAngleY = Vec3_HorzAngle(&mPos, &mAnchor);
     } else if (OWL_TIMER(this) == 0) {
         mWanderAngleY = (((u32)RandomIntInternal(&data_0209e650.value) >> 8) << 12);
-        mStateTimer = (s16)((((u32)RandomIntInternal(&data_0209e650.value) >> 8) & 0x3f) + 0x32);
+        mStateTimer = (s16)((((u32)RandomIntInternal(&data_0209e650.value) >> 8) & 0x3f) + 50);
     }
 
     ApproachAngle(&mPrevAngleY, mWanderAngleY, 0xa, 0x200, 0x100);
@@ -377,7 +376,7 @@ int daOwl_c::UpdateHover() {
 int daOwl_c::EnterHover() {
     mAnmModel.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     mWanderAngleY = (((u32)RandomIntInternal(&data_0209e650.value) >> 8) << 0xc);
-    mStateTimer = (short)((((u32)RandomIntInternal(&data_0209e650.value) >> 8) & 0x3f) + 0x32);
+    mStateTimer = (short)((((u32)RandomIntInternal(&data_0209e650.value) >> 8) & 0x3f) + 50);
     mAnimSpeed = 0x1000;
     return 1;
 }
@@ -426,16 +425,16 @@ int daOwl_c::EnterTalk() {
 int daOwl_c::UpdateDormant() {
     daPly_c *p = ClosestPlayer();
     if (p != 0 && p->mClimbClsn != 0) {
-        VecFx32 *playerPos = (VecFx32 *)&p->mPosX;
+        const Vector3 *playerPos = &p->mPos;
         VecFx32 pp;
         VecFx32 d;
-        VecFx32 *selfpos = (VecFx32 *)&mPosX;
+        const Vector3 *selfpos = &mPos;
         pp.x = playerPos->x;
         pp.y = playerPos->y;
         pp.z = playerPos->z;
         mPosY = p->mGroundY + 0x190000;
         mTalkTarget = p;
-        Vec3_Sub((Vector3 *)&d, (const Vector3 *)selfpos, (const Vector3 *)&pp);
+        Vec3_Sub((Vector3 *)&d, selfpos, (const Vector3 *)&pp);
         if (VEC_Mag((const Vector3 *)&d) < 0x28000) {
             d.x = mPosX;
             d.y = mPosY;

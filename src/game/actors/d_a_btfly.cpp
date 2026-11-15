@@ -27,14 +27,10 @@
  * - State7 mFlutterPhase: named += is 0x234 vs 0x258. The phase load is
  *   ldrsh plus a zero-extend shift (ldrh of the field is shorter), and the
  *   adds take the int-cast address, not add #0x300.
- * - State7 daPly_c::Hurt: method form is 0x264 vs 0x258 (+0xc). Fix12<int>
- *   by value. daPly_c.h does not declare Hurt.
  * - State7 UpdateContinuous(): WRONG-DEST. ROM calls
  *   dBgCh_Actr_UpdateContinuous_Veneer (0x020383fc).
  * - State7 func_02035638 is mClsnFlags & 0x10. No method; IsOnGround is
  *   mFlags & 0x10.
- * - Behavior DropShadowRadHeight: method form is 0x24c vs 0x22c (+0x20,
- *   both calls). Fix12<int> by value.
  * - Behavior scratch matrix: Matrix4x3 assignment is 0x264 vs 0x22c.
  *   The flat Mtx43 copy is the ROM ldm/stm; the real type's translation is a
  *   Vector3 and runs ~Vector3.
@@ -68,8 +64,6 @@ enum daBtfly_c_AssetId {
 /* The model-matrix copies go through Mtx43, a flat 12-word copy. Assigning
  * Matrix4x3 would run ~Vector3 on its translation. */
 
-/* InitResources' collider offset is a VecFx32. dCcAcPos_c::Init's offset
- * argument is passed as a pointer; a stack Vector3 here would emit ~Vector3. */
 typedef void (daBtfly_c::*ButterflyState)();
 
 /* File-scope objects at the end of this file construct the two resource
@@ -108,8 +102,6 @@ extern SharedFilePtr data_ov100_02148668;
 extern BtflyModelFilePtr gButterflyModelFile;
 extern ButterflyState data_ov100_02148628[];
 
-/* Fix12<int> by value. The header method form homes those arguments on the
- * stack; these scalar entries are the ROM calls. */
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
 }
@@ -127,7 +119,7 @@ void daBtfly_c::State7()
 
     /* Read mFlutterPhase signed, then zero-extend: a single (u16) read
      * shortens State7 by 8 bytes. */
-    if (mStateTimer > 0x78) {
+    if (mStateTimer > 120) {
         int ang = mFlutterPhase;
         ang = (unsigned short)(short)ang;
         int idx = ang >> 4;
@@ -157,7 +149,7 @@ void daBtfly_c::State7()
     }
     /* mClsnFlags & 0x10 is func_02035638. No accessor; IsOnGround is mFlags & 0x10. */
     if (hasContact || mWithMeshClsn.IsOnWall() || mWithMeshClsn.IsOnGround() ||
-        func_02035638((u8 *)&mWithMeshClsn) || mStateTimer > 0x9d) {
+        func_02035638((u8 *)&mWithMeshClsn) || mStateTimer > 157) {
         if (hasContact != 0) {
             dActor_c *hit = dActor_c::FindWithID(mdCcAcPos_c.otherOwner);
             if (hit != 0) {
@@ -189,7 +181,7 @@ void daBtfly_c::State7()
 
 void daBtfly_c::State6()
 {
-    if (mStateTimer == 0x14) {
+    if (mStateTimer == 20) {
         if (mKind != 1) {
             mScale = 0;
             mUseAnimModel = 0;
@@ -199,7 +191,7 @@ void daBtfly_c::State6()
         MarkForDestruction();
         return;
     }
-    if (mStateTimer <= 0x14)
+    if (mStateTimer <= 20)
         return;
     mScale += 0x40;
     if (mScale < 0x800)
@@ -219,8 +211,7 @@ void daBtfly_c::State5()
         return;
     }
 
-    if (mStateTimer > 0x6e && DistToCPlayer() < 0xc8000 &&
-        (unsigned char)(mKind + 0xff) <= 1) {
+    if (mStateTimer > 110 && DistToCPlayer() < 0xc8000 && (unsigned char)(mKind + 0xff) <= 1) {
         mHorzSpeed = 0;
         mStateTimer = 0;
         mState = 6;
@@ -229,7 +220,7 @@ void daBtfly_c::State5()
         ApproachLinear(mHorzSpeed, 0x8000, 0x800);
     }
 
-    if (mStateTimer >= 0x3c)
+    if (mStateTimer >= 60)
         hAngle = mWanderAngle;
     else
         hAngle = Vec3_HorzAngle(&mPos, (const Vector3 *)&mHomePosX);
@@ -429,7 +420,7 @@ int daBtfly_c::Render()
     if (mUseAnimModel != 0)
         mAnmModel.Render(0);
     else
-        mModel.Render((Vector3 *)&mScaleX);
+        mModel.Render(&this->dActor_c::mScale);
     return 1;
 }
 
@@ -495,11 +486,11 @@ int daBtfly_c::InitResources()
 
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
-    VecFx32 v;
+    Vector3 v;
     v.x = 0;
     v.y = -0x32000;
     v.z = 0;
-    mdCcAcPos_c.Init(this, *(Vector3 *)&v, 0x32000, 0x64000, 0x200000, 0);
+    mdCcAcPos_c.Init(this, v, 0x32000, 0x64000, 0x200000, 0);
 
     int sub = (int)(u8)(param1 & 0x30);
     if (sub != 0x10 && sub != 0x20) {

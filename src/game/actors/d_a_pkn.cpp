@@ -12,8 +12,6 @@
  * D1 and D0 pair; `new` odr-uses the class so that pair is emitted here.
  *
  * deslop leftovers:
- * - daPly_c::Hurt and daPly_c::Bounce stay mangled extern "C" calls: each
- *   takes a Fix12<int> by value.
  * - UpdatePose still walks VecFx32 views: spelling those copies as
  *   Vector3 is emitted differently.
  * - The shared files keep their address names (d_a_f_pkn.cpp reads them
@@ -457,7 +455,7 @@ void daPkn_c::StateWake()
 {
     Sound::PlaySub(0x36, 0x7f, 0, 0xcb33, 0);
     if (CheckHits() != 0) return;
-    if (mStateTimer <= 0xb)
+    if (mStateTimer <= 11)
         return;
     if (!mAnmModel.Finished())
         return;
@@ -490,7 +488,7 @@ void daPkn_c::StateDie()
 
     Sound::PlaySub(0x36, 0x7f, 0, 0xcb33, 0);
     mClsnEnabled = 0;
-    if (mStateTimer < 0xa) {
+    if (mStateTimer < 10) {
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
@@ -720,8 +718,7 @@ void daPkn_c::UpdatePose()
     ang[1] = 0;
     ang[2] = 0;
     for (lr = 0; lr < 5; lr++) {
-        ang[1] = (ang[1] +
-                  *(s16 *)((char *)mAnmModel.data.bones + data_ov084_021302ec[lr] * 0x34 + 0x1c));
+        ang[1] = (ang[1] + (s16)mAnmModel.data.bones[data_ov084_021302ec[lr]].rotY);
     }
 
     mHeadClsnOffset.x = 0;

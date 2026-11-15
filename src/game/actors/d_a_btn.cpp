@@ -28,10 +28,6 @@
  * king's face texture 02128178, the collision meshes data_ov079_02127bf0[2].
  *
  * Known limits:
- * - dActor_c::SpawnCoins/Earthquake, DropShadowScaleXYZ,
- *   dBgW_KcMbg::SetFile and
- *   dBgCh_Actr::Init take Fix12<int> by value, so they stay mangled
- *   (notes/mwccarm-codegen.md 6az).
  * - func_ov079_02123804 reacts to a hit but nothing in the cartridge's
  *   relocations calls it.
  * - func_ov079_02123d4c is really a Vector3-by-value member of daBtn_c, but
@@ -132,7 +128,7 @@ extern CLPS_Block data_ov015_021135d4;
 
 extern int data_ov079_021275dc[];
 extern int data_ov079_021275e4[];
-extern void *data_ov079_021275ec[];
+extern SharedFilePtr *data_ov079_021275ec[];
 extern void *data_ov079_02127600[];
 extern CLPS_Block data_ov079_02127ba0;   /* the plain Whomp's CLPS block */
 extern void *data_ov079_02127bf0[];
@@ -238,8 +234,7 @@ int daBtn_c::InitResources()
         mAnmModel.SetFile((BMD_File *)bmd, 1, -1);
         animIdx = 0;
         do {
-            anim = data_ov079_02127600[animIdx];
-            dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)anim);
+            dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov079_02127600[animIdx]);
             animIdx += 1;
         } while (animIdx < 6);
         dExtAnmTexPat_c::LoadFile(data_ov079_02128178);
@@ -249,8 +244,7 @@ int daBtn_c::InitResources()
         mAnmModel.SetFile((BMD_File *)bmd, 1, -1);
         animIdx = 0;
         do {
-            anim = data_ov079_021275ec[animIdx];
-            dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)anim);
+            dExtFrameCtrl_c::LoadFile(*data_ov079_021275ec[animIdx]);
             animIdx += 1;
         } while (animIdx < 5);
     }
@@ -666,7 +660,7 @@ void daBtn_c::func_ov079_021256d4()
     ApproachLinear(mPrevAngleY, mTargetAngle, 0x200);
     mAngleY = mPrevAngleY;
 
-    if (mStateTimer > 0x1e) {
+    if (mStateTimer > 30) {
         if (mFrontDist < 0x5dc000) {
             mHorzSpeed = 0xd800;
             mAnmModel.speed = 0x3000;
@@ -695,7 +689,7 @@ void daBtn_c::func_ov079_021256d4()
         s16 t;
         void *anim;
         int five;
-        void **tab;
+        SharedFilePtr **tab;
         dExtAnmModel_c *ma;
 
         Sound::StopLoadedMusic_Layer3();
@@ -1047,7 +1041,7 @@ void daBtn_c::func_ov079_02124b08()
             func_ov079_02124dec();
 
         {
-            int lim = mIsKing * 0x14 + 0x64;
+            int lim = mIsKing * 20 + 100;
             u16 cur = mStateTimer;
             if (cur <= lim) {
                 if (unk_407 != 1)
@@ -1069,7 +1063,7 @@ void daBtn_c::func_ov079_02124b08()
     if (st == 0xa) {
         mAnmModel.Advance();
         mSubTimer++;
-        if (mSubTimer <= 0x1e)
+        if (mSubTimer <= 30)
             return;
         unk_407 = 0;
         mSubState++;
@@ -1081,7 +1075,7 @@ void daBtn_c::func_ov079_02124b08()
     }
 
     if (mAngleX > 0) {
-        if (mSubTimer >= 0xc) {
+        if (mSubTimer >= 12) {
             mPitchSpeed = -0x290;
             mAngleX += mPitchSpeed;
         }
@@ -1139,7 +1133,7 @@ void daBtn_c::func_ov079_021249f0()
     if (mSubState == 0) {
         mHorzSpeed = 0;
         mAnmModel.speed = 0x2000;
-        if (mStateTimer >= 0x20) {
+        if (mStateTimer >= 32) {
             mSubState++;
         } else {
             mPrevAngleY += 0x400;
@@ -1147,7 +1141,7 @@ void daBtn_c::func_ov079_021249f0()
         }
     } else {
         mHorzSpeed = data_ov079_021275dc[mIsKing];
-        if (mStateTimer > 0x2a) {
+        if (mStateTimer > 42) {
             mState = 1;
             mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
@@ -1358,7 +1352,7 @@ void daBtn_c::func_ov079_02124188()
     int shadowRad;
     int tiltSin;
     int lean;
-    char *bone;
+    ModelBone *bone;
 
     Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
 
@@ -1366,14 +1360,14 @@ void daBtn_c::func_ov079_02124188()
     mAnmModel.mat4x3.t.y = (mPosY + mTipLift) >> 3;
     mAnmModel.mat4x3.t.z = mPosZ >> 3;
 
-    bone = (char *)mAnmModel.data.bones;
+    bone = mAnmModel.data.bones;
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
 
-    mBodyPitch = -*(unsigned short *)(bone + 0x1c);
-    mBodyYaw = *(unsigned short *)(bone + 0x1a);
-    mBodyRoll = (*(unsigned short *)(bone + 0x1e) - 0x4000);
+    mBodyPitch = -bone->rotY;
+    mBodyYaw = bone->rotX;
+    mBodyRoll = (bone->rotZ - 0x4000);
 
     if (mIsKing != 0) {
         tiltSin = FX_SinIdx((unsigned short)mAngleX >> 4);
@@ -1388,7 +1382,7 @@ void daBtn_c::func_ov079_02124188()
     pos.x += FX_MUL(lean, FX_SinIdx((unsigned short)mAngleY >> 4));
     pos.z += FX_MUL(lean, FX_CosIdx((unsigned short)mAngleY >> 4));
 
-    ::Vec3_Asr((::Vector3 *)&asr, (::Vector3 *)&pos, 3);
+    ::Vec3_Asr(&asr, &pos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, (mAngleY + mBodyYaw));
 
@@ -1664,7 +1658,7 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
             mSavedStateTimer = mStateTimer;
             mSavedSubState = mSubState;
         }
-        mWobbleTimer = 0x5a;
+        mWobbleTimer = 90;
         mHorzSpeed = 0;
         mState = 0xa;
         mResumePending = 1;

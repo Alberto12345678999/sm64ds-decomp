@@ -98,7 +98,7 @@ void daObjBk_Botaosi_c::OnHitByMegaChar(daPly_c &player) {
         return;
     player.IncMegaKillCount();
     mState = 2;
-    mWobbleTimer = 0x640;
+    mWobbleTimer = 1600;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -147,12 +147,12 @@ void daObjBk_Botaosi_c::HandleHit(dActor_c *other) {
     }
 
     if (mState == 1) {
-        if (mWobbleTimer >= 0x320) {
+        if (mWobbleTimer >= 800) {
             if (other->mPosY > mPosY + 0x64000)
                 mState++;
         }
     }
-    mWobbleTimer = 0x640;
+    mWobbleTimer = 1600;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -303,7 +303,7 @@ int daObjBk_Botaosi_c::InitResources() {
     UpdateModelMatrix();
     UpdateClsnPosAndRot();
     mMeshCollider.SetFile(dBgW_Kc::LoadFile(data_ov015_02114974), mClsnMat, 0x1000, mAngleY,
-                          *(CLPS_Block *)(&data_ov015_02113574));
+                          data_ov015_02113574);
 
     mAngleY += 0x8000;
     a.x = 0;

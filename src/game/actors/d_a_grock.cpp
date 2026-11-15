@@ -31,9 +31,8 @@
  * Notes (measured spellings that do not match):
  * - SpawnStar: one UntrackAndSpawnStar with a chosen mode size-DIFFs
  *   (999 words). The two call sites, mode 2 and mode 4, match.
- * - HandleMeshCollision: ReflectAngle(Fix12<int>, Fix12<int>, s16)
- *   size-DIFFs. The wall angle is held in a short so GetSubtraction gets
- *   it without a re-extension.
+ * - HandleMeshCollision: the wall angle is held in a short so
+ *   GetSubtraction gets it without a re-extension.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -103,16 +102,16 @@ void daGrock_c::SpawnStar() {
 }
 
 /* Shift the position down 3, build the scratch matrix, keep the unrotated
- * copy in pad_188 for the shadow, then rotate it into the model. */
+ * copy in mShadowMtx for the shadow, then rotate it into the model. */
 void daGrock_c::UpdateModelTransform() {
     int shifted[3];
 
     Vec3_Asr(reinterpret_cast<Vector3 *>(shifted), &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shifted[0], shifted[1], shifted[2]);
-    *(Matrix4x3 *)pad_188 = data_020a0e68;
+    mShadowMtx = data_020a0e68;
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3 = data_020a0e68;
-    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)pad_188, 0x1f4000, 0x1f4000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMtx, 0x1f4000, 0x1f4000, 0xf);
 }
 
 /* Cylinder hit. Mega always breaks the rock. Punch/kick/breakdance/slide
@@ -257,7 +256,7 @@ int daGrock_c::Behavior() {
             s16 *roll;
 
             ApplyGravityAndMove();
-            roll = (s16 *)&mAngleX;
+            roll = &mAngleX;
             *roll = (s16)(*roll + (mHorzSpeed >> 12) * 0x43);
             mAngleY = mPrevAngleY;
             HandleMeshCollision();
@@ -299,7 +298,7 @@ int daGrock_c::Behavior() {
     } else {
         int dist = DistToCPlayer();
         if (dist > 0x5dc000) {
-            u32 threshold = (dist < 0x1770000) ? 0x70 : 0xe0;
+            u32 threshold = (dist < 0x1770000) ? 112 : 224;
             if ((u16)mStateTimer >= threshold) {
                 u32 rnd;
 
@@ -323,7 +322,7 @@ int daGrock_c::Behavior() {
             }
         }
         {
-            u16 *timer = (u16 *)&mStateTimer;
+            u16 *timer = &mStateTimer;
             *timer = (u16)(*timer + 1);
         }
     }

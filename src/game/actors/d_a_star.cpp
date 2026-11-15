@@ -21,7 +21,7 @@
  * daSoundObj_c, dBgCh_Gnd and dBgCh_Actr instead of offset arithmetic, and each
  * function says what it does.
  *
- * Units: positions, speeds and scales are Fix12 (0x1000 = 1.0; the comments
+ * Units: positions, speeds and scales are fx32 (0x1000 = 1.0; the comments
  * give decimal values); angles are s16 (0x10000 = a full turn); a model or
  * shadow matrix takes the position >> 3. Hit-flag bits and sound ids stay
  * numbers; the sound calls are func_02012694 (positional, bank 3) and
@@ -29,17 +29,16 @@
  *
  * Leftover. The first three items were tried in their clean form and moved
  * the bytes; the rest are names or types the evidence does not give:
- * - StateCollectTalk keeps the `*(u16 *)((int)&mStarFlags)` halfword
- *   stores and the LA label; a plain mBits.answer store loses the address
- *   rematerialization. The `& ~0ULL` identity mask that used to sit on that
- *   address is gone and the sentence no longer claims it.
+ * - StateCollectTalk keeps the LA label, and stores mStarFlags through a
+ *   local u16 pointer; a plain mBits.answer store loses the address
+ *   rematerialization.
  * - Render keeps its gotos, and mStateTimer keeps its (u16) casts.
  * - func_ov002_020e8244 stays a free function; its first parameter is the
  *   output vector, not the star.
  * - Still unnamed: the dActor_c word at +0xc8 and the halfword at
  *   data_02082714 + 0x56, which lands mid-word in an untyped arm9 table.
- * - Fix12-by-value callees stay as mangled extern "C" names, and `this`
- *   goes to some externs as (char *)this to keep their declared signatures.
+ * - `this` goes to LinkSilverStarAndStarMarker as (char *)this to keep its
+ *   declared signature.
  * - The Kind names are numbers (KIND_n): only what the code evidences is
  *   said about each one.
  * Methods are named for what their bodies do (and, for the State handlers and the
@@ -87,8 +86,6 @@ enum daStar_c_AssetId {
  * a local or a struct copy of either one adds cleanup code the cartridge does
  * not have; NitroSDK VecFx32 and these same-layout PODs keep the bytes
  * identical. Whole matrices are copied through Mtx43. */
-struct Vec1 { s32 a; };                /* one word, copied component by component */
-
 /* A state handler: data_ov002_021109d8 holds one pointer-to-member per
    daStar_c::State. */
 typedef void (daStar_c::*StateHandler)();
@@ -410,8 +407,8 @@ s32 daStar_c::InitResources()
         mState = STATE_BOUNCE;
         mVertSpeed = 0x20000;
         SetDefaultGravity();
-        mStateTimer = 0xf;
-        mSparkleTimer = 0x32;
+        mStateTimer = 15;
+        mSparkleTimer = 50;
         mWithMeshClsn.StartDetectingWater();
     } else if (kind == KIND_2 || kind == KIND_4) {
         mState = STATE_LAUNCH;
@@ -675,7 +672,7 @@ int daStarBase_c::Behavior()
                 mdCcAcPos_c.flags &= ~1;
             }
         } else {
-            mAppearTimer = 0x2a;
+            mAppearTimer = 42;
         }
         mBits.refresh = 0;
     }
@@ -850,9 +847,9 @@ void daStar_c::StateLaunch() {
         } else {
             mState = STATE_FLY_TO_MARKER;
             op = &other->mPos;
-            *(struct Vec1 *)&v0.x = *(struct Vec1 *)&op->x;
-            *(struct Vec1 *)&v0.y = *(struct Vec1 *)&op->y;
-            *(struct Vec1 *)&v0.z = *(struct Vec1 *)&op->z;
+            v0.x = op->x;
+            v0.y = op->y;
+            v0.z = op->z;
             v0.y = v0.y + 0xc8000;
             area = gCurrentSublevel;
             if (area == 0x11) {
@@ -1012,7 +1009,7 @@ void daStar_c::StateIdle() {
                 mFlags |= CUTSCENE_FLAG;
                 gNextActorUpdateMask |= CUTSCENE_FLAG;
             } else if (mScaleX == 0x1000) {
-                mAppearTimer = lim + 0xb;
+                mAppearTimer = lim + 11;
                 mBits.appeared = 1;
                 AddStarMarker();
                 mdCc_c.flags &= ~1;
@@ -1041,7 +1038,7 @@ void daStar_c::StateIdle() {
                 }
             } else {
                 if (!mBits.switchStar)
-                    mAppearTimer = 0x3d;
+                    mAppearTimer = 61;
                 else
                     mAppearTimer = 0;
             }
@@ -1060,7 +1057,7 @@ void daStar_c::StateIdle() {
                 if (mStateTimer == 0)
                     func_02012790(0x42);
                 spd2 = mScaleX;
-                if (mStateTimer <= 0xf) {
+                if (mStateTimer <= 15) {
                     mStateTimer += 1;
                     step2 = 0;
                 } else {
@@ -1289,7 +1286,7 @@ void daStar_c::StateCollectTalk() {
     mPosZ = src[2];
     mPrevAngleY = mPlayer->mAngleY;
     if (mKind == KIND_9) {
-        if (mMusicTimer < 0x78) {
+        if (mMusicTimer < 120) {
             Sound::ChangeMusicVolume(0, 0x7f000);
             mMusicTimer++;
         } else {
@@ -1335,8 +1332,8 @@ void daStar_c::StateCollectTalk() {
             st2 = 0x11;
 LA:
         if (mBits.answer == 0) {
-            *(u16 *)((int)&mStarFlags) =
-                (*(u16 *)((int)&mStarFlags) & ~0xc00) | ((data_0209d684 & 3) << 10);
+            u16 *starFlags = &mStarFlags;
+            *starFlags = (*starFlags & ~0xc00) | ((data_0209d684 & 3) << 10);
             {
                 u32 b3 = mBits.answer;
                 if (b3 == 1) {
@@ -1348,7 +1345,7 @@ LA:
                 }
             }
         }
-        mSeqTimer = 0xa;
+        mSeqTimer = 10;
         if (mPlayer->Unk_020c9e5c(st2) == 0) {
             mTalkStep = 2;
             mState = STATE_SAVE_MESSAGE;
@@ -1382,7 +1379,7 @@ LA:
  * adjusting the music. */
 void daStar_c::StateSaveMessage() {
     if (mKind == KIND_9) {
-        if (mMusicTimer < 0x78) {
+        if (mMusicTimer < 120) {
             Sound::ChangeMusicVolume(0, 0x7f000);
             mMusicTimer++;
         } else {
@@ -1500,7 +1497,7 @@ void daStar_c::StateWaitMarker() {
     if (!actor->mBits.hold) return;
 
     mBits.noPickup = 0;
-    mStateTimer = 0xf;
+    mStateTimer = 15;
     mState = STATE_BOUNCE;
     mVertSpeed = 0x20000;
     SetDefaultGravity();
@@ -1559,7 +1556,8 @@ void daStar_c::StateSpinAndEnd() {
             UntrackStar(mMarkerSlot);
         }
         mBits.visible = 0;
-        if (mSeqTimer < 0x64) return;
+        if (mSeqTimer < 100)
+            return;
         StopCollectSoundObj();
         if ((int)(gGameMode == 1) != 0) {
             MarkForDestruction();
@@ -1931,7 +1929,7 @@ void daStar_c::AddStarMarker()
 {
     s8 i;
     if (mMarkerSlot >= 0) return;
-    for (i = 0; i < 0xc; i++) {
+    for (i = 0; i < 12; i++) {
         if (STAR_MARKERS[(int)i] != 0)
             continue;
 
@@ -2042,7 +2040,7 @@ void daStar_c::ReturnToHome() {
     mState = mHomeState;
     mVertSpeed = 0x20000;
     SetDefaultGravity();
-    mStateTimer = 0xf;
+    mStateTimer = 15;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2320,7 +2318,7 @@ void func_ov002_020e8244(void *out, daStar_c *b)
     VEC_Add((struct Vector3 *)&b->mCenterX, &b->mPos, (struct Vector3 *)&b->mCenterX);
     {
         int *p = &b->mCenterY;
-        *p = *(int *)((char *)b->mAnmModel1.data.bones + 0xc) * 0xd + *p;
+        *p = b->mAnmModel1.data.bones->scaleX * 0xd + *p;
     }
     ((int *)out)[0] = b->mCenterX;
     ((int *)out)[1] = b->mCenterY;
@@ -2365,10 +2363,10 @@ void daStar_c::SpawnCollectEffects() {
     vc.y = FX_MUL(vc.y, mScaleY);
     vc.z = FX_MUL(vc.z, mScaleZ);
     VEC_Add(&vc, &mPos, &vc);
-    *(void **)&mParticle[0] =
-        (void *)Particle::System::New(mParticle[0], kPtclStarCollectA, vc.x, vc.y, vc.z, 0, 0);
-    *(void **)&mParticle[1] =
-        (void *)Particle::System::New(mParticle[1], kPtclStarCollectB, vc.x, vc.y, vc.z, 0, 0);
+    mParticle[0] =
+        (u32)Particle::System::New(mParticle[0], kPtclStarCollectA, vc.x, vc.y, vc.z, 0, 0);
+    mParticle[1] =
+        (u32)Particle::System::New(mParticle[1], kPtclStarCollectB, vc.x, vc.y, vc.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2384,7 +2382,7 @@ void daStar_c::SpawnPoseEffects() {
 
     root = mAnmModel1.data.bones;
 
-    if (!mAnmModel1.Finished() && (u32)((*(u32 *)&mAnmModel1.currFrame << 4) >> 0x10) >= 2 &&
+    if (!mAnmModel1.Finished() && (u32)(((u32)mAnmModel1.currFrame << 4) >> 0x10) >= 2 &&
         root->scaleX != 0) {
         func_ov002_020e8244(&v1, this);
         mParticle[0] =
@@ -2422,8 +2420,8 @@ void daStar_c::UpdateSparkleEffect() {
         zvar = zraw;
         y = yadj;
     }
-    mParticle[2] =
-        (u32)Particle::System::New(*(volatile u32 *)&mParticle[2], kPtclStarSparkle, x, y, z, 0, 0);
+    volatile u32 &slot = mParticle[2];
+    mParticle[2] = (u32)Particle::System::New(slot, kPtclStarSparkle, x, y, z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2583,14 +2581,14 @@ void daStar_c::PlaceCameraOnRing(void *cam) {
             short ang = Vec3_HorzAngle(&vec[0], (Vector3*)&mCamPosX);
             vec[0].x = FX_SinIdx((u16)(s16)(ang + ((r6 & 3) << 14)) >> 4) * 1000 + vec[0].x;
             vec[0].z = FX_CosIdx((u16)(s16)(ang + ((r6 & 3) << 14)) >> 4) * 1000 + vec[0].z;
-            ((dCamera_c *)cam)->SetPos(*(const Vector3 *)&vec[0]);
+            ((dCamera_c *)cam)->SetPos(vec[0]);
         } else {
             if (!IsAreaShowing(mAreaId))
                 return;
             short ang = Vec3_HorzAngle(&vec[0], (Vector3*)&mCamPosX);
             vec[0].x += FX_MUL(dist, FX_SinIdx((u16)(s16)(ang + ((r6 & 3) << 14)) >> 4));
             vec[0].z += FX_MUL(dist, FX_CosIdx((u16)(s16)(ang + ((r6 & 3) << 14)) >> 4));
-            ((dCamera_c *)cam)->SetPos(*(const Vector3 *)&vec[0]);
+            ((dCamera_c *)cam)->SetPos(vec[0]);
         }
 
         if (!IsAreaShowing(mAreaId))

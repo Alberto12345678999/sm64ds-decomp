@@ -63,7 +63,7 @@ int daBDonketu_c::InitResources() {
     mFileTable = &data_ov064_0211b93c;
     result = InitResourcesCommon();
     mStarID = param1 & 0xf;
-    mTrackStarID = (u8)TrackStar(mStarID, 2);
+    mTrackStarID = (s8)TrackStar(mStarID, 2);
     mSecretSoundCounter = 0;
 
     if ((param1 & 0xff00) == 0x100) {
@@ -170,23 +170,23 @@ void daBDonketu_c::UpdateDeathState() {
     pos.y = mPosY;
     pos.z = mPosZ;
     pos.y += 0x64000;
-    UntrackAndSpawnStar(*(s8 *)&mTrackStarID, (mStarID | 0x40) & 0xff, pos, 4);
+    UntrackAndSpawnStar(mTrackStarID, (mStarID | 0x40) & 0xff, pos, 4);
 }
 
 /* Charge timer, then run. Key function: the inline destructor emits no vtable. */
 int daBDonketu_c::UpdateRunState() {
-    if ((u16)mStateTimer < 0xa) {
+    if ((u16)mStateTimer < 10) {
         mHorzSpeed = 0;
         int result = func_ov064_02116110(0x700);
         if (result != 0)
             return result;
-        u16 *timer = (u16 *)&mStateTimer;
+        u16 *timer = &mStateTimer;
         if (*timer == 9)
             *timer = 0;
         return (int)timer;
     }
     mHorzSpeed = 0x14000;
-    u16 *timer = (u16 *)&mStateTimer;
+    u16 *timer = &mStateTimer;
     u32 value = *timer;
     if (value > 0x23) {
         value = 0;

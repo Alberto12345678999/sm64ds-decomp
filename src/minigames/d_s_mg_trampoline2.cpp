@@ -33,8 +33,6 @@ enum d_s_mg_trampoline2_AssetId {
  *
  * leftovers:
  * - 0x7acc has no matched read.
- * - NewCleanParticle takes Fix12 by value, which costs the caller bytes
- *   (notes/mwccarm-codegen.md 6az).
  * - The 0x78-element pool helpers stay free functions over char *; they
  *   read the record through Trmp2Spinner.h's view. Their
  *   pointer locals (Init's p1..p3, Update's p), StatePlay's level pointer
@@ -63,7 +61,7 @@ enum d_s_mg_trampoline2_AssetId {
 
 
 /* local: the ROM re-reads the slot byte at each use here, so keep the read volatile. */
-#define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
+#define ACTIVE_SLOT (gActivePlayerSlot)
 /* local: these readers only reproduce through a 4-byte-record view of the lane. */
 #define TOUCH_REC(lane) ((unsigned char (*)[4])(lane))
 
@@ -325,7 +323,7 @@ int dScMgTrampoline2_c::CanEndState(int /* mode */) {
 
 void dScMgTrampoline2_c::BeginIntro() {
     short a, b;
-    mTimer = 0x5a;
+    mTimer = 90;
     a = sTrmpStartTouchX;
     mTouchStartX = a;
     b = sTrmpStartTouchY;
@@ -385,7 +383,7 @@ void dScMgTrampoline2_c::StateIntro() {
 }
 
 void dScMgTrampoline2_c::BeginPlay() {
-    mTimer = 0xb4;
+    mTimer = 180;
     mInputEnabled = 1;
     /* The callee ignores r0; this + 0x7b00 lands mid-element in mScorePopups. */
     Trmp2Mario_PlaceAtStart();
@@ -469,12 +467,12 @@ void dScMgTrampoline2_c::StatePlay() {
             SpawnWave();
         }
     }
-    mTimer = 0x78;
+    mTimer = 120;
 }
 
 void dScMgTrampoline2_c::BeginResults() {
     Trmp2Mario_EnterAll();
-    mTimer = 0x5a;
+    mTimer = 90;
     mState = &dScMgTrampoline2_c::StateResults;
 }
 
@@ -487,7 +485,7 @@ void dScMgTrampoline2_c::StateResults() {
         return;
     Mg_SetSharedState(MG_STATE_GAME_OVER);
     mPromptEnabled = 0;
-    mTimer = 0xb4;
+    mTimer = 180;
     mState = &dScMgTrampoline2_c::StateWaitExit;
 }
 
@@ -779,9 +777,9 @@ s32 dScMgTrampoline2_c::Render() {
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite(sTrmp2TextSpritesByLanguage[idx][1], a1v, 0xc, 0);
+                DrawOamSprite(sTrmp2TextSpritesByLanguage[idx][1], a1v, 12, 0);
             } else {
-                RenderOamMainScreen(sTrmpLifeIconSprite, a1v, 0xc, -1, -1);
+                RenderOamMainScreen(sTrmpLifeIconSprite, a1v, 12, -1, -1);
             }
             a1v += 0x12;
         }
@@ -831,7 +829,7 @@ int dScMgTrampoline2_c::OnGraphCallback3() {
 /* OnGraphCallback0: the vtable slot is this class's own; the name is inferred. */
 int dScMgTrampoline2_c::OnGraphCallback0() {
 
-    u16 buf[5];
+    s16 buf[5];
 
     if (!dScMgBase_c::OnGraphCallback0())
         return 0;
@@ -850,15 +848,14 @@ int dScMgTrampoline2_c::OnGraphCallback0() {
 
     if (mTouchReleased != 0) {
         s16 a = *(volatile s16 *)&mTouchStartX;
-        if ((a < 0x18 && *(volatile s16 *)&mTouchX < 0x18) ||
-            (a > 0xe8 && *(volatile s16 *)&mTouchX > 0xe8)) {
+        if ((a < 0x18 && mTouchX < 0x18) || (a > 0xe8 && mTouchX > 0xe8)) {
             func_02012790(0xe);
         } else {
             buf[1] = mTouchStartX;
             buf[2] = mTouchStartY;
             buf[3] = mTouchX;
             buf[4] = mTouchY;
-            if (TrmpLine::Create((s16 *)&buf[1], (s16 *)&buf[3])) {
+            if (TrmpLine::Create(&buf[1], &buf[3])) {
                 func_02012718(0x1af, (mTouchStartX + mTouchX) << 11);
             } else {
                 func_02012790(0xe);
@@ -908,7 +905,7 @@ void dScMgTrampoline2_c::InitBrush(int layer) {
         return;
     }
 
-    for (i = 0; i < 0x300; i++) {
+    for (i = 0; i < 768; i++) {
         t0 = v;
         MI_CpuFill16(scrPtr, t0, 2);
         v = (unsigned short)(v + 1);
@@ -1089,7 +1086,7 @@ void Trmp2Spinner_Init(void *r0, int value) {
     }
     func_020169f4((char *)spinner, sTrmp2SpinnerColors[idx]);
     int scale = value * 0xA00;
-    spinner->mLifeTimer = 0xF0;
+    spinner->mLifeTimer = 240;
     if (scale > 0x4000) {
         scale = 0x4000;
     }

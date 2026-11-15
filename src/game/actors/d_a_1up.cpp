@@ -101,11 +101,9 @@
  *   as a mushroom launches, 0x69 once when type 13 starts).
  * - The vulnFlags/hitFlags bit names come from the best-effort table in
  *   include/dCc_c.h.
- * - The PlayBank3 / IsPlayerInRange / ReflectAngle / DropShadowRadHeight /
- *   Vec3_* / Matrix4x3_* / cstd / Particle::System::New externs are the
- *   spelled-out declarations in the file-scope `extern "C"` region (the
- *   Fix12/undeclared walls above are why real method/header forms are not
- *   used); member bodies cannot carry per-site views.
+ * - The Vec3_* / Matrix4x3_* externs are the spelled-out declarations in
+ *   the file-scope `extern "C"` region; member bodies cannot carry per-site
+ *   views.
  */
 
 #pragma defer_codegen off
@@ -252,9 +250,7 @@ void da1up_c::func_ov002_020aefa4() {
    non-virtual methods. The merged TU has both real classes complete through
    da1up_c.h, so the shadows are gone and the calls go through the real types --
    which mangle identically, the class name being the whole of the difference.
-   ReflectAngle is a real member call: the by-value Fix12<int> its old
-   mangled name claimed was never in the ROM, and with scalar parameters the
-   typed call costs nothing (notes/mwccarm-codegen.md 6az, batch 5). */
+   ReflectAngle is a real member call. */
 void da1up_c::UpdatePhysics() {
 
     UpdatePosWithHorzSpeedAndAng();
@@ -271,7 +267,7 @@ void da1up_c::UpdatePhysics() {
             if (mHorzSpeed >= 0xf000) mHorzSpeed = 0xf000;
         }
     }
-    UpdatePosWithOnlySpeed((dCc_c*)&mdCcAc_c);
+    UpdatePosWithOnlySpeed(&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
     if (!mWithMeshClsn.IsOnWall()) return;
     mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
@@ -294,15 +290,11 @@ void da1up_c::SteerTowardPlayer() {
     if(p != 0){
         Vector3 diff;
         Vector3 ppos;
-        /* The player's position is read through an int * over a (void *) of
-           &p->mPosX; reading p->mPosX/Y/Z directly here changes the bytes
-           (tried: it did not byte-match), so that spelling stays. The (int)
-           round-trip that used to sit between the two casts did nothing and
-           is gone (#821). */
-        int *s = (int *)(void *)&p->mPosX;
-        ppos.x = s[0];
-        ppos.y = s[1];
-        ppos.z = s[2];
+        /* mPos is the position. Reading mPosX/Y/Z directly changes the bytes. */
+        const Vector3 *s = &p->mPos;
+        ppos.x = s->x;
+        ppos.y = s->y;
+        ppos.z = s->z;
         diff.x = ppos.x - mPosX;
         if (p->func_ov002_020d0d2c() != 0)
             diff.y = ppos.y - mPosY - 0x50000;
@@ -492,7 +484,7 @@ void da1up_c::UpdateLaunchArc() {
      airborne:        dBgCh_Gnd probes the floor from 40 units (0x28000) above
                       the actor; depth = the actor's height over the hit (1 unit
                       at least), radius = twice (cylinder radius - 10 units)
-                      minus depth * 0x180 / 0x1000 (a Fix12 multiply by 0.09375),
+                      minus depth * 0x180 / 0x1000 (an fx32 multiply by 0.09375),
                       10 units at least, and then depth += 60 units (0x3c000);
      on the ground:   depth = 60 units, radius = twice (cylinder radius - 10 units). */
 void da1up_c::UpdateModelAndShadow() {
@@ -707,10 +699,10 @@ void da1up_c::UpdateHiddenChase() {
 
     case 3:
         UpdatePhysics();
-        if (mStateTimer > 0x11)
+        if (mStateTimer > 17)
             UpdateTrailEffect();
         UpdateLaunchArc();
-        if (mStateTimer != 0x25)
+        if (mStateTimer != 37)
             return;
 
         mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
@@ -775,11 +767,11 @@ void da1up_c::UpdateHiddenFlee() {
         return;
     case 3:
         UpdatePhysics();
-        if (mStateTimer > 0x11) {
+        if (mStateTimer > 17) {
             UpdateTrailEffect();
         }
         UpdateLaunchArc();
-        if (mStateTimer != 0x25)
+        if (mStateTimer != 37)
             return;
         mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
         mState = 1;
@@ -922,7 +914,7 @@ void da1up_c::UpdatePopOutFlee() {
             Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
         }
         UpdateLaunchArc();
-        if (mStateTimer == 0x25) {
+        if (mStateTimer == 37) {
             mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
             mState = 1;
             mHorzSpeed = 0x8000;
@@ -955,14 +947,14 @@ void da1up_c::UpdatePopOutDrift() {
         if (mStateTimer == 0)
             Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
         UpdateLaunchArc();
-        if (mStateTimer != 0x25)
+        if (mStateTimer != 37)
             break;
         mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
         mState = 1;
         mHorzSpeed = 0x2000;
         break;
     case 1:
-        if (mStateTimer > 0x12c)
+        if (mStateTimer > 300)
             mState = 2;
         CollectOnTouch();
         break;

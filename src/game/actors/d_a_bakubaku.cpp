@@ -24,8 +24,6 @@
  * fields; the existing vector pointer views at those helper boundaries are
  * still partial reconstruction. The state timer uses unsigned halfword reads,
  * and the state installer retains its StateFn pointer read-back.
- * Native Fix12<int> calls for collision setup, animation, shadow and Hurt
- * remain pending; the local declarations retain their matched scalar ABI.
  * The forward vectors retain the observed doubled Z store and store order.
  * g_profile_BAKUBAKU remains this file's data, not a class member.
  */
@@ -96,7 +94,6 @@ extern VecFx32 data_ov032_021137d8; /* head cylinder */
 extern "C" int AngleDiff(int a, int b);
 s16 Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 
-/* local extern: retain the matched scalar ABI; native Fix12<int> calls remain pending. */
 /* Parameter names keep this TU's @NNN. */
 extern "C" {
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a,
@@ -135,7 +132,7 @@ SpawnInfo<daBakubaku_c> g_profile_BAKUBAKU = {
 
 int daBakubaku_c::OnAimedAtWithEgg()
 {
-    return 0xa0000; /* Fix12 160.0, egg aim height */
+    return 0xa0000; /* fx32 160.0, egg aim height */
 }
 
 s32 daBakubaku_c::InitResources()
@@ -144,11 +141,11 @@ s32 daBakubaku_c::InitResources()
     Vector3 headOffset;
     void *f;
 
-    f = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBakubakuModelFile);
+    f = dExtSimpleModel_c::LoadFile(gBakubakuModelFile);
     mAnmModel.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a48);
+    dExtFrameCtrl_c::LoadFile(data_ov032_02113a50);
+    dExtFrameCtrl_c::LoadFile(data_ov032_02113a48);
 
     bodyOffset.x = data_ov032_021137cc.x;
     bodyOffset.y = data_ov032_021137cc.y;
@@ -170,7 +167,7 @@ s32 daBakubaku_c::InitResources()
     mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
     mAnmModel.speed = 0x1000;
 
-    SetState((State *)&data_ov032_02113a8c);
+    SetState(&data_ov032_02113a8c);
     return 1;
 }
 
@@ -227,9 +224,9 @@ void daBakubaku_c::OnPendingDestroy()
 
 s32 daBakubaku_c::CleanupResources()
 {
-    ((SharedFilePtr *)&gBakubakuModelFile)->Release();
-    ((SharedFilePtr *)&data_ov032_02113a50)->Release();
-    ((SharedFilePtr *)&data_ov032_02113a48)->Release();
+    gBakubakuModelFile.Release();
+    data_ov032_02113a50.Release();
+    data_ov032_02113a48.Release();
     return 1;
 }
 
@@ -263,7 +260,7 @@ int daBakubaku_c::EnterWander() {
     unsigned int r = RandomIntInternal(&data_0209e650.value);
     mAngTarget = ((r >> 8) & 0xf) << 0xc;
     r = RandomIntInternal(&data_0209e650.value);
-    mStateTimer = ((r >> 8) & 0x3f) + 0x32;
+    mStateTimer = ((r >> 8) & 0x3f) + 50;
     mAnmModel.speed = 0x1000;
     return 1;
 }
@@ -276,8 +273,8 @@ int daBakubaku_c::ExecuteWander() {
 
     ApproachLinear(mHorzSpeed, 0x5000, 0x333);
     if (ShouldReturnHome() == 1) {
-        mStateTimer = 0x28;
-        mChaseCooldown = 0x28;
+        mStateTimer = 40;
+        mChaseCooldown = 40;
         ang = Vec3_HorzAngle(&mPos, (const Vector3 *)&mSpawnPosX);
         mAngTarget = ang;
     }
@@ -304,7 +301,7 @@ int daBakubaku_c::ExecuteWander() {
         if (((r >> 8) & 3) == 0) {
             SetState(&data_ov032_02113a9c);
         } else {
-            SetState((State *)&data_ov032_02113a8c);
+            SetState(&data_ov032_02113a8c);
         }
     }
     return 1;
@@ -313,7 +310,7 @@ int daBakubaku_c::ExecuteWander() {
 /* Pause enter: short timer, kill the velocity. */
 int daBakubaku_c::EnterPause() {
     unsigned int r = RandomIntInternal(&data_0209e650.value);
-    mStateTimer = ((r >> 8) & 0x1f) + 0x14;
+    mStateTimer = ((r >> 8) & 0x1f) + 20;
     mAnmModel.speed = 0x1000;
     mSpeedX = 0;
     mVertSpeed = 0;
@@ -328,13 +325,13 @@ int daBakubaku_c::ExecutePause() {
         return 1;
     }
     if (mStateTimer == 0)
-        SetState((State *)&data_ov032_02113a8c);
+        SetState(&data_ov032_02113a8c);
     return 1;
 }
 
 /* Chase enter. */
 int daBakubaku_c::EnterChase() {
-    mStateTimer = 0x12c;
+    mStateTimer = 300;
     mAnmModel.speed = 0x2000;
     mHorzSpeed = 0xa000;
     return 1;
@@ -345,8 +342,8 @@ int daBakubaku_c::ExecuteChase() {
     /* Out of time, chase aborted, or no target: back to wandering. */
     if (mStateTimer == 0 || ShouldReturnHome() == 1 || FindChaseTarget() == 0) {
         mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
-        mChaseCooldown = 0x64;
-        SetState((State *)&data_ov032_02113a8c);
+        mChaseCooldown = 100;
+        SetState(&data_ov032_02113a8c);
         return 1;
     }
 
@@ -458,13 +455,13 @@ int daBakubaku_c::ExecuteDive() {
             s16 a = mPrevAngleX;
             if (a < 0) a = -a;
             if (a < 0x100) {
-                mChaseCooldown = 0x64;
+                mChaseCooldown = 100;
                 mAngTarget = mAngleY;
                 mFlags = 3; /* profile clip bits 1|2 */
                 mBodyClsn.flags &= ~kCcCharMove;
                 mHeadClsn.flags &= ~kCcCharMove;
                 mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
-                SetState((State *)&data_ov032_02113a8c);
+                SetState(&data_ov032_02113a8c);
                 return 1;
             }
         }
@@ -522,11 +519,11 @@ int daBakubaku_c::ExecuteSurface() {
         mMouthOpen = 0;
         if (AngleDiff(mPrevAngleX, 0) < 0x200) {
             mPrevAngleX = 0;
-            mChaseCooldown = 0x64;
+            mChaseCooldown = 100;
             mAngTarget = mAngleY;
             mFlags = 3;
             mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
-            SetState((State *)&data_ov032_02113a8c);
+            SetState(&data_ov032_02113a8c);
         }
     } else {
         Vector3 vec;
@@ -629,15 +626,15 @@ int daBakubaku_c::ShouldReturnHome() {
 /* Mario is a chase target. Stores his position. */
 int daBakubaku_c::FindChaseTarget() {
     daPly_c *pl = ClosestPlayer();
-    int *s;
+    const Vector3 *s;
     void *t;
     int d;
     if (pl == 0 || mChaseCooldown != 0)
         return 0;
-    s = (int *)&pl->mPosX;
-    mTargetPosX = s[0];
-    mTargetPosY = s[1];
-    mTargetPosZ = s[2];
+    s = &pl->mPos;
+    mTargetPosX = s->x;
+    mTargetPosY = s->y;
+    mTargetPosZ = s->z;
     t = mState;
     if (t != &data_ov032_02113abc && t != &data_ov032_02113a7c) {
         if (pl->mIsUnderwater == 0)

@@ -97,7 +97,7 @@ s32 daObjWlPolelift_c::Behavior()
     int scale;
     int skipCollision;
 
-    if (DecIfAbove0_Short((u16 *)&bounceTimer) == 0) {
+    if (DecIfAbove0_Short(&bounceTimer) == 0) {
         speed = moveSpeed;
         current = curNodeIdx;
         prevNodeIdx = current - speed;
@@ -130,7 +130,7 @@ s32 daObjWlPolelift_c::Behavior()
                 if (path.Loops()) {
                     curNodeIdx = numNodes - 1;
                 } else {
-                    bounceTimer = 0x3c;
+                    bounceTimer = 60;
                     moveSpeed = 1;
                     curNodeIdx += moveSpeed << 1;
                 }
@@ -139,7 +139,7 @@ s32 daObjWlPolelift_c::Behavior()
                 if (path.Loops()) {
                     curNodeIdx = 0;
                 } else {
-                    bounceTimer = 0x3c;
+                    bounceTimer = 60;
                     moveSpeed = -1;
                     curNodeIdx += moveSpeed << 1;
                 }
