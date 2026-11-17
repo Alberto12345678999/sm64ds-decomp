@@ -23,6 +23,7 @@
 // speed registers.
 
 #include "dScMgBomroom_c.h"
+#include "OamAttr.h"
 #include "nitro/hw/registers.h"
 #include "types.h"
 #include "nitro/gx/gx_load.h"
@@ -37,14 +38,138 @@
 #include "nitro/gx/gx_bgcnt.h"
 #include "PlayerInput.h"
 #include "nitro/mi/memory.h"
+#include "SpawnInfo.h"
 
 extern "C" {
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-extern OamAttr *sBomroomPenGateSprites[];
+OamAttr data_ov006_02134514[5] = {
+    {0x8000, 0x01fd, 0x101a, 0x0000}, {0x80f0, 0x01fd, 0x101a, 0x0000},
+    {0x0010, 0x01fd, 0x105a, 0x0000}, {0x0018, 0x01fd, 0x105a, 0x0000},
+    {0x0020, 0x01fd, 0x101b, 0xffff},
+};
+OamAttr data_ov006_0213466c[10] = {
+    {0x00ef, 0x4000, 0x1094, 0x0000}, {0x80ef, 0x0010, 0x1096, 0x0000},
+    {0x40ff, 0x0000, 0x10d4, 0x0000}, {0x00ff, 0x0010, 0x10d6, 0x0000},
+    {0x0017, 0x4000, 0x10d7, 0x0000}, {0x8017, 0x0010, 0x10d9, 0x0000},
+    {0x4007, 0x0000, 0x10f4, 0x0000}, {0x0007, 0x0010, 0x10f6, 0x0000},
+    {0x400f, 0x0000, 0x10b7, 0x0000}, {0x000f, 0x0010, 0x10b9, 0xffff},
+};
+OamAttr data_ov006_021345ec[8] = {
+    {0x000f, 0x4000, 0x1014, 0x0000}, {0x800f, 0x0010, 0x1016, 0x0000},
+    {0x401f, 0x0000, 0x1054, 0x0000}, {0x001f, 0x0010, 0x1056, 0x0000},
+    {0x00ef, 0x4000, 0x1014, 0x0000}, {0x80ef, 0x0010, 0x1016, 0x0000},
+    {0x40ff, 0x0000, 0x1054, 0x0000}, {0x00ff, 0x0010, 0x1056, 0xffff},
+};
+OamAttr data_ov006_02134484[4] = {
+    {0x800f, 0x8000, 0x1017, 0x0000},
+    {0x800f, 0x4010, 0x1019, 0x0000},
+    {0x80e7, 0x8000, 0x1097, 0x0000},
+    {0x80e7, 0x4010, 0x1099, 0xffff},
+};
+OamAttr data_ov006_0213456c[8] = {
+    {0x8010, 0x01fd, 0x101a, 0x0000}, {0x80e0, 0x01fd, 0x101a, 0x0000},
+    {0x0000, 0x01fd, 0x101b, 0x0000}, {0x0030, 0x01fd, 0x101b, 0x0000},
+    {0x00f0, 0x01fd, 0x105a, 0x0000}, {0x00f8, 0x01fd, 0x105a, 0x0000},
+    {0x0020, 0x01fd, 0x105a, 0x0000}, {0x0028, 0x01fd, 0x105a, 0xffff},
+};
+OamAttr data_ov006_021344c4[5] = {
+    {0x8000, 0x01fb, 0x101a, 0x0000}, {0x0010, 0x01fb, 0x105a, 0x0000},
+    {0x0018, 0x01fb, 0x105a, 0x0000}, {0x0020, 0x01fb, 0x101b, 0x0000},
+    {0x80f0, 0x01fb, 0x101a, 0xffff},
+};
+OamAttr data_ov006_0213453c[6] = {
+    {0x80ef, 0x91f0, 0x1094, 0x0000}, {0x80ef, 0x51e8, 0x1096, 0x0000},
+    {0x000f, 0x51f0, 0x10b7, 0x0000}, {0x800f, 0x11e8, 0x10b9, 0x0000},
+    {0x401f, 0x11f0, 0x10f7, 0x0000}, {0x001f, 0x11e8, 0x10f9, 0xffff},
+};
+OamAttr data_ov006_0213462c[8] = {
+    {0x000f, 0x51f0, 0x1014, 0x0000}, {0x800f, 0x11e8, 0x1016, 0x0000},
+    {0x401f, 0x11f0, 0x1054, 0x0000}, {0x001f, 0x11e8, 0x1056, 0x0000},
+    {0x00ef, 0x51f0, 0x1014, 0x0000}, {0x80ef, 0x11e8, 0x1016, 0x0000},
+    {0x40ff, 0x11f0, 0x1054, 0x0000}, {0x00ff, 0x11e8, 0x1056, 0xffff},
+};
+OamAttr data_ov006_021344a4[4] = {
+    {0x80e7, 0x91f0, 0x1097, 0x0000},
+    {0x80e7, 0x51e8, 0x1099, 0x0000},
+    {0x800f, 0x91f0, 0x1017, 0x0000},
+    {0x800f, 0x51e8, 0x1019, 0xffff},
+};
+OamAttr data_ov006_021345ac[8] = {
+    {0x8010, 0x01fb, 0x101a, 0x0000}, {0x0020, 0x01fb, 0x105a, 0x0000},
+    {0x0028, 0x01fb, 0x105a, 0x0000}, {0x0030, 0x01fb, 0x101b, 0x0000},
+    {0x80e0, 0x01fb, 0x101a, 0x0000}, {0x00f0, 0x01fb, 0x105a, 0x0000},
+    {0x00f8, 0x01fb, 0x105a, 0x0000}, {0x0000, 0x01fb, 0x101b, 0xffff},
+};
+OamAttr *sBomroomPenGateSprites[] = {
+    data_ov006_02134514, data_ov006_0213466c, data_ov006_021345ec, data_ov006_02134484,
+    data_ov006_0213456c, data_ov006_021344c4, data_ov006_0213453c, data_ov006_0213462c,
+    data_ov006_021344a4, data_ov006_021345ac,
+};
 extern int sBomroomPenGateX[];
 extern int sBomroomPenGateY[];
-extern OamAttr *sBomroomHatchPanelSprites[];
-extern OamAttr *sBomroomTopDoorSprites[];
+OamAttr data_ov006_02134340[6] = {
+    {0x00fb, 0x01f8, 0x101c, 0x0000}, {0x00fb, 0x01f0, 0x101c, 0x0000},
+    {0x00fb, 0x01e8, 0x101c, 0x0000}, {0x00fb, 0x0000, 0x101c, 0x0000},
+    {0x00fb, 0x0008, 0x101c, 0x0000}, {0x00fb, 0x0010, 0x101c, 0xffff},
+};
+OamAttr data_ov006_021342d0[4] = {
+    {0x40f8, 0x01e7, 0x1097, 0x0000},
+    {0x00f8, 0x01f7, 0x1099, 0x0000},
+    {0x40f8, 0x1009, 0x1097, 0x0000},
+    {0x00f8, 0x1001, 0x1099, 0xffff},
+};
+OamAttr data_ov006_021342f0[4] = {
+    {0x80f0, 0x01e4, 0x101a, 0x0000},
+    {0x80f0, 0x0014, 0x101a, 0x0000},
+    {0x40f8, 0x01f0, 0x003c, 0x0000},
+    {0x40f8, 0x0000, 0x003d, 0xffff},
+};
+OamAttr data_ov006_02134310[6] = {
+    {0x40f8, 0x0018, 0x1097, 0x0000}, {0x00f8, 0x0028, 0x1099, 0x0000},
+    {0x40f8, 0x11d8, 0x1097, 0x0000}, {0x00f8, 0x11d0, 0x1099, 0x0000},
+    {0x40f8, 0x01f0, 0x005c, 0x0000}, {0x40f8, 0x0000, 0x005d, 0xffff},
+};
+OamAttr data_ov006_02134370[6] = {
+    {0x00fb, 0x01e0, 0x101c, 0x0000}, {0x00fb, 0x01d8, 0x101c, 0x0000},
+    {0x00fb, 0x01d0, 0x101c, 0x0000}, {0x00fb, 0x0018, 0x101c, 0x0000},
+    {0x00fb, 0x0020, 0x101c, 0x0000}, {0x00fb, 0x0028, 0x101c, 0xffff},
+};
+OamAttr *sBomroomHatchPanelSprites[] = {
+    data_ov006_02134340, data_ov006_021342d0, data_ov006_021342f0,
+    data_ov006_02134310, data_ov006_02134370,
+};
+OamAttr data_ov006_02134404[8] = {
+    {0x00f4, 0x41e8, 0x1014, 0x0000}, {0x80f4, 0x01f8, 0x1016, 0x0000},
+    {0x4004, 0x01e8, 0x1054, 0x0000}, {0x0004, 0x01f8, 0x1056, 0x0000},
+    {0x00f4, 0x5008, 0x1014, 0x0000}, {0x80f4, 0x1000, 0x1016, 0x0000},
+    {0x4004, 0x1008, 0x1054, 0x0000}, {0x0004, 0x1000, 0x1056, 0xffff},
+};
+OamAttr data_ov006_021343a0[2] = {
+    {0x80f4, 0x81e8, 0x1017, 0x0000},
+    {0x80f4, 0x9008, 0x1017, 0xffff},
+};
+OamAttr data_ov006_021343e4[4] = {
+    {0x80f4, 0x41e5, 0x101f, 0x0000},
+    {0x80f4, 0x4013, 0x101f, 0x0000},
+    {0x0014, 0x01e5, 0x107a, 0x0000},
+    {0x0014, 0x0013, 0x107a, 0xffff},
+};
+OamAttr data_ov006_021343c4[4] = {
+    {0x80f4, 0x8017, 0x1017, 0x0000},
+    {0x80f4, 0x4027, 0x1019, 0x0000},
+    {0x80f4, 0x91d9, 0x1017, 0x0000},
+    {0x80f4, 0x51d1, 0x1019, 0xffff},
+};
+OamAttr data_ov006_02134444[8] = {
+    {0x00f4, 0x4018, 0x1014, 0x0000}, {0x80f4, 0x0028, 0x1016, 0x0000},
+    {0x4004, 0x0018, 0x1054, 0x0000}, {0x0004, 0x0028, 0x1056, 0x0000},
+    {0x00f4, 0x51d8, 0x1014, 0x0000}, {0x80f4, 0x11d0, 0x1016, 0x0000},
+    {0x4004, 0x11d8, 0x1054, 0x0000}, {0x0004, 0x11d0, 0x1056, 0xffff},
+};
+OamAttr *sBomroomTopDoorSprites[] = {
+    data_ov006_02134404, data_ov006_021343a0, data_ov006_021343e4,
+    data_ov006_021343c4, data_ov006_02134444,
+};
 extern int sBomroomHatchPanelX[];
 extern int sBomroomHatchPanelY[];
 extern unsigned char *sBomroomBombFrameTimes[];
@@ -52,11 +177,94 @@ extern unsigned char sBomroomBombFrameCounts[];
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern unsigned char *sBomroomBombSprites[];
 extern unsigned char *sBomroomBombLitSprites[];
+extern "C" char data_ov006_02133dd0[];
+extern "C" char data_ov006_02133dc8[];
+extern "C" char data_ov006_02133dc0[];
+extern "C" char data_ov006_02133db8[];
+extern "C" char data_ov006_02133e00[];
+extern "C" char data_ov006_02133df8[];
+extern "C" char data_ov006_02133df0[];
+extern "C" char data_ov006_02133de8[];
+extern "C" char data_ov006_02133de0[];
+extern "C" char data_ov006_02133dd8[];
+extern "C" char data_ov006_02133c98[];
+extern "C" char data_ov006_02133c90[];
+extern "C" char data_ov006_02133c88[];
+extern "C" char data_ov006_02133c80[];
+extern "C" char data_ov006_02133c78[];
+extern "C" char data_ov006_02133c70[];
+extern "C" char data_ov006_02133ca8[];
+extern "C" char data_ov006_02133cb8[];
+extern "C" char data_ov006_02133ca0[];
+extern "C" char data_ov006_02133cc0[];
+extern "C" char data_ov006_02133cc8[];
+extern "C" char data_ov006_02133cb0[];
+extern "C" char data_ov006_02133ce8[];
+extern "C" char data_ov006_02133d50[];
 extern void *sBomroomBombsSprites[];
 extern void RenderOamMainScreen(OamAttr *a0, int a1, int a2, int a3, int a4);
-extern OamAttr *sBomroomRoundOverSprites;
-extern void *sBomroomMarkerPlainSprites[];
-extern void *sBomroomMarkerLitSprites[];
+OamAttr data_ov006_02134f34[21] = {
+    {0x00f8, 0x01f8, 0x011d, 0x0000}, {0x00f8, 0x01f0, 0x011d, 0x0000},
+    {0x00f8, 0x01e8, 0x011d, 0x0000}, {0x00f8, 0x01e0, 0x011d, 0x0000},
+    {0x00f8, 0x01d8, 0x011d, 0x0000}, {0x00f8, 0x01d0, 0x011d, 0x0000},
+    {0x00f8, 0x01c8, 0x011d, 0x0000}, {0x00f8, 0x01c0, 0x011d, 0x0000},
+    {0x00f8, 0x01b8, 0x011d, 0x0000}, {0x00f8, 0x01b0, 0x011d, 0x0000},
+    {0x00f8, 0x0040, 0x011d, 0x0000}, {0x00f8, 0x0038, 0x011d, 0x0000},
+    {0x00f8, 0x0030, 0x011d, 0x0000}, {0x00f8, 0x0028, 0x011d, 0x0000},
+    {0x00f8, 0x0020, 0x011d, 0x0000}, {0x00f8, 0x0018, 0x011d, 0x0000},
+    {0x00f8, 0x0010, 0x011d, 0x0000}, {0x00f8, 0x0008, 0x011d, 0x0000},
+    {0x00f8, 0x0000, 0x011d, 0x0000}, {0x00f8, 0x01f8, 0x011d, 0x0000},
+    {0x00f8, 0x0048, 0x011d, 0xffff},
+};
+OamAttr *sBomroomRoundOverSprites = data_ov006_02134f34;
+OamAttr data_ov006_02133b60[8] = {
+    {0x00f0, 0x41f0, 0x0110, 0x0000}, {0x4000, 0x01f0, 0x0150, 0x0000},
+    {0x80f0, 0x0000, 0x0111, 0x0000}, {0x0000, 0x0000, 0x0151, 0x0000},
+    {0x80f0, 0x0008, 0x0112, 0x0000}, {0x0000, 0x0008, 0x0152, 0x0000},
+    {0x80f8, 0x0010, 0x0133, 0x0000}, {0x00f0, 0x0010, 0x0154, 0xffff},
+};
+OamAttr data_ov006_02133ba0[8] = {
+    {0x00f0, 0x41f0, 0x0114, 0x0000}, {0x80f0, 0x0000, 0x0115, 0x0000},
+    {0x80f0, 0x0008, 0x0116, 0x0000}, {0x4000, 0x01f0, 0x0150, 0x0000},
+    {0x4000, 0x0000, 0x0151, 0x0000}, {0x0000, 0x0010, 0x0153, 0x0000},
+    {0x00f8, 0x0010, 0x0133, 0x0000}, {0x00f0, 0x0010, 0x0154, 0xffff},
+};
+OamAttr data_ov006_02133af0[7] = {
+    {0x00f0, 0x41f0, 0x0117, 0x0000}, {0x00f0, 0x4000, 0x0118, 0x0000},
+    {0x4000, 0x01f0, 0x0150, 0x0000}, {0x4000, 0x0000, 0x0151, 0x0000},
+    {0x0000, 0x0010, 0x0153, 0x0000}, {0x00f8, 0x0010, 0x0133, 0x0000},
+    {0x00f0, 0x0010, 0x0154, 0xffff},
+};
+OamAttr data_ov006_02133b28[7] = {
+    {0x00f0, 0x41f0, 0x011a, 0x0000}, {0x00f0, 0x4000, 0x011b, 0x0000},
+    {0x4000, 0x01f0, 0x0150, 0x0000}, {0x4000, 0x0000, 0x0151, 0x0000},
+    {0x0000, 0x0010, 0x0153, 0x0000}, {0x00f8, 0x0010, 0x0133, 0x0000},
+    {0x00f0, 0x0010, 0x0154, 0xffff},
+};
+OamAttr *sBomroomMarkerPlainSprites[] = {data_ov006_02133b60, data_ov006_02133ba0,
+                                         data_ov006_02133af0, data_ov006_02133b28};
+OamAttr data_ov006_02133ab0[3] = {
+    {0x40fc, 0x21f0, 0x0134, 0x0000},
+    {0x40fc, 0x2000, 0x0135, 0x0000},
+    {0x00fc, 0x0010, 0x0113, 0xffff},
+};
+OamAttr data_ov006_02133a98[3] = {
+    {0x40fc, 0x21f0, 0x0137, 0x0000},
+    {0x40fc, 0x2000, 0x0138, 0x0000},
+    {0x00fc, 0x0010, 0x0113, 0xffff},
+};
+OamAttr data_ov006_02133a80[3] = {
+    {0x40fc, 0x21f0, 0x013a, 0x0000},
+    {0x40fc, 0x2000, 0x013b, 0x0000},
+    {0x00fc, 0x0010, 0x0113, 0xffff},
+};
+OamAttr data_ov006_02133ac8[3] = {
+    {0x40fc, 0x21f0, 0x0130, 0x0000},
+    {0x40fc, 0x2000, 0x0131, 0x0000},
+    {0x00fc, 0x0010, 0x0113, 0xffff},
+};
+OamAttr *sBomroomMarkerLitSprites[] = {data_ov006_02133ab0, data_ov006_02133a98,
+                                       data_ov006_02133a80, data_ov006_02133ac8};
 extern int sBomroomMarkerY[];
 extern int Mg_GetSubmittedScore(void);
 extern u16 sBomroomSpawnDelays[];
@@ -279,7 +487,7 @@ void dScMgBomroom_c::TopDoor_StateClosing(int index) {
     }
 }
 
-void dScMgBomroom_c::TopDoor_StateOpen() {}
+void dScMgBomroom_c::TopDoor_StateOpen(int index) {}
 
 void dScMgBomroom_c::TopDoor_StateOpening(int index) {
     if (mTopDoor[index].idx >= 4) {
@@ -445,7 +653,7 @@ void dScMgBomroom_c::HatchPanel_StateRevert(int index) {
     }
 }
 
-void dScMgBomroom_c::HatchPanel_StateHeld() {}
+void dScMgBomroom_c::HatchPanel_StateHeld(int index) {}
 
 void dScMgBomroom_c::HatchPanel_StateAnimate(int index) {
     mHatchPanels[index].timer += 1;
@@ -956,7 +1164,7 @@ void dScMgBomroom_c::CheckColorComplete() {
     TopDoor_Open();
 }
 
-void dScMgBomroom_c::BombMarch_LinedUp() {}
+void dScMgBomroom_c::BombMarch_LinedUp(int index) {}
 
 void dScMgBomroom_c::BombMarch_ToLine(int index) {
     if (mBombs[index].marchDelay != 0) {
@@ -1000,7 +1208,7 @@ void dScMgBomroom_c::BombMarch_ToLine(int index) {
     }
 }
 
-void dScMgBomroom_c::BombMarch_Offscreen() {}
+void dScMgBomroom_c::BombMarch_Offscreen(int index) {}
 
 void dScMgBomroom_c::BombMarch_Exit(int index) {
     int color, x;
@@ -1846,81 +2054,49 @@ void *dScMgBomroom_c_classInit() {
     return new dScMgBomroom_c;
 }
 
-/* The seven state tables. mwcc emits __sinit_d_s_mg_bomroom.cpp from these
- * definitions: each entry is one pointer-to-member, copied from the ROM
- * pmf_dScMgBomroom_c_* constants in retail order. Round and round-end take
- * no argument; the other five take the slot. */
-extern PMFv pmf_dScMgBomroom_c_Round_StateSetup;
-extern PMFv pmf_dScMgBomroom_c_Round_StateStart;
-extern PMFv pmf_dScMgBomroom_c_Round_StatePlay;
-extern PMFv pmf_dScMgBomroom_c_Round_StateEnd;
-extern PMFv pmf_dScMgBomroom_c_Round_StateGameOver;
-extern PMFv pmf_dScMgBomroom_c_RoundEnd_StartMarch;
-extern PMFv pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp;
-extern PMFv pmf_dScMgBomroom_c_RoundEnd_Tally;
-extern PMFv pmf_dScMgBomroom_c_RoundEnd_Finish;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateWaiting;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateWalk;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateHeld;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateChainDelay;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateExploding;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateInPen;
-extern PMF pmf_dScMgBomroom_c_Bomb_StateMarch;
-extern PMF pmf_dScMgBomroom_c_BombMarch_ToGate;
-extern PMF pmf_dScMgBomroom_c_BombMarch_Exit;
-extern PMF pmf_dScMgBomroom_c_BombMarch_Offscreen;
-extern PMF pmf_dScMgBomroom_c_BombMarch_ToLine;
-extern PMF pmf_dScMgBomroom_c_BombMarch_LinedUp;
-extern PMF pmf_dScMgBomroom_c_HatchPanel_StateIdle;
-extern PMF pmf_dScMgBomroom_c_HatchPanel_StateAnimate;
-extern PMF pmf_dScMgBomroom_c_HatchPanel_StateHeld;
-extern PMF pmf_dScMgBomroom_c_HatchPanel_StateRevert;
-extern PMF pmf_dScMgBomroom_c_PenGate_StateShut;
-extern PMF pmf_dScMgBomroom_c_PenGate_StateOpening;
-extern PMF pmf_dScMgBomroom_c_PenGate_StateHold;
-extern PMF pmf_dScMgBomroom_c_PenGate_StateClosing;
-extern PMF pmf_dScMgBomroom_c_TopDoor_StateShut;
-extern PMF pmf_dScMgBomroom_c_TopDoor_StateOpening;
-extern PMF pmf_dScMgBomroom_c_TopDoor_StateOpen;
-extern PMF pmf_dScMgBomroom_c_TopDoor_StateClosing;
+BaseSpawnInfo<void> g_profile_MG_BOMROOM = {dScMgBomroom_c_classInit, 0x172, 0x172};
 
+/* The seven state tables. mwcc emits __sinit_d_s_mg_bomroom.cpp from these
+ * definitions: each entry is one pointer-to-member, copied from the {fn, 0}
+ * constant mwcc emits for each &dScMgBomroom_c:: initializer. Round and
+ * round-end take no argument; the other five take the slot. */
 extern "C" PMFv sBomroomRoundStateTable[5] = {
-    pmf_dScMgBomroom_c_Round_StateSetup,    pmf_dScMgBomroom_c_Round_StateStart,
-    pmf_dScMgBomroom_c_Round_StatePlay,     pmf_dScMgBomroom_c_Round_StateEnd,
-    pmf_dScMgBomroom_c_Round_StateGameOver,
+    &dScMgBomroom_c::Round_StateSetup,    &dScMgBomroom_c::Round_StateStart,
+    &dScMgBomroom_c::Round_StatePlay,     &dScMgBomroom_c::Round_StateEnd,
+    &dScMgBomroom_c::Round_StateGameOver,
 };
 extern "C" PMFv sBomroomRoundEndTable[4] = {
-    pmf_dScMgBomroom_c_RoundEnd_StartMarch,
-    pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp,
-    pmf_dScMgBomroom_c_RoundEnd_Tally,
-    pmf_dScMgBomroom_c_RoundEnd_Finish,
+    &dScMgBomroom_c::RoundEnd_StartMarch,
+    &dScMgBomroom_c::RoundEnd_WaitLinedUp,
+    &dScMgBomroom_c::RoundEnd_Tally,
+    &dScMgBomroom_c::RoundEnd_Finish,
 };
 PMF sBomroomBombStateTable[7] = {
-    pmf_dScMgBomroom_c_Bomb_StateWaiting,   pmf_dScMgBomroom_c_Bomb_StateWalk,
-    pmf_dScMgBomroom_c_Bomb_StateHeld,      pmf_dScMgBomroom_c_Bomb_StateChainDelay,
-    pmf_dScMgBomroom_c_Bomb_StateExploding, pmf_dScMgBomroom_c_Bomb_StateInPen,
-    pmf_dScMgBomroom_c_Bomb_StateMarch,
+    &dScMgBomroom_c::Bomb_StateWaiting,   &dScMgBomroom_c::Bomb_StateWalk,
+    &dScMgBomroom_c::Bomb_StateHeld,      &dScMgBomroom_c::Bomb_StateChainDelay,
+    &dScMgBomroom_c::Bomb_StateExploding, &dScMgBomroom_c::Bomb_StateInPen,
+    &dScMgBomroom_c::Bomb_StateMarch,
 };
 extern "C" PMF sBomroomBombMarchTable[5] = {
-    pmf_dScMgBomroom_c_BombMarch_ToGate,    pmf_dScMgBomroom_c_BombMarch_Exit,
-    pmf_dScMgBomroom_c_BombMarch_Offscreen, pmf_dScMgBomroom_c_BombMarch_ToLine,
-    pmf_dScMgBomroom_c_BombMarch_LinedUp,
+    &dScMgBomroom_c::BombMarch_ToGate,    &dScMgBomroom_c::BombMarch_Exit,
+    &dScMgBomroom_c::BombMarch_Offscreen, &dScMgBomroom_c::BombMarch_ToLine,
+    &dScMgBomroom_c::BombMarch_LinedUp,
 };
 extern "C" PMF sBomroomHatchPanelStateTable[4] = {
-    pmf_dScMgBomroom_c_HatchPanel_StateIdle,
-    pmf_dScMgBomroom_c_HatchPanel_StateAnimate,
-    pmf_dScMgBomroom_c_HatchPanel_StateHeld,
-    pmf_dScMgBomroom_c_HatchPanel_StateRevert,
+    &dScMgBomroom_c::HatchPanel_StateIdle,
+    &dScMgBomroom_c::HatchPanel_StateAnimate,
+    &dScMgBomroom_c::HatchPanel_StateHeld,
+    &dScMgBomroom_c::HatchPanel_StateRevert,
 };
 extern "C" PMF sBomroomPenGateStateTable[4] = {
-    pmf_dScMgBomroom_c_PenGate_StateShut,
-    pmf_dScMgBomroom_c_PenGate_StateOpening,
-    pmf_dScMgBomroom_c_PenGate_StateHold,
-    pmf_dScMgBomroom_c_PenGate_StateClosing,
+    &dScMgBomroom_c::PenGate_StateShut,
+    &dScMgBomroom_c::PenGate_StateOpening,
+    &dScMgBomroom_c::PenGate_StateHold,
+    &dScMgBomroom_c::PenGate_StateClosing,
 };
 extern "C" PMF sBomroomTopDoorStateTable[4] = {
-    pmf_dScMgBomroom_c_TopDoor_StateShut,
-    pmf_dScMgBomroom_c_TopDoor_StateOpening,
-    pmf_dScMgBomroom_c_TopDoor_StateOpen,
-    pmf_dScMgBomroom_c_TopDoor_StateClosing,
+    &dScMgBomroom_c::TopDoor_StateShut,
+    &dScMgBomroom_c::TopDoor_StateOpening,
+    &dScMgBomroom_c::TopDoor_StateOpen,
+    &dScMgBomroom_c::TopDoor_StateClosing,
 };
