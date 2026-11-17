@@ -112,11 +112,6 @@ typedef void (daYegg_c::*PMF)();
 struct Entry { PMF pmf[2]; };
 extern Entry data_ov002_02110a5c[];
 
-namespace Sound {
-/* local extern: including Sound.h renumbers @NNN. */
-int PlayLong(u32, u32, u32, const Vector3 &, s16);
-}
-
 extern "C" {
 /* Defined below. */
 
@@ -140,24 +135,11 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
    ov079's function there is daBtn_c's hit reaction, which takes the body and
    the actor that hit it -- the call's (actor, egg). */
 extern int RandomIntInternal(int *seed);
-/* Numbering pins: func_ov002_020d5f98/020d6048 are now daPly_c members (see
-   daPly_c.h) and no call in this TU uses these free spellings anymore. The
-   declarations stay, spelled exactly as they were, because each named
-   parameter advances mwccarm's @NNN counter: removing or un-naming them
-   renumbers this TU's .data temps and rotates __sinit_d_a_yegg.cpp's pool
-   destinations (measured). */
-extern int func_ov002_020d5f98(void *c, unsigned char *a, unsigned char *b);
-extern int func_ov002_020d6048(void *c);
-extern s32 d_a_yeggNewHold(u32 a, u32 b, s32 x, s32 y, s32 z, Vector3_16 *rot, void *cb);
-extern void d_a_yeggRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
-extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 extern s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern void MTX_MultVec43(Vector3 *in, Matrix4x3 *m, Vector3 *out);
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern int Math_Function_0203b14c(void *ptr, int target, int rate, int limit, int step);
 extern int ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
@@ -723,16 +705,16 @@ void daYegg_c::ExecuteFollowPlayer() {
                     t2 = b;
                 }
                 Vec3_Add(&sumA, &com->mPos, &out);
-                mHoldTargetX = sumA.x;
-                mHoldTargetY = sumA.y;
-                mHoldTargetZ = sumA.z;
+                mHoldTarget.x = sumA.x;
+                mHoldTarget.y = sumA.y;
+                mHoldTarget.z = sumA.z;
             } else {
                 mGoalAngleX = -0x4000;
                 mGoalAngleZ = 0;
                 Vec3_Add(&sumB, &com->mPos, &out);
-                mHoldTargetX = sumB.x;
-                mHoldTargetY = sumB.y;
-                mHoldTargetZ = sumB.z;
+                mHoldTarget.x = sumB.x;
+                mHoldTarget.y = sumB.y;
+                mHoldTarget.z = sumB.z;
             }
         } else {
             mGoalAngleX = com->mAngleX;
@@ -747,9 +729,9 @@ void daYegg_c::ExecuteFollowPlayer() {
                 mGoalAngleY = Vec3_HorzAngle(&v1, &v2);
             }
             Vec3_Add(&sumC, &com->mPos, &out);
-            mHoldTargetX = sumC.x;
-            mHoldTargetY = sumC.y;
-            mHoldTargetZ = sumC.z;
+            mHoldTarget.x = sumC.x;
+            mHoldTarget.y = sumC.y;
+            mHoldTarget.z = sumC.z;
         }
         mHoldFreezeTimer = 0;
     }
@@ -757,9 +739,9 @@ void daYegg_c::ExecuteFollowPlayer() {
     {
         /* 0x1000 / 0x3000 as fx32: a third. */
         int fd = FX_Div(0x1000, 0x3000);
-        Math_Function_0203b14c(&mPosX, mHoldTargetX, fd, 0x3e8000, 4);
-        Math_Function_0203b14c(&mPosY, mHoldTargetY, fd, 0x3e8000, 4);
-        Math_Function_0203b14c(&mPosZ, mHoldTargetZ, fd, 0x3e8000, 4);
+        Math_Function_0203b14c(&mPosX, mHoldTarget.x, fd, 0x3e8000, 4);
+        Math_Function_0203b14c(&mPosY, mHoldTarget.y, fd, 0x3e8000, 4);
+        Math_Function_0203b14c(&mPosZ, mHoldTarget.z, fd, 0x3e8000, 4);
     }
 
     ApproachAngle(&mEasedAngleX, mGoalAngleX, 8, 0x4000, 0x100);
@@ -846,9 +828,9 @@ void daYegg_c::EnterFollowPlayer() {
     mPosZ = sp[2];
     src = mPlayer;
     mAngleY = src->mAngleY;
-    mHoldTargetX = mPosX;
-    mHoldTargetY = mPosY;
-    mHoldTargetZ = mPosZ;
+    mHoldTarget.x = mPosX;
+    mHoldTarget.y = mPosY;
+    mHoldTarget.z = mPosZ;
     src = mPlayer;
     m = &src->mAngleX;
     mGoalAngleX = m[0];
@@ -893,10 +875,10 @@ void daYegg_c::RunState() {
  * after 15 shorter moves in a row; it stays 1 while the egg stays put), else
  * 0. */
 int daYegg_c::IsStalled() {
-    fx32 d = Vec3_HorzDist((struct Vector3 *)&mLastPosX, &mPos);
-    mLastPosX = mPosX;
-    mLastPosY = mPosY;
-    mLastPosZ = mPosZ;
+    fx32 d = Vec3_HorzDist(&mLastPos, &mPos);
+    mLastPos.x = mPosX;
+    mLastPos.y = mPosY;
+    mLastPos.z = mPosZ;
     if (d < 0x32000) {
         if (DecIfAbove0_Byte(&mStallTimer) == 0)
             return 1;
@@ -1042,6 +1024,12 @@ int daYegg_c::FindTarget(int a1, int best) {
     dActor_c *actor;
     int matched;
     int b;
+    /* Kept (#821 r21). The ROM reserves 0x10 bytes of frame it never
+       touches; without this the function is 0x15c against 0x168. An unused
+       `Vector3 pos;` reproduces it exactly, but a dead local only sizes the
+       frame too, so it buys nothing over this one. A used copy, `Vector3 pos
+       = actor->mPos;` in the loop or `= mPos;` at the top, keeps its stores:
+       0x180. */
     struct P { int a, b, c, d; };
     volatile struct P _p;
     struct P *_q = const_cast<struct P *>(&_p);
@@ -1130,7 +1118,7 @@ void func_ov002_020edca4(daYegg_c* self)
         spawned =
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, pos, 0, self->mPlayer->mAreaId, -1);
         if (spawned != 0) {
-            ((daStar_c *)spawned)->SeekNewMarker((char *)self->mPlayer, 1);
+            ((daStar_c *)spawned)->SeekNewMarker(self->mPlayer, 1);
         }
     }
 
@@ -1360,9 +1348,9 @@ int daYegg_c::InitResources()
     mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
 
     mAreaId = -1;
-    mSpawnPosX = mPosX;
-    mSpawnPosY = mPosY;
-    mSpawnPosZ = mPosZ;
+    mSpawnPos.x = mPosX;
+    mSpawnPos.y = mPosY;
+    mSpawnPos.z = mPosZ;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mState = param1 & 3;

@@ -107,7 +107,6 @@ extern const unsigned char sCoinCaptionBlinkTimes[];
 extern const unsigned char sCoinCaptionBlinkSprites[];
 extern const u16 sCoinCaptionCountInTimes[];
 extern const u8 sCoinCaptionCountInSprites[];
-extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern const int sCoinSparkleSpawnOffsets[];
 extern const u16 sCoinSparkleAngles[];
@@ -125,7 +124,7 @@ extern void *sCoinSparkleSprites[];
 extern void *sCoinBagSprites[];
 extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
 extern const int sCoinRowY[];
-extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
+extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, Matrix2x2 *a5);
 extern void RenderOamMainScreen(OamAttr *a, int b, int c, int d, int e);
 extern const u16 sCoinBlockFrameSprites[];
 extern void *sCoinBlocksSprites[];
@@ -218,7 +217,12 @@ dScMgCoin_c::~dScMgCoin_c() {}
    fifteen words. The pragma is part of that match. The table stays
    hand-indexed here: through FX_CosIdx / FX_SinIdx the two products take
    swapped registers (21 DIFF in every declaration order of vec, the icon
-   index and fx16 or int locals, with or without the pragma). */
+   index and fx16 or int locals, with or without the pragma).
+   Kept, re-measured (#821, 2026-11-16): without opt_propagation off the body
+   is 21 of 56 words off. c/s locals, a table local, vec[2] = -vec[1]
+   copies, the icon index read after the products, an int spin, an inline i
+   and an i * 2 index all stay at 21; an s16 spin is 22; a &table[i] pointer
+   grows the body to 0x124. */
 #pragma push
 #pragma opt_propagation off
 void dScMgCoin_c::Bag_Draw() {
@@ -473,7 +477,7 @@ void dScMgCoin_c::DrawResultPrompt() {
     if (mCountdown == 0)
         return;
 
-    Mg_DrawBlinkSprite(this, 0xe0, 0xa0);
+    DrawBlinkSprite(0xe0, 0xa0);
 }
 
 void dScMgCoin_c::DrawResultNumbers() {
@@ -676,13 +680,13 @@ void dScMgCoin_c::Coin_StateWaitTouch(int idx) {
 
     int slot = gActivePlayerSlot;
     touched = 0;
-    if (gTouchHeld[slot * 4] != 0 && gTouchEdge[slot * 4] != 0)
+    if (gTouchInfo[slot].held != 0 && gTouchInfo[slot].edge != 0)
         touched = 1;
     if (touched == 0)
         return;
 
-    dx = gTouchX[gActivePlayerSlot * 4] - (mCoins[idx].x >> 12);
-    dy = gTouchY[gActivePlayerSlot * 4] - (mCoins[idx].y >> 12);
+    dx = gTouchInfo[gActivePlayerSlot].x - (mCoins[idx].x >> 12);
+    dy = gTouchInfo[gActivePlayerSlot].y - (mCoins[idx].y >> 12);
     if (dx <= -0x10 || dx >= 0x10 || dy <= -0x10 || dy >= 0x10)
         return;
 
@@ -719,7 +723,7 @@ void dScMgCoin_c::Coin_StateWaitTouch(int idx) {
 /* Runs each coin's state handler from sCoinCoinStateTable. */
 void dScMgCoin_c::Coin_UpdateAll() {
     int i;
-    for (i = 0; i < 24; i++) {
+    for (i = 0; i < COIN_NUM; i++) {
         unsigned char k = this->mCoins[i].state;
         (this->*sCoinCoinStateTable[k].pmf)(i);
     }
@@ -745,7 +749,7 @@ void dScMgCoin_c::LayOutCoins() {
 
     row = 0;
     col = 0;
-    for (i = 0; i < 24; i++) {
+    for (i = 0; i < COIN_NUM; i++) {
         mCoins[i].x = (((col << 5) + 0x10) << 12);
         mCoins[i].y = sCoinRowY[row] << 12;
         col++;
@@ -769,7 +773,7 @@ void dScMgCoin_c::LayOutCoins() {
    up from under the coin (state 5) and plays the panned hop sound. */
 void dScMgCoin_c::KickBlockUnderCoin(int id) {
     int i;
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < BLOCK_NUM; i++) {
         if (mBlocks[i].active != 0 && mBlocks[i].state == 4 && id == mBlocks[i].coin) {
             mBlocks[i].y = mCoins[id].y - 0x20000;
             mBlocks[i].visible = 1;
@@ -792,7 +796,7 @@ void dScMgCoin_c::DrawBlocks() {
     int i;
     if (mPhase == 5 && mCountdown == 0)
         return;
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < BLOCK_NUM; i++) {
         if (mBlocks[i].visible == 0)
             continue;
         {
@@ -1015,7 +1019,7 @@ void dScMgCoin_c::Block_ClampToWalls(int idx) {
 void dScMgCoin_c::Block_UpdateAll() {
     int n = 0;
     int i;
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < BLOCK_NUM; i++) {
         if (mBlocks[i].active != 0) {
             (this->*sCoinBlockStateTable[mBlocks[i].state].pmf)(i);
             if (mBlocks[i].state != 4)
@@ -1066,7 +1070,7 @@ void dScMgCoin_c::SpawnBlocks() {
    the caption and the moneybag. */
 void dScMgCoin_c::ResetRound() {
     int i, j, k, l;
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < BLOCK_NUM; i++) {
         mBlocks[i].x = 0;
         mBlocks[i].y = 0;
         mBlocks[i].vx = 0;
@@ -1083,7 +1087,7 @@ void dScMgCoin_c::ResetRound() {
         mBlocks[i].coin = 0;
     }
 
-    for (j = 0; j < 24; j++) {
+    for (j = 0; j < COIN_NUM; j++) {
         mCoins[j].x = 0;
         mCoins[j].y = 0;
         mCoins[j].state = 0;
@@ -1105,7 +1109,7 @@ void dScMgCoin_c::ResetRound() {
         mSparkles[k].visible = 0;
     }
 
-    for (l = 0; l < 24; l++) {
+    for (l = 0; l < POPUP_NUM; l++) {
         mPopups[l].live = 0;
         mPopups[l].flag = 0;
     }
@@ -1130,7 +1134,7 @@ void dScMgCoin_c::Phase_StateResult() {
     mCountdown--;
     int slot = gActivePlayerSlot;
     int touched = 0;
-    if (gTouchHeld[slot * 4] != 0 && gTouchEdge[slot * 4] != 0)
+    if (gTouchInfo[slot].held != 0 && gTouchInfo[slot].edge != 0)
         touched = 1;
     if (touched != 0 && mCountdown <= 128) {
         mCountdown = 0;
@@ -1176,7 +1180,7 @@ void dScMgCoin_c::Phase_StateSettle() {
     dScMgBase_c *g;
 
     count = 0;
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < BLOCK_NUM; i++) {
         if (mBlocks[i].active) {
             int idx = mBlocks[i].state;
             (this->*sCoinBlockStateTable[idx].pmf)(i);
@@ -1186,7 +1190,7 @@ void dScMgCoin_c::Phase_StateSettle() {
                 this->Block_Animate(i);
         }
     }
-    for (j = 0; j < 24; j++) {
+    for (j = 0; j < COIN_NUM; j++) {
         if (mCoins[j].state == 1 && mCoins[j].placed != 0)
             count++;
     }
@@ -1218,7 +1222,7 @@ void dScMgCoin_c::Phase_StateSettle() {
    win flag is set from the other score. */
 void dScMgCoin_c::Phase_StatePlay() {
     int i;
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < BLOCK_NUM; i++) {
         if (mBlocks[i].active != 0) {
             (this->*sCoinBlockStateTable[mBlocks[i].state].pmf)(i);
             this->Block_Animate(i);
@@ -1232,7 +1236,7 @@ void dScMgCoin_c::Phase_StatePlay() {
     {
         int found = 0;
         int j;
-        for (j = 0; j < 24; j++) {
+        for (j = 0; j < COIN_NUM; j++) {
             if (mCoins[j].value != 0) {
                 if (mCoins[j].collected == 0) {
                     found++;

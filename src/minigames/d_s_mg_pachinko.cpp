@@ -106,9 +106,7 @@ extern void Mg_RenderSpriteBothPalMtx(void *sprite, int x, int y, int a3, void *
 extern int Mg_RenderSpriteBothScaled(OamAttr *a, int b, int c, int d, int e, int f, int g);
 extern void Mg_SetSharedState(int a);
 extern void Mg_SetTopScreenYOffset(int a);
-extern void Mg_InitBrush(char *a, char b, int c, int d);
 extern void func_02012718(int a, int b);
-extern s16 atan2_hold_d_s_mg_pachinko_1(int y, int x);
 extern void FreeGfxSlotsById(int arg);
 extern void *LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
@@ -394,7 +392,7 @@ void dScMgPachinko_c::Flyer_CheckHits(int idx) {
     if (mFlyer[idx].state == 0)
         return;
 
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < SHOT_NUM; i++) {
         if (mShot[i].active == 0)
             continue;
         if (mShot[i].state < 2)
@@ -408,7 +406,7 @@ void dScMgPachinko_c::Flyer_CheckHits(int idx) {
         mShot[i].active = 0;
         mShot[i].visible = 0;
         Fx_Spawn(mFlyer[idx].x, mFlyer[idx].y, 2, 0, 0);
-        for (j = 0; j < 30; j++) {
+        for (j = 0; j < BALL_NUM; j++) {
             if (mBall[j].active == 0)
                 continue;
             state = mBall[j].state;
@@ -567,7 +565,7 @@ void dScMgPachinko_c::Target_Choose() {
 
 void dScMgPachinko_c::Fx_DrawAll() {
     int i;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < FX_NUM; i++) {
         if (mFx[i].visible) {
             int type = mFx[i].kind;
             int x = mFx[i].x >> 12;
@@ -587,7 +585,7 @@ void dScMgPachinko_c::Fx_UpdateAll() {
     int lastFrame;
     u8 target;
 
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < FX_NUM; i++) {
         if (mFx[i].active == 0)
             continue;
         mFx[i].timer++;
@@ -614,7 +612,7 @@ void dScMgPachinko_c::Fx_UpdateAll() {
 
 void dScMgPachinko_c::Fx_Spawn(int x, int y, int kind, int points, int target) {
     int i;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < FX_NUM; i++) {
         if (mFx[i].active == 0) {
             mFx[i].x = x;
             mFx[i].y = y;
@@ -668,7 +666,7 @@ void dScMgPachinko_c::DrawTopRecord() {
 
 void dScMgPachinko_c::Popup_DrawAll() {
     int i;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < POPUP_NUM; i++) {
         if (mPopup[i].timer != 0)
             Mg_DrawBigNumber(mPopup[i].x >> 12, mPopup[i].y >> 12, mPopup[i].points, -1, -1, 0, 0);
     }
@@ -676,7 +674,7 @@ void dScMgPachinko_c::Popup_DrawAll() {
 
 void dScMgPachinko_c::Popup_UpdateAll() {
     int i;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < POPUP_NUM; i++) {
         if (mPopup[i].timer != 0) {
             mPopup[i].timer--;
             if ((s16)mPopup[i].timer < 0)
@@ -733,7 +731,20 @@ void dScMgPachinko_c::ClearAimLine() {
    data, 4bpp tiles laid out 32 to a row: y picks the tile row and the
    4-byte line inside the tile, x the tile column and the nibble. It does
    not read `this`.
-   opt_loop_invariants stays off: the ROM keeps j on the stack and every spelling without these staged locals is a word short (0x7c of 0x80). */
+   Kept, measured (#821, 2026-11-16): without opt_loop_invariants off this
+   body is the right 0x80 (j's zero still comes off the stack) but 10 of 32
+   words off: py & 7 and py >> 3 swap order and xb, lineOfs and rowTile
+   rotate registers. 36 orders of the staged assignments land on the same
+   10 words or a word short; dropping x0 (a fresh px), or hoisting rowTile
+   and xb out of the inner loop, is 0x7c, and the unstaged one-line index
+   is 0x78. dScMgPachinko2_c's twin keeps the same pragma.
+   The byte-offset store stays too (#821, re-measured 2026-11-16): the ROM
+   adds lineOfs to the tile's address as a register offset. With tile =
+   rowTile + (x >> 3), bp[tile * 8 + line] is 0x7c, and (bp + tile * 8)[line],
+   a u32 *tile local or bp[tile * 8 + (lineOfs >> 2)] is 0x84. A 32-byte
+   tile type (u32 (*)[8], a { u32 line[8]; } struct, a tile row pointer,
+   either operand order) is the right 0x80 but 15 of 32 words off: line * 4
+   is folded into the tile base and the registers rotate. */
 void dScMgPachinko_c::PlotSubBg2Pixels(int x, int y, int colour) {
     int i, j, py, line, tileY, lineOfs, rowTile, xb, x0;
     u32 *bp;
@@ -1076,12 +1087,22 @@ static inline int FX_Mul(int v1, int v2)
  * `sprite` picks, at its position plus offX/offY, through a 2x2
  * rotate-and-scale matrix: `rotation` is the angle (>> 4 indexes the shared
  * sine/cosine table) and the 20.12 `scale` is the scale. The products go through FX_Mul; spelled out in the body
- * they put the scale in the first smull's Rm instead of the table value. With
- * opt_prelinearize on, every callee-saved register in the loop rotates by one
- * place. */
+ * they put the scale in the first smull's Rm instead of the table value.
+ * Kept, measured (#821, 2026-11-16): without opt_prelinearize off this local
+ * FX_Mul (and the SDK's own fx32 FX_Mul body) is 42 of 60 words off, every
+ * callee-saved register in the loop rotated. Through fx.h's FX_MUL macro it is
+ * 6 words off: the scale lands in sl instead of ip, so the two smulls take
+ * other registers. 36 orders of the scale, sprite and matrix locals, the
+ * matrix stores and the x/y reads, swapped FX_MUL operands, a fx32 or long
+ * scale and an `idx` local all stay at 6. A ball pointer (local or walked)
+ * is 56; a function-scope matrix 42.
+ * Re-measured (#821, round 18): FX_MUL without the pragma stays 6 words off
+ * with fx64 casts on both operands or on the scale alone, a block-scope loop
+ * counter and a u16 rotation local. The sine product first is 18 off, fx16
+ * or int sine/cosine locals 42, the scale re-read per product 52. */
 void dScMgPachinko_c::Ball_DrawAll() {
     int i;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < BALL_NUM; i++) {
         if (mBall[i].visible != 0) {
             int scale = mBall[i].scale;
             int sprite = mBall[i].sprite;
@@ -1154,7 +1175,14 @@ void dScMgPachinko_c::Ball_CheckPipes(int idx) {
  * The two velocity-component base offsets must be introduced in the order
  * below: the constant pool emits 0x4668 before 0x466c, and the declaration
  * order is what fixes it.
- * opt_common_subs stays off: typed mBall[i] spellings land at 0x1fc-0x260 of 0x240 with or without it, so the field-base forms remain. */
+ * opt_common_subs stays off: typed mBall[i] spellings land at 0x1fc-0x260 of 0x240 with or without it, so the field-base forms remain.
+ * Kept, re-measured (#821, 2026-11-16): this body without the pragma is 0x23c;
+ * the plain typed body (one sqrt expression, while-loop re-roll, every field
+ * as mBall[i].f) is 0x260 without it and 0x230 with it. The ROM reaches each
+ * field as its own this + offset base indexed by i * 0x38, the shape common
+ * subexpressions off gives. Round 18: a `ball` pointer for every field is
+ * 0x204 without the pragma and 0x200 with it; the squared length summed in
+ * an s64 local is 0x260 / 0x230, as the one-expression form. */
 void dScMgPachinko_c::Ball_AimAtTarget(int i) {
     int idx;
     int n;
@@ -1489,7 +1517,7 @@ void dScMgPachinko_c::Ball_StateWaiting(int idx) {
 
 void dScMgPachinko_c::Ball_UpdateAll() {
     int i;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < BALL_NUM; i++) {
         if (mBall[i].active != 0) {
             (this->*sPachinkoBallStateTable[mBall[i].state].pmf)(i);
         }
@@ -1514,7 +1542,7 @@ void dScMgPachinko_c::Ball_UpdateAll() {
 void dScMgPachinko_c::Ball_CheckHitByBobOmb(int i) {
     int j;
 
-    for (j = 0; j < 48; j++) {
+    for (j = 0; j < SHOT_NUM; j++) {
         int dx;
         int dy;
         s64 distsq;
@@ -1563,7 +1591,7 @@ void dScMgPachinko_c::SpawnWave() {
         return;
     }
     mWaveTimer = 80;
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < BALL_NUM; i++) {
         int ra;
         int rb;
         if (mBall[i].active != 0)
@@ -1628,7 +1656,7 @@ void dScMgPachinko_c::SpawnWave() {
 
 void dScMgPachinko_c::BobOmb_ClearAll() {
     int i;
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < SHOT_NUM; i++) {
         mShot[i].active = 0;
         mShot[i].visible = 0;
     }
@@ -1636,7 +1664,7 @@ void dScMgPachinko_c::BobOmb_ClearAll() {
 
 void dScMgPachinko_c::BobOmb_DrawAll() {
     int i;
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < SHOT_NUM; i++) {
         if (mShot[i].visible == 0)
             continue;
         Mg_RenderSpriteBothScaled((OamAttr *)sPachinkoBobOmbSprites, mShot[i].x >> 12,
@@ -1646,7 +1674,7 @@ void dScMgPachinko_c::BobOmb_DrawAll() {
 
 void dScMgPachinko_c::BobOmb_UpdateAll() {
     int i;
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < SHOT_NUM; i++) {
         if (mShot[i].active != 0) {
             (this->*sPachinkoBobOmbStateTable[mShot[i].state].pmf)(i);
         }
@@ -1663,11 +1691,11 @@ void dScMgPachinko_c::BobOmb_StateWaitGrab(int i) {
     int grabbed = 0;
     int dx, dy;
 
-    if (((u8(*)[4])gTouchHeld)[slot][0] != 0)
-        grabbed = ((u8(*)[4])gTouchEdge)[slot][0] != 0;
+    if (gTouchInfo[slot].held != 0)
+        grabbed = gTouchInfo[slot].edge != 0;
     if (grabbed != 0) {
-        dx = (mShot[i].x >> 12) - ((u8(*)[4])gTouchX)[slot][0];
-        dy = (mShot[i].y >> 12) - ((u8(*)[4])gTouchY)[slot][0];
+        dx = (mShot[i].x >> 12) - gTouchInfo[slot].x;
+        dy = (mShot[i].y >> 12) - gTouchInfo[slot].y;
         mShot[i].state = 1;
         mShot[i].offX = dx << 12;
         mShot[i].offY = dy << 12;
@@ -1702,6 +1730,15 @@ void dScMgPachinko_c::BobOmb_StateWaitGrab(int i) {
  * the touch loads, the x/y reloads and the clamps differently (74 words,
  * unmoved by declaration order, idx type, vx/vy order, `py`, inline touch
  * reads, `+=` or else-if clamps).
+ * Kept, re-measured (#821, 2026-11-16) in dScMgPachinko2_c::Ball_StateAim's
+ * typed shape without the pragma: 0x3bc and 65 of 239 words off, every one in
+ * the held branch (touch loads, x/y stores and reloads, clamp addresses); the
+ * release branch, FX_CosIdx/FX_SinIdx products included, is exact. 16 held-
+ * branch variants (touch locals or inline, int or u32 idx, operand and
+ * read order) give 65-71; a shot pointer for the x clamps 62. With the pragma
+ * that shape is 0x3e8. Round 18: plain mShot[i] at every use with typed
+ * touch reads is 84 off (0x3e8 with the pragma); the twin's flat byte-view
+ * touch reads bring it to 35, a launder for a pragma, so not taken.
  * The two velocity reads stay hand-indexed into FX_SinCosTable_: through
  * FX_CosIdx / FX_SinIdx the products take swapped registers (17-22 DIFF in
  * eleven spellings: inline, index local, fx16 local, speed read first).
@@ -1713,12 +1750,12 @@ void dScMgPachinko_c::BobOmb_StateAim(int i) {
     s32 cy;
     u32 idx = gActivePlayerSlot;
 
-    if (((u8(*)[4])gTouchHeld)[idx][0] != 0) {
+    if (gTouchInfo[idx].held != 0) {
         int off = i * 0x38;
         s32 vy, vx;
 
-        cx = ((u8(*)[4])gTouchX)[idx][0];
-        cy = ((u8(*)[4])gTouchY)[idx][0];
+        cx = gTouchInfo[idx].x;
+        cy = gTouchInfo[idx].y;
         s32 grab = *(s32 *)(c + SHOT_OFF(offX) + off);
         dScMgPachinko_shot *shot = (dScMgPachinko_shot *)((char *)mShot + off);
         shot->x = (cx << 12) + grab;
@@ -1737,8 +1774,8 @@ void dScMgPachinko_c::BobOmb_StateAim(int i) {
             *py = 0x8000;
 
         {
-            s32 nx = (*(s32 *)(c + SHOT_OFF(x) + off) >> 12) - gTouchX[gActivePlayerSlot * 4];
-            s32 ny = (*(s32 *)(c + SHOT_OFF(y) + off) >> 12) - gTouchY[gActivePlayerSlot * 4];
+            s32 nx = (*(s32 *)(c + SHOT_OFF(x) + off) >> 12) - gTouchInfo[gActivePlayerSlot].x;
+            s32 ny = (*(s32 *)(c + SHOT_OFF(y) + off) >> 12) - gTouchInfo[gActivePlayerSlot].y;
 
             *(s32 *)(c + SHOT_OFF(offX) + off) = nx << 12;
             *(s32 *)(c + SHOT_OFF(offY) + off) = ny << 12;
@@ -1880,7 +1917,7 @@ void dScMgPachinko_c::UpdateNextBall() {
         return;
     mNextBallDelay = 0;
 
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < SHOT_NUM; i++) {
         if (mShot[i].active == 0) {
             mShot[i].active = 1;
             mShot[i].visible = 1;
@@ -1912,7 +1949,7 @@ void dScMgPachinko_c::ResetRound() {
 
     mPhase = 0;
 
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < POPUP_NUM; i++) {
         mPopup[i].x = 0;
         mPopup[i].y = 0;
         mPopup[i].points = 0;
@@ -1937,7 +1974,7 @@ void dScMgPachinko_c::ResetRound() {
         mPipe[k].visible = 0;
     }
 
-    for (l = 0; l < 48; l++) {
+    for (l = 0; l < SHOT_NUM; l++) {
         mShot[l].x = 0;
         mShot[l].y = 0;
         mShot[l].prevX = 0;
@@ -1951,13 +1988,13 @@ void dScMgPachinko_c::ResetRound() {
         mShot[l].visible = 0;
     }
 
-    for (m = 0; m < 30; m++) {
+    for (m = 0; m < BALL_NUM; m++) {
         mBall[m].active = 0;
         mBall[m].visible = 0;
         mBall[m].state = 0;
     }
 
-    for (n = 0; n < 30; n++) {
+    for (n = 0; n < FX_NUM; n++) {
         mFx[n].active = 0;
         mFx[n].visible = 0;
     }
@@ -2082,7 +2119,6 @@ s32 dScMgPachinko_c::Behavior()
 /* Vtable slot 0. */
 s32 dScMgPachinko_c::InitResources()
 {
-    char *c = (char *)this;
     char *b;
     char *dst;
     volatile u16 fillScr;
@@ -2143,7 +2179,7 @@ s32 dScMgPachinko_c::InitResources()
     G2S_SetBG2ControlText(GX_BG_SCRSIZE_TEXT_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE_0x2000,
                           GX_BG_CHARBASE_0x18000);
 
-    Mg_InitBrush(c, 0, 2, 0);
+    InitBrush(0, 2, 0);
 
     b = (char *)G2S_GetBG2CharPtr();
     fillZero = 0;

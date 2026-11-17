@@ -81,7 +81,8 @@ struct dScMgSound_c : dScMgSingle3DBase_c {
     Presenter mTable; /* 0x4f38 -- the Mario face */
     u8  pad_50e4[4];
     dMgSoundNote_c mNotes[10];       /* 0x50e8 */
-    dMgSoundPop_c mPops[30];         /* 0x51b0 */
+    static const int POP_NUM = 30;
+    dMgSoundPop_c mPops[POP_NUM];    /* 0x51b0 */
     dMgSoundSprite_c mSpriteA;       /* 0x55e8 frame limit 2 */
     dMgSoundSprite_c mSpriteB;       /* 0x55f8 frame limit 3 */
     s32 mState;                      /* 0x5608 */
@@ -137,7 +138,7 @@ struct dScMgSound_c : dScMgSingle3DBase_c {
     void Pop08_Fly(int slot);
     void Pop08_Start(int slot);
     void Pop08_Update(int slot);
-    void Pop07_Finish();
+    void Pop07_Finish(int slot);
     void Pop07_Fly(int slot);
     void Pop07_Start(int slot);
     void Pop07_Update(int slot);
@@ -149,7 +150,7 @@ struct dScMgSound_c : dScMgSingle3DBase_c {
     void Pop05_Fly(int slot);
     void Pop05_Start(int slot);
     void Pop05_Update(int slot);
-    void Pop04_Finish();
+    void Pop04_Finish(int slot);
     void Pop04_Fly(int slot);
     void Pop04_Start(int slot);
     void Pop04_Update(int slot);
@@ -165,7 +166,7 @@ struct dScMgSound_c : dScMgSingle3DBase_c {
     void Pop01_Fly(int slot);
     void Pop01_Start(int slot);
     void Pop01_Update(int slot);
-    void Pop00_Finish();
+    void Pop00_Finish(int slot);
     void Pop00_Fly(int slot);
     void Pop00_Start(int slot);
     void Pop00_Update(int slot);

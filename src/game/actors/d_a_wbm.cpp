@@ -78,9 +78,6 @@ extern SharedFilePtr data_ov002_0210da38;
 /* The five fragments' launch angles. */
 extern u16 data_ov098_0213bf90[];
 
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, s32 radius, s32 height, Vector3_16 *a,
-                         Vector3_16 *b);
 }
 
 /* The bomb's file-scope SharedFilePtr object, spelled through the same
@@ -172,9 +169,9 @@ int daWbm_c::InitResources()
     mStateTimer = 0;
     mBounceCount = 0;
     unk_3b4 = 0;
-    mSpawnPosX = mPosX;
-    mSpawnPosY = mPosY;
-    mSpawnPosZ = mPosZ;
+    mSpawnPos.x = mPosX;
+    mSpawnPos.y = mPosY;
+    mSpawnPos.z = mPosZ;
 
     if ((unsigned int)(mVariant - 1) <= 1)
     {

@@ -52,12 +52,11 @@
 #include "math/Approach.h"
 #include "LevelRng.h"
 #include "math/CalcLib.h"
-extern "C" void Mg_DrawScoreTally(void *, int, int, int);
 extern "C" void Mg_ShowBanner(int, int, int, int, int, short);
 extern "C" void Mg_SetSharedState(s32);
 extern "C" void FreeGfxSlotsById(int);
 extern "C" void Mg_SetTopScreenYOffset(int);
-extern "C" void Mg_RenderSubSpriteMtx(void *a, int, int, void *m);
+extern "C" void Mg_RenderSubSpriteMtx(void *a, int, int, Matrix2x2 *m);
 extern "C" int Mg_RenderSubSpriteScaled(void *, int, int, int, int, int, unsigned short);
 extern "C" void Mg_SubmitScore(int);
 void Mg_SetNextBanner(int);
@@ -476,7 +475,7 @@ extern dScMg3DEsp_cState pmf_dScMg3DEsp_c_FlashQuick;
 void dScMg3DEsp_c::DrawBanner()
 {
     if (mDone != 0)
-        Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
+        DrawScoreTally(0xe0, 0x14, 1);
 }
 
 /* Early-out once mFlashStep is set; otherwise set the embedded model's
@@ -522,7 +521,7 @@ extern void *sEsp3DAnimSetSlotsSprites[];
 
 void dScMg3DEsp_c::RenderSlots() {
     int i;
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < SLOT_NUM; i++) {
         if (mSlots[i].mVisible) {
             int x = mSlots[i].mX >> 12;
             int y = mSlots[i].mY >> 12;
@@ -662,7 +661,7 @@ void dScMg3DEsp_c::SlotWait(int idx)
 }
 
 void dScMg3DEsp_c::UpdateSlots() {
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < SLOT_NUM; i++) {
         if (mSlots[i].mActive) {
             u8 k = mSlots[i].mState;
             (this->*s3DEspSlotFallTable[k])(i);
@@ -672,12 +671,12 @@ void dScMg3DEsp_c::UpdateSlots() {
 
 void dScMg3DEsp_c::ResetSlots() {
     int i;
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < SLOT_NUM; i++) {
         mSlots[i].mActive = 0;
         mSlots[i].mVisible = 0;
     }
 
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < SLOT_NUM; i++) {
         mSlots[i].mActive = 1;
         mSlots[i].mState = 0;
         mSlots[i].mType = 0;
@@ -874,15 +873,15 @@ void dScMg3DEsp_c::CardTouch(int idx) {
     int ok = 0;
     int v, w;
 
-    if (gTouchHeld[i * 4] != 0) {
-        if (gTouchEdge[i * 4] != 0) {
+    if (gTouchInfo[i].held != 0) {
+        if (gTouchInfo[i].edge != 0) {
             ok = 1;
         }
     }
     if (ok == 0) return;
 
-    v = gTouchX[gActivePlayerSlot * 4] - (mCards[idx].mX >> 12);
-    w = gTouchY[gActivePlayerSlot * 4] - (mCards[idx].mY >> 12);
+    v = gTouchInfo[gActivePlayerSlot].x - (mCards[idx].mX >> 12);
+    w = gTouchInfo[gActivePlayerSlot].y - (mCards[idx].mY >> 12);
 
     if (v < -0xa) return;
     if (v > 0xa) return;
@@ -1142,8 +1141,8 @@ void dScMg3DEsp_c::Results() {
             return;
         b = 0;
         i = gActivePlayerSlot;
-        if (gTouchHeld[i * 4] != 0) {
-            if (gTouchEdge[i * 4] != 0)
+        if (gTouchInfo[i].held != 0) {
+            if (gTouchInfo[i].edge != 0)
                 b = 1;
         }
         if (b != 0)

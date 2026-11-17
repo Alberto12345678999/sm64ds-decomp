@@ -18,11 +18,7 @@
  * each function as it is parsed, so this file is written ROM-ascending: the
  * out-of-line destructor first (D1 0x02111314, then D0 0x02111360; the D2
  * it also produces has no cartridge home and is deadstripped), the factory
- * last. Immediate codegen is also what lets the per-member setting below
- * -- opt_foldconstants off on UpdateShadow -- bind to its own member
- * through push/pop. Under the default deferred codegen it is file-global
- * (measured; see the TU manifest).
- * Same arrangement as src/game/actors/d_a_btt_bk.cpp.
+ * last. Same arrangement as src/game/actors/d_a_btt_bk.cpp.
  *
  * What stays, and why:
  * - OnKicked and OnAttacked2 keep #pragma long_calls: the ROM
@@ -38,8 +34,8 @@
  * - data_ov015_02113574 is the CLPS block in overlay .data that
  *   this TU does not own; FX_SinCosTable_ is arm9's sin/cos table,
  *   data_020a0e68 arm9's scratch matrix, and gCurrentStarId / gCurrentSublevel
- *   arm9 scene state. AngleDiff, IsStarCollectedInCurLevel, MTX_MultVec43
- *   and Vec3_Add have no shared header, so they keep a local extern "C" block.
+ *   arm9 scene state. AngleDiff, IsStarCollectedInCurLevel and Vec3_Add
+ *   have no shared header, so they keep a local extern "C" block.
  * - g_profile_BK_BOTAOSI lives outside this TU.
  */
 
@@ -80,7 +76,6 @@ extern u8 gCurrentStarId;
 /* local extern: arm9 C helpers with no shared header yet. */
 extern "C" {
 int AngleDiff(int a, int b);
-void MTX_MultVec43(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 }
 int IsStarCollectedInCurLevel(int starID);
@@ -162,8 +157,6 @@ void daObjBk_Botaosi_c::HandleHit(dActor_c *other) {
    out from mFront*, and once the plank goes over it drops to mFrontFloorY.
    The two scoped row blocks are load-bearing: written flat, with the table
    lookup inlined, the body DIFFs (measured). */
-#pragma push
-#pragma opt_foldconstants off
 void daObjBk_Botaosi_c::UpdateShadow() {
     u16 yaw;
     int lean = 0;
@@ -171,19 +164,19 @@ void daObjBk_Botaosi_c::UpdateShadow() {
     int tilt = FX_MUL(sine, 0x7d0000);
     yaw = 0x8000;
     if (tilt <= 0) {
-        yaw = yaw + 0x8000;
+        yaw += 0x8000;
         tilt = -tilt;
     }
     lean = lean + tilt;
     Matrix4x3_FromRotationY(&mShadowMat, (s16)(mAngleY + yaw));
     {
-        int front = mFrontPosX;
+        int front = mFrontPos.x;
         int cosine = FX_CosIdx((u16)(s16)(mAngleY + yaw) >> 4);
         mShadowMat.t.x = (front + FX_MUL(cosine, (lean >> 1))) >> 3;
     }
-    mShadowMat.t.y = mFrontPosY >> 3;
+    mShadowMat.t.y = mFrontPos.y >> 3;
     {
-        int front = mFrontPosZ;
+        int front = mFrontPos.z;
         int sine2 = FX_SinIdx((u16)(s16)(mAngleY + yaw) >> 4);
         mShadowMat.t.z = (front + FX_MUL(sine2, (lean >> 1))) >> 3;
     }
@@ -191,7 +184,6 @@ void daObjBk_Botaosi_c::UpdateShadow() {
         mShadowMat.t.y = mFrontFloorY >> 3;
     DropShadowScaleXYZ(mShadowModel, mShadowMat, 0xc8000, 0x12c000, lean, 0xf);
 }
-#pragma pop
 
 /* -------------------------------------------------------------------------- */
 /* mModel's matrix from all three angles, the position in its translation
@@ -337,9 +329,9 @@ int daObjBk_Botaosi_c::InitResources() {
     Vec3_Add(&d, &b, &mPos);
 
     one = 1;
-    mFrontPosX = d.x;
-    mFrontPosY = d.y;
-    mFrontPosZ = d.z;
+    mFrontPos.x = d.x;
+    mFrontPos.y = d.y;
+    mFrontPos.z = d.z;
     mOriginalPosY = mPosY;
     mKnockDir = one;
 

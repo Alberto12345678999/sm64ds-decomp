@@ -151,9 +151,6 @@ struct GmchDrawReg { GmchDrawReg(Vector3 &v) { v.x = 0; v.y = 0x2000; v.z = 0; }
  * GmchDrawReg supplies the draw offset's .init stores so the plain Vector3
  * earns its registered destructor instead of constant initialization. */
 extern "C" {
-/* local extern: named parameters keep the TU's compiler-generated aliases
- * stable when CalcLib's shared declarations are included above. */
-extern int RandomIntInternal(int *seed);
 extern void func_02038414(void *clsn);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -161,8 +158,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
 
 /* One definition, two ROM variants (the D2 mwccarm also emits is
@@ -197,7 +192,7 @@ void daGmch_c::ChooseNextState()
     int curState;
 
     distC = DistToCPlayer();
-    dist = Vec3_Dist(&mPos, (Vector3 *)&mSpawnPosX);
+    dist = Vec3_Dist(&mPos, &mSpawnPos);
     if (dist > 0x5dc000) {
         mNextState = 5;
     } else if (distC > 0x3e8000) {
@@ -526,13 +521,13 @@ int daGmch_c::EnterState6()
 
 int daGmch_c::UpdateState5()
 {
-    fx32 distToSpawn = Vec3_Dist(&mPos, (Vector3 *)&mSpawnPosX);
+    fx32 distToSpawn = Vec3_Dist(&mPos, &mSpawnPos);
     if (distToSpawn < mHorzSpeed) {
-        mAngleY = Vec3_HorzAngle(&mPos, (Vector3 *)&mSpawnPosX);
+        mAngleY = Vec3_HorzAngle(&mPos, &mSpawnPos);
         mPrevAngleY = mAngleY;
         mHorzSpeed = distToSpawn;
     } else {
-        ApproachLinear(mAngleY, Vec3_HorzAngle(&mPos, (Vector3 *)&mSpawnPosX), 0x2bc);
+        ApproachLinear(mAngleY, Vec3_HorzAngle(&mPos, &mSpawnPos), 0x2bc);
         mPrevAngleY = mAngleY;
     }
     mAnmModel.Advance();
@@ -844,9 +839,9 @@ int daGmch_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    mSpawnPosX = mPosX;
-    mSpawnPosY = mPosY;
-    mSpawnPosZ = mPosZ;
+    mSpawnPos.x = mPosX;
+    mSpawnPos.y = mPosY;
+    mSpawnPos.z = mPosZ;
     mState = 1;
     mMatrix = IDENTITY_MATRIX4X3;
     UpdateDrawMatrices();

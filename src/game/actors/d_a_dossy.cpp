@@ -28,8 +28,7 @@
 // - The BOOL/TRUE/FALSE spelling in func_ov065_02119594 and
 //   func_ov065_0211956c stays. `bool isPlayer = other->actorID == 0xbf`
 //   shrinks each function 0x28 to 0x1c: the ROM keeps the ternary 0/1
-//   materialization plus the `cmp r2, #0` re-test. Removing the typedef
-//   also renumbers this TU's @NNN temps (manifest rename @1027).
+//   materialization plus the `cmp r2, #0` re-test.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daDossy_c_AssetId {
@@ -168,7 +167,7 @@ void daDossy_c::func_ov065_0211956c(dActor_c *other)
 int daDossyCap_c::InitResources()
 {
     mModel.SetFile((BMD_File *)data_ov002_0210d9c0.filePtr, 1, -1);
-    mCapIcon.Link((char *)this, 2, 2, 0);
+    mCapIcon.Link(this, 2, 2, 0);
     mdCcAc_c.Init(this, 0x96000, 0x96000, 0x100002, 0x8000);
     mCarrier = 0;
     return 1;
@@ -257,7 +256,7 @@ int daDossyCap_c::Behavior()
             mFlags &= ~0x20000;
             mEatingPlayer = 0;
             mCapIcon.Unlink();
-            mCapIcon.Link((char *)this, 2, 0, 0);
+            mCapIcon.Link(this, 2, 0, 0);
         }
         return 1;
     }
@@ -607,7 +606,7 @@ int func_ov065_021180d4(daDossyCap_c *cap) {
                 pos.z += FX_MUL(speed, FX_CosIdx(idx));
                 if (dActor_c::Spawn(0x10d, 0x1210, pos, &cap->mAngle, cap->mAreaId, -1) != 0) {
                     cap->mCapIcon.Unlink();
-                    cap->mCapIcon.Link((char *)cap, 2, 0, 0);
+                    cap->mCapIcon.Link(cap, 2, 0, 0);
                     cap->mCarrier->mRideCooldown = 30;
                 }
                 return 1;

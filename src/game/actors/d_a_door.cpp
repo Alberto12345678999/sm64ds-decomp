@@ -108,6 +108,7 @@ enum daDoor_c_AssetId {
 #include "private/mtx43.h"
 #include "nitro/fx/fx.h"
 #include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* The vector temps below are VecFx32: a stack Vector3 would run its destructor. */
 /* The door's matrix copies go through the flat Mtx43: a copy through the
@@ -204,8 +205,6 @@ int func_ov002_020ca78c(void *p);
 void Vec3_RotateYAndTranslate(Vector3 *res, const Vector3 *translation, short angY,
                               const Vector3 *v);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 int AngleDiff(int a, int b);
 }
 
@@ -252,9 +251,6 @@ extern signed char gNextSublevel;
 extern int gMusicVolume;
 extern int gSubVolume;
 extern Vector3 data_020a0ebc;
-/* local extern: including math/MtxStack.h instead renumbers every @NNN and
-   $NNN in this TU (+72, measured). */
-extern Matrix4x3 data_020a0e68;
 extern char data_ov002_0211094c;
 extern SharedFilePtr data_ov089_02132c50;
 /* ov089's key-model file table, not a function: eight SharedFilePtr*
@@ -403,7 +399,7 @@ int daDoor_c::func_ov100_02144528(daPly_c *pl) {
                 Sound::ChangeMusicVolume(0, 0x19666);
             }
             func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END,
-                          (const Vector3 *)(&mCamSpacePosX));
+                          &mCamSpacePos);
         }
         if (DecIfAbove0_Byte(&mTimer) == 0) {
             void *r1 = data_ov100_02148704 != 0 ? 0 : &data_ov100_021488f4;
@@ -474,8 +470,7 @@ int daDoor_c::func_ov100_02144730(daPly_c *arg1) {
         {
             gCamera->mFlags &= ~DOOR_CAMERA_FLAGS;
         }
-        func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END,
-                      (const Vector3 *)(&mCamSpacePosX));
+        func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END, &mCamSpacePos);
     } else if (mKeyModelIdx != 0) {
         if (mModel.WillHitFrame((u16)(mModel.GetFrameCount() - 0x1c)) != 0) {
             gCamera->mFlags &= ~DOOR_CAMERA_FLAGS;
@@ -524,7 +519,7 @@ int daDoor_c::func_ov100_02144950(daPly_c *pl, int unused) {
     ShowArea((signed char)mAngleZ);
     gCamera->mFlags |= DOOR_CAMERA_FLAGS;
     func_02012694((param1 == DOOR_ALT_SOUND) ? SND_SWING_START_ALT : SND_SWING_START,
-                  (const Vector3 *)(&mCamSpacePosX));
+                  &mCamSpacePos);
     mTimer = 0;
     return 1;
 }
@@ -1078,8 +1073,8 @@ s32 daDoor_c::InitResources() {
 
     /* The model matrix takes the position >> 3. */
     Vec3_Asr(&tmp, &mPos, 3);
-    Matrix4x3_FromTranslation(&data_020a0e68, tmp.x, tmp.y, tmp.z);
-    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
+    MtxStack::transS(tmp.x, tmp.y, tmp.z);
+    MtxStack::YrotM(mAngleY);
     *(Mtx43 *)&mModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
 
     if (e->keyFile != 0) {

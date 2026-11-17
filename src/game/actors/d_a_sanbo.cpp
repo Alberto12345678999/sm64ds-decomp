@@ -69,10 +69,7 @@ extern void Matrix4x3_ApplyInPlaceToTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void* m, int x, int y, int z);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern struct Matrix4x3 data_020a0e68;
-extern void d_a_sanboNewSimpleHold(unsigned int, int, int, int);
 extern void func_02038414(void *p);
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *actor, int b, int c, void *v, int e);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 }
 
@@ -140,9 +137,9 @@ int daSanbo_c::InitResources()
     t = (actorID == SANBO_HEAD);
     if (t != false) {
         mRootPos = mPos;
-        mScaleX = 0x1000;
-        mScaleY = 0x1000;
-        mScaleZ = 0x1000;
+        mScaleX = FX32_ONE;
+        mScaleY = FX32_ONE;
+        mScaleZ = FX32_ONE;
         mPrevSegment = 0;
         mNextSegment = 0;
     } else {
@@ -239,10 +236,6 @@ namespace Sound { void PlayBank0(unsigned int id, const Vector3 &pos); }
 
 
 extern "C" {
-void d_a_sanboRunningSlidingDustAtHold(int x, int y, int z);
-unsigned d_a_sanboNewHold(unsigned a, unsigned b, int x, int y, int z, const void *dir, void *cb);
-unsigned d_a_sanboNewCleanParticleHold(unsigned a, unsigned b, int x, int y, int z,
-                                       const Vector3_16f *dir);
 }
 
 /* A segment tracks the one in front of it while that piece is still small. */
@@ -252,16 +245,11 @@ int daSanbo_c::UpdateStackedBody() {
     if (!next) {
         ChangeState(1);
     } else {
-        int offset = 0xe000;
         int vy;
         int clamped;
-        s16 sine;
-        s16 cosine;
-        u16 ang;
 
         mPosX = next->mPosX;
-        next = mNextSegment;
-        mPosZ = next->mPosZ;
+        mPosZ = mNextSegment->mPosZ;
 
         vy = mVertSpeed - 0x2000;
         clamped = mTerminalVelocity;
@@ -270,24 +258,16 @@ int daSanbo_c::UpdateStackedBody() {
         mVertSpeed = clamped;
         mPosY += mVertSpeed;
 
-        next = mNextSegment;
-        if (mPosY < next->mPosY + 0x6e000) {
-            mPosY = next->mPosY + 0x6e000;
+        if (mPosY < mNextSegment->mPosY + 0x6e000) {
+            mPosY = mNextSegment->mPosY + 0x6e000;
             mVertSpeed = 0;
         }
 
-        next = mNextSegment;
-        mAngleY = next->mAngleY;
-        next = mNextSegment;
-        s16 segAng = (next->mSegAngY + 0x13000);
-        mSegAngY = segAng;
-        ang = (u16)mSegAngY;
-        sine = FX_SinIdx(ang >> 4);
-        mOffsetX = FX_MUL(sine, offset);
-        mOffsetY = 0;
-        ang = (u16)mSegAngY;
-        cosine = FX_CosIdx(ang >> 4);
-        mOffsetZ = FX_MUL(cosine, offset);
+        mAngleY = mNextSegment->mAngleY;
+        mSegAngY = mNextSegment->mSegAngY + 0x13000;
+        mOffset.x = FX_MUL(FX_SinIdx((u16)mSegAngY >> 4), 0xe000);
+        mOffset.y = 0;
+        mOffset.z = FX_MUL(FX_CosIdx((u16)mSegAngY >> 4), 0xe000);
     }
     HandleAttacks();
     mdCcAc_c.Clear();
@@ -307,9 +287,9 @@ int daSanbo_c::EnterLeader() {
     mTimer = timer;
     timer = mTimer;
     if (timer == 0) {
-        mScaleX = 0x1000;
-        mScaleY = 0x1000;
-        mScaleZ = 0x1000;
+        mScaleX = FX32_ONE;
+        mScaleY = FX32_ONE;
+        mScaleZ = FX32_ONE;
     }
     mState = 1;
     return 1;
@@ -326,9 +306,9 @@ int daSanbo_c::UpdateLeader() {
     mScaleY = copied;
     mScaleZ = copied;
     mSegAngY = (mSegAngY + 0x500);
-    mOffsetX = 0;
-    mOffsetY = 0;
-    mOffsetZ = 0;
+    mOffset.x = 0;
+    mOffset.y = 0;
+    mOffset.z = 0;
     UpdateWanderYaw();
     if (GetSegmentIndex() < 4) {
         if (DecIfAbove0_Byte(&mTimer) == 0) {
@@ -436,28 +416,15 @@ int daSanbo_c::UpdateStackedOnGrowingBody() {
         int fullHeight = 0x6e000;
         int scale = next->mScaleX;
         int raised = FX_MUL(scale, fullHeight);
-        int offset = 0xe000;
-        s16 sine;
-        s16 cosine;
-        u16 ang;
 
         mPosX = next->mPosX;
-        next = mNextSegment;
-        mPosY = raised + next->mPosY;
-        next = mNextSegment;
-        mPosZ = next->mPosZ;
-        next = mNextSegment;
-        mAngleY = next->mAngleY;
-        next = mNextSegment;
-        s16 segAng = (next->mSegAngY + 0x13000);
-        mSegAngY = segAng;
-        ang = (u16)mSegAngY;
-        sine = FX_SinIdx(ang >> 4);
-        mOffsetX = FX_MUL(sine, offset);
-        mOffsetY = 0;
-        ang = (u16)mSegAngY;
-        cosine = FX_CosIdx(ang >> 4);
-        mOffsetZ = FX_MUL(cosine, offset);
+        mPosY = raised + mNextSegment->mPosY;
+        mPosZ = mNextSegment->mPosZ;
+        mAngleY = mNextSegment->mAngleY;
+        mSegAngY = mNextSegment->mSegAngY + 0x13000;
+        mOffset.x = FX_MUL(FX_SinIdx((u16)mSegAngY >> 4), 0xe000);
+        mOffset.y = 0;
+        mOffset.z = FX_MUL(FX_CosIdx((u16)mSegAngY >> 4), 0xe000);
         if (raised == fullHeight)
             ChangeState(0);
     }
@@ -532,9 +499,9 @@ void daSanbo_c::UpdateModelAndShadow() {
     }
 
     Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
-    mModel.mat4x3.m[9] = (mPosX + mOffsetX) >> 3;
+    mModel.mat4x3.m[9] = (mPosX + mOffset.x) >> 3;
     mModel.mat4x3.m[10] = (mPosY + 0x3c000) >> 3;
-    mModel.mat4x3.m[11] = (mPosZ + mOffsetZ) >> 3;
+    mModel.mat4x3.m[11] = (mPosZ + mOffset.z) >> 3;
 
     if (mNextSegment == 0 || mState == 2 || mState == 5) {
         DropShadowRadHeight(mShadowModel, mModel.mat4x3, 0x82000, 0x2bc000, 0xf);
@@ -542,22 +509,22 @@ void daSanbo_c::UpdateModelAndShadow() {
 }
 
 void daSanbo_c::UpdateFloorAndWalls(dBgCh_Actr *clsn) {
-    int n0[3];
-    int n1[3];
+    Vector3 n0;
+    Vector3 n1;
 
     func_02038414(clsn);
     if (clsn->IsOnGround()) {
-        static_cast<dBgPi *>(clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)n0);
-        if (n0[1] != 0) {
-            int x = FX_MUL(n0[0], mSpeedX);
-            int z = FX_MUL(n0[2], mSpeedZ);
+        static_cast<dBgPi *>(clsn->GetFloorResult())->surface.CopyNormalTo(n0);
+        if (n0.y != 0) {
+            int x = FX_MUL(n0.x, mSpeedX);
+            int z = FX_MUL(n0.z, mSpeedZ);
             int dot = x + z;
-            int slope = FX_Div(dot, n0[1]);
+            int slope = FX_Div(dot, n0.y);
             mVertSpeed = -(slope + 0x8000);
         }
     }
     if (clsn->IsOnWall()) {
-        static_cast<dBgPi *>(clsn->GetWallResult())->surface.CopyNormalTo(*(Vector3 *)n1);
+        static_cast<dBgPi *>(clsn->GetWallResult())->surface.CopyNormalTo(n1);
     }
 }
 
@@ -578,12 +545,12 @@ void daSanbo_c::HandleAttacks() {
     int state;
     daSanbo_c *prev;
     struct Vector3 pos;
-    /* Five arrays on purpose. One shared int[3] changes this function. */
-    int vv1[3];
-    int vv2[3];
-    int vv3[3];
-    int vv4[3];
-    int vv5[3];
+    /* Five vectors on purpose. One shared local changes this function. */
+    Vector3 vv1;
+    Vector3 vv2;
+    Vector3 vv3;
+    Vector3 vv4;
+    Vector3 vv5;
     int x;
     int y;
     int z;
@@ -664,37 +631,37 @@ void daSanbo_c::HandleAttacks() {
                 prev = mPrevSegment;
                 if (prev == 0) {
                     if (mVertSpeed == 0) {
-                        vv1[0] = mPosX;
-                        vv1[1] = mPosY;
-                        vv1[2] = mPosZ;
-                        player->Hurt(*(Vector3 *)vv1, 2, 0xc000, 1, 0, 1);
+                        vv1.x = mPosX;
+                        vv1.y = mPosY;
+                        vv1.z = mPosZ;
+                        player->Hurt(vv1, 2, 0xc000, 1, 0, 1);
                     }
                 } else if (mVertSpeed == 0 && prev->mVertSpeed == 0) {
-                    vv2[0] = mPosX;
-                    vv2[1] = mPosY;
-                    vv2[2] = mPosZ;
-                    player->Hurt(*(Vector3 *)vv2, 2, 0xc000, 1, 0, 1);
+                    vv2.x = mPosX;
+                    vv2.y = mPosY;
+                    vv2.z = mPosZ;
+                    player->Hurt(vv2, 2, 0xc000, 1, 0, 1);
                 }
             } else if (state == 1) {
                 if (mPrevSegment == 0) {
                     if (mWithMeshClsn.IsOnGround() != 0) {
-                        vv3[0] = mPosX;
-                        vv3[1] = mPosY;
-                        vv3[2] = mPosZ;
-                        player->Hurt(*(Vector3 *)vv3, 2, 0xc000, 1, 0, 1);
+                        vv3.x = mPosX;
+                        vv3.y = mPosY;
+                        vv3.z = mPosZ;
+                        player->Hurt(vv3, 2, 0xc000, 1, 0, 1);
                     }
                 } else if (mWithMeshClsn.IsOnGround() != 0 &&
                            mPrevSegment->mVertSpeed == 0) {
-                    vv4[0] = mPosX;
-                    vv4[1] = mPosY;
-                    vv4[2] = mPosZ;
-                    player->Hurt(*(Vector3 *)vv4, 2, 0xc000, 1, 0, 1);
+                    vv4.x = mPosX;
+                    vv4.y = mPosY;
+                    vv4.z = mPosZ;
+                    player->Hurt(vv4, 2, 0xc000, 1, 0, 1);
                 }
             } else {
-                vv5[0] = mPosX;
-                vv5[1] = mPosY;
-                vv5[2] = mPosZ;
-                player->Hurt(*(Vector3 *)vv5, 2, 0xc000, 1, 0, 1);
+                vv5.x = mPosX;
+                vv5.y = mPosY;
+                vv5.z = mPosZ;
+                player->Hurt(vv5, 2, 0xc000, 1, 0, 1);
             }
         }
     }

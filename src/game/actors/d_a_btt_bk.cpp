@@ -36,8 +36,6 @@ typedef void (daBttBk_c::*PMF)();
 /* arm9 C helpers. local extern: no shared header declares these. */
 extern "C" {
 int *Vec3_LslInPlace(Vector3 *v, int sh);
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
 
 /* dExtSimpleModel_c-file handle. The derived constructor and destructor are the retail
@@ -255,11 +253,9 @@ int daBttBk_c::StateCarriedMain() {
 
 /* State 1 enter. */
 int daBttBk_c::StateCarriedInit() {
-    u32 *flagsPtr = &mFlags;
-    int one = 1;
-    mState = one;
-    *flagsPtr &= ~3;
-    return one;
+    mState = 1;
+    mFlags &= ~3;
+    return 1;
 }
 
 /* State 0 update: fall, bounce at 60% on landing, collide. */
@@ -351,9 +347,9 @@ int daBttBk_c::InitResources() {
         mPosY = ground.clsnY;
     else
         mPosY = pos.y;
-    mScaleX = 0x1000;
-    mScaleY = 0x1000;
-    mScaleZ = 0x1000;
+    mScaleX = FX32_ONE;
+    mScaleY = FX32_ONE;
+    mScaleZ = FX32_ONE;
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mCarrier = 0;
     SetState(0);

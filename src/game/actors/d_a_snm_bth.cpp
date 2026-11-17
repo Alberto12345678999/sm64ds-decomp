@@ -31,19 +31,13 @@
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
 #include "LevelRng.h"
+#include "Sound.h"
 
 /* This scene owns the position used by the breath effect. */
 extern Vector3 data_ov027_02113d10;
 
-namespace Sound {
-/* local extern: including Sound.h renumbers @NNN. */
-int PlayLong(u32, u32, u32, const Vector3 &, s16);
-}
-
 extern "C" {
 int *Vec3_LslInPlace(Vector3 *, int);
-/* local extern: these five names hold the @NNN count. */
-void d_a_snm_bthPlayLongHold(int handle, unsigned int a, unsigned int b, void *pos, unsigned int c);
 extern u8 gGameMode;
 extern SharedFilePtr data_ov002_0210da40;
 extern SharedFilePtr data_ov002_0210d9a0;
@@ -237,7 +231,7 @@ int daSnmBth_c::Render()
         return 1;
     {
         int i;
-        for (i = 0; i < 50; i++) {
+        for (i = 0; i < PARTICLE_NUM; i++) {
             mParticles[i].Render();
         }
     }
@@ -252,7 +246,6 @@ int daSnmBth_c::Behavior()
     Vector3 pos;
     int i;
     SnowmanBreathParticle *slot;
-    int zero;
 
     b = gGameMode;
     b = (b == 2);
@@ -273,12 +266,10 @@ int daSnmBth_c::Behavior()
             break;
         case 1:
             pos.x = mPosX;
-            zero = 0;
             pos.y = mPosY;
             pos.z = mPosZ;
             pos.y = pos.y + 0x12c000;
-            if (mTalkPlayer->ShowMessage(
-                    *this, 0xbb, &pos, zero, zero) == 0) {
+            if (mTalkPlayer->ShowMessage(*this, 0xbb, &pos, 0, 0) == 0) {
                 break;
             }
             mTalkState++;
@@ -313,7 +304,7 @@ int daSnmBth_c::Behavior()
         slot->Behavior();
         i++;
         slot++;
-    } while (i < 50);
+    } while (i < PARTICLE_NUM);
 
     return 1;
 }

@@ -87,11 +87,6 @@ extern ChoropuStateRow data_ov080_02128438[6];
 
 #define LAUND(p) ((void*)(p))
 
-extern "C" unsigned int d_a_choropuNewHold(unsigned int a, unsigned int b, int x, int y, int z,
-                                           void *vel, void *cb);
-/* Parameter names keep this TU's @NNN. */
-typedef int BgchInitAt_(void *self, void *actor, int radius, int height, Vector3_16 *a,
-                        Vector3_16 *b);
 extern "C" int RandomIntInternal(int *seed);
 extern "C" void Matrix4x3_FromRotationY(void *m, int ang);
 void func_02012694(unsigned int a, const Vector3 *p);
@@ -563,7 +558,7 @@ void daChoropu_c::func_ov080_02124208()
     }
 
     if ((mdCcAc_c.hitFlags & daChoropu_HIT_MEGA) != 0) {
-        func_02012694(0x1d, (const Vector3 *)(&mCamSpacePosX));
+        func_02012694(0x1d, &mCamSpacePos);
         p->IncMegaKillCount();
         func_ov080_02124088();
         return;

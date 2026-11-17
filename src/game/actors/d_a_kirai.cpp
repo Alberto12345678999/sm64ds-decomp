@@ -11,7 +11,6 @@
  */
 /* Notes:
  * - data_ov060_0211b1c4 is the model handle (LoadFile / Release).
- * - &mHomePosX stays punned: daKirai_c stores it as three scalars.
  * - The armed state tests IsPlayerActor, an int-returning predicate: a bool
  *   local there misses.
  * - func_02012694 plays sound 0x2f at mCamSpacePos.
@@ -28,6 +27,7 @@ enum daKirai_c_AssetId { ASSET_KOOPA_BOMB_BMD = 0x0382 };
 #include "ParticleIds.h"
 #include "math/MtxStack.h"
 #include "math/CalcLib.h"
+#include "nitro/fx/fx.h"
 
 /* Per-member opt brackets bind only when codegen is not deferred, and that
  * also lays .text down in source order. The file is therefore ROM-ascending. */
@@ -100,7 +100,7 @@ int daKirai_c::IsInTriggerRange(Vector3 *pos) {
     horz = Vec3_HorzLen(pos);
     homeHorz = mHomeHorzDist;
     if (horz >= homeHorz - 0x12c000 && horz <= homeHorz + 0x12c000) {
-        if (Vec3_Dist((Vector3 *)&mHomePosX, pos) < mHomeYOffset)
+        if (Vec3_Dist(&mHomePos, pos) < mHomeYOffset)
             return 1;
     }
     return 0;
@@ -132,9 +132,9 @@ void daKirai_c::UpdateModelTransform() {
 
 /* Re-arm. */
 void daKirai_c::Rearm() {
-    mScaleX = 0x1000;
-    mScaleY = 0x1000;
-    mScaleZ = 0x1000;
+    mScaleX = FX32_ONE;
+    mScaleY = FX32_ONE;
+    mScaleZ = FX32_ONE;
     mOpacity = 0xff;
     mStateIndex = 0;
     mdCcAcPos_c.flags &= ~1;
@@ -286,19 +286,19 @@ int daKirai_c::InitResources() {
     v.y = -0x96000;
     v.z = 0;
     mdCcAcPos_c.Init(this, v, 0x96000, 0x12c000, 0x204004, 0);
-    mScaleX = 0x1000;
-    mScaleY = 0x1000;
-    mScaleZ = 0x1000;
+    mScaleX = FX32_ONE;
+    mScaleY = FX32_ONE;
+    mScaleZ = FX32_ONE;
     mOpacity = 0xff;
     z.x = 0;
     z.y = 0;
     z.z = 0;
     Vec3_HorzAngle(&z, &mPos);
     mHomeYOffset = 0x2ee000;
-    mHomePosX = mPosX;
-    mHomePosY = mPosY;
-    mHomePosZ = mPosZ;
-    mHomePosY += mHomeYOffset >> 3;
+    mHomePos.x = mPosX;
+    mHomePos.y = mPosY;
+    mHomePos.z = mPosZ;
+    mHomePos.y += mHomeYOffset >> 3;
     mHomeHorzDist = Vec3_HorzLen(&mPos);
     mStateIndex = 0;
     mSlotIndex = AddSpikeBomb(this);

@@ -8,14 +8,13 @@
  * leftovers:
  * - DrawCards steps a char* by 0x18 from this. mCards[i] and a card
  *   pointer both change that loop.
- * - CardFlyAway keeps FlyAwaySceneView. Direct mCards access misses.
- * - CheckFinished reads mCredits and mHudScore through inline_fn(&member);
- *   the plain reads change four words. unk_5407 is only cleared.
- * - MEMORY2_OFF names the offsets CardFlyAway adds.
+ * - CheckFinished's clear-bonus call reads mCredits through WordAt, as
+ *   dScMgMemory_c's twin does; the plain read changes four words.
+ *   unk_5407 is only cleared.
  * - Camera_InitDealerView sets mCamera and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
- * - Mg_DrawScoreTally and Mg_SaveRecordPair stay the linker names. Their
- *   bodies are not in this file.
+ * - Mg_SaveRecordPair stays the linker name. Its body is not in this
+ *   file.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -40,66 +39,15 @@ namespace cstd {
 s16 atan2(s32, s32);
 }
 
-/* CardFlyAway, ResultWait and RoundDealHard retain the partial views below.
- * Their array extents span unrelated fields to retain specific address
- * calculations; they are not original class layouts. */
-
 typedef void (dScMgMemory2_c::*dScMgMemory2_cState)();
 typedef void (dScMgMemory2_c::*dScMgMemory2_cCardState)(int);
 extern "C" dScMgMemory2_cCardState sMemory2CardTable[];
-
-typedef struct FlyAwayCardView {
-    /* 0x00 */ s32 x;
-    /* 0x04 */ u8 unk04[0x12 - 0x04];
-    /* 0x12 */ u8 visible;
-    /* 0x13 */ u8 active;
-    /* 0x14 */ u8 state;
-    /* 0x15 */ u8 frame;
-    /* 0x16 */ u8 flyAwayStarted;
-    /* 0x17 */ u8 pad_17;
-} FlyAwayCardView;
-
-typedef struct FlyAwaySceneView {
-    /* 0x0000 */ FlyAwayCardView raw[1];
-    /* 0x0018 */ u8 unk18[0x51a8 - 0x18];
-    /* 0x51a8 */ FlyAwayCardView cards[25];
-    /* 0x5400 */ u8 unk5400[0xa];
-    /* 0x540a */ u8 difficulty;
-} FlyAwaySceneView;
-
-struct ScoreView {
-    char pad[0xb4];
-    int hudScore;
-    int bestHudScore;
-};
-
-typedef struct {
-    char _pad0[0x13];
-    u8 active; /* +0x13 */
-    char _pad1[4];
-} DealCardView; /* 0x18 */
-
-typedef struct {
-    char _pad0[0x51a8];
-    DealCardView cards[23]; /* 0x51a8 */
-    char _pad1[8];
-    int substate; /* 0x53d8 */
-    char _pad2[0xa];
-    short dealSignals; /* 0x53e6 */
-    short cardsDealt;  /* 0x53e8 */
-    u16 targetPairs;   /* 0x53ea */
-    char _pad3[0x1e];
-    u8 difficulty; /* 0x540a */
-} DealSceneView;
 
 extern "C" dScMgMemory2_cState sMemory2ResultTable[];
 extern "C" dScMgMemory2_cState sMemory2StateTable[];
 extern "C" dScMgMemory2_cState sMemory2RoundTable[];
 
 extern "C" {
-extern void Mg_DrawScoreTally(void *thiz, int a, int b, int c);
-extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
-extern s16 atan2_hold_d_s_mg_memory2_1(int y, int x);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 sMemory2CardFrameSprites[];
 extern void *sMemory2CardSprites[];
@@ -119,7 +67,6 @@ extern int sMemory2EasyDealsPerDifficulty[];
 extern int sMemory2PreviewCountPerDifficulty[];
 extern int sMemory2PreviewTimePerDifficulty[];
 extern void FreeGfxSlotsById(int x);
-void Mg_DrawCredits(void *, int, int, int);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
@@ -141,9 +88,6 @@ void Mg_PlaceBannersOnTopScreen(void);
 /* The scene seen through a pointer stepped one card at a time, for the
  * DrawCards walk. */
 #define MEMORY2(p) ((dScMgMemory2_c *)(p))
-/* A field's byte offset in the scene, for the CardFlyAway sites that add it
-   to a stepped pointer, as the ROM does. */
-#define MEMORY2_OFF(member) ((int)&((dScMgMemory2_c *)0)->member)
 
 #pragma defer_codegen off
 
@@ -155,13 +99,13 @@ dScMgMemory2_c::~dScMgMemory2_c() {}
 void dScMgMemory2_c::DrawMessage() {
     if (mMessageVisible == 0)
         return;
-    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
+    DrawScoreTally(0xe0, 0x14, 1);
 }
 
 void dScMgMemory2_c::DrawCursor() {
     if (mCursor.enabled == 0)
         return;
-    Mg_DrawBlinkSprite(this, 0xe0, 0xa0);
+    DrawBlinkSprite(0xe0, 0xa0);
 }
 
 void dScMgMemory2_c::UpdateCursor() {
@@ -198,33 +142,39 @@ void dScMgMemory2_c::HideCursor() {
 void dScMgMemory2_c::PlayerWait(int /* player */) {}
 
 void dScMgMemory2_c::PlayerMove(int player) {
-    int targetX = (player << 4) + 0xc;
-    int targetY = -0x2c;
-    u16 *angle;
-    int dx;
-    int dy;
+    int targetX = player * 16 + 12;
+    int dx, dy;
+
     dx = targetX - (mPlayers[player].x >> 12);
-    dy = targetY - (mPlayers[player].y >> 12);
+    dy = -44 - (mPlayers[player].y >> 12);
+
     mPlayers[player].angle = cstd::atan2(dy, dx);
-    mPlayers[player].speed = mPlayers[player].speed + 0x200;
-    /* The index stays by hand here: through FX_CosIdx/FX_SinIdx, with or
-       without the angle pointer, the second product takes other registers
-       (17 words). */
-    angle = (u16 *)&mPlayers[player].angle;
-    mPlayers[player].x = mPlayers[player].x +
-                         FX_MUL(FX_SinCosTable_[((*angle >> 4) << 1) + 1], mPlayers[player].speed);
-    mPlayers[player].y =
-        mPlayers[player].y + FX_MUL(FX_SinCosTable_[(*angle >> 4) << 1], mPlayers[player].speed);
+
+    mPlayers[player].speed += 0x200;
+
+    {
+        fx16 c = FX_CosIdx((u16)mPlayers[player].angle >> 4);
+        mPlayers[player].x += FX_MUL(c, mPlayers[player].speed);
+    }
+    {
+        fx16 s = FX_SinIdx((u16)mPlayers[player].angle >> 4);
+        mPlayers[player].y += FX_MUL(s, mPlayers[player].speed);
+    }
+
     dx = targetX - (mPlayers[player].x >> 12);
-    dy = targetY - (mPlayers[player].y >> 12);
-    if (dx < -3 || dx > 3) {
+    dy = -44 - (mPlayers[player].y >> 12);
+
+    if (dx < -3)
         return;
-    }
-    if (dy < -3 || dy > 3) {
+    if (dx > 3)
         return;
-    }
+    if (dy < -3)
+        return;
+    if (dy > 3)
+        return;
+
     mPlayers[player].x = targetX << 12;
-    mPlayers[player].y = targetY << 12;
+    mPlayers[player].y = -0x2c000;
     mPlayers[player].state = PLAYER_WAIT;
 }
 
@@ -264,10 +214,13 @@ void dScMgMemory2_c::InitPlayers() {
     }
 }
 
-/* inline_fn stays: reading mCredits and mHudScore directly changes the code. */
+/* WordAt stays for the clear bonus's mCredits read: as a plain member the
+   multiply-add takes its registers the other way round (4 of 41 words),
+   whichever side of the + mCredits sits on. mHudScore and the miss path's
+   reads are plain. */
 void Mg_SaveRecordPair(int r0arg, int r1arg);
-inline int *inline_fn(char *arg0) {
-    return (int *)arg0;
+inline int *WordAt(char *p) {
+    return (int *)p;
 }
 
 void dScMgMemory2_c::CheckFinished() {
@@ -275,14 +228,13 @@ void dScMgMemory2_c::CheckFinished() {
         mResultTimer = 64;
         mState = STATE_RESULT;
         mSubstate = RESULT_WAIT;
-        Mg_SaveRecordPair(((5 - mMisses) * 5) + (*inline_fn((char *)&mCredits)),
-                          (*inline_fn((char *)&mHudScore)) + 1);
+        Mg_SaveRecordPair((5 - mMisses) * 5 + *WordAt((char *)&mCredits), mHudScore + 1);
     }
     if (mMisses >= mMaxMisses) {
         mResultTimer = 64;
         mState = STATE_RESULT;
         mSubstate = RESULT_WAIT;
-        Mg_SaveRecordPair(*inline_fn((char *)&mCredits), (*inline_fn((char *)&mHudScore)) - 1);
+        Mg_SaveRecordPair(mCredits, mHudScore - 1);
     }
 }
 
@@ -322,6 +274,12 @@ void dScMgMemory2_c::JudgePair() {
 }
 
 // opt_propagation off keeps the card loop's constant live, as in the ROM.
+/* Kept, measured (#821, 2026-11-16), the same as dScMgMemory_c::DrawCards,
+ * its twin: the ROM copies the loop's zero into `dimmed` (mov r0, sb) and
+ * computes it after the sprite index. Without the pragma this body is 27 of
+ * 42 words off; mCards[cardIndex] in a for or do-while 27; `dimmed` passed
+ * as `mState != STATE_JUDGE_PAIRS` or a ternary 26; the sprite index before
+ * `dimmed` 29; a card pointer, local or walked, 36. */
 #pragma push
 #pragma opt_propagation off
 void dScMgMemory2_c::DrawCards() {
@@ -347,28 +305,27 @@ void dScMgMemory2_c::DrawCards() {
         }
         cardIndex += 1;
         p += 0x18;
-    } while (cardIndex < 20);
+    } while (cardIndex < CARD_NUM);
 }
 #pragma pop
 
 void dScMgMemory2_c::UpdateCards() {
     int cardIndex;
-    for (cardIndex = 0; cardIndex < 20; cardIndex++) {
+    for (cardIndex = 0; cardIndex < CARD_NUM; cardIndex++) {
         if (mCards[cardIndex].active)
             (this->*sMemory2CardTable[mCards[cardIndex].state])(cardIndex);
     }
 }
 
 void dScMgMemory2_c::CardFlyAway(int cardIndex) {
-    FlyAwaySceneView *view = (FlyAwaySceneView *)this;
     s32 rowWidth;
     s32 column;
     s32 precedingOffset;
     s32 scanLimit;
 
-    view->cards[cardIndex].x -= 0x10000;
-    if (view->cards[cardIndex].flyAwayStarted == 0) {
-        rowWidth = sMemory2FlyAwayLimitPerMode[view->difficulty];
+    mCards[cardIndex].x -= 0x10000;
+    if (mCards[cardIndex].flyAwayStarted == 0) {
+        rowWidth = sMemory2FlyAwayLimitPerMode[mDifficulty];
         column = cardIndex;
         if (cardIndex >= rowWidth) {
             scanLimit = rowWidth;
@@ -377,30 +334,29 @@ void dScMgMemory2_c::CardFlyAway(int cardIndex) {
             } while (column >= scanLimit);
         }
         if (column == 0) {
-            view->cards[cardIndex].flyAwayStarted = 1;
+            mCards[cardIndex].flyAwayStarted = 1;
             return;
         }
         scanLimit = column + 1;
         precedingOffset = 1;
         if (scanLimit > 1) {
             do {
-                if (view->cards[cardIndex - precedingOffset].active != 0) {
-                    if (((view->cards[cardIndex].x - view->cards[cardIndex - precedingOffset].x) >>
-                         12) <= 4) {
-                        view->cards[cardIndex].flyAwayStarted = 1;
-                        view->cards[cardIndex - precedingOffset].state = CARD_FLY_AWAY;
+                if (mCards[cardIndex - precedingOffset].active != 0) {
+                    if (((mCards[cardIndex].x - mCards[cardIndex - precedingOffset].x) >> 12) <=
+                        4) {
+                        mCards[cardIndex].flyAwayStarted = 1;
+                        mCards[cardIndex - precedingOffset].state = CARD_FLY_AWAY;
                     }
                 }
                 precedingOffset++;
             } while (precedingOffset < scanLimit);
         }
     }
-    if ((view->cards[cardIndex].x >> 12) > -0x18) {
+    if ((mCards[cardIndex].x >> 12) > -0x18) {
         return;
     }
-    /* mCards[cardIndex].active and .visible; view->cards[cardIndex] shrinks the function. */
-    *((u8 *)view + cardIndex * 24 + MEMORY2_OFF(mCards[0].active)) = 0;
-    *((u8 *)view + cardIndex * 24 + MEMORY2_OFF(mCards[0].visible)) = 0;
+    mCards[cardIndex].active = 0;
+    mCards[cardIndex].visible = 0;
 }
 
 void dScMgMemory2_c::CardFlipDown(int cardIndex) {
@@ -443,16 +399,16 @@ void dScMgMemory2_c::CardSelect(int cardIndex) {
 
     playerSlot = gActivePlayerSlot;
     touchPressed = 0;
-    if (gTouchHeld[playerSlot * 4] != 0) {
-        if (gTouchEdge[playerSlot * 4] != 0) {
+    if (gTouchInfo[playerSlot].held != 0) {
+        if (gTouchInfo[playerSlot].edge != 0) {
             touchPressed = 1;
         }
     }
     if (touchPressed == 0)
         return;
 
-    dx = gTouchX[gActivePlayerSlot * 4] - (mCards[cardIndex].x >> 12);
-    dy = gTouchY[gActivePlayerSlot * 4] - (mCards[cardIndex].y >> 12);
+    dx = gTouchInfo[gActivePlayerSlot].x - (mCards[cardIndex].x >> 12);
+    dy = gTouchInfo[gActivePlayerSlot].y - (mCards[cardIndex].y >> 12);
 
     if (dx < -0x10)
         return;
@@ -522,8 +478,8 @@ void dScMgMemory2_c::ResultFinish() {
 
     int touchPressed = 0;
     int playerSlot = gActivePlayerSlot;
-    if (gTouchHeld[playerSlot * 4] != 0) {
-        if (gTouchEdge[playerSlot * 4] != 0) {
+    if (gTouchInfo[playerSlot].held != 0) {
+        if (gTouchInfo[playerSlot].edge != 0) {
             touchPressed = 1;
         }
     }
@@ -565,7 +521,7 @@ void dScMgMemory2_c::ResultTurnCards() {
     {
         int cardsToReveal = 0;
         int cardIndex = 0;
-        for (; cardIndex < 20; cardIndex++) {
+        for (; cardIndex < CARD_NUM; cardIndex++) {
             if (mCards[cardIndex].active != 0) {
                 if (mCards[cardIndex].state == CARD_SELECT) {
                     mCards[cardIndex].state = CARD_FLIP_UP;
@@ -603,45 +559,39 @@ void dScMgMemory2_c::ResultReward() {
 }
 
 void dScMgMemory2_c::ResultWait() {
-    struct ScoreView *scoreView;
+    dScMgBase_c *scene;
 
-    if (mResultTimer == 0)
-        goto zero;
-
-    mResultTimer--;
-    if ((short)mResultTimer > 0)
-        return;
-
-    mResultTimer = 0;
-
-    if (mPairsFound >= mTargetPairs) {
-        if (mMisses == 0)
-            Mg_SetPerfectBanner();
-        Mg_SetSharedState(MG_STATE_WIN);
-        scoreView = (struct ScoreView *)gMgScene;
-        if (scoreView != 0) {
-            if (scoreView->hudScore < 0x270f)
-                scoreView->hudScore += 1;
-            if (scoreView->hudScore > scoreView->bestHudScore)
-                scoreView->bestHudScore = scoreView->hudScore;
+    if (mResultTimer != 0) {
+        mResultTimer--;
+        if ((short)mResultTimer > 0)
+            return;
+        mResultTimer = 0;
+        if (mPairsFound >= mTargetPairs) {
+            if (mMisses == 0)
+                Mg_SetPerfectBanner();
+            Mg_SetSharedState(MG_STATE_WIN);
+            scene = gMgScene;
+            if (scene != 0) {
+                if (scene->mHudScore < 0x270f)
+                    scene->mHudScore += 1;
+                if (scene->mHudScore > scene->mBestHudScore)
+                    scene->mBestHudScore = scene->mHudScore;
+            }
+            Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
+            mDealer.PlayWin();
+        } else {
+            Mg_SetSharedState(MG_STATE_LOSE);
+            scene = gMgScene;
+            if (scene != 0) {
+                if (scene->mHudScore > 0)
+                    scene->mHudScore -= 1;
+            }
+            mDealer.PlayLose();
         }
-        Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
-        mDealer.PlayWin();
-        return;
+    } else {
+        mPromptEnabled = 0;
+        mCardTimer = 16;
     }
-
-    Mg_SetSharedState(MG_STATE_LOSE);
-    scoreView = (struct ScoreView *)gMgScene;
-    if (scoreView != 0) {
-        if (scoreView->hudScore > 0)
-            scoreView->hudScore -= 1;
-    }
-    mDealer.PlayLose();
-    return;
-
-zero:
-    mPromptEnabled = 0;
-    mCardTimer = 16;
 }
 
 void dScMgMemory2_c::RoundReveal() {
@@ -657,7 +607,7 @@ void dScMgMemory2_c::RoundReveal() {
     }
     {
         long i;
-        for (i = 0; i < 20; i++) {
+        for (i = 0; i < CARD_NUM; i++) {
             mCards[i].state = CARD_SELECT;
         }
     }
@@ -669,7 +619,7 @@ void dScMgMemory2_c::RoundWaitDeal() {
     int pending = 0;
     int cardIndex;
     int j;
-    for (cardIndex = 0; cardIndex < 20; cardIndex++) {
+    for (cardIndex = 0; cardIndex < CARD_NUM; cardIndex++) {
         if (mCards[cardIndex].active != 0) {
             if (mCards[cardIndex].state != CARD_IDLE) {
                 pending++;
@@ -679,7 +629,7 @@ void dScMgMemory2_c::RoundWaitDeal() {
     }
     if (pending != 0)
         return;
-    for (j = 0; j < 20; j++)
+    for (j = 0; j < CARD_NUM; j++)
         mCards[j].state = CARD_SELECT;
     mSubstate = ROUND_START;
     mState = STATE_JUDGE_PAIRS;
@@ -689,13 +639,13 @@ void dScMgMemory2_c::RoundReadyCards() {
     int pending = 0;
     int cardIndex;
     int j;
-    for (cardIndex = 0; cardIndex < 20; cardIndex++) {
+    for (cardIndex = 0; cardIndex < CARD_NUM; cardIndex++) {
         if (mCards[cardIndex].active != 0) {
             if (mCards[cardIndex].state == CARD_SELECT)
                 mCards[cardIndex].state = CARD_IDLE;
         }
     }
-    for (j = 0; j < 20; j++) {
+    for (j = 0; j < CARD_NUM; j++) {
         if (mCards[j].active != 0) {
             if (mCards[j].state != CARD_IDLE) {
                 pending++;
@@ -715,7 +665,7 @@ void dScMgMemory2_c::RoundHideCards() {
         mPreviewTimer--;
         return;
     }
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < CARD_NUM; i++) {
         if (mCards[i].active != 0) {
             if (mCards[i].state == CARD_WAIT)
                 mCards[i].state = CARD_FLIP_DOWN;
@@ -723,7 +673,7 @@ void dScMgMemory2_c::RoundHideCards() {
     }
 
     pending = 0;
-    for (j = 0; j < 20; j++) {
+    for (j = 0; j < CARD_NUM; j++) {
         if (mCards[j].active != 0) {
             unsigned char cardState = mCards[j].state;
             if ((cardState != CARD_IDLE) && (cardState != CARD_FLIP_DOWN)) {
@@ -790,19 +740,19 @@ void dScMgMemory2_c::RoundDealFourth() {
  * difficulty's limit (sMemory2HardDealsPerMode) move to substate 5 on difficulty 1, 4
  * otherwise. */
 void dScMgMemory2_c::RoundDealHard() {
-    DealSceneView *view = (DealSceneView *)this;
-    u8 difficulty;
-    if (view->dealSignals < 3)
+    int cardIndex;
+    if (mDealSignals < 3) {
         return;
-    view->cards[view->targetPairs * 2 - 1 - view->cardsDealt].active = 1;
+    }
+    cardIndex = mTargetPairs * 2 - 1 - mCardsDealt;
+    mCards[cardIndex].active = 1;
     mCardsDealt++;
-    difficulty = view->difficulty;
-    if (view->cardsDealt < sMemory2HardDealsPerMode[difficulty])
-        return;
-    if (difficulty == 1)
-        view->substate = ROUND_SHOW_CARDS;
-    else
-        view->substate = ROUND_DEAL_FOURTH;
+    if (mCardsDealt >= sMemory2HardDealsPerMode[mDifficulty]) {
+        if (mDifficulty == 1)
+            mSubstate = ROUND_SHOW_CARDS;
+        else
+            mSubstate = ROUND_DEAL_FOURTH;
+    }
 }
 
 void dScMgMemory2_c::RoundDealNormal() {
@@ -848,7 +798,7 @@ void dScMgMemory2_c::RoundStart() {
 }
 
 void dScMgMemory2_c::ShuffleCards() {
-    for (int cardIndex = 0; cardIndex < 11; cardIndex++)
+    for (int cardIndex = 0; cardIndex < VALUE_NUM; cardIndex++)
         mValueCounts[cardIndex] = 0;
     for (int cardIndex = 0; cardIndex < 8; cardIndex++)
         mPreviewCards[cardIndex] = 0xff;
@@ -902,7 +852,7 @@ void dScMgMemory2_c::ShuffleCards() {
         return;
     } else {
         int cardIndex;
-        for (cardIndex = 0; cardIndex < 20; cardIndex++) {
+        for (cardIndex = 0; cardIndex < CARD_NUM; cardIndex++) {
             u32 cardValue = 1 + MG_RAND(10);
         check2:
             if (mValueCounts[cardValue] < 2) {
@@ -914,7 +864,7 @@ void dScMgMemory2_c::ShuffleCards() {
             }
         }
         int positionIndex;
-        for (positionIndex = 0; positionIndex < 20; positionIndex++) {
+        for (positionIndex = 0; positionIndex < CARD_NUM; positionIndex++) {
             mCards[positionIndex].x = 0x80000;
             mCards[positionIndex].y = -0x80000;
             mCards[positionIndex].speed = 0x8000;
@@ -931,16 +881,14 @@ void dScMgMemory2_c::ChoosePreviewCards() {
     int previewCount = sMemory2PreviewCountPerDifficulty[difficulty];
     int cardCount = sMemory2PreviewTimePerDifficulty[difficulty];
     int previewIndex;
-    int zero = 0;
     for (previewIndex = 0; previewIndex < previewCount; previewIndex++) {
-        int cardIndex;
-        cardIndex = MG_RAND(cardCount);
+        int cardIndex = MG_RAND(cardCount);
         if (previewIndex != 0) {
             int duplicate;
             int previousIndex;
             do {
-                duplicate = zero;
-                for (previousIndex = zero; previousIndex < previewIndex; previousIndex++) {
+                duplicate = 0;
+                for (previousIndex = 0; previousIndex < previewIndex; previousIndex++) {
                     if (cardIndex == mPreviewCards[previousIndex]) {
                         duplicate++;
                         break;
@@ -959,7 +907,7 @@ void dScMgMemory2_c::ResetGame() {
     int i;
     int j;
 
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < CARD_NUM; i++) {
         mCards[i].x = 0;
         mCards[i].y = 0;
         mCards[i].speed = 0;
@@ -999,7 +947,7 @@ void dScMgMemory2_c::ResetGame() {
         mSelectedValues[i] = 0;
         mSelectedCards[i] = 0;
     }
-    for (j = 0; j < 11; j++)
+    for (j = 0; j < VALUE_NUM; j++)
         mValueCounts[j] = 0;
     mMessageVisible = 1;
     mInputSeen = 0;
@@ -1085,7 +1033,7 @@ void dScMgMemory2_c::StartRound(int /* arg */) {
  * cursor, cards and dealer. */
 s32 dScMgMemory2_c::Render() {
     Camera_InitDealerView(&mCamera);
-    Mg_DrawCredits(this, 0xc, 0xc, 0);
+    DrawCredits(0xc, 0xc, 0);
     MgCoins_Draw();
     DrawMessage();
     DrawCursor();

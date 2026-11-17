@@ -68,27 +68,22 @@ enum {
 };
 
 /* Sound::Play2D(2, id). This TU calls the wrapper, not Play2D. */
-extern s16 data_ov081_021289a4;
-extern s16 data_ov081_021289a6;
-extern s16 data_ov081_021289a8;
+/* How fast RotateTowardPlayer turns, as ApproachAngle's three limits. */
+struct daSnowmanTurnRate {
+    s16 divisor;
+    s16 band;
+    s16 maxStep;
+};
+extern daSnowmanTurnRate data_ov081_021289a4[2];
 extern "C" int AngleDiff(int a, int b);
-struct Aea30C;
-void func_ov002_020aea30(Aea30C *self, dActor_c *actor, dBgCh_Actr *collision);
 /* Sound::Play(3, id, pos) — PlayBank3. This TU calls the wrapper. */
 void func_02012694(unsigned int a, const Vector3 *p);
 extern Vector3 data_ov081_02128998; /* cylinder offset (0, 0x1e000, 0) */
 extern unsigned char gNumPlayers;
 extern daPly_c *gPlayers[];
-extern "C" unsigned d_a_snowmanNewHold(unsigned a, unsigned b, int c, int d, int e, const void *f,
-                                       void *g);
 extern "C" void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern "C" void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int s);
 extern struct Matrix4x3 data_020a0e68;
-/* Parameter names keep this TU's @NNN. */
-extern "C" {
-typedef void BgchInitAt_(void *self, void *actor, int b, int c, void *v16, int e);
-}
-extern "C" int atan2_hold_d_a_snowman_1(int a, int b);
 
 /* File handles the static initializer constructs. The two models use
  * func_02017acc; the five animations use SharedFilePtr::Construct.
@@ -179,10 +174,6 @@ void daSnowman_c::RotateTowardPlayer(int idx) {
     daPly_c *player;
     struct Vector3 v;
     short ang;
-    int off;
-    s16 *maxStep;
-    s16 *band;
-    s16 *divisor;
     int lim;
 
     player = this->ClosestNonVanishPlayer();
@@ -201,14 +192,9 @@ void daSnowman_c::RotateTowardPlayer(int idx) {
     }
     ang = Vec3_HorzAngle(&this->mPos, &v);
 
-    /* Two rows of (divisor, band, maxStep), six bytes apart. Both rows in
-       the ROM are 1, 0x1000, 0x1000; idx still selects which one. */
-    off = idx * 6;
-    maxStep = (s16 *)((char *)&data_ov081_021289a8 + off);
-    band = (s16 *)((char *)&data_ov081_021289a6 + off);
-    divisor = (s16 *)((char *)&data_ov081_021289a4 + off);
-
-    ApproachAngle(&this->mPrevAngleY, ang, *divisor, *band, *maxStep);
+    /* Both rows in the ROM are 1, 0x1000, 0x1000; idx still selects one. */
+    ApproachAngle(&this->mPrevAngleY, ang, data_ov081_021289a4[idx].divisor,
+                  data_ov081_021289a4[idx].band, data_ov081_021289a4[idx].maxStep);
 
     if (idx != 1) {
         this->mInitAngleY = 0;
@@ -230,7 +216,8 @@ void daSnowman_c::RotateTowardPlayer(int idx) {
         ApproachAngle(&this->mInitAngleY, 0, 1, 0x500, 0x500);
     }
 
-    ApproachAngle(&this->mAngleX, this->mInitAngleY, *divisor, *band, *maxStep);
+    ApproachAngle(&this->mAngleX, this->mInitAngleY, data_ov081_021289a4[idx].divisor,
+                  data_ov081_021289a4[idx].band, data_ov081_021289a4[idx].maxStep);
     this->mAngleY = this->mPrevAngleY;
 }
 
@@ -251,7 +238,7 @@ void daSnowman_c::CheckAttacks() {
 
     if (flags & 0x2000) {
         this->mDeathState = 2;
-        func_ov002_020aea30((Aea30C *)this, found, 0);
+        func_ov002_020aea30(found, 0);
         this->mPrevAngleY = (this->HorzAngleToCPlayer() + 0x8000);
         hit = 1;
     }
@@ -264,7 +251,7 @@ void daSnowman_c::CheckAttacks() {
         if (found->mIsVanish != 0) return;
         if (found->mIsMetal == 1) {
             this->mDeathState = 2;
-            func_ov002_020aea30((Aea30C *)this, found, 0);
+            func_ov002_020aea30(found, 0);
             this->mPrevAngleY = (this->HorzAngleToCPlayer() + 0x8000);
             hit = 1;
         }
@@ -279,7 +266,7 @@ void daSnowman_c::CheckAttacks() {
         }
         if ((flags & 0x40) && (s32)found->param1 == 2) {
             this->mDeathState = 2;
-            func_ov002_020aea30((Aea30C *)this, found, 0);
+            func_ov002_020aea30(found, 0);
             this->mDeathSound = 2;
             this->mPrevAngleY = (this->HorzAngleToCPlayer() + 0x8000);
             hit = 1;

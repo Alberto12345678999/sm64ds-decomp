@@ -60,11 +60,6 @@
 #include "cstd.h"
 #include "nitro/gx/gx_load.h"
 
-/* Scene_StateResult's view of the ov004 score block at gMgScene
-   (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
-   at +0xb8. */
-struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
-
 /* Everything this file calls or reads that decl_common.h does not declare. */
 extern "C" {
 
@@ -77,7 +72,6 @@ struct Matrix2x2;
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
 extern void Hud_RenderSprite(void *fn, int a, int b, int c, int d);
 extern void Mg_DrawNumberRotated(int, int, int, int, int, int, u16);
-extern void Mg_DrawScoreTally(void *, int, int, int);
 extern int Mg_IsNewRecord(void);
 #include "OAM.h"
 #include "nitro/mi/memory.h"
@@ -250,11 +244,11 @@ void dScMgTeresa_c::BigBoo_StateExit(int i) {
     *p16 = *p16 + 1;
     if (*p16 >= 8) {
         unsigned char *p8;
-        int z = 0;
-        *p16 = z;
+        *p16 = 0;
         p8 = &mBigBoo[i].frame;
         *p8 = *p8 + 1;
-        if (*p8 >= 4) *p8 = z;
+        if (*p8 >= 4)
+            *p8 = 0;
     }
     add = &mBigBoo[i].xVel;
     sum = &mBigBoo[i].x;
@@ -628,10 +622,10 @@ void dScMgTeresa_c::Reveal_Hide()
 }
 
 /* decl_common.h declares this one with a `void *` parameter, and
-   Mg_RenderSubSpriteMtx as `(void *, int, int, void *)`. */
+   Mg_RenderSubSpriteMtx as `(void *, int, int, Matrix2x2 *)`. */
 void dScMgTeresa_c::FoundNumber_DrawAll() {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < FOUND_NUMBER_NUM; i++) {
         if (mFoundNumbers[i].visible) {
             int b = mFoundNumbers[i].y >> 12;
             int a = mFoundNumbers[i].x >> 12;
@@ -644,7 +638,7 @@ void dScMgTeresa_c::FoundNumber_DrawAll() {
 
 void dScMgTeresa_c::FoundNumber_ClearAll() {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < FOUND_NUMBER_NUM; i++) {
         mFoundNumbers[i].active = 0;
         mFoundNumbers[i].visible = 0;
     }
@@ -653,7 +647,7 @@ void dScMgTeresa_c::FoundNumber_ClearAll() {
 int dScMgTeresa_c::FoundNumber_CountBusy() {
     int cnt = 0;
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < FOUND_NUMBER_NUM; i++) {
         if (mFoundNumbers[i].active != 0 && mFoundNumbers[i].state != 2) {
             cnt++;
         }
@@ -663,7 +657,7 @@ int dScMgTeresa_c::FoundNumber_CountBusy() {
 
 void dScMgTeresa_c::FoundNumber_UpdateAll() {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < FOUND_NUMBER_NUM; i++) {
         unsigned char v;
         if (mFoundNumbers[i].active == 0) {
             continue;
@@ -700,7 +694,7 @@ void dScMgTeresa_c::FoundNumber_UpdateAll() {
 
 void dScMgTeresa_c::FoundNumber_Spawn(int i) {
     int n;
-    for (n = 0; n < 16; n++) {
+    for (n = 0; n < FOUND_NUMBER_NUM; n++) {
         if (mFoundNumbers[n].active == 0) {
             mFoundNumbers[n].active = 1;
             mFoundNumbers[n].visible = 0;
@@ -716,7 +710,7 @@ void dScMgTeresa_c::FoundNumber_Spawn(int i) {
 
 void dScMgTeresa_c::FoundNumber_SpawnForFound() {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < BOO_NUM; i++) {
         if (mBoos[i].mInPlay != 0 && mBoos[i].mState == 5)
             FoundNumber_Spawn(i);
     }
@@ -725,7 +719,7 @@ void dScMgTeresa_c::FoundNumber_SpawnForFound() {
 /* decl_common.h declares this one with a `void *` parameter. */
 void dScMgTeresa_c::VanishPuff_DrawAll() {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < VANISH_PUFF_NUM; i++) {
         if (mVanishPuffs[i].visible) {
             Hud_RenderSprite(sTeresaVanishPuffSprites[mVanishPuffs[i].frame],
                              mVanishPuffs[i].x >> 12, mVanishPuffs[i].y >> 12, -1, -1);
@@ -735,7 +729,7 @@ void dScMgTeresa_c::VanishPuff_DrawAll() {
 
 void dScMgTeresa_c::VanishPuff_UpdateAll() {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < VANISH_PUFF_NUM; i++) {
         if (mVanishPuffs[i].active == 0)
             continue;
         mVanishPuffs[i].timer += 1;
@@ -753,7 +747,7 @@ void dScMgTeresa_c::VanishPuff_UpdateAll() {
 
 void dScMgTeresa_c::VanishPuff_Spawn(int param) {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < VANISH_PUFF_NUM; i++) {
         if (mVanishPuffs[i].active == 0) {
             mVanishPuffs[i].x = mBoos[param].mX;
             mVanishPuffs[i].y = mBoos[param].mY;
@@ -817,7 +811,7 @@ void dScMgTeresa_c::StartCountdown() {
 void dScMgTeresa_c::Exclaim_DrawAll()
 {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EXCLAIM_NUM; i++) {
         if (mExclaims[i].visible != 0) {
             int v0 = mExclaims[i].x >> 12;
             int v4 = mExclaims[i].y >> 12;
@@ -832,7 +826,7 @@ void dScMgTeresa_c::Exclaim_UpdateAll()
 {
     int i;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EXCLAIM_NUM; i++) {
         if (mExclaims[i].active != 0) {
             if (mExclaims[i].timer != 0) {
                 u8 *p = &mExclaims[i].timer;
@@ -852,7 +846,7 @@ void dScMgTeresa_c::Exclaim_UpdateAll()
 void dScMgTeresa_c::Exclaim_Spawn(int idx)
 {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EXCLAIM_NUM; i++) {
         if (mExclaims[i].active == 0) {
             mExclaims[i].active = 1;
             mExclaims[i].visible = 1;
@@ -871,7 +865,7 @@ void dScMgTeresa_c::CheckRevealDone()
     if (mRevealDone != 0)
         return;
     found = 0;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < BOO_NUM; i++) {
         if (mBoos[i].mInPlay != 0 && mBoos[i].mState <= 2) {
             found++;
             break;
@@ -896,7 +890,7 @@ void dScMgTeresa_c::CheckRoundEnd()
     {
         int count = 0;
         int i;
-        for (i = 0; i < 16; i++) {
+        for (i = 0; i < BOO_NUM; i++) {
             if (mBoos[i].mInPlay != 0 && mBoos[i].mFound == 0) {
                 count++;
                 break;
@@ -923,7 +917,7 @@ void dScMgTeresa_c::DrawBoos()
 {
     int i;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < BOO_NUM; i++) {
         if (mBoos[i].mVisible != 0) {
             void **frames = sTeresaBooFrameSprites;
             int translucent = mBoos[i].mFade;
@@ -947,7 +941,7 @@ void dScMgTeresa_c::AreBoosSettled()
 {
     int found = 0;
     int i = 0;
-    for (; i < 16; i++) {
+    for (; i < BOO_NUM; i++) {
         if (mBoos[i].mInPlay != 0) {
             unsigned int t = (mBoos[i].mState + 0xfd) & 0xff;
             if (t <= 1) {
@@ -1247,7 +1241,7 @@ void dScMgTeresa_c::StepBoo(int i) {
 void dScMgTeresa_c::StartBoosHiding()
 {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < BOO_NUM; i++) {
         if (mBoos[i].mInPlay != 0 && mBoos[i].mState == 1)
             mBoos[i].mState = 2;
     }
@@ -1294,7 +1288,7 @@ void dScMgTeresa_c::AnimateBoo(int i)
 void dScMgTeresa_c::UpdateBoos()
 {
     int i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < BOO_NUM; i++) {
         if (mBoos[i].mInPlay) {
             (this->*sTeresaBooStateTable[mBoos[i].mState])(i);
             AnimateBoo(i);
@@ -1409,25 +1403,25 @@ void dScMgTeresa_c::UpdateRubbing() {
 
 void dScMgTeresa_c::ReadRubTouch() {
     int i = gActivePlayerSlot;
-    if (gTouchHeld[i * 4] != 0 && mRubTouching == 0) {
-        mRubX = gTouchX[i * 4];
-        mRubY = gTouchY[i * 4];
+    if (gTouchInfo[i].held != 0 && mRubTouching == 0) {
+        mRubX = gTouchInfo[i].x;
+        mRubY = gTouchInfo[i].y;
         mRubPrevX = mRubX;
         mRubPrevY = mRubY;
         mRubTouching += 1;
     }
-    if (gTouchHeld[gActivePlayerSlot * 4] == 0) {
+    if (gTouchInfo[gActivePlayerSlot].held == 0) {
         mRubTouching = 0;
     }
     if (mRubTouching == 0)
         return;
-    mRubX = gTouchX[gActivePlayerSlot * 4];
-    mRubY = gTouchY[gActivePlayerSlot * 4];
+    mRubX = gTouchInfo[gActivePlayerSlot].x;
+    mRubY = gTouchInfo[gActivePlayerSlot].y;
 }
 
 void dScMgTeresa_c::ResetRound() {
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < BOO_NUM; i++) {
         mBoos[i].mX = 0;
         mBoos[i].mY = 0;
         mBoos[i].mTimer = 0;
@@ -1443,14 +1437,14 @@ void dScMgTeresa_c::ResetRound() {
         mBoos[i].mAnim = 0;
         mBoos[i].mFade = 0;
     }
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < EXCLAIM_NUM; i++) {
         mExclaims[i].x = 0;
         mExclaims[i].y = 0;
         mExclaims[i].timer = 0;
         mExclaims[i].active = 0;
         mExclaims[i].visible = 0;
     }
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < VANISH_PUFF_NUM; i++) {
         mVanishPuffs[i].active = 0;
         mVanishPuffs[i].visible = 0;
     }
@@ -1492,18 +1486,18 @@ void dScMgTeresa_c::Scene_StateResult() {
         return;
     mSceneTimer = 0;
     if (mRoundCleared != 0) {
-        struct ScoreView *p;
+        dScMgBase_c *scene;
         Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
-        p = (struct ScoreView *)gMgScene;
-        if (p != 0) {
-            if (p->b4 < 0x270f) {
-                p->b4 += 1;
+        scene = gMgScene;
+        if (scene != 0) {
+            if (scene->mHudScore < 0x270f) {
+                scene->mHudScore += 1;
             }
-            if (p->b4 > p->b8) {
-                p->b8 = p->b4;
+            if (scene->mHudScore > scene->mBestHudScore) {
+                scene->mBestHudScore = scene->mHudScore;
             }
         }
-        Mg_SubmitScore(gMgScene ? ((struct ScoreView *)gMgScene)->b4 : 0);
+        Mg_SubmitScore(gMgScene ? gMgScene->mHudScore : 0);
     } else {
         if (Mg_IsNewRecord() != 0) {
             mCountdownShown = 0;
@@ -1590,7 +1584,10 @@ void dScMgTeresa_c::Scene_StateInit() {
  * grows and buf moves to another slot. The hand-rotated do/while is kept
  * too: `for (j = 0; j < n; j++)` with y = cy - half + j is the right size
  * but schedules cx - half and cy - half ahead of the n <= 0 exit (12 words
- * off; corner in the for initialiser, a word short; measured 2026-11-07). */
+ * off; corner in the for initialiser, a word short; measured 2026-11-07).
+ * Re-measured (#821, 2026-11-16): 0x170 without the pragma against the ROM's
+ * 0x15c; a ~(0xf << s) mask or a named shift local 0x16c; x = cx - half + i
+ * 0x174. */
 #pragma opt_loop_invariants off
 /* dScMgTeresa_c::PaintSquare - slot 34, a STIPPLED brush.
 
@@ -1690,7 +1687,7 @@ void dScMgTeresa_c::StartRound(int reset) {
 /* Vtable slot 9. */
 s32 dScMgTeresa_c::Render()
 {
-    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
+    DrawScoreTally(0xe0, 0x14, 1);
     FoundNumber_DrawAll();
     DrawCountdown();
     Exclaim_DrawAll();
@@ -1764,7 +1761,7 @@ s32 dScMgTeresa_c::InitResources()
         fb = 0;
         MI_CpuFill16(p, fb, 0x800);
     }
-    Mg_InitBrush((char *)this, 0, 0, 0);
+    InitBrush(0, 0, 0);
     {
         void *p = G2S_GetBG0CharPtr();
         fc = 0x1111;

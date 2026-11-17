@@ -164,7 +164,6 @@ extern "C" void func_02011cfc(void);
 // local extern: CalcLib.h does not declare Vec3_VertAngle yet.
 extern short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 extern "C" {
-extern int atan2_hold_d_a_bombking_1(int a, int b);
 extern int func_ov002_020db5f4(daPly_c *c, dActor_c *arg);
 }
 
@@ -266,6 +265,7 @@ int daBombking_c::TickWalkHome() {
         return 1;
     daPly_c *p = this->ClosestPlayer();
     if (p != 0) {
+        /* A Vector3 copy of p->mPos is memberwise: 0x124 -> 0x12c. */
         VecFx32 v = *(VecFx32 *)&p->mPosX;
         if (Vec3_Dist(&this->mArenaPos, (const Vector3 *)&v) < 0x640000) {
             if (this->mArenaPos.y - 0x64000 < v.y) {
@@ -873,6 +873,7 @@ int daBombking_c::TickHeldByPlayer() {
             return 1;
         }
         {
+            /* A Vector3 copy of obj->mPos is memberwise: 0x1a8 -> 0x1b0. */
             VecFx32 copy = *(VecFx32 *)&obj->mPosX;
             if (Vec3_Dist(&this->mArenaPos, (const Vector3 *)&copy) > 0x640000)
                 goto drop;
@@ -1057,6 +1058,7 @@ int daBombking_c::TickChase() {
 
     p = this->ClosestPlayer();
     if (p != 0) {
+        /* A Vector3 copy of p->mPos is memberwise: 0x2ec -> 0x2f4. */
         VecFx32 v = *(const VecFx32 *)&p->mPosX;
         if (Vec3_Dist(&this->mArenaPos, (const Vector3 *)&v) > 0x640000 ||
             (this->mArenaPos.y - 0xa000) > v.y) {
@@ -1557,12 +1559,9 @@ int daBombking_c::InitResources()
     mHealth = 3;
     mStarID = param1 & 0xf;
     mStarTracked = TrackStar(mStarID, 2);
-    {
-    int z = 0;
     for (i = 0; i < 2; i++) {
-        mSpawnedId[i] = z;
-        mSpawnedThrown[i] = z;
-    }
+        mSpawnedId[i] = 0;
+        mSpawnedThrown[i] = 0;
     }
     mPhase = ((unsigned int)RandomIntInternal(&data_0209e650.value) >> 0x1e) & 1;
     mPhase = mPhase + 1;

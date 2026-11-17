@@ -154,14 +154,10 @@ extern int data_ov074_0212291c[];
 extern int data_ov074_0212290c[];
 extern float data_ov074_02122e4c[];
 extern "C" void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern "C" s16 atan2_hold_d_a_kuri_king_1(s32 y, s32 x);
 extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern "C" int *Vec3_LslInPlace(void *v, int n);
 extern struct Matrix4x3 data_020a0e68;
 extern struct Matrix4x3 IDENTITY_MATRIX4X3;
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
-extern "C" void d_a_kuri_kingEarthquakeHold(void *thiz, void *v, int f);
 struct KuriKingBoneIdx {
     int v[3];
 };
@@ -382,10 +378,8 @@ void daKuriKing_c::UpdateDefeat() {
     vzero.x = 0;
     vzero.y = 0;
     vzero.z = 0;
-    vmsg.x = this->mPosX;
-    vmsg.y = this->mPosY;
-    vmsg.z = this->mPosZ;
-    vmsg.y = vmsg.y + 0x78000;
+    vmsg = mPos;
+    vmsg.y += 0x78000;
     cam = gCamera;
     player = this->mTalkPlayer;
 
@@ -417,7 +411,6 @@ void daKuriKing_c::UpdateDefeat() {
         if (DecIfAbove0_Short(&this->mTimer) == 0) {
             dActor_c *actor = dActor_c::FindWithActorID(0xc8, 0);
             if (actor != 0) {
-                u32 id = 0xc8;
                 while (1) {
                     s32 flag = (actor->mFlags & 0x40000) ? 1 : 0;
                     if (flag == 0) {
@@ -431,7 +424,7 @@ void daKuriKing_c::UpdateDefeat() {
                         this->mTimer = 2;
                         return;
                     }
-                    actor = dActor_c::FindWithActorID(id, actor);
+                    actor = dActor_c::FindWithActorID(0xc8, actor);
                     if (actor == 0)
                         break;
                 }
@@ -474,10 +467,8 @@ void daKuriKing_c::UpdateDefeat() {
         if (player->HasFinishedTalking() == 0)
             return;
         this->mShouldRender = 0;
-        vzero.x = this->mPosX;
-        vzero.y = this->mPosY;
-        vzero.z = this->mPosZ;
-        vzero.y = vzero.y + 0x190000;
+        vzero = mPos;
+        vzero.y += 0x190000;
         Particle::System::NewSimple(kPtclGoombossVanishA, vzero.x, vzero.y, vzero.z);
         Particle::System::NewSimple(kPtclGoombossVanishB, vzero.x, vzero.y, vzero.z);
         func_02012694(0x15f, &this->mCamSpacePos);
@@ -1343,7 +1334,7 @@ int daKuriKing_c::WalkAlongRing() {
 
 void daKuriKing_c::UpdateShadows() {
     Matrix4x3 mtx;
-    int i, height, rad, footX, posY, radius; /* footX is never used: it keeps the @NNN count */
+    int i, height, rad, posY, radius;
     char *self, *src, *m;
     dExtShadowModel_c *shadow;
 
@@ -1352,8 +1343,12 @@ void daKuriKing_c::UpdateShadows() {
 
     /* self and src are this shifted by i shadow matrices (0x30) and i
      * mCylClsnPos entries (0xc), read back through the class so each load
-     * keeps the member offset: typed pointers or indexing re-base them and
-     * the loop changes. Words 9..11 are a matrix's translation row. */
+     * keeps the member offset. Words 9..11 are a matrix's translation row.
+     * Measured (2004/b56): mShadowMatrices[i] / mCylClsnPos[i] /
+     * mShadowModels[i] at every use is 8/87 words off (the matrix copy and
+     * the DropShadowRadHeight argument share one this + 0x2ec induction
+     * register, where the ROM copies through the this-based one); keeping m
+     * as a Matrix4x3 * walk with the rest indexed grows it by 0x10 bytes. */
     mtx = IDENTITY_MATRIX4X3;
     self = (char *)this;
     src = (char *)this;
@@ -1371,10 +1366,7 @@ void daKuriKing_c::UpdateShadows() {
         ((daKuriKing_c *)self)->mShadowMatrices[0][9] =
             ((daKuriKing_c *)src)->mCylClsnPos[0].x >> 3;
         posY = this->mPosY;
-        /* Both arms are the same; the select is never needed for codegen,
-           but its compiler temporaries keep the @2113.. pins (dropping it
-           renumbers by 4). */
-        ((daKuriKing_c *)self)->mShadowMatrices[0][10] = (radius ? posY : posY) >> 3;
+        ((daKuriKing_c *)self)->mShadowMatrices[0][10] = posY >> 3;
         height += 0x28000;
         ((daKuriKing_c *)self)->mShadowMatrices[0][11] =
             ((daKuriKing_c *)src)->mCylClsnPos[0].z >> 3;
