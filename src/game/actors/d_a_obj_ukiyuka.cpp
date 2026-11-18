@@ -3,12 +3,13 @@
  * Abstract: slots 0 (InitResources) and 3 (CleanupResources) are pure.
  * daObjFl_Ukiyuka_c (ov022) and daObjKm2_Ukishima_c (ov045) implement them
  * by handing their own Resources record to InitResourcesFrom /
- * CleanupResourcesFrom. Setup seeds mRestY from mPosY and mBobAmplitude
- * from its argument; Behavior bobs mPosY on a sine of mBobPhase.
+ * CleanupResourcesFrom. Setup seeds mRestY from mPos.y and mBobAmplitude
+ * from its argument; Behavior bobs mPos.y on a sine of mBobPhase.
  *
  * Notes:
  * - mBobPhase is stepped through a u16 pun, *(u16 *)&mBobPhase; the plain
- *   s16 member step differs by one word.
+ *   s16 member step differs by one word. Measured (#821 r68): a u16 member
+ *   steps right but turns the later (s64) read's ldrsh into ldrh.
  * - The (s64) cast on mBobPhase before the u16 table index is load-bearing;
  *   the plain (u16) read is two instructions shorter.
  * - FX_SinIdx reads the sine table, which keeps its arm9 linker name,
@@ -71,13 +72,18 @@ s32 daObjUkiyuka_c::Behavior() {
         IsClsnInRange(0, 0);
         return 1;
     }
+    /* Kept (#821 r76): a sign pun on a scalar; no block-copy or type lever (r72-r75) applies to
+       this scalar pin (r68: s16 plain step is -1 word).
+       Kept (#821 r80): getter tried -> an s16 or u16 phase accessor in the step is 0xec of 0xf0.
+       Kept (#821 r81): the (s64) read -> an inline s16 GetBobPhase(), a plain u16 or int read,
+       or (u16)GetBobPhase() >> 4 are all 0xe8 of 0xf0 (ldrh replaces ldrsh + zero-extend). */
     *(u16 *)&mBobPhase += 0x100;
     {
         u16 h = (u16)((s64)mBobPhase);
-        mPosY -= FX_MUL(mBobAmplitude, FX_SinIdx(h >> 4));
+        mPos.y -= FX_MUL(mBobAmplitude, FX_SinIdx(h >> 4));
     }
     {
-        int d = mPosY - mRestY;
+        int d = mPos.y - mRestY;
         if (d < 0)
             d = -d;
         if (d == 0)
@@ -91,15 +97,15 @@ s32 daObjUkiyuka_c::Behavior() {
 
 /* ROM ordinal 5 -- ov002 0x020b6584, size 0x88.
  * Shared resource setup both leaves call. Slot 0 is dExtSimpleModel_c::LoadFile, slot 1
- * is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then mRestY = mPosY
+ * is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then mRestY = mPos.y
  * and mBobAmplitude = bobAmplitude. */
 int daObjUkiyuka_c::InitResourcesFrom(Resources *resources, int bobAmplitude) {
     mModel.SetFile(dExtSimpleModel_c::LoadFile(*resources->model), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    mMeshCollider.SetFile(dBgW_Kc::LoadFile(*resources->collision), mClsnMat, 0x1000, mAngleY,
+    mMeshCollider.SetFile(dBgW_Kc::LoadFile(*resources->collision), mClsnMat, 0x1000, mAngle.y,
                           *resources->clps);
-    mRestY = mPosY;
+    mRestY = mPos.y;
     mBobAmplitude = bobAmplitude;
     return 1;
 }

@@ -36,7 +36,6 @@ enum dScMgSnowball_c_AssetId {
 
 #pragma defer_codegen off
 
-/* common.h is first so Matrix4x3 is the flat 12-word struct. */
 #include "common.h"
 #include "dScMgSnowball_c.h"
 #include "nitro/hw/registers.h"
@@ -300,6 +299,8 @@ int dScMgSnowball_c::HitsBreakable(int *point) {
 // re-reading point[] 0x288. Re-measured (#821 r43), all 0x288: x and courseY
 // shifted in place after the lookup (`x >>= 12`), the lookup reading point[0],
 // x re-read from point[0] after the lookup, and x/courseY declared long.
+/* Kept (#821 r79): localX/localY taken before the tile lookup, the bit-8 tests on localX, and a
+   column pointer for the lookup are 0x230, 0x288 (not identical) and 0x270 against 0x28c. */
 #pragma opt_common_subs off
 int dScMgSnowball_c::HitsWall(int *point) {
     int courseY = point[1];
@@ -698,6 +699,8 @@ void dScMgSnowball_c::RedrawCourse() {
  * and reloaded around the screen-pointer call).
  */
 void dScMgSnowball_c::DrawCourseColumn(int col, int flag) {
+    /* Kept (#821 r73): row as (char *)&mTileMap[0][col] read through
+       *(u16 *)row is 0x36c of 0x398; the ROM keeps row this-based. */
     char *scene = (char *)this;
     volatile u16 v0, v1, v2, v3, v4, v5, v6, v7;
     volatile u16 w0, w1, w2, w3, w4, w5, w6, w7;

@@ -15,11 +15,14 @@
  *   optimization pragmas are brackets.
  * - data_0209fc78 is a volatile macro in func_02033464 only. decl_common.h
  *   spells that byte plain, and the other functions in this file read it plain.
- * - LayoutLineVS keeps the char-cast handler call: data_02092830[idx - 1]()
- *   subtracts first, a 6-word DIFF.
+ * - LayoutLineVS calls the handler as (data_02092830 + idx)[-1](), the
+ *   spelling of its single-player twin; data_02092830[idx - 1]() subtracts
+ *   first, a 6-word DIFF.
  * - func_020319fc writes the spill-over store as (&dst[wordIdx])[8] and keeps
  *   the char-cast data_0209fd5c read: dst[wordIdx + 8] grows the function by
  *   4 bytes, and indexing data_0209fd5c shrinks it by 8.
+ *   Kept (#821 r82): data_0209fd5c[i + j * 16], *(data_0209fd5c + ...) and
+ *   (data_0209fd5c + j * 16)[i] -> 0x180 or 55 words off of 0x188.
  * - SetTextGlobalsVS keeps the r2/r3 temps. One expression reorders the load
  *   of *(r2 + 4) against the store of r3.
  * - Address-named helpers stay address-named.
@@ -307,7 +310,6 @@ extern ControllerInput data_0209f498[];
 }
 extern u8 NumStars(void);
 extern int func_020138dc(void);
-void func_02031cd4(void *arg);
 int func_020321fc(void);
 void func_020326ac(void);
 void func_02032f54(void);
@@ -356,7 +358,7 @@ s32 GetLanguageIndexVS(void) {
     }
 }
 
-void func_02031028(int arg) {
+void Message::func_02031028(int arg) {
     MBUserInfo *p;
     int i;
     int j;
@@ -432,7 +434,7 @@ void Message::AddChoiceVS() {
     }
 }
 
-void func_0203128c(void) {
+void Message::func_0203128c(void) {
     u8 *g;
     int mode;
     int sub;
@@ -494,8 +496,10 @@ void Message::AddCharPairVS() {
  * Re-measured (#821 r17): without the bracket it is 0x23c against 0x2b0, the
  * same with the row indices assigned inside the subscripts. */
 #pragma push
+/* Kept (#821 r79): rolled k loops over the four words and a u32 *src row pointer are 0x1ec and
+   0x22c against 0x2b0. */
 #pragma opt_common_subs off
-void func_02031428(void) {
+void Message::func_02031428(void) {
     int cnt;
     int i;
     int j;
@@ -571,7 +575,7 @@ void func_02031428(void) {
 }
 #pragma pop
 
-void func_020316d8(int screen, int c, u32 x, void *buf) {
+void Message::func_020316d8(int screen, int c, u32 x, void *buf) {
     u32 *chr;
     int pitch;
     if (screen == 1)
@@ -632,7 +636,7 @@ void func_020316d8(int screen, int c, u32 x, void *buf) {
     }
 }
 
-void func_020318a4(int sl) {
+void Message::func_020318a4(int sl) {
     int base;
     int acc;
     int m;
@@ -684,7 +688,7 @@ void func_020318a4(int sl) {
     }
 }
 
-void func_020319fc(int n) {
+void Message::func_020319fc(int n) {
     u32 *dst;
     int i;
     u32 col;
@@ -769,7 +773,7 @@ void Message::AddCharVS(u8 c) {
     }
 }
 
-void func_02031cd4(void *arg) {
+void Message::func_02031cd4(void *arg) {
     int i;
     u8 *base;
     u8 cmd;
@@ -888,7 +892,7 @@ void Message::LayoutLineVS() {
         case 0xfe: {
             u8 idx = p[2];
             data_0209fd18 = idx;
-            (*(void (**)(void))((char *)data_02092830 + (idx << 2) - 4))();
+            (data_02092830 + idx)[-1]();
             p = data_0209fd0c;
             data_0209fd0c = p + p[1];
             break;
@@ -929,7 +933,7 @@ void Message::LayoutLineVS() {
     }
 }
 
-int func_020321fc(void) {
+int Message::func_020321fc(void) {
     if (data_0209fcb8 == 0) {
         if (data_0209fc8c > data_0209fc6c && data_0209fc74 > data_0209fce0) {
             int t;
@@ -1018,7 +1022,7 @@ int func_020321fc(void) {
     return 0;
 }
 
-void func_020326ac(void) {
+void Message::func_020326ac(void) {
     switch (data_0209fcc8) {
     case 0:
     case 8:
@@ -1226,7 +1230,7 @@ void Message::SetTextGlobalsVS() {
     data_0209fd08 = bankBase + 0x30;
 }
 
-void func_02032f54(void) {
+void Message::func_02032f54(void) {
     if (data_0209fc9c == 0)
         return;
     if (func_020321fc() == 0)
@@ -1234,7 +1238,7 @@ void func_02032f54(void) {
     func_020326ac();
 }
 
-void func_02032f9c(int a) {
+void Message::func_02032f9c(int a) {
     volatile int li;
     volatile unsigned short ls;
     int idx;
@@ -1308,7 +1312,7 @@ void func_02032f9c(int a) {
     data_0209fcdc = (((data_0209fc88 + 7) >> 3) << 1);
 }
 
-void func_020331fc(int a0, int a1, int a2) {
+void Message::func_020331fc(int a0, int a1, int a2) {
     volatile int li;
     short *scr;
     int base;
@@ -1364,7 +1368,7 @@ void func_020331fc(int a0, int a1, int a2) {
     }
 }
 
-void func_02033390(int sub) {
+void Message::func_02033390(int sub) {
     data_0209fc9c = 0;
     func_02034504();
     data_0209fc94 = 1;
@@ -1387,11 +1391,15 @@ void func_02033390(int sub) {
     }
 }
 
-/* byte-forced: this function accesses data_0209fc78 volatile (reload per use);
-   decl_common.h spells it plain. The macro expands each use to a volatile deref
-   of the global -- the inner name paints blue and resolves to the extern. */
+/* byte-forced: this function reloads data_0209fc78 at every use;
+   decl_common.h spells it plain. The macro expands each use to a deref
+   through a cast of its address -- the inner name paints blue and resolves to
+   the extern. Measured (#821 r68): without it the function is 0x380 of 0x388. */
+/* Kept (#821 r76): a reload pin; no block-copy or type lever (r72-r75) applies to this scalar pin;
+   r68: 0x380 of 0x388 without it.
+   Kept (#821 r80): getter tried -> a u8 or int accessor on the three reads is 0x380, as plain. */
 #define data_0209fc78 (*(u8 *)&data_0209fc78)
-void func_02033464(int arg0, int arg1, int arg2) {
+void Message::func_02033464(int arg0, int arg1, int arg2) {
     volatile unsigned short sv0;
     volatile unsigned short sv2;
     volatile int li4;
@@ -1514,7 +1522,7 @@ void func_02033464(int arg0, int arg1, int arg2) {
 }
 #undef data_0209fc78
 
-void func_020337ec(void) {
+void Message::func_020337ec(void) {
     volatile unsigned short v;
     volatile int z;
     data_0209fc9c = 0;
@@ -1537,7 +1545,7 @@ void func_020337ec(void) {
     func_02033464(0, 0, 0);
 }
 
-void func_020338b0(int a, int b, short c, int d) {
+void Message::func_020338b0(int a, int b, short c, int d) {
     int p, s;
     volatile int li0, li1;
     volatile unsigned short ls0, ls1;
@@ -1591,7 +1599,7 @@ void Message::DisplayVsExitText(unsigned short n) {
     Message_DrawCenteredLineVS(0x1c0, 0x20);
 }
 
-void func_02033a80(int arg0) {
+void Message::func_02033a80(int arg0) {
     data_0209fce8 = arg0;
     data_0209fc9c = 0;
     func_02034504();
@@ -1628,8 +1636,10 @@ void Message::DisplayOptionsMenuTextVS(s16 arg) {
  * r17): still 0x278 without the bracket, and 0x2a8 with the second and third
  * rows re-reading data_0209fc88 for their tile count. */
 #pragma push
+/* Kept (#821 r79): a for loop with (n + 7) / 8 recomputed in the bound and seeds, and a static
+   inline TextCells(n) helper, are 0x288 and 0x278 against 0x298. */
 #pragma opt_common_subs off
-void func_02033bb8(int param0) {
+void Message::func_02033bb8(int param0) {
     volatile int li;
     volatile unsigned short sv;
     int n, m, i;
@@ -1719,7 +1729,7 @@ void func_02033bb8(int param0) {
 }
 #pragma pop
 
-void func_02033e50(int p0, int p1) {
+void Message::func_02033e50(int p0, int p1) {
     int i;
     int idx = data_0209fce8;
     char *base = (char *)data_0209fd08;
@@ -1808,7 +1818,7 @@ void Message_DrawLineBG2VS(void) {
         (u8 *)(data_0209fd14 + (sizeof(MessageBankHeader) + sizeof(MessageDataSection)) +
                ((MessageInfoSection *)data_0209fcf8)->sectionSize +
                ((MessageEntry *)(base + idx * 8))->textOffset);
-    func_02031cd4((void *)1);
+    Message::func_02031cd4((void *)1);
     data_0209fc7c = 0;
     n = ((data_0209fc88 + 7) / 8) << 6;
     {
@@ -1816,7 +1826,7 @@ void Message_DrawLineBG2VS(void) {
         li = 0;
         MI_CpuFill32((void *)p, li, n);
     }
-    func_020318a4(1);
+    Message::func_020318a4(1);
     data_0209fcdc = data_0209fcdc + (u8)(((data_0209fc88 + 7) / 8) << 1);
 }
 
@@ -1831,7 +1841,7 @@ extern "C" void Message_DrawCenteredLineVS(int a0, int a1) {
         (u8 *)(data_0209fd14 + (sizeof(MessageBankHeader) + sizeof(MessageDataSection)) +
                ((MessageInfoSection *)data_0209fcf8)->sectionSize +
                ((MessageEntry *)(base + idx * 8))->textOffset);
-    func_02031cd4((void *)1);
+    Message::func_02031cd4((void *)1);
     oldc = data_0209fc88;
     data_0209fc7c = (((a1 << 3) - oldc) & 0xf) >> 1;
     data_0209fc88 = oldc + data_0209fc7c;
@@ -1849,7 +1859,7 @@ extern "C" void Message_DrawCenteredLineVS(int a0, int a1) {
         scr[i] = data_0209fc78 + 0x200 + i;
         (&scr[i])[32] = data_0209fc78 + 0x200 + (data_0209fc88 + 7) / 8 + i;
     }
-    func_020318a4(0);
+    Message::func_020318a4(0);
     data_0209fc78 = data_0209fc78 + (u8)(((data_0209fc88 + 7) / 8) << 1);
 }
 
@@ -1898,7 +1908,7 @@ void Message::DisplayDontSaveTextVS(unsigned short n) {
     Message_DrawCenteredLineVS(0x291, 0xa);
 }
 
-extern "C" void func_02034504(void) {
+void Message::func_02034504(void) {
     data_0209fcb0 = 0;
     data_0209fcbc = 0;
     data_0209fcc4 = 0 * 0;
@@ -1913,7 +1923,7 @@ extern "C" void func_02034504(void) {
     data_0209fc7c = 0;
 }
 
-void func_020345b0(int arg0) {
+void Message::func_020345b0(int arg0) {
     u16 *scr;
     s32 i;
     s32 cols;

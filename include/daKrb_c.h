@@ -75,7 +75,7 @@ struct daKrb_c : dCapEnemy_c {
        word into mFlags (0xb0), not back into param1. */
     s32 mSavedParam;            /* 0x44c */
     /* Wander: frames left before a new heading is chosen. */
-    s16 mHeadingHoldTimer;  /* 0x450 */
+    u16 mHeadingHoldTimer; /* 0x450 */
     /* STATE_TUMBLE: bounce countdown, 60 frames when the tumble starts. */
     u16 mBounceCountdown;   /* 0x452 */
     s16 mWanderRerollTimer; /* 0x454 */
@@ -91,7 +91,7 @@ struct daKrb_c : dCapEnemy_c {
     /* Spawn heading, later overwritten with the heading toward the chase target
        or home (func_ov084_02129cf4). */
     s16 mInitAngleY;            /* 0x45a */
-    /* Heading mPrevAngleY is turned toward. */
+    /* Heading mPrevAngle.y is turned toward. */
     s16 mTargetAngleY;      /* 0x45c */
     u8  pad_45e[0x2];
     s32 mGoombaType;            /* 0x460 -- a GoombaType */
@@ -130,12 +130,16 @@ struct daKrb_c : dCapEnemy_c {
     void OnTurnIntoEgg(daPly_c &player);        /* slot 19 */
     int OnAimedAtWithEgg();                     /* slot 29 */
 
+    /* param1, the spawn word; defined inline in d_a_krb.cpp. */
+    u32 GetParam1() const;
+
     void func_ov084_021290d4();
     void func_ov084_02129168(dActor_c *actor);
     void func_ov084_02129238();
     void func_ov084_0212934c();
     void func_ov084_02129498();
     void func_ov084_021294d0();
+    void func_ov084_021296b0(void *b);
     void func_ov084_021296cc();
     void func_ov084_02129864();
     int func_ov084_021298d0();

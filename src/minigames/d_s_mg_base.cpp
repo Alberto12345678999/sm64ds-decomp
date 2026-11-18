@@ -769,7 +769,7 @@ void Banner_Update(MgBanner *e);
 extern void func_02012e1c(void);
 int func_02013580(int table, int index);
 void func_02013568(int table, int index, int value);
-extern void func_0201f32c(int arg0);
+#include "Message.h"
 extern void Banner_Free(MgBanner *e);
 extern void Banner_Press(MgBanner *e);
 extern int Banner_IsPressFinished(MgBanner *e);
@@ -1745,6 +1745,7 @@ void dScMgBase_c::DrawMenu() {
                r28: the volatile pointer taken from &mtx in this block
                instead of pmtx, 24 of 118 words off. */
             {
+                /* Kept (#821 r79): an inline ClearMtx22 through pmtx or &mtx is 10 words off. */
                 volatile Matrix2x2 *vp = pmtx;
                 vp->m00 = 0;
                 vp->m01 = 0;
@@ -2068,7 +2069,7 @@ int dScMgBase_c::SaveScreenForMenu() {
         MI_CpuFill16((char *)0x5000400, tmp, 2);
     }
 
-    func_0201f32c(mSceneKind);
+    Message::func_0201f32c(mSceneKind);
 
     gMainScreenLayers = DISPLAY_LAYER_BG1 | DISPLAY_LAYER_OBJ;
     gSubScreenLayers = 0x10;
@@ -2887,6 +2888,9 @@ int Mg_CheckBannerButton(int arg) {
                    `o->mX - cx` ints, a plain Vec2 assigned by member, a
                    short[2] and a brace-initialised Vec2 all drop the
                    round trip (0x180 against 0x190). */
+                /* Kept (#821 r72): the only shared short pair, Vec2s, belongs
+                   to TrmpLine.h; retyping would not remove the volatile. */
+                /* Kept (#821 r79): an inline GetBannerPos(o, &pos) into a plain Vec2 is 0x180. */
                 volatile struct Vec2 pos;
                 int dx, dy;
                 short ty;
@@ -4028,6 +4032,13 @@ short sMgSceneKindByGame[] = {
 }
 }
 
+/* The constructor keeps param1's low half with a read through this
+   accessor. Measured (#821 r68): a plain `param1 = param1 & 0xffff` or
+   `&=` makes the constructor 0x180 of 0x17c. */
+inline u32 dScMgBase_c::GetParam1() const {
+    return param1;
+}
+
 dScMgBase_c::dScMgBase_c() : mRunDuringFade(0), unk_0c2(1) {
     using s20b2adc::sMgSceneKindByGame;
     mMenuOpen = 0;
@@ -4039,7 +4050,7 @@ dScMgBase_c::dScMgBase_c() : mRunDuringFade(0), unk_0c2(1) {
     mLevel = gMgMenuRow.level; /* dScMiniGm_c::mStartLevel */
 
     mSceneKind = sMgSceneKindByGame[(param1 >> 16) & 0xff];
-    *(s32 *)&param1 = param1 & 0xffff;
+    param1 = GetParam1() & 0xffff;
     mTallyShown = 0;
     mTallyAnimTimer = 0;
 

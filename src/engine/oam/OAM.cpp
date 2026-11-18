@@ -63,19 +63,19 @@ int func_0202043c(void *thiz);
 
 /* -------------------------------------------------------------------------- */
 
-void func_02020820(OamAnimation *anim, int *src, int screen, int loops, u8 enabled, u8 affine) {
-    anim->frames = (const OamAnimFrame *)src[0];
-    anim->frameCount = src[1];
-    func_0202043c(anim);
-    anim->palette = -1;
-    anim->priority = -1;
-    anim->scaleX = 0x1000;
-    anim->scaleY = 0x1000;
-    anim->rotation = 0;
-    anim->loops = loops;
-    anim->enabled = enabled;
-    anim->affine = affine;
-    anim->screen = screen;
+void OamAnimation::func_02020820(int *src, int screen, int loops, u8 enabled, u8 affine) {
+    this->frames = (const OamAnimFrame *)src[0];
+    this->frameCount = src[1];
+    func_0202043c(this);
+    this->palette = -1;
+    this->priority = -1;
+    this->scaleX = 0x1000;
+    this->scaleY = 0x1000;
+    this->rotation = 0;
+    this->loops = loops;
+    this->enabled = enabled;
+    this->affine = affine;
+    this->screen = screen;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -161,6 +161,10 @@ u8 OAM::GetObjWidth(int shape, int sizeBits)
  * Render and Reset; optimization_level 2 file-wide breaks three functions,
  * level 3 leaves this one at 0x688. */
 #pragma opt_propagation off
+/* Kept (#821 r79): with loop invariants on, mtxIdx declared in the matrix block is 0x690 but 16
+   words off (the sin/cos/mtx spill slots trade places with halfW/halfH); four declaration
+   orders and scoped halfW/halfH stay there, all three indices scoped is 0x688, mtxIdx at the
+   loop top or inline 0x698. */
 #pragma opt_loop_invariants off
 
 void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority,
@@ -348,6 +352,8 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
                 aff = 0;
             }
             {
+                /* Kept (#821 r76): genuine; the ROM reads attr2 and attr3 as one word and GXOamAttr
+                   has no word member for them. */
                 u32 a23 = *(u32 *)&attr->attr2;
                 u32 a01 = attr->attr01;
                 u32 tile, mosaic, maskbits;

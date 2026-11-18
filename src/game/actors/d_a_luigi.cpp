@@ -15,19 +15,14 @@
  * What stays, and why (each alternative measured):
  * - InitResources: a local holding dExtSimpleModel_c::LoadFile's return, reused by
  *   Prepare, differs by 34 words (size stays 0x1ec).
- * - InitResources: assigning Matrix4x3 onto both models differs (size stays
- *   0x1ec, 5 relocation destinations wrong). The twelve-word Mtx43 copy stays.
  * - Behavior: or-ing the fade into data_ov055_02111b64 differs by 1 word.
  *   The ROM adds.
  * - Render: *dst = *src in the bone loop differs by 8 words (size stays
  *   0x1b0). The u64 destination round trip stays.
- * - Render: Matrix4x3 assignment of the body matrix, the flipped copy onto
- *   mModel, and transforms[15] together differs (size stays 0x1b0, 1
- *   relocation destination wrong).
  * - Render: inlining mBodyModels[GetBodyModelID(mBodyModelId, 1)] differs
  *   (size stays 0x1b0, 2 relocation destinations wrong). The ROM calls
  *   func_ov002_020e496c.
- * - ExecuteMirror: direct mPosX, mPosZ, mPosY reads differ (size stays
+ * - ExecuteMirror: direct mPos.x, mPos.z, mPos.y reads differ (size stays
  *   0x034). One pointer, x then z then y, stays.
  * - func_ov055_02111264: Sound::Play2D(3, 0x179) differs (size stays 0x024,
  *   the relocation target is func_0201277c). That wrapper is Play2D(3, id).
@@ -43,11 +38,6 @@
 #include "SaveBlock.h"
 #include "math/CalcLib.h"
 
-/* The matrix copies go through the flat Mtx43. Assigning Matrix4x3 itself
-   is a different sequence (.text grows by 0xa0 bytes). */
-/* InitResources' local is a VecFx32. Vector3's declared destructor (see
-   include/types.h) costs this TU a numbered .data local if an object of it
-   is declared here, so the local stays POD and casts at the call. */
 #define CurrentPlayer() gPlayers[gLocalPlayerId]
 
 /* Material bits ClearMaterialFlags clears and SetMaterialFlags sets. The reflected
@@ -96,8 +86,8 @@ extern "C" {
 /* Sound::Play2D(3, id). The ROM calls this wrapper, not Play2D. */
 unsigned int func_0201277c(unsigned int soundID);
 
-/* Depth from mModelOffsetY, mPosY, mSinkDepth and mGroundY; radius from that,
- * mIsBalloon, mIsMega and mScaleY. The definition takes char *. */
+/* Depth from mModelOffsetY, mPos.y, mSinkDepth and mGroundY; radius from that,
+ * mIsBalloon, mIsMega and mScale.y. The definition takes char *. */
 /* Returns mBodyModels[GetBodyModelID(mBodyModelId, 1)] as int. */
 int func_ov002_020e496c(daPly_c *player);
 
@@ -114,7 +104,7 @@ daLuigi_c *daLuigi_c_classInit() {
 }
 
 int daLuigi_c::InitResources() {
-    VecFx32 t;
+    Vector3 t;
 
     mAnmModel.SetFile(dExtSimpleModel_c::LoadFile(data_ov002_0210ebb8), 1, -1);
     mAnmModel.ClearMaterialFlags(kMatClear);
@@ -135,12 +125,12 @@ int daLuigi_c::InitResources() {
 
     mAnmModel.SetAnim(dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
 
-    Vec3_Asr((Vector3 *)&t, &mPos, 3);
+    Vec3_Asr(&t, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
-    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngle.y);
 
-    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
-    *(Mtx43 *)&mModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
+    mModel.mat4x3 = data_020a0e68;
 
     SetState(&data_ov055_02111b70, CurrentPlayer());
 
@@ -165,7 +155,7 @@ int daLuigi_c::Behavior() {
     player = CurrentPlayer();
     if (mState->execute)
         (this->*mState->execute)(player);
-    Matrix4x3_FromTranslation(&mShadowMatrix, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
+    Matrix4x3_FromTranslation(&mShadowMatrix, mPos.x >> 3, mPos.y >> 3, mPos.z >> 3);
     player->func_ov002_020e4374(&depth, &radius);
     DropShadowRadHeight(mShadowModel, mShadowMatrix, radius, depth, kShadowOpacity);
     /* dCamera_c::mFramedActor; this file does not include dCamera_c.h. */
@@ -202,17 +192,17 @@ int daLuigi_c::Render() {
     }
 
     mat = &mAnmModel.mat4x3;
-    *(Mtx43 *)mat = *(Mtx43 *)&body->mat4x3;
-    mat->t.x = -mat->t.x;
+    *mat = body->mat4x3;
+    mat->m[9] = -mat->m[9];
     func_0203c178(&data_020a0e68, kMirrorSx, kFxOne, kFxOne);
     MTX_Concat33((const int *)mat, (const int *)&data_020a0e68, (int *)mat);
-    *(Mtx43 *)&mModel.mat4x3 = *(Mtx43 *)mat;
+    mModel.mat4x3 = *mat;
 
     if (data_ov055_02111b64 & kHideBit)
         return 1;
 
     mAnmModel.dExtSimpleModel_c::Render(0);
-    *(Mtx43 *)&mModel.data.transforms[0] = *(Mtx43 *)&mAnmModel.data.transforms[15];
+    mModel.data.transforms[0] = mAnmModel.data.transforms[15];
     mTextureSequences[0].Update(mAnmModel.data);
     mTextureSequences[0].currFrame = player->mIsVanish << 12;
     mTextureSequences[1].Update(mModel.data);
@@ -242,23 +232,23 @@ int daLuigi_c::EnterMirror(daPly_c *player) {
 }
 
 int daLuigi_c::ExecuteMirror(daPly_c *player) {
-    /* One base, read x then z then y. Direct mPosX / mPosZ / mPosY
+    /* One base, read x then z then y. Direct mPos.x / mPos.z / mPos.y
      * differ (same size). */
-    int *pos = &player->mPosX;
+    int *pos = &player->mPos.x;
     int x = pos[0];
     int z = pos[2];
     int y = pos[1];
 
-    mPosX = -x;
-    mPosY = y;
-    mPosZ = z;
-    mAngleY = -player->mAngleY;
+    mPos.x = -x;
+    mPos.y = y;
+    mPos.z = z;
+    mAngle.y = -player->mAngle.y;
     return 1;
 }
 
 /* One candidate caller, ov063 0x02118004, relocates to ov027 or ov055, so
  * the owner is unknown. */
-void func_ov055_02111264(void) {
+void daLuigi_c::func_ov055_02111264() {
     data_ov055_02111b68 = kReqFade;
     func_0201277c(kAppearSound);
 }

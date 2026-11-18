@@ -83,7 +83,13 @@ u64 func_0206c51c(u64 a, u64 b)
     if (exp >= expb) {
         for (; i < exp - expb; i++)
             mantb >>= 1;
+        /* Kept (#821 r63): the ROM reads mantb back through memory for the
+           sum. `mantb = manta + mantb` and `mantb += manta` differ by 44
+           words; only a pointer alias of mantb matches, and a const one is
+           the same launder without the volatile. */
         {
+            /* Kept (#821 r79): an inline get64(&mantb) read, an inline add64(manta, mantb), and
+               get64 as the left operand are 90, 44 and 90 words off. */
             volatile u64 *pb = &mantb;
             mantb = manta + *pb;
         }

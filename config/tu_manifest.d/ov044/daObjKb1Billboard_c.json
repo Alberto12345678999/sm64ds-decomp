@@ -154,7 +154,7 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN24Kb1BillboardModelFilePtrC1Ej",
-      "canonical_symbol": "_Z13func_02017accPvj",
+      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and wrapper constructor relocation"
@@ -205,7 +205,7 @@
       "source": "0x02111324",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_Z13func_02017accPvj",
+      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -1004,7 +1004,7 @@
         "requested": [
           {
             "from": "_ZN24Kb1BillboardModelFilePtrC1Ej",
-            "to": "_Z13func_02017accPvj",
+            "to": "_ZN13SharedFilePtr13func_02017accEj",
             "module": "arm9",
             "address": "0x02017acc",
             "evidence": "retail initializer call destination and wrapper constructor relocation"
@@ -1028,7 +1028,7 @@
           {
             "symbolIndex": 75,
             "from": "_ZN24Kb1BillboardModelFilePtrC1Ej",
-            "to": "_Z13func_02017accPvj"
+            "to": "_ZN13SharedFilePtr13func_02017accEj"
           },
           {
             "symbolIndex": 77,
@@ -1704,7 +1704,7 @@
         "requested": [
           {
             "from": "_ZN24Kb1BillboardModelFilePtrC1Ej",
-            "to": "_Z13func_02017accPvj",
+            "to": "_ZN13SharedFilePtr13func_02017accEj",
             "module": "arm9",
             "address": "0x02017acc",
             "evidence": "retail initializer call destination and wrapper constructor relocation"
@@ -1728,7 +1728,7 @@
           {
             "symbolIndex": 75,
             "from": "_ZN24Kb1BillboardModelFilePtrC1Ej",
-            "to": "_Z13func_02017accPvj"
+            "to": "_ZN13SharedFilePtr13func_02017accEj"
           },
           {
             "symbolIndex": 77,
@@ -2245,9 +2245,9 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@321",
+      "from": "@319",
       "to": "@231",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin Re-keyed from @311 to @304 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @304 to @316 when math/MtxStack.h gained the MTX_MultVec33/43 Vector3 overloads (#5207) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @316 to @321 when MTX_Inverse43 and G3i_LookAt_ took NitroSDK signatures with Matrix4x3 / Vector3 overloads in math/MtxStack.h and nitro/gx/g3_util.h (#5207) (measured from the compiled object: same section, value, size and de-numbered name)."
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin Re-keyed from @311 to @304 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @304 to @316 when math/MtxStack.h gained the MTX_MultVec33/43 Vector3 overloads (#5207) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @316 to @321 when MTX_Inverse43 and G3i_LookAt_ took NitroSDK signatures with Matrix4x3 / Vector3 overloads in math/MtxStack.h and nitro/gx/g3_util.h (#5207) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @321 to @319 when Matrix4x3 became one flat fx32 m[12] (#821) (measured from the compiled object: same section, value, size and de-numbered name)."
     }
   ]
 }

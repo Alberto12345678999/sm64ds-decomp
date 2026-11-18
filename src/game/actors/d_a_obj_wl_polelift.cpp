@@ -1,6 +1,5 @@
 //cpp
 /* leftovers:
- * - common.h stays first.
  * - The destructor stays inline. Out of line it emits D0 before D1,
  *   and a D2.
  * - data_ov026_02113ea0 is the BMD handle and data_ov026_02113a9c
@@ -14,13 +13,6 @@
  * and the vtable at 0x02113ae0 name the class. classInit is
  * reconstructed.
  */
-/* common.h FIRST: UpdateShadow whole-struct-assigns the model matrix
- * into the drop-shadow matrix, and the cartridge does it as one flat
- * twelve-word ldm/stm run. common.h's flat `s32 m[12]` spelling of Matrix4x3
- * is that copy; math/Matrix.h's nested {Matrix3x3 r; Vector3 t;} -- which
- * dExtSimpleModel_c.h would otherwise pull in first -- scalarizes the last three words,
- * because Vector3 declares a destructor and is therefore not POD. Measured:
- * 0x88 emitted against the cartridge's 0x70. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_wl_polelift_AssetId {
     ASSET_WL_POLE_LIFT_BMD = 0x06db
@@ -114,10 +106,10 @@ s32 daObjWlPolelift_c::Behavior()
         Vec3_Sub(&delta, &mPos, &node);
         length = VEC_Mag(&delta);
         if (length == 0 || length <= 0xa000) {
-            mPosX = node.x;
+            mPos.x = node.x;
             moved = 1;
-            mPosY = node.y;
-            mPosZ = node.z;
+            mPos.y = node.y;
+            mPos.z = node.z;
         } else {
             scale = FX_Div(0xa000, length);
             Vec3_MulScalar(&step, &delta, scale);
@@ -185,10 +177,10 @@ s32 daObjWlPolelift_c::CleanupResources()
 
 /* Rebuild the model matrix from the actor's Y rotation and position. */
 void daObjWlPolelift_c::UpdateModelTransform() {
-    Matrix4x3_FromRotationY(&model.mat4x3, mAngleY);
-    model.mat4x3.m[9] = mPosX >> 3;
-    model.mat4x3.m[10] = mPosY >> 3;
-    model.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&model.mat4x3, mAngle.y);
+    model.mat4x3.m[9] = mPos.x >> 3;
+    model.mat4x3.m[10] = mPos.y >> 3;
+    model.mat4x3.m[11] = mPos.z >> 3;
 }
 
 /* Copy the model matrix into the drop-shadow matrix, drop it to the ground

@@ -4,6 +4,7 @@
 #include "types.h"
 #include "common.h"
 #include "dActor_c.h"
+#include "nitro/fx/fx.h"
 
 /* TWO WITNESSES, and they close on each other:
  *
@@ -24,9 +25,12 @@
  */
 struct daPicGate_c : dActor_c {
     /* One point of the picture's mesh. The grid in mCells is mCols x mRows of
-       these; mCorners holds the four corners of the flat frame. */
+       these; mCorners holds the four corners of the flat frame. pos is the
+       SDK's POD VecFx32, as in the entry menu's twin mesh (EntryMeshVertex):
+       UpdateCellDistances copy-initializes a local from it with one ldm/stm
+       block move, which a Vector3 copy (memberwise) does not give. */
     struct Vertex {
-        s32 x, y, z;             /* 0x00 -- z is the ripple height */
+        VecFx32 pos;             /* 0x00 -- z is the ripple height */
         s32 dist;                /* 0x0c -- ripple phase input */
         u32 normal;              /* 0x10 -- packed 10-bit-per-axis normal: BuildNormals
                                     packs it, and both strip writers store it to
@@ -57,14 +61,14 @@ struct daPicGate_c : dActor_c {
 
     Matrix4x3 mMtx;              /* 0x0d4 -- model-to-world */
     Matrix4x3 mInvMtx;           /* 0x104 -- its inverse */
-    s32 mWaveOrigin[3];          /* 0x134 -- x, y, 0 in cell space: BeginWave sets it,
+    Vector3 mWaveOrigin;         /* 0x134 -- x, y, 0 in cell space: BeginWave sets it,
                                     UpdateCellDistances measures each cell's dist from it */
     Vertex mCorners[4];          /* 0x140 */
     Vertex *mCells;              /* 0x1a0 -- mNumCells, from operator new[] */
     State *mState;               /* 0x1a4 */
     s32 mTexRecord;              /* 0x1a8 -- from LoadTexture */
     const WaveParams *mWaveParams; /* 0x1ac */
-    s32 mClosedPosX;             /* 0x1b0 -- mPosX as spawned */
+    s32 mClosedPosX;               /* 0x1b0 -- mPos.x as spawned */
     s16 mWavePhase;              /* 0x1b4 */
     u16 mWaveTimer;              /* 0x1b6 */
     u16 mNumCells;               /* 0x1b8 */

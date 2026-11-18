@@ -12,18 +12,15 @@
  * The file compiles under `#pragma defer_codegen off`, so mwccarm lays .text
  * in source order, which is ROM order. Do not reorder. The destructor stays
  * inline in daDsnBase_c.h and the two forcing functions near the top pull
- * its D0 and D1 out here, in the cartridge's order. daDsnBase_c.h is the
- * first include so Matrix4x3 is
- * common.h's flat s32 m[12]. Do not hoist math/Matrix.h.
+ * its D0 and D1 out here, in the cartridge's order.
  *
  * Notes (measured spellings that do not match):
- * - UpdateDropShadow keeps the early `s32 *clipRadius` and the braced
- *   mClipRadius clamp. An if-clamp in that spot is a 64-word DIFF.
- *   Dropping the pointer and shifting mClipRadius directly is a 1-word
- *   DIFF.
+ * - UpdateDropShadow keeps the braced mClipRadius clamp. An if-clamp in
+ *   that spot is a 64-word DIFF. (#821 r82: the early `s32 *clipRadius`
+ *   pointer is gone; `mClipRadius >>= 3` is byte-identical.)
  * - StateSlam keeps `int isDosun` and `if (isDosun != 0)`.
  *   Comparing actorID in the if size-DIFFs 0xf0 -> 0xe4. Combining
- *   dustPos.y into `mPosY + 0x3c000` size-DIFFs 0xf0 -> 0xec.
+ *   dustPos.y into `mPos.y + 0x3c000` size-DIFFs 0xf0 -> 0xec.
  * - Init keeps the two-step probePos.y (combined form size-DIFFs
  *   0x1a8 -> 0x1a4). Storing beforeClsnCallback directly size-DIFFs
  *   0x1a8 -> 0x1a4; the body calls dBgW::SetBeforeClsnCallback.
@@ -99,9 +96,9 @@ int daDsnBase_c::WakeNearYoshiEgg() {
     dActor_c *egg = ClosestWithActorID(kYoshiEggActorID);
     if (egg != 0) {
         Vector3 aimPos;
-        aimPos.x = mPosX;
-        aimPos.y = mPosY;
-        aimPos.z = mPosZ;
+        aimPos.x = mPos.x;
+        aimPos.y = mPos.y;
+        aimPos.z = mPos.z;
         aimPos.y = aimPos.y + OnAimedAtWithEgg();
         if (Vec3_Dist(&mPos, &egg->mPos) < (mClipRadius << 3)) {
             if (!mMeshCollider.IsEnabled()) {
@@ -141,27 +138,27 @@ void daDsnBase_c::StateRest() {
 void daDsnBase_c::StateSlam() {
     Vector3 dustPos;
     Vector3 quakePos;
-    mVertSpeed = mVertSpeed - 0x4000;
-    mPosY = mPosY + mVertSpeed;
-    if (mPosY > mGroundY)
+    mSpeed.y = mSpeed.y - 0x4000;
+    mPos.y = mPos.y + mSpeed.y;
+    if (mPos.y > mGroundY)
         return;
-    mPosY = mGroundY;
-    mVertSpeed = 0;
+    mPos.y = mGroundY;
+    mSpeed.y = 0;
     mState = 3;
     mTimer = 10;
     int isDosun = (actorID == kDosunActorID);
     if (isDosun != 0) {
         HugeLandingDust(true);
     } else {
-        dustPos.x = mPosX;
-        dustPos.y = mPosY;
-        dustPos.z = mPosZ;
+        dustPos.x = mPos.x;
+        dustPos.y = mPos.y;
+        dustPos.z = mPos.z;
         dustPos.y = dustPos.y + 0x3c000;
         Particle::System::NewSimple(kPtclGrindelLanding, dustPos.x, dustPos.y, dustPos.z);
     }
-    quakePos.x = mPosX;
-    quakePos.y = mPosY;
-    quakePos.z = mPosZ;
+    quakePos.x = mPos.x;
+    quakePos.y = mPos.y;
+    quakePos.z = mPos.z;
     Earthquake(quakePos, 0x7d0000);
     func_0201267c(0xc7, &mCamSpacePos);
 }
@@ -178,10 +175,10 @@ void daDsnBase_c::StateHover() {
  * (0x390); on arrival snaps to it, moves to state 1 and rolls the hover
  * time (0xa..0x27 frames). */
 void daDsnBase_c::StateRise() {
-    mPosY += 0xa000;
-    if (mPosY < mRiseY)
+    mPos.y += 0xa000;
+    if (mPos.y < mRiseY)
         return;
-    mPosY = mRiseY;
+    mPos.y = mRiseY;
     mState = 1;
     mTimer = (((unsigned int)RandomIntInternal(&data_0209e650.value) >> 0x10) % 30 + 10);
 }
@@ -190,17 +187,15 @@ void daDsnBase_c::StateRise() {
  * Scales the drop shadow with the height above groundY, grows mClipRadius
  * with that height, and copies the model matrix into shadowMtx with the
  * translation shifted. mClipRadius is also WakeNearYoshiEgg's trigger
- * radius. The clipRadius pointer and the braced clamp are load-bearing;
- * see the file comment. */
+ * radius. The braced clamp is load-bearing; see the file comment. */
 void daDsnBase_c::UpdateDropShadow() {
     int shadowDrop = 0x20000;
-    int heightAboveGround = mPosY - mGroundY;
+    int heightAboveGround = mPos.y - mGroundY;
     if (heightAboveGround <= 0x14000) {
         heightAboveGround = 0x14000;
         shadowDrop = 0;
     }
     int radius = FX_MUL(heightAboveGround, 0x60);
-    s32 *clipRadius = &mClipRadius;
     DsnBaseFileTable *files = mFileTable;
     int scaleX = files->shadowExtentX - radius;
     if (scaleX < 0xa000)
@@ -215,11 +210,11 @@ void daDsnBase_c::UpdateDropShadow() {
             clamped = 0x200000;
         mClipRadius = clamped;
     }
-    *clipRadius = *clipRadius >> 3;
+    mClipRadius >>= 3;
     mShadowMtx = mModel.mat4x3;
-    mShadowMtx.m[9] = mPosX >> 3;
-    mShadowMtx.m[10] = (mPosY - shadowDrop) >> 3;
-    mShadowMtx.m[11] = mPosZ >> 3;
+    mShadowMtx.m[9] = mPos.x >> 3;
+    mShadowMtx.m[10] = (mPos.y - shadowDrop) >> 3;
+    mShadowMtx.m[11] = mPos.z >> 3;
     DropShadowScaleXYZ(mShadowModel, mShadowMtx, scaleX, heightAboveGround + 0x28000, scaleZ, 0xf);
 }
 
@@ -273,7 +268,7 @@ s32 daDsnBase_c::Init() {
     files = mFileTable;
     kcl = dBgW_Kc::LoadFile(*files->collision);
     clps = files->clps;
-    mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngleY, *clps);
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngle.y, *clps);
     mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosAndAngs);
     mMeshCollider.Enable(this);
 
@@ -291,9 +286,9 @@ s32 daDsnBase_c::Init() {
     if (!mShadowModel.InitCuboid())
         return 0;
 
-    probePos.x = mPosX;
-    probePos.y = mPosY;
-    probePos.z = mPosZ;
+    probePos.x = mPos.x;
+    probePos.y = mPos.y;
+    probePos.z = mPos.z;
     probePos.y = probePos.y + 0x32000;
     {
         dBgCh_Gnd ground;
@@ -302,8 +297,8 @@ s32 daDsnBase_c::Init() {
         if (ground.DetectClsn())
             mGroundY = ground.clsnY;
 
-        mRiseY = mPosY + 0x190000;
-        mPosY = mGroundY;
+        mRiseY = mPos.y + 0x190000;
+        mPos.y = mGroundY;
         mTimer = 40;
         mVertAccel = -0x4000;
         mTerminalVelocity = -0x3c000;

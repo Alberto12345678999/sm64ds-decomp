@@ -22,9 +22,6 @@
  * daSoundObj_c_classInit is reconstructed (RTTI daSoundObj_c, SOUND_OBJ
  * registry). Retail does not store that spelling.
  *
- * Leftover: func_ov002_020f9468 passes mLoop through `*(bool *)&`.
- *   A bool parameter converts the u8 and the function grows from 0x94
- *   to 0xac.
  * Leftover: SoundObjectCallbackOwner stays a shadow: entries 0-2 of
  *   the callback table are arm9 Sound:: starters, not daSoundObj_c
  *   members, and the sinit fills the table as non-polymorphic {ptr,0}
@@ -44,6 +41,7 @@
  */
 
 #include "daSoundObj_c.h"
+#include "Sound.h"
 
 /* opt_loop_invariants is set once, for the whole file. The one loop in
    the file is InitResources' FindWithActorID walk, whose 0x167 and
@@ -51,6 +49,8 @@
    motion on they are hoisted into callee-saved registers: 0x15c, not
    0x14c. Re-measured (#821 r17): the loop as a goto back-edge is also
    0x15c. */
+/* Kept (#821 r79): a do-while with the combined test, continue on actor == this, and
+   gSubSoundID re-read in the PlaySub call are 0x160, 0x15c and 0x150 against 0x14c. */
 #pragma opt_loop_invariants off
 
 /* One row of the 0xc-stride sound table: the four members InitResources
@@ -59,7 +59,7 @@ struct SoundObjRow {
     s32 soundID;
     s32 volume;
     u16 counterLimit;
-    u8 loop;
+    bool loop;
     u8 pad_0b;
 };
 typedef char SoundObjRow_size_must_be_0x0c[
@@ -71,10 +71,6 @@ typedef char SoundObjRow_size_must_be_0x0c[
 struct SoundObjectCallbackOwner;
 
 typedef int (SoundObjectCallbackOwner::*SoundObjectCallback)(u16 *);
-
-namespace Sound {
-bool PlaySub(u32, u32, u32, int, bool);
-}
 
 extern "C" {
 extern SoundObjRow data_ov002_0210c080[]; /* 7 rows; row 7 is the _ZTV12daSoundObj_c header */
@@ -107,6 +103,8 @@ SoundObjStarter data_ov002_0210c038 = {(int)&func_ov002_020f9468, 0};
 SoundObjStarter data_ov002_0210c040 = {(int)&Sound::PlaySecretSound, 0};
 
 SoundObjectCallback data_ov002_0211110c[7] = {
+    /* Kept (#821 r76): entries 0-2 are arm9 free functions, so no pointer-to-member constant names
+       them; that needs Sound's starters to become members, which is class-identity work. */
     *(SoundObjectCallback *)&data_ov002_0210c040, *(SoundObjectCallback *)&data_ov002_0210c010,
     *(SoundObjectCallback *)&data_ov002_0210c020, *(SoundObjectCallback *)&data_ov002_0210c038,
     *(SoundObjectCallback *)&data_ov002_0210c030, *(SoundObjectCallback *)&data_ov002_0210c018,
@@ -183,9 +181,9 @@ int func_ov002_020f9468(daSoundObj_c *self, u16 *counter) {
        steady-state branch falls through to the one `return 0`. */
     if (*counter < self->mCounterLimit - 15) {
         int vol = self->mVolume;
-        Sound::PlaySub(self->mSoundID, vol, 127, (127 - vol) << 12, *(bool *)&self->mLoop);
+        Sound::PlaySub(self->mSoundID, vol, 127, (127 - vol) << 12, self->mLoop);
         *counter += 1;
-    } else if (Sound::PlaySub(self->mSoundID, 127, 0, kPoolDist, *(bool *)&self->mLoop)) {
+    } else if (Sound::PlaySub(self->mSoundID, 127, 0, kPoolDist, self->mLoop)) {
         return 1;
     }
     return 0;

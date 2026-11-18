@@ -69,14 +69,8 @@ extern Ov007Sprite *NumberSprite_Create(int index);
 extern "C" void func_ov007_020bce70(short n, int frames);
 extern "C" void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, VecFx32 *out);
 extern int func_ov007_020c1da0(int i);
-extern int func_ov007_020c30ac(VecFx32 *arr, int count, VecFx32 *target, int arg4, int *out);
+extern "C" int func_ov007_020c30ac(VecFx32 *arr, int count, VecFx32 *target, int arg4, int *out);
 extern "C" unsigned short func_ov007_020c3be0(int t, int a, int b);
-extern void func_ov007_020c9a84(Ov007Swing *swing, VecFx32 *offset, u16 *rotX, u16 *rotY);
-extern void func_ov007_020c9c24(Ov007Swing *swing, int shift);
-extern void func_ov007_020c9d90(Ov007Swing *swing, Ov007Mesh *mesh);
-extern void func_ov007_020c9f10(Ov007Swing *swing, VecFx32 *pos, int w, int h);
-extern void func_ov007_020c9fa0(Ov007Swing *swing);
-extern Ov007Swing *func_ov007_020ca010(Ov007SwingParams *params);
 extern void func_ov007_020ca1d4(Ov007MeshWave *wave, Ov007Mesh *mesh);
 extern void func_ov007_020ca26c(Ov007MeshWave *wave);
 extern Ov007MeshWave *func_ov007_020ca2a8(Ov007MeshWaveParams *params);
@@ -86,7 +80,8 @@ extern "C" void func_ov007_020ca5f0(Ov007Mesh *mesh, Ov007MeshMaterial *mat, Vec
 extern "C" void func_ov007_020cb3dc(Ov007Mesh *mesh);
 extern "C" void func_ov007_020cba78(Ov007Mesh *mesh, int shift);
 extern void func_ov007_020cbb04(Ov007Mesh *mesh);
-extern Ov007Mesh *func_ov007_020cbbb0(int columns, int rows, int width, Ov007MeshParams *params);
+extern "C" Ov007Mesh *func_ov007_020cbbb0(int columns, int rows, int width,
+                                          Ov007MeshParams *params);
 extern "C" Ov007MeshMaterial *func_ov007_020cbf8c(Ov007MeshMaterial *src);
 
 /* Defined below, after their callers (ROM order). */
@@ -99,12 +94,12 @@ extern "C" void func_ov007_020beeb0(void);
  * unprojected through the camera at the camera's depth, then
  * func_ov007_020c30ac finds the mesh vertex nearest it. Returns its index,
  * or -1. */
-int func_ov007_020bf630(Ov007Mesh *mesh, Ov007Camera *camera, int x, int y, int arg5) {
+int Ov007Mesh::func_ov007_020bf630(Ov007Camera *camera, int x, int y, int arg5) {
     VecFx32 local;
     func_ov007_020bfe4c(camera, x << 0xc, y << 0xc, -camera->distance, &local);
     {
-        Ov007Grid *grid = mesh->grid;
-        return func_ov007_020c30ac(mesh->verts, grid->columns * grid->rows, &local, arg5, 0);
+        Ov007Grid *grid = this->grid;
+        return func_ov007_020c30ac(this->verts, grid->columns * grid->rows, &local, arg5, 0);
     }
 }
 
@@ -120,8 +115,8 @@ void func_ov007_020bf57c(Ov007Camera *camera, int idx) {
     buf.depth = -camera->distance;
     func_ov007_020c43bc(&buf, camera);
     func_ov007_020c4388(&buf, camera);
-    func_ov007_020c9f10(swing, &buf.pos, buf.worldWidth, buf.worldHeight);
-    func_ov007_020c9d90(swing, SCENE->mesh);
+    swing->func_ov007_020c9f10(&buf.pos, buf.worldWidth, buf.worldHeight);
+    swing->func_ov007_020c9d90(SCENE->mesh);
 }
 
 /* Builds the mesh scene once: the 0xf x 0xe grid mesh, its two materials
@@ -153,7 +148,7 @@ extern "C" void func_ov007_020bf428(void) {
     SCENE->wave = func_ov007_020ca2a8(&data_ov007_020d7c9c);
 
     for (i = 0; i < 8; i++) {
-        SCENE->swings[i] = func_ov007_020ca010(&data_ov007_020d7cc8);
+        SCENE->swings[i] = data_ov007_020d7cc8.func_ov007_020ca010();
         func_ov007_020bf57c(WORK->cameras[0], i);
     }
 
@@ -201,7 +196,7 @@ extern "C" void func_ov007_020bf304(void) {
     }
 
     for (i = 0; i < 8; i++) {
-        func_ov007_020c9fa0(SCENE->swings[i]);
+        SCENE->swings[i]->func_ov007_020c9fa0();
     }
 
     for (i = 0; i <= 2; i++) {
@@ -271,9 +266,9 @@ void func_ov007_020beeb0(void) {
         if (view->item->state->stateWork == 2)
             func_ov007_020bf57c(WORK->cameras[0], i);
         if (view->item->visible != 0) {
-            func_ov007_020c9c24(swing, 2);
-            func_ov007_020c9a84(swing, &view->sprite->posOffset, &view->sprite->rotX,
-                                &view->sprite->rotY);
+            swing->func_ov007_020c9c24(2);
+            swing->func_ov007_020c9a84(&view->sprite->posOffset, &view->sprite->rotX,
+                                       &view->sprite->rotY);
             view->sprite->posOffset.x = FX_MUL(view->sprite->posOffset.x, 100);
             view->sprite->posOffset.y = FX_MUL(view->sprite->posOffset.y, 100);
         }
@@ -363,7 +358,7 @@ void func_ov007_020bee14(void) {
 void func_ov007_020bed60(int arg0, int arg1, int arg2) {
     Ov007Mesh *mesh = SCENE->mesh;
     Ov007Camera *camera = WORK->cameras[0];
-    int res = func_ov007_020bf630(mesh, camera, arg0, arg1, -1);
+    int res = mesh->func_ov007_020bf630(camera, arg0, arg1, -1);
     if (res == -1)
         return;
     {

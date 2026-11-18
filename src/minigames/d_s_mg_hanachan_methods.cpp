@@ -35,8 +35,8 @@
  *   HanaStarPopup view, and StarPopup_Update reaches its timer byte
  *   through a separate symbol, sHanaStarPopups.
  * - Wiggler::DrawTarget repeats Wiggler::DrawField's segment
- *   walk with its own point type, Vec2_ea914, whose trivial destructor
- *   is part of the match.
+ *   walk with Vector2 points, whose declared destructor is part of
+ *   the match.
  * - Wiggler::GetFlag reads the four 2-bit colours in color (+0x74) through
  *   the B72 bitfield view.
  * - Wiggler::DrawField: OAM::Render(int, OamAttr*, int, int, int,
@@ -85,7 +85,8 @@ extern int sHanaFieldWigglerCount;
 void *dScMgHanachan_c_classInit();
 extern "C" BaseSpawnInfo<void> g_profile_MG_HANACHAN = {dScMgHanachan_c_classInit, 0x182, 0x182};
 
-typedef dScMgHanachan_c::Point V2;
+/* Kept (#821 r72): DrawField's points as Vector2 give 0x3d8 against the
+   ROM's 0x3e0; this plain pair keeps the frame. */
 typedef struct {
     int x, y;
 } Vec2;
@@ -171,9 +172,8 @@ extern const int sHanaFieldWigglerCounts[10] = {3, 4, 5, 4, 6, 3, 4, 5, 15, 15};
 extern u8 gMainScreenLayers;
 extern u8 gSubScreenLayers;
 
-/* These helpers read or write two scalar words. Cast the plain Point
-   records at the C ABI boundary rather than giving the externs new types. */
-/* Scalar pair ABI agrees with the arm9 definitions; V2 only names this TU workspace. */
+/* These helpers read or write two scalar words. Cast the Vector2 points
+   at the C ABI boundary rather than giving the externs new types. */
 extern void func_0203d704(int *o, int *a, int *b);
 extern void Vec2_Sub(int *o, int *a, int *b);
 extern void func_0203d680(Vector2 *out, const Vector2 *in, int scale);
@@ -483,14 +483,8 @@ void HanaPopup_ClearAll(void) {
 
 /* Draws a wiggler's five segments from the tail forward, then one more
    sprite by the head when bloom is set and IsStarVisible agrees. The
-   trivial ~Vec2_ea914 and the strength-reduction bracket are both part of
-   the match. */
-struct Vec2_ea914 {
-    s32 x;
-    s32 y;
-    ~Vec2_ea914() {}
-};
-
+   Vector2's declared destructor and the strength-reduction bracket are
+   both part of the match. */
 void dScMgHanachan_c::Wiggler::DrawTarget() {
     s32 i;
     s16 rot;
@@ -503,11 +497,11 @@ void dScMgHanachan_c::Wiggler::DrawTarget() {
     s32 res;
     s32 j;
 
-    Vec2_ea914 pos;
-    Vec2_ea914 va;
-    Vec2_ea914 vb;
-    Vec2_ea914 vout;
-    Vec2_ea914 pts[5];
+    Vector2 pos;
+    Vector2 va;
+    Vector2 vb;
+    Vector2 vout;
+    Vector2 pts[5];
 
     pts[4].x = 0xb4000;
     pts[4].y = 0x80000;
@@ -567,7 +561,7 @@ void dScMgHanachan_c::Wiggler::DrawField() {
        B, (u16)rot, the hoisted zero, res and py, and keeps px in a register.
        Measured 2026-11-16 (#821 r22) against 0x3e0 bytes: plain Vector2
        locals give 0x3dc, the same locals unnested 0x3d8, DrawTarget's
-       Vec2_ea914 shape 0x3e4, and all 72 declaration orders of A/B with
+       destructor-only point shape 0x3e4, and all 72 declaration orders of A/B with
        the points as Vector2 miss the size. */
     struct {
         int A, B, urot, va0x, res;
@@ -869,7 +863,7 @@ void dScMgHanachan_c::Wiggler::Move() {
     StepSegmentsA();
 }
 
-int dScMgHanachan_c::Wiggler::HitTest(const Point *touchPoint) {
+int dScMgHanachan_c::Wiggler::HitTest(const Vector2 *touchPoint) {
     int segmentIndex;
     for (segmentIndex = 0; segmentIndex < 5; segmentIndex++) {
         if (func_0203d5dc((const int *)(&seg[segmentIndex]), (const int *)touchPoint) < 0x14000)
@@ -1101,10 +1095,10 @@ int dScMgHanachan_c::Wiggler::ClampToScreen() {
 }
 
 void dScMgHanachan_c::Wiggler::StepSegmentsA() {
-    V2 segmentOffset;
-    V2 headOffset;
-    V2 segmentPosition;
-    V2 headPosition;
+    Vector2 segmentOffset;
+    Vector2 headOffset;
+    Vector2 segmentPosition;
+    Vector2 headPosition;
     int segmentIndex;
     s16 targetAngle;
     int previousIndex;
@@ -1169,10 +1163,10 @@ void dScMgHanachan_c::Wiggler::StepSegmentsA() {
 }
 
 void dScMgHanachan_c::Wiggler::StepSegmentsB() {
-    V2 segmentOffset;
-    V2 headOffset;
-    V2 segmentPosition;
-    V2 headPosition;
+    Vector2 segmentOffset;
+    Vector2 headOffset;
+    Vector2 segmentPosition;
+    Vector2 headPosition;
     int segmentIndex = 4;
     Vector2 *segment = &seg[segmentIndex];
     int baseSpacing = 0x8000;
@@ -1217,10 +1211,10 @@ void dScMgHanachan_c::Wiggler::StepSegmentsB() {
 }
 
 void dScMgHanachan_c::Wiggler::StepSegmentsC() {
-    V2 segmentOffset;
-    V2 headOffset;
-    V2 segmentPosition;
-    V2 headPosition;
+    Vector2 segmentOffset;
+    Vector2 headOffset;
+    Vector2 segmentPosition;
+    Vector2 headPosition;
     int segmentIndex = 2;
     Vector2 *segment = &seg[segmentIndex];
     int previousIndex;
@@ -1472,11 +1466,11 @@ void dScMgHanachan_c::Wiggler::TurnTowardAim() {
 }
 
 void dScMgHanachan_c::Wiggler::StartPathC(int wigglerIndex) {
-    V2 initialHead;
-    V2 segmentOffset;
-    V2 headOffset;
-    V2 segmentPosition;
-    V2 headPosition;
+    Vector2 initialHead;
+    Vector2 segmentOffset;
+    Vector2 headOffset;
+    Vector2 segmentPosition;
+    Vector2 headPosition;
     int lastIndex, indexWeight, reverseWeight, spacingOffset, segmentIndex, previousIndex;
 
     bloom = 1;
@@ -1502,8 +1496,7 @@ void dScMgHanachan_c::Wiggler::StartPathC(int wigglerIndex) {
         initialHead.x = 0x38000;
 
     aim = -0x8000;
-    seg[0].x = *(int *)&initialHead;
-    seg[0].y = *((int *)&initialHead + 1);
+    seg[0] = initialHead;
     ang[0] = aim - 0x2000;
 
     for (segmentIndex = 1; segmentIndex < 5; segmentIndex++) {
@@ -1745,7 +1738,7 @@ void dScMgHanachan_c::BeginResult() {
 }
 
 void dScMgHanachan_c::Phase_Play() {
-    V2 a;
+    Vector2 a;
     int vec[4];
     int b = 0;
     int idx = gActivePlayerSlot;
@@ -1921,12 +1914,17 @@ void dScMgHanachan_c::Phase_SetupRound() {
     }
 }
 
+/* StartRound steps the level with a read through this accessor, and the
+   cartridge re-issues ldr r1,[r4,#0xbc] for it. A plain `mLevel + 1` lets
+   mwccarm keep the +0xbc field address in its own register (add r2,r4,#0xbc /
+   ldr [r2] / str [r2]), a word longer. */
+inline u32 dScMgBase_c::GetLevel() const {
+    return mLevel;
+}
+
 void dScMgHanachan_c::StartRound(int state) {
     if (state == 1) {
-        /* `const` on the read is load-bearing: without it mwcc CSEs the +0xbc field
-           address into its own register (add r2,r4,#0xbc / ldr [r2] / str [r2]) and the
-           function grows a word; the cartridge re-issues ldr r1,[r4,#0xbc]. */
-        mLevel = *(const u32 *)&mLevel + 1;
+        mLevel = GetLevel() + 1;
         if (mLevel > 0x270e)
             mLevel = 0x270e;
     } else if (state == 0x12) {

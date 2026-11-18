@@ -2,7 +2,6 @@
 #define DATGZ_C_H
 
 #include "types.h"
-#include "private/mtx43.h"
 #include "dActor_c.h"
 #include "dExtSimpleModel_c.h"
 #include "dExtAnmModel_c.h"
@@ -31,7 +30,7 @@ struct daTgz_c : dActor_c {
     dBgCh_Actr mWithMeshClsn;            /* 0x1e4 */
     /* Drop-shadow matrix. InitResources copies IDENTITY_MATRIX4X3 here and
        the shadow helper writes the translation as position >> 3. */
-    Mtx43 mShadowMatrix; /* 0x3a0 */
+    Matrix4x3 mShadowMatrix; /* 0x3a0 */
     /* PMF pair. func_ov077_02125e94 stores &gTgzStates[i] (d_a_tgz.cpp).
        func_ov077_02125e5c calls slot 0; func_ov077_02125e20 calls slot 1. */
     void *mStateDesc;                    /* 0x3d0 */
@@ -47,7 +46,7 @@ struct daTgz_c : dActor_c {
     u32 mRippleId;                       /* 0x3e0 */
     u8 mInWater;                         /* 0x3e4 */
     u8 pad_3e5;                          /* 0x3e5 */
-    /* ApproachLinear target for mAngleY while walking. */
+    /* ApproachLinear target for mAngle.y while walking. */
     s16 mTurnTarget;                     /* 0x3e6 */
     /* DecIfAbove0_Byte. State 5 arms 45 frames; state 1 arms a random byte. */
     u8 mActionTimer;                     /* 0x3e8 */
@@ -81,6 +80,17 @@ struct daTgz_c : dActor_c {
     void func_ov077_02125b1c();
     int func_ov077_02125bb4();
     int func_ov077_02125dd4();
+    int func_ov077_02124c28();
+    int func_ov077_02124ce4();
+    void func_ov077_02124d08(dBgCh_Actr *clsn);
+    void func_ov077_02124eb0();
+    void func_ov077_021250a8();
+    void func_ov077_021251d0();
+    void func_ov077_02125290();
+    void func_ov077_02125304();
+    void func_ov077_02125e20();
+    void func_ov077_02125e5c();
+    void func_ov077_02125e94(int i);
 };
 
 #ifndef SM64DS_PLATFORM_PC

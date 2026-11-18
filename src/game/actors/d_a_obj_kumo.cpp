@@ -108,10 +108,10 @@ int daObjKumo_c::CleanupResources() {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 void daObjKumo_c::UpdateModelMatrix() {
-    Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
-    mModel.mat4x3.t.x = mPosX >> 3;
-    mModel.mat4x3.t.y = mPosY >> 3;
-    mModel.mat4x3.t.z = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModel.mat4x3, mAngle.y);
+    mModel.mat4x3.m[9] = mPos.x >> 3;
+    mModel.mat4x3.m[10] = mPos.y >> 3;
+    mModel.mat4x3.m[11] = mPos.z >> 3;
 }
 
 /* -------------------------------------------------------------------------- */

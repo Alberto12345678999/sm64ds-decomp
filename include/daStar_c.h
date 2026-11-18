@@ -39,12 +39,6 @@
 
 struct daPly_c;
 
-/* The shadow's matrix (a bare 4x3: a real Matrix4x3 member would drag
-   Vector3's destructor into ~daStar_c). tx/ty/tz are the position >> 3. */
-struct daStarShadowMtx { s32 m[9]; s32 tx; s32 ty; s32 tz; };
-#ifndef SM64DS_PLATFORM_PC
-typedef char daStarShadowMtx_size_must_be_0x30[sizeof(struct daStarShadowMtx) == 0x30 ? 1 : -1];
-#endif
 
 struct daStar_c : dEnemyBase_c {
     /* ---- state, indexing data_ov002_021109d8 (the 14-entry pointer-to-member
@@ -89,7 +83,7 @@ struct daStar_c : dEnemyBase_c {
 
     /* mStarFlags bits. */
     enum StarFlag {
-        /* clear: UpdateModelMatrix spins it (+0xc00 on mAngleY per frame); set: faces mPrevAngleY, 50.0 up */
+        /* clear: UpdateModelMatrix spins it (+0xc00 on mAngle.y per frame); set: faces mPrevAngle.y, 50.0 up */
         FLAG_NO_SPIN = 0x0001,
         /* Render, the drop shadow and the touch volume all need it; InitResources disables the touch volume while clear */
         FLAG_VISIBLE = 0x0002,
@@ -142,7 +136,7 @@ struct daStar_c : dEnemyBase_c {
     dExtAnmModel_c mAnmModel2; /* 0x370 -- the translucent "already collected" star */
     dExtShadowModel_c                  mShadowModel;          /* 0x3d4 */
 
-    daStarShadowMtx              mShadowMtx;            /* 0x3fc */
+    Matrix4x3 mShadowMtx; /* 0x3fc */
 
     s32 mGroundY; /* 0x42c -- ProbeGround's downward probe from 50.0 above the star: the hit, or 0x7fffffff */
     u32 mSoundObjID; /* 0x430 -- uniqueID of the sound object SpawnCollectSoundObj spawned, 0 if none */
@@ -195,9 +189,7 @@ struct daStar_c : dEnemyBase_c {
         StarFlagBits mBits;       /* the same word as bit-fields, for the tests the ROM compiles as shifts */
     };
     u8   pad_4a4[0x4];
-    s32  mCenterX;                /* 0x4a8 -- cache for func_ov002_020e8244; zeroed each Behavior */
-    s32  mCenterY;                /* 0x4ac */
-    s32  mCenterZ;                /* 0x4b0 */
+    Vector3 mCenter;              /* 0x4a8 -- cache for func_ov002_020e8244; zeroed each Behavior */
     u32  mParticle[4];            /* 0x4b4 -- Particle::System handles: [0] shared by effects 0x113, 0x115 and 0x2f, [1] 0x116, [2] 0x114, [3] 0x10e (silver star) */
 
     /* --- vtable --- */
@@ -233,6 +225,7 @@ struct daStar_c : dEnemyBase_c {
     void SpawnSoundObj6();
     void StopCollectSoundObj();
     void func_ov002_020e7eb4();
+    Vector3 func_ov002_020e8244();
     void UpdateSilverTrailEffect();
     void UpdateSparkleEffect();
     void SpawnPoseEffects();

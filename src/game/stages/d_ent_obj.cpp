@@ -20,8 +20,6 @@
  *
  * leftovers:
  *  - G3i_PerspectiveW_ takes the SDK's fx32 scalars.
- *  - The Matrix4x3 copies go through the flat Mtx43; assigning Matrix4x3
- *    itself grows .text by 0x6c bytes.
  *  - Behavior reads mFellOffThisFrame as mPlayers[i] beside the running
  *    `player`: folding it into `player->mFellOffThisFrame` drops a register and
  *    rewrites the whole function, and indexing every use changes its size.
@@ -40,7 +38,6 @@
 #include "nitro/gx/g3x.h"
 #include "math/Approach.h"
 #include "BMD_File.h"
-#include "private/mtx43.h"
 #include "LevelRng.h"
 #include "nitro/gx/g3_util.h"
 #include "nitro/fx/fx_cp.h"
@@ -249,8 +246,11 @@ void UnknownVsPlayer::MovePoseParticles() {
     if (mPosition.x >= 0x1c2000)
         return;
     Vector3 pos;
-    Matrix4x3 *bone = &mModel.data.transforms[15];
-    MTX_MultVec43(&bone->t, &mModel.mat4x3, &pos);
+    /* The bone matrix as its four rows of three; row 3 is the translation.
+     * Indexing m[9] instead folds the bone and row offsets into one add,
+     * where the ROM adds 0x2d0 and then 0x24. */
+    const Vector3 *rows = (const Vector3 *)&mModel.data.transforms[15];
+    MTX_MultVec43(&rows[3], &mModel.mat4x3, &pos);
     Vec3_MulScalarInPlace(&pos, 0x8000);
     pos.y += 0x28000;
     mParticleHandle =
@@ -528,7 +528,7 @@ void UnknownVsPlayer::Render() {
         animation->Virtual10(components->transforms[15]);
     }
 
-    *(Mtx43 *)&mAnimation.mat4x3 = *(Mtx43 *)&mModel.mat4x3;
+    mAnimation.mat4x3 = mModel.mat4x3;
 
     {
         ModelComponents *components = &mAnimation.data;
@@ -553,7 +553,7 @@ void UnknownVsPlayer::Behavior() {
     (this->*sVsPlayerMoveStates[mMoveState].state)();
     Matrix4x3_FromTranslation(&data_020a0e68, mPosition.x >> 3, mPosition.y >> 3, mPosition.z >> 3);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-    *(Mtx43 *)&mModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
+    mModel.mat4x3 = data_020a0e68;
     (this->*sVsPlayerAnimStates[mAnimState].state)();
     mModel.Advance();
     mTextureSequence.Advance();
@@ -696,7 +696,7 @@ void dEntObj_c::SetMarkerPosition(int playerNo) {
     markerPosition.y += 0x32000;
     Vec3_Asr(&renderPosition, &markerPosition, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, renderPosition.x, renderPosition.y, renderPosition.z);
-    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
 }
 
 /* The exit x for player slot playerNo, from the row for the current player
@@ -738,7 +738,7 @@ void dEntObj_c::SetCamera() {
     Matrix4x3 view;
     G3i_PerspectiveW_(data_02082614[10], data_02082614[11], 0x1555, 0x1000, 0x1388000, 0x1000, true,
                       0);
-    G3i_LookAt_(&mCamPos, (Vector3 *)&data_ov075_0211c660, &mCamTarget, true, &view);
+    G3i_LookAt_(&mCamPos, &data_ov075_0211c660, &mCamTarget, true, &view);
     CopyToViewMat(&view);
     data_0209f43c.Func_020156DC(0x1555, 0x105b, 0x1000, 0x1388000);
 }
@@ -883,14 +883,14 @@ int dEntObj_c::InitResources() {
     func_0203c178(&data_020a0e68, 0x7d000, 0x7d000, 0x7d000);
     /* 0x888 is +0x1c inside the dExtSimpleModel_c at 0x86c -- its mat4x3. The cartridge's own
        ~dEntObj_c proves the extent; see tools/dtor_members.py. */
-    *(Mtx43 *)&mModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
+    mModel.mat4x3 = data_020a0e68;
 
     if (param1 != 1) {
         mAnmModel.SetFile((BMD_File *)data_ov075_0211d3bc.filePtr, 1, -1);
         mAnmModel.SetAnim((BCA_File *)data_ov075_0211d3e4.filePtr, 0, 0x1000, 0);
     }
 
-    mMesh.Init((Vector3 *)&data_ov075_0211c654, 0);
+    mMesh.Init(&data_ov075_0211c654, 0);
     mParticle.Initialise();
 
     player = mPlayers;

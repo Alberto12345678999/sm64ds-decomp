@@ -81,11 +81,9 @@ struct daIbl_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x110 */
     dExtSimpleModel_c mModel; /* 0x2cc -- mModel.mat4x3 is the model matrix */
     dExtShadowModel_c                  mShadowModel;          /* 0x31c */
-    /* The shadow's Matrix4x3, as twelve words (words 9..11 are the
-       translation). UpdateModelMatrix copies the model matrix into it and then
-       overwrites the Y translation. Kept as plain words because a Matrix4x3
-       member would bring Vector3's destructor into this class's own. */
-    s32                          mShadowMtx[12];        /* 0x344 */
+    /* The shadow's matrix. UpdateModelMatrix copies the model matrix into it
+       and then overwrites the Y translation (m[10]). */
+    Matrix4x3 mShadowMtx;         /* 0x344 */
     dCcAc_c           mdCcAc_c;   /* 0x374 -- hitFlags/otherOwner at 0x394/0x398 name what touched the ball */
     /* On a ball made by a spawner (kind 0): the spawner. The spawner stores
        itself here right after Spawn returns, and CleanupResources gives its
@@ -100,8 +98,8 @@ struct daIbl_c : dEnemyBase_c {
     u8  pad_3b8[0x2];
     /* The heading from the ball to mNextNodePos: AdvancePath stores
        atan2(node.x - pos.x, node.z - pos.z) here on every call, the path
-       followers steer mPrevAngleY toward it, and InitResources copies it
-       straight into mPrevAngleY once. */
+       followers steer mPrevAngle.y toward it, and InitResources copies it
+       straight into mPrevAngle.y once. */
     s16                          mHeadingToNode;        /* 0x3ba */
     u8  pad_3bc[0x4];
     /* Spawner (kind 0) only: the horizontal distance band to the closest player
@@ -160,6 +158,9 @@ struct daIbl_c : dEnemyBase_c {
     void RollOffBehavior();
     void FreeRollBehavior();
     void SpawnerBehavior();
+
+    /* param1, the spawn word; defined inline in d_a_ibl.cpp. */
+    u32 GetParam1() const;
 };
 
 #ifndef SM64DS_PLATFORM_PC

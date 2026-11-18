@@ -98,9 +98,9 @@ int daTree_c::InitResources()
     if (*slot == 0)
         mModel[variant].LoadAndSetFile(data_ov002_0210abb8[variant], 1, 1);
     node = new TreeNode;
-    node->pos.x = mPosX;
-    node->pos.y = mPosY;
-    node->pos.z = mPosZ;
+    node->pos.x = mPos.x;
+    node->pos.y = mPos.y;
+    node->pos.z = mPos.z;
     Vec3_AsrInPlace(&node->pos, 3);
     node->pos.y += kCanopyLift;
     node->clsn.Init(mPos, kClsnRadius, kClsnHeight, kClsnFlags, 0);
@@ -154,9 +154,9 @@ int daTree_c::Render()
                 /* The second argument is the one every retail caller passes;
                    see notes/experiments/applyopacity-api-0920.md. */
                 model->ApplyOpacity(opacity, 0);
-                mat->t.x = node->pos.x;
-                mat->t.y = node->pos.y - kCanopyLift;
-                mat->t.z = node->pos.z;
+                mat->m[9] = node->pos.x;
+                mat->m[10] = node->pos.y - kCanopyLift;
+                mat->m[11] = node->pos.z;
                 model->Render(0);
             }
             node = node->next;

@@ -18,8 +18,6 @@
 #define DAONMS_C_H
 #include "types.h"
 
-/* dBgActor_c.h deliberately selects the flat Matrix4x3 spelling before
- * dExtSimpleModel_c.h. It must therefore be the first ownership header included here. */
 #include "dBgActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
@@ -31,7 +29,7 @@
 struct daOnms_c : dBgActor_c {
     dActor_c *mPlayerActor;         /* 0x320 - last player that hit the box */
     dBgCh_Actr mWithMeshClsn;       /* 0x324 */
-    s16 mTumbleVelX;                /* 0x4e0 - added to mAngleX each frame */ /* coined */
+    s16 mTumbleVelX; /* 0x4e0 - added to mAngle.x each frame */ /* coined */
     s16 mTumbleVelY;                /* 0x4e2 */ /* coined */
     s16 mTumbleVelZ;                /* 0x4e4 */ /* coined */
     u8 pad_4e6[0x2];

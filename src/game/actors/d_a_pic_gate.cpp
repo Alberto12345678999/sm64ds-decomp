@@ -60,8 +60,8 @@
    write Vector3, the NitroSDK VEC_* and MTX_MultVec43 write VecFx32. The VEC_*
    calls take VecFx32 directly (nitro/fx/fx_vec.h, through math/CalcLib.h).
    MTX_MultVec43 takes VecFx32 with the SDK's MtxFx43, or Vector3 with the
-   game's Matrix4x3 through math/MtxStack.h's overload (#5207); these calls
-   use the game's matrix stack, hence the casts on the VecFx32 outputs. */
+   game's Matrix4x3 through math/MtxStack.h's overload (#5207). HitTest's
+   calls use the game's matrix stack, so their outputs are Vector3. */
 
 extern "C" void G3_LoadMtx43(void *m);
 void func_02012694(u32 id, const Vector3 *pos);
@@ -109,7 +109,7 @@ void daPicGate_c::BuildGateMatrix() {
     Vector3 v;
     Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngle.x, mAngle.y, mAngle.z);
     Matrix4x3_ApplyInPlaceToTranslation(
         &data_020a0e68, -(((unsigned char)(param1 & 15) + 1) * 0x64000) / 2 >> 3, 0, 0);
     mMtx = data_020a0e68;
@@ -130,7 +130,7 @@ u8 *daPicGate_c::LoadTexture(s32 i) {
         BMD_Material *b;
         BMD_Palette *c;
         SharedFilePtr *sfp = data_ov080_0212775c[i];
-        BMD_File *o = (BMD_File *)func_0201787c(sfp);
+        BMD_File *o = (BMD_File *)sfp->func_0201787c();
         a = o->textures;
         b = o->materials;
         c = o->palettes;
@@ -158,8 +158,8 @@ u8 *daPicGate_c::LoadTexture(s32 i) {
 void daPicGate_c::HitTest() {
     Vector3 a;
     Vector3 b;
-    VecFx32 ob;
-    VecFx32 oa;
+    Vector3 ob;
+    Vector3 oa;
     daPly_c *r5;
     int x, y;
     int lim;
@@ -173,8 +173,8 @@ void daPicGate_c::HitTest() {
     Vec3_Asr(&a, &r5->mPrevPos, 3);
     Vec3_Asr(&b, &r5->mPos, 3);
     data_020a0e68 = mInvMtx;
-    MTX_MultVec43(&a, &data_020a0e68, (Vector3 *)&oa);
-    MTX_MultVec43(&b, &data_020a0e68, (Vector3 *)&ob);
+    MTX_MultVec43(&a, &data_020a0e68, &oa);
+    MTX_MultVec43(&b, &data_020a0e68, &ob);
 
     if ((oa.z > 0 && ob.z <= 0) || (oa.z < 0 && ob.z >= 0)) {
         x = ob.x << 3;
@@ -276,9 +276,9 @@ void daPicGate_c::BuildNormals() {
 void daPicGate_c::FlattenFrame() {
     for (int i = 0; i < mNumCells; i++) {
         Vertex *e = mCells + i;
-        if (e->x == 0 || e->x == ((unsigned char)(param1 & 15) + 1) * 0x64000 || e->y == 0 ||
-            e->y == ((unsigned char)((param1 >> 4) & 15) + 1) * 0x64000) {
-            e->z = 0;
+        if (e->pos.x == 0 || e->pos.x == ((unsigned char)(param1 & 15) + 1) * 0x64000 ||
+            e->pos.y == 0 || e->pos.y == ((unsigned char)((param1 >> 4) & 15) + 1) * 0x64000) {
+            e->pos.z = 0;
             mCells[i].normal = 0x1ff00000;
         }
     }
@@ -342,15 +342,18 @@ s32 daPicGate_c::WavePhase(s32 dist) {
 
 /* Refresh every cell's planar distance from the wave origin (mWaveOrigin);
  * Vertex::dist feeds RippleHeight. The plain vector is initialized inside
- * the loop: b56 emits the retail block copy for that form. */
+ * the loop: b56 emits the retail block copy for that form.
+ * Kept (#821 r77): tmp is a POD VecFx32 (its copy-init is the ROM's ldm/stm
+ * block move; a Vector3 copy is memberwise), and the game's Vec3_Dist takes
+ * the game's Vector3, so the call casts at that boundary. */
 void daPicGate_c::UpdateCellDistances() {
     int i;
 
     for (i = 0; i < mNumCells; i++) {
         Vertex *e = &mCells[i];
-        VecFx32 tmp = *(VecFx32 *)&e->x;
+        VecFx32 tmp = e->pos;
         tmp.z = 0;
-        e->dist = Vec3_Dist((Vector3 *)mWaveOrigin, (Vector3 *)&tmp);
+        e->dist = Vec3_Dist(&mWaveOrigin, (Vector3 *)&tmp);
     }
 }
 
@@ -361,9 +364,9 @@ void daPicGate_c::BeginWave(s32 a1, s32 a2, s32 a3) {
     u32 m8;
     int r0;
     unsigned char f;
-    mWaveOrigin[0] = a1;
-    mWaveOrigin[1] = a2;
-    mWaveOrigin[2] = 0;
+    mWaveOrigin.x = a1;
+    mWaveOrigin.y = a2;
+    mWaveOrigin.z = 0;
     UpdateCellDistances();
     m8 = param1;
     r0 = 0;
@@ -392,24 +395,24 @@ void daPicGate_c::BeginWave(s32 a1, s32 a2, s32 a3) {
 /* Init of state row 3: the picture's four border vertices, scaled by the
  * param1 width/height, with the s texture coordinate mirrored. */
 void daPicGate_c::PlaceCornersMirrored() {
-    mCorners[0].x = 0;
-    mCorners[0].y = 0;
-    mCorners[0].z = 0;
+    mCorners[0].pos.x = 0;
+    mCorners[0].pos.y = 0;
+    mCorners[0].pos.z = 0;
     mCorners[0].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[0].texCoord = GX_ST(0x80000, 0x80000);
-    mCorners[1].x = (u8)(param1 & 15) * 0x64000 + 0x64000;
-    mCorners[1].y = 0;
-    mCorners[1].z = 0;
+    mCorners[1].pos.x = (u8)(param1 & 15) * 0x64000 + 0x64000;
+    mCorners[1].pos.y = 0;
+    mCorners[1].pos.z = 0;
     mCorners[1].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[1].texCoord = GX_ST(0, 0x80000);
-    mCorners[2].x = (u8)(param1 & 15) * 0x64000 + 0x64000;
-    mCorners[2].y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
-    mCorners[2].z = 0;
+    mCorners[2].pos.x = (u8)(param1 & 15) * 0x64000 + 0x64000;
+    mCorners[2].pos.y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
+    mCorners[2].pos.z = 0;
     mCorners[2].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[2].texCoord = GX_ST(0, 0);
-    mCorners[3].x = 0;
-    mCorners[3].y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
-    mCorners[3].z = 0;
+    mCorners[3].pos.x = 0;
+    mCorners[3].pos.y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
+    mCorners[3].pos.z = 0;
     mCorners[3].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[3].texCoord = GX_ST(0x80000, 0);
 }
@@ -436,7 +439,7 @@ void daPicGate_c::DrawFlat() {
     for (i = 0, p = mCorners; i < 4; i++, p++) {
         REG_TEXCOORD = p->texCoord;
         REG_NORMAL = p->normal;
-        G3_Vtx(p->x >> 8, p->y >> 8, p->z >> 8);
+        G3_Vtx(p->pos.x >> 8, p->pos.y >> 8, p->pos.z >> 8);
     }
 
     G3_End();
@@ -449,24 +452,24 @@ void daPicGate_c::UpdateFlat() {}
 /* Init of state row 2, and the corners both mesh inits place: the same
  * vertices as PlaceCornersMirrored with s running the other way. */
 void daPicGate_c::PlaceCorners() {
-    mCorners[0].x = 0;
-    mCorners[0].y = 0;
-    mCorners[0].z = 0;
+    mCorners[0].pos.x = 0;
+    mCorners[0].pos.y = 0;
+    mCorners[0].pos.z = 0;
     mCorners[0].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[0].texCoord = GX_ST(0, 0x80000);
-    mCorners[1].x = (u8)(param1 & 15) * 0x64000 + 0x64000;
-    mCorners[1].y = 0;
-    mCorners[1].z = 0;
+    mCorners[1].pos.x = (u8)(param1 & 15) * 0x64000 + 0x64000;
+    mCorners[1].pos.y = 0;
+    mCorners[1].pos.z = 0;
     mCorners[1].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[1].texCoord = GX_ST(0x80000, 0x80000);
-    mCorners[2].x = (u8)(param1 & 15) * 0x64000 + 0x64000;
-    mCorners[2].y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
-    mCorners[2].z = 0;
+    mCorners[2].pos.x = (u8)(param1 & 15) * 0x64000 + 0x64000;
+    mCorners[2].pos.y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
+    mCorners[2].pos.z = 0;
     mCorners[2].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[2].texCoord = GX_ST(0x80000, 0);
-    mCorners[3].x = 0;
-    mCorners[3].y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
-    mCorners[3].z = 0;
+    mCorners[3].pos.x = 0;
+    mCorners[3].pos.y = (u8)((param1 >> 4) & 15) * 0x64000 + 0x64000;
+    mCorners[3].pos.z = 0;
     mCorners[3].normal = GX_VECFX10(0, 0, -0x1000);
     mCorners[3].texCoord = GX_ST(0, 0);
 }
@@ -516,9 +519,9 @@ void daPicGate_c::DrawRippleEnvMapped() {
             Vertex *v2 = &mCells[(i + 1) + j * mRows];
 
             REG_NORMAL = v1->normal;
-            G3_Vtx(v1->x >> 7, v1->y >> 7, v1->z >> 7);
+            G3_Vtx(v1->pos.x >> 7, v1->pos.y >> 7, v1->pos.z >> 7);
             REG_NORMAL = v2->normal;
-            G3_Vtx(v2->x >> 7, v2->y >> 7, v2->z >> 7);
+            G3_Vtx(v2->pos.x >> 7, v2->pos.y >> 7, v2->pos.z >> 7);
         }
         G3_End();
     }

@@ -56,15 +56,11 @@ extern s16 sMCarlo2BoardStep;
 /* difficulty row into sMCarlo2BoardRows */
 extern int sMCarlo2FaceCounts[];
 /* per-face weights the picker draws from  */
-/* Twenty-three sprite words. The static initializer copies them out of
- * sMgCardSprites in this order; an in-order copy does not. */
-struct Carlo2SpriteWords {
-    int w[23];
-};
-
 extern int sMgCardSprites[];
 
-extern Carlo2SpriteWords sMCarlo2CardSprites;
+/* Twenty-three sprite words. The static initializer copies them out of
+ * sMgCardSprites in this order; an in-order copy does not. */
+extern int sMCarlo2CardSprites[23];
 
 extern unsigned short sMCarlo2CardFrameSprites[];
 
@@ -501,7 +497,7 @@ void dMgMCarlo2CardObj_c::Render()
     {
         int idx = (mFace + 1) * 5 + (mLift >> 12);
         unsigned short sprite = sMCarlo2CardFrameSprites[idx];
-        Hud_RenderSprite((void *)sMCarlo2CardSprites.w[sprite], (mPos.x >> 12) + 0x18,
+        Hud_RenderSprite((void *)sMCarlo2CardSprites[sprite], (mPos.x >> 12) + 0x18,
                          (mPos.y >> 12) + 0x18, -1, -1);
     }
 }
@@ -748,16 +744,14 @@ void dScMgMCarlo2_c::UpdateBoard()
                                 dMgMCarlo2CardObj_c* save = h->mNext;
                                 h->mNext = p;
                                 p->mPrev = h;
-                                /* The ROM reloads p->mNext after the step. A plain
-                                   `p = p->mNext` reuses the load (2 DIFF) and a
-                                   while loop is 8 bytes longer, so the volatile
-                                   read stays. */
-                                if (p->mNext != 0) {
-                                    do { p = *(dMgMCarlo2CardObj_c* volatile*)&p->mNext; } while (p->mNext != 0);
+                                /* Splice p's chain in after the tail: walk to its
+                                   last card and hang the old successor off that. */
+                                dMgMCarlo2CardObj_c *last;
+                                for (last = p; last->mNext != 0; last = last->mNext) {
                                 }
-                                p->mNext = save;
-                                if (p->mNext == 0)
-                                    sMCarlo2CardTail = p;
+                                last->mNext = save;
+                                if (last->mNext == 0)
+                                    sMCarlo2CardTail = last;
                             }
                             p = nxt;
                         } while (p != 0);
@@ -807,7 +801,7 @@ dMgMCarlo2CardObj_c::~dMgMCarlo2CardObj_c()
  * here makes the compiler emit both out of line in cartridge order. */
 
 /* Retail copy order is not address order. mwcc emits __sinit_d_s_mg_m_carlo2.cpp. */
-Carlo2SpriteWords sMCarlo2CardSprites = {
+int sMCarlo2CardSprites[23] = {
     sMgCardSprites[0],  sMgCardSprites[1],  sMgCardSprites[2],  sMgCardSprites[11],
     sMgCardSprites[12], sMgCardSprites[13], sMgCardSprites[14], sMgCardSprites[3],
     sMgCardSprites[4],  sMgCardSprites[5],  sMgCardSprites[6],  sMgCardSprites[9],

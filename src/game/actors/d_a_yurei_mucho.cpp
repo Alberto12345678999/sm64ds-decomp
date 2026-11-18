@@ -13,11 +13,9 @@
  * State records at the end of this file name.
  *
  * Remaining reconstruction under issue #2478:
- * - mStateTimer comparisons read it through a (u16) cast, because the ROM
- *   loads it with ldrh.
- * - The Mtx43 overlays on mAnmModel.mat4x3 and the scratch matrix, the
- *   Matrix4x3 view of mShadowMat, and the V3A copies of a player's
- *   position. Plain Matrix4x3 / Vector3 assignment scalarizes.
+ * - The V3A copy of a player's position in UpdateShoot: Vector3
+ *   assignment scalarizes; UpdateChase's snapshot is a POD VecFx32
+ *   copy-init.
  * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
  *   DropShadowRadHeight, KillByInvincibleChar, SpawnCoins, daPly_c::Hurt
  *   and daPly_c::Bounce retain scalar ABI declarations. Native fixed-point
@@ -39,26 +37,12 @@
 #include "LevelRng.h"
 #include "math/CalcLib.h"
 
-/* POD views preserve the retail aggregate copies. Matrix4x3 and Vector3 are
-   available, but their non-POD copies change these two helpers' codegen; see
-   the measured alternatives in the handoff. */
-#include "private/mtx43.h"
 #include "math/MtxStack.h"
+/* Kept for UpdateShoot's playerPos (measured r57): any Vector3 copy is
+ * memberwise, and the ROM block-moves the player's position.
+ * Kept (#821 r71): `playerPos = pl->mPos` gives UpdateShoot 0x220 (ROM 0x224);
+ * a VecFx32 copy-init cannot feed the Vector3 target without a cast. */
 struct V3A { int w[3]; };
-
-/* UpdateShoot builds a five-Vector3 aggregate on the stack. Leaving it
-   an unnamed local class works, but mwccarm then mangles its implicit
-   destructor with a file-and-counter tag (_ZN29@class$NNNd_a_yurei_mucho_cppD1Ev)
-   that moves whenever this file does, so the manifest row licensing it would
-   not survive the move out of src_tu/. Naming it at file scope pins the
-   symbol; the emitted bytes are unchanged. */
-struct V3Quint {
-    Vector3 pp;
-    Vector3 spv;
-    Vector3 sout;
-    Vector3 d;
-    Vector3 tgt;
-};
 
 /* Scalar ABI declarations retained by this TU. */
 
@@ -149,13 +133,13 @@ int daYurei_Mucho_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gYureiMuchoAttackAnimFile);
     mTerminalVelocity = -0x1e000;
     mdCcAc_c.Init(this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
-    mAngleY = mPrevAngleY;
+    mAngle.y = mPrevAngle.y;
     mWithMeshClsn.Init(this, 0x46000, 0, 0, 0);
     mCoinType = 1;
     mExtraCoinCount = 1;
-    mHomePos.x = mPosX;
-    mHomePos.y = mPosY;
-    mHomePos.z = mPosZ;
+    mHomePos.x = mPos.x;
+    mHomePos.y = mPos.y;
+    mHomePos.z = mPos.z;
     mAnmModel.speed = 0x1000;
     ChangeState(&data_ov065_0211d670);
     return 1;
@@ -173,9 +157,9 @@ int daYurei_Mucho_c::Behavior()
             }
         }
         UpdateModelTransform();
-        mHomePos.x = mPosX;
-        mHomePos.y = mPosY;
-        mHomePos.z = mPosZ;
+        mHomePos.x = mPos.x;
+        mHomePos.y = mPos.y;
+        mHomePos.z = mPos.z;
         ChangeState(&data_ov065_0211d670);
         return 1;
     }
@@ -183,7 +167,7 @@ int daYurei_Mucho_c::Behavior()
         return 1;
     }
     if (mDeathState != 0) {
-        ApproachAngle(&mAngleX, -0x4000, 0xa, 0x200, 0x100);
+        ApproachAngle(&mAngle.x, -0x4000, 0xa, 0x200, 0x100);
         UpdateDeath(mWithMeshClsn);
         UpdateModelTransform();
         return 1;
@@ -196,16 +180,16 @@ int daYurei_Mucho_c::Behavior()
         }
     }
     {
-        /* Gravity, clamped at terminal velocity. mSpeedZ is read and written
+        /* Gravity, clamped at terminal velocity. mSpeed.z is read and written
            back unchanged -- the ROM really does reload and restore it here. */
-        int fallSpeed = mVertSpeed + mVertAccel;
+        int fallSpeed = mSpeed.y + mVertAccel;
         int clamped = mTerminalVelocity;
         if (fallSpeed >= clamped) {
             clamped = fallSpeed;
         }
-        int keep = mSpeedZ;
-        mVertSpeed = clamped;
-        mSpeedZ = keep;
+        int keep = mSpeed.z;
+        mSpeed.y = clamped;
+        mSpeed.z = keep;
     }
     if (mCurrentState != &data_ov065_0211d650) {
         int ang;
@@ -217,15 +201,15 @@ int daYurei_Mucho_c::Behavior()
            signed s16 would read the wrong table entry for negative angles. */
         sine = FX_SinIdx((unsigned short)(short)ang >> 4);
         result = FX_MUL(sine, 0x46000);
-        ApproachLinear(mPosY, mHomePos.y + (result + 0xb4000), 0x3000);
+        ApproachLinear(mPos.y, mHomePos.y + (result + 0xb4000), 0x3000);
     }
     UpdatePosWithOnlySpeed(&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
     UpdateModelTransform();
     if (mCurrentState != &data_ov065_0211d660) {
-        mAngleX = mPrevAngleX;
-        mAngleY = mPrevAngleY;
-        mAngleZ = mPrevAngleZ;
+        mAngle.x = mPrevAngle.x;
+        mAngle.y = mPrevAngle.y;
+        mAngle.z = mPrevAngle.z;
         HandleCollision();
     }
     mdCcAc_c.Clear();
@@ -277,29 +261,29 @@ void daYurei_Mucho_c::UpdateModelTransform() {
 
     Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngle.x, mAngle.y, mAngle.z);
 
-    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
     mShotPos.x = 0;
     mShotPos.y = 0;
     mShotPos.z = 0;
-    *(Mtx43 *)&data_020a0e68 = *(Mtx43 *)&mAnmModel.mat4x3;
+    data_020a0e68 = mAnmModel.mat4x3;
 
     MTX_Concat43(&mAnmModel.data.transforms[4], &data_020a0e68, &data_020a0e68);
 
-    mShotPos.x = data_020a0e68.t.x;
-    mShotPos.y = data_020a0e68.t.y;
-    mShotPos.z = data_020a0e68.t.z;
+    mShotPos.x = data_020a0e68.m[9];
+    mShotPos.y = data_020a0e68.m[10];
+    mShotPos.z = data_020a0e68.m[11];
     mShotPos.x <<= 3;
     mShotPos.y <<= 3;
     mShotPos.y -= 0xa000;
     mShotPos.z <<= 3;
 
-    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x18000) >> 3, mPosZ >> 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, mPos.x >> 3, (mPos.y - 0x18000) >> 3, mPos.z >> 3);
 
-    mShadowMat = *(Mtx43 *)&data_020a0e68;
+    mShadowMat = data_020a0e68;
 
-    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)&mShadowMat, 0x64000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x64000, 0x258000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -348,18 +332,18 @@ int daYurei_Mucho_c::UpdateIdle() {
 
     if (Vec3_Dist(&mPos, &mHomePos) > 0x1f4000 || mWithMeshClsn.IsOnWall() != 0) {
         mTargetAngle = Vec3_HorzAngle(&mPos, &mHomePos);
-        if ((u16)mStateTimer < 20)
+        if (mStateTimer < 20)
             mStateTimer = 20;
     }
 
-    ApproachAngle(&mPrevAngleY, mTargetAngle, 0xa, 0x200, 0x100);
-    ApproachAngle(&mPrevAngleX, 0, 1, 0x500, 0x500);
+    ApproachAngle(&mPrevAngle.y, mTargetAngle, 0xa, 0x200, 0x100);
+    ApproachAngle(&mPrevAngle.x, 0, 1, 0x500, 0x500);
 
     in.z = 0xa000;
-    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-    MTX_MultVec43(&in, &data_020a0e68, (Vector3 *)&mSpeedX);
+    Matrix4x3_FromRotationY(&data_020a0e68, mAngle.y);
+    MTX_MultVec43(&in, &data_020a0e68, &mSpeed);
 
-    if ((u16)mStateTimer == 0) {
+    if (mStateTimer == 0) {
         ChangeState(&data_ov065_0211d670);
         return 1;
     }
@@ -383,9 +367,9 @@ int daYurei_Mucho_c::UpdateIdle() {
 /* -------------------------------------------------------------------------- */
 /* State entry hook at 0x0211d680 +0x00: stop the actor dead. */
 int daYurei_Mucho_c::EnterChase() {
-    mSpeedX = 0;
-    mVertSpeed = 0;
-    mSpeedZ = 0;
+    mSpeed.x = 0;
+    mSpeed.y = 0;
+    mSpeed.z = 0;
     return 1;
 }
 
@@ -399,8 +383,13 @@ int daYurei_Mucho_c::UpdateChase() {
     short pitch = 0;
     daPly_c *p = ClosestNonVanishPlayer();
     if (p != 0) {
-        Vector3 tmp;
-        *(V3A *)&tmp = *(V3A *)&p->mPosX;
+        /* POD: the ROM copy-inits with ldm/stm; a Vector3 copy is memberwise. */
+        /* Measured (#821 r68): copied as a Vector3 this is memberwise, not the ROM's ldm/stm. */
+        /* Kept (#821 r77): the snapshot reads through `*(VecFx32 *)&` and goes
+           back to Vec3_Dist as `const Vector3 *`. `Vector3 tmp = p->mPos;`
+           gives 0x150 (ROM 0x154); passing the Vector3 copy b instead of tmp
+           gives 0x14c. */
+        VecFx32 tmp = *(VecFx32 *)&p->mPos;
         Vector3 v;
         Vector3 a;
         a.x = tmp.x;
@@ -412,24 +401,24 @@ int daYurei_Mucho_c::UpdateChase() {
         b.y = tmp.y;
         b.z = tmp.z;
         pitch = Vec3_VertAngle(&mPos, &b);
-        if (Vec3_Dist(&mPos, &tmp) >= 0x1f4000) {
-            mSpeedX = 0;
-            mVertSpeed = 0;
-            mSpeedZ = 0;
+        if (Vec3_Dist(&mPos, (const Vector3 *)&tmp) >= 0x1f4000) {
+            mSpeed.x = 0;
+            mSpeed.y = 0;
+            mSpeed.z = 0;
         } else {
             v.z = 0;
             v.z = -0x1000;
             v.x = 0;
             v.y = 0;
-            Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-            MTX_MultVec43(&v, &data_020a0e68, (Vector3 *)&mSpeedX);
+            Matrix4x3_FromRotationY(&data_020a0e68, mAngle.y);
+            MTX_MultVec43(&v, &data_020a0e68, &mSpeed);
         }
     } else {
         mStateTimer = pitch;
     }
-    ApproachAngle(&mPrevAngleY, mTargetAngle, 1, 0x500, 0x500);
-    ApproachAngle(&mPrevAngleX, pitch, 1, 0x500, 0x500);
-    if ((u16)mStateTimer == 0)
+    ApproachAngle(&mPrevAngle.y, mTargetAngle, 1, 0x500, 0x500);
+    ApproachAngle(&mPrevAngle.x, pitch, 1, 0x500, 0x500);
+    if (mStateTimer == 0)
         ChangeState(&data_ov065_0211d650);
     return 1;
 }
@@ -449,32 +438,31 @@ short daYurei_Mucho_c::EnterShoot() {
 /* State main hook at 0x0211d650 +0x08: aim, and spawn the projectile (profile
    0xe9) up to three times before returning to a wait state. */
 int daYurei_Mucho_c::UpdateShoot() {
-    V3Quint L;
+    Vector3 playerPos, shotSpeed, shotVel, shotPos, target;
     daPly_c *pl = ClosestNonVanishPlayer();
     if (pl != 0) {
-        *(V3A *)(&L.pp) = *(V3A *)(&pl->mPosX);
-        L.tgt = L.pp;
-        mTargetAngle = Vec3_HorzAngle(&mPos, &L.tgt);
-        ApproachAngle(&mPrevAngleY, mTargetAngle, 1, 0x500, 0x500);
+        *(V3A *)(&playerPos) = *(V3A *)(&pl->mPos.x);
+        target = playerPos;
+        mTargetAngle = Vec3_HorzAngle(&mPos, &target);
+        ApproachAngle(&mPrevAngle.y, mTargetAngle, 1, 0x500, 0x500);
 
-        if ((((u32)mAnmModel.currFrame << 4) >> 16) >= 0xf && (u16)mStateTimer == 0 &&
-            mShotCount < 3) {
+        if ((((u32)mAnmModel.currFrame << 4) >> 16) >= 0xf && mStateTimer == 0 && mShotCount < 3) {
             void *spawned = dActor_c::Spawn(0xe9, 1, mShotPos, 0, mAreaId, -1);
             if (spawned != 0) {
                 dActor_c *shot = (dActor_c *)spawned;
                 func_02012694(0xfb, &mCamSpacePos);
-                L.spv.x = 0;
-                L.spv.y = 0;
-                L.spv.z = 0x1e000;
-                L.sout.x = 0;
-                L.sout.y = 0;
-                L.sout.z = 0;
-                Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-                Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-                MTX_MultVec43(&L.spv, &data_020a0e68, &L.sout);
-                shot->mSpeedX = L.sout.x;
-                shot->mVertSpeed = L.sout.y;
-                shot->mSpeedZ = L.sout.z;
+                shotSpeed.x = 0;
+                shotSpeed.y = 0;
+                shotSpeed.z = 0x1e000;
+                shotVel.x = 0;
+                shotVel.y = 0;
+                shotVel.z = 0;
+                Matrix4x3_FromRotationY(&data_020a0e68, mAngle.y);
+                Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngle.x);
+                MTX_MultVec43(&shotSpeed, &data_020a0e68, &shotVel);
+                shot->mSpeed.x = shotVel.x;
+                shot->mSpeed.y = shotVel.y;
+                shot->mSpeed.z = shotVel.z;
                 mShotCount += 1;
                 mStateTimer = 4;
             }
@@ -483,11 +471,11 @@ int daYurei_Mucho_c::UpdateShoot() {
 
     if (mAnmModel.Finished() != 0) {
         if (pl != 0) {
-            s32 *dsrc = (s32 *)(&pl->mPosX);
-            L.d.x = dsrc[0];
-            L.d.y = dsrc[1];
-            L.d.z = dsrc[2];
-            if (Vec3_Dist(&mPos, &L.d) > 0x3e8000) {
+            s32 *dsrc = (s32 *)(&pl->mPos.x);
+            shotPos.x = dsrc[0];
+            shotPos.y = dsrc[1];
+            shotPos.z = dsrc[2];
+            if (Vec3_Dist(&mPos, &shotPos) > 0x3e8000) {
                 mStateTimer = 0;
                 ChangeState(&data_ov065_0211d670);
             } else {
@@ -506,10 +494,10 @@ int daYurei_Mucho_c::UpdateShoot() {
 /* -------------------------------------------------------------------------- */
 /* State entry hook at 0x0211d660 +0x00: the bumped-from-below pop. */
 int daYurei_Mucho_c::EnterBumped() {
-    mSpeedX = 0;
-    mVertSpeed = 0;
-    mSpeedZ = 0;
-    mVertSpeed = 0x32000;
+    mSpeed.x = 0;
+    mSpeed.y = 0;
+    mSpeed.z = 0;
+    mSpeed.y = 0x32000;
     mVertAccel = -0x5000;
     mStateTimer = 10;
     mFlags = 0;
@@ -526,9 +514,9 @@ int daYurei_Mucho_c::EnterBumped() {
  * wrong callee still reproduced the bytes; the ROM's own `bl 0x02115f84` at
  * 0x02116314 decides it. */
 int daYurei_Mucho_c::UpdateBumped() {
-    ApproachAngle(&mAngleX, -0x4000, 0xa, 0x200, 0x100);
-    ApproachLinear(mAngleX, -0x4000, 0x200);
-    if ((u16)mStateTimer == 0)
+    ApproachAngle(&mAngle.x, -0x4000, 0xa, 0x200, 0x100);
+    ApproachLinear(mAngle.x, -0x4000, 0x200);
+    if (mStateTimer == 0)
         KillWithCoins();
     return 1;
 }
@@ -606,9 +594,9 @@ void daYurei_Mucho_c::HandleCollision() {
         func_02012694(0x11e, &mCamSpacePos);
         return;
     }
-    hv.x = mPosX;
-    hv.y = mPosY;
-    hv.z = mPosZ;
+    hv.x = mPos.x;
+    hv.y = mPos.y;
+    hv.z = mPos.z;
     p->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
@@ -617,9 +605,9 @@ void daYurei_Mucho_c::HandleCollision() {
 void daYurei_Mucho_c::KillWithCoins() {
     Vector3 v;
     SmallPoofDust();
-    v.x = mPosX;
-    v.y = mPosY;
-    v.z = mPosZ;
+    v.x = mPos.x;
+    v.y = mPos.y;
+    v.z = mPos.z;
     SpawnCoins(v, mExtraCoinCount + 1, 0xa000, 0);
     KillAndTrackInDeathTable();
     func_02012694(0x11e, &mCamSpacePos);

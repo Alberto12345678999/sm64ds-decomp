@@ -153,7 +153,10 @@ extern dBgPc data_020a0cec;
    (cls 0) that fails it gets the expensive path -- a real hypotenuse through
    the hardware sqrt, then the contact angle through FX_Div, compared
    against upAxis. IsNearZeroDivisor guards the divisor: |x| <= 8 means near-zero,
-   so bail. */
+   so bail.
+   Kept (#821 r77): sn is the game's Vector3 (SurfaceInfo::CopyNormalTo fills
+   it) and upAxis is dBgW_Kc's POD VecFx32 member (dBgW_Kc.h), so the SDK
+   dot product of the two casts one side whichever overload is called. */
 #define EDGE_FILTER(d, hypv)                                                       \
     if (!(sphere.flags & 2)) {                                                     \
         if (cls == 1) {                                                            \
@@ -438,7 +441,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
        cast anywhere -- the `(const s16 *)` view this used to need was treating the
        symptom. */
     Vector3s cr;
-    s32 nrm[3];
+    VecFx32 nrm;
     s16 *en1;
     s16 *en2;
     s16 *en3;
@@ -512,7 +515,9 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
     }
 
     rsc = sphere.radius << 4;
-    /* Demotes rsc into the temp pool at sp+0x104. An inline spelling recomputes it. */
+    /* Demotes rsc into the temp pool at sp+0x104. An inline spelling recomputes it.
+       Kept (#821 r81): re-measured; without the self-assignment DetectClsn keeps
+       0x1bc8 but the bytes differ. rsc is a local, so no accessor lever applies. */
     rsc = (s32)rsc;
 
     hiPX = loPX = 0;
@@ -625,11 +630,10 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         if (shallowOnly) {
                             if (faceDot < -0x50000) continue;
                         } else if (depthByDir) {
-                            nrm[0] = fn[0] << 2;
-                            nrm[1] = fn[1] << 2;
-                            nrm[2] = fn[2] << 2;
-                            if (VEC_DotProduct((const Vector3 *)nrm, (const Vector3 *)&depthDir) >
-                                depthDirMinDot) {
+                            nrm.x = fn[0] << 2;
+                            nrm.y = fn[1] << 2;
+                            nrm.z = fn[2] << 2;
+                            if (VEC_DotProduct(&nrm, &depthDir) > depthDirMinDot) {
                                 if (faceDot < -f->prismThickness)
                                     continue;
                             } else {

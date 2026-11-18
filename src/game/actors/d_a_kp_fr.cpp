@@ -14,8 +14,6 @@
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *   mwcc emits one .text section per ordinary definition in reverse source
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
- *   Mtx43, the flat type for the IDENTITY_MATRIX4X3 copy: the nested
- *   math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes it.
  *   fx32[3] locals instead of Vector3, which declares its own
  *   destructor.
  *   FX_MUL's 64-bit product (one smull) in func_ov070_02121d50 is the
@@ -24,9 +22,6 @@
  *   ROM does, not UpdateContinuous.
  */
 
-// leftovers:
-// - `return new` synthesizes a vague-linkage _ZN9Matrix4x3D1Ev over mMatrix
-//   (deadstripped; no ROM symbol).
 #include "daKpFr_c.h"
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
@@ -56,7 +51,6 @@ SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
 
 #include "decl_common.h"
 #include "dBgCh_Actr.h"
-#include "private/mtx43.h"
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
@@ -68,11 +62,11 @@ int daKpFr_c::InitResources()
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mVertAccel = -0x400;
     mTerminalVelocity = -0x5000;
-    mScaleX = 0x1000;
-    mScaleY = 0x1000;
-    mScaleZ = 0x1000;
+    mScale.x = 0x1000;
+    mScale.y = 0x1000;
+    mScale.z = 0x1000;
     func_ov070_02122044(0);
-    *(Mtx43 *)&mMatrix = *(Mtx43 *)&IDENTITY_MATRIX4X3;
+    mMatrix = IDENTITY_MATRIX4X3;
     return 1;
 }
 
@@ -90,10 +84,10 @@ int daKpFr_c::Render()
 {
   int hidden = (mFlags & 0x40000) != 0;
   if (hidden) return 1;
-  mParticle1 = Particle::System::NewCleanParticle(mParticle1, kPtclKeronpaFireA, mPosX,
-                                                  mPosY + 0x4b000, mPosZ, 0);
-  mParticle2 = Particle::System::NewCleanParticle(mParticle2, kPtclKeronpaFireB, mPosX,
-                                                  mPosY + 0x4b000, mPosZ, 0);
+  mParticle1 = Particle::System::NewCleanParticle(mParticle1, kPtclKeronpaFireA, mPos.x,
+                                                  mPos.y + 0x4b000, mPos.z, 0);
+  mParticle2 = Particle::System::NewCleanParticle(mParticle2, kPtclKeronpaFireB, mPos.x,
+                                                  mPos.y + 0x4b000, mPos.z, 0);
   return 1;
 }
 
@@ -148,8 +142,8 @@ int daKpFr_c::func_ov070_02121f18() {
     player = ClosestNonVanishPlayer();
     if (player) {
         short angleToPlayer = Vec3_HorzAngle(&mPos, &player->mPos);
-        ApproachLinear(mAngleY, angleToPlayer, 0x180);
-        mPrevAngleY = mAngleY;
+        ApproachLinear(mAngle.y, angleToPlayer, 0x180);
+        mPrevAngle.y = mAngle.y;
     }
   UpdatePos(&mdCcAc_c);
   func_ov070_02121be4();
@@ -180,13 +174,13 @@ int daKpFr_c::func_ov070_02121eb0() {
 
 void daKpFr_c::func_ov070_02121e14() {
   int shadowDepth;
-  mMatrix.t.x = mPosX >> 3;
-  mMatrix.t.y = mPosY >> 3;
-  mMatrix.t.z = mPosZ >> 3;
+  mMatrix.m[9] = mPos.x >> 3;
+  mMatrix.m[10] = mPos.y >> 3;
+  mMatrix.m[11] = mPos.z >> 3;
   dBgCh_Gnd ground;
   ground.SetObjAndPos(mPos, this);
   if (ground.DetectClsn() != 0)
-    shadowDepth = (mPosY - ground.clsnY) + 0x1e000;
+      shadowDepth = (mPos.y - ground.clsnY) + 0x1e000;
   else
     shadowDepth = 0x12c000;
   DropShadowRadHeight(mShadowModel, mMatrix, 0x64000, shadowDepth, 15);
@@ -203,9 +197,9 @@ void daKpFr_c::func_ov070_02121d50(void* vclsn) {
     if (clsn->IsOnGround()) {
         clsn->GetFloorResult()->surface.CopyNormalTo(normal);
         if (normal.y != 0) {
-            int a = FX_MUL(normal.x, mSpeedX);
-            int b = FX_MUL(normal.z, mSpeedZ);
-            mVertSpeed = -(FX_Div(a + b, normal.y) + 0x8000);
+            int a = FX_MUL(normal.x, mSpeed.x);
+            int b = FX_MUL(normal.z, mSpeed.z);
+            mSpeed.y = -(FX_Div(a + b, normal.y) + 0x8000);
         }
     }
     if (clsn->IsOnWall())
@@ -250,19 +244,18 @@ void daKpFr_c::func_ov070_02121be4()
 
     dBgCh_Gnd ground;
     {
-        fx32 z = mPosZ;
-        fx32 y = mPosY + 0x1e000;
-        fx32 x = mPosX;
+        fx32 z = mPos.z;
+        fx32 y = mPos.y + 0x1e000;
+        fx32 x = mPos.x;
         pos[0] = x;
         pos[1] = y;
         pos[2] = z;
     }
     ground.SetObjAndPos(*(Vector3*)pos, this);
-    if (ground.DetectClsn() == 0 ||
-        ground.clsnY < mPosY - 0x32000) {
-        mPosX = mPrevPosX;
-        mPosY = mPrevPosY;
-        mPosZ = mPrevPosZ;
+    if (ground.DetectClsn() == 0 || ground.clsnY < mPos.y - 0x32000) {
+        mPos.x = mPrevPos.x;
+        mPos.y = mPrevPos.y;
+        mPos.z = mPrevPos.z;
     }
 }
 

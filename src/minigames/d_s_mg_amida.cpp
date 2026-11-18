@@ -892,8 +892,12 @@ int dScMgAmida_c::StepWalker(int walker, int dir) {
    every slot pointer typed 0xe4c (s8 * for the two byte arrays the same). */
 #pragma push
 #pragma opt_strength_reduction off
+/* Kept (#821 r79): walker x pointers taken off ent, and the delay loop indexed as
+   mWalkerDelay[delayIndex]--, are 0xe44 and 0xe54 against 0xe48. */
 #pragma opt_common_subs off
 void dScMgAmida_c::StepWalkers() {
+    /* Kept (#821 r73): every slot pointer as &mWalkerX[walker] is 0xe4c of
+       0xe48; the ROM forms (this + i * stride) + offset. */
     char *sceneBytes = (char *)this;
     s32 delayIndex;
     s32 walker;
@@ -1976,7 +1980,10 @@ s32 dScMgAmida_c::Behavior() {
                             mPieces[slot].posX += mLanePos[j].x;
                             mPieces[slot].posY += mLanePos[j].y;
                             /* (int)cosA: without the cast, or with cosA
-                               declared int, Behavior differs by 13 words. */
+                               declared int, Behavior differs by 13 words.
+                               Kept (#821 r81): re-measured, the plain cosA
+                               still differs; cosA is a local, so no accessor
+                               or block-copy lever applies. */
                             mPieces[slot].velX = FX_MUL(cosB, FX_MUL(0x1000, (int)cosA));
                             mPieces[slot].velY = FX_MUL(cosB, FX_MUL(0x1000, sinA));
                         }

@@ -21,16 +21,11 @@
  * What stays:
  * - data_ov029_02114270 is the model SharedFilePtr, defined here; symbols.txt
  *   has no recovered name, so it is not coined.
- * - Address-valued `&mAngleY` in Behavior: a named increment CSEs the field
- *   address. The cartridge keeps r1 as &mAngleY for both the halfword load
+ * - Address-valued `&mAngle.y` in Behavior: a named increment CSEs the field
+ *   address. The cartridge keeps r1 as &mAngle.y for both the halfword load
  *   and store.
- * - Class header first so dExtSimpleModel_c.h's structured Matrix4x3 (`.t`) wins;
- *   daObjWc_Mizu_c.h would otherwise pull common.h's flat `s32 m[12]`.
  */
 
-/* Class header first: dExtSimpleModel_c.h pulls the structured Matrix4x3 (`.t`) that
- * UpdateModelTransform writes. daObjWc_Mizu_c.h -> dBgActor_c.h would otherwise
- * reach common.h's flat `s32 m[12]` spelling first. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_wc_obj03_AssetId {
     ASSET_WC_OBJ03_BMD = 0x06d0
@@ -89,7 +84,7 @@ int daObjWc_Obj03_c::InitResources()
     mWaterID = 0;
     mWaterParam = param1 & 1;
     mActive = 0;
-    mAngleY = 0;
+    mAngle.y = 0;
     return 1;
 }
 
@@ -101,19 +96,16 @@ int daObjWc_Obj03_c::Behavior()
     if (mWaterID == 0) return 1;
     CheckClsnWithPlayer();
     if (mActive != 0) {
-        /* The address-valued temporary is load-bearing under 2004/b56: the
-         * cartridge keeps r1 as &mAngleY for both the halfword load and store.
-         * A named increment CSEs the field address. */
-        s16 *angleY = &mAngleY;
-        *angleY = *angleY + 0x400;
+        mAngle.y += 0x400;
         daObjWc_Mizu_c *water = (daObjWc_Mizu_c *)dActor_c::FindWithID(mWaterID);
         if (water != 0) {
-            if (mPosY == water->mPosY) {
-                if (mAngleY == 0) mActive = 0;
+            if (mPos.y == water->mPos.y) {
+                if (mAngle.y == 0)
+                    mActive = 0;
             }
-            if (mPosY != water->mTargetPosY) {
+            if (mPos.y != water->mTargetPosY) {
                 mActive = 0;
-                mAngleY = 0;
+                mAngle.y = 0;
             }
         }
     }
@@ -146,10 +138,10 @@ int daObjWc_Obj03_c::CleanupResources()
 /* -------------------------------------------------------------------------- */
 void daObjWc_Obj03_c::UpdateModelTransform()
 {
-    Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
-    mModel.mat4x3.t.x = mPosX >> 3;
-    mModel.mat4x3.t.y = mPosY >> 3;
-    mModel.mat4x3.t.z = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModel.mat4x3, mAngle.y);
+    mModel.mat4x3.m[9] = mPos.x >> 3;
+    mModel.mat4x3.m[10] = mPos.y >> 3;
+    mModel.mat4x3.m[11] = mPos.z >> 3;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -188,12 +180,12 @@ void daObjWc_Obj03_c::CheckClsnWithPlayer()
         return;
     daObjWc_Mizu_c *water = (daObjWc_Mizu_c *)dActor_c::FindWithID(mWaterID);
     int targetPosY = water->mTargetPosY;
-    if (targetPosY != water->mPosY)
+    if (targetPosY != water->mPos.y)
         return;
-    if (targetPosY == mPosY)
+    if (targetPosY == mPos.y)
         return;
     mActive = 1;
-    water->mTargetPosY = mPosY;
+    water->mTargetPosY = mPos.y;
     Sound::PlayBank3(0x63, mCamSpacePos);
 }
 

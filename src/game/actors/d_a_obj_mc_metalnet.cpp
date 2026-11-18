@@ -13,8 +13,6 @@
  * (src/engine/save/SaveData.cpp); no header declares it yet.
  */
 
-/* daObjMc_Metalnet_c.h FIRST: it pulls in dBgActor_c.h, which must reach
-   common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_mc_metalnet_AssetId { ASSET_MC_METALNET_BMD = 0x0691, ASSET_MC_METALNET_KCL = 0x0692 };
 
@@ -75,7 +73,7 @@ s32 daObjMc_Metalnet_c::InitResources() {
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = dBgW_Kc::LoadFile(data_ov009_02113e88);
-    mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov009_02112bf8);
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngle.y, data_ov009_02112bf8);
 
     if ((param1 & 0xff) == 0xff) {
         if (!IsVsMode() && (data_0209caa0.file.flags2 & 0x80000) != 0)

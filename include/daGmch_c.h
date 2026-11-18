@@ -27,7 +27,7 @@ struct daGmch_c : dActor_c {
        Matrix4x3 type reaches this header through dExtSimpleModel_c.h.
        [InitResources, UpdateDrawMatrices] */
     Matrix4x3 mMatrix;      /* 0x3a0 */
-    /* Copy of mPosX/Y/Z taken once in InitResources.
+    /* Copy of mPos.x/.y/.z taken once in InitResources.
        [_ZN8daGmch_c13InitResourcesEv, now in src/game/actors/d_a_gmch.cpp] */
     Vector3 mSpawnPos; /* 0x3d0 */
     /* The current state's 16-byte pointer-to-member-function pair: SetState
@@ -48,7 +48,7 @@ struct daGmch_c : dActor_c {
        by 0xc00 every frame.
        [UpdateDrawMatrices, UpdateState0] */
     s16 mSpinAngleY;           /* 0x3ec */
-    /* The heading UpdateState1 turns mAngleY toward, 0x2bc a frame; EnterState1
+    /* The heading UpdateState1 turns mAngle.y toward, 0x2bc a frame; EnterState1
        draws it at random.
        [EnterState1, UpdateState1] */
     s16 mTargetAngleY;         /* 0x3ee */
@@ -56,9 +56,7 @@ struct daGmch_c : dActor_c {
        is above 1 and the static model when it is at or below 0x1f, so both
        draw for 2..0x1f and only the animated model draws above 0x1f.
        [_ZN8daGmch_c13InitResourcesEv, _ZN8daGmch_c6RenderEv, now in src/game/actors/d_a_gmch.cpp] */
-    /* UpdateState0 also reaches this offset as an `int *` through
-       ApproachLinear2, so the four bytes 0x3f0..0x3f3 are read and written as
-       one word there and as three separate bytes everywhere else.
+    /* UpdateState0 fades it with the byte stepper ApproachLinear2.
        [UpdateState0, Render, InitResources] */
     u8  mState;            /* 0x3f0 */
     /* The phase within a state: the two multi-phase states switch on it and

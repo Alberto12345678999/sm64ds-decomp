@@ -22,8 +22,6 @@
  * - func_02012694 and Vec3_Add have no shared header, so
  *   they keep a local extern "C" block. data_ov079_02128300 / 021282f0 are
  *   the model handles, in overlay data this TU does not own.
- * - Mtx43 keeps the one 0x30-byte mat4x3 block copy; Matrix4x3's
- *   own memberwise assignment comes out 0x18 bytes longer.
  */
 
 #include "daKlr_c.h"
@@ -35,7 +33,6 @@
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
-#include "private/mtx43.h"
 
 struct BMD_File;
 
@@ -102,7 +99,7 @@ s32 daKlr_c::Behavior() {
         flags = mCylClsn.hitFlags;
         if (flags & 0x10) {
             ((daPly_c *)FindWithID(id))->IncMegaKillCount();
-            Particle::System::NewSimple(kBurstParticle, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(kBurstParticle, mPos.x, mPos.y, mPos.z);
             MarkForDestruction();
             func_02012694(0x78, &mCamSpacePos);
         } else if (flags & 0x3c0) {
@@ -115,9 +112,9 @@ s32 daKlr_c::Behavior() {
                 if (isPlayer) {
                     if (!((daPly_c *)o)->mIsVanish) {
                         Vector3 pos;
-                        pos.x = mPosX;
-                        pos.y = mPosY;
-                        pos.z = mPosZ;
+                        pos.x = mPos.x;
+                        pos.y = mPos.y;
+                        pos.z = mPos.z;
                         ((daPly_c *)o)->Hurt(pos, 3, 0xc000, 1, 0, 1);
                         mState = 1;
                         Sound::PlayBank0(0xb5, mCamSpacePos);
@@ -143,9 +140,9 @@ s32 daKlr_c::Behavior() {
     }
     mCylClsn.Update();
 
-    mPrevAngleX = mAngleX;
-    mPrevAngleY = mAngleY;
-    mPrevAngleZ = mAngleZ;
+    mPrevAngle.x = mAngle.x;
+    mPrevAngle.y = mAngle.y;
+    mPrevAngle.z = mAngle.z;
     return 1;
 }
 
@@ -179,13 +176,13 @@ void daKlr_c::StateFly() {
     this->UpdateWMClsn(this->mWallClsn, 0);
     this->mHorzSpeed = -0x1e000;
     this->UpdatePosWithHorzSpeedAndAng();
-    Vec3_Add(&nose, &this->mPos, (Vector3 *)&this->mSpeedX);
+    Vec3_Add(&nose, &this->mPos, &this->mSpeed);
     this->mSmokeTrailID =
         Particle::System::New(this->mSmokeTrailID, kSmokeParticle, nose.x, nose.y, nose.z, 0, 0);
     this->mHorzSpeed = 0x1e000;
     if (this->DistToCPlayer() > 0x12c000)
-        ApproachLinear(this->mPrevAngleY, this->HorzAngleToCPlayer(), 0x200);
-    this->mAngleY = this->mPrevAngleY;
+        ApproachLinear(this->mPrevAngle.y, this->HorzAngleToCPlayer(), 0x200);
+    this->mAngle.y = this->mPrevAngle.y;
     if (this->mStateTimer == 50) {
         func_0201267c(0xd4, &this->mCamSpacePos);
         this->mCylClsn.flags &= ~1;
@@ -222,24 +219,24 @@ void daKlr_c::StateShotDown() {
         this->mHorzSpeed = -0x1e000;
         this->mCylClsn.flags |= 1;
     }
-    this->mAngleX += 0x2000;
-    this->mPosY += 0x14000;
+    this->mAngle.x += 0x2000;
+    this->mPos.y += 0x14000;
     if (this->mStateTimer <= 90)
         return;
-    Particle::System::NewSimple(kBurstParticle, this->mPosX, this->mPosY, this->mPosZ);
+    Particle::System::NewSimple(kBurstParticle, this->mPos.x, this->mPos.y, this->mPos.z);
     func_02012694(0x78, &this->mCamSpacePos);
     this->MarkForDestruction();
 }
 
 /* Pose both models from the actor and drop the shadow under them. */
 void daKlr_c::UpdateModelAndShadow() {
-    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
-    mModel.mat4x3.t.x = mPosX >> 3;
-    mModel.mat4x3.t.y = mPosY >> 3;
-    mModel.mat4x3.t.z = mPosZ >> 3;
+    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngle.x, mAngle.y, mAngle.z);
+    mModel.mat4x3.m[9] = mPos.x >> 3;
+    mModel.mat4x3.m[10] = mPos.y >> 3;
+    mModel.mat4x3.m[11] = mPos.z >> 3;
     /* One 0x30-byte block copy. Matrix4x3's own assignment goes member by
        member through Vector3 and comes out 0x18 bytes longer. */
-    *(Mtx43 *)&mModel2.mat4x3 = *(Mtx43 *)&mModel.mat4x3;
+    mModel2.mat4x3 = mModel.mat4x3;
     DropShadowRadHeight(mShadow, mModel.mat4x3, 0x50000, 0x50000, 15);
 }
 

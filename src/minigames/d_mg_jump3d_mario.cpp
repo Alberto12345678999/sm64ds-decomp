@@ -11,8 +11,6 @@
  * reorder. The destructor is not virtual, so the first declared virtual
  * (GetPos) is the key function and this file emits the vtable.
  *
- * Include common.h first: the mat4x3 copy in UpdateModelMatrix needs its
- * flat s32 m[12]; math/Matrix.h's nested form scalarizes the copy.
  * decl_common.h is left out because four of the data symbols here collide
  * with its spellings.
  *
@@ -385,7 +383,7 @@ void dMgJump3DMario_c::Draw()
 void dMgJump3DMario_c::Update()
 {
     ApproachLinear(mVel.y, sJump3DFallSpeed, sJump3DGravityStep);
-    VEC_Add((Vector3 *)&mPos, (Vector3 *)&mVel, (Vector3 *)&mPos);
+    VEC_Add(&mPos, &mVel, &mPos);
     (this->*mState)();
     Camera_ProjectToScreen16(sMgMainCamera, &mPos, &mScreenX);
     UpdateModelMatrix();
@@ -489,7 +487,7 @@ void dMgJump3DMario_c::EnterHold()
 {
     Vector3 v;
 
-    Vec3_Sub(&v, (const Vector3 *)&mPos, (const Vector3 *)&mAnchor);
+    Vec3_Sub(&v, &mPos, &mAnchor);
     if (NormalizeVec3IfNonZero(&v) != 0) {
         mVel.x = v.x;
         mVel.y = v.y;
@@ -805,7 +803,7 @@ int dMgJump3DMario_c::LoadResources()
        (notes/experiments/jump3d-2711-87d0-int-temp.md). */
     int t;
 
-    if (func_020179b4(&gMarioModelMgModelFile, &mAnmModel, 1) == 0)
+    if (gMarioModelMgModelFile.func_020179b4(&mAnmModel, 1) == 0)
         return 0;
 
     sJump3DAnimJump = dExtFrameCtrl_c::LoadFile(sJump3DMarioJumpAnimFile);

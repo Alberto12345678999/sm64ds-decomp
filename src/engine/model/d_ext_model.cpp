@@ -34,10 +34,6 @@
    in that .data block. The vtables and records are compared against those
    homes and discarded; this TU claims .text only. */
 
-/* common.h comes first so this TU sees the flat Matrix4x3 { s32 m[12]; }
-   spelling: the constructors' mat4x3 = IDENTITY_MATRIX4X3 copies block-move
-   twelve words under it, where the structured Matrix3x3 + Vector3 spelling
-   scalarizes and lands +0x1c bytes long. */
 #include "common.h"
 #include "math/MtxStack.h"
 #include "dExtSimpleModel_c.h"
@@ -65,11 +61,7 @@ extern Matrix4x3 data_0209b3ec;
 /* local extern: the camera-space matrix the Render paths use */
 /* local extern: no header declares it; sizes the transforms buffer from the file */
 extern "C" int func_02046564(void *file);
-/* local extern: Model4.cpp's Dst/Desc/ElemA. Pointer casts at the calls. */
-struct Dst;
-struct Desc;
-struct ElemA;
-void func_020462d0(Dst *data, Desc *file, ElemA *buffer);
+#include "Dst.h"
 /* defined below; dExtCommonModel_c and dExtShadowModel_c take their pooled
    components from it */
 ModelComponents *GetCommonModelComponents(BMD_File *file);
@@ -236,7 +228,7 @@ ModelComponents *GetCommonModelComponents(BMD_File *file) {
             e->components = 0;
             return 0;
         }
-        func_020462d0((Dst *)e->components, (Desc *)file, (ElemA *)b);
+        ((RuntimeModel *)e->components)->func_020462d0((Desc *)file, (ElemA *)b);
     }
     return e->components;
 }
@@ -288,7 +280,7 @@ int dExtSimpleModel_c::DoSetFile(char *file_, int a, int b) {
     buffer = transformsBuf;
     if (buffer == 0)
         return 0;
-    func_020462d0((Dst *)&data, (Desc *)file, (ElemA *)buffer);
+    ((RuntimeModel *)&data)->func_020462d0((Desc *)file, (ElemA *)buffer);
     data.UpdateVertsUsingBones();
     if (a != 0)
         SetMaterialFlags(0x8000);

@@ -37,8 +37,8 @@ struct daStarBase_c : dActor_c {
     dCcAcPos_c mdCcAcPos_c;            /* 0x0d4 */
     /* dExtSimpleModel_c member, named by _ZN17dExtSimpleModel_cD1Ev at +0x114 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. The marker's pad stopped
-       short of the object, so the member also takes over unk_154 (+0x40 = mat4x3.t.x),
-       unk_158 (+0x44 = mat4x3.t.y), unk_15c (+0x48 = mat4x3.t.z), which the header
+       short of the object, so the member also takes over unk_154 (+0x40 = mat4x3.m[9]),
+       unk_158 (+0x44 = mat4x3.m[10]), unk_15c (+0x48 = mat4x3.m[11]), which the header
        declared separately inside it. */
     dExtSimpleModel_c mModel; /* 0x114 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
@@ -51,9 +51,9 @@ struct daStarBase_c : dActor_c {
                                      tree; the name records the copy. */
     s32 mGroundY;                /* 0x1c8 -- the ground height under the
                                      marker: InitResources raycasts down with
-                                     a dBgCh_Gnd from mPosY + 0x1e000 and
+                                     a dBgCh_Gnd from mPos.y + 0x1e000 and
                                      stores the result's own +0x44. Behavior
-                                     turns mPosY - mGroundY into the shadow's
+                                     turns mPos.y - mGroundY into the shadow's
                                      drop height. */
     u32 mLinkedStarID;           /* 0x1cc -- uniqueID of the star (daStar_c) this
                                      marker is linked to, 0 for none. Stored by

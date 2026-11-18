@@ -8,11 +8,6 @@
  * far from home it turns back. When the timer expires it pauses (speed 0),
  * then starts swimming again.
  *
- * common.h is first on purpose. Matrix4x3 is either common.h's flat s32 m[12]
- * or math/Matrix.h's nested {r, t}, and the first include wins. The nested
- * form splits the model-matrix copy in UpdateModelMatrix. Nothing here
- * names .r or .t.
- *
  * Source order is the reverse of the ROM. mwccarm emits one .text section per
  * function in reverse source order. Do not reorder. The inline destructor in
  * daPukupuku_c.h emits D1 then D0 from `return new`; g_profile_PUKUPUKU stays
@@ -106,10 +101,10 @@ int daPukupuku_c::InitResources() {
     v = data_ov090_021342d8;
     mdCcAcPos_c.Init(this, v, 0x32000, 0x3c000, 0x200004, 0x8000);
 
-    mHomePos.x = mPosX;
-    mHomePos.y = mPosY;
-    mHomePos.z = mPosZ;
-    mAngleY = mPrevAngleY;
+    mHomePos.x = mPos.x;
+    mHomePos.y = mPos.y;
+    mHomePos.z = mPos.z;
+    mAngle.y = mPrevAngle.y;
     mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
 
     mAnmModel.SetAnim((BCA_File *)data_ov090_0213455c.filePtr, 0, 0x1000, 0);
@@ -137,7 +132,7 @@ int daPukupuku_c::Behavior() {
         if (q->main != 0)
             (this->*(q->main))();
     }
-    mAngleY = mPrevAngleY;
+    mAngle.y = mPrevAngle.y;
     mAnmModel.speed = 0x1000;
     static_cast<dExtFrameCtrl_c &>(mAnmModel).Advance();
     UpdateModelMatrix();
@@ -174,7 +169,7 @@ void daPukupuku_c::UpdateModelMatrix() {
     Vector3 v;
     Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngle.x, mAngle.y, mAngle.z);
     mAnmModel.mat4x3 = data_020a0e68;
 }
 
@@ -205,7 +200,7 @@ int daPukupuku_c::StateSwim() {
         mStateTimer = 50;
         mTargetAngleY = Vec3_HorzAngle(&mPos, &mHomePos);
     }
-    ApproachAngle(&mPrevAngleY, mTargetAngleY, 1, 0x100, 0x200);
+    ApproachAngle(&mPrevAngle.y, mTargetAngleY, 1, 0x100, 0x200);
     if (mStateTimer == 0)
         SetState((PukuStatePMF *)&data_ov090_02134584);
     return 1;
@@ -248,9 +243,9 @@ void daPukupuku_c::CheckPlayerHit() {
                 return;
             {
                 Vector3 hv;
-                hv.x = mPosX;
-                hv.y = mPosY;
-                hv.z = mPosZ;
+                hv.x = mPos.x;
+                hv.y = mPos.y;
+                hv.z = mPos.z;
                 a->Hurt(hv, 1, 0xc000, 1, 0, 1);
             }
         }

@@ -46,9 +46,8 @@ struct daKpa_c : dActor_c {
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
     dExtShadowModel_c mShadowModel;                               /* 0x308 */
     /* The shadow's world matrix: a Matrix4x3 written from the scratch matrix at
-       0x020a0e68 each frame and handed to dActor_c::DropShadowRadHeight. Left a
-       byte array so this header does not have to pull Matrix4x3 in. */
-    u8  mShadowMtx[0x30];         /* 0x330 */
+       0x020a0e68 each frame and handed to dActor_c::DropShadowRadHeight. */
+    Matrix4x3 mShadowMtx; /* 0x330 */
     /* The body cylinder. Its dCc_c flags word (+0x18, so 0x378) bit 0 is
        "disabled"; its radius (+0x04, so 0x364) is set to 180 units when the
        defeat knock-back starts; its otherOwner (+0x24, so 0x384) is the uniqueID of
@@ -88,7 +87,7 @@ struct daKpa_c : dActor_c {
     u16 mTimer;            /* 0x3fc -- frames in the current state; reset on every state change */
     u16 mStepCounter;         /* 0x3fe -- general per-state counter; its meaning depends on mState */
     u16 mFireTimer;           /* 0x400 -- frames of fire breath so far */
-    s16 mSpinSpeed;           /* 0x402 -- angle added to mAngleY each frame in the defeat sequence */
+    s16 mSpinSpeed; /* 0x402 -- angle added to mAngle.y each frame in the defeat sequence */
     u8  pad_404[0x2];
     s16 mAngleToTarget;            /* 0x406 */
     s16 mAngleToCenter;       /* 0x408 -- angle from Bowser toward the world origin */

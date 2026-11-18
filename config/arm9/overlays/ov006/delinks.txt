@@ -53,7 +53,8 @@
     .rodata.data_ov006_0212ec70 start:0x0212ec70 end:0x0212ec78 kind:rodata align:4
     .rodata.data_ov006_0212ec78 start:0x0212ec78 end:0x0212ec80 kind:rodata align:4
     .rodata.sPachinko2PaddleFlyAwayVX start:0x0212ec80 end:0x0212ec8c kind:rodata align:4
-    .rodata.gap8 start:0x0212ec8c end:0x0212ecac kind:rodata align:4
+    .rodata.data_ov006_0212ec8c start:0x0212ec8c end:0x0212ec9c kind:rodata align:4
+    .rodata.data_ov006_0212ec9c start:0x0212ec9c end:0x0212ecac kind:rodata align:4
     .rodata.sPachinko2CupWaitTimesAlt start:0x0212ecac end:0x0212ecbc kind:rodata align:4
     .rodata.sPachinko2CupRightStops start:0x0212ecbc end:0x0212ecd4 kind:rodata align:4
     .rodata.sPachinko2CupLeftStops start:0x0212ecd4 end:0x0212ecec kind:rodata align:4
@@ -333,14 +334,21 @@
     .data.data_ov006_0213abb8 start:0x0213abb8 end:0x0213abc0 kind:data align:4
     .data.data_ov006_0213abc0 start:0x0213abc0 end:0x0213abc8 kind:data align:4
     .data.sLuigiPictureSprites start:0x0213abc8 end:0x0213abd8 kind:data align:4
-    .data.gap43 start:0x0213abd8 end:0x0213acc0 kind:data align:4
+    .data.gap43 start:0x0213abd8 end:0x0213ac48 kind:data align:4
+    .data.pmf_Dealer start:0x0213ac48 end:0x0213acc0 kind:data align:4
     .data.sMascotWalkerPaths start:0x0213acc0 end:0x0213ace0 kind:data align:4
     .data.data_ov006_0213ace0 start:0x0213ace0 end:0x0213ad04 kind:data align:4
     .data.data_ov006_0213ad04 start:0x0213ad04 end:0x0213ad28 kind:data align:4
     .data.sDealerIdentityMtx start:0x0213ad28 end:0x0213ad58 kind:data align:4
     .data.data_ov006_0213ad58 start:0x0213ad58 end:0x0213ad88 kind:data align:4
     .data.data_ov006_0213ad88 start:0x0213ad88 end:0x0213adb8 kind:data align:4
-    .data.gap45 start:0x0213adb8 end:0x0213aee8 kind:data align:4
+    .data.pmf_Presenter start:0x0213adb8 end:0x0213add8 kind:data align:4
+    .data.gap45 start:0x0213add8 end:0x0213ade0 kind:data align:4
+    .data.pmf_PresenterWin start:0x0213ade0 end:0x0213ade8 kind:data align:4
+    .data.gap45b start:0x0213ade8 end:0x0213adf0 kind:data align:4
+    .data.pmf_PresenterMiss start:0x0213adf0 end:0x0213ae00 kind:data align:4
+    .data.gap45c start:0x0213ae00 end:0x0213aec0 kind:data align:4
+    .data.pmf_FlowerFace start:0x0213aec0 end:0x0213aee8 kind:data align:4
     .data.data_ov006_0213aee8 start:0x0213aee8 end:0x0213af18 kind:data align:4
     .data.pmf_Heyho start:0x0213af18 end:0x0213afd0 kind:data align:4
     .data.gap46 start:0x0213afd0 end:0x0213b008 kind:data align:4
@@ -354,24 +362,38 @@
     .data.sJump3DAnimTable start:0x0213b098 end:0x0213b0a4 kind:data align:4
     .data.gap48 start:0x0213b0a4 end:0x0213b0d8 kind:data align:4
     .data.sPuffSprites start:0x0213b0d8 end:0x0213b0ec kind:data align:4
-    .data.gap49 start:0x0213b0ec end:0x0213b22c kind:data align:4
+    .data.gap49 start:0x0213b0ec end:0x0213b0f4 kind:data align:4
+    .data.trmpmariopmf start:0x0213b0f4 end:0x0213b22c kind:data align:4
     .data.sTrmpBounceAnimTable start:0x0213b22c end:0x0213b238 kind:data align:4
     .data.gap50 start:0x0213b238 end:0x0213b31c kind:data align:4
     .data.pmf_unit020cd744 start:0x0213b31c end:0x0213b3a4 kind:data align:4
     .data.gap50b start:0x0213b3a4 end:0x0213b3f4 kind:data align:4
     .data.sTrmpLineTex start:0x0213b3f4 end:0x0213b814 kind:data align:4
-    .data start:0x0213b814 end:0x021402e0 kind:data align:4
+    .data.w13b814 start:0x0213b814 end:0x0213c6c4 kind:data align:4
+    .data.pmf_Esp3D_a start:0x0213c6c4 end:0x0213c6d4 kind:data align:4
+    .data.gap51 start:0x0213c6d4 end:0x0213c6dc kind:data align:4
+    .data.pmf_Esp3D_b start:0x0213c6dc end:0x0213c75c kind:data align:4
+    .data.gap52 start:0x0213c75c end:0x0213c764 kind:data align:4
+    .data.pmf_Esp3D_c start:0x0213c764 end:0x0213c78c kind:data align:4
+    .data.gap53 start:0x0213c78c end:0x0213c794 kind:data align:4
+    .data.pmf_Esp3D_d start:0x0213c794 end:0x0213c7bc kind:data align:4
+    .data start:0x0213c7bc end:0x021402e0 kind:data align:4
     .bss        start:0x021402e0 end:0x021430a0 kind:bss align:32
 src/minigames/unit020bfec0.cpp:
     complete
     .text start:0x020bfec0 end:0x020c4048
     .bss start:0x021402e0 end:0x021402fc
+    .data.pmf_Dealer start:0x0213ac48 end:0x0213acc0
     .data.sMascotWalkerPaths start:0x0213acc0 end:0x0213ace0
     .data.data_ov006_0213ace0 start:0x0213ace0 end:0x0213ad04
     .data.data_ov006_0213ad04 start:0x0213ad04 end:0x0213ad28
     .data.sDealerIdentityMtx start:0x0213ad28 end:0x0213ad58
     .data.data_ov006_0213ad58 start:0x0213ad58 end:0x0213ad88
     .data.data_ov006_0213ad88 start:0x0213ad88 end:0x0213adb8
+    .data.pmf_Presenter start:0x0213adb8 end:0x0213add8
+    .data.pmf_PresenterWin start:0x0213ade0 end:0x0213ade8
+    .data.pmf_PresenterMiss start:0x0213adf0 end:0x0213ae00
+    .data.pmf_FlowerFace start:0x0213aec0 end:0x0213aee8
     .data.data_ov006_0213aee8 start:0x0213aee8 end:0x0213af18
 
 src/minigames/d_mg3d_heyho_obj_adapter.cpp:
@@ -433,6 +455,7 @@ src/minigames/d_mg_trmpln2_mario.cpp:
     .init start:0x0212f6b4 end:0x0212fc7c
     .ctor start:0x02133578 end:0x0213357c
     .bss start:0x0214053c end:0x02140808
+    .data.trmpmariopmf start:0x0213b0f4 end:0x0213b22c
     .data.sTrmpBounceAnimTable start:0x0213b22c end:0x0213b238
 
 src/minigames/unit020cd744.cpp:
@@ -447,7 +470,7 @@ src/minigames/unit020cd744.cpp:
 src/minigames/d_s_mg_amida.cpp:
     complete
     .text start:0x020d1018 end:0x020d5a54
-    .data start:0x0213b814 end:0x0213b9ac
+    .data.w13b814 start:0x0213b814 end:0x0213b9ac
 
 src/minigames/d_s_mg_bomroom.cpp:
     complete
@@ -455,7 +478,7 @@ src/minigames/d_s_mg_bomroom.cpp:
     .init start:0x0212fd48 end:0x021300b0
     .ctor start:0x02133580 end:0x02133584
     .bss start:0x02141660 end:0x02141768
-    .data start:0x0213b9ec end:0x0213bafc
+    .data.w13b814 start:0x0213b9ec end:0x0213bafc
     .data.sBomroomMarkerLitSprites start:0x02133a70 end:0x02133a80
     .data.sBomroomMarkerPlainSprites start:0x02133ae0 end:0x02133af0
     .data.sBomroomHatchPanelSprites start:0x021342bc end:0x021342d0
@@ -513,6 +536,7 @@ src/minigames/d_s_mg_coin.cpp:
     .text start:0x020dbe40 end:0x020de988
     .init start:0x0213014c end:0x021303d0
     .ctor start:0x02133588 end:0x0213358c
+    .data.w13b814 start:0x0213be44 end:0x0213bf48
     .bss start:0x021417b0 end:0x02141870
     .data.data_ov006_02133f00 start:0x02133f00 end:0x02133f08
     .data.data_ov006_02133f08 start:0x02133f08 end:0x02133f10
@@ -543,7 +567,7 @@ src/minigames/d_s_mg_cup.cpp:
     .init start:0x021303d0 end:0x021304ac
     .ctor start:0x0213358c end:0x02133590
     .bss start:0x02141870 end:0x021418b0
-    .data start:0x0213bfe0 end:0x0213c1e4
+    .data.w13b814 start:0x0213bfe0 end:0x0213c1e4
     .data.data_ov006_02139db4 start:0x02139db4 end:0x02139dbc
     .data.data_ov006_02139dbc start:0x02139dbc end:0x02139dc4
     .data.data_ov006_02139dc4 start:0x02139dc4 end:0x02139dd4
@@ -571,7 +595,7 @@ src/minigames/d_s_mg_curling.cpp:
     .text start:0x020e0638 end:0x020e3854
     .init start:0x021304ac end:0x02130758
     .ctor start:0x02133590 end:0x02133594
-    .data start:0x0213c1e4 end:0x0213c2c4
+    .data.w13b814 start:0x0213c1e4 end:0x0213c2c4
     .bss start:0x021418b0 end:0x02141978
 
 src/minigames/d_s_mg_curling2.cpp:
@@ -579,7 +603,7 @@ src/minigames/d_s_mg_curling2.cpp:
     .text start:0x020e3854 end:0x020e6c28
     .init start:0x02130758 end:0x02130a04
     .ctor start:0x02133594 end:0x02133598
-    .data start:0x0213c3d4 end:0x0213c4bc
+    .data.w13b814 start:0x0213c3d4 end:0x0213c4bc
     .bss start:0x02141978 end:0x02141a40
 
 src/minigames/d_s_mg_d3d_base.cpp:
@@ -589,7 +613,7 @@ src/minigames/d_s_mg_d3d_base.cpp:
     .ctor start:0x02133598 end:0x0213359c
     .bss start:0x02141a40 end:0x02141e54
     .rodata.sD3DSoundPanOffsets start:0x0212e574 end:0x0212e57c
-    .data start:0x0213c5e8 end:0x0213c610
+    .data.w13b814 start:0x0213c5e8 end:0x0213c610
 
 src/minigames/d_mg3d_esp_anim_set.cpp:
     complete
@@ -601,9 +625,7 @@ src/minigames/d_mg3d_esp_anim_set.cpp:
     .rodata.sEsp3DCardsPerDifficulty start:0x0212e588 end:0x0212e58c
     .rodata.data_ov006_0212e58c start:0x0212e58c end:0x0212e594
     .rodata.sEsp3DResultSfx start:0x0212e594 end:0x0212e5a8
-    .data.sEsp3DAnimSetSlotsSprites start:0x02133a3c end:0x02133a5c
-    .data.data_ov006_02133f24 start:0x02133f24 end:0x02133f38
-    .data.sEsp3DAnimSetRowsSprites start:0x02136e38 end:0x02136e3c
+    .data start:0x0213c85c end:0x0213c88c
     .data.data_ov006_021339fc start:0x021339fc end:0x02133a04
     .data.data_ov006_02133a04 start:0x02133a04 end:0x02133a0c
     .data.data_ov006_02133a0c start:0x02133a0c end:0x02133a14
@@ -612,13 +634,19 @@ src/minigames/d_mg3d_esp_anim_set.cpp:
     .data.data_ov006_02133a24 start:0x02133a24 end:0x02133a2c
     .data.data_ov006_02133a2c start:0x02133a2c end:0x02133a34
     .data.data_ov006_02133a34 start:0x02133a34 end:0x02133a3c
+    .data.sEsp3DAnimSetSlotsSprites start:0x02133a3c end:0x02133a5c
+    .data.data_ov006_02133f24 start:0x02133f24 end:0x02133f38
     .data.data_ov006_02133f38 start:0x02133f38 end:0x02133f50
     .data.data_ov006_02133f50 start:0x02133f50 end:0x02133f68
     .data.data_ov006_02133f68 start:0x02133f68 end:0x02133f80
     .data.data_ov006_02133f80 start:0x02133f80 end:0x02133f98
     .data.data_ov006_02133f98 start:0x02133f98 end:0x02133fb0
+    .data.sEsp3DAnimSetRowsSprites start:0x02136e38 end:0x02136e3c
     .data.data_ov006_02136e3c start:0x02136e3c end:0x02136e44
-    .data start:0x0213c85c end:0x0213c88c
+    .data.pmf_Esp3D_a start:0x0213c6c4 end:0x0213c6d4
+    .data.pmf_Esp3D_b start:0x0213c6dc end:0x0213c75c
+    .data.pmf_Esp3D_c start:0x0213c764 end:0x0213c78c
+    .data.pmf_Esp3D_d start:0x0213c794 end:0x0213c7bc
 
 src/minigames/d_s_mg_hanachan_methods.cpp:
     complete
@@ -773,6 +801,8 @@ src/minigames/d_s_mg_pachinko2.cpp:
     .rodata.data_ov006_0212ec70 start:0x0212ec70 end:0x0212ec78
     .rodata.data_ov006_0212ec78 start:0x0212ec78 end:0x0212ec80
     .rodata.sPachinko2PaddleFlyAwayVX start:0x0212ec80 end:0x0212ec8c
+    .rodata.data_ov006_0212ec8c start:0x0212ec8c end:0x0212ec9c
+    .rodata.data_ov006_0212ec9c start:0x0212ec9c end:0x0212ecac
     .rodata.sPachinko2CupWaitTimesAlt start:0x0212ecac end:0x0212ecbc
     .rodata.sPachinko2CupRightStops start:0x0212ecbc end:0x0212ecd4
     .rodata.sPachinko2CupLeftStops start:0x0212ecd4 end:0x0212ecec
@@ -794,7 +824,7 @@ src/minigames/d_s_mg_pachinko2.cpp:
     .data.data_ov006_02138cd8 start:0x02138cd8 end:0x02138cf0
     .data.data_ov006_02138cf0 start:0x02138cf0 end:0x02138d08
     .data.sPachinko2BallCountSprites start:0x02138d08 end:0x02138d28
-    .data start:0x0213db6c end:0x0213db9c
+    .data start:0x0213da5c end:0x0213db9c
 
 src/minigames/d_s_mg_panel.cpp:
     complete
@@ -811,6 +841,7 @@ src/minigames/d_s_mg_roulette_methods.cpp:
     .ctor start:0x021335cc end:0x021335d0
     .bss start:0x021428c8 end:0x02142bdc
     .rodata.sRouletteTables start:0x0212ed14 end:0x0212ed88
+    .data start:0x0213e2e8 end:0x0213e300
 
 src/minigames/d_s_mg_roulette.cpp:
     complete
@@ -825,6 +856,7 @@ src/minigames/d_s_mg_slots.cpp:
     .text start:0x0210a8c0 end:0x0210d740
     .init start:0x02132894 end:0x02132970
     .ctor start:0x021335d0 end:0x021335d4
+    .data start:0x0213e4e0 end:0x0213e588
     .bss start:0x02142bdc end:0x02142c1c
 
 src/minigames/d_s_mg_smartball.cpp:
@@ -895,7 +927,7 @@ src/minigames/d_s_mg_teresa.cpp:
     .data.data_ov006_0213a904 start:0x0213a904 end:0x0213a924
     .data.data_ov006_0213a924 start:0x0213a924 end:0x0213a944
     .data.data_ov006_0213a944 start:0x0213a944 end:0x0213a964
-    .data start:0x0213f9d0 end:0x0213f9e4
+    .data start:0x0213f8d4 end:0x0213f9e4
 
 src/minigames/d_s_mg_trampoline.cpp:
     complete
@@ -944,7 +976,7 @@ src/minigames/d_s_mg_bsc.cpp:
     .init start:0x0213326c end:0x021333e0
     .ctor start:0x021335e0 end:0x021335e4
     .bss start:0x02142f94 end:0x02143004
-    .data start:0x0213fe78 end:0x0213fe8c
+    .data start:0x0213fd0c end:0x0213fe8c
 
 src/minigames/d_s_mg_snowball.cpp:
     complete

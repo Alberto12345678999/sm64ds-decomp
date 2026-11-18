@@ -93,8 +93,6 @@
  *   [8] 0x020f15cc  src/daObjBC_Switch_c_classInit.c
  */
 
-/* daObjBC_Switch_c.h FIRST: it pulls in dBgActor_c.h, which must reach
-   common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_bc_switch_AssetId {
     ASSET_B_COIN_SWITCH_BMD = 0x043c,
@@ -183,7 +181,7 @@ void daObjBC_Switch_c::OnStoodOn(dActor_c *other) {
  * -- it is multiplied by 10 here -- and a byte of 0 or 0xff means "use the
  * default 0xfa" instead.
  *
- * mStopPosY is just mPosY - 0x64000, so the switch always sinks the same distance
+ * mStopPosY is just mPos.y - 0x64000, so the switch always sinks the same distance
  * from wherever it was placed rather than to a fixed height.
  *
  * mAreaId is copied into mHomeAreaId before Behavior sets mAreaId to -1, which is
@@ -203,20 +201,20 @@ int daObjBC_Switch_c::InitResources() {
     bmd = dExtSimpleModel_c::LoadFile(daObjBC_Switch_c_ModelFile);
     mModel.SetFile((BMD_File *)bmd, 1, -1);
 
-    mEventBit = (int)param1 & 15;
+    mEventBit = param1 & 15;
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
     kcl = dBgW_Kc::LoadFile(daObjBC_Switch_c_ClsnFile);
     /* Collision scale 0x199 is 0.1 in 20.12. */
-    mMeshCollider.SetFile((KCL_File *)kcl, mClsnMat, 0x199, mAngleY,
+    mMeshCollider.SetFile((KCL_File *)kcl, mClsnMat, 0x199, mAngle.y,
                           *(CLPS_Block *)(&data_ov002_0210d6f4));
 
     mMeshCollider.SetStoodOnCallback(&StoodOnCallback);
 
     mPressed = 0;
 
-    mStopPosY = mPosY - 0x64000;
+    mStopPosY = mPos.y - 0x64000;
     mCoinTimerSeed = (param1 >> 8) & 0xff;
     mHomeAreaId = mAreaId;
 
@@ -236,7 +234,7 @@ int daObjBC_Switch_c::InitResources() {
  * pressed.
  *
  * Once pressed: mAreaId is set to -1 (the switch stops claiming its area, which
- * is why init stashed the original in mHomeAreaId), the music ducks, and mPosY
+ * is why init stashed the original in mHomeAreaId), the music ducks, and mPos.y
  * walks down 0x14000 a frame toward mStopPosY. On arrival it snaps exactly to
  * mStopPosY, sets its event bit, arms the countdown from mCoinTimerSeed, disables the
  * collider and poofs -- so the sinking animation and the "switch is now on"
@@ -262,10 +260,10 @@ s32 daObjBC_Switch_c::Behavior() {
             Sound::ChangeMusicVolume(127, 0x3f000);
     }
     if (mPressed == 1) {
-        if (mPosY > mStopPosY) {
-            mPosY = mPosY - 0x14000;
-            if (mPosY <= mStopPosY) {
-                mPosY = mStopPosY;
+        if (mPos.y > mStopPosY) {
+            mPos.y = mPos.y - 0x14000;
+            if (mPos.y <= mStopPosY) {
+                mPos.y = mStopPosY;
                 Event::SetBit(mEventBit);
                 mCoinTimer = mCoinTimerSeed;
                 mMeshCollider.Disable();
@@ -301,12 +299,12 @@ s32 daObjBC_Switch_c::Behavior() {
 /* -------------------------------------------------------------------------- */
 /* recovered: named members + shared header, real C++ method
  *
- * Draws the switch only while it is still above its stop. Behavior sinks mPosY
+ * Draws the switch only while it is still above its stop. Behavior sinks mPos.y
  * toward mStopPosY once pressed, so this comparison IS the visibility rule --
  * the switch vanishes exactly when it bottoms out, with no separate flag.
  */
 int daObjBC_Switch_c::Render() {
-    if (mPosY > mStopPosY)
+    if (mPos.y > mStopPosY)
         mModel.Render(0);
     return 1;
 }

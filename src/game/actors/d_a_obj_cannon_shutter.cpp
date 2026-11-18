@@ -23,8 +23,6 @@
  * - daPly_c.h is needed for ClosestPlayer()->mIsMega.
  */
 
-/* daObjCannonShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach
-   common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_cannon_shutter_AssetId {
     ASSET_CANNON_SHUTTER_BMD = 0x045f,
@@ -105,11 +103,11 @@ int daObjCannonShutter_c::InitResources() {
     {
         KCL_File *kcl = dBgW_Kc::LoadFile(data_ov002_0210e124);
         /* 0x199 is 409/4096, i.e. a collider scale of 0.1. */
-        mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngleY, data_ov002_0210d7f4);
+        mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngle.y, data_ov002_0210d7f4);
     }
-    mHomePos.x = mPosX;
-    mHomePos.y = mPosY;
-    mHomePos.z = mPosZ;
+    mHomePos.x = mPos.x;
+    mHomePos.y = mPos.y;
+    mHomePos.z = mPos.z;
     if (IsCannonOpenInCurLevel() != 0) {
         mCannonOpen = 1;
     }
@@ -121,9 +119,9 @@ int daObjCannonShutter_c::InitResources() {
 int daObjCannonShutter_c::Behavior() {
     if (mCannonOpen != 0) {
         if (ClosestPlayer()->mIsMega != 0) {
-            mPosX = mHomePos.x;
-            mPosY = mHomePos.y;
-            mPosZ = mHomePos.z;
+            mPos.x = mHomePos.x;
+            mPos.y = mHomePos.y;
+            mPos.z = mHomePos.z;
             if (IsClsnInRangeOnScreen(0, 0)) {
                 UpdateModelPosAndRotY();
                 UpdateClsnPosAndRot();
@@ -150,7 +148,7 @@ int daObjCannonShutter_c::Behavior() {
         } else {
             slide.y = -0x1000; /* -1.0 down */
         }
-        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+        Matrix4x3_FromRotationY(&data_020a0e68, mAngle.y);
         MTX_MultVec43(&slide, &data_020a0e68, &rotated);
         VEC_Add(&mPos, &rotated, &mPos);
         if (Vec3_Dist(&mHomePos, &mPos) > 0xa000) {

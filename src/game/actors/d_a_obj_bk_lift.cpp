@@ -27,23 +27,17 @@
  * - data_ov015_02113594 is the CLPS block this TU does not own;
  *   FX_SinCosTable_ is arm9's sin/cos table; gCurrentStarId / gCurrentSublevel
  *   are arm9 scene state; g_profile_BK_LIFT01 lives outside this TU.
- * - Behavior kind 1 writes the half-turn through s16 *p = &mPrevAngleY
+ * - Behavior kind 1 writes the half-turn through s16 *p = &mPrevAngle.y
  *   and a u8 temporary for 0x87: a direct member add if-converts
  *   (ldrsheq / addeq / strheq) and Behavior shrinks from 0x1cc to 0x1c4.
  * - Behavior kind 2 keeps the 0/1 flag, the second compare, and the
- *   equal-arm ternary: direct mPosY < mMinPosY / mPosY > mMaxPosY clamps
+ *   equal-arm ternary: direct mPos.y < mMinPosY / mPos.y > mMaxPosY clamps
  *   compile to 0x1a4 against the ROM's 0x1cc.
  * - Vec3_Dist, DecIfAbove0_Byte and IsStarCollectedInCurLevel stay local
  *   externs; Vec3_Dist's header copies take Vector3 * in unrelated leaf
  *   headers.
  */
 
-/* MEASURED -- MUST STAY AHEAD OF daObjBk_Lift_c.h, which reaches math/Matrix.h
-   through dBgW_KcMbg.h. Matrix4x3 has two guarded spellings over the same 0x30
-   bytes and whichever a translation unit sees first stands; UpdateShadow
-   copies one flat, and with math/Matrix.h's structured spelling that copy
-   compiles to 0xb4 against the ROM's 0x9c. Same rule, and the same reason, as
-   the common.h include in include/dBgActor_c.h. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjBk_Lift_c_AssetId { ASSET_BK_LIFT01_BMD = 0x0599, ASSET_BK_LIFT01_KCL = 0x059a };
 
@@ -129,15 +123,15 @@ int daObjBk_Lift_c::InitResources() {
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    mMeshCollider.SetFile(dBgW_Kc::LoadFile(data_ov015_02114a5c), mClsnMat, 0x199, mAngleY,
+    mMeshCollider.SetFile(dBgW_Kc::LoadFile(data_ov015_02114a5c), mClsnMat, 0x199, mAngle.y,
                           data_ov015_02113594);
     mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosWithVelocity);
     mMeshCollider.SetStoodOnCallback(&StoodOnCallback);
 
     Vector3 probePos;
-    probePos.x = mPosX;
-    probePos.y = mPosY;
-    probePos.z = mPosZ;
+    probePos.x = mPos.x;
+    probePos.y = mPos.y;
+    probePos.z = mPos.z;
     probePos.y -= 0x14000;
 
     dBgCh_Gnd ground;
@@ -146,30 +140,30 @@ int daObjBk_Lift_c::InitResources() {
     if (ground.DetectClsn())
         mFloorPosY = ground.clsnY;
 
-    u16 angle = mAngleY;
+    u16 angle = mAngle.y;
     int sine = FX_SinIdx(angle >> 4);
     mShadowOffsetX = FX_MUL(sine, 0xc8000);
-    angle = mAngleY;
+    angle = mAngle.y;
     int cosine = FX_CosIdx(angle >> 4);
     mShadowOffsetY = FX_MUL(cosine, 0xc8000);
 
     UpdateShadow();
 
-    mPrevAngleY = mAngleY + 0x8000;
+    mPrevAngle.y = mAngle.y + 0x8000;
     mMoveTimer = 135;
 
     int kind = param1 & 0xff;
     if (kind != 2) {
         mHorzSpeed = 0x3000;
     } else {
-        mMinPosY = mPosY;
+        mMinPosY = mPos.y;
         mMaxPosY = mMinPosY + 0x1f4000;
         mTerminalVelocity = -0x3c000;
-        mVertSpeed = 0xa000;
+        mSpeed.y = 0xa000;
     }
 
     if (gCurrentSublevel == 7 && (gCurrentStarId == 1 || IsStarCollectedInCurLevel(1) == 0) &&
-        mPosY >= 0xdac000)
+        mPos.y >= 0xdac000)
         return 0;
 
     return 1;
@@ -180,7 +174,7 @@ int daObjBk_Lift_c::Behavior() {
 
     if (kind == 1) {
         if (DecIfAbove0_Byte(&mMoveTimer) == 0) {
-            mPrevAngleY += 0x8000;
+            mPrevAngle.y += 0x8000;
             mMoveTimer = 135;
         }
         UpdatePos(0);
@@ -196,19 +190,19 @@ int daObjBk_Lift_c::Behavior() {
 
                 UpdatePos(0);
                 bound = mMinPosY;
-                y = mPosY;
+                y = mPos.y;
                 flag = (y >= bound);
                 if (flag == 0) {
-                    mPosY = (y < bound) ? bound : y;
-                    mVertSpeed = 0xa000;
+                    mPos.y = (y < bound) ? bound : y;
+                    mSpeed.y = 0xa000;
                     if (mJustSteppedOn == 0)
                         mMove = 0;
                 } else {
                     bound = mMaxPosY;
                     flag = (y <= bound);
                     if (flag == 0) {
-                        mPosY = (y > bound) ? bound : y;
-                        mVertSpeed = -0xa000;
+                        mPos.y = (y > bound) ? bound : y;
+                        mSpeed.y = -0xa000;
                         mMoveTimer = 90;
                     }
                 }
@@ -249,9 +243,9 @@ int daObjBk_Lift_c::CleanupResources() {
    biased by mShadowOffsetX / mShadowOffsetY and flattened onto mFloorPosY. */
 void daObjBk_Lift_c::UpdateShadow() {
     mShadowMat = mModel.mat4x3;
-    mShadowMat.m[9] = (mPosX - mShadowOffsetX) >> 3;
+    mShadowMat.m[9] = (mPos.x - mShadowOffsetX) >> 3;
     mShadowMat.m[10] = mFloorPosY >> 3;
-    mShadowMat.m[11] = (mPosZ - mShadowOffsetY) >> 3;
+    mShadowMat.m[11] = (mPos.z - mShadowOffsetY) >> 3;
     DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x190000, 0x28000, 0x258000, 0xf);
 }
 
@@ -273,10 +267,10 @@ void daObjBk_Lift_c::OnHitByMegaChar(daPly_c &player) {
    mPos rather than reusing the words it just passed. */
 void daObjBk_Lift_c::Kill() {
     Vector3 dustPos;
-    Particle::System::NewSimple(kPtclStoneBlockBreak, mPosX, mPosY, mPosZ);
-    dustPos.x = mPosX;
-    dustPos.y = mPosY;
-    dustPos.z = mPosZ;
+    Particle::System::NewSimple(kPtclStoneBlockBreak, mPos.x, mPos.y, mPos.z);
+    dustPos.x = mPos.x;
+    dustPos.y = mPos.y;
+    dustPos.z = mPos.z;
     PoofDustAt(dustPos);
     Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();

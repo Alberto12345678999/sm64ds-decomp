@@ -95,6 +95,9 @@ extern "C" {
    Quick race (daRNk_c). InitResources clears it. */
 extern unsigned char gShowRaceTimer;
 extern Timer gRaceTimer;
+/* Kept (#821 r79): with the table plain (here and in decl_common.h), an inline DigitPlace(i)
+   returning int or unsigned short, for both reads or the modulo only, and `value %=`, are 0x94
+   against 0x8c. */
 extern volatile unsigned short data_ov002_0210c208[];
 extern unsigned char gLocalPlayerId;
 extern unsigned char gMeterCounterSlideState;
@@ -299,6 +302,10 @@ int dMeter_c::InitResources() {
                build. Nothing in this ROM says what they were. The `u16 *` pun is
                what keeps the stores apart; a `volatile` qualifier on it
                changes nothing. */
+            /* Kept (#821 r76): no block-copy or type lever (r72-r75) applies to this scalar pin;
+               the measurements above stand.
+               Kept (#821 r80): getter tried -> a setter on this arm, the else arm or all
+               three lets the stores merge, 0x740 of 0x750. */
             *(u16 *)&mVsTimer = 30;
         else
             mVsTimer = 30;
@@ -1033,6 +1040,9 @@ void dMeter_c::RenderLifeCount() {
  * The divisor table is volatile in the ROM's own spelling and stays that way --
  * it forces the 100/10/1 loads to be re-read per iteration instead of folded
  * into immediates, which is what makes this a loop at all.
+ * r63: a plain or const table keeps the divisor in a register across the
+ * division call, so the modulo's reload of data_ov002_0210c208[i] is lost
+ * (0x94 against 0x8c).
  */
 void dMeter_c::CalculateDigits(unsigned short value) {
     int flag = 0;

@@ -279,9 +279,9 @@ void daHanachan_c::StateDeadMain()
     }
 
     {
-        int px = mPosX;
-        int pz = mPosZ;
-        int py = mPosY + 0x64000;
+        int px = mPos.x;
+        int pz = mPos.z;
+        int py = mPos.y + 0x64000;
         starPos.x = px;
         starPos.y = py;
         starPos.z = pz;
@@ -343,7 +343,7 @@ void daHanachan_c::StateDamageMain()
     gCamera->SetFlag_3();
     mDriveCamera = 1;
 
-    ApproachLinear(mPlayer->mAngleY, Vec3_HorzAngle(&mSegmentPos[0], &mPlayer->mPos), 0x100);
+    ApproachLinear(mPlayer->mAngle.y, Vec3_HorzAngle(&mSegmentPos[0], &mPlayer->mPos), 0x100);
 
     func_ov002_020c51d0(talk, &st);
 
@@ -401,7 +401,7 @@ void daHanachan_c::StateMoveMain()
             mFalling = 1;
             mVertAccel = -0x1000;
             mTerminalVelocity = -0x3c000;
-            mVertSpeed = 0;
+            mSpeed.y = 0;
         }
     }
 
@@ -492,7 +492,7 @@ void daHanachan_c::StateMoveStartMain()
                 health = mHealth;
                 if (health < 4) {
                     if (health > 1) {
-                        mVertSpeed = 0x41000 - (((health - 2) * 10) << 12);
+                        mSpeed.y = 0x41000 - (((health - 2) * 10) << 12);
                         mVertAccel = -0x4000;
                     }
                 }
@@ -617,7 +617,7 @@ void daHanachan_c::StateDemoWaitMain()
     Vec3_Sub(&v, &mPos, &mHomePos);
     len = VEC_Mag(&v);
     player = ClosestPlayer();
-    if (player->mPosY > mPosY + 0x12c000) {
+    if (player->mPos.y > mPos.y + 0x12c000) {
         SetState(1);
         return;
     }
@@ -651,11 +651,11 @@ void daHanachan_c::StateDemoWaitInit()
     mHorzSpeed = data_ov034_02114488[0];
     for (seg = 0; seg < 5; seg++) {
         if (seg == 0) {
-            mSegmentPos[seg].x = mPosX;
-            mSegmentPos[seg].y = mPosY;
-            mSegmentPos[seg].z = mPosZ;
+            mSegmentPos[seg].x = mPos.x;
+            mSegmentPos[seg].y = mPos.y;
+            mSegmentPos[seg].z = mPos.z;
             mSegmentRot[seg].y = HorzAngleToCPlayer();
-            mPrevAngleY = mSegmentRot[seg].y;
+            mPrevAngle.y = mSegmentRot[seg].y;
         } else {
             in.z = -mSegmentSpacing[seg];
             in.x = 0;
@@ -691,7 +691,7 @@ void daHanachan_c::ExecState()
 int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor)
 {
     Vector3 push = cyl->pushback;
-    if (actor->mVertSpeed < 0 && push.y < 0 && push.y > actor->mVertSpeed)
+    if (actor->mSpeed.y < 0 && push.y < 0 && push.y > actor->mSpeed.y)
         return 1;
     return 0;
 }
@@ -810,9 +810,9 @@ void daHanachan_c::UpdateSegmentModels()
     for (i = 0; i < 5; i++) {
         dExtAnmModel_c *model = &mAnmModels[i];
         Matrix4x3_FromRotationY(&model->mat4x3, mSegmentRot[i].y);
-        mAnmModels[i].mat4x3.t.x = mSegmentPos[i].x >> 3;
-        mAnmModels[i].mat4x3.t.y = mSegmentPos[i].y >> 3;
-        mAnmModels[i].mat4x3.t.z = mSegmentPos[i].z >> 3;
+        mAnmModels[i].mat4x3.m[9] = mSegmentPos[i].x >> 3;
+        mAnmModels[i].mat4x3.m[10] = mSegmentPos[i].y >> 3;
+        mAnmModels[i].mat4x3.m[11] = mSegmentPos[i].z >> 3;
     }
 }
 
@@ -865,13 +865,13 @@ int daHanachan_c::Behavior()
     Vector3 t1;
 
     if (mFalling != 0) {
-        if (mHomePos.y + mPosY < -0x1f4000)
+        if (mHomePos.y + mPos.y < -0x1f4000)
             MarkForDestruction();
     }
 
     ExecState();
 
-    if (mVertSpeed <= 0) {
+    if (mSpeed.y <= 0) {
         ApproachLinear(mSegmentRot[0].y, mTargetAngleY, ((mHorzSpeed / 0x1000) * 0x1e));
     }
 
@@ -891,7 +891,7 @@ int daHanachan_c::Behavior()
                     func_0201267c(0x11d, &mCamSpacePos);
             }
             if (mHealth == 2) {
-                Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
+                Particle::RunningSlidingDustAt(mPos.x, mPos.y, mPos.z);
             }
         }
     }
@@ -932,15 +932,15 @@ int daHanachan_c::Behavior()
             mTextureSequences[0].currFrame = 0;
     }
 
-    mPrevAngleY = mSegmentRot[0].y;
+    mPrevAngle.y = mSegmentRot[0].y;
     UpdatePos(0);
 
     if (mFalling == 0)
         UpdateWMClsn(mWithMeshClsn, 0);
 
-    mSegmentPos[0].x = mPosX;
-    mSegmentPos[0].y = mPosY;
-    mSegmentPos[0].z = mPosZ;
+    mSegmentPos[0].x = mPos.x;
+    mSegmentPos[0].y = mPos.y;
+    mSegmentPos[0].z = mPos.z;
     UpdateSegments();
 
     mSegmentPos[0].y = mSegmentPos[1].y + 0x1000;
@@ -1001,6 +1001,9 @@ int daHanachan_c::Behavior()
 
 int daHanachan_c::InitResources()
 {
+    /* Kept (#821 r73): every row as mSegmentPos[i] / mSegmentRot[i] /
+       mSegmentScale[i] / mTextureSequences[i] / mSegmentRot[prev] is 0x468
+       but 42 words off: the strength-reduced rows rank below segPos. */
     char *c = (char *)this;
     s32 i;
     dExtAnmModel_c *animRow;
@@ -1079,13 +1082,13 @@ int daHanachan_c::InitResources()
         texSeq->SetFile(*(BTP_File *)texFile->filePtr, zeroB, 0x1000, zeroB);
         ((daHanachan_c *)texRow)->mTextureSequences[0].speed = zeroC;
         if (i == 0) {
-            ((daHanachan_c *)posRow)->mSegmentPos[0].x = mPosX;
-            ((daHanachan_c *)posRow)->mSegmentPos[0].y = mPosY;
-            ((daHanachan_c *)posRow)->mSegmentPos[0].z = mPosZ;
-            ((daHanachan_c *)rotRow)->mSegmentRot[0].x = mAngleX;
-            ((daHanachan_c *)rotRow)->mSegmentRot[0].y = mAngleY;
-            ((daHanachan_c *)rotRow)->mSegmentRot[0].z = mAngleZ;
-            mPrevAngleY = ((daHanachan_c *)rotRow)->mSegmentRot[0].y;
+            ((daHanachan_c *)posRow)->mSegmentPos[0].x = mPos.x;
+            ((daHanachan_c *)posRow)->mSegmentPos[0].y = mPos.y;
+            ((daHanachan_c *)posRow)->mSegmentPos[0].z = mPos.z;
+            ((daHanachan_c *)rotRow)->mSegmentRot[0].x = mAngle.x;
+            ((daHanachan_c *)rotRow)->mSegmentRot[0].y = mAngle.y;
+            ((daHanachan_c *)rotRow)->mSegmentRot[0].z = mAngle.z;
+            mPrevAngle.y = ((daHanachan_c *)rotRow)->mSegmentRot[0].y;
         } else {
             va.z = 0 - mSegmentSpacing[i];
             va.x = zeroC;
@@ -1137,9 +1140,9 @@ int daHanachan_c::InitResources()
     mWithMeshClsn.Init(this, 0x14000, 0x14000, 0, 0);
     mHealth = 4;
     UpdateSegmentModels();
-    mHomePos.x = mPosX;
-    mHomePos.y = mPosY;
-    mHomePos.z = mPosZ;
+    mHomePos.x = mPos.x;
+    mHomePos.y = mPos.y;
+    mHomePos.z = mPos.z;
     return 1;
 }
 

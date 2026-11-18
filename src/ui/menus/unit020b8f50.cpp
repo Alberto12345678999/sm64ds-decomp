@@ -74,6 +74,9 @@ typedef struct Ov007PickerSprites {
 } Ov007PickerSprites;
 
 /* PickerScene_UpdateMoveAnim copies pos as three words. */
+/* Kept (#821 r72): no C++ spelling of three named ints (VecFx32, Vector3, a
+   plain or tagged struct, a temporary) copies memory to memory with ldm/stm;
+   the same copy compiled as C does (measured on func_ov007_020c5dec). */
 typedef struct Vec3Words {
     fx32 w[3];
 } Vec3Words;
@@ -110,11 +113,11 @@ extern "C" void func_ov007_020c5188(void *, int);
 extern "C" void func_ov007_020c5490(void *obj, Matrix2x2 *m);
 extern "C" void func_ov007_020c55bc(Ov007Picker *self, int m1, int m2);
 extern "C" void func_ov007_020c56bc(void *c, int a, int b, int d, int e, int f);
-extern void func_ov007_020c5a6c(Ov007Picker *, VecFx32 *, int);
+extern "C" void func_ov007_020c5a6c(Ov007Picker *, VecFx32 *, int);
 extern "C" void func_ov007_020c5c14(Ov007Picker *picker, VecFx32 *out);
 extern "C" int func_ov007_020c5d5c(void *o);
 extern "C" int func_ov007_020c5db0(void *p);
-extern void func_ov007_020c5dec(Ov007Picker *c);
+extern "C" void func_ov007_020c5dec(Ov007Picker *c);
 extern "C" void func_ov007_020c5ef0(void *o);
 extern "C" int func_ov007_020c8f98(void *p);
 extern "C" void func_ov007_020c9080(void *);
@@ -529,6 +532,10 @@ void PickerScene_HandleDrawingKeys(void) {
            local from the top of the function all reuse it: 0x410, -1 word.
            Retyping data_ov007_02104ba0 as an Ov007PickerScene * changes
            nothing either way. */
+        /* Kept (#821 r76): a reload pin; no block-copy or type lever (r72-r75) applies to this
+           scalar pin.
+           Kept (#821 r80): getter tried -> a scene accessor, as this local or in the test, is
+           0x410 of 0x414, as plain. */
         Ov007PickerScene *b = *(Ov007PickerScene **)&data_ov007_02104ba0;
         int n = r5->groupCount;
         if (n >= b->strokeCount)
@@ -710,6 +717,8 @@ void PickerScene_UpdateMoveAnim(void) {
     }
     case 5:
         if (counter == 0) {
+            /* Kept (#821 r76): the file calls Ov007Picker members, so it stays C++, where no copy
+               of a VecFx32 is one ldm/stm (r72); C struct assignment would be. */
             *(Vec3Words *)&a->pos = *(Vec3Words *)&a->restPos;
             a->posOffset.y = 0;
             a->posOffset.x = a->posOffset.y;
@@ -1471,6 +1480,8 @@ void func_ov007_020b8fd4(Ov007Camera *camera) {
            direct SCENE->/WORK->/SPRITES-> spellings with or without scene and
            sprite locals, and the sprite reads first all schedule the work
            chain ahead of the scene: 16 to 20 of 120 words wrong. */
+        /* Kept (#821 r79): inline GetScene()/GetWork() accessors, for both reads, either one,
+           or as initialisers, are 16 to 20 words off. */
         c = *((Ov007PickerScene *volatile *)&data_ov007_02104ba0);
         g = *((Ov007Work *volatile *)&data_ov007_0210342c);
         flag = c->awaitingTap;

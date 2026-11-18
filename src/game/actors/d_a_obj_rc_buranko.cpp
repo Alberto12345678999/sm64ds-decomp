@@ -39,9 +39,6 @@
  *   handles; data_ov036_02112b68 is the CLPS block. This TU consumes them,
  *   overlay .bss/.data owns them.
  * What stays: g_profile_RC_BURANKO lives outside this TU (S14).
- * What stays: common.h first so UpdateModelMatrix's Matrix4x3 translation
- *   stores use the flat s32 m[12] spelling (math/Matrix.h nested form
- *   scalarises).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -106,12 +103,12 @@ int daObjRcBuranko_c::InitResources() {
 
     /* The pendulum starts a quarter of the way over, not hanging straight
        down, so it is already moving on the frame the player first sees it. */
-    mAngleZ = 0x2000;
+    mAngle.z = 0x2000;
     UpdateModelMatrix();
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = dBgW_Kc::LoadFile(data_ov036_02114020);
-    mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov036_02112b68);
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngle.y, data_ov036_02112b68);
 
     /* A rider is carried by the collider's whole transform, not by a position
        and a pair of angles: the platform tilts underfoot as it swings. */
@@ -126,12 +123,12 @@ int daObjRcBuranko_c::Behavior() {
     /* The whole pendulum is these four lines: a constant 4-unit acceleration
        always pointed back at zero, integrated into the angle. There is no
        damping term, so the swing never decays and never needs re-kicking. */
-    if (mAngleZ < 0)
+    if (mAngle.z < 0)
         mSwingVelZ += 4;
     else
         mSwingVelZ -= 4;
 
-    mAngleZ += mSwingVelZ;
+    mAngle.z += mSwingVelZ;
 
     UpdateModelMatrix();
     if (IsClsnInRange(0, 0))
@@ -164,11 +161,11 @@ int daObjRcBuranko_c::CleanupResources() {
  * from the actor's three angles, then writes the actor position >> 3 into
  * that matrix's translation row. */
 void daObjRcBuranko_c::UpdateModelMatrix() {
-    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngle.x, mAngle.y, mAngle.z);
 
-    mModel.mat4x3.m[9] = mPosX >> 3;
-    mModel.mat4x3.m[10] = mPosY >> 3;
-    mModel.mat4x3.m[11] = mPosZ >> 3;
+    mModel.mat4x3.m[9] = mPos.x >> 3;
+    mModel.mat4x3.m[10] = mPos.y >> 3;
+    mModel.mat4x3.m[11] = mPos.z >> 3;
 }
 
 /* -------------------------------------------------------------------------- */

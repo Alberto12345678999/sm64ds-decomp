@@ -30,8 +30,9 @@ void *dScEntry_c_classInit_ENTRY(void) {
 
 extern "C" {
 /* local extern: no header declares these arm9 vector helpers.
-   The grid data is the SDK's POD VecFx32; these EAD helpers take Vector3,
-   so they receive pointer views and the Vector3 destructor is not emitted. */
+   They take Vector3. TouchAt's locals are Vector3; the grid data is the
+   SDK's POD VecFx32 (private/ov075_entry_mesh.h), so CalcDistances hands
+   it over through pointer views. */
 void Vec3_Sub(Vector3 *, const Vector3 *, const Vector3 *);
 /* local extern: the BMD texture and palette VRAM loaders. */
 /* local extern: the geometry-engine matrix load and the
@@ -77,9 +78,9 @@ void EntryMesh::CalcMatrix() {
     Matrix4x3_FromTranslation(&data_020a0e68, (mPos.x - 0xfa000) >> 3, (mPos.y - 0xfa000) >> 3,
                               mPos.z >> 3);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-    *(Matrix4x3 *)&mMtx = data_020a0e68;
+    mMtx = data_020a0e68;
     MTX_Inverse43(&data_020a0e68, &data_020a0e68);
-    *(Matrix4x3 *)&mInvMtx = data_020a0e68;
+    mInvMtx = data_020a0e68;
 }
 
 /* A BMD_Material's two colour words, which BMD_File.h still keeps inside
@@ -123,14 +124,14 @@ int EntryMesh::LoadTexture(BMD_File *file) {
 
 /* Map a touched world point into grid space and start a ripple there. */
 void EntryMesh::TouchAt(Vector3 *touch) {
-    VecFx32 origin;
-    VecFx32 r;
-    VecFx32 out;
+    Vector3 origin;
+    Vector3 r;
+    Vector3 out;
     origin.x = 0;
     origin.y = 0x15e000;
     origin.z = -0x320000;
-    Vec3_Sub((Vector3 *)&out, (const Vector3 *)&origin, touch);
-    Vec3_Asr((Vector3 *)&r, (Vector3 *)&out, 3);
+    Vec3_Sub(&out, &origin, touch);
+    Vec3_Asr(&r, &out, 3);
     r.x = r.x + 0xfa000;
     r.y = r.y + 0xfa000;
     StartRipple(r.x, r.y);
@@ -234,20 +235,18 @@ short EntryMesh::RipplePhase(int dist) {
     return (v - mRipplePhase);
 }
 
-/* An array-member twin of VecFx32. Copying through it keeps C's
-   block-move schedule (ldm/stm); the C++ memberwise copy of the three named
-   words is 0x10 bytes longer (a named-field copy does not block-move). */
-struct EntryMeshVecCopy {
-    s32 words[3];
-};
-
-/* Store each vertex's flat (z = 0) distance from mRippleCenter. */
+/* Store each vertex's flat (z = 0) distance from mRippleCenter. tmp is
+   copy-initialized from the POD VecFx32, which mwcc block-moves (ldm/stm);
+   assigning it after the declaration copies the three words one by one.
+   Kept (#821 r77): both VecFx32s reach the game's Vec3_Dist through
+   `(Vector3 *)` casts. A Vector3 tmp built from v->pos grows this function
+   0x78 -> 0x88, and mRippleCenter stays VecFx32 for the reason the header
+   gives (no ~Vector3 in this unit or in EntryMesh). */
 void EntryMesh::CalcDistances() {
     int i;
-    VecFx32 tmp;
     for (i = 0; i < mNumVertices; i++) {
         EntryMeshVertex *v = &mVertices[i];
-        *(EntryMeshVecCopy *)&tmp = *(EntryMeshVecCopy *)&v->pos;
+        VecFx32 tmp = v->pos;
         tmp.z = 0;
         v->dist = Vec3_Dist((Vector3 *)&mRippleCenter, (Vector3 *)&tmp);
     }
@@ -273,7 +272,7 @@ void EntryMesh::DrawGrid() {
     int i, j;
 
     G3_PushMtx();
-    MTX_Concat43((const Matrix4x3 *)&mMtx, &data_0209b3ec, &tmp);
+    MTX_Concat43(&mMtx, &data_0209b3ec, &tmp);
     G3_MtxMode(GX_MTXMODE_POSITION_VECTOR);
     G3_LoadMtx43(&tmp);
     G3_MtxMode(GX_MTXMODE_POSITION);
@@ -375,7 +374,7 @@ int EntryMesh::Init(const Vector3 *pos, int angleY) {
     mGridDim[1] = 20;
     mNumVertices = mGridDim[0] * mGridDim[1];
     mVertices = (EntryMeshVertex *)::operator new[](mNumVertices * sizeof(EntryMeshVertex));
-    LoadTexture((BMD_File *)func_0201787c(&EntryMeshTextureFile));
+    LoadTexture((BMD_File *)EntryMeshTextureFile.func_0201787c());
     EntryMeshTextureFile.Release();
     mState = EntryMeshHandlers;
     (this->*(*mState))();

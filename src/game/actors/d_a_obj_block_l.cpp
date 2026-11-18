@@ -55,7 +55,7 @@ struct daObjBlockLClsnFile : SharedFilePtr {
 };
 
 extern BigBrickBlockAssets data_ov002_02108ab0[];
-extern Vector3 data_ov002_021089e0;
+extern VecFx32 data_ov002_021089e0;
 extern s8 gCurrentSublevel; /* current level */
 extern u8 gCurrentStarId;
 
@@ -112,9 +112,9 @@ void daObjBlockL_c::NotifyLinkedActor() {
 }
 
 /* Both callers are daObjBlockL_c methods in this TU. The field at 0x8c is the
-   inherited dActor_c::mAngleX; no external state participates. */
+   inherited dActor_c::mAngle.x; no external state participates. */
 bool daObjBlockL_c::HasNonzeroAngleX() {
-    return mAngleX != 0;
+    return mAngle.x != 0;
 }
 
 /* Vtable slot 27. player.IncMegaKillCount() then this class's own Kill
@@ -221,9 +221,9 @@ void daObjBlockL_c::Kill() {
 
     int is11 = (actorID == 0x11);
     if (is11 && mStarID != 0) {
-        starPos.x = mPosX;
-        starPos.y = mPosY;
-        starPos.z = mPosZ;
+        starPos.x = mPos.x;
+        starPos.y = mPos.y;
+        starPos.z = mPos.z;
         starPos.y += 0x96000;
 
         if (((param1 >> 8) & 0xff) == 0xff) {
@@ -235,18 +235,18 @@ void daObjBlockL_c::Kill() {
         int isF = (actorID == 0xf);
         if (isF || is11) {
             if (mLinkedActor == 0) {
-                coinPos.x = mPosX;
-                coinPos.y = mPosY;
-                coinPos.z = mPosZ;
+                coinPos.x = mPos.x;
+                coinPos.y = mPos.y;
+                coinPos.z = mPos.z;
                 SpawnCoins(coinPos, 3, 0xf000, 0);
             }
         }
     }
 
     {
-        fx32 z = mPosZ;
-        fx32 y = mPosY + 0x64000;
-        fx32 x = mPosX;
+        fx32 z = mPos.z;
+        fx32 y = mPos.y + 0x64000;
+        fx32 x = mPos.x;
         pos.x = x;
         pos.z = z;
         pos.y = y;
@@ -254,7 +254,7 @@ void daObjBlockL_c::Kill() {
 
     u32 kind = 0xa;
     if (IsActorID(this, 0x11)) {
-        pos.y = mPosY + 0x96000;
+        pos.y = mPos.y + 0x96000;
         kind = 0xf;
     }
     if (IsActorID(this, 0x2e)) {
@@ -305,7 +305,11 @@ int daObjBlockL_c::Render() {
         }
     }
     if (IsActorID(this, 0x10)) {
-        VecFx32 v = *(VecFx32 *)&data_ov002_021089e0;
+        /* Kept (#821 r77): the ROM copy-initializes the scale with one
+           ldm/stm block move, which only a POD VecFx32 gives; Render takes
+           the game's Vector3, so it casts there. A Vector3 built from the
+           three fields grows Render 0xf8 -> 0x104. */
+        VecFx32 v = data_ov002_021089e0;
         mModel.Render((Vector3 *)&v);
     } else {
         mModel.Render(0);
@@ -403,14 +407,14 @@ int daObjBlockL_c::InitResources() {
     if (idx <= 1) {
         if (IsActorID(this, 0x10)) {
             KCL_File *kcl = dBgW_Kc::LoadFile(*data_ov002_02108ab0[idx].clsnFile);
-            mMeshCollider.SetFile(kcl, mClsnMat, 0x1800, mAngleY, *data_ov002_02108ab0[idx].clps);
+            mMeshCollider.SetFile(kcl, mClsnMat, 0x1800, mAngle.y, *data_ov002_02108ab0[idx].clps);
         } else {
             KCL_File *kcl = dBgW_Kc::LoadFile(*data_ov002_02108ab0[idx].clsnFile);
-            mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, *data_ov002_02108ab0[idx].clps);
+            mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngle.y, *data_ov002_02108ab0[idx].clps);
         }
     } else {
         KCL_File *kcl = dBgW_Kc::LoadFile(*data_ov002_02108ab0[idx].clsnFile);
-        mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngleY, *data_ov002_02108ab0[idx].clps);
+        mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngle.y, *data_ov002_02108ab0[idx].clps);
     }
 
     if (IsActorID(this, 0x13))
@@ -429,7 +433,7 @@ int daObjBlockL_c::InitResources() {
 
     if (IsActorID(this, 0x2e) && gCurrentSublevel == 7) {
         if (gCurrentStarId == 1 || IsStarCollectedInCurLevel(1) == 0) {
-            if (mPosY >= 0xdac000)
+            if (mPos.y >= 0xdac000)
                 return 0;
         }
     }

@@ -66,9 +66,9 @@ struct daYegg_c : dEnemyBase_c {
     daPly_c *mPlayer; /* 0x38c */
     /* A 4x3 matrix of twelve words. It is the Matrix4x3 argument of both
        dActor_c::DropShadow* calls, so it is the drop shadow's transform; the
-       shadow code builds it from mAngleY and mPos >> 3 (words 9..11 are the
+       shadow code builds it from mAngle.y and mPos >> 3 (words 9..11 are the
        translation). */
-    s32 mShadowMtx[12];                         /* 0x390 */
+    Matrix4x3 mShadowMtx; /* 0x390 */
     /* InitResources copies the actor's own position here once, and nothing
        migrated writes it again. */
     Vector3 mSpawnPos; /* 0x3c0 */
@@ -79,8 +79,8 @@ struct daYegg_c : dEnemyBase_c {
        offset rotated by mEasedAngle. */
     Vector3 mHoldTarget; /* 0x3d8 */
     /* TWO s16 triples. State 0 (ExecuteFollowPlayer) steps the second toward the
-       first with ApproachAngle and copies its Y into mAngleY; both are seeded
-       from mAngleX/Y/Z in InitResources and from the daPly_c's angles in
+       first with ApproachAngle and copies its Y into mAngle.y; both are seeded
+       from mAngle.x/.y/.z in InitResources and from the daPly_c's angles in
        EnterFollowPlayer. */
     s16 mGoalAngleX;                            /* 0x3e4 */
     s16 mGoalAngleY;                            /* 0x3e6 */
@@ -125,7 +125,7 @@ struct daYegg_c : dEnemyBase_c {
     u8  mBurstDone;                             /* 0x426 -- set at the end of
                                                    func_ov002_020edca4, which returns at
                                                    once if it is already set */
-    u8  mStarSlot;                              /* 0x427 -- dActor_c::TrackStar's answer,
+    s8 mStarSlot;                               /* 0x427 -- dActor_c::TrackStar's answer,
                                                    the same shape as daIDonketu_c's */
     /* param1 >> 4. Bits 0-1: the variant func_ov002_020ec654 tests. Bits 2-5:
        how many coins GetCoinPayoutCount pays. Bit 6: pays a blue coin
@@ -157,6 +157,8 @@ struct daYegg_c : dEnemyBase_c {
     void ExecuteFollowPlayer();
     void EnterFollowPlayer();
     void RunState();
+    void func_ov002_020ed63c(int i);
+    void func_ov002_020edca4();
     int IsStalled();
     void UpdateTilt();
     void UpdateShadow();
