@@ -29,7 +29,6 @@ struct Vector3_16;
 extern "C" {
 int AngleDiff(int, int);
 }
-short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 
 /* ov085 statics. This file does not include decl_common.h.
  * data_ov085_0212f280 is the seven animation files, defined below. */
@@ -278,14 +277,17 @@ int daPeach_c::InitState1() {
     return 1;
 }
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 /* The same liveness question IsTouchingPlayer asks, written out here
  * instead of called -- the ROM inlines it at this one site. */
 int daPeach_c::InitState3() {
     if (mCylinder.hitFlags & 0x8000000) {
         dActor_c *a = dActor_c::FindWithID(mCylinder.otherOwner);
         if (a) {
-            int match = (a->actorID == 0xbf) ? 1 : 0;
-            if (match != 0) {
+            if (IsPlayerActor(a)) {
                 mTalkPlayer = (daPly_c *)a;
                 if (mTalkPlayer->StartTalk(*this, false)) {
                     SetState(1);

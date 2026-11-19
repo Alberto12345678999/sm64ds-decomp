@@ -1,6 +1,6 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
-/* func_0204a730 @ 0x0204a730 (arm9, size 0x6fc)   [mwccarm 2004/b56]
+/* SPLEmitter_Update @ 0x0204a730 (arm9, size 0x6fc)   [mwccarm 2004/b56]
  * Particle system update: emit, run the per-particle animation and behavior
  * tables, integrate, spawn children and retire expired particles, then the
  * same for the child particles. The child loop's time byte is staged in an int
@@ -8,10 +8,10 @@
  * the ROM keeps it in a register across it.
  */
 
-extern void func_0204c584(void *self, void *arg);
-extern void func_0204c304(void *node, void *self, void *arg);
-extern void *func_0204d8e8(void *listHead, void *node);
-extern void func_0204d9a0(void *list, void *node);
+extern void SPLEmitter_EmitParticles(void *self, void *arg);
+extern void SPLEmitter_EmitChildren(void *node, void *self, void *arg);
+extern void *SPLList_Erase(void *listHead, void *node);
+extern void SPLList_PushFront(void *list, void *node);
 
 typedef void (*Cb1)(void *, void *, int);
 typedef void (*Cb2)(u32, void *, void *);
@@ -171,7 +171,7 @@ extern void SPLAnim_Texture(void *, void *, int);
 extern void SPLAnim_ChildScale(void *, void *, int);
 extern void SPLAnim_ChildAlpha(void *, void *, int);
 
-void func_0204a730(void *arg0, void *self) {
+void SPLEmitter_Update(void *manager, void *self) {
     UpdateDef *sb;
     PtclNode *next;
     UpdateChild *cfg;
@@ -192,7 +192,7 @@ void func_0204a730(void *arg0, void *self) {
     s32 i;
     s32 n;
     PtclSystem *sys = (PtclSystem *)self;
-    PtclManager *mgr = (PtclManager *)arg0;
+    PtclManager *mgr = (PtclManager *)manager;
 
     sb = sys->def;
     cfg = sb->child;
@@ -200,14 +200,14 @@ void func_0204a730(void *arg0, void *self) {
     flags = data->flags;
     i = 0;
     n = 0;
-    drag = (s32)data->airResistance + 0x180;
+    drag = data->airResistance + 0x180;
     emitterLifeTime = data->emitterLifeTime;
     behaviorCount = sb->behaviorCount;
 
-    if (emitterLifeTime == 0 || (u16)sys->age < emitterLifeTime) {
-        if ((u16)sys->age % (u8)sys->emitInterval == 0) {
+    if (emitterLifeTime == 0 || sys->age < emitterLifeTime) {
+        if (sys->age % sys->emitInterval == 0) {
             if (!sys->terminate && !sys->stopGenerate) {
-                func_0204c584(self, &mgr->freeParticles);
+                SPLEmitter_EmitParticles(self, &mgr->freeParticles);
             }
         }
     }
@@ -247,8 +247,8 @@ void func_0204a730(void *arg0, void *self) {
             next = node->next;
             ratio = node->age;
 
-            time[0] = (u8)((s32)(node->lifeRateFactor * ratio) >> 8);
-            time[1] = (u8)((s32)(node->loopTimeFactor * ratio) >> 8);
+            time[0] = (u8)((node->lifeRateFactor * ratio) >> 8);
+            time[1] = (u8)((node->loopTimeFactor * ratio) >> 8);
 
             i = 0;
             if (n > 0) {
@@ -272,7 +272,7 @@ void func_0204a730(void *arg0, void *self) {
                     Ent2 *tbl2 = sb->behaviors;
                     tbl2[j].func(tbl2[j].data, node, &acc[0]);
                     j += 1;
-                } while (j < (s32)behaviorCount);
+                } while (j < behaviorCount);
             }
 
             node->angle += node->angularSpeed;
@@ -288,18 +288,18 @@ void func_0204a730(void *arg0, void *self) {
 
             if (emitChildren != 0) {
                 u16 life = node->age;
-                s32 a = (s32)node->lifetime << 12;
-                s32 b = ((s32)cfg->emissionDelay + 1) << 12;
+                s32 a = node->lifetime << 12;
+                s32 b = (cfg->emissionDelay + 1) << 12;
                 s32 r1 = FX_MUL(a, b);
-                s32 r0 = ((s32)life << 12) - (r1 >> 8);
-                if (life != 0 && r0 >= 0 && ((r0 >> 12) % (u8)cfg->emissionInterval) == 0) {
-                    func_0204c304(node, self, &mgr->freeParticles);
+                s32 r0 = (life << 12) - (r1 >> 8);
+                if (life != 0 && r0 >= 0 && ((r0 >> 12) % cfg->emissionInterval) == 0) {
+                    SPLEmitter_EmitChildren(node, self, &mgr->freeParticles);
                 }
             }
 
             node->age++;
             if (node->age > node->lifetime) {
-                func_0204d9a0(&mgr->freeParticles, func_0204d8e8(&sys->particles, node));
+                SPLList_PushFront(&mgr->freeParticles, SPLList_Erase(&sys->particles, node));
             }
 
             node = next;
@@ -334,7 +334,7 @@ void func_0204a730(void *arg0, void *self) {
                 age = child->age;
                 childNext = child->next;
                 lifetime = child->lifetime;
-                time[0] = (u8)(((s32)(age << 8)) / (s32)lifetime);
+                time[0] = (u8)((age << 8) / lifetime);
 
                 k = 0;
                 if (n2 > 0) {
@@ -359,7 +359,7 @@ void func_0204a730(void *arg0, void *self) {
                         Ent2 *tbl2 = sb->behaviors;
                         tbl2[k].func(tbl2[k].data, child, &acc[0]);
                         k += 1;
-                    } while (k < (s32)behaviorCount);
+                    } while (k < behaviorCount);
                 }
 
                 child->angle += child->angularSpeed;
@@ -375,7 +375,7 @@ void func_0204a730(void *arg0, void *self) {
                 child->age++;
 
                 if (child->age > child->lifetime) {
-                    func_0204d9a0(&mgr->freeParticles, func_0204d8e8(&sys->particles2, child));
+                    SPLList_PushFront(&mgr->freeParticles, SPLList_Erase(&sys->particles2, child));
                 }
 
                 child = childNext;

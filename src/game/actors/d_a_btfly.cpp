@@ -53,6 +53,7 @@ enum daBtfly_c_AssetId {
 #include "nitro/fx/fx_trig.h"
 #include "math/Approach.h"
 #include "LevelRng.h"
+#include "math/MtxStack.h"
 
 /* Lays .text down in source order (see the note at the top). */
 #pragma defer_codegen off
@@ -79,10 +80,7 @@ void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 /* local extern: CalcLib.h clashes with this TU's C Vec3_HorzLen (int) and Vec3_Asr (void *) */
 int Vec3_HorzLen(const Vector3 *v);
 void Vec3_Asr(void *d, void *s, int sh);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 ang);
 int RandomIntInternal(int *seed);
-extern Matrix4x3 data_020a0e68; /* scratch matrix */
 /* Init LoadFile: ov002 BMD shared with the other small fauna, this overlay's
  * BCA, the still-model BMD, and the animated-model BMD. Cleanup Release. */
 extern SharedFilePtr data_ov002_0210d9d8;
@@ -97,6 +95,10 @@ s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 /* One ~daBtfly_c() emits both D1 and D0. */
 daBtfly_c::~daBtfly_c()
 {
+}
+
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
 }
 
 void daBtfly_c::State7()
@@ -134,12 +136,11 @@ void daBtfly_c::State7()
     }
     /* mClsnFlags & 0x10 is func_02035638. No accessor; IsOnGround is mFlags & 0x10. */
     if (hasContact || mWithMeshClsn.IsOnWall() || mWithMeshClsn.IsOnGround() ||
-        func_02035638((u8 *)&mWithMeshClsn) || mStateTimer > 157) {
+        func_02035638(&mWithMeshClsn) || mStateTimer > 157) {
         if (hasContact != 0) {
             dActor_c *hit = dActor_c::FindWithID(mdCcAcPos_c.otherOwner);
             if (hit != 0) {
-                int isPlayer = (hit->actorID == 0xbf);
-                if (isPlayer != 0) {
+                if (IsPlayerActor(hit)) {
                     Vector3 pos;
                     pos.x = mPos.x;
                     pos.y = mPos.y;
@@ -236,7 +237,7 @@ void daBtfly_c::State4()
         if (DistToCPlayer() >= 0xc8000)
             return;
         {
-            int sb = (int)((unsigned int)RandomIntInternal(&data_0209e650.value) % 3);
+            int sb = (unsigned int)RandomIntInternal(&data_0209e650.value) % 3;
             int sel;
             int i;
             int mask = typ & 0x30;
@@ -278,7 +279,7 @@ void daBtfly_c::State3()
     UpdatePos(0);
 
     mPos.y -= FX_MUL(mHorzSpeed, FX_SinIdx((unsigned short)mPrevAngle.x >> 4)) +
-              FX_CosIdx((unsigned short)(short)((mStateTimer << 16) / 100) >> 4) * (short)20 / 4;
+              FX_CosIdx((unsigned short)(short)((mStateTimer << 16) / 100) >> 4) * 20 / 4;
 
     mStateTimer = mStateTimer + 1;
     if (mStateTimer > 100)
@@ -468,7 +469,7 @@ int daBtfly_c::InitResources()
     v.z = 0;
     mdCcAcPos_c.Init(this, v, 0x32000, 0x64000, 0x200000, 0);
 
-    int sub = (int)(u8)(param1 & 0x30);
+    int sub = (u8)(param1 & 0x30);
     if (sub != 0x10 && sub != 0x20) {
         mKind = 0;
         mHorzSpeed = 0x7800;

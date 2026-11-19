@@ -128,7 +128,6 @@ extern UpdownClpsSlot data_ov091_02134c38[];
 extern s8 gCurrentSublevel;
 
 extern "C" {
-void Matrix4x3_FromRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
@@ -146,6 +145,10 @@ daObjRotateUpdownLift_c::~daObjRotateUpdownLift_c()
 }
 
 // 0x02130fac (0xc4)
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
 /* Put a killed lift back on its spawn node. The watcher calls this. */
 void daObjRotateUpdownLift_c::func_ov091_02130fac()
 {
@@ -185,13 +188,15 @@ void daObjRotateUpdownLift_c::Kill()
         mMeshCollider.Disable();
 }
 
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
 // 0x021310fc (0x64)
 /* HS_UPDOWN_LIFT ignores the hit. The others count it, play 0x1e, and
    snap yaw back to the previous angle. */
 void daObjRotateUpdownLift_c::OnHitByMegaChar(daPly_c &player) {
-    unsigned short id = actorID;
-    int isHs = (id == 0x1e);
-    if (isHs)
+    if (IsActorID(this, 0x1e))
         return;
     player.IncMegaKillCount();
     func_02012694(0x1e, &mCamSpacePos);
@@ -327,11 +332,9 @@ int daObjRotateUpdownLift_c::Behavior()
             if (platform0 != 0) {
                 platform1 = mPlatform1;
                 if (platform1 != 0) {
-                    int offScreen;
                     if (platform0->mIsDead != 0 && platform1->mIsDead != 0)
                         keepSound = 0;
-                    offScreen = (mFlags & 8) ? 1 : 0;
-                    if (offScreen != 0) {
+                    if (IsOffScreen(this)) {
                         if (DistToCPlayer() > 0x7d0000) {
                             platform0 = mPlatform0;
                             if (platform0->mIsDead != 0)
@@ -449,8 +452,7 @@ int daObjRotateUpdownLift_c::InitResources()
 
     mVariant = 0;
     {
-        int isHs = (actorID == 0x1e);
-        if (isHs)
+        if (IsActorID(this, 0x1e))
             mVariant = 2;
         else if (gCurrentSublevel == 7)
             mVariant = 1;

@@ -58,7 +58,6 @@ struct Event {
 #define ICON_Y_VISIBLE(y) ((u16)((y) + 0x10) < 0xe0)
 
 extern "C" {
-extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern signed char gCurrentSublevel;
 extern u8 gCurrentStarId;
 }
@@ -116,7 +115,6 @@ struct MinimapDesc;
 extern void UpdateMinimap(MinimapDesc *a, u32 b, u32 c, u32 d, u32 e);
 Vector3 *Vec3_DivScalarInPlace(Vector3 *v, int s);
 extern "C" {
-void Vec3_MulScalarInPlace(Vector3 *v, int s);
 void Vec3_RotateYAndTranslate(Vector3 *out, const Vector3 *in, short ang, const Vector3 *t);
 }
 
@@ -362,6 +360,10 @@ void dMap_c::OnPendingDestroy()
     this;
 }
 
+static inline int IsVsMode(void) {
+    return gGameMode == 1;
+}
+
 int dMap_c::Render()
 {
     u8 flag20c = data_0209f20c;
@@ -375,12 +377,11 @@ int dMap_c::Render()
         !(data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE) ||
         (flag20c != 0 && gLevelClearStep < 3)) {
         daPly_c *player = gPlayers[idx];
-        int vs = (gGameMode == 1);
-        if (vs != 0) {
+        if (IsVsMode()) {
             OAM::RenderSub(OAM::MM_VS_PLAYER_ICONS[player->param1 + idx * 4],
                            this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
             {
-                u16 ang = (s16)this->mAngle + ((player->mAngle.y ^ 0xffff) + 0x8001);
+                u16 ang = this->mAngle + ((player->mAngle.y ^ 0xffff) + 0x8001);
                 s16 cs = FX_CosIdx((u16)(s16)ang >> 4);
                 this->mArrowMatrixA = (s16)FX_MUL(cs, this->mArrowScale);
                 s16 sn = FX_SinIdx((u16)(s16)ang >> 4);
@@ -428,7 +429,7 @@ int dMap_c::Render()
                         if (s == 1)
                             ang = (player->mAngle.y ^ 0xffff) + 0x8001;
                         else
-                            ang = (s16)this->mAngle + ((player->mAngle.y ^ 0xffff) + 0x8001);
+                            ang = this->mAngle + ((player->mAngle.y ^ 0xffff) + 0x8001);
                         {
                             s16 cs = FX_CosIdx((u16)(s16)ang >> 4);
                             this->mArrowMatrixA = (s16)FX_MUL(cs, this->mArrowScale);
@@ -490,8 +491,7 @@ int dMap_c::Render()
         {
             u8 *p1 = gMapCapIconShown;
             u8 *p2 = gMapCapIconCharacters;
-            int vs2 = (gGameMode == 1);
-            OamAttr **tbl = (vs2 != 0) ? OAM::MM_VS_CAP_ICONS : OAM::MM_CAP_ICONS;
+            OamAttr **tbl = IsVsMode() ? OAM::MM_VS_CAP_ICONS : OAM::MM_CAP_ICONS;
             for (i = 0; i < 9; i++, p1++, p2++) {
                 if (*p1 != 0) {
                     if (data_ov002_02111148 == this->mCapMapIDs[i]) {
@@ -513,7 +513,7 @@ int dMap_c::Render()
                 this->mStarKeyBlinkTimer = 0;
             if (this->mStarKeyMapID >= 0) {
                 if (data_0209d660 == 0 || !(data_020a0db0 & 8)) {
-                    int sel = (this->mStarKeyBlinkTimer < 2) ? 1 : 0;
+                    int sel = this->mStarKeyBlinkTimer < 2;
                     OAM::Render(true, OAM::MM_STAR_KEYS[sel], this->mStarKeyIconX,
                                 this->mStarKeyIconY, -1, 2, 0);
                 }
@@ -538,9 +538,6 @@ int dMap_c::Render()
 
 /* One frame of the minimap: pick the map for the focus object, scroll and
  * scale the BG, then project every icon onto the screen.
- *
- * mAngle is a u16 in the header; the one `+= 0x40` reads it as s16, hence
- * the cast at that site.
  */
 s32 dMap_c::Behavior()
 {
@@ -583,8 +580,7 @@ s32 dMap_c::Behavior()
                 G2S_SetBG2ControlText(GX_BG_SCRSIZE_TEXT_512x256, GX_BG_COLORMODE_16,
                                       GX_BG_SCRBASE_0xa800, GX_BG_CHARBASE_0x00000);
         } else {
-            s32 b = (gGameMode == 1);
-            if (b != 0 || (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
+            if (IsVsMode() || (data_0209caa0.file.flags2 & FILE_FLAGS2_INTRO_DONE)) {
                 gSubScreenLayers &= ~4;
                 if (!(u8)flagsOr) {
                     GXS_SetVisiblePlane(gSubScreenLayers);
@@ -608,13 +604,8 @@ s32 dMap_c::Behavior()
             this->mAngle = 0;
         } else if (this->mInIntroCutscene != 0) {
             if (gMapIntroRotating != 0) {
-                /* Kept (#821 r76): a sign pun on a scalar; no block-copy or type lever
-                   (r72-r75) applies to this scalar pin.
-                   Kept (#821 r80): getter tried -> a u16 angle accessor in the step is 0xcf8
-                   of 0xcfc.
-                   measured (#821 r68): the plain u16 `+=` loads ldrh, ROM ldrsh. */
-                *(s16 *)&this->mAngle += 0x40;
-                if (this->mAngle >= 0x8000)
+                this->mAngle += 0x40;
+                if ((u16)this->mAngle >= 0x8000)
                     gMapIntroRotating = 0;
             }
         } else if (data_0209d660 == 0 && !(cam->mFlags & 0xc000) && !(cam->mFlags & 8)) {
@@ -649,11 +640,11 @@ s32 dMap_c::Behavior()
 
         this->mCurrentScale = FX_Div(this->mScale, this->mInvScale);
         {
-            fx32 cs = FX_CosIdx(this->mAngle >> 4);
+            fx32 cs = FX_CosIdx((u16)this->mAngle >> 4);
             this->mBgMatrixA = FX_MUL(cs, this->mInvScale);
         }
         {
-            fx32 sn = FX_SinIdx(this->mAngle >> 4);
+            fx32 sn = FX_SinIdx((u16)this->mAngle >> 4);
             this->mBgMatrixB = FX_MUL(sn, this->mInvScale);
         }
         this->mBgMatrixC = -this->mBgMatrixB;
@@ -883,8 +874,7 @@ int dMap_c::InitResources()
     }
 
     {
-        int b = (gGameMode == 1);
-        if (!b) {
+        if (!IsVsMode()) {
             UpdateLevelSpecific();
         }
     }

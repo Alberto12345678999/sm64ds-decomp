@@ -36,6 +36,8 @@ enum Scuttlebug_AssetId {
 #include "Particle__System.h"
 #include "math/Approach.h"
 #include "nitro/fx/fx_cp.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* ------------------------------------------------------------------------
  * Local value shapes carried from the legacy one-function files.
@@ -59,15 +61,6 @@ typedef struct { PMF enter, run; } ScuttlebugStateRow;
  * ------------------------------------------------------------------------ */
 
 extern "C" int AngleDiff(int a, int b);
-extern "C" unsigned short DecIfAbove0_Short(void *p);
-/* local extern: CalcLib.h clashes with this TU's C DecIfAbove0_Short (void *) */
-extern "C" int Vec3_Dist(const Vector3 *a, const Vector3 *b);
-/* local extern: CalcLib.h clashes with this TU's C DecIfAbove0_Short (void *) */
-extern "C" short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-
-extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
-extern "C" void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-extern "C" void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 
 void func_02012694(unsigned int id, const Vector3 *pos);
 
@@ -75,7 +68,6 @@ void func_02012694(unsigned int id, const Vector3 *pos);
  * back-references the pointer type). */
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
-extern Matrix4x3 data_020a0e68;           /* scratch matrix        */
 
 /* Intra-TU forward declarations.  mwccarm lays .text down in reverse source
  * order, so this file is written ROM-descending and nearly every intra-TU call
@@ -204,9 +196,12 @@ int daSpd_c::Behavior() {
     return 1;
 }
 
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
 int daSpd_c::Render() {
-    int flag = (mFlags & 0x40000) ? 1 : 0;
-    if (flag || !mState)
+    if (IsInYoshiMouth(this) || !mState)
         return 1;
     /* dExtAnmModel_c slot 5. The call stays virtual. */
     mAnmModel.Render(0);
@@ -437,29 +432,26 @@ int daSpd_c::func_ov071_0211fb0c() {
     return 1;
 }
 
+static inline int IsFlagSet(dActor_c *actor, u32 bit) {
+    return (actor->mFlags & bit) != 0;
+}
+
+static inline int IsBeingEaten(dActor_c *actor) {
+    return (actor->mFlags & 0x20000) != 0;
+}
+
 int daSpd_c::func_ov071_0211fa54() {
-    int b0 = (int)((mFlags & 0x40000) != 0);
-    if (b0 != 0) {
+    if (IsInYoshiMouth(this)) {
         int *src = &mEatingPlayer->mPos.x;
         mPos.x = src[0];
         mPos.y = src[1];
         mPos.z = src[2];
     }
-    {
-        int v = mFlags;
-        int b1 = (int)((v & 0x80000) != 0);
-        if (b1 != 0) {
-            SetState(7);
-        } else {
-            int b2 = (int)((v & 0x20000) != 0);
-            if (b2 == 0) {
-                int b3 = (int)((v & 0x40000) != 0);
-                if (b3 == 0) {
-                    mEatingPlayer = 0;
-                    SetState(2);
-                }
-            }
-        }
+    if (IsFlagSet(this, 0x80000)) {
+        SetState(7);
+    } else if (!IsBeingEaten(this) && !IsInYoshiMouth(this)) {
+        mEatingPlayer = 0;
+        SetState(2);
     }
     mdCcAc_c.Clear();
     return 1;
@@ -536,8 +528,7 @@ int daSpd_c::func_ov071_0211f694() {
 }
 
 void daSpd_c::func_ov071_0211f524() {
-    int b = (int)((mFlags & 0x40000) != 0);
-    if (b) {
+    if (IsInYoshiMouth(this)) {
         if (mState == 0)
             return;
     }
@@ -600,11 +591,11 @@ void daSpd_c::func_ov071_0211f29c() {
     if (hitPlayer == 0)
         return;
 
-    b = (int)(hitPlayer->actorID == 0xbf);
+    b = (hitPlayer->actorID == 0xbf);
     if (b == 0)
         return;
 
-    b = (int)((mFlags & 0x20000) != 0);
+    b = ((mFlags & 0x20000) != 0);
     if (b != 0) {
         SetState(6);
         return;

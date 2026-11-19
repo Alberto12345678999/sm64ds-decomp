@@ -62,12 +62,6 @@ extern fBase_c *gCurrentScene;
 typedef void (Heyho::*HeyhoMotion)();
 
 extern "C" {
-extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
-extern void Vec3_MulScalarInPlace(Vector3 *v, int s);
-extern int NormalizeVec3IfNonZero(Vector3 *v);
-
 
 extern int sHeyhoUnsettledCount;
 extern int sJumpComboCount;
@@ -573,7 +567,7 @@ void Heyho::StartMotionVShape() {
 
 /* ---- Heyho::MotionVShape ---- */
 void Heyho::MotionVShape() {
-    Vector3 sp0, spC, sp18, sp24;
+    Vector3 toTop, upDir, toBottom, downDir;
     int r5, r0v;
     int t;
 
@@ -591,21 +585,21 @@ void Heyho::MotionVShape() {
             mWaypoint.x = mPath.range.left;
             mWaypoint.y = mPath.range.top;
         }
-        Vec3_Sub(&sp0, &mWaypoint, &mPos);
-        mVel.x = sp0.x;
-        mVel.y = sp0.y;
-        mVel.z = sp0.z;
-        func_0203ce80(&spC, &mVel);
+        Vec3_Sub(&toTop, &mWaypoint, &mPos);
+        mVel.x = toTop.x;
+        mVel.y = toTop.y;
+        mVel.z = toTop.z;
+        func_0203ce80(&upDir, &mVel);
         Vec3_MulScalarInPlace(&mVel, mSpeed);
         mPhase = 0;
     } else if (r5 != 0 && r0v != 0 && mWaypoint.y == mPath.range.top) {
         mWaypoint.x = (mPath.range.left + mPath.range.right) >> 1;
         mWaypoint.y = mPath.range.bottom;
-        Vec3_Sub(&sp18, &mWaypoint, &mPos);
-        mVel.x = sp18.x;
-        mVel.y = sp18.y;
-        mVel.z = sp18.z;
-        func_0203ce80(&sp24, &mVel);
+        Vec3_Sub(&toBottom, &mWaypoint, &mPos);
+        mVel.x = toBottom.x;
+        mVel.y = toBottom.y;
+        mVel.z = toBottom.z;
+        func_0203ce80(&downDir, &mVel);
         Vec3_MulScalarInPlace(&mVel, mSpeed);
         mPhase = 0;
     }
@@ -696,7 +690,7 @@ void Heyho::StartMotionDiagonal() {
 
 /* ---- Heyho::MotionDiagonal ---- */
 void Heyho::MotionDiagonal() {
-    Vector3 sp0, spC, sp18, sp24;
+    Vector3 toTop, upDir, toBottom, downDir;
     int r5, r0v;
     int t;
 
@@ -708,21 +702,21 @@ void Heyho::MotionDiagonal() {
     if (r5 != 0 && r0v != 0 && mWaypoint.y == mPath.range.bottom) {
         mWaypoint.x = mPath.range.left;
         mWaypoint.y = mPath.range.top;
-        Vec3_Sub(&sp0, &mWaypoint, &mPos);
-        mVel.x = sp0.x;
-        mVel.y = sp0.y;
-        mVel.z = sp0.z;
-        func_0203ce80(&spC, &mVel);
+        Vec3_Sub(&toTop, &mWaypoint, &mPos);
+        mVel.x = toTop.x;
+        mVel.y = toTop.y;
+        mVel.z = toTop.z;
+        func_0203ce80(&upDir, &mVel);
         Vec3_MulScalarInPlace(&mVel, mSpeed);
         mPhase = 0;
     } else if (r5 != 0 && r0v != 0 && mWaypoint.y == mPath.range.top) {
         mWaypoint.x = mPath.range.right;
         mWaypoint.y = mPath.range.bottom;
-        Vec3_Sub(&sp18, &mWaypoint, &mPos);
-        mVel.x = sp18.x;
-        mVel.y = sp18.y;
-        mVel.z = sp18.z;
-        func_0203ce80(&sp24, &mVel);
+        Vec3_Sub(&toBottom, &mWaypoint, &mPos);
+        mVel.x = toBottom.x;
+        mVel.y = toBottom.y;
+        mVel.z = toBottom.z;
+        func_0203ce80(&downDir, &mVel);
         Vec3_MulScalarInPlace(&mVel, mSpeed);
         mPhase = 0;
     }
@@ -783,7 +777,7 @@ void Heyho::StartMotionDiagonalMirror() {
 
 /* ---- Heyho::MotionDiagonalMirror ---- */
 void Heyho::MotionDiagonalMirror() {
-    Vector3 sp0, spC, sp18, sp24;
+    Vector3 toTop, upDir, toBottom, downDir;
     int r5, r0v;
     int t;
 
@@ -795,21 +789,21 @@ void Heyho::MotionDiagonalMirror() {
     if (r5 != 0 && r0v != 0 && mWaypoint.y == mPath.range.bottom) {
         mWaypoint.x = mPath.range.right;
         mWaypoint.y = mPath.range.top;
-        Vec3_Sub(&sp0, &mWaypoint, &mPos);
-        mVel.x = sp0.x;
-        mVel.y = sp0.y;
-        mVel.z = sp0.z;
-        func_0203ce80(&spC, &mVel);
+        Vec3_Sub(&toTop, &mWaypoint, &mPos);
+        mVel.x = toTop.x;
+        mVel.y = toTop.y;
+        mVel.z = toTop.z;
+        func_0203ce80(&upDir, &mVel);
         Vec3_MulScalarInPlace(&mVel, mSpeed);
         mPhase = 0;
     } else if (r5 != 0 && r0v != 0 && mWaypoint.y == mPath.range.top) {
         mWaypoint.x = mPath.range.left;
         mWaypoint.y = mPath.range.bottom;
-        Vec3_Sub(&sp18, &mWaypoint, &mPos);
-        mVel.x = sp18.x;
-        mVel.y = sp18.y;
-        mVel.z = sp18.z;
-        func_0203ce80(&sp24, &mVel);
+        Vec3_Sub(&toBottom, &mWaypoint, &mPos);
+        mVel.x = toBottom.x;
+        mVel.y = toBottom.y;
+        mVel.z = toBottom.z;
+        func_0203ce80(&downDir, &mVel);
         Vec3_MulScalarInPlace(&mVel, mSpeed);
         mPhase = 0;
     }
@@ -1054,7 +1048,7 @@ void Heyho::Settle() {
                                                         mPos.z << 3);
     b = (Particle::System *)Particle::System::NewSimple(kPtclPoofDustB, mPos.x << 3, mPos.y << 3,
                                                         mPos.z << 3);
-    t = (int)(mSize << 0x1c) >> 0x10;
+    t = (mSize << 0x1c) >> 0x10;
     /* Both stores go through a; the cartridge never sets b's scale. */
     if (a)
         a->callbackScale = t;
@@ -1297,7 +1291,11 @@ void Heyho_SeparateAll(void) {
             for (j = t + 1; j < sHeyhoCount; j++) {
                 if (sHeyhos[j].IsChasing() != 0) {
                     /* The long long widening is load-bearing (re-measured 2026-11-11):
-                       dropping it costs Heyho_SeparateAll 15 words. */
+                       dropping it costs Heyho_SeparateAll 15 words. Kept (#821 r97):
+                       with it dropped, `Heyho *oj = &sHeyhos[j];` declared here is
+                       7 words off (r7/r8 swap the j stride and oj); oi, pi, ai, v1
+                       and v2 declared at first use as well are 15 to 18, and oj
+                       declared at the top of the j loop is 71 to 92 (size -4/-20). */
                     oj = (Heyho *)((long long)(int)&sHeyhos[j]);
                     pj = &oj->mPos;
                     Vec3_Sub(&v1, pi, pj);

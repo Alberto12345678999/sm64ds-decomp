@@ -485,7 +485,7 @@ void daRNk_c::func_ov062_0211a1f4()
             this->mState = daRNk_c::STATE_PULL_UP;
             this->mStep = 0;
             gRaceTimer.StopTimer();
-            this->mPlayerWon = (flag->mHasTouchedFlag != 0) ? 1 : 0;
+            this->mPlayerWon = flag->mHasTouchedFlag != 0;
             flag->mHasTouchedFlag = 1;
             return;
         }
@@ -560,7 +560,7 @@ void daRNk_c::func_ov062_0211a1f4()
             this->mStep = 0;
             gRaceTimer.StopTimer();
             flag = (daRFlag_c *)dActor_c::FindWithID(this->mFlagID);
-            this->mPlayerWon = (flag->mHasTouchedFlag != 0) ? 1 : 0;
+            this->mPlayerWon = flag->mHasTouchedFlag != 0;
             flag->mHasTouchedFlag = 1;
             SET_ANIM(this, ANIM_LAND, kAnimPlayOnce);
             return;
@@ -803,7 +803,7 @@ int daRNk_c::func_ov062_02119af0() {
     prevZ = p->mPrevPathPt.z;
     dz = targetZ - posZ;
     dzc = targetZ - prevZ;
-    p->mTargetAngleY = (short)cstd::atan2(dx, dz);
+    p->mTargetAngleY = cstd::atan2(dx, dz);
     int dot = (dxc >> 0xc) * (dx >> 0xc) + (dzc >> 0xc) * (dz >> 0xc);
     if (dot <= 0 || Vec3_Dist(&p->mPos, &p->mPathTarget) < (p->mHorzSpeed >> 1)) {
         int v = p->mPathTarget.x;
@@ -816,7 +816,7 @@ int daRNk_c::func_ov062_02119af0() {
         }
         int idx = p->mCurPathPt;
         if (idx == 0) return PATH_DONE;
-        p->mPathPtr.GetNode(p->mPathTarget, (unsigned)idx);
+        p->mPathPtr.GetNode(p->mPathTarget, idx);
         return PATH_NODE_REACHED;
     }
     return PATH_TRAVELLING;
@@ -848,41 +848,27 @@ int daRNk_c::func_ov062_021199ac()
     s32 r;
 
     other = (daIbl_c *)this->ClosestWithActorID(kIronBallActorId);
-    if (other == 0)
-        goto ret0;
-    if (other->mVariant != 2)
-        goto ret0;
+    if (other != 0 && other->mVariant == 2) {
+        angle = Vec3_HorzAngle(&this->mPos, &other->mPos);
+        dist = Vec3_Dist(&this->mPos, &other->mPos);
+        selfAngle = this->mPrevAngle.y;
+        otherAngle = other->mPrevAngle.y;
+        idx = (s16)(otherAngle - selfAngle);
+        tableVal = FX_CosIdx(idx >> 4);
+        otherK = other->mHorzSpeed;
+        fixed1 = FX_MUL(otherK, tableVal);
 
-    angle = Vec3_HorzAngle(&this->mPos, &other->mPos);
-    dist = Vec3_Dist(&this->mPos, &other->mPos);
-    selfAngle = this->mPrevAngle.y;
-    otherAngle = other->mPrevAngle.y;
-    idx = (u16)(s16)(otherAngle - selfAngle);
-    tableVal = FX_CosIdx(idx >> 4);
-    otherK = other->mHorzSpeed;
-    fixed1 = FX_MUL(otherK, tableVal);
-
-    r = this->GetSubtraction(selfAngle, angle);
-    if (r < 0x4000) {
-        s32 selfK;
-        s32 fixed2;
-        if (dist >= kBallAheadRange)
-            goto ret0;
-        selfK = this->mHorzSpeed;
-        fixed2 = FX_MUL(selfK, 0xb33);
-        if (fixed1 < fixed2)
-            return BALL_AHEAD_JUMP;
-        this->mHorzSpeed -= 0x2000;
-        goto ret0;
-    } else {
-        if (dist >= kBallBehindRange)
-            goto ret0;
-        if (fixed1 > this->mHorzSpeed)
+        r = this->GetSubtraction(selfAngle, angle);
+        if (r < 0x4000) {
+            if (dist < kBallAheadRange) {
+                if (fixed1 < FX_MUL(this->mHorzSpeed, 0xb33))
+                    return BALL_AHEAD_JUMP;
+                this->mHorzSpeed -= 0x2000;
+            }
+        } else if (dist < kBallBehindRange && fixed1 > this->mHorzSpeed) {
             return BALL_BEHIND_STOP_AND_JUMP;
-        goto ret0;
+        }
     }
-
-ret0:
     return BALL_NONE;
 }
 

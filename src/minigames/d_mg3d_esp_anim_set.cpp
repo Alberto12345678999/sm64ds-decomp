@@ -53,6 +53,7 @@
 #include "math/Approach.h"
 #include "LevelRng.h"
 #include "math/CalcLib.h"
+#include "math/MtxStack.h"
 extern "C" void Mg_ShowBanner(int, int, int, int, int, short);
 extern "C" void Mg_SetSharedState(s32);
 extern "C" void FreeGfxSlotsById(int);
@@ -107,11 +108,6 @@ extern EspAnimSetAnimationFileHandle gEspCardOpenAnimFile;
 extern EspAnimSetModelFilePtr gEspHamonModelFile;
 
 extern EspAnimSetModelFilePtr gEspIrieModelFile;
-
-extern Matrix4x3 data_020a0e68;
-extern "C" {
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-}
 
 void func_02046208(void *a, unsigned int b, int c);
 
@@ -1249,7 +1245,7 @@ s32 dScMg3DEsp_c::Behavior()
    StartRound(-1). */
 s32 dScMg3DEsp_c::InitResources()
 {
-    Matrix4x3 tmp;
+    Matrix4x3 identity;
     void *f;
     void *r5v;
     void *r4v;
@@ -1284,9 +1280,9 @@ s32 dScMg3DEsp_c::InitResources()
     if (gIrieBackModelFile.func_020179b4(&mModel2, 1) == 0)
         return 0;
 
-    tmp = sEsp3DIdentityMtx;
+    identity = sEsp3DIdentityMtx;
     mModel1.mat4x3 = sEsp3DIdentityMtx;
-    mModel2.mat4x3 = tmp;
+    mModel2.mat4x3 = identity;
 
     gSubScreenLayers |= 4;
     /* sub BG2CNT, then the sub BG2 scroll offsets */

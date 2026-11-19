@@ -119,6 +119,7 @@ enum daObjHatenaBlock_c_AssetId {
 #include "LevelRng.h"
 #include "nitro/fx/fx_trig.h"
 #include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 struct CLPS_Block;
 struct KCL_File;
@@ -178,9 +179,6 @@ extern SharedFilePtr gPFlowerOpenModelFile;
 extern SharedFilePtr gPFlowerCloseModelFile;
 extern CLPS_Block data_ov002_0210d954;
 
-extern int RandomIntInternal(int *seed);
-extern u16 DecIfAbove0_Short(u16 *p);
-extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void hold_d_a_obj_hatena_block(void *thiz, void *kcl, void *mtx, int fix, short s,
                                       void *clps);
 
@@ -193,6 +191,10 @@ void func_ov102_02149684(int *dst, daObjHatenaBlock_c *src);
    predicates are what make the ROM materialize 0/1 before testing it. */
 static inline int IsVsMode(void) {
     return gGameMode == 1;
+}
+
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
 }
 
 static inline int IsActorID(dActor_c *actor, int id) {
@@ -369,22 +371,12 @@ int daObjHatenaBlock_c::InitResources()
         mStarTracked = TrackStar(mStarId, 2);
     }
 
-    {
-        int b16 = !(actorID != ACTOR_VS_ITEM_BLOCK);
-        if (b16 != 0) {
-            mContentType = 0;
-            dExtSimpleModel_c::LoadFile(data_ov002_0210da58);
-        }
+    if (IsActorID(this, ACTOR_VS_ITEM_BLOCK)) {
+        mContentType = 0;
+        dExtSimpleModel_c::LoadFile(data_ov002_0210da58);
     }
 
-    do {
-        int b14 = !(actorID != ACTOR_HATENA_BLOCK);
-        if (b14 == 0) {
-            int b15 = !(actorID != ACTOR_ITEM_BLOCK);
-            if (b15 == 0)
-                break;
-        }
-
+    if (IsActorID(this, ACTOR_HATENA_BLOCK) || IsActorID(this, ACTOR_ITEM_BLOCK)) {
         switch (mContentType) {
         case CONTENT_COINS:
         case CONTENT_STAR:
@@ -413,7 +405,7 @@ int daObjHatenaBlock_c::InitResources()
             dExtSimpleModel_c::LoadFile(gPFlowerCloseModelFile);
             break;
         }
-    } while (0);
+    }
     return 1;
 }
 
@@ -472,20 +464,13 @@ int daObjHatenaBlock_c::Behavior()
    mScale.x. Always returns 1. */
 int daObjHatenaBlock_c::Render()
 {
-    do {
-        if (mState == STATE_POPPED)
-            break;
-        if ((data_0209caa0.file.flags1 & SAVE_FLAGS1_BIT31) == 0) {
-            int b = (actorID == ACTOR_HATENA_BLOCK);
-            if (b != 0) {
-                mAnmModel.Render(0);
-                break;
-            }
-        }
-        {
+    if (mState != STATE_POPPED) {
+        if ((data_0209caa0.file.flags1 & SAVE_FLAGS1_BIT31) == 0 &&
+            IsActorID(this, ACTOR_HATENA_BLOCK))
+            mAnmModel.Render(0);
+        else
             mModel.Render(&mScale);
-        }
-    } while (0);
+    }
     return 1;
 }
 
@@ -496,21 +481,13 @@ int daObjHatenaBlock_c::Render()
    Always returns 1. */
 int daObjHatenaBlock_c::CleanupResources()
 {
-    int b, b2, b3;
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 
-    b = (int)(actorID == ACTOR_VS_ITEM_BLOCK);
-    if (b)
+    if (IsActorID(this, ACTOR_VS_ITEM_BLOCK))
         data_ov002_0210da58.Release();
 
-    do {
-        b2 = (int)(actorID == ACTOR_HATENA_BLOCK);
-        if (b2 == 0) {
-            b3 = (int)(actorID == ACTOR_ITEM_BLOCK);
-            if (b3 == 0)
-                break;
-        }
+    if (IsActorID(this, ACTOR_HATENA_BLOCK) || IsActorID(this, ACTOR_ITEM_BLOCK)) {
         switch (mContentType) {
         case CONTENT_STAR:
             UntrackStar(mStarTracked);
@@ -539,7 +516,7 @@ int daObjHatenaBlock_c::CleanupResources()
             gPFlowerCloseModelFile.Release();
             break;
         }
-    } while (0);
+    }
 
     switch (actorID - ACTOR_HATENA_BLOCK) {
     case 0:   /* HATENA_BLOCK */
@@ -581,8 +558,7 @@ void daObjHatenaBlock_c::UpdateModelMatrix() {
     mModel.mat4x3.t.z = mPos.z >> 3;
     if (data_0209caa0.file.flags1 & SAVE_FLAGS1_BIT31)
         return;
-    int b = (int)(actorID == ACTOR_HATENA_BLOCK);
-    if (b == 0)
+    if (!IsActorID(this, ACTOR_HATENA_BLOCK))
         return;
     mAnmModel.mat4x3 = mModel.mat4x3;
 }
@@ -604,10 +580,8 @@ void daObjHatenaBlock_c::UpdateModelMatrix() {
  * opacity 0xf. */
 void daObjHatenaBlock_c::UpdateDropShadow() {
     int shadowScale, height, paddedHeight;
-    int b0, b1;
 
-    b0 = (mFlags & 8) ? 1 : 0;
-    if (b0 == 0 || ((b1 = (gGameMode == 1) ? 1 : 0) != 0))
+    if (!IsOffScreen(this) || IsVsMode())
         mFloorY = GetFloorY();
     height = mPos.y - mFloorY;
     if (height <= 0x1000) height = 0x1000;
@@ -669,8 +643,7 @@ void daObjHatenaBlock_c::EnterIdle() {
 void daObjHatenaBlock_c::UpdateIdle() {
     daPly_c *player;
     if (!(data_0209caa0.file.flags1 & SAVE_FLAGS1_BIT31)) {
-        int b = (int)(actorID == ACTOR_HATENA_BLOCK);
-        if (b)
+        if (IsActorID(this, ACTOR_HATENA_BLOCK))
             return;
     }
     player = ClosestPlayer();
@@ -764,7 +737,7 @@ void daObjHatenaBlock_c::UpdateBouncing() {
         Particle::System::NewSimple(kPtclCapBlockBreak, pos.x, pos.y, pos.z);
         break;
     }
-    ch = (int)mHitterParam;
+    ch = mHitterParam;
     if (ch < 0) ch = 0; else if (ch > 3) ch = 3;
     typ = actorID;
     switch (typ - ACTOR_HATENA_BLOCK) {
@@ -934,7 +907,7 @@ void daObjHatenaBlock_c::SpawnPrizeMarioCap(int p1, int p2) {
     dActor_c* o;
     dCamera_c* g;
     func_ov102_02149684((int *)&pos, this);
-    o = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (unsigned int)(p2 | (p1 << 8)), pos, 0, mAreaId, -1);
+    o = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, p2 | (p1 << 8), pos, 0, mAreaId, -1);
     if (o == 0) return;
     g = gCamera;
     Vector3 vel(0, 0x11000, 0);
@@ -1064,10 +1037,10 @@ void daObjHatenaBlock_c::SpawnCoinSpray(Vector3 *pos, int n, unsigned int speed,
         a = dActor_c::Spawn(ACTOR_COIN, 2, *pos, 0, mAreaId, -1);
         if (a != 0) {
             do {
-                rnd = (unsigned int)RandomIntInternal(&data_0209e650.value);
+                rnd = RandomIntInternal(&data_0209e650.value);
                 dir = (int)((rnd >> 0x10) << 0x1b) >> 0x10;
             } while (dir == prevDir);
-            rnd = (unsigned int)RandomIntInternal(&data_0209e650.value);
+            rnd = RandomIntInternal(&data_0209e650.value);
             a->mPrevAngle.x = 0;
             q = rnd >> 0x10;
             speed = (speed * (q % 50 + 100)) / 100;
@@ -1088,7 +1061,7 @@ void daObjHatenaBlock_c::SpawnCoinSpray(Vector3 *pos, int n, unsigned int speed,
    dActor_c::GetWaterHeightWDW, the tree does not name 0x21. */
 int daObjHatenaBlock_c::IsHitBlocked() {
     if (gCurrentSublevel == 0x15) {
-        if ((int)(mHomePosY - 0x32000) <= data_0209f32c)
+        if ((mHomePosY - 0x32000) <= data_0209f32c)
             return 1;
     } else {
         if (gCurrentSublevel == 0x21)

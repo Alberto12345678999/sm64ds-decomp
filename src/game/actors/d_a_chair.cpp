@@ -78,7 +78,6 @@ enum ChairSfxId {
 /* local extern: arm9 C helpers with no shared header yet. Vec3_Sub takes the
    shared Vector3 interface; this TU keeps NitroSDK VecFx32 views. */
 extern "C" {
-void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 int AngleDiff(int a, int b);
 }
 
@@ -368,7 +367,7 @@ void daChair_c::State3() {
     ip = mTrackedAngle;
     sample = FX_SinIdx((u16)*ip >> 4);
     wrapped = angle;
-    offset = (s16)sample * (s16)0x50;
+    offset = sample * 0x50;
     if (ip != &mAngle.x) {
         mClsnOffset.x = -offset;
         mClsnOffset.y = 0;
@@ -381,10 +380,10 @@ void daChair_c::State3() {
     if (wrapped >= 0x4000) {
         s16 past = (wrapped - 0x4000);
         s16 tip = FX_SinIdx((u16)past >> 4);
-        mPos.y = (s16)tip * (s16)0x28 + (mHomePos.y + 0x28000);
+        mPos.y = tip * 0x28 + (mHomePos.y + 0x28000);
     } else {
         s16 tip = FX_SinIdx((u16)wrapped >> 4);
-        mPos.y = (s16)tip * (s16)0x28 + mHomePos.y;
+        mPos.y = tip * 0x28 + mHomePos.y;
     }
 }
 

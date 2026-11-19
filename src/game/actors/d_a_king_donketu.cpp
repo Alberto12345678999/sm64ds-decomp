@@ -419,7 +419,7 @@ s32 daKing_Donketu_c::HandleHit() {
     }
 
     {
-        int isBf = (int)(target->actorID == ACTOR_PLAYER);
+        int isBf = (target->actorID == ACTOR_PLAYER);
         if (isBf == 1) {
             daPly_c *player = (daPly_c *)target;
             if (player->mIsMega != 0) {
@@ -513,32 +513,27 @@ s32 daKing_Donketu_c::HandleHit() {
         return 1;
     }
 
-    {
-        Vector3 v2;
-        v2.x = mPos.x;
-        v2.y = mPos.y;
-        v2.z = mPos.z;
-        if (((daPly_c *)target)->Hurt(v2, 0, 0x14000, 1, 0, 1) == 0)
-            goto done0;
-    }
-    {
+    Vector3 v2;
+    v2.x = mPos.x;
+    v2.y = mPos.y;
+    v2.z = mPos.z;
+    if (((daPly_c *)target)->Hurt(v2, 0, 0x14000, 1, 0, 1) != 0) {
         s32 *pv = &target->mPos.x;
         Particle::System::NewSimple(kPtclChiefChillyHitPlayer, pv[0], pv[1], pv[2]);
+        if (mState == &data_ov073_021233d0) {
+            func_02012694(SND_HIT_REGISTERED, &mCamSpacePos);
+            return 1;
+        }
+        mPrevAngle.y += 0x8000;
+        func_02012694(SND_REVERSE_AFTER_HURT, &mCamSpacePos);
+        ChiefChilly_ChangeState((C *)(this), (PMF *)&data_ov073_02123360);
+        mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuHitAnimationFile.filePtr, 4, 0x40000000,
+                               0x1000, 0);
+        mBlendAnmModel.speed = 0x1000;
+        mPhase = 2;
+        mStateParam = 0x2000;
+        mStateTimer = 30;
     }
-    if (mState == &data_ov073_021233d0) {
-        func_02012694(SND_HIT_REGISTERED, &mCamSpacePos);
-        return 1;
-    }
-    mPrevAngle.y += 0x8000;
-    func_02012694(SND_REVERSE_AFTER_HURT, &mCamSpacePos);
-    ChiefChilly_ChangeState((C *)(this), (PMF *)&data_ov073_02123360);
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuHitAnimationFile.filePtr), 4,
-                           0x40000000, 0x1000, 0);
-    mBlendAnmModel.speed = 0x1000;
-    mPhase = 2;
-    mStateParam = 0x2000;
-    mStateTimer = 30;
-done0:
     return 0;
 }
 
@@ -565,53 +560,52 @@ int daKing_Donketu_c::UpdateDefeat() {
     mScale.z = mScale.x;
     mScale.y = mScale.z;
     RenewLoopedParticles();
-    if (mScale.x >= 0x100)
-        goto end;
-    pos.x = mSpawnPos.x;
-    pos.y = mSpawnPos.y;
-    pos.z = mSpawnPos.z;
-    Message::EndTalk();
-    Sound::StopLoadedMusic_Layer3();
-    func_02011cfc();
-    Sound::ChangeMusicVolume(0x7f, 0x15666);
-    pos.y = pos.y + 0x190000;
-    func_0200fa8c(1);
+    if (mScale.x < 0x100) {
+        pos.x = mSpawnPos.x;
+        pos.y = mSpawnPos.y;
+        pos.z = mSpawnPos.z;
+        Message::EndTalk();
+        Sound::StopLoadedMusic_Layer3();
+        func_02011cfc();
+        Sound::ChangeMusicVolume(0x7f, 0x15666);
+        pos.y = pos.y + 0x190000;
+        func_0200fa8c(1);
 
-    /* Kept (#821 r20, measured against ov073 0x0211fa74, 0x178). rot is
-       built and never read; the ROM still stores all four halfwords.
-         non-volatile rot with plain field stores: 0x15c (the stores are
-           dropped).
-         volatile rot, `rot.x = mAngle.x; rot.y = mAngle.y; ...`: 5 of 94
-           words differ.
-         volatile rot with the reads below but `rot.x = a`: 4 differ.
-       Vector3_16 has no destructor, so the non-POD lever that keeps a
-       dead Vector3 copy does not apply. */
-    {
-        unsigned short a = *(unsigned short *)&mAngle.x;
-        unsigned short b = *(unsigned short *)&mAngle.y;
-        rot.x = b ? a : a;
-        rot.y = b;
-        rot.z = *(unsigned short *)&mAngle.z;
-        rot.y = (unsigned short)HorzAngleToCPlayer();
-    }
+        /* Kept (#821 r20, measured against ov073 0x0211fa74, 0x178). rot is
+           built and never read; the ROM still stores all four halfwords.
+             non-volatile rot with plain field stores: 0x15c (the stores are
+               dropped).
+             volatile rot, `rot.x = mAngle.x; rot.y = mAngle.y; ...`: 5 of 94
+               words differ.
+             volatile rot with the reads below but `rot.x = a`: 4 differ.
+           Vector3_16 has no destructor, so the non-POD lever that keeps a
+           dead Vector3 copy does not apply. */
+        {
+            unsigned short a = *(unsigned short *)&mAngle.x;
+            unsigned short b = *(unsigned short *)&mAngle.y;
+            rot.x = b ? a : a;
+            rot.y = b;
+            rot.z = *(unsigned short *)&mAngle.z;
+            rot.y = HorzAngleToCPlayer();
+        }
 
-    spawned = dActor_c::Spawn(ACTOR_OBJ_KEY, 4, pos, 0, mAreaId, -1);
-    found = dActor_c::FindWithActorID(ACTOR_OBJ_BLUE_FIRE, 0);
-    func_02012694(SND_POOF, &mCamSpacePos);
-    if (found != 0) {
-        struct Vector3 fp;
-        const s32 *pv = &found->mPos.x;
-        fp.x = pv[0];
-        fp.y = pv[1];
-        fp.z = pv[2];
-        PoofDustAt(fp);
-        found->MarkForDestruction();
+        spawned = dActor_c::Spawn(ACTOR_OBJ_KEY, 4, pos, 0, mAreaId, -1);
+        found = dActor_c::FindWithActorID(ACTOR_OBJ_BLUE_FIRE, 0);
+        func_02012694(SND_POOF, &mCamSpacePos);
+        if (found != 0) {
+            struct Vector3 fp;
+            const s32 *pv = &found->mPos.x;
+            fp.x = pv[0];
+            fp.y = pv[1];
+            fp.z = pv[2];
+            PoofDustAt(fp);
+            found->MarkForDestruction();
+        }
+        if (spawned != 0) {
+            cam->mFlags &= ~8;
+            MarkForDestruction();
+        }
     }
-    if (spawned != 0) {
-        cam->mFlags &= ~8;
-        MarkForDestruction();
-    }
-end:
     return 1;
 }
 
@@ -777,8 +771,7 @@ int daKing_Donketu_c::UpdateDefeatCutscene1() {
 /* ..33b0 enter: start the animation in gKingIceDonketuDeadAnimationFile.filePtr;
    mStateTimer = 0x32 (50 frames). */
 short daKing_Donketu_c::EnterDefeatCutscene1() {
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuDeadAnimationFile.filePtr), 4,
-                           0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuDeadAnimationFile.filePtr, 4, 0, 0x1000, 0);
     mStateTimer = 50;
     return 1;
 }
@@ -798,8 +791,8 @@ int daKing_Donketu_c::UpdateJumpEnd() {
 struct BCA_File;
 int daKing_Donketu_c::EnterJumpEnd() {
     mEdgeRecovered = 0;
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr), 4,
-                           0x40000000, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr, 4, 0x40000000,
+                           0x1000, 0);
     return 1;
 }
 
@@ -820,9 +813,8 @@ int daKing_Donketu_c::UpdateLeapToSpawn() {
     u16 state = mStateTimer;
     if (state != 0) {
         if (state == 1) {
-            mBlendAnmModel.SetAnim(
-                *(BCA_File *)((BCA_File *)gKingIceDonketuJumpStAnimationFile.filePtr), 4,
-                0x40000000, 0x1000, 0);
+            mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuJumpStAnimationFile.filePtr, 4,
+                                   0x40000000, 0x1000, 0);
             mBlendAnmModel.speed = 0x1000;
             mSpeed.y = 0x46000;
             mLandedWaypoint = 0xff;
@@ -888,9 +880,8 @@ int daKing_Donketu_c::UpdateLeapToSpawn() {
         if (mHitsRemaining == 1 && mEdgeRecovered == 0) {
             mLandedWaypoint = 0;
             if (mStateScratch == 0) {
-                mBlendAnmModel.SetAnim(
-                    *(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr), 4,
-                    0x40000000, 0x1000, 0);
+                mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr, 4,
+                                       0x40000000, 0x1000, 0);
             }
             mStateScratch += 1;
             if (mStateScratch < 0x82) {
@@ -997,18 +988,16 @@ int daKing_Donketu_c::EnterWaypointHop() {
 int daKing_Donketu_c::func_ov073_02120610() {
     Vector3 v;
 
-    if (mStateTimer == 0)
-        goto mainblock;
-
-    if (mStateTimer == 1) {
-        mSpeed.y = 0x5a000;
-        mBlendAnmModel.SetAnim(
-            *(BCA_File *)((BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr), 4, 0, 0x1000, 0);
-        mBlendAnmModel.speed = 0x2000;
+    if (mStateTimer != 0) {
+        if (mStateTimer == 1) {
+            mSpeed.y = 0x5a000;
+            mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0,
+                                   0x1000, 0);
+            mBlendAnmModel.speed = 0x2000;
+        }
+        return 1;
     }
-    return 1;
 
-mainblock:
     ApproachLinear(mAngle.x, 0, 0x2000);
     if (mHitsRemaining == 2) {
         v = mWaypointsB[mWaypointCursor];
@@ -1147,8 +1136,7 @@ int daKing_Donketu_c::UpdateEdgeWobble() {
    mGroundMissPos copied into mEdgePos; sound handle cleared;
    mStateTimer = 0x5a (90 frames). */
 int daKing_Donketu_c::EnterEdgeWobble() {
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr), 4,
-                           0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     mBlendAnmModel.speed = 0x4000;
     mAngle.x = 0;
     mStateScratch = 0;
@@ -1190,8 +1178,7 @@ int daKing_Donketu_c::func_ov073_02120b78() {
    (-3.0); mAngle.x and mStateScratch cleared. */
 int daKing_Donketu_c::func_ov073_02120c08()
 {
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr), 4,
-                           0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     mBlendAnmModel.speed = 0x4000;
     mHorzSpeed = 0x14000;
     mSpeed.y = 0x1e000;
@@ -1249,8 +1236,8 @@ int daKing_Donketu_c::EnterHitReaction() {
 
     fix = 0x1000;
     t = 0;
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr), 4,
-                           0x40000000, fix, t);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0x40000000,
+                           fix, t);
     mBlendAnmModel.speed = fix;
     ang = HorzAngleToCPlayer();
     mPrevAngle.y = ang;
@@ -1277,13 +1264,16 @@ int daKing_Donketu_c::UpdateTurnToSpawn() {
    mTargetAngle = the angle to mSpawnPos; mStateScratch = 0;
    mPrevAngle.y = mAngle.y. */
 int daKing_Donketu_c::EnterTurnToSpawn() {
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr), 4,
-                           0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     mBlendAnmModel.speed = 0x2000;
     mTargetAngle = Vec3_HorzAngle(&mPos, &mSpawnPos);
     mStateScratch = 0;
     mPrevAngle.y = mAngle.y;
     return 1;
+}
+
+static inline int IsNoControl(daPly_c *player) {
+    return player->mIsNoControl != 0;
 }
 
 /* ..3360 update, the chase, in legs selected by mPhase. mNoGroundAhead being
@@ -1384,25 +1374,17 @@ int daKing_Donketu_c::UpdateChase() {
         if (mPhase == 2) {
             daPly_c *p = ClosestPlayer();
             if (p != 0) {
-                int t;
-                if (p->GetHurtState() == 4)
-                    goto hz;
-                if (p->GetHurtState() == 5)
-                    goto hz;
-                t = p->mIsNoControl ? 1 : 0;
-                if (t == 1) {
-                hz:
+                if (p->GetHurtState() == 4 || p->GetHurtState() == 5 || IsNoControl(p) == 1)
                     mTargetAngle = Vec3_HorzAngle(&mPos, &mSpawnPos);
-                } else {
+                else
                     mTargetAngle = HorzAngleToCPlayer();
-                }
             }
         }
         mHorzSpeed = 0;
         mPrevAngle.y = mAngle.y;
         mStateTimer = 30;
-        mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
-                               4, 0, 0x1000, 0);
+        mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000,
+                               0);
         mBlendAnmModel.speed = 0x2000;
         mStateScratch = 0;
         mPhase = 0;
@@ -1425,8 +1407,7 @@ int daKing_Donketu_c::EnterChase() {
     mStateTimer = 0;
     mPhase = 0;
     mStateParam = 0x2000;
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr), 4,
-                           0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     mBlendAnmModel.speed = 0x2000;
     return 1;
 }
@@ -1548,8 +1529,7 @@ int daKing_Donketu_c::UpdateIntroTalk() {
 /* ..3330 enter: mPhase = 0; animation gKingIceDonketuWaitAnimationFile.filePtr. */
 int daKing_Donketu_c::EnterIntroTalk() {
     mPhase = 0;
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWaitAnimationFile.filePtr), 4,
-                           0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)gKingIceDonketuWaitAnimationFile.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 

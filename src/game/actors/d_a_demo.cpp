@@ -244,7 +244,7 @@ extern void SetSubBg1Offset(int a, int b);
    disagree); 23f0 casts at the one use. */
 extern void *gSceneFader;
 extern u8 data_ov002_02111144;
-extern u32 data_020a0db0;
+extern int data_020a0db0;
 extern struct OamAttr *data_ov002_0210b6a8[];
 
 extern const int data_ov002_02100140[];
@@ -313,8 +313,6 @@ extern void DecompressLZ16(void *src, void *dst);
 }
 
 extern "C" void Deallocate(void *p);
-extern "C" void GXS_LoadBG1Scr(const void *src, int offset, int count);
-extern "C" void GXS_LoadBG3Scr(const void *src, u32 offset, u32 count);
 
 extern void func_02012694(unsigned int, const Vector3 *);
 extern "C" {
@@ -329,13 +327,9 @@ extern VecFx32 data_ov002_0210b958;
 }
 
 /* local extern dropped: decl_common.h declares data_0209b41c */
-extern s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
 extern "C" {
 
 extern void Math_Function_0203b0fc(int* p, int target, int scale, int max);
-extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
-extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern int data_0208ee44;
@@ -346,7 +340,6 @@ extern void *gPlayers[];
    scratch as Vector3 renumbers this TU's @NNN literals. */
 extern void Vec3_RotateYAndTranslate(void *out, void *in, short angle, void *src);
 extern int data_ov002_0210b964[3];
-extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 data_0209b41c;
 extern unsigned char gGameMode;
 extern char data_ov002_0211094c;
@@ -452,7 +445,7 @@ void daDemo_c::func_ov002_020f2210()
             mScroll->spriteDelay[i] -= 1;
             if (mScroll->spriteDelay[i] == 0) {
                 if (mScroll->spriteActive[i] == 0) {
-                    unsigned int r = (unsigned int)RandomIntInternal(&data_0209e650);
+                    unsigned int r = RandomIntInternal(&data_0209e650);
                     if (r & 1) {
                         mScroll->spriteX[i] = -0x40;
                         mScroll->spriteVelX[i] = 1;
@@ -2448,22 +2441,20 @@ int daDemo_c::func_ov002_020f63d4()
 int daDemo_c::func_ov002_020f63f8(unsigned char *src)
 {
     this->mCue = *src;
-    this->mStaffRoll->func_ov002_020f5dd8((int)this->mCue);
+    this->mStaffRoll->func_ov002_020f5dd8(this->mCue);
     return 1;
 }
 
 
 int daDemo_c::func_ov002_020f6424()
 {
-    this->mStaffRoll->func_ov002_020f5f0c((int)this->mCue);
+    this->mStaffRoll->func_ov002_020f5f0c(this->mCue);
     return 1;
 }
 
-
-int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
-{
+int daDemo_c::func_ov002_020f6448(unsigned char *src) {
     StaffRoll *p;
-    this->mCue = *arg1;
+    this->mCue = *src;
     p = new StaffRoll;
     this->mStaffRoll = p;
     if (this->mStaffRoll == 0)
@@ -2513,8 +2504,8 @@ void daDemo_c::anmModel_c::func_ov002_020f65ec() {
 }
 
 int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, SharedFilePtr **anims,
-                        int arg5, unsigned char texByte, SharedFilePtr **texs, int tsData)
-{
+                                              int snapToFloor, unsigned char texByte,
+                                              SharedFilePtr **texs, int tsData) {
     int i;
     mModelFile = mdl;
     if (SetFile(dExtSimpleModel_c::LoadFile(*mModelFile), 1, tsData) == 0)
@@ -2538,7 +2529,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
         }
         mTexSeq->SetFile(*(BTP_File *)mTexSeqFiles[0]->filePtr, 0, 0x1000, 0);
     }
-    mSnapToFloor = (u8)arg5;
+    mSnapToFloor = (u8)snapToFloor;
     return 1;
 }
 
@@ -2589,7 +2580,7 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 {
     mFile = fp;
     BMD_File *f = dExtSimpleModel_c::LoadFile(*mFile);
-    return ((dExtModel_c *)this)->SetFile(f, 1, n) != 0 ? 1 : 0;
+    return ((dExtModel_c *)this)->SetFile(f, 1, n) != 0;
 }
 
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
@@ -2712,56 +2703,51 @@ int daDemo_c::func_ov002_020f6c34(unsigned char *src)
 }
 
 extern "C" {
-inline unsigned int inline_fn(unsigned int arg0)
-{
-  return arg0;
+inline unsigned int inline_fn(unsigned int value) {
+    return value;
 }
 }
 
-int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
-{
-  u8 *flag = (u8 *) arg1;
-  Vector3 v;
-  if (arg2 == gKuppaScriptFrame) {
-      if ((*flag) != 0) {
-          int r = (inline_fn(RandomIntInternal(&data_0209e650)) >> 20) & 0xfff;
-          int m = FX_MUL(r, 0xa000);
-          this->mMagnitude = m + 0x19000;
-      }
-      VEC_Add(&this->mPos, &((dCamera_c *)gCamera)->pos, &this->mPos);
-      if (arg2 > 0x2bc) {
-          this->mPos.y -= 0x96000;
-      }
-      if (arg2 != data_ov002_0210b614) {
-          func_0201267c(0x6a, &this->mCamSpacePos);
-          data_ov002_0210b614 = arg2;
-      }
-  }
-  if (arg3 == gKuppaScriptFrame) {
-      this->mOpacity = 0;
-      return 1;
-  }
-  this->mOpacity = 0x1f;
-  if ((*flag) == 0)
-  {
-      /* First call stores the look-at point and registers ~Vector3(). */
-      static __attribute__((aligned(8))) Vector3 sLookTarget(0xffdd6000, 0xbe4000, 0x2ae000);
-      func_ov002_020f6f48(&sLookTarget, 0x20);
-  }
-  else
-  {
-      /* Kept (#821 r77): data_ov002_0210b958 is a statically initialized
+int daDemo_c::func_ov002_020f6c60(void *src, int first, int last) {
+    u8 *flag = (u8 *)src;
+    Vector3 v;
+    if (first == gKuppaScriptFrame) {
+        if ((*flag) != 0) {
+            int r = (inline_fn(RandomIntInternal(&data_0209e650)) >> 20) & 0xfff;
+            int m = FX_MUL(r, 0xa000);
+            this->mMagnitude = m + 0x19000;
+        }
+        VEC_Add(&this->mPos, &((dCamera_c *)gCamera)->pos, &this->mPos);
+        if (first > 0x2bc) {
+            this->mPos.y -= 0x96000;
+        }
+        if (first != data_ov002_0210b614) {
+            func_0201267c(0x6a, &this->mCamSpacePos);
+            data_ov002_0210b614 = first;
+        }
+    }
+    if (last == gKuppaScriptFrame) {
+        this->mOpacity = 0;
+        return 1;
+    }
+    this->mOpacity = 0x1f;
+    if ((*flag) == 0) {
+        /* First call stores the look-at point and registers ~Vector3(). */
+        static __attribute__((aligned(8))) Vector3 sLookTarget(0xffdd6000, 0xbe4000, 0x2ae000);
+        func_ov002_020f6f48(&sLookTarget, 0x20);
+    } else {
+        /* Kept (#821 r77): data_ov002_0210b958 is a statically initialized
          .data VecFx32 (a Vector3, which declares constructors, would be
          built by __sinit instead), and MtxStack.h's MTX_MultVec43 overload
          takes the game's Vector3. */
-      MTX_MultVec43((Vector3 *)&data_ov002_0210b958, &data_0209b41c, &v);
-      Vec3_LslInPlace((int *)&v, 3);
-      func_ov002_020f6f48(&v, 8);
-  }
-  this->mPrevAngle.x = this->mAngle.x;
-  this->mPrevAngle.y = this->mAngle.y;
-  this->mPrevAngle.z = this->mAngle.z;
-  return 1;
+        MTX_MultVec43((Vector3 *)&data_ov002_0210b958, &data_0209b41c, &v);
+        Vec3_LslInPlace((int *)&v, 3);
+        func_ov002_020f6f48(&v, 8);
+    }
+    this->mPrevAngle.x = this->mAngle.x;
+    this->mPrevAngle.y = this->mAngle.y;
+    this->mPrevAngle.z = this->mAngle.z;
+    return 1;
 }
 
 /* Script handler 10: position (p[0..5], whole units shifted into 20.12) and
@@ -2805,7 +2791,7 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 
 /* Turn mAngle.x/mAngle.y toward v by 1/amt of the remaining difference per
  * call (step capped at 0x4000, 90 degrees), then set mSpeed.x, mSpeed.y and
- * mSpeed.z to mMagnitude times rotation elements 6..8 of the animated model's
+ * mSpeed.z to mMagnitude times the Z axis row of the animated model's
  * matrix. */
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
@@ -2814,9 +2800,9 @@ void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
     ApproachAngle(&this->mAngle.x, Vec3_VertAngle((&this->mPos), v), amt, 0x4000, 0);
     ApproachAngle(&this->mAngle.y, Vec3_HorzAngle((&this->mPos), v), amt, 0x4000, 0);
     m = &this->mAnmModel->mat4x3;
-    this->mSpeed.x = FX_MUL(this->mMagnitude, m->m[6]);
-    this->mSpeed.y = FX_MUL(this->mMagnitude, m->m[7]);
-    this->mSpeed.z = FX_MUL(this->mMagnitude, m->m[8]);
+    this->mSpeed.x = FX_MUL(this->mMagnitude, m->r.m[2][0]);
+    this->mSpeed.y = FX_MUL(this->mMagnitude, m->r.m[2][1]);
+    this->mSpeed.z = FX_MUL(this->mMagnitude, m->r.m[2][2]);
 }
 
 /* Script handler 9: clear mFlags bit 0x2. */
@@ -2970,25 +2956,24 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
     return 1;
 }
 
-/* Script handler 3. On the start frame, when arg1[0] is non-zero, it sets
+/* Script handler 3. On the start frame, when src[0] is non-zero, it sets
  * fixed angles and clears mRate. Every frame Math_Function_0203b0fc moves
- * mRate toward 1.0 (arg1[0] non-zero) or 0, and the vector at mAnmModel +
+ * mRate toward 1.0 (src[0] non-zero) or 0, and the vector at mAnmModel +
  * 0x64 (the param_c tail base) becomes base + (sViewEnd - base) *
  * mRate, with base sViewStart or sViewIdle by the same
  * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; mMagnitude
- * approaches arg1[0] << 12 by arg1[1] << 8 and drives mOpacity. */
+ * approaches src[0] << 12 by src[1] << 8 and drives mOpacity. */
 
-int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
-{
-    int a = arg1[0];
-    int b = arg1[1];
+int daDemo_c::func_ov002_020f7538(unsigned char *src, int first) {
+    int a = src[0];
+    int b = src[1];
     int f1 = a << 0xc;
     int f2 = b << 8;
     const Vector3 *base;
     int scale;
-    Vector3 tmp, diff, scaled, sum;
+    Vector3 delta, diff, scaled, sum;
 
-    if (f1 != 0 && arg2 == gKuppaScriptFrame) {
+    if (f1 != 0 && first == gKuppaScriptFrame) {
         this->mAngle.x = 0xd00;
         this->mAngle.y = -0x7300;
         this->mAngle.z = 0x2f00;
@@ -3010,10 +2995,10 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
 
     Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
     Vec3_Sub(&diff, &sViewEnd, base);
-    tmp.x = diff.x;
-    tmp.y = diff.y;
-    tmp.z = diff.z;
-    Vec3_MulScalar(&scaled, &tmp, this->mRate);
+    delta.x = diff.x;
+    delta.y = diff.y;
+    delta.z = diff.z;
+    Vec3_MulScalar(&scaled, &delta, this->mRate);
     Vec3_Add(&sum, base, &scaled);
 
     {
@@ -3028,7 +3013,6 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     this->mOpacity = this->mMagnitude >> 0xc;
     return 1;
 }
-
 
 int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 {
@@ -3211,8 +3195,8 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     return 1;
 }
 
-void daDemo_c::RunCommand(unsigned char *p, int a2, int a3) {
-    /* Indexed by the command byte p[6]. The handlers take what they read
+void daDemo_c::RunCommand(unsigned char *command, int first, int last) {
+    /* Indexed by the command byte command[6]. The handlers take what they read
        from the command, so each is cast to the table's signature. */
     static PMF3 sCommandTable[24] = {
         (PMF3)&daDemo_c::func_ov002_020f7bb8, /* 0 */
@@ -3240,7 +3224,7 @@ void daDemo_c::RunCommand(unsigned char *p, int a2, int a3) {
         (PMF3)&daDemo_c::func_ov002_020f26d4, /* 22 */
         (PMF3)&daDemo_c::func_ov002_020f26c4, /* 23 */
     };
-    (this->*sCommandTable[p[6]])(p + 7, a2, a3);
+    (this->*sCommandTable[command[6]])(command + 7, first, last);
 }
 
 int daDemo_c::CleanupResources()
@@ -3310,8 +3294,7 @@ int daDemo_c::Behavior()
     Vector3 asr;
     /* Kept (#821 r84): v filled from mPos directly, as a struct copy, via a
        block-scoped Vector3(x, y + 0x96000, z), or with the sum in yy -> DIFF. */
-    int new_var2;
-    s32 t;
+    u32 t;
     t = this->param1;
     if (t == 0x2e) {
         return func_ov002_020f63d4();
@@ -3319,7 +3302,7 @@ int daDemo_c::Behavior()
     if (t == 0x2f) {
         return func_ov002_020f23f0();
     }
-    if ((((u32)t) >= 0x1a) && (((u32)t) <= 0x2d)) {
+    if ((t >= 0x1a) && (t <= 0x2d)) {
         UpdatePosWithOnlySpeed(0);
     } else {
         UpdatePos(0);
@@ -3331,9 +3314,9 @@ int daDemo_c::Behavior()
                 s32 xx = this->mPos.x;
                 s32 yy = this->mPos.y;
                 s32 zz = this->mPos.z;
-                new_var2 = yy + 0x96000;
+                s32 probeY = yy + 0x96000;
                 v.x = xx;
-                v.y = new_var2;
+                v.y = probeY;
                 v.z = zz;
             }
             dBgCh_Gnd ground;
@@ -3350,7 +3333,7 @@ int daDemo_c::Behavior()
     Vec3_Asr(&asr, &this->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     t = this->param1;
-    if ((((u32)t) >= 0x1a) && (((u32)t) <= 0x2d)) {
+    if ((t >= 0x1a) && (t <= 0x2d)) {
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngle.x, this->mAngle.y,
                                                this->mAngle.z);
     } else {

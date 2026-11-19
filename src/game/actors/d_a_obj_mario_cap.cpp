@@ -130,6 +130,8 @@ enum daObjMarioCap_c_AssetId {
 #include "math/Approach.h"
 #include "nitro/fx/fx_cp.h"
 #include "nitro/fx/fx_trig.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
@@ -214,19 +216,7 @@ extern "C" {
 
 /* -- other modules -- */
 
-unsigned short DecIfAbove0_Short(unsigned short *p);
-
-fx32 Vec3_HorzLen(const Vector3 *v);
-void  Vec3_MulScalarInPlace(void *v, int s);
-void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
-void Vec3_Asr(Vector3 *out, Vector3 *v, int shift);
-
-void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-void  Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
-void  Matrix4x3_FromRotationY(void *m, int angle);
-
 /* -- data -- */
-extern Matrix4x3      data_020a0e68;
 extern int            data_02092138;
 extern u8 gGameMode;
 
@@ -267,6 +257,10 @@ extern int *const data_ov002_020ff0c4[];
    predicate is what makes the ROM materialize 0/1 before testing it. */
 static inline int IsVsMode(void) {
     return gGameMode == 1;
+}
+
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
 }
 
 void func_02013a88(void);
@@ -567,8 +561,7 @@ int daObjMarioCap_c::Behavior()
  * the taken state. Always returns 1. */
 int daObjMarioCap_c::Render()
 {
-    int b = (mFlags & 0x40000) ? 1 : 0;
-    if (b)
+    if (IsInYoshiMouth(this))
         return 1;
     if (mDormant == 1 || mScale.x < 0x100)
         return 1;
@@ -720,14 +713,11 @@ void daObjMarioCap_c::UpdateMatrix()
         }
 
         off = 0;
-        {
-            int t = mModelIndex;
-            if (t == 0)
-                goto neg;
-            if (t == 1) {
-            neg:
-                off = -10;
-            }
+        switch (mModelIndex) {
+        case 0:
+        case 1:
+            off = -10;
+            break;
         }
         Matrix4x3_FromRotationY(&mShadowMat, mAngle.y);
         mShadowMat.t.x = mPos.x >> 3;
@@ -947,7 +937,7 @@ int daObjMarioCap_c::Slide()
     if (DecIfAbove0_Short(&mStateTimer) == 0)
         return 1;
     if (CAP_TIMER(this) == 1) {
-        b = (int)((mFlags & 0x60000) != 0);
+        b = ((mFlags & 0x60000) != 0);
         if (b == 0) {
             MarkForDestruction();
             return 1;
@@ -1032,7 +1022,7 @@ int daObjMarioCap_c::InitTaken()
     if (!IsVsMode()) {
         daPly_c *p = mPlayer;
         if (p->mCharacter == 3) {
-            if (mModelIndex == (int)p->param1) {
+            if (mModelIndex == p->param1) {
                 struct Vector3 v;
                 Sound::PlayBank3(kSfx1Up, mCamSpacePos);
                 GiveLives(1);
@@ -1247,6 +1237,10 @@ int daObjMarioCap_c::Dormant()
     return 1;
 }
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kActorPlayer;
+}
+
 /* The touch check shared by the states that let the player pick the cap up.
  * If the cap is against a wall, reflects mPrevAngle.y off the wall normal.
  * Then it proceeds only if the collider's other owner is a daPly_c (actor ID
@@ -1277,8 +1271,8 @@ void daObjMarioCap_c::CheckTouch()
     if (mPlayer == 0) return;
 
     {
-        int t = (mPlayer->actorID == kActorPlayer);
-        if (t == false) return;
+        if (!IsPlayerActor(mPlayer))
+            return;
     }
 
     if ((mdCcAc_c.hitFlags & 0x8000) != 0) return;

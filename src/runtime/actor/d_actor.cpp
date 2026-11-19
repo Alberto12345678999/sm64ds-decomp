@@ -87,6 +87,10 @@ struct ActorList {
 };
 ActorList data_0209b468;
 
+static inline int IsGameMode(int mode) {
+    return gGameMode == mode;
+}
+
 /* Constructor first in source: reverse emission puts C1/C2 above the
    destructor. Both variants are this one body. */
 dActor_c::dActor_c() : mActorListNode(this) {
@@ -120,10 +124,9 @@ dActor_c::dActor_c() : mActorListNode(this) {
         SpawnInfo<void> *info = (SpawnInfo<void> *)table[actorID];
         mFlags = info->actorFlags;
         {
-            int isMode2 = (gGameMode == 2);
             int clipDistance;
             int farDistance = info->farDistance;
-            if (isMode2)
+            if (IsGameMode(2))
                 clipDistance = info->clipDistance + 0x7d0000;
             else
                 clipDistance = info->clipDistance;
@@ -144,13 +147,15 @@ dActor_c::~dActor_c() {
     func_0203b27c(&data_0209b468, &mActorListNode);
 }
 
+static inline int IsFlagSet(dActor_c *actor, u32 bit) {
+    return (actor->mFlags & bit) != 0;
+}
+
 /* Kills an actor born dead: unless its profile sets 0x08000000 ("spawn even if
    the death table says already killed"), a death-table hit destroys it. */
 bool dActor_c::BeforeInitResources()
 {
-    int spawnEvenIfKilledBefore = (mFlags & 0x8000000) ? 1 : 0;
-
-    if (spawnEvenIfKilledBefore == 0 && GetBitInDeathTable() != 0) {
+    if (!IsFlagSet(this, 0x8000000) && GetBitInDeathTable() != 0) {
         MarkForDestruction();
         return true;
     }
@@ -214,11 +219,11 @@ int dActor_c::BeforeBehavior()
             return 0;
     } else {
         if (mClipRadius != 0) {
-            Vector3 tmp;
-            tmp.x = mPos.x >> 3;
-            tmp.y = (mPos.y + mClipOffsetY) >> 3;
-            tmp.z = mPos.z >> 3;
-            MTX_MultVec43(&tmp, &data_0209b3ec, &mCamSpacePos);
+            Vector3 scaledPos;
+            scaledPos.x = mPos.x >> 3;
+            scaledPos.y = (mPos.y + mClipOffsetY) >> 3;
+            scaledPos.z = mPos.z >> 3;
+            MTX_MultVec43(&scaledPos, &data_0209b3ec, &mCamSpacePos);
         }
         if (mFlags & 0x10003) {
             int r = data_0209f43c.ClipSphere(mCamSpacePos, mClipRadius, &mClipResult);
@@ -589,11 +594,11 @@ void dActor_c::SpawnCoins(const Vector3 &pos, s32 count, fx32 spread, s16 angle)
                 ang = (s32)(((u32)RandomIntInternal(&data_0209e650.value) >> 16) << 27) >> 16;
             } while (ang == prev);
 
-            r = (u32)RandomIntInternal(&data_0209e650.value);
+            r = RandomIntInternal(&data_0209e650.value);
             r >>= 16;
 
             actor->mPrevAngle.x = 0;
-            spread = (u32)((u32)spread * ((r % 50) + 100)) / 100;
+            spread = ((u32)spread * ((r % 50) + 100)) / 100;
             prev = ang;
             actor->mPrevAngle.y = (s16)(ang0 + ang);
             actor->mPrevAngle.z = 0;
@@ -899,9 +904,9 @@ dActor_c *dActor_c::SpawnNumber(const Vector3 &pos, u32 value, bool packLowNibbl
     return number->SetOwner(owner);
 }
 
-extern u8 gCurrentStarId[];
+extern u8 gCurrentStarId;
 /* the star index this mission was entered for */
-extern s8 gCurrentSublevel[];
+extern s8 gCurrentSublevel;
 /* the current sublevel id */
 extern dActor_c *STAR_MARKERS[12];
 /* 0x0209f40c */
@@ -913,8 +918,8 @@ s32 dActor_c::TrackStar(u32 starIdx, u32 markerType)
     s32 type = markerType;
 
     if (markerType == 2) {
-        if (starIdx != gCurrentStarId[0]) {
-            if (SublevelToLevel(gCurrentSublevel[0]) <= 0xe)
+        if (starIdx != gCurrentStarId) {
+            if (SublevelToLevel(gCurrentSublevel) <= 0xe)
                 return -1;
         }
         if (IsStarCollectedInCurLevel(starIdx))
@@ -951,7 +956,7 @@ dActor_c *dActor_c::UntrackAndSpawnStar(s8 &trackStarID, u32 starID,
                  mAreaId, -1);
 }
 
-extern unsigned char data_0209f2c0[];
+extern unsigned char data_0209f2c0;
 /* WDW's water level, 0..2 */
 extern int data_02075244[];
 /* the water height for each level */
@@ -961,8 +966,8 @@ extern int data_02075244[];
 s32 dActor_c::GetWaterHeightWDW()
 {
     s32 height = mPos.y;
-    if (gCurrentSublevel[0] == 0x15 && mAreaId == 0) {
-        unsigned int level = data_0209f2c0[0];
+    if (gCurrentSublevel == 0x15 && mAreaId == 0) {
+        unsigned int level = data_0209f2c0;
         if (level >= 3)
             level = 2;
         height = data_02075244[level];

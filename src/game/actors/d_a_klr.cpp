@@ -33,6 +33,7 @@
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
 #include "Particle__System.h"
+#include "math/CalcLib.h"
 
 struct BMD_File;
 
@@ -40,9 +41,6 @@ extern SharedFilePtr data_ov079_02128300;
 extern SharedFilePtr data_ov079_021282f0;
 
 /* local extern: arm9 C helpers with no shared header yet. */
-extern "C" {
-void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
-}
 void func_02012694(u32 id, const Vector3 *pos);
 
 /* Indexed by mState: [0] StateFly, [1] StateShotDown.
@@ -125,7 +123,7 @@ s32 daKlr_c::Behavior() {
     }
 
     mStateTimer++;
-    if (which != (u32)mState)
+    if (which != mState)
         mStateTimer = 0;
 
     UpdateModelAndShadow();
@@ -167,7 +165,7 @@ void daKlr_c::StateFly() {
         return;
     }
     if (timer < 50) {
-        if ((int)timer % 2)
+        if (timer % 2)
             this->mHorzSpeed = 0x3000;
         else
             this->mHorzSpeed = -0x3000;

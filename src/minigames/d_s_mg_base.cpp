@@ -1179,7 +1179,7 @@ void MgFx::DrawSparkle() {
         sMgSparkleSpritesGuard |= 1;
     }
     {
-        int idx = ((int)mTimer) & 0xf;
+        int idx = mTimer & 0xf;
         int x = mPos[0] >> 0xc;
         int y = mPos[1] >> 0xc;
         s20adcc8::Mg_RenderSpriteOnNoMtx(sMgSparkleSprites[idx], x, y, -1, -1);
@@ -1198,9 +1198,8 @@ extern "C" void Mg_DrawFx(MgFx *c) {
 namespace s20addcc {
 extern "C" {
 void Mg_GainCredits(int c);
-inline long long inline_fn(int arg0)
-{
-    return arg0;
+inline long long inline_fn(int value) {
+    return value;
 }
 }
 }
@@ -1808,6 +1807,12 @@ extern void func_0203b958(short* o, short* a, short* b);
 }
 extern void func_02012dd0(void *a);
 
+static inline short Abs(short v) {
+    if (v < 0)
+        v = -v;
+    return v;
+}
+
 /* The overlay menu's frame while it is open: slides the items in and, on
    a new touch with nothing highlighted, highlights the touched item in
    mMenuCursor (within 0x60 x 0x18 of item 0, 0x40 x 0x13 of the others, by
@@ -1820,11 +1825,10 @@ void dScMgBase_c::UpdateMenu() {
     unsigned char idx = gActivePlayerSlot;
     unsigned short flags = data_020a0e5a[idx * 2];
     int unlocked;
-    short tmp[2];
+    short touchPos[2];
     short d0[2];
     short d1[2];
     short d2[2];
-    short a, b;
 
     if ((flags & 0x40) || (flags & 0x80) || (flags & 0x20) || (flags & 0x10)) {
         func_02012790(0xe);
@@ -1841,59 +1845,27 @@ void dScMgBase_c::UpdateMenu() {
     if (gTouchInfo[idx].held != 0) {
         unlocked = (gTouchInfo[idx].edge != 0);
     }
-    do {
-        if (unlocked == 0)
-            break;
-        if (mMenuCursor >= 0)
-            break;
-        tmp[0] = gTouchInfo[idx].x;
-        tmp[1] = gTouchInfo[idx].y;
-        func_0203b958(d0, tmp, &mMenuItem0X);
-        func_0203b958(d1, tmp, &mMenuItem1X);
-        func_0203b958(d2, tmp, &mMenuItem2X);
-        a = d0[0];
-        if (a < 0)
-            a = -a;
-        if (a < 0x60) {
-            b = d0[1];
-            if (b < 0)
-                b = -b;
-            if (b < 0x18) {
-                func_02012790(0x62);
-                mMenuCursor = 0;
-                /* 0x10 for item 0 and 0 for the others */
-                mMenuPickDelay = 16;
-                break;
-            }
+    if (unlocked != 0 && mMenuCursor < 0) {
+        touchPos[0] = gTouchInfo[idx].x;
+        touchPos[1] = gTouchInfo[idx].y;
+        func_0203b958(d0, touchPos, &mMenuItem0X);
+        func_0203b958(d1, touchPos, &mMenuItem1X);
+        func_0203b958(d2, touchPos, &mMenuItem2X);
+        if (Abs(d0[0]) < 0x60 && Abs(d0[1]) < 0x18) {
+            func_02012790(0x62);
+            mMenuCursor = 0;
+            /* 0x10 for item 0 and 0 for the others */
+            mMenuPickDelay = 16;
+        } else if (Abs(d1[0]) < 0x40 && Abs(d1[1]) < 0x13) {
+            func_02012790(0x63);
+            mMenuCursor = 1;
+            mMenuPickDelay = 0;
+        } else if (Abs(d2[0]) < 0x40 && Abs(d2[1]) < 0x13) {
+            func_02012790(0x62);
+            mMenuCursor = 2;
+            mMenuPickDelay = 0;
         }
-        a = d1[0];
-        if (a < 0)
-            a = -a;
-        if (a < 0x40) {
-            b = d1[1];
-            if (b < 0)
-                b = -b;
-            if (b < 0x13) {
-                func_02012790(0x63);
-                mMenuCursor = 1;
-                mMenuPickDelay = 0;
-                break;
-            }
-        }
-        a = d2[0];
-        if (a < 0)
-            a = -a;
-        if (a < 0x40) {
-            b = d2[1];
-            if (b < 0)
-                b = -b;
-            if (b < 0x13) {
-                func_02012790(0x62);
-                mMenuCursor = 2;
-                mMenuPickDelay = 0;
-            }
-        }
-    } while (0);
+    }
 
     if (mMenuCursor < 0)
         return;
@@ -2061,12 +2033,12 @@ int dScMgBase_c::SaveScreenForMenu() {
     GXS_LoadBGPltt((const void *)sMgMenuSubBgPltt, 0, 0x80);
 
     {
-        volatile unsigned short tmp = 0;
-        MI_CpuFill16((char *)0x5000000, tmp, 2);
+        volatile unsigned short fill = 0;
+        MI_CpuFill16((char *)0x5000000, fill, 2);
     }
     {
-        volatile unsigned short tmp = 0;
-        MI_CpuFill16((char *)0x5000400, tmp, 2);
+        volatile unsigned short fill = 0;
+        MI_CpuFill16((char *)0x5000400, fill, 2);
     }
 
     Message::func_0201f32c(mSceneKind);
@@ -3749,21 +3721,20 @@ extern "C" {
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(OamAttr *attr, int x, int y, Matrix2x2 *mtx);
 
-/* Unless arg1 is 1, draws sprite words 0 and 1 at (12, 12) and (30, 12)
-   and arg0 from x 0x30. With arg1 1, draws sprite word 0 arg0 times,
+/* Unless asIcons is 1, draws sprite words 0 and 1 at (12, 12) and (30, 12)
+   and count from x 0x30. With asIcons 1, draws sprite word 0 count times,
    16 px apart from (12, 12). */
-void Mg_DrawStockCounter(int arg0, int arg1)
-{
+void Mg_DrawStockCounter(int count, int asIcons) {
     OamAttr **table = sMgSpriteTables[GetGameLanguage()];
     OamAttr *sb = table[0];
     int b = 12;
-    if (arg1 != 1) {
+    if (asIcons != 1) {
         DrawOamSprite(sb, b, b, 0);
         DrawOamSprite(sMgSpriteTables[GetGameLanguage()][1], 30, b, 0);
-        Mg_DrawBigNumber(0x30, b, arg0, 1, -1, 2, 0);
+        Mg_DrawBigNumber(0x30, b, count, 1, -1, 2, 0);
     } else {
         int i;
-        for (i = 0; i < arg0; i++) {
+        for (i = 0; i < count; i++) {
             Mg_RenderSubSpriteMtx(sb, b, 12, 0);
             b += 16;
         }

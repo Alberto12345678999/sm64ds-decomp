@@ -58,18 +58,6 @@
 #include "nitro/fx/fx_cp.h"
 #include "nitro/fx/fx_trig.h"
 
-/* The callees of this TU's members, spelled by their mangled or ROM names.
- * They cannot be declared inside a method body: a block-scope extern in a
- * daMky_c member gets C++ linkage, the reference mangles a second time, and
- * the module no longer links. Each is declared once, here, because C++
- * rejects two extern "C" declarations of one name that disagree, so one
- * spelling has to serve every call site. Data objects stay in the bodies:
- * a variable's name does not mangle. */
-extern "C" {
-
-void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
-}
-
 /* The model handle constructs through func_02017acc and the animation
  * handles through SharedFilePtr::Construct. Declared here, ahead of the
  * members that read them; defined at the bottom in retail __sinit order. */
@@ -544,7 +532,7 @@ int daMky_c::func_ov030_02112578()
         }
         break;
     case 4:
-        if (ApproachLinear(this->mAngle.y, (s16)0xffffe04e, 0x400) != 0) {
+        if (ApproachLinear(this->mAngle.y, -0x1fb2, 0x400) != 0) {
             this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000,
                                     0);
             this->mPrevAngle.y = this->mAngle.y;
@@ -684,11 +672,11 @@ int daMky_c::EnterState7()
         int t2 = op[2];
         this->mPos.z = t2;
     }
-    ang = (u16)this->mAngle.y;
+    ang = this->mAngle.y;
     s = FX_SinIdx(ang >> 4);
     *pos = (*pos) + FX_MUL(s, mul);
     *py = (*py) + 0x50000;
-    ang = (u16)this->mAngle.y;
+    ang = this->mAngle.y;
     s = FX_CosIdx(ang >> 4);
     *pz = (*pz) + FX_MUL(s, mul);
     other = this->mPlayer;
@@ -805,8 +793,8 @@ int daMky_c::func_ov030_02113094()
         break;
     }
     case 1: {
-        int msg = (this->mHasSpawnedCap != 0) ? 0xc2 : 0xc3;
-        if (this->mPlayer->ShowMessage(*this, (s16)msg, 0, 0, 0) != 0) {
+        s16 msg = (this->mHasSpawnedCap != 0) ? 0xc2 : 0xc3;
+        if (this->mPlayer->ShowMessage(*this, msg, 0, 0, 0) != 0) {
             func_0201267c(0xd1, &this->mCamSpacePos);
             this->mSubState++;
         }

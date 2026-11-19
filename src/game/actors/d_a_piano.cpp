@@ -50,11 +50,6 @@ extern PianoAnimationFilePtr gPianoAttackAnimationFile;
 int data_ov063_0211ecb8[8] = {0x53504c43, 0x00010008, 0x01000fc0, 0x000000ff,
                               0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
 
-/* local extern: no shared header declares these. */
-extern "C" {
-extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-}
-
 /* Reconstructed registry name; the class identity is backed by retail RTTI.
  * Historical alias: daPiano_c_Spawn. The inherited allocator and native
  * construction establish the base, vtable and member lifetimes. */
@@ -203,7 +198,6 @@ void daPiano_c::StateSearch() {
     daPly_c *cand;
     int dist;
     int j;
-    dCcAcPos_c *cc;
 
     bestDist = 0x7fffffff;
     for (i = 0; i < gNumPlayers; i++) {
@@ -226,11 +220,9 @@ void daPiano_c::StateSearch() {
     this->mCylinderClsn[0].pos = this->mPos;
     this->mCylinderClsn[1].pos = tip;
 
-    cc = this->mCylinderClsn;
     for (j = 0; j < 2; j++) {
         this->mCylinderClsn[j].radius = 0x9b000;
-        cc->Clear();
-        cc++;
+        this->mCylinderClsn[j].Clear();
     }
 }
 
@@ -241,6 +233,10 @@ void daPiano_c::InitStateAttack() {
     this->mAttackTimer = 30;
 }
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 /* State-1 body, run every frame: lunge at the target and bite any player
  * caught by the cylinders. Gives up (back to state 0) when the target is
  * gone or farther than 939.0 at a frame boundary. */
@@ -249,11 +245,10 @@ void daPiano_c::StateAttack() {
     int i;
     Vector3 tip;
     Vector3 hurtPos;
-    Vector3 tmp;
+    Vector3 diff;
     int dist;
     dActor_c *target;
     int k;
-    dCcAcPos_c *cc;
 
     if (DecIfAbove0_Byte(&this->mAttackTimer) != 0)
         return;
@@ -263,11 +258,10 @@ void daPiano_c::StateAttack() {
     for (i = 0; i < 2; i++) {
         int id = this->mCylinderClsn[i].otherOwner;
         if (id != 0) {
-            victim = static_cast<daPly_c *>(dActor_c::FindWithID((unsigned int)id));
+            victim = static_cast<daPly_c *>(dActor_c::FindWithID(id));
             if (victim != 0) {
                 /* The actor profile is PLAYER before the daPly_c-specific call. */
-                int isPlayer = (victim->actorID == 0xbf);
-                if (isPlayer) {
+                if (IsPlayerActor(victim)) {
                     hurtPos = this->mPos;
                     victim->Hurt(hurtPos, 3, 0xc000, 1, 0, 1);
                 }
@@ -282,8 +276,8 @@ void daPiano_c::StateAttack() {
 
     target = this->mTarget;
     if (target != 0) {
-        Vec3_Sub(&tmp, &this->mPos, &target->mPos);
-        dist = VEC_Mag(&tmp);
+        Vec3_Sub(&diff, &this->mPos, &target->mPos);
+        dist = VEC_Mag(&diff);
         ApproachLinear(this->mPrevAngle.y, Vec3_HorzAngle(&this->mPos, &this->mTarget->mPos),
                        0x200);
         this->mAngle.y = this->mPrevAngle.y;
@@ -309,13 +303,11 @@ void daPiano_c::StateAttack() {
     this->mCylinderClsn[0].pos = this->mPos;
     this->mCylinderClsn[1].pos = tip;
 
-    cc = this->mCylinderClsn;
     for (k = 0; k < 2; k++) {
         this->mCylinderClsn[k].radius = 0x9b000;
-        cc->Clear();
+        this->mCylinderClsn[k].Clear();
         if (this->ClosestPlayer()->mIsVanish == 0)
-            cc->Update();
-        cc++;
+            this->mCylinderClsn[k].Update();
     }
 }
 

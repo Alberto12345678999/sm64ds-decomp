@@ -725,20 +725,20 @@ void TrmpItem::Init(int *position, int *normal, int itemType, short motionType) 
     mForward.y = normal[1];
     mForward.z = normal[2];
     {
-        int *normalComponents = (int *)&mForward;
-        mSide.x = normalComponents[0];
-        mSide.y = normalComponents[1];
-        mSide.z = normalComponents[2];
+        Vector3 *normalComponents = &mForward;
+        mSide.x = normalComponents->x;
+        mSide.y = normalComponents->y;
+        mSide.z = normalComponents->z;
     }
     func_0203cc28((int *)&mSide, -0x4000);
     mPrevPos.x = mPos.x;
     mPrevPos.y = mPos.y;
     mPrevPos.z = mPos.z;
     {
-        int *cachedPosition = (int *)&mPrevPos;
-        mSpawnPos.x = cachedPosition[0];
-        mSpawnPos.y = cachedPosition[1];
-        mSpawnPos.z = cachedPosition[2];
+        Vector3 *cachedPosition = &mPrevPos;
+        mSpawnPos.x = cachedPosition->x;
+        mSpawnPos.y = cachedPosition->y;
+        mSpawnPos.z = cachedPosition->z;
     }
     mPrevForward.x = mForward.x;
     mPrevForward.y = mForward.y;
@@ -1124,7 +1124,7 @@ void TrmpLine::StateFlex() {
 
     angleIndex = mWobblePhase >> 4;
     sine = FX_SinIdx(angleIndex);
-    negativeSine = -(int)sine;
+    negativeSine = -sine;
 
     restPosition = (Vec3 *)mRestVerts;
     position = (Vec3 *)mVerts;
@@ -1426,15 +1426,15 @@ void TrmpLine::Build(short *startPoint, short *endPoint) {
     }
 
     {
-        s32 ax = ((s32)startPoint[0]) << 12;
-        s32 ay = ((s32)startPoint[1]) << 12;
+        s32 ax = startPoint[0] << 12;
+        s32 ay = startPoint[1] << 12;
         startPosition.x = ax;
         startPosition.y = ay;
         startPosition.z = 0;
     }
     {
-        s32 bx = ((s32)endPoint[0]) << 12;
-        s32 by = ((s32)endPoint[1]) << 12;
+        s32 bx = endPoint[0] << 12;
+        s32 by = endPoint[1] << 12;
         endPosition.x = bx;
         endPosition.y = by;
         endPosition.z = 0;
@@ -1759,10 +1759,10 @@ int TrmpLine::Create(s16 *startPoint, s16 *endPoint) {
         return 0;
 
     deltaY = deltaPixels[1];
-    delta[0] = (int)deltaX << 12;
-    delta[1] = (int)deltaY << 12;
-    direction[0] = ((int)deltaX >> 1) << 12;
-    direction[1] = ((int)deltaY >> 1) << 12;
+    delta[0] = deltaX << 12;
+    delta[1] = deltaY << 12;
+    direction[0] = (deltaX >> 1) << 12;
+    direction[1] = (deltaY >> 1) << 12;
 
     {
         int ay = startPoint[1];

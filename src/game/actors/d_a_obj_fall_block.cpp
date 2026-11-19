@@ -45,7 +45,6 @@ enum { ACTOR_FL_KUZURE = 0x53, ACTOR_KM2_KUZURE = 0x8b, ACTOR_STAR = 0xb2 };
 #include "nitro/fx/fx_trig.h"
 
 extern "C" {
-s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 int AngleDiff(int a, int b);
 }
 
@@ -72,6 +71,14 @@ void daObjFallBlock_c_EmitDeletingDestructor(daObjFallBlock_c *p) {
 /* Not called. Forces the out-of-line copy of the inline destructor. */
 void daObjFallBlock_c_EmitDestructor(daObjFallBlock_c *p) {
     p->~daObjFallBlock_c();
+}
+
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
 }
 
 /* Once (mGroupLinked). Same-id neighbours closer than 0x96000 become
@@ -102,7 +109,7 @@ void daObjFallBlock_c::LinkGroup() {
    Slot 4 is StateIdle. Reaching it clears mSuppressed so
    this FL_KUZURE block renders and runs. A missing star destroys it. */
 void daObjFallBlock_c::PollLinkedStar() {
-    dActor_c *a = dActor_c::FindWithID((unsigned int)mLinkedStarID);
+    dActor_c *a = dActor_c::FindWithID(mLinkedStarID);
     if (a == 0) {
         MarkForDestruction();
         return;
@@ -118,7 +125,7 @@ void daObjFallBlock_c::FindLinkedStar() {
     star = dActor_c::FindWithActorID(ACTOR_STAR, 0);
     while (star) {
         if (static_cast<daStar_c *>(star)->unk_49d == (param1 & 0xf)) {
-            mLinkedStarID = (s32)star->uniqueID;
+            mLinkedStarID = star->uniqueID;
         }
         star = dActor_c::FindWithActorID(ACTOR_STAR, star);
     }
@@ -157,13 +164,7 @@ void daObjFallBlock_c::Kill() {
     pos.z = mPos.z;
     pos.y += 0x32000;
     u32 id = 0x48;
-    /* THE INTERMEDIATE IS LOAD-BEARING. `if (actorID == 0x8b)` folds the test
-       into the conditional move -- `cmp r1,#0x8b; moveq r0,#0x49`, two
-       instructions. The ROM materialises the comparison into a register first
-       and then tests THAT: cmp/moveq #1/movne #0/cmp #0/movne, five. Writing
-       the int is what asks for the second shape. */
-    int isFallBlockBfs = (actorID == ACTOR_KM2_KUZURE);
-    if (isFallBlockBfs) {
+    if (IsActorID(this, ACTOR_KM2_KUZURE)) {
         id = 0x49;
     }
     Particle::System::NewSimple(id, pos.x, pos.y, pos.z);
@@ -226,16 +227,13 @@ s32 daObjFallBlock_c::Behavior() {
     int all;
     daObjFallBlock_c *p;
     daObjFallBlock_c *q;
-    int is53;
     s16 yaw;
     int dist;
     int thresh;
-    int flag;
     s16 sinv;
     void *pl;
 
-    is53 = actorID == ACTOR_FL_KUZURE;
-    if (is53 != 0) {
+    if (IsActorID(this, ACTOR_FL_KUZURE)) {
         if (mSuppressed != 0) {
             if (mLinkedStarID == 0)
                 FindLinkedStar();
@@ -254,8 +252,7 @@ s32 daObjFallBlock_c::Behavior() {
         return 1;
     }
 
-    is53 = actorID == ACTOR_FL_KUZURE;
-    if (is53 == 0) {
+    if (!IsActorID(this, ACTOR_FL_KUZURE)) {
         if (mPrevInGroup == 0) {
             p = this;
             all = 1;
@@ -339,15 +336,13 @@ s32 daObjFallBlock_c::Behavior() {
         mPos.x = mRestPos.x;
         mPos.y = mRestPos.y;
         mPos.z = mRestPos.z;
-        is53 = actorID == ACTOR_FL_KUZURE;
-        if (is53 == 0) {
+        if (!IsActorID(this, ACTOR_FL_KUZURE)) {
             pl = ClosestPlayer();
             dist = Vec3_HorzDist(&mRestPos, &((dActor_c *)pl)->mPos);
             thresh = 0x28a000;
             if (gCurrentSublevel == 0x2e)
                 thresh = 0xa000;
-            flag = (mFlags & 8) ? 1 : 0;
-            if (flag != 0 && dist > thresh)
+            if (IsOffScreen(this) && dist > thresh)
                 mReady = 1;
             else
                 mReady = 0;

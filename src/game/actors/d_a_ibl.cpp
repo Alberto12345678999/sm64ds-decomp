@@ -130,6 +130,10 @@ s32 daIbl_c::OnAimedAtWithEgg()
     return 532480;
 }
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == daIbl_ACTOR_PLAYER;
+}
+
 /* Contact check, shared by every handler. mdCcAc_c.otherOwner is the uniqueID
    of the actor that touched the ball; when that is a daPly_c (actor 191) who is
    not vanished (mIsVanish), mdCcAc_c.hitFlags decides what happens:
@@ -153,8 +157,8 @@ void daIbl_c::CheckContact() {
     dActor_c *actor = dActor_c::FindWithID(id);
     if (actor == 0) return;
     {
-        int b = (actor->actorID == daIbl_ACTOR_PLAYER);
-        if (b == 0) return;
+        if (!IsPlayerActor(actor))
+            return;
     }
     a = static_cast<daPly_c *>(actor);
     if (a->mIsVanish != 0) return;
@@ -596,7 +600,7 @@ void daIbl_c::FreeRollBehavior() {
 void daIbl_c::SpawnerBehavior() {
     Vector3 pos;
     daPly_c *pl;
-    int r1;
+    u32 r1;
 
     if (mStateTimer != 0) {
         mStateTimer--;
@@ -607,7 +611,8 @@ void daIbl_c::SpawnerBehavior() {
         r1 = 3;
     else
         r1 = 6;
-    if (mLiveBalls >= (u32)r1) return;
+    if (mLiveBalls >= r1)
+        return;
 
     pl = ClosestPlayer();
     if (pl == 0) return;
@@ -635,7 +640,8 @@ void daIbl_c::SpawnerBehavior() {
     }
 
     if (gCurrentSublevel == 0x16) {
-        if (pos.y < (int)0xff63c000) return;
+        if (pos.y < -0x9c4000)
+            return;
         mStateTimer = 63;
     } else {
         mStateTimer = 127;

@@ -41,6 +41,7 @@ enum d_a_star_gate_AssetId {
 #include "nitro/fx/fx.h"
 #include "SaveBlock.h"
 #include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 void func_02012694(unsigned int soundID, const Vector3 *position);
 extern "C" void ChangeArea(int areaID);
@@ -51,8 +52,6 @@ u8 IsAreaShowing(int areaID);
 extern "C" {
 void Vec3_RotateYAndTranslate(Vector3 *out, void *m, short angle, const Vector3 *in);
 int AngleDiff(int a, int b);
-void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
 }
 extern u8 gLocalPlayerId;
 extern dCamera_c *gCamera;
@@ -195,10 +194,10 @@ bool daStarGate_c::ChangeState(State *nextState, daPly_c *player) {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 daPly_c *daStarGate_c::CalculateRelativePlayerPos() {
-    Vector3 tmp;
+    Vector3 toPlayer;
     daPly_c *player = gPlayers[gLocalPlayerId];
-    Vec3_Sub(&tmp, &player->mPos, &mPos);
-    Vec3_RotateYAndTranslate(&mScale, &data_020a0ebc, -mAngle.y, &tmp);
+    Vec3_Sub(&toPlayer, &player->mPos, &mPos);
+    Vec3_RotateYAndTranslate(&mScale, &data_020a0ebc, -mAngle.y, &toPlayer);
     return player;
 }
 
@@ -240,7 +239,7 @@ bool daStarGate_c::St_Wait_Main(daPly_c *player) {
     if (IsInFrontOfPlayer(player)) {
         entry = &data_ov100_02148390[param1];
         isSpecial = entry->numStars == 0x50;
-        notEnoughStars = (int)NumStars() < entry->numStars;
+        notEnoughStars = NumStars() < entry->numStars;
         isMario = data_0209caa0.file.mCharacter == 0;
 
         /* A door already unlocked in the save just opens. So does the 80-star

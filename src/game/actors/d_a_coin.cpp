@@ -47,6 +47,7 @@
 #include "math/CalcLib.h"
 #include "daObjBC_Switch_c.h"
 #include "daObjFl_Coin_c.h"
+#include "math/MtxStack.h"
 
 namespace Event { s32 GetBit(u32 bit); void SetBit(u32 bit); }
 
@@ -83,20 +84,12 @@ struct CoinFlagBits {
  * does not mangle them a second time. */
 
 extern "C" int SublevelToLevel(int i);
-extern "C" {
-extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-extern unsigned short DecIfAbove0_Short(unsigned short* p);
-}
 
 extern void GiveCoins(int idx, int amount);
 extern int GiveRedCoins(int i, int amt);
 extern s8 NumRedCoins(void);
 extern void func_02012694(unsigned int id, const Vector3 *v);
 extern int SurfaceInfo_TestFlag0x20(int *p);
-
-extern "C" {
-extern void Matrix4x3_FromRotationY(void *m, int angle);
-}
 
 extern unsigned char gGameMode;
 
@@ -259,10 +252,10 @@ daStarBase_c *daCoin_c::FindStarMarker() {
 /* Bounce off a wall: turns the heading (mPrevAngle.y) around the wall normal. */
 void daCoin_c::BounceOffWall() {
     if (mWithMeshClsn.IsOnWall() == 0) return;
-    int normal[3];
+    Vector3 normal;
     dBgPi *wall = mWithMeshClsn.GetWallResult();
-    wall->surface.CopyNormalTo(*(Vector3 *)normal);
-    mPrevAngle.y = ReflectAngle(normal[0], normal[2], mPrevAngle.y);
+    wall->surface.CopyNormalTo(normal);
+    mPrevAngle.y = ReflectAngle(normal.x, normal.z, mPrevAngle.y);
 }
 
 /* Shared per-frame tail of the movement handlers. Counts down the no-collision
@@ -709,6 +702,10 @@ void daCoin_c::StateDrop() {
     }
 }
 
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
 s32 daCoin_c::CleanupResources()
 {
     /* Vtable slot 3. Releases the files this coin's own type loaded, gives up its
@@ -720,8 +717,7 @@ s32 daCoin_c::CleanupResources()
     extern SharedFilePtr *const data_ov002_020ff060[];
 
     dActor_c *manager;
-    int isRed = (actorID == 0x121);
-    if (isRed != 0)
+    if (IsActorID(this, 0x121))
         data_ov002_0210d9a8.Release();
     if (mCoinType == COIN_BLUE) {
         data_ov002_020ff06c[mCoinType]->Release();
@@ -730,8 +726,7 @@ s32 daCoin_c::CleanupResources()
     UntrackStar(mTrackStarID);
     manager = dActor_c::FindWithID(mPuzzleManagerID);
     if (manager != 0) {
-        int isFlCoin = (manager->actorID == 0x4f);
-        if (isFlCoin != 0) {
+        if (IsActorID(manager, 0x4f)) {
             if (((daObjFl_Coin_c *)manager)->mLiveCoinCount != 0) {
                 ((daObjFl_Coin_c *)manager)->mLiveCoinCount--;
             }
@@ -950,24 +945,15 @@ s32 daCoin_c::InitResources()
     mWithMeshClsn.StartDetectingWater();
 
     behavior = mBehaviorType;
-    do {
-        if (behavior == 8) {
-            mDisappearTimer = 45;
-            mdCc_c.flags |= 1;
-            break;
-        }
-        if (behavior == 6) {
-            int inMode1;
-            inMode1 = gGameMode;
-            inMode1 = (inMode1 == 1);
-            if (inMode1 == 0) {
-                mDisappearTimer = 0xffffu;
-                mdCc_c.flags |= 1;
-                break;
-            }
-        }
+    if (behavior == 8) {
+        mDisappearTimer = 45;
+        mdCc_c.flags |= 1;
+    } else if (behavior == 6 && !IsVsMode()) {
+        mDisappearTimer = 0xffffu;
+        mdCc_c.flags |= 1;
+    } else {
         mDisappearTimer = 210;
-    } while (0);
+    }
 
     *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~1) | 1;
 

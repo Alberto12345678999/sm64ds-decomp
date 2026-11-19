@@ -6,22 +6,18 @@
 #include "nitro/fx/fx_mtx43.h"
 
 extern void G3_MultMtx43(int *m);                /* multiply by the 4x3 matrix */
-extern void func_0204c24c(int tileS, int tileT); /* the XY-plane quad */
+extern void SPLUtil_DrawXYPlane(int tileS, int tileT); /* the XY-plane quad */
 
-/* Draw one particle as a camera-facing quad (draw type 0, func_0204a5c8):
- * alpha and the next polygon ID into POLYGON_ATTR (nothing more when the
- * alpha is 0), move basePosition + offset into view space, then load a matrix
- * that rotates by the particle's angle about the view axis, scales by
- * scale * animScale (x by aspectRatio too) and translates there, set its
- * color and emit the XY-plane quad. pret's SPL calls this SPLDraw_Billboard;
- * func_0204bbd8 is the child-particle twin. */
-void func_0204be40(ManagerView *mgr, ParticleElement *ptcl) {
+/* Draw one child particle as a camera-facing quad (child draw type 0,
+ * func_0204a5c8): SPLDraw_Billboard with the child record's tile counts. The
+ * name is pret's SPL's. */
+void SPLDraw_Child_Billboard(ManagerView *mgr, ParticleElement *ptcl) {
     ParticleSystem *sys = mgr->mCurrentSystem;
     s16 aspectRatio = sys->mDefinition->data->aspectRatio;
     int alpha = (ptcl->visibility.baseAlpha * (ptcl->visibility.animAlpha + 1)) >> 5;
     const MtxFx43 *view = mgr->mDrawMatrix;
     VecFx32 trans;
-    int mat[12];
+    MtxFx43 mat;
     u32 v;
     int sx;
     int sy;
@@ -58,26 +54,26 @@ void func_0204be40(ManagerView *mgr, ParticleElement *ptcl) {
 
         /* the 4x3 rows: (cos, sin, 0) * sx, (-sin, cos, 0) * sy, (0, 0, 1),
          * then the view-space position */
-        mat[0] = FX_MUL(cos, sx);
-        mat[3] = FX_MUL(-sin, sy);
-        mat[1] = FX_MUL(sin, sx);
-        mat[9] = trans.x;
-        mat[10] = trans.y;
-        mat[8] = 0x1000;
-        mat[11] = trans.z;
-        mat[6] = 0;
-        mat[4] = FX_MUL(cos, sy);
-        mat[7] = 0;
-        mat[2] = 0;
-        mat[5] = 0;
+        mat.m[0][0] = FX_MUL(cos, sx);
+        mat.m[1][0] = FX_MUL(-sin, sy);
+        mat.m[0][1] = FX_MUL(sin, sx);
+        mat.m[3][0] = trans.x;
+        mat.m[3][1] = trans.y;
+        mat.m[2][2] = 0x1000;
+        mat.m[3][2] = trans.z;
+        mat.m[2][0] = 0;
+        mat.m[1][1] = FX_MUL(cos, sy);
+        mat.m[2][1] = 0;
+        mat.m[0][2] = 0;
+        mat.m[1][2] = 0;
         G3_Identity();
-        G3_MultMtx43(mat);
+        G3_MultMtx43(&mat.m[0][0]);
     }
 
     G3_Color(ptcl->color);
     {
-        PtclData *data = mgr->mCurrentSystem->mDefinition->data;
+        PtclChild *child = mgr->mCurrentSystem->mDefinition->child;
         /* Keep the retail u8 narrowing; passing these bitfields as int changes MWCC output. */
-        func_0204c24c((u8)data->textureTileCountS, (u8)data->textureTileCountT);
+        SPLUtil_DrawXYPlane((u8)child->textureTileCountS, (u8)child->textureTileCountT);
     }
 }

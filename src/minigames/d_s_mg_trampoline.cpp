@@ -120,7 +120,7 @@ extern s16 data_02082414;
 extern "C" int Trmp3DMario_InitPool(unsigned char *a0, int a1);
 void TrmpFx_InitPool(void *records, int count);
 void TrmpLine_LoadTextures(void);
-extern "C" void Trmp3DMario_ResetAll(unsigned int n, int arg1);
+extern "C" void Trmp3DMario_ResetAll(unsigned int n, int spawnHeight);
 void TrmpFx_ClearAll(void);
 
 extern int sTrmpPuffXByLanguage[];
@@ -315,7 +315,7 @@ s32 dScMgTrampoline_c::InitResources() {
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 8;
     InitialiseVramGlobals();
     G2_SetBG0Priority(1);
-    fov = FX_Div(0xc0000, (s32)data_02082414);
+    fov = FX_Div(0xc0000, data_02082414);
     this->mCameras[0].mLookAt.x = 0;
     this->mCameras[0].mLookAt.y = -0x64000;
     this->mCameras[0].mLookAt.z = 0;
@@ -433,8 +433,8 @@ void dScMgTrampoline_c::StateIntro() {
 
         {
             int dst = (int)G2_GetBG3CharPtr();
-            volatile u16 tmp = 0;
-            MIi_CpuClear16(tmp, (char *)dst, 0x6000);
+            volatile u16 fill = 0;
+            MIi_CpuClear16(fill, (char *)dst, 0x6000);
         }
 
         TrmpLine::CreateStartLineT1();
@@ -554,8 +554,7 @@ void dScMgTrampoline_c::StatePlay() {
             }
             Sound::PlayBank2_2D(0x1b6);
             {
-                unsigned int rnd =
-                    (unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff;
+                unsigned int rnd = RandomIntInternal(&data_0209e650.value) & 0x7fffffff;
                 int scaled = (rnd >> 19) * 0x2d0;
                 mDoorSwitchTimer = (s16)((scaled >> 12) + 0x2d0);
                 mDoorBlinkTimer = 0;

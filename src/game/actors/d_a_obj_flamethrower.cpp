@@ -68,10 +68,6 @@ extern signed char gCurrentSublevel;
 /* Second particle parameter per segment: 0xe61 + i * 0x689. */
 extern short data_ov095_02136f98[];
 
-extern "C" {
-extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
-}
-
 /* data_ov095_02136f80 (decl_common.h) is the per-segment scale,
  * 0x1000 + i * 0x745: collision radius and height are that times
  * 0x14 and 0x28, and the particle call takes it too.
@@ -163,7 +159,7 @@ int daObjFlamethrower_c::Behavior() {
         }
         break;
     case 1:
-        if ((int)mActiveFlames < (count - 1)) {
+        if (mActiveFlames < (count - 1)) {
             active = &mActiveFlames;
             *active = (*active + 1);
         }
@@ -190,7 +186,7 @@ int daObjFlamethrower_c::Behavior() {
 
     if (mActiveFlames != 0) {
         for (i = 0; i < count; i++) {
-            if (i == (int)mActiveFlames)
+            if (i == mActiveFlames)
                 break;
             if (((param1 & 0xff) != kAltParam) || (gCurrentSublevel == kBigBoosHaunt)) {
                 im1 = i - 1;
@@ -245,7 +241,7 @@ int daObjFlamethrower_c::Behavior() {
 
     for (j = 0; j < count; j++) {
         mColliders[j].Clear();
-        if (j < (int)mActiveFlames)
+        if (j < mActiveFlames)
             mColliders[j].dCc_c::Update();
     }
     return 1;

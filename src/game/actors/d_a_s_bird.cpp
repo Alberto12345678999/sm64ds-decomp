@@ -78,11 +78,6 @@ extern SBirdModelFilePtr data_ov009_02113c20;
 extern SBirdAnimationFilePtr data_ov009_02113c28;
 extern SBirdStateTable data_ov009_02113c48;
 
-/* local extern: no shared header declares Vec3_Sub. */
-extern "C" {
-extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-}
-
 /* The flock's random draws are unsigned: a signed % or >> changes codegen. */
 static inline u32 Random() {
     return RandomIntInternal(&data_0209e650.value);
@@ -260,9 +255,9 @@ s32 daSBird_c::Render() {
 
 s32 daSBird_c::Behavior() {
     (this->*data_ov009_02113c48.slots[mState])();
-    Vector3 tmp;
-    Vec3_Asr(&tmp, &mPos, 3);
-    MtxStack::transS(tmp.x, tmp.y, tmp.z);
+    Vector3 scaledPos;
+    Vec3_Asr(&scaledPos, &mPos, 3);
+    MtxStack::transS(scaledPos.x, scaledPos.y, scaledPos.z);
     mAngle.y = mPrevAngle.y;
     Matrix4x3_ApplyInPlaceToRotationZ(&MtxStack::get(), mAngle.z);
     MtxStack::YrotM(mAngle.y);

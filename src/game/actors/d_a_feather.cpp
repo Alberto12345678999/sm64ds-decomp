@@ -37,10 +37,6 @@
 #include "Particle__System.h"
 #include "ParticleIds.h"
 
-/* local extern: Vec3_Asr's definition takes a plain triple; no shared header
-   declares it yet. */
-extern "C" void Vec3_Asr(struct Vector3 *d, struct Vector3 *s, int sh);
-
 extern SharedFilePtr data_ov002_0210da58;
 extern unsigned char gGameMode;
 extern dCamera_c *gCamera;
@@ -101,10 +97,17 @@ int daFeather_c::InitResources() {
  * Vtable slot 6.
  * ======================================================================== */
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
+static inline int IsVsMode(void) {
+    return gGameMode == 1;
+}
+
 int daFeather_c::Behavior() {
     {
-        int b = (gGameMode == 1);
-        if (!b) {
+        if (!IsVsMode()) {
             daPly_c *p = ClosestPlayer();
             if (p->param1 != 0 || p->IsCollectingCap() != 0) {
                 SmallPoofDust();
@@ -137,8 +140,7 @@ int daFeather_c::Behavior() {
     mAngle.z = FX_CosIdx((u16)mSwayAngle >> 4) * 2 - 0x6000;
 
     {
-        int b = (gGameMode == 1);
-        if (!b) {
+        if (!IsVsMode()) {
             mAngle.y = gCamera->mAngleY + 0x4000;
         }
     }
@@ -147,8 +149,7 @@ int daFeather_c::Behavior() {
     if (id != 0) {
         dActor_c *a = dActor_c::FindWithID(id);
         if (a != 0) {
-            int eq = (a->actorID == 0xbf);
-            if (eq) {
+            if (IsPlayerActor(a)) {
                 ((daPly_c *)a)->InitWingFeathers(true);
                 Particle::System::NewSimple(kPtclItemVanish, mPos.x, mPos.y, mPos.z);
                 MarkForDestruction();

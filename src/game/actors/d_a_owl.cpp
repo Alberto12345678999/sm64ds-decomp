@@ -52,9 +52,9 @@
  * Leftover: the rider matrix pointer at +0xc8, and the model matrix at +0x328
  *   and bone-matrix pointer at +0x320, stay raw offsets from the actor.
  *   Writing them as mAnmModel members hoists the base.
- * Leftover: UpdateHover narrows `player->mStateFlags & 0x800` to u16 before
- *   the test; the ROM masks, then shifts the result through 16 bits.
- *   Kept (#821 r82): the plain mask test -> 0x234 of 0x23c (ands, no shift).
+ * Note: UpdateHover holds `player->mStateFlags & 0x800` in a u16 local; the
+ *   ROM masks, then shifts the result through 16 bits. The plain mask test
+ *   is 0x234 of 0x23c (ands, no shift; #821 r82).
  * Leftover: RandomIntInternal returns int (math/CalcLib.h); UpdateHover and
  *   EnterHover shift it as u32, the ROM's logical shift. Behavior tests the
  *   carry state twice; the else is what the ROM emits.
@@ -144,11 +144,9 @@ enum {
 extern signed char gCurrentSublevel;
 extern unsigned char gCurrentStarId;
 void func_02012694(unsigned int a, const Vector3 *pos);
-short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 int IsStarCollectedInCurLevel(int);
 extern "C" {
 int func_ov002_020df7f4(void *c);
-void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 }
 
 /* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
@@ -172,11 +170,11 @@ daOwl_c::~daOwl_c()
  * state; if the attach is refused the rider is dropped again. */
 void daOwl_c::TryPickUpRider() {
     Vector3 st;
-    Vector3 tmp;
-    tmp.x = data_ov094_02136a1c[0];
-    tmp.y = data_ov094_02136a1c[1];
-    tmp.z = data_ov094_02136a1c[2];
-    mdCcAcPos_c.SetPosRelativeToActor(tmp);
+    Vector3 offset;
+    offset.x = data_ov094_02136a1c[0];
+    offset.y = data_ov094_02136a1c[1];
+    offset.z = data_ov094_02136a1c[2];
+    mdCcAcPos_c.SetPosRelativeToActor(offset);
     if (mdCcAcPos_c.otherOwner == 0)
         return;
     dActor_c *other = dActor_c::FindWithID(mdCcAcPos_c.otherOwner);
@@ -276,7 +274,7 @@ int daOwl_c::UpdateCarrying() {
 
     ApproachAngle(&mPrevAngle.x, 0, 0xa, 0x200, 0x100);
 
-    if (mWithMeshClsn.IsOnWall() != 0 || func_02035638((u8 *)&mWithMeshClsn) != 0) {
+    if (mWithMeshClsn.IsOnWall() != 0 || func_02035638(&mWithMeshClsn) != 0) {
         rider = mRider;
         if (rider != 0 && rider->func_ov002_020df7ac() != 0) {
             mWithMeshClsn.Unk_0203589c();
@@ -318,7 +316,8 @@ int daOwl_c::UpdateHover() {
         if (ClosestPlayer() != 0) {
             daPly_c *player = mTalkTarget;
             if (player != 0) {
-                if ((u16)(player->mStateFlags & 0x800) == 0) {
+                u16 busy = player->mStateFlags & 0x800;
+                if (busy == 0) {
                     if (player->StartTalk(*this, 1) != 0) {
                         if (mTalkTarget->ShowMessage(*this, 0xa2, &mPos, 0, 0) == 1) {
                             func_02012694(0x176, &mCamSpacePos);

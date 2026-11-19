@@ -68,6 +68,7 @@ enum d_a_jgm_AssetId {
 #include "math/MtxStack.h"
 #include "nitro/fx/fx_cp.h"
 #include "nitro/fx/fx_trig.h"
+#include "math/CalcLib.h"
 
 /* File-scope objects at the end of this file construct the seven resource
  * handles (model files 0x34c/0x429/0x42a, animation files 0x34f/0x34d,
@@ -115,14 +116,7 @@ extern DaJgmStateHandler data_ov077_02127810;
 extern DaJgmStateHandler data_ov077_021277f8;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
-extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-/* local extern: CalcLib.h clashes with this TU's C Vec3_Asr (void *) */
-extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-/* local extern: CalcLib.h clashes with this TU's C Vec3_Asr (void *) */
-extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-
 extern int *Vec3_LslInPlace(void *v, int sh);
-extern void Vec3_Asr(void *d, void *s, int sh);
 
 }
 
@@ -185,10 +179,13 @@ s32 daJgm_c::Behavior()
     return 1;
 }
 
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
 s32 daJgm_c::Render()
 {
-    int b = (int)((mFlags & 0x40000) != 0);
-    if (b != 0)
+    if (IsInYoshiMouth(this))
         return 1;
     mTextureSequence.Update(mAnmModel.data);
     mAnmModel.Render(0);
@@ -334,23 +331,27 @@ s32 daJgm_c::EnterYoshiMouthState()
     return 1;
 }
 
+static inline int IsFlagSet(dActor_c *actor, u32 bit) {
+    return (actor->mFlags & bit) != 0;
+}
+
+static inline int IsBeingEaten(dActor_c *actor) {
+    return (actor->mFlags & 0x20000) != 0;
+}
+
 s32 daJgm_c::UpdateYoshiMouthState()
 {
-    if (((mFlags & 0x40000) ? 1 : 0) != 0) {
+    if (IsInYoshiMouth(this)) {
         dActor_c *carrier = mEatingPlayer;
         s32 *carrierPos = &carrier->mPos.x;
         mPos.x = carrierPos[0];
         mPos.y = carrierPos[1];
         mPos.z = carrierPos[2];
     }
-    {
-        int flags = mFlags;
-        if (((flags & 0x80000) ? 1 : 0) != 0)
-            SetState(3);
-        else if (((flags & 0x20000) ? 1 : 0) == 0
-                 && ((flags & 0x40000) ? 1 : 0) == 0)
-            SetState(0);
-    }
+    if (IsFlagSet(this, 0x80000))
+        SetState(3);
+    else if (!IsBeingEaten(this) && !IsInYoshiMouth(this))
+        SetState(0);
     return 1;
 }
 
@@ -419,8 +420,7 @@ s32 daJgm_c::UpdateFallState()
 
 void daJgm_c::UpdateModels()
 {
-    int b = (int)((mFlags & 0x40000) != 0);
-    if (b)
+    if (IsInYoshiMouth(this))
         return;
 
     Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngle.y);
@@ -520,11 +520,11 @@ void daJgm_c::HandlePlayerCollision()
     if (other == 0)
         return;
 
-    b = (int)(other->actorID == 0xbf);
+    b = (other->actorID == 0xbf);
     if (b == 0)
         return;
 
-    b = (int)((mFlags & 0x20000) != 0);
+    b = ((mFlags & 0x20000) != 0);
     if (b != 0) {
         SetState(2);
         return;
@@ -631,7 +631,7 @@ int daJgm_c::CountSpinies()
 
 void daJgm_c::UpdateHoverBob()
 {
-    unsigned short v = (unsigned short)mBobAngle;
+    unsigned short v = mBobAngle;
     short s = FX_SinIdx(v >> 4);
     long long prod = (long long)s * 0x27000;
     mBobOffsetY = (int)((prod + 0x800) >> 12);

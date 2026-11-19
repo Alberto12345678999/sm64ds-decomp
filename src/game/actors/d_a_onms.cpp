@@ -50,6 +50,7 @@ enum daOnms_c_AssetId {
 #include "Sound.h"
 #include "math/CalcLib.h"
 #include "nitro/fx/fx_trig.h"
+#include "math/MtxStack.h"
 
 /* mMoveDir indexes the member-pointer table this file defines below. The
    compiler copies the nine pointer-to-member descriptors into it at
@@ -115,10 +116,6 @@ extern "C" int func_ov002_020de328(void *player);
 /* Sound::Play(3, id, pos). The overlay calls this wrapper, not Sound::Play. */
 void func_02012694(unsigned int id, const Vector3 *v);
 /* Stores mRadius: p[6] = value, the word at dBgCh_Actr + 0x18. */
-extern "C" void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-extern "C" void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angX);
-extern "C" void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
-extern "C" void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 extern "C" void hold_d_a_onms(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
                               short angY, void *clps);
 /* Stores beforeClsnCallback: p[6] = value, the word at dBgW + 0x18. */
@@ -165,7 +162,7 @@ void daOnms_c::StateSink()
 /* State 7: tumble until the box lands, then shake the ground. */
 int daOnms_c::StateBounce()
 {
-    Vector3 tmp;
+    Vector3 dustPos;
     Vector3 eq;
     Vector3 dust;
 
@@ -205,12 +202,12 @@ int daOnms_c::StateBounce()
     Earthquake(eq, 0x5dc000);
     func_02012694(0x46, CamPos(this));
 
-    /* tmp is a dead copy the ROM keeps; building dust directly differs. */
-    tmp.x = mPos.x;
-    tmp.y = mPos.y;
-    tmp.z = mPos.z;
-    tmp.y -= 0x78000;
-    dust = tmp;
+    /* dustPos is a dead copy the ROM keeps; building dust directly differs. */
+    dustPos.x = mPos.x;
+    dustPos.y = mPos.y;
+    dustPos.z = mPos.z;
+    dustPos.y -= 0x78000;
+    dust = dustPos;
     LandingDustAt(dust, 1);
 
     mVertAccel = 0;
@@ -471,6 +468,10 @@ void daOnms_c::Launch(dActor_c *player, u32 how)
     mdCcAcPos_c.radius = 0x1a9000;
 }
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 void daOnms_c::CheckPlayerHit()
 {
     unsigned int id = mdCcAcPos_c.otherOwner;
@@ -479,8 +480,8 @@ void daOnms_c::CheckPlayerHit()
     if (o == 0) return;
     /* PLAYER is actor 0xbf. A flag, not `if (o->actorID != 0xbf)`: the
        direct test differs. */
-    int b = (o->actorID == 0xbf);
-    if (b == 0) return;
+    if (!IsPlayerActor(o))
+        return;
     int f = mdCcAcPos_c.hitFlags;
     daPly_c *player = (daPly_c *)o;
     if (f & 0x40) {
@@ -572,7 +573,7 @@ int daOnms_c::Behavior()
 int daOnms_c::InitResources()
 {
     void *f;
-    Vector3 tmp;
+    Vector3 scaledPos;
 
     f = dExtSimpleModel_c::LoadFile(gOnimasuModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
@@ -597,9 +598,9 @@ int daOnms_c::InitResources()
     mRestPos.x = mPos.x;
     mRestPos.y = mPos.y;
     mRestPos.z = mPos.z;
-    Vec3_Asr(&tmp, ActorPos(this), 3);
+    Vec3_Asr(&scaledPos, ActorPos(this), 3);
 
-    Matrix4x3_FromTranslation(&data_020a0e68, tmp.x, tmp.y, tmp.z);
+    Matrix4x3_FromTranslation(&data_020a0e68, scaledPos.x, scaledPos.y, scaledPos.z);
     mModel.mat4x3 = data_020a0e68;
     mBaseMtx = mModel.mat4x3;
 

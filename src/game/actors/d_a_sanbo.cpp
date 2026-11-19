@@ -91,10 +91,13 @@ daSanbo_c *daSanbo_c_classInit_SANBO_BODY(void) {
     return new daSanbo_c();
 }
 
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
 /* Only the head pays out a coin. Every piece then destroys itself. */
 void daSanbo_c::OnTurnIntoEgg(daPly_c &player) {
-    int flag = (actorID == SANBO_HEAD);
-    if (flag)
+    if (IsActorID(this, SANBO_HEAD))
         GivePlayerCoins(player, 1, 2);
     MarkForDestruction();
 }
@@ -168,11 +171,14 @@ int daSanbo_c::Behavior()
     return 1;
 }
 
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
 int daSanbo_c::Render()
 {
-    unsigned int f = mFlags;
-    int b = ((f & 0x40000) != 0);
-    if(b) return 1;
+    if (IsInYoshiMouth(this))
+        return 1;
     mModel.Render(&mScale);
     return 1;
 }
@@ -191,15 +197,12 @@ void daSanbo_c::OnPendingDestroy()
 }
 
 int daSanbo_c::CleanupResources() {
-    int id = actorID;
-    int a = (id == SANBO_HEAD);
-    if (a) {
+    if (IsActorID(this, SANBO_HEAD)) {
         UnloadBlueCoinModel();
         gSanboHeadModelFile.Release();
         gSanboBodyModelFile.Release();
     } else {
-        a = (id == SANBO_BODY);
-        if (a) {
+        if (IsActorID(this, SANBO_BODY)) {
             gSanboBodyModelFile.Release();
         }
     }
@@ -327,9 +330,8 @@ int daSanbo_c::UpdateLeader() {
 }
 
 int daSanbo_c::EnterKnockback() {
-    int head = (actorID == SANBO_HEAD);
 
-    if (head != 0) {
+    if (IsActorID(this, SANBO_HEAD)) {
         dActor_c::Spawn(0x122, 2, mPos, (Vector3_16 *)0, mAreaId, -1);
     }
     UnlinkSegment();
@@ -383,15 +385,13 @@ int daSanbo_c::EnterInMouth() {
     return 1;
 }
 
-int daSanbo_c::UpdateInMouth() {
-    int flags = mFlags;
-    int held = (flags & 0x20000) ? 1 : 0;
+static inline int IsBeingEaten(dActor_c *actor) {
+    return (actor->mFlags & 0x20000) != 0;
+}
 
-    if (held == 0) {
-        held = (flags & 0x40000) ? 1 : 0;
-        if (held == 0)
-            PoofAndDestroy();
-    }
+int daSanbo_c::UpdateInMouth() {
+    if (!IsBeingEaten(this) && !IsInYoshiMouth(this))
+        PoofAndDestroy();
     return 1;
 }
 
@@ -429,10 +429,9 @@ int daSanbo_c::UpdateStackedOnGrowingBody() {
 }
 
 int daSanbo_c::EnterMegaKill() {
-    int head = (actorID == SANBO_HEAD);
     int rnd;
 
-    if (head) {
+    if (IsActorID(this, SANBO_HEAD)) {
         dActor_c::Spawn(0x122, 2, mPos, 0, mAreaId, -1);
     }
     Sound::PlayBank0(9, mCamSpacePos);
@@ -451,9 +450,7 @@ int daSanbo_c::EnterMegaKill() {
 }
 
 int daSanbo_c::UpdateMegaKill() {
-    int head = (actorID == SANBO_HEAD) ? 1 : 0;
-
-    if (head != 0)
+    if (IsActorID(this, SANBO_HEAD))
         mAngle.x = (mAngle.x - 0x1000);
     UpdatePos(&mdCcAc_c);
     func_02038414(&mWithMeshClsn);
@@ -524,6 +521,10 @@ void daSanbo_c::UpdateFloorAndWalls(dBgCh_Actr *clsn) {
 #include "decl_Actor.h"
 #include "decl_Player.h"
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 void daSanbo_c::HandleAttacks() {
     unsigned int hitId;
     dActor_c *other;
@@ -553,8 +554,7 @@ void daSanbo_c::HandleAttacks() {
         Sound::PlayBank0(9, mCamSpacePos);
         UnlinkSegment();
         {
-            int head = (actorID == SANBO_HEAD);
-            if (head)
+            if (IsActorID(this, SANBO_HEAD))
                 dActor_c::Spawn(0x122, 2, mPos, 0, mAreaId, -1);
         }
         PoofAndDestroy();
@@ -570,25 +570,23 @@ void daSanbo_c::HandleAttacks() {
         return;
 
     if (mState == 1) {
-        int shove = (other->actorID == 0x135);
-        if (shove) {
-        radius = mdCcAc_c.radius;
-        if (Vec3_HorzDist(&mPos, &other->mPos) < radius + 0x1a9000) {
-            angle = Vec3_HorzAngle(&other->mPos, &mPos);
-            index = (unsigned short)angle >> 4;
-            sine = FX_SinIdx(index);
-            dist = mdCcAc_c.radius + 0x1a9000;
-            mPos.x = other->mPos.x + FX_MUL(dist, sine);
-            cosine = FX_CosIdx(index);
-            dist2 = mdCcAc_c.radius + 0x1a9000;
-            mPos.z = other->mPos.z + FX_MUL(dist2, cosine);
-        }
+        if (IsActorID(other, 0x135)) {
+            radius = mdCcAc_c.radius;
+            if (Vec3_HorzDist(&mPos, &other->mPos) < radius + 0x1a9000) {
+                angle = Vec3_HorzAngle(&other->mPos, &mPos);
+                index = (unsigned short)angle >> 4;
+                sine = FX_SinIdx(index);
+                dist = mdCcAc_c.radius + 0x1a9000;
+                mPos.x = other->mPos.x + FX_MUL(dist, sine);
+                cosine = FX_CosIdx(index);
+                dist2 = mdCcAc_c.radius + 0x1a9000;
+                mPos.z = other->mPos.z + FX_MUL(dist2, cosine);
+            }
         }
     }
 
     {
-        int playerId = (other->actorID == 0xbf);
-        if (!playerId)
+        if (!IsPlayerActor(other))
             return;
     }
 
@@ -683,7 +681,7 @@ void daSanbo_c::UpdateWanderYaw() {
     }
     dist = Vec3_HorzDist(&mPos, target);
     ang = Vec3_HorzAngle(&mPos, target);
-    ApproachLinear(mAngle.y, ang, (short)0x320);
+    ApproachLinear(mAngle.y, ang, 0x320);
     turn = CalcShyAwayAngle(dist);
     mPrevAngle.y = (mAngle.y + turn);
 }
@@ -693,8 +691,8 @@ int daSanbo_c::CalcShyAwayAngle(int x) {
         return 0;
     int rate = FX_Div(0x4000, 0xc8000);
     int drop = FX_MUL(rate, x);
-    int r = 0x8000 - drop;
-    return (short)r;
+    s16 r = 0x8000 - drop;
+    return r;
 }
 
 void daSanbo_c::PoofAndDestroy() {
@@ -719,9 +717,8 @@ int daSanbo_c::GetSegmentIndex() {
 void daSanbo_c::UnlinkSegment() {
     daSanbo_c *next;
     daSanbo_c *prev;
-    int head = (actorID == SANBO_HEAD);
 
-    if (head)
+    if (IsActorID(this, SANBO_HEAD))
         return;
     next = mNextSegment;
     prev = mPrevSegment;

@@ -201,7 +201,7 @@ dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
 
 void dScMgTrampoline2_c::InitDisplay() {
     void *objChar, *objPltt, *bgChar, *bgScr, *bgPltt;
-    volatile u16 sp0;
+    volatile u16 fill;
 
     objChar = LoadFile(sTrmp2NcgByLanguage[GetGameLanguage()]);
     objPltt = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
@@ -216,8 +216,8 @@ void dScMgTrampoline2_c::InitDisplay() {
 
     {
         char *dst = (char *)G2_GetBG2CharPtr();
-        sp0 = 0;
-        MI_CpuFill16(dst, sp0, 0x4000);
+        fill = 0;
+        MI_CpuFill16(dst, fill, 0x4000);
     }
     DecompressLZ16(bgChar, ((char *)G2_GetBG2CharPtr() + 0x4000));
     DecompressLZ16(bgScr, G2_GetBG2ScrPtr());
@@ -356,8 +356,8 @@ void dScMgTrampoline2_c::StateIntro() {
 
         {
             int dst = (int)G2_GetBG3CharPtr();
-            volatile u16 tmp = 0;
-            MI_CpuFill16((void *)dst, tmp, 0x6000);
+            volatile u16 fill = 0;
+            MI_CpuFill16((void *)dst, fill, 0x6000);
         }
 
         TrmpLine::CreateStartLineT2();
@@ -455,7 +455,7 @@ void dScMgTrampoline2_c::StatePlay() {
         }
     } else {
         if (ApproachLinear(mWaveStep, 4, 1)) {
-            unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650.value) & 0x7fffffff;
+            unsigned int rnd = RandomIntInternal(&data_0209e650.value) & 0x7fffffff;
             const Trampoline2WaveDef *d = &sTrmp2SpawnDefs[(int)((rnd >> 19) * 6) >> 12];
             int i;
             VecFx32 vecB;
@@ -639,7 +639,7 @@ int Trmp2_PickFaceB(int a) {
 }
 
 void dScMgTrampoline2_c::SpawnWave() {
-    int occupancy;
+    u32 occupancy;
     int column;
     int kind;
     int kinds[7];
@@ -690,7 +690,7 @@ void dScMgTrampoline2_c::SpawnWave() {
                     continue;
                 }
 
-                if ((savedOccupancy = (int)occupancy, (savedOccupancy & rightBit) != 0)) {
+                if ((savedOccupancy = occupancy, (savedOccupancy & rightBit) != 0)) {
                     kinds[i] = kind;
                     faces[i] = 8;
                     occupancy |= Trmp2_OccupancyBits(column, 1);
@@ -1074,7 +1074,7 @@ extern "C" {
 extern struct Tbl sTrmp2SpinnerSpeeds;
 extern const u16 sTrmp2SpinnerColors[];
 }
-void func_020169f4(char *self, int kind);
+void func_020169f4(dExtSimpleModel_c *model, int color);
 
 void Trmp2Spinner_Init(void *r0, int value) {
     Trmp2Spinner *spinner = (Trmp2Spinner *)r0;
@@ -1090,7 +1090,7 @@ void Trmp2Spinner_Init(void *r0, int value) {
     } else {
         idx = 3;
     }
-    func_020169f4((char *)spinner, sTrmp2SpinnerColors[idx]);
+    func_020169f4(&spinner->mModel, sTrmp2SpinnerColors[idx]);
     int scale = value * 0xA00;
     spinner->mLifeTimer = 240;
     if (scale > 0x4000) {
@@ -1109,8 +1109,8 @@ void Trmp2Spinner_Init(void *r0, int value) {
     spinner->mPos.x += (RAND_FX() - 0x800) * 0x40;
     spinner->mVel.x -= RAND_FX() >> 1;
     spinner->mVel.y -= RAND_FX() >> 1;
-    func_02016a14((char *)spinner, 0);
-    func_02016a04((char *)spinner, 0);
+    func_02016a14(&spinner->mModel, 0);
+    func_02016a04(&spinner->mModel, 0);
 }
 
 void Trmp2Spinner_Update(char *raw) {

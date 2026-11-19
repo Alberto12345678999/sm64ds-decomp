@@ -511,6 +511,16 @@ static inline int IsCastleFallCutsceneRunning() {
 static inline int IsKuppaScriptRunning() {
     return gRunningKuppaScript != 0;
 }
+
+static inline int IsLevelEntryDone(daPly_c *player) {
+    return player->mLevelEntryDone != 0;
+}
+
+/* The stylus is down this frame and was not last frame. */
+static inline int IsTouchJustBegun(int slot) {
+    return gTouchInfo[slot].held != 0 && gTouchInfo[slot].edge != 0;
+}
+
 extern u8 data_0209fcc8;
 extern PadData data_020a0e58[];
 extern u16 data_020a0e5a[];
@@ -1045,7 +1055,7 @@ void dScStage_c::CheckCameraInput() {
                         if ((state == 0 && ((gTouchInfo[i].x <= 88 && gTouchInfo[i].y >= 138) ||
                                             (gTouchInfo[i].x >= 167 && gTouchInfo[i].y >= 138))) ||
                             (state == 2 && gTouchInfo[i].x >= 167 && gTouchInfo[i].y >= 154)) {
-                            if (((gTouchInfo[i].held && gTouchInfo[i].edge) ? 1 : 0) || *st == 1) {
+                            if (IsTouchJustBegun(i) || *st == 1) {
                                 u16 mask;
                                 if ((state == 0 && gTouchInfo[i].x < 43) ||
                                     (gTouchInfo[i].x >= 167 && gTouchInfo[i].x < 209))
@@ -1059,7 +1069,7 @@ void dScStage_c::CheckCameraInput() {
                                     if (mask == 0)
                                         mask = 0x200;
                                 }
-                                if ((gTouchInfo[i].held && gTouchInfo[i].edge) ? 1 : 0)
+                                if (IsTouchJustBegun(i))
                                     cam->pressed |= mask;
                                 else
                                     cam->pressed |= mask & (mask ^ data_0209f368[i]);
@@ -1080,7 +1090,7 @@ void dScStage_c::CheckCameraInput() {
                 {
                     u8 state2 = data_0209f498[i].mode;
                     if (state2 != 0) {
-                        if (((gTouchInfo[i].held && gTouchInfo[i].edge) ? 1 : 0) &&
+                        if (IsTouchJustBegun(i) &&
                             ((state2 == 1 && gTouchInfo[i].x >= 215 && gTouchInfo[i].y >= 141) ||
                              (state2 == 2 && gTouchInfo[i].x >= 215 && gTouchInfo[i].y >= 115 &&
                               gTouchInfo[i].y < 151))) {
@@ -1694,7 +1704,9 @@ void dScStage_c::PS_Update() {
                     changed = 1;
                     if (sPauseDisplayedCourse == 0xFF)
                         sPauseDisplayedCourse = 0xF;
-                    /* Kept (#821 r84): sPauseArrowPressTimer stored directly -> 8 bytes shorter. */
+                    /* Kept (#821 r84): sPauseArrowPressTimer stored directly -> 8 bytes shorter.
+                       Kept (#821 r93): the ROM keeps a dead `cmp #0x38` on vx here; the same
+                       test as a ?: or if/else around two identical stores folds it (8 short). */
                     {
                         u8 *p0 = &sPauseArrowPressTimer;
                         u8 *p1 = &sPauseArrowPressTimer;
@@ -1703,14 +1715,7 @@ void dScStage_c::PS_Update() {
                         *p = (data_0208ee44 * 3);
                     }
                 } else {
-                    /* Kept (#821 r84): testing a/edge directly in the if -> 0x18 shorter. */
-                    s32 rightPressed;
-                    if ((a != 0) && (gTouchInfo[sl2].edge != 0)) {
-                        rightPressed = 1;
-                    } else {
-                        rightPressed = 0;
-                    }
-                    if (rightPressed != 0) {
+                    if (IsTouchPressed(a, sl2)) {
                         if (((u8)(gTouchInfo[sl2].x - 200) < 56U) && (gTouchInfo[sl2].y < 32U)) {
                             sPauseDisplayedCourse = (sPauseDisplayedCourse + 1);
                             sPressedPauseArrow = 2;
@@ -3085,8 +3090,7 @@ void dScStage_c::RenderVsModeCountdown() {
     int i;
     for (i = 0; i < 4; i++) {
         if (gPlayers[i]) {
-            int t = (gPlayers[i]->mLevelEntryDone != 0);
-            if (t == 1)
+            if (IsLevelEntryDone(gPlayers[i]) == 1)
                 count++;
         }
     }
@@ -3404,7 +3408,7 @@ extern "C" void GiveLives(int delta) {
    (int, u32, u32, u32 in decl_common.h) forwards its own four with no
    narrowing; the stack-passed returnState is read back with ldrsb, so it is
    a signed byte. */
-void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 returnState) {
+void LoadLevel(int levelID, u32 entranceID, int starID, u32 loadMode, s8 returnState) {
     int cur;
     int chk;
 
@@ -3419,7 +3423,7 @@ void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 returnState
     else
         gNextStarId = starID;
     SetNextStar();
-    sReturnState = arg3;
+    sReturnState = loadMode;
     if (returnState >= 0) {
         gReturnSublevel = gCurrentSublevel;
         gReturnEntranceId = returnState;
@@ -3447,8 +3451,8 @@ void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 returnState
     }
 }
 
-extern "C" void LoadLevelNoReturn(int levelID, u32 arg1, u32 arg2, u32 arg3) {
-    LoadLevel(levelID, arg1, arg2, arg3, -1);
+extern "C" void LoadLevelNoReturn(int levelID, u32 entranceID, u32 starID, u32 loadMode) {
+    LoadLevel(levelID, entranceID, starID, loadMode, -1);
     gReturnSublevel = -1;
     gCheckpointSublevel = -1;
 }
@@ -3993,6 +3997,11 @@ void func_02019a58();
 void func_02030a78();
 }
 
+/* State 6 is written by the wireless teardown path. */
+static inline int HasConnectionError() {
+    return data_0209fc68 == 6;
+}
+
 static inline u32 MaskOff(u32 x, u32 m) {
     return x & ~m;
 }
@@ -4022,8 +4031,7 @@ int dScStage_c::Behavior() {
                 return 1;
             }
             if (data_0209fc68 != 0) {
-                int b2 = (data_0209fc68 == 6);
-                if (b2) {
+                if (HasConnectionError()) {
                     if (c9c == 0) {
                         func_02019a58();
                         func_02012790(0x123);
@@ -4040,8 +4048,7 @@ int dScStage_c::Behavior() {
                 for (i = 0; i < 4; i++) {
                     daPly_c *p = gPlayers[i];
                     if (p != 0) {
-                        int t = (p->mLevelEntryDone != 0) ? 1 : 0;
-                        if (t == 1)
+                        if (IsLevelEntryDone(p) == 1)
                             cnt++;
                     }
                 }
@@ -4539,9 +4546,9 @@ int dScStage_c::InitResources() {
                 int idx = 0;
                 u8 *p1 = (u8 *)gNumRedCoins;
                 u8 *vsStars = (u8 *)gNumStageStars;
-                /* Kept (#821 r87): IsVsMode() here is 12 bytes short of the ROM. */
-                u8 mode = gGameMode;
-                int vsModeCounters = (mode == 1) ? 1 : 0;
+                /* Sampled once, before the loop: IsVsMode() here, or IsGameMode(1)
+                   tested inside the loop, is 12 bytes short or 12 long. */
+                int vsModeCounters = IsGameMode(1);
                 u8 loadMode = sReturnState;
                 do {
                     if (vsModeCounters || (specialSublevel == 0 && loadMode != 1)) {
@@ -4730,7 +4737,7 @@ int dScStage_c::InitResources() {
                         if (gCurrentSublevel != 2 || (data_0209caa0.file.flags2 & 0x200)) {
                             Sound::LoadAndSetMusic_Layer1(data_0207576a[gCurrentSublevel * 3]);
                             u8 localPlayer = gLocalPlayerId;
-                            if (((u8 *)gPlayers[localPlayer])[0x6ff] != 0) {
+                            if (gPlayers[localPlayer]->mHasWings != 0) {
                                 Sound::SetMusic(localPlayer, 0x33);
                             }
                         }

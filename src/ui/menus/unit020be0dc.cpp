@@ -54,6 +54,7 @@
 #include "dExtModel_c.h"
 #include "nitro/fx/fx.h"
 #include "nitro/fx/fx_trig.h"
+#include "nitro/fx/fx_vec.h"
 #include "nitro/gx/gxcommon.h"
 #include "types.h"
 #include "Ov007Model.h"
@@ -157,8 +158,6 @@ extern "C" void func_ov007_020c3fe4(Ov007SpriteItem *item);
 /* the figure and its files */
 extern const int data_ov007_020d7c5c[2][2]; /* [figureIndex][index]: animation file */
 extern void *data_ov007_02104bc4[2][2];
-extern "C" int VEC_Fx16Mag(s16 *v);
-extern "C" void VEC_Fx16Normalize(s16 *in, s16 *out);
 extern "C" void func_ov007_020b3edc(int idx);
 extern "C" void *func_ov007_020b3f20(int idx);
 extern "C" int func_ov007_020aebac(void);
@@ -178,7 +177,7 @@ extern "C" Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 void Ov007Figure::func_ov007_020beb80() {
     struct ModelComponents *comps = this->model->model;
     Matrix4x3 *bone0 = comps->transforms;
-    int *row = &bone0->r.m[6];
+    int *row = bone0->r.m[2];
     int yaw;
     Vector3s motion;
     Particle::System *sys;
@@ -201,7 +200,7 @@ void Ov007Figure::func_ov007_020beb80() {
             vel = 0;
             frames = 0x1000;
             if (motion.x != 0 || motion.y != 0 || motion.z != 0) {
-                int mag = (short)VEC_Fx16Mag((s16 *)&motion);
+                int mag = (short)VEC_Fx16Mag((VecFx16 *)&motion);
                 int t;
                 if (mag <= 0)
                     speed = 0;
@@ -216,16 +215,16 @@ void Ov007Figure::func_ov007_020beb80() {
                 else
                     t = FX_Div(mag - 0x1f4, 0x1f4);
                 frames -= t;
-                VEC_Fx16Normalize((s16 *)&motion, (s16 *)&motion);
+                VEC_Fx16Normalize((VecFx16 *)&motion, (VecFx16 *)&motion);
                 *(Vec3sWords *)&sys->direction = *(Vec3sWords *)&motion;
                 vel = (short)FX_MUL(speed, 0x460);
             }
             sys->emitInterval = (((frames << 2) >> 12) + 1);
             sys->callbackVelocity = vel;
-            sys->callbackFlags &= ~2;
+            sys->stopGenerate = 0;
             *(Vec3Words *)&sys->position = *(Vec3Words *)pos;
         } else {
-            sys->callbackFlags |= 2;
+            sys->stopGenerate = 1;
         }
     }
 }
@@ -410,7 +409,7 @@ void func_ov007_020be684(void *system, Ov007SpriteGroup *grp) {
     for (i = 0; i < *grp->layout; i++) {
         item = grp->items[i];
         rec = &SPRITES->tracking[i];
-        item->node->visible = (rec->particle != 0) ? 1 : 0;
+        item->node->visible = rec->particle != 0;
         item->node->x = rec->screenX << 12;
         item->node->y = rec->screenY << 12;
         item->node->priority = rec->priority;
@@ -550,7 +549,7 @@ int func_ov007_020be0dc(void) {
         }
 
         {
-            int *row = &Bone0(fig)->r.m[6];
+            int *row = Bone0(fig)->r.m[2];
             int yaw = FX_Atan2(row[0], row[2]);
             int turn = FX_DivS32(yaw << 12, 0xffff);
             unsigned int scale = ((turn * 18) >> 12) & 0xff;

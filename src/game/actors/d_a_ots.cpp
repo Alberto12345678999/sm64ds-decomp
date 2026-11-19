@@ -58,8 +58,8 @@
  * - BehaviorCommon: the mStateTimer increment stays unsigned short (ldrh).
  * - 02115f98 keeps integer-array scratch vectors; its vector helpers receive
  *   explicit Vector3 pointer views so these locals stay POD.
- * - bool-widening `int isD8 = (int)(actorID == kBigBullyActorId)` / `isBf` in
- *   CheckMarioCollision / ActKnockback: the temporary is load-bearing.
+ * - CheckMarioCollision / ActKnockback test the actor IDs through IsActorID /
+ *   IsPlayerActor. Testing actorID directly in the if changes the code.
  * - CleanupResources and InitResourcesCommon read the config block through
  *   mFileTable every time; caching it in a local size-DIFFs.
  * - ActBackUp: `mPrevAngle.y += 0x8000` is the match form (a separate read
@@ -178,10 +178,8 @@ enum {
     kHopSpeed = 0xf000              /* 15 units a frame upward */
 };
 
-/* ROM symbols with no header of their own. `extern` on every data declaration:
- * without it the block form defines rather than declares. */
-extern "C" {
-extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -213,8 +211,7 @@ int daOts_c::InitResourcesCommon()
     mdCcAc_c.Init(this, mFileTable->cylinderRadius, mFileTable->cylinderHeight, 0x200000,
                   kHitAttackMask | kHitEgg);
     {
-        int isD9 = (int)(actorID == kChillBullyActorId);
-        if (isD9) {
+        if (IsActorID(this, kChillBullyActorId)) {
             mdCcAc_c.vulnFlags |= kHitBit40000;
         }
     }
@@ -381,6 +378,10 @@ void daOts_c::func_ov064_02116bac(){
     DropShadowRadHeight(this->mShadowModel, tail().mShadowMtx, h, d + 0x28000, 0xf);
 }
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kPlayerActorId;
+}
+
 /* -------------------------------------------------------------------------- */
 /* The hit reaction: what the actor does when its collider is touched. Does
  * nothing in STATE_KNOCKED_BACK, or unless the other collider's owner is the
@@ -424,12 +425,11 @@ void daOts_c::CheckMarioCollision() {
         return;
 
     {
-        int isBf = (int)(hitPlayer->actorID == kPlayerActorId);
-        if (!isBf)
+        if (!IsPlayerActor(hitPlayer))
             return;
     }
 
-    hitFlags = (s32)this->mdCcAc_c.hitFlags;
+    hitFlags = this->mdCcAc_c.hitFlags;
     if ((hitFlags & kHitAttackMask) || hitPlayer->mIsMetal != 0) {
         this->mPrevAngle.y = hitPlayer->mAngle.y;
         if (hitPlayer->param1 == 2)
@@ -458,8 +458,7 @@ void daOts_c::CheckMarioCollision() {
     }
 
     {
-        int isD8 = (int)(this->actorID == kBigBullyActorId);
-        if (!isD8 && (hitFlags & kHitMegaChar)) {
+        if (!IsActorID(this, kBigBullyActorId) && (hitFlags & kHitMegaChar)) {
             Vector3_16 v;
             v.x = 0x2000;
             v.y = 0;
@@ -530,8 +529,7 @@ void daOts_c::CheckMarioCollision() {
 
     this->mPrevAngle.y = (s16)(this->mAngle.y + 0x8000);
     {
-        int isD8 = (int)(this->actorID == kBigBullyActorId);
-        if (!isD8)
+        if (!IsActorID(this, kBigBullyActorId))
             this->mHorzSpeed = kHurtRecoilSpeed;
         else
             this->mHorzSpeed = kHurtRecoilSpeedBigBully;
@@ -638,8 +636,7 @@ void daOts_c::ActChaseMario() {
  * hops. */
 void daOts_c::ActKnockback() {
     if (ApproachLinear(this->mHorzSpeed, 0, tail().mHorzDecel) != 0) {
-        int b = (this->actorID == kBigBullyActorId);
-        int lim = b ? 0x14 : 0xa;
+        u32 lim = IsActorID(this, kBigBullyActorId) ? 0x14 : 0xa;
         if (tail().mHopCount < 2) {
             if (this->mWithMeshClsn.IsOnGround()) {
                 unsigned char *p = &tail().mHopCount;
@@ -649,7 +646,7 @@ void daOts_c::ActKnockback() {
             mStateTimer = 0;
             return;
         }
-        if (mStateTimer < (unsigned int)lim)
+        if (mStateTimer < lim)
             return;
         tail().mState = STATE_CHASE;
         this->mPrevAngle.y = this->mAngle.y;
@@ -786,11 +783,11 @@ int daOts_c::func_ov064_0211616c() {
     }
     this->mPos.y = this->mPos.y - 0x5000;
     this->mParticle0 =
-        (u32)Particle::System::New(this->mParticle0, mFileTable->particleId, tail().mHomePos.x,
-                                   tail().mHomePos.y, tail().mHomePos.z, 0, 0);
+        Particle::System::New(this->mParticle0, mFileTable->particleId, tail().mHomePos.x,
+                              tail().mHomePos.y, tail().mHomePos.z, 0, 0);
     this->mParticle1 =
-        (u32)Particle::System::New(this->mParticle1, mFileTable->particleId + 1, tail().mHomePos.x,
-                                   tail().mHomePos.y, tail().mHomePos.z, 0, 0);
+        Particle::System::New(this->mParticle1, mFileTable->particleId + 1, tail().mHomePos.x,
+                              tail().mHomePos.y, tail().mHomePos.z, 0, 0);
     return 0;
 }
 
@@ -819,10 +816,10 @@ int daOts_c::func_ov064_02116110(short step){
  * y offset. */
 void daOts_c::func_ov064_02115f98(char* a1)
 {
-    int scratch[3];
-    int pos0[3];
-    int pos1[3];
-    int diff[3];
+    Vector3 scratch;
+    Vector3 pos0;
+    Vector3 pos1;
+    Vector3 diff;
     int scale;
     int angH;
     int angV;
@@ -834,33 +831,33 @@ void daOts_c::func_ov064_02115f98(char* a1)
     int tmpy;
 
     p1 = &((dActor_c *)a1)->mPos.x;
-    pos0[0] = this->mPos.x;
+    pos0.x = this->mPos.x;
     y0 = this->mPos.y;
-    pos0[1] = y0;
-    pos0[2] = this->mPos.z;
-    pos1[0] = *p1;
+    pos0.y = y0;
+    pos0.z = this->mPos.z;
+    pos1.x = *p1;
     tmpy = p1[1];
-    pos1[1] = tmpy;
-    pos1[2] = p1[2];
+    pos1.y = tmpy;
+    pos1.z = p1[2];
     tmpy = tmpy + 0x46000;
 
     scale = mFileTable->cylinderRadius;
-    pos0[1] = y0 + tail().mModelYOffset;
-    pos1[1] = tmpy;
+    pos0.y = y0 + tail().mModelYOffset;
+    pos1.y = tmpy;
 
-    Vec3_Sub((Vector3 *)diff, (const Vector3 *)pos1, (const Vector3 *)pos0);
+    Vec3_Sub(&diff, &pos1, &pos0);
 
-    scratch[0] = diff[0];
-    scratch[1] = diff[1];
-    scratch[2] = diff[2];
-    angH = cstd::atan2(scratch[0], scratch[2]);
+    scratch.x = diff.x;
+    scratch.y = diff.y;
+    scratch.z = diff.z;
+    angH = cstd::atan2(scratch.x, scratch.z);
     {
-        int hl = Vec3_HorzLen((const Vector3 *)scratch);
-        angV = cstd::atan2(scratch[1], hl);
+        int hl = Vec3_HorzLen(&scratch);
+        angV = cstd::atan2(scratch.y, hl);
     }
 
-    idxV = (int)((u16)angV >> 4);
-    idxH = (int)((u16)angH >> 4);
+    idxV = (u16)angV >> 4;
+    idxH = (u16)angH >> 4;
 
     cosV = FX_CosIdx(idxV);
     sinV = FX_SinIdx(idxV);
@@ -872,11 +869,11 @@ void daOts_c::func_ov064_02115f98(char* a1)
     t0 = FX_MUL(lenfix, sinH);
     t1 = FX_MUL(lenfix, cosH);
 
-    pos0[0] = pos0[0] + t0;
-    pos0[1] = pos0[1] + ycomp;
-    pos0[2] = pos0[2] + t1;
+    pos0.x = pos0.x + t0;
+    pos0.y = pos0.y + ycomp;
+    pos0.z = pos0.z + t1;
 
-    Particle::System::NewSimple(kParticleHit, pos0[0], pos0[1], pos0[2]);
+    Particle::System::NewSimple(kParticleHit, pos0.x, pos0.y, pos0.z);
 }
 
 /* -------------------------------------------------------------------------- */
