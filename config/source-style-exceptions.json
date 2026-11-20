@@ -278,56 +278,56 @@
       "rule": "unknown-field",
       "match": "unk_02c",
       "count": 2,
-      "reason": "func_0204a4c8's (short*)(p+0x2c) store and AddSystem's read are the existing Manager member. The constructor's third argument is loaned into each system's flags.unk_000; no consumer names the value. Follow-up: name Manager+0x2c with that flag field.",
-      "evidence": "include/Particle__Manager.h u16 unk_02c at +0x2c. Replaces (short*)(p+0x2c). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH; AddSystem at 0x02049e0c size 0xdc MATCH."
+      "reason": "SPLManager_New's (short*)(p+0x2c) store and AddSystem's read are the existing Manager member. The constructor's third argument is loaned into each system's flags.unk_000; no consumer names the value. Follow-up: name Manager+0x2c with that flag field.",
+      "evidence": "include/Particle__Manager.h u16 unk_02c at +0x2c. Replaces (short*)(p+0x2c). mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH; AddSystem at 0x02049e0c size 0xdc MATCH."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_02e",
       "count": 2,
-      "reason": "func_0204a4c8's (short*)(p+0x2e) store and AddSystem's read are the existing Manager member. The constructor's fourth argument is loaned into flags.unk_006; no consumer names the value. Follow-up: name Manager+0x2e with that flag field.",
-      "evidence": "include/Particle__Manager.h u16 unk_02e at +0x2e. Replaces (short*)(p+0x2e). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH; AddSystem at 0x02049e0c size 0xdc MATCH."
+      "reason": "SPLManager_New's (short*)(p+0x2e) store and AddSystem's read are the existing Manager member. The constructor's fourth argument is loaned into flags.unk_006; no consumer names the value. Follow-up: name Manager+0x2e with that flag field.",
+      "evidence": "include/Particle__Manager.h u16 unk_02e at +0x2e. Replaces (short*)(p+0x2e). mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH; AddSystem at 0x02049e0c size 0xdc MATCH."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_028",
       "count": 1,
-      "reason": "func_0204a4c8's (short*)(p+0x28) store is the existing Manager member, the constructor's first argument. Nothing else in this TU reads it, so the header name stays unknown. Follow-up: name Manager+0x28 when a reader establishes its role.",
-      "evidence": "include/Particle__Manager.h u16 unk_028 at +0x28. Replaces (short*)(p+0x28). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+      "reason": "SPLManager_New's (short*)(p+0x28) store is the existing Manager member, the constructor's first argument. Nothing else in this TU reads it, so the header name stays unknown. Follow-up: name Manager+0x28 when a reader establishes its role.",
+      "evidence": "include/Particle__Manager.h u16 unk_028 at +0x28. Replaces (short*)(p+0x28). mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_02a",
       "count": 1,
-      "reason": "func_0204a4c8's (short*)(p+0x2a) store is the existing Manager member, the constructor's second argument. Nothing else in this TU reads it, so the header name stays unknown. Follow-up: name Manager+0x2a when a reader establishes its role.",
-      "evidence": "include/Particle__Manager.h u16 unk_02a at +0x2a. Replaces (short*)(p+0x2a). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+      "reason": "SPLManager_New's (short*)(p+0x2a) store is the existing Manager member, the constructor's second argument. Nothing else in this TU reads it, so the header name stays unknown. Follow-up: name Manager+0x2a when a reader establishes its role.",
+      "evidence": "include/Particle__Manager.h u16 unk_02a at +0x2a. Replaces (short*)(p+0x2a). mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_020",
       "count": 1,
-      "reason": "func_0204a4c8's (int*)(p+0x20) clear is the existing Manager member. func_0204a17c then fills the same slot as the second resource table through the file-local EData view. The shared header name stays unknown. Follow-up: name Manager+0x20 once that table is shared outside this TU.",
-      "evidence": "include/Particle__Manager.h void *unk_020 at +0x20. Replaces (int*)(p+0x20). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+      "reason": "SPLManager_New's (int*)(p+0x20) clear is the existing Manager member. SPLManager_LoadResources then fills the same slot as the second resource table through the file-local EData view. The shared header name stays unknown. Follow-up: name Manager+0x20 once that table is shared outside this TU.",
+      "evidence": "include/Particle__Manager.h void *unk_020 at +0x20. Replaces (int*)(p+0x20). mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_024",
       "count": 1,
-      "reason": "func_0204a4c8's (short*)(p+0x24) store is the existing Manager member. The same halfword is EData::numA, the first resource-table count func_0204a17c writes. The shared header name stays unknown. Follow-up: name Manager+0x24 with that count once both views share one record.",
-      "evidence": "include/Particle__Manager.h u16 unk_024 at +0x24. Replaces (short*)(p+0x24) and the following unsigned load of unk_026. mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+      "reason": "SPLManager_New's (short*)(p+0x24) store is the existing Manager member. The same halfword is EData::numA, the first resource-table count SPLManager_LoadResources writes. The shared header name stays unknown. Follow-up: name Manager+0x24 with that count once both views share one record.",
+      "evidence": "include/Particle__Manager.h u16 unk_024 at +0x24. Replaces (short*)(p+0x24) and the following unsigned load of unk_026. mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_026",
       "count": 2,
-      "reason": "func_0204a4c8's (unsigned short*)(p+0x26) clear and the reload into unk_024 are the existing Manager member. The same halfword is EData::numB. The shared header name stays unknown. Follow-up: name Manager+0x26 with that count once both views share one record.",
-      "evidence": "include/Particle__Manager.h u16 unk_026 at +0x26. Replaces both (unsigned short*)(p+0x26) occurrences. mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+      "reason": "SPLManager_New's (unsigned short*)(p+0x26) clear and the reload into unk_024 are the existing Manager member. The same halfword is EData::numB. The shared header name stays unknown. Follow-up: name Manager+0x26 with that count once both views share one record.",
+      "evidence": "include/Particle__Manager.h u16 unk_026 at +0x26. Replaces both (unsigned short*)(p+0x26) occurrences. mwccarm 2004/b56 match.py: SPLManager_New at 0x0204a4c8 size 0xf4 MATCH."
     },
     {
       "path": "src/game/stages/d_s_entry_methods.cpp",
@@ -860,14 +860,6 @@
     {
       "path": "src/engine/mb/MB_WmBase.c",
       "rule": "raw-offset",
-      "match": "(int*)(data_020a9db4+0x1428",
-      "count": 1,
-      "reason": "WmWork.status +0x10, a BOOL WM_ReadStatus fills in and MBi_ParentCallback tests before starting MP. Which SDK WMStatus field it is has not been pinned down, so the read keeps the offset rather than inventing a name. Follow-up: name the WMStatus field once a reference layout places +0x10.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.c",
-      "rule": "raw-offset",
       "match": "(char*)((a0+0x1f",
       "count": 1,
       "reason": "Not a field access: MB_Init rounds the caller's buffer address up to 32 bytes ((a0 + 0x1f) & ~0x1f) before carving the WmWork out of it. No follow-up.",
@@ -887,14 +879,6 @@
       "match": "(u16*)(base1+0x1e38",
       "count": 1,
       "reason": "MB_Init's parent-name copy into a halfword in WmWork's pad_1e2e region that nothing in this file reads back, so no field is placed there. It overlaps the 0x1e30 copy. Follow-up: place both copies in WmWork once a reader shows the layout.",
-      "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
-    },
-    {
-      "path": "src/engine/mb/MB_WmBase.c",
-      "rule": "raw-offset",
-      "match": "(short*)(data_020a9db4+0x1e48",
-      "count": 1,
-      "reason": "MBi_StartCommon clears a halfword in WmWork's pad_1e2e region that nothing in this file reads back, so no field is placed there. Follow-up: place it in WmWork once a reader shows its role.",
       "evidence": "arm9/MB_WmBase 23/23 TEXT-VERIFIED (tools/tubuild.py verify); carried unchanged from the standalone shards this fold absorbs (0x0206879c..0x0206a318), with the comment beside each access that says why it stays raw"
     },
     {

@@ -76,8 +76,8 @@ extern const int data_ov062_0211cf0c[9];
 
 extern SharedFilePtr *const data_ov062_0211ced8[2];
 extern SharedFilePtr *const data_ov062_0211cee0[2];
-extern SharedFilePtr data_ov002_0210da18;
-extern SharedFilePtr data_ov002_0210da20;
+extern SharedFilePtr gShellGreenModelFile;
+extern SharedFilePtr gShellRedModelFile;
 
 int SurfaceInfo_TestFlag0x20(int *p); /* CLPS bit 0x20: water */
 
@@ -242,10 +242,10 @@ int daNknk_c::Behavior()
         switch (kind) {
         case 0:
         case 2:
-            func_ov062_02117acc();
+            UpdateStateWithShell();
             break;
         case 1:
-            func_ov062_02117a3c();
+            UpdateStateNoShell();
             break;
         }
 
@@ -258,7 +258,7 @@ int daNknk_c::Behavior()
             mStateTimer = 0;
             mWalkState = 0;
         }
-        func_ov062_02117c98();
+        HandleCollision();
         UpdatePos(&mdCc_c);
 
         if (mDeathState == 0 && mState != 0) {
@@ -336,8 +336,7 @@ int daNknk_c::CleanupResources()
   return 1;
 }
 
-void daNknk_c::func_ov062_02118de8()
-{
+void daNknk_c::UpdateWait() {
     mHorzSpeed = 0;
     if (mAnimIndex == 2) {
         if (mAnmModel.Finished() == 0)
@@ -348,7 +347,7 @@ void daNknk_c::func_ov062_02118de8()
     if (mAnmModel.WillHitFrame((unsigned short)(mAnmModel.GetFrameCount() - 1)) != 0) {
         mWalkState++;
     } else {
-        func_ov062_02118058();
+        TryStartRun();
         return;
     }
     SetAnimByIndex(0);
@@ -363,11 +362,10 @@ void daNknk_c::func_ov062_02118de8()
         int r = ((unsigned int)RandomIntInternal(&data_0209e650.value) >> 16) & 0x1fff;
         mTargetAngle = (s16)(mPrevAngle.y + r);
     }
-    func_ov062_02118058();
+    TryStartRun();
 }
 
-void daNknk_c::func_ov062_02118cdc()
-{
+void daNknk_c::UpdateWalkWithShell() {
     if (mTurning) {
         mTurning = (ApproachLinear(mPrevAngle.y, mTargetAngle, 0x200) ^ 1) != 0;
     } else {
@@ -391,10 +389,10 @@ void daNknk_c::func_ov062_02118cdc()
         UpdateWalkEnd();
         break;
     }
-    func_ov062_02118058();
+    TryStartRun();
 }
 
-void daNknk_c::func_ov062_02118b4c() {
+void daNknk_c::UpdateRun() {
     if (mAnimIndex == 3)
         SpawnFootstepDust(2, 5, 8, 0xb);
 
@@ -426,8 +424,7 @@ void daNknk_c::func_ov062_02118b4c() {
     ApproachLinear(mHorzSpeed, 0x11000, 0x1000);
 }
 
-void daNknk_c::func_ov062_02118a50()
-{
+void daNknk_c::UpdateShellSlide() {
     if (mHorzSpeed != 0) {
         if (mWithMeshClsn.IsOnWall() != 0) {
             dBgPi *wall = mWithMeshClsn.GetWallResult();
@@ -469,8 +466,7 @@ void daNknk_c::WaitUntilGrounded() {
     SpawnLandingDust();
 }
 
-void daNknk_c::func_ov062_02118718()
-{
+void daNknk_c::UpdateChaseShell() {
     int dist = 0x7fffffff;
     dActor_c *other;
 
@@ -531,8 +527,7 @@ void daNknk_c::func_ov062_02118718()
     mTimer = 20;
 }
 
-void daNknk_c::func_ov062_02118588()
-{
+void daNknk_c::UpdateDive() {
     dActor_c *found = 0;
     int match = 0;
     if (mState == 2) {
@@ -581,8 +576,7 @@ void daNknk_c::func_ov062_02118588()
     SetAnimByIndex(3);
 }
 
-void daNknk_c::func_ov062_021183e0()
-{
+void daNknk_c::UpdateWalkNoShell() {
     int dist = 0x7fffffff;
     dActor_c *other;
 
@@ -619,7 +613,7 @@ void daNknk_c::func_ov062_021183e0()
     else
         ApproachLinear(mHorzSpeed, 0x3000, 0x4cc);
 
-    func_ov062_02118058();
+    TryStartRun();
 }
 
 void daNknk_c::UpdateModelMatrixAndShadow() {
@@ -627,7 +621,7 @@ void daNknk_c::UpdateModelMatrixAndShadow() {
     Vec3_Asr(&v, &mPos, 3);
     MtxStack::transS(v.x, v.y, v.z);
     MtxStack::YrotM(mAngle.y);
-    mAnmModel.mat4x3 = data_020a0e68;
+    mAnmModel.mat4x3 = gScratchMtx;
     /* No drop shadow while in Yoshi's mouth. */
     int inMouth = (mFlags & 0x40000) != 0;
     if (inMouth != 0)
@@ -688,7 +682,7 @@ void daNknk_c::UpdateWalkEnd() {
     SetAnimByIndex(4);
 }
 
-void daNknk_c::func_ov062_02118058() {
+void daNknk_c::TryStartRun() {
     daPly_c *o = mClosestPlayer;
     int d = mPlayerDist;
     if (o != 0)
@@ -715,8 +709,7 @@ void daNknk_c::SlideToStop(int a1) {
     Particle::RunningSlidingDustAt(x, y, z);
 }
 
-void daNknk_c::func_ov062_02117c98()
-{
+void daNknk_c::HandleCollision() {
     dActor_c *found;
     int turnAround;
     s32 flags;
@@ -746,7 +739,7 @@ void daNknk_c::func_ov062_02117c98()
             return;
         }
         mDeathState = 5;
-        func_ov002_020aea30(found, (dBgCh_Actr *)turnAround);
+        KillByAttack(found, (dBgCh_Actr *)turnAround);
         return;
     }
     if (flags & 0x4000) {
@@ -773,7 +766,7 @@ void daNknk_c::func_ov062_02117c98()
                 mScale.y = 0x1000;
                 mScale.z = 0x1000;
             }
-            func_ov002_020aea30(found, 0);
+            KillByAttack(found, 0);
             return;
         }
     } else {
@@ -788,7 +781,7 @@ void daNknk_c::func_ov062_02117c98()
                     DropShell();
                 } else {
                     mDeathState = 6;
-                    func_ov002_020aea30(found, 0);
+                    KillByAttack(found, 0);
                     return;
                 }
             } else {
@@ -804,7 +797,7 @@ void daNknk_c::func_ov062_02117c98()
                         DropShell();
                     } else {
                         mDeathState = 1;
-                        func_ov002_020aea30(found, 0);
+                        KillByAttack(found, 0);
                         mScale.x = 0x1000;
                         mScale.y = 0x1000;
                         mScale.z = 0x1000;
@@ -831,7 +824,7 @@ void daNknk_c::func_ov062_02117c98()
         }
     }
 
-    func_ov002_020aea30(found, &mWithMeshClsn);
+    KillByAttack(found, &mWithMeshClsn);
     if (turnAround)
         mAngle.y = (u16)(mPrevAngle.y + 0x8000);
 }
@@ -883,29 +876,46 @@ void daNknk_c::BounceOffHurtPlayer() {
     mHorzSpeed = 0;
 }
 
-void daNknk_c::func_ov062_02117acc(){
-  switch(mState){
-  case 0:
-      WaitUntilGrounded();
-      break;
-  case 1: func_ov062_02118de8(); break;
-  case 2: func_ov062_02118cdc(); break;
-  case 3: func_ov062_02118b4c(); break;
-  case 4: func_ov062_02118a50(); break;
-  }
-}
-
-void daNknk_c::func_ov062_02117a3c()
-{
+void daNknk_c::UpdateStateWithShell() {
     switch (mState) {
     case 0:
         WaitUntilGrounded();
         break;
-    case 1: func_ov062_02118718(); break;
-    case 2: func_ov062_02118588(); break;
-    case 3: func_ov062_02118588(); break;
-    case 4: func_ov062_02118de8(); break;
-    case 5: func_ov062_021183e0(); break;
+    case 1:
+        UpdateWait();
+        break;
+    case 2:
+        UpdateWalkWithShell();
+        break;
+    case 3:
+        UpdateRun();
+        break;
+    case 4:
+        UpdateShellSlide();
+        break;
+    }
+}
+
+void daNknk_c::UpdateStateNoShell() {
+    switch (mState) {
+    case 0:
+        WaitUntilGrounded();
+        break;
+    case 1:
+        UpdateChaseShell();
+        break;
+    case 2:
+        UpdateDive();
+        break;
+    case 3:
+        UpdateDive();
+        break;
+    case 4:
+        UpdateWait();
+        break;
+    case 5:
+        UpdateWalkNoShell();
+        break;
     }
 }
 
@@ -920,6 +930,10 @@ void daNknk_c::SpawnBlueCoin() {
     dActor_c::Spawn(0x122, 2, pos, 0, mAreaId, -1);
 }
 
+/* idx indexes data_ov062_0211cee8, whose nine handles are, in order:
+ * 0 WALK_ST, 1 WALK, 2 WALK_ED, 3 RUN, 4 WAIT1, 5 WAIT2, 6 DIVE_ST,
+ * 7 DIVE, 8 DIVE_ED. The state handlers above are named after the clip
+ * each one plays. */
 void daNknk_c::SetAnimByIndex(int idx) {
     mAnmModel.SetAnim((BCA_File *)data_ov062_0211cee8[idx]->filePtr, data_ov062_0211cf0c[idx],
                       mAnimSpeed, 0);
@@ -1051,8 +1065,8 @@ extern SharedFilePtr *const data_ov062_0211ced8[2] = {
     &gNokonokoRedModelFile,
 };
 extern SharedFilePtr *const data_ov062_0211cee0[2] = {
-    &data_ov002_0210da18,
-    &data_ov002_0210da20,
+    &gShellGreenModelFile,
+    &gShellRedModelFile,
 };
 extern NknkAnimationFileHandle *const data_ov062_0211cee8[9] = {
     &gNokonokoWalkStAnimationFile, &gNokonokoWalkAnimationFile,  &gNokonokoWalkEdAnimationFile,

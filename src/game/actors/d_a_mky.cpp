@@ -2,19 +2,21 @@
 /* daMky_c -- Tall Tall Mountain Ukiki (UKIKI_THIEF 0x10b, UKIKI_STAR 0x10c).
  *
  * ov030 0x02115b78 is the bytes 7daMky_c. The star monkey's talk
- * (func_ov030_02112578) finds UKIKI_CAGE (0x67) and shoves it.
+ * (St_PushCage_Main) finds UKIKI_CAGE (0x67) and shoves it.
  * Key function ~daMky_c (out-of-line): D1 0x02111688, D0 0x021116d0;
  * D2 has no ROM home (deadstripped). defer_codegen off keeps ROM order.
  * Factories daMky_c_classInit_MONKEY_STAR/_THIEF last
  * (historical aliases UkikiStar_Spawn, UkikiThief_Spawn).
- * The func_ov030_* helpers are daMky_c methods (S33); symbols.txt
- * carries the mangled spellings.
+ * The helpers and the eleven St_*_Main ticks are daMky_c methods (S33);
+ * symbols.txt carries the mangled spellings.
  *
  * leftovers:
- * - The func_ov030_* methods keep their address names. Of the 22
- *   pointer-to-member records at 0x02115ac8, EnterState0..10 store
- *   mState. The other eleven are the ticks. Helpers those ticks call
- *   take the same Ukiki, so they are methods too.
+ * - Of the 22 pointer-to-member records at 0x02115ac8, EnterState0..10
+ *   store mState; the other eleven are the ticks, named St_<state>_Main
+ *   after what each body does. The state numbers are the cartridge's and
+ *   the words are coined; the enter halves keep the numbers in their own
+ *   names. Helpers those ticks call take the same Ukiki, so they are
+ *   methods too.
  * - func_0201267c and PlayBank3 are the bank-3 wrappers.
  *   func_02012790 is Sound::Play2D(2, id). func_020383f0 and
  *   dBgCh_Actr_UpdateContinuous_Veneer are the tail-call veneers the
@@ -29,7 +31,7 @@
  * - data_ov030_* handles stay address labels. decl_common.h types
  *   four of them as void*[] where this file's blocks say int[].
  *   g_profile is not this TU's data.
- * - func_ov030_02112578 fills a Vector3 v it never reads. As a Vector3
+ * - St_PushCage_Main fills a Vector3 v it never reads. As a Vector3
  *   the three stores survive; as `s32 v[3]`, or with v removed, mwcc
  *   drops them and the function comes out 0x24 short.
  */
@@ -69,6 +71,15 @@ struct MkyAnimFilePtr : SharedFilePtr {
     MkyAnimFilePtr(unsigned int fileID);
     ~MkyAnimFilePtr();
 };
+
+extern MkyAnimFilePtr gMonkeyHoldAnimationFile;
+extern MkyAnimFilePtr gMonkeyJumpStAnimationFile;
+extern MkyAnimFilePtr gMonkeyJumpEdAnimationFile;
+extern MkyAnimFilePtr gMonkeyRunAnimationFile;
+extern MkyAnimFilePtr data_ov030_02115cf0; /* wait 1 */
+extern MkyAnimFilePtr gMonkeyWait2AnimationFile;
+extern MkyAnimFilePtr gMonkeyWait3AnimationFile;
+extern MkyAnimFilePtr gMonkeyWait4AnimationFile;
 
 /* The carry offsets, one per hold pose: UpdateModelAndCap picks one by
  * index. The table is defined at the bottom, in retail __sinit order. */
@@ -110,8 +121,8 @@ static inline int IsFlagSet(dActor_c *actor, u32 flag) {
     return (actor->mFlags & flag) != 0;
 }
 
-static inline int IsPlayingAnim(daMky_c *mky, int *animFile) {
-    return (int)mky->mAnmModel.file == animFile[1];
+static inline int IsPlayingAnim(daMky_c *mky, SharedFilePtr &animFile) {
+    return mky->mAnmModel.file == animFile.filePtr;
 }
 
 /* ~daMky_c is the first virtual DECLARED in include/daMky_c.h and it is
@@ -141,8 +152,8 @@ s32 daMky_c::OnYoshiTryEat()
 
 void daMky_c::ReturnToPerch() {
 
-    extern dClipper data_0209f43c;
-    extern Matrix4x3 data_0209b3ec;
+    extern dClipper gClipper;
+    extern Matrix4x3 gViewMtx;
     struct Vector3 a, b, out, asr;
 
     if (DecIfAbove0_Byte(&this->mResetTimer))
@@ -163,7 +174,7 @@ void daMky_c::ReturnToPerch() {
     if (this->mPerchPos.y - this->mPos.y > 0x96000 || rc.DetectClsn()) {
         Vec3_Asr(&asr, &this->mPerchPos, 3);
 
-        if (data_0209f43c.TransformAndClip(data_0209b3ec, asr, 0x1f400, out) > 0xc350000) {
+        if (gClipper.TransformAndClip(gViewMtx, asr, 0x1f400, out) > 0xc350000) {
             this->mPos = this->mPerchPos;
             this->mSpawnPos = this->mPerchPos;
             this->mPrevPos = this->mPerchPos;
@@ -173,7 +184,6 @@ void daMky_c::ReturnToPerch() {
     }
 }
 void daMky_c::PlayRunFootstepSound() {
-    extern int gMonkeyRunAnimationFile[];
     if (!IsPlayingAnim(this, gMonkeyRunAnimationFile))
         return;
     int v = (short)((unsigned int)this->mAnmModel.currFrame << 4 >> 16);
@@ -181,10 +191,6 @@ void daMky_c::PlayRunFootstepSound() {
         func_0201267c(0xea, &this->mCamSpacePos);
 }
 void daMky_c::PlayIdleSounds() {
-    extern int data_ov030_02115cf0[];
-    extern int gMonkeyWait2AnimationFile[];
-    extern int gMonkeyWait3AnimationFile[];
-
     int frame = (short)(((unsigned)(this->mAnmModel.currFrame << 4)) >> 16);
 
     if (IsPlayingAnim(this, data_ov030_02115cf0)) {
@@ -201,10 +207,6 @@ void daMky_c::PlayIdleSounds() {
     }
 }
 int daMky_c::CycleIdleAnimation() {
-    extern int data_ov030_02115cf0[];
-    extern int gMonkeyWait2AnimationFile[];
-    extern int gMonkeyWait3AnimationFile[];
-    extern int gMonkeyWait4AnimationFile[];
     extern void** data_ov030_02115bc8[];
     PlayIdleSounds();
     if (this->mAnmModel.WillHitFrame(0) != 0 || (!IsPlayingAnim(this, data_ov030_02115cf0) &&
@@ -409,8 +411,10 @@ void daMky_c::UpdateModelAndCap() {
     obj->mPos.y = this->mPos.y;
     obj->mPos.z = this->mPos.z;
 }
-int daMky_c::func_ov030_021122b0()
-{
+/* State 10's tick. Steers mAngle.y toward HorzAngleToCPlayer() + 0x8000 -- the
+ * heading away from the player -- at the 0x13000 EnterState10 armed, and hands
+ * over to state 0 once mActionTimer runs out. */
+int daMky_c::St_Flee_Main() {
     short ang = this->HorzAngleToCPlayer() + 0x8000;
     ApproachLinear(this->mAngle.y, ang, 0xa28);
     this->mPrevAngle.y = this->mAngle.y;
@@ -434,9 +438,7 @@ int daMky_c::func_ov030_021122b0()
     return 1;
 }
 int daMky_c::EnterState10(){
-    struct S { int w[2]; };
-    extern struct S gMonkeyRunAnimationFile;
-    mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile.w[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile.filePtr, 0, 0x1000, 0);
     this->mAnmModel.speed = 0x1000;
     mHorzSpeed = 0x13000;
     mActionTimer = 30;
@@ -444,8 +446,11 @@ int daMky_c::EnterState10(){
     return 1;
 }
 
-int daMky_c::func_ov030_02112400()
-{
+/* State 9's tick. It never moves: EnterState9 zeroed mHorzSpeed and nothing here
+ * restores it. It cycles the idle animations and waits for the one condition that
+ * lets this Ukiki resume -- the star back within 0x514000 of mPerchPos (state 1),
+ * the thief standing on plain collision again (state 0). */
+int daMky_c::St_Wait_Main() {
     CycleIdleAnimation();
     this->mAnmModel.Advance();
     this->UpdatePos(&this->mdCcAc_c);
@@ -477,14 +482,12 @@ int daMky_c::EnterState9()
     return 1;
 }
 
-int daMky_c::func_ov030_02112578()
-{
+/* State 8's tick. Walks mPathPtr to UKIKI_CAGE (actor 0x67) and talks (message
+ * 0xbd), then shoves the cage: mCagePushProgress climbs 0x400 a frame while the
+ * cage carries mHorzSpeed 0x400 and then falls, and once the cage is gone the
+ * Ukiki marks itself for destruction. */
+int daMky_c::St_PushCage_Main() {
 
-    extern void *gMonkeyWait2AnimationFile[];
-    extern void *gMonkeyWait3AnimationFile[];
-    extern void *gMonkeyJumpStAnimationFile[];
-    extern void *gMonkeyJumpEdAnimationFile[];
-    extern void *gMonkeyRunAnimationFile[];
     dActor_c *cage = dActor_c::FindWithActorID(0x67, 0);
     daPly_c *player = this->ClosestPlayer();
     Vector3 v;
@@ -495,7 +498,7 @@ int daMky_c::func_ov030_02112578()
     switch (this->mSubState) {
     case 0:
         if (FollowPath() != 0) {
-            this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait2AnimationFile[1], 0, 0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait2AnimationFile.filePtr, 0, 0x1000, 0);
             this->mAnmModel.speed = 0x1000;
             this->mHorzSpeed = 0;
             this->mSubState++;
@@ -517,7 +520,7 @@ int daMky_c::func_ov030_02112578()
         Vector3 sp = this->mPos;
         sp.y += 0x50000;
         if (player->ShowMessage(*this, 0xbd, &sp, 1, 0) != 0) {
-            this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait3AnimationFile[1], 0, 0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait3AnimationFile.filePtr, 0, 0x1000, 0);
             this->mAnmModel.SetFlags(0);
             func_0201267c(0xd1, &this->mCamSpacePos);
             this->mSubState++;
@@ -527,14 +530,14 @@ int daMky_c::func_ov030_02112578()
     case 3:
         if (player->GetTalkState() == 2) {
             player->HasFinishedTalking();
-            this->mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile[1], 0, 0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile.filePtr, 0, 0x1000, 0);
             this->mSubState++;
         }
         break;
     case 4:
         if (ApproachLinear(this->mAngle.y, -0x1fb2, 0x400) != 0) {
-            this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000,
-                                    0);
+            this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile.filePtr, 0x40000000,
+                                    0x1000, 0);
             this->mPrevAngle.y = this->mAngle.y;
             this->mHorzSpeed = 0xf000;
             this->mSpeed.y = 0x2f000;
@@ -544,15 +547,15 @@ int daMky_c::func_ov030_02112578()
         break;
     case 5:
         if (this->mWithMeshClsn.JustHitGround() != 0) {
-            this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpEdAnimationFile[1], 0x40000000, 0x1000,
-                                    0);
+            this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpEdAnimationFile.filePtr, 0x40000000,
+                                    0x1000, 0);
             this->mHorzSpeed = 0;
             this->mSubState++;
         }
         break;
     case 6:
         if (this->mAnmModel.Finished() != 0) {
-            this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait2AnimationFile[1], 0, 0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait2AnimationFile.filePtr, 0, 0x1000, 0);
             this->mAnmModel.speed = 0x1000;
             cage->mHorzSpeed = 0x400;
             Sound::PlaySub(0x20, 0x14, 0x7f, 0x15666, 0);
@@ -576,7 +579,8 @@ int daMky_c::func_ov030_02112578()
         }
         break;
     case 9:
-        this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
+        this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile.filePtr, 0x40000000, 0x1000,
+                                0);
         cage->mVertAccel = -0x2000;
         cage->mTerminalVelocity = -0x3c000;
         this->mSubState++;
@@ -597,9 +601,7 @@ int daMky_c::func_ov030_02112578()
     return 1;
 }
 int daMky_c::EnterState8() {
-    struct G { void *a; void *b; };
-    extern struct G gMonkeyRunAnimationFile;
-    this->mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile.b, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile.filePtr, 0, 0x1000, 0);
     this->mAnmModel.speed = 0x1000;
     this->mPathPtr.FromID(this->param1 & 0xff);
     mPathNode = 1;
@@ -609,8 +611,10 @@ int daMky_c::EnterState8() {
     return 1;
 }
 
-int daMky_c::func_ov030_02112a84()
-{
+/* State 7's tick, reached only from the two in-mouth states. EnterState7 cleared
+ * the 0x80000 flag, dropped mEatingPlayer and placed the Ukiki 0x4b000 in front of
+ * the player, so this half only waits for the ground and then resumes. */
+int daMky_c::St_LeaveMouth_Main() {
     dBgCh_Actr_UpdateContinuous_Veneer(&this->mWithMeshClsn);
     if (this->mWithMeshClsn.JustHitGround() || this->mWithMeshClsn.IsOnGround()) {
         this->mSpeed.y = 0;
@@ -641,7 +645,6 @@ int daMky_c::EnterState7()
     typedef unsigned char u8;
     typedef unsigned short u16;
     typedef short s16;
-    extern void *gMonkeyJumpStAnimationFile[];
     int *pos;
     int *py;
     int *pz;
@@ -651,7 +654,7 @@ int daMky_c::EnterState7()
     s16 s;
     int mul = 0x4b000;
     mFlags &= ~0x80000;
-    this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile.filePtr, 0x40000000, 0x1000, 0);
     this->mHorzSpeed = 0xa000;
     this->mSpeed.y = 0;
     other = this->mPlayer;
@@ -695,8 +698,10 @@ int daMky_c::EnterState7()
     return 1;
 }
 
-int daMky_c::func_ov030_02112da0()
-{
+/* State 6's tick -- the star Ukiki in Yoshi's mouth; HandleContact sends the star
+ * here while IsBeingEaten. Message 0xc1 is a question: yes drops the Ukiki and
+ * queues state 8, the cage. */
+int daMky_c::St_StarEaten_Main() {
     extern u8 data_0209d684;
     if (IsInYoshiMouth(this))
         mPos = mPlayer->mPos;
@@ -767,8 +772,10 @@ int daMky_c::EnterState6()
     return 1;
 }
 
-int daMky_c::func_ov030_02113094()
-{
+/* State 5's tick -- the thief in Yoshi's mouth; HandleContact sends the thief here
+ * while IsBeingEaten. Message 0xc2 or 0xc3 depending on mHasSpawnedCap; on the way
+ * out it respawns the cap with parameter 5 and queues state 10. */
+int daMky_c::St_ThiefEaten_Main() {
     if (IsInYoshiMouth(this)) {
         int *p = &this->mPlayer->mPos.x;
         this->mPos.x = p[0];
@@ -837,8 +844,10 @@ int daMky_c::EnterState5() {
     return 1;
 }
 
-int daMky_c::func_ov030_02113324()
-{
+/* State 4's tick -- the star Ukiki held by the player; HandleContact sends the star
+ * here when TryGrab succeeds. Message 0xc0 is a question: yes starts state 8, no
+ * re-asks after mActionTimer. Being let go sends it to state 1 or state 9. */
+int daMky_c::St_StarGrabbed_Main() {
 
     extern dCamera_c *gCamera;
     extern unsigned char data_0209d684;
@@ -923,8 +932,7 @@ int daMky_c::func_ov030_02113324()
     return 1;
 }
 int daMky_c::EnterState4(){
-    extern int gMonkeyHoldAnimationFile[];
-    this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyHoldAnimationFile[1]), 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)gMonkeyHoldAnimationFile.filePtr, 0, 0x1000, 0);
     this->mAnmModel.speed = 0x1000;
     if (Vec3_Dist(&this->mPerchPos, &this->mPos) < 0x514000 &&
         this->mPos.y > mPerchPos.y - 0x12c000) {
@@ -938,8 +946,11 @@ int daMky_c::EnterState4(){
     return 1;
 }
 
-int daMky_c::func_ov030_021136b0()
-{
+/* State 3's tick -- the thief held by the player; HandleContact sends the thief here
+ * when TryGrab succeeds. With mHasSpawnedCap set it takes the cap (SaveData::
+ * PlayerLoseCap or the player's mHasNoCap, plus the 0x10d cap actor); with it clear
+ * it hands the cap back and flees into state 10. */
+int daMky_c::St_ThiefGrabbed_Main() {
     typedef short s16;
     typedef signed char s8;
     typedef unsigned char u8;
@@ -1084,7 +1095,6 @@ int daMky_c::func_ov030_021136b0()
 }
 int daMky_c::EnterState3()
 {
-    extern MkyAnimFilePtr gMonkeyHoldAnimationFile;
     this->mAnmModel.SetAnim((BCA_File *)gMonkeyHoldAnimationFile.filePtr, 0, 0x1000, 0);
     this->mAnmModel.speed = 0x1000;
     if (mHasSpawnedCap == 0 && SaveData::HasPlayerLostCap()) {
@@ -1104,15 +1114,16 @@ int daMky_c::EnterState3()
     return 1;
 }
 
-int daMky_c::func_ov030_02113b38()
-{
-    extern int gMonkeyRunAnimationFile[];
+/* State 2's tick. EnterState2 set the jump-start animation, the launch speeds and
+ * the limited-movement flag; this waits for JustHitGround, then clears that flag,
+ * returns to the run animation and resumes mPrevState. */
+int daMky_c::St_Jump_Main() {
     this->mAnmModel.Advance();
     this->UpdatePos(&this->mdCcAc_c);
     UpdateFloorAndWalls(&this->mWithMeshClsn);
     if (this->mWithMeshClsn.JustHitGround() != 0) {
         this->mWithMeshClsn.ClearLimMovFlag();
-        this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile[1]), 0, 0x1000, 0);
+        this->mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile.filePtr, 0, 0x1000, 0);
         this->mAnmModel.speed = 0x1000;
         this->mSpawnPos = this->mPos;
         ChangeState(this->mPrevState);
@@ -1124,7 +1135,6 @@ int daMky_c::func_ov030_02113b38()
 int daMky_c::EnterState2() {
     typedef short s16;
 
-    extern SharedFilePtr gMonkeyJumpStAnimationFile;
     daPly_c *p;
 
     p = this->mPlayer;
@@ -1152,11 +1162,13 @@ int daMky_c::EnterState2() {
     return 1;
 }
 
-int daMky_c::func_ov030_02113d20()
-{
+/* State 1's tick. Holds the player at arm's length through three substates: 0 runs
+ * away (the player's heading + 0x8000) at 0x13000 inside 0x190000, 1 closes again at
+ * 0xc000 beyond 0x258000, 2 stands still in between. Cornered on a wall within
+ * 0x12c000 of a fast or airborne player, it jumps (state 2). */
+int daMky_c::St_KeepAway_Main() {
     typedef short s16;
 
-    extern SharedFilePtr gMonkeyRunAnimationFile;
     daPly_c *p;
     fx32 dist;
     s16 angle;
@@ -1238,14 +1250,14 @@ int daMky_c::EnterState1(){
     return 1;
 }
 
-int daMky_c::func_ov030_02113ff0()
-{
+/* State 0's tick -- the thief's resting behaviour. It always turns toward the
+ * closest player, walks at 0xc000 past 0x15e000 and stops to idle inside 0xfa000. */
+int daMky_c::St_Follow_Main() {
     typedef short s16;
-    extern int gMonkeyRunAnimationFile[];
     int dist = this->DistToCPlayer();
     if (dist > 0x15e000) {
         this->mHorzSpeed = 0xc000;
-        this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile[1]), 0, 0x1000, 0);
+        this->mAnmModel.SetAnim((BCA_File *)gMonkeyRunAnimationFile.filePtr, 0, 0x1000, 0);
     } else if (dist <= 0xfa000) {
         this->mHorzSpeed = 0;
         CycleIdleAnimation();
@@ -1289,12 +1301,11 @@ void daMky_c::ChangeState(int idx) {
     CallStateEnter();
 }
 extern MkyModelFilePtr data_ov030_02115d00;
-extern MkyAnimFilePtr data_ov030_02115cf0;
 
 /* File-scope extern "C" for the six virtuals below. A block-scope extern
  * inside a daMky_c method gets C++ linkage and the reference mangles a
- * second time, so these callees are declared here. The func_ov030_*
- * methods above are members of this class and are not redeclared. */
+ * second time, so these callees are declared here. The daMky_c methods
+ * above are members of this class and are not redeclared. */
 extern "C" {
 
 extern SharedFilePtr  data_ov002_0210da40;
@@ -1474,17 +1485,17 @@ MkyAnimFilePtr gMonkeyWait4AnimationFile(ASSET_MONKEY_WAIT4_BCA);
 /* Eleven {enter, update} pairs. Brace-init is what makes __sinit copy the
  * 22 pointer-to-member constants; a constructor body here scalarizes. */
 extern "C" daMky_c::StateFunctions data_ov030_02115e0c[11] = {
-    {&daMky_c::EnterState0, &daMky_c::func_ov030_02113ff0},
-    {&daMky_c::EnterState1, &daMky_c::func_ov030_02113d20},
-    {&daMky_c::EnterState2, &daMky_c::func_ov030_02113b38},
-    {&daMky_c::EnterState3, &daMky_c::func_ov030_021136b0},
-    {&daMky_c::EnterState4, &daMky_c::func_ov030_02113324},
-    {&daMky_c::EnterState5, &daMky_c::func_ov030_02113094},
-    {&daMky_c::EnterState6, &daMky_c::func_ov030_02112da0},
-    {&daMky_c::EnterState7, &daMky_c::func_ov030_02112a84},
-    {&daMky_c::EnterState8, &daMky_c::func_ov030_02112578},
-    {&daMky_c::EnterState9, &daMky_c::func_ov030_02112400},
-    {&daMky_c::EnterState10, &daMky_c::func_ov030_021122b0},
+    {&daMky_c::EnterState0, &daMky_c::St_Follow_Main},
+    {&daMky_c::EnterState1, &daMky_c::St_KeepAway_Main},
+    {&daMky_c::EnterState2, &daMky_c::St_Jump_Main},
+    {&daMky_c::EnterState3, &daMky_c::St_ThiefGrabbed_Main},
+    {&daMky_c::EnterState4, &daMky_c::St_StarGrabbed_Main},
+    {&daMky_c::EnterState5, &daMky_c::St_ThiefEaten_Main},
+    {&daMky_c::EnterState6, &daMky_c::St_StarEaten_Main},
+    {&daMky_c::EnterState7, &daMky_c::St_LeaveMouth_Main},
+    {&daMky_c::EnterState8, &daMky_c::St_PushCage_Main},
+    {&daMky_c::EnterState9, &daMky_c::St_Wait_Main},
+    {&daMky_c::EnterState10, &daMky_c::St_Flee_Main},
 };
 
 /* Vector3(x, y, z) matches only the first offset. The other three store

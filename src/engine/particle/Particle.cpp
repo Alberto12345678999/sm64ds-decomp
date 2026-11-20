@@ -30,7 +30,7 @@ extern "C" {
 void DecompressLZ16(const void* src, void* dst);
 }
 
-extern Matrix4x3 data_0209b3ec;
+extern Matrix4x3 gViewMtx;
 extern u32 sParticlePalVramLowCursor;
 extern u32 sParticlePalVramHighCursor;
 extern signed char gCurrentSublevel;
@@ -123,7 +123,7 @@ void dPa_c::Initialise() {
     sParticlePalVramLowCursor = func_02045cf0();
     sParticlePalVramHighCursor = func_02045ce0();
 
-    mManager = (Particle::Manager *)func_0204a4c8(func_02023178, countA, countB, 0x1a, 0x3e);
+    mManager = (Particle::Manager *)SPLManager_New(func_02023178, countA, countB, 0x1a, 0x3e);
     mManager->mPolygonAttr = 0x8000;
 
     if (memcmp((u8 *)data_02075f14, data_0208f668, 4) != 0) {
@@ -139,9 +139,9 @@ void dPa_c::Initialise() {
         mResourceFile = dst;
     }
 
-    func_0204a17c(mManager, (char *)mResourceFile);
-    func_0204a0dc(mManager, (u32(*)(u32, u32))Particle::Texture::AllocTexVram);
-    func_0204a028(mManager, (u32(*)(u32, u32))Particle::Texture::AllocPalVram);
+    SPLManager_LoadResources(mManager, (char *)mResourceFile);
+    SPLManager_UploadTexturesEx(mManager, (u32(*)(u32, u32))Particle::Texture::AllocTexVram);
+    SPLManager_UploadPalettesEx(mManager, (u32(*)(u32, u32))Particle::Texture::AllocPalVram);
 
     if (mResourceFile != data_02075f14) {
         /* The textures are in VRAM now; keep only the resource's resident
@@ -156,7 +156,7 @@ void dPa_c::Initialise() {
 
 void dPa_c::Update() {
     mLevel.execute();
-    func_02049f58(mManager);
+    SPLManager_Update(mManager);
 }
 
 namespace Particle {
@@ -167,7 +167,7 @@ void RenderAll()
     if (!particle)
         return;
 
-    func_02049ee8(particle->mManager, &data_0209b3ec);
+    func_02049ee8(particle->mManager, &gViewMtx);
 }
 
 void *System::NewSimple(u32 uniqueID, fx32 x, fx32 y, fx32 z) {

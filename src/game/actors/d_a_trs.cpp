@@ -22,8 +22,8 @@
  *
  * The func_ov063_* helpers are methods now (daTrs_c, one on daTBasket_c):
  * r0 is the object, so each one is a member of that class.
- * func_ov063_02118f24 stays free (C linkage): its receiver is the
- * ICON_TERESA marker, not the Boo. func_ov063_0211a0a8 is pure math.
+ * SpawnTrackedStar stays free (C linkage): its receiver is the
+ * ICON_TERESA marker, not the Boo. DeadbandStep is pure math.
  *
  * deslop leftovers:
  * - DropShadowRadHeight, dCcAcPos_c::Init, dCcAc_c::Init, dBgCh_Actr::Init,
@@ -133,9 +133,9 @@ extern TrsAnimationResFileHandle data_ov063_0211eddc;
 extern TrsAnimationResFileHandle data_ov063_0211ede4;
 extern TrsModelFileResHandle data_ov063_0211edec;
 extern TrsModelFileResHandle data_ov063_0211edf4;
-extern SharedFilePtr data_ov002_0210d9c8;
-extern SharedFilePtr data_ov002_0210d9f8;
-extern SharedFilePtr data_ov002_0210d9b8;
+extern SharedFilePtr gCoinBluePoly32ModelFile;
+extern SharedFilePtr gCoinRedPoly32ModelFile;
+extern SharedFilePtr gCoinYellowPoly32ModelFile;
 
 /* File-local helpers and engine entry points, with the C-linkage spellings
  * these bodies were matched against. */
@@ -212,17 +212,17 @@ int daTrs_c::OnAimedAtWithEgg() {
     return mdCcAcPos_c.height / 2;
 }
 
-void daTrs_c::func_ov063_021160d4() {
+void daTrs_c::UpdateClsnOffset() {
 
     int *p;
     this->mClsnOff.x = 0;
     this->mClsnOff.y = 0;
     this->mClsnOff.z = 0;
-    Matrix4x3_FromTranslation(&data_020a0e68, this->mPos.x, this->mPos.y, this->mPos.z);
-    MTX_Concat43(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
-    this->mClsnOff.x = data_020a0e68.t.x;
-    this->mClsnOff.y = data_020a0e68.t.y;
-    this->mClsnOff.z = data_020a0e68.t.z;
+    Matrix4x3_FromTranslation(&gScratchMtx, this->mPos.x, this->mPos.y, this->mPos.z);
+    MTX_Concat43(this->mAnmModel.data.transforms, &gScratchMtx, &gScratchMtx);
+    this->mClsnOff.x = gScratchMtx.t.x;
+    this->mClsnOff.y = gScratchMtx.t.y;
+    this->mClsnOff.z = gScratchMtx.t.z;
     VEC_Subtract(&this->mClsnOff, &this->mPos, &this->mClsnOff);
     VEC_Subtract(&this->mClsnOff, &this->mClsnBase, &this->mClsnOff);
     Vec3_MulScalarInPlace(&this->mClsnOff, 0x6800);
@@ -230,7 +230,7 @@ void daTrs_c::func_ov063_021160d4() {
     *p += this->mClsnZBias;
 }
 
-int daTrs_c::func_ov063_02116190() {
+int daTrs_c::IsPlayerBeyondLimit() {
 
     Vector3 vec;
     daPly_c *p;
@@ -250,8 +250,7 @@ int daTrs_c::func_ov063_02116190() {
     return 0;
 }
 
-
-void daTrs_c::func_ov063_02116244() {
+void daTrs_c::SpawnStarMarker() {
 
     if (this->mBooDefeatCount < 5) return;
     if (this->mSpawnedActorID != 0) return;
@@ -261,8 +260,7 @@ void daTrs_c::func_ov063_02116244() {
     this->mFoundActor = 0;
 }
 
-
-void daTrs_c::func_ov063_021162c8() {
+void daTrs_c::BeginDefeat() {
 
     if (this->mBooFlags.hitByParam3Player) {
         this->mState = 4;
@@ -287,8 +285,7 @@ void daTrs_c::func_ov063_021162c8() {
     func_0201267c(0x14a, &this->mCamSpacePos);
 }
 
-
-unsigned char daTrs_c::func_ov063_021163d0() {
+unsigned char daTrs_c::IsTrapOccupied() {
 
     unsigned int id = this->mCachedActorID;
     if(id==0) return 0;
@@ -297,8 +294,7 @@ unsigned char daTrs_c::func_ov063_021163d0() {
     return a->mOccupiedFlag;
 }
 
-
-void daTrs_c::func_ov063_0211640c() {
+void daTrs_c::UpdatePose() {
 
     struct Vector3 pos, t1, t2;
     s16 ang;
@@ -316,8 +312,8 @@ void daTrs_c::func_ov063_0211640c() {
 
     if (this->mState == 3) {
         Vec3_Asr(&t1, &pos, 3);
-        Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
-        this->mAnmModel.mat4x3 = data_020a0e68;
+        Matrix4x3_FromTranslation(&gScratchMtx, t1.x, t1.y, t1.z);
+        this->mAnmModel.mat4x3 = gScratchMtx;
         this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
         func_020167a4(&this->mAnmModel);
         {
@@ -329,28 +325,26 @@ void daTrs_c::func_ov063_0211640c() {
         this->mAnmModel.data.UpdateVertsUsingBones();
     } else {
         Vec3_Asr(&t2, &pos, 3);
-        Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
-        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, ang);
-        this->mAnmModel.mat4x3 = data_020a0e68;
+        Matrix4x3_FromTranslation(&gScratchMtx, t2.x, t2.y, t2.z);
+        Matrix4x3_ApplyInPlaceToRotationY(&gScratchMtx, ang);
+        this->mAnmModel.mat4x3 = gScratchMtx;
         this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
     }
 
     if (this->mOpacity >= 0x10) {
-        Matrix4x3_FromTranslation(&data_020a0e68,
-            pos.x >> 3, pos.y >> 3, pos.z >> 3);
-        this->mShadowMtx = data_020a0e68;
+        Matrix4x3_FromTranslation(&gScratchMtx, pos.x >> 3, pos.y >> 3, pos.z >> 3);
+        this->mShadowMtx = gScratchMtx;
         DropShadowRadHeight(this->mShadowModel1, this->mShadowMtx, 0x12c000, 0xc8000, 0xf);
 
         if (this->mBooFlags.mirrored) {
             pos.x *= -1;
-            Matrix4x3_FromTranslation(&data_020a0e68,
-                pos.x >> 3, pos.y >> 3, pos.z >> 3);
-            this->mShadowMtx2 = data_020a0e68;
+            Matrix4x3_FromTranslation(&gScratchMtx, pos.x >> 3, pos.y >> 3, pos.z >> 3);
+            this->mShadowMtx2 = gScratchMtx;
             DropShadowRadHeight(this->mShadowModel2, this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
         }
     }
 
-    func_ov063_021160d4();
+    UpdateClsnOffset();
 }
 
 static inline int IsActorID(dActor_c *actor, int id) {
@@ -365,7 +359,7 @@ void daTrs_c::func_ov063_021166ac() {
     Vector3 pos;
 
     if (mVariant == 0xf) {
-        func_ov063_0211640c();
+        UpdatePose();
         return;
     }
     if (!mBooFlags.visible)
@@ -382,8 +376,8 @@ void daTrs_c::func_ov063_021166ac() {
 
     if (mState == 3 || mState == 3 || mState == 3 || mState == 3) {
         Vec3_Asr(&t1, &this->mPos, 3);
-        Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
-        this->mAnmModel.mat4x3 = data_020a0e68;
+        Matrix4x3_FromTranslation(&gScratchMtx, t1.x, t1.y, t1.z);
+        this->mAnmModel.mat4x3 = gScratchMtx;
         this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
         func_020167a4(&this->mAnmModel);
         {
@@ -395,15 +389,15 @@ void daTrs_c::func_ov063_021166ac() {
         this->mAnmModel.data.UpdateVertsUsingBones();
     } else {
         Vec3_Asr(&t2, &this->mPos, 3);
-        Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
-        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngle.y);
-        this->mAnmModel.mat4x3 = data_020a0e68;
+        Matrix4x3_FromTranslation(&gScratchMtx, t2.x, t2.y, t2.z);
+        Matrix4x3_ApplyInPlaceToRotationY(&gScratchMtx, this->mAngle.y);
+        this->mAnmModel.mat4x3 = gScratchMtx;
         this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
     }
 
-    Matrix4x3_FromTranslation(&data_020a0e68, this->mPos.x >> 3, this->mPos.y >> 3,
+    Matrix4x3_FromTranslation(&gScratchMtx, this->mPos.x >> 3, this->mPos.y >> 3,
                               this->mPos.z >> 3);
-    this->mShadowMtx = data_020a0e68;
+    this->mShadowMtx = gScratchMtx;
     {
         if (IsActorID(this, TRS_ID_BOSS_TERESA))
             DropShadowRadHeight(this->mShadowModel1, this->mShadowMtx, 0x12c000, 0xc8000, 0xf);
@@ -426,7 +420,7 @@ void daTrs_c::func_ov063_021166ac() {
     }
     /* equal-arm ternary: the rot address (r2) is set up before pos (r1), as in the ROM */
     UpdateCapPos(pos, this ? rot : rot);
-    func_ov063_021160d4();
+    UpdateClsnOffset();
 }
 
 
@@ -441,7 +435,7 @@ void daTBasket_c::func_ov063_021169c4() {
 /* Behavior handler for variant 4 (needs 15 stars): the scripted-path Boo.
    Hidden until canAppear, then waits for the player within 0x3e8000, flies
    a fixed path and fades. */
-void daTrs_c::func_ov063_02116a1c() {
+void daTrs_c::UpdateStarGatedPathBoo() {
     Vector3 v;
     int a;
     int scale;
@@ -497,7 +491,6 @@ void daTrs_c::func_ov063_02116a1c() {
     Oscillate(1);
 }
 
-
 void daTrs_c::func_ov063_02116bf0() {
 
 }
@@ -505,7 +498,7 @@ void daTrs_c::func_ov063_02116bf0() {
 
 /* Behavior handler for variant 3: spawns TERESA children (param 0xfff1)
    while fewer than two are alive, five at most. */
-void daTrs_c::func_ov063_02116bf4() {
+void daTrs_c::UpdateChildSpawner() {
 
     unsigned char st;
 
@@ -544,27 +537,35 @@ void daTrs_c::func_ov063_02116bf4() {
 }
 
 /* Behavior handler for variant 5: the Boo carrying the cage (T_BASKET). */
-void daTrs_c::func_ov063_02116d38() {
+void daTrs_c::UpdateCageBoo() {
 
     switch(this->mState){
-        case 0: func_ov063_02116f48(); break;
-        case 1: func_ov063_02116e14(); break;
-        case 2: func_ov063_02116df0(); break;
-        case 3: func_ov063_02116dbc(); break;
-        case 4: func_ov063_02116d98(); break;
+    case 0:
+        UpdateCageInactive();
+        break;
+    case 1:
+        UpdateCageChase();
+        break;
+    case 2:
+        UpdateCageBouncedOn();
+        break;
+    case 3:
+        UpdateCageDying();
+        break;
+    case 4:
+        UpdateCageNonlethalHit();
+        break;
     }
     ApproachTargetOpacityAndUpdateScale();
 }
 
-
-void daTrs_c::func_ov063_02116d98() {
+void daTrs_c::UpdateCageNonlethalHit() {
     if (UpdateDuringNonlethalHit(0x28)) {
         this->mState = 1;
     }
 }
 
-
-void daTrs_c::func_ov063_02116dbc() {
+void daTrs_c::UpdateCageDying() {
 
     if (UpdateDuringDeath() == 0)
         return;
@@ -572,15 +573,13 @@ void daTrs_c::func_ov063_02116dbc() {
     func_0201267c(0xd5, &this->mCamSpacePos);
 }
 
-
-void daTrs_c::func_ov063_02116df0() {
+void daTrs_c::UpdateCageBouncedOn() {
     if (UpdateAfterBouncedOn(0x14)) {
         this->mState = 1;
     }
 }
 
-
-void daTrs_c::func_ov063_02116e14() {
+void daTrs_c::UpdateCageChase() {
 
     this->mBooFlags.hitByParam3Player = 0;
     if (this->mChaseDelay == 0) {
@@ -615,8 +614,7 @@ void daTrs_c::func_ov063_02116e14() {
     this->mBooFlags.carrying = 0;
 }
 
-
-int daTrs_c::func_ov063_02116f48() {
+int daTrs_c::UpdateCageInactive() {
 
     this->mBigBooID = 0;
     this->mTargetOpacity = 0xff;
@@ -631,11 +629,10 @@ int daTrs_c::func_ov063_02116f48() {
     return r;
 }
 
-
 /* Behavior handler for variant 0xb: the scripted-path Boo. Hidden until
    canAppear, then waits for the player within 0x258000, flies a fixed path
    (hopping in state 4), then vanishes (opacity 0, hidden). */
-void daTrs_c::func_ov063_02116fac() {
+void daTrs_c::UpdateScriptedPathBoo() {
 
     Vector3 target = this->mHomePos;
     s16 r4 = 0xc00;
@@ -711,17 +708,35 @@ void daTrs_c::func_ov063_02116fac() {
 }
 
 /* Behavior handler for variant 0xf: the Big Boo that leaves the OBJ_KEY. */
-void daTrs_c::func_ov063_021172a8() {
+void daTrs_c::UpdateKeyBigBoo() {
     switch (this->mState) {
-    case 0: func_ov063_02118914(); break;
-    case 1: func_ov063_0211873c(); break;
-    case 2: func_ov063_02118f50(); break;
-    case 3: func_ov063_021177b0(); break;
-    case 4: func_ov063_02118458(); break;
-    case 5: func_ov063_0211776c(); break;
-    case 6: func_ov063_02117364(); break;
-    case 7: func_ov063_02117cdc(); break;
-    case 8: func_ov063_02117b0c(); break;
+    case 0:
+        UpdateKeyBooInit();
+        break;
+    case 1:
+        UpdateKeyBooChase();
+        break;
+    case 2:
+        UpdateBigBooBouncedOn();
+        break;
+    case 3:
+        UpdateKeyBooHit();
+        break;
+    case 4:
+        UpdateKeyBooAttack();
+        break;
+    case 5:
+        UpdateKeyBooDefeated();
+        break;
+    case 6:
+        UpdateKeyBooRelocate();
+        break;
+    case 7:
+        UpdateKeyBooIntro();
+        break;
+    case 8:
+        UpdateKeyBooTalk();
+        break;
     }
     {
         int state = this->mState;
@@ -734,8 +749,7 @@ void daTrs_c::func_ov063_021172a8() {
     }
 }
 
-
-void daTrs_c::func_ov063_02117364() {
+void daTrs_c::UpdateKeyBooRelocate() {
 
     Vector3 pos = this->mPos;
 
@@ -749,7 +763,7 @@ void daTrs_c::func_ov063_02117364() {
             {
                 this->mBooFlags.mirrored ^= 1;
             }
-            func_ov063_02117650();
+            RelocateAwayFromPlayer();
             this->mTargetOpacity = 0xff;
             this->mParticle1 = 0;
             this->mParticle0 = this->mParticle1;
@@ -788,7 +802,7 @@ void daTrs_c::func_ov063_02117364() {
 
 #undef New
 
-void daTrs_c::func_ov063_02117650() {
+void daTrs_c::RelocateAwayFromPlayer() {
 
     struct Vector3 ppos;
     struct Vector3 npos;
@@ -825,8 +839,7 @@ void daTrs_c::func_ov063_02117650() {
     this->mPrevAngle.y = this->mAngle.y;
 }
 
-
-void daTrs_c::func_ov063_0211776c() {
+void daTrs_c::UpdateKeyBooDefeated() {
 
     Stop();
     unsigned short v = this->mStateTimer;
@@ -834,12 +847,11 @@ void daTrs_c::func_ov063_0211776c() {
         return;
     if (v != 0xf)
         return;
-    func_ov063_02118ddc();
+    SpawnKey();
     this->MarkForDestruction();
 }
 
-
-void daTrs_c::func_ov063_021177b0() {
+void daTrs_c::UpdateKeyBooHit() {
 
     if (this->mStateTimer == 0)
         this->mHitPoints--;
@@ -925,8 +937,7 @@ void daTrs_c::func_ov063_021177b0() {
     func_02012694(0x153, &this->mCamSpacePos);
 }
 
-
-void daTrs_c::func_ov063_02117b0c() {
+void daTrs_c::UpdateKeyBooTalk() {
 
     Vector3 v;
 
@@ -978,8 +989,7 @@ void daTrs_c::func_ov063_02117b0c() {
     }
 }
 
-
-void daTrs_c::func_ov063_02117cdc() {
+void daTrs_c::UpdateKeyBooIntro() {
 
     s16 v[3];
     Vector3 w;
@@ -1069,13 +1079,13 @@ void daTrs_c::func_ov063_02117cdc() {
         return;
     case 5: {
         int v0;
-        if (data_ov008_02111b6c == 0x1f000 || (data_0209caa0.file.flags1 & 0x10)) {
+        if (data_ov008_02111b6c == 0x1f000 || (gSaveBlock.file.flags1 & 0x10)) {
             v0 = 1;
         } else {
             v0 = 0;
         }
         if (v0 == 0) {
-            if ((data_0209caa0.file.flags1 & 0x10) == 0) {
+            if ((gSaveBlock.file.flags1 & 0x10) == 0) {
                 return;
             }
         }
@@ -1142,7 +1152,7 @@ void daTrs_c::func_ov063_02117cdc() {
             int x = 0 - this->mPos.x;
             int z = this->mPos.z;
             int y = this->mPos.y + 0xc8000;
-            int fl = data_0209caa0.file.flags1 & 0x10;
+            int fl = gSaveBlock.file.flags1 & 0x10;
             w.x = x;
             w.y = y;
             w.z = z;
@@ -1178,8 +1188,7 @@ void daTrs_c::func_ov063_02117cdc() {
     return;
 }
 
-
-void daTrs_c::func_ov063_02118458() {
+void daTrs_c::UpdateKeyBooAttack() {
     int status = GetAttackStatus();
 
     ApproachLinear(this->mPrevAngle.y, this->mAngleToPlayer,
@@ -1241,7 +1250,7 @@ void daTrs_c::func_ov063_02118458() {
     func_02012694(0x152, &this->mCamSpacePos);
 }
 
-void daTrs_c::func_ov063_0211873c() {
+void daTrs_c::UpdateKeyBooChase() {
 
     short a;
     int b;
@@ -1299,7 +1308,7 @@ void daTrs_c::func_ov063_0211873c() {
     this->mHorzSpeed = 0;
 }
 
-void daTrs_c::func_ov063_02118914() {
+void daTrs_c::UpdateKeyBooInit() {
 
     s32 scale;
 
@@ -1327,7 +1336,7 @@ void daTrs_c::func_ov063_02118914() {
 
 
 /* Behavior handler for variants 0xc/0xd/0xe: the Big Boo. */
-void daTrs_c::func_ov063_021189f4() {
+void daTrs_c::UpdateBigBoo() {
 
     if (this->mSoundCount != 0) {
         if (this->mVariant == 0xd) {
@@ -1348,30 +1357,29 @@ void daTrs_c::func_ov063_021189f4() {
 
     switch (this->mState) {
     case 0:
-        func_ov063_02119074();
+        UpdateBigBooInactive();
         break;
     case 1:
-        func_ov063_02118f74();
+        UpdateBigBooChase();
         break;
     case 2:
-        func_ov063_02118f50();
+        UpdateBigBooBouncedOn();
         break;
     case 3:
-        func_ov063_02118cd8();
+        UpdateBigBooHit();
         break;
     case 4:
-        func_ov063_02118b98();
+        UpdateBigBooDefeated();
         break;
     case 5:
-        func_ov063_02118b2c();
+        UpdateBigBooApproach();
         break;
     }
 
     ApproachTargetOpacityAndUpdateScale();
 }
 
-
-void daTrs_c::func_ov063_02118b2c() {
+void daTrs_c::UpdateBigBooApproach() {
     mHorzSpeed = 0x5000;
     int r = GetAttackStatus();
     if (r == -1) {
@@ -1387,19 +1395,18 @@ void daTrs_c::func_ov063_02118b2c() {
         mState = 1;
 }
 
-
-void daTrs_c::func_ov063_02118b98() {
+void daTrs_c::UpdateBigBooDefeated() {
     this->mBooFlags.hitByParam3Player = 0;
     Stop();
 
     if (this->mStateTimer <= 15) {
         if (this->mStateTimer == 15) {
             if (this->mDeathMode == 0) {
-                func_ov063_02118eac();
+                AwardStar();
             } else if (this->mDeathMode == 1) {
-                func_ov063_02118e5c();
+                AwardStarAndArmTrap();
             } else {
-                func_ov063_02118ea0();
+                AwardStarVeneer();
             }
 
             this->mPos.x = this->mHomePos.x;
@@ -1427,8 +1434,7 @@ void daTrs_c::func_ov063_02118b98() {
     }
 }
 
-
-void daTrs_c::func_ov063_02118cd8() {
+void daTrs_c::UpdateBigBooHit() {
 
     if (this->mStateTimer == 0) {
         if (!this->mBooFlags.hitByParam3Player) {
@@ -1455,26 +1461,25 @@ void daTrs_c::func_ov063_02118cd8() {
     }
 }
 
+void daTrs_c::SpawnKey() {
 
-void daTrs_c::func_ov063_02118ddc() {
-
-  struct Vector3 v;
-  v.x = this->mPos.x;
-  int y = this->mPos.y;
-  v.y = y;
-  v.z = this->mPos.z;
-  v.y = y + 0x64000;
-  int s = this->mPos.x;
-  if(s < 0) s = -s;
-  v.x = s;
-  dActor_c::Spawn(TRS_ID_OBJ_KEY, 3, v, (0), this->mAreaIdx, -1);
-  func_02012694(0xbb, &this->mCamSpacePos);
+    struct Vector3 v;
+    v.x = this->mPos.x;
+    int y = this->mPos.y;
+    v.y = y;
+    v.z = this->mPos.z;
+    v.y = y + 0x64000;
+    int s = this->mPos.x;
+    if (s < 0)
+        s = -s;
+    v.x = s;
+    dActor_c::Spawn(TRS_ID_OBJ_KEY, 3, v, (0), this->mAreaIdx, -1);
+    func_02012694(0xbb, &this->mCamSpacePos);
 }
 
+void daTrs_c::AwardStarAndArmTrap() {
 
-void daTrs_c::func_ov063_02118e5c() {
-
-    func_ov063_02118eac();
+    AwardStar();
     unsigned int id = this->mCachedActorID;
     if (id == 0) return;
     void *actor = dActor_c::FindWithID(id);
@@ -1486,14 +1491,12 @@ void daTrs_c::func_ov063_02118e5c() {
     this->mFoundActor = 0;
 }
 
+void daTrs_c::AwardStarVeneer() {
 
-void daTrs_c::func_ov063_02118ea0() {
-
-    func_ov063_02118eac();
+    AwardStar();
 }
 
-
-void daTrs_c::func_ov063_02118eac() {
+void daTrs_c::AwardStar() {
 
     Vector3 v;
     void *p;
@@ -1510,24 +1513,23 @@ void daTrs_c::func_ov063_02118eac() {
     p = dActor_c::FindWithID(id);
     this->mFoundActor = (dActor_c *)p;
     if (this->mFoundActor != 0) {
-        (static_cast<daTrsIcon_c *>(this->mFoundActor))->func_ov063_02118f24(v);
+        (static_cast<daTrsIcon_c *>(this->mFoundActor))->SpawnTrackedStar(v);
     }
     this->mFoundActor = 0;
 }
 
-void daTrsIcon_c::func_ov063_02118f24(const Vector3 &pos) {
+void daTrsIcon_c::SpawnTrackedStar(const Vector3 &pos) {
     unsigned int val = 4;
     this->UntrackAndSpawnStar(this->mTrackStarID, this->mStarID, pos, val);
 }
 
-void daTrs_c::func_ov063_02118f50() {
+void daTrs_c::UpdateBigBooBouncedOn() {
 
     if (UpdateAfterBouncedOn(0x14))
         this->mState = 1;
 }
 
-
-void daTrs_c::func_ov063_02118f74() {
+void daTrs_c::UpdateBigBooChase() {
 
     short a2;
     int a3;
@@ -1553,7 +1555,7 @@ void daTrs_c::func_ov063_02118f74() {
     ChaseMario(-0x64, a2, a3);
     r5v = GetAttackStatus();
     if (this->mVariant == 0xd) {
-        if (func_ov063_021163d0() == 0) {
+        if (IsTrapOccupied() == 0) {
             this->mState = 0;
         }
     } else {
@@ -1572,8 +1574,7 @@ void daTrs_c::func_ov063_02118f74() {
     func_0201267c(0xc7, &this->mCamSpacePos);
 }
 
-
-void daTrs_c::func_ov063_02119074() {
+void daTrs_c::UpdateBigBooInactive() {
 
     /* ROM: beq body on ==0xc; bne after on !=0xf  =>  body when 0xc OR 0xf */
     if (this->mVariant == 0xc ||
@@ -1619,7 +1620,7 @@ void daTrs_c::func_ov063_02119074() {
                 this->mPrevAngle.y = Vec3_HorzAngle(&this->mPos, &((dActor_c *)r)->mPos);
         } else {
             if (this->mVariant == 0xe)
-                func_ov063_02116244();
+                SpawnStarMarker();
             this->mState = 1;
         }
 
@@ -1635,7 +1636,6 @@ void daTrs_c::func_ov063_02119074() {
         Stop();
     }
 }
-
 
 /* Behavior handler for variant 8. */
 void daTrs_c::func_ov063_02119274() {
@@ -1760,7 +1760,7 @@ void daTrs_c::func_ov063_0211934c() {
             this->mFoundActor = dActor_c::FindWithID(this->mBigBooID);
             found = this->mFoundActor;
             if (found != 0 && ((daTrs_c *)found)->mBooDefeatCount == 5) {
-                ((daTrs_c *)found)->func_ov063_02116244();
+                ((daTrs_c *)found)->SpawnStarMarker();
                 this->mSoundCount++;
             }
         }
@@ -1943,7 +1943,7 @@ void daTrs_c::HandleAttackStatus() {
         return;
     }
     if (r4 != 1) return;
-    func_ov063_021162c8();
+    BeginDefeat();
 }
 
 void daTrs_c::func_ov063_02119b84() {
@@ -2074,7 +2074,7 @@ void daTrs_c::ChaseMario(int a1, short a2, int a3) {
                 int otherY = p->mPos.y;
                 int dy = myY - otherY;
                 if ((a1 << 0xc) < dy && dy < 0x1f4000 && (this->mHomePos.y - myY) < 0xfa000) {
-                    this->mSpeed.y = this->func_ov063_0211a0a8(myY, otherY, 0xa000, 0x2000);
+                    this->mSpeed.y = this->DeadbandStep(myY, otherY, 0xa000, 0x2000);
                 }
             }
         }
@@ -2105,7 +2105,7 @@ void daTrs_c::SetVelFromPlayerVel(int a, int b) {
     this->mHorzSpeed = FX_MUL(pv, h);
 }
 
-int daTrs_c::func_ov063_0211a0a8(int a1, int a2, int a3, int a4) {
+int daTrs_c::DeadbandStep(int a1, int a2, int a3, int a4) {
     int diff = a1 - a2;
     if (diff > 0) {
         if (diff < a3) return 0;
@@ -2250,7 +2250,7 @@ int daTrs_c::UpdateDuringDeath() {
                     if (this->mVariant != 2) {
                         ((daTrs_c *)this->mFoundActor)->mBooDefeatCount += 1;
                     }
-                    ((daTrs_c *)this->mFoundActor)->func_ov063_02116244();
+                    ((daTrs_c *)this->mFoundActor)->SpawnStarMarker();
                 }
                 this->mFoundActor = 0;
             }
@@ -2464,7 +2464,8 @@ int daTrs_c::ShouldBeActive() {
     }
     v = this->mVariant;
     if (v == 0xd || v == 1) {
-        if (func_ov063_021163d0() != 0) return 1;
+        if (IsTrapOccupied() != 0)
+            return 1;
         return 0;
     }
     if (ShouldBeStopped() == 0) {
@@ -2477,7 +2478,7 @@ int daTrs_c::ShouldBeStopped() {
 
     unsigned char v = this->mVariant;
     if (v == 0xd || v == 1) {
-        return func_ov063_021163d0() == 0;
+        return IsTrapOccupied() == 0;
     }
     return 0;
 }
@@ -2655,7 +2656,7 @@ int daTrs_c::Behavior()
     if (mSoundCount == 0) {
         /* Area-reset: when the home area is not showing or the leave test
            (02116190) passes, an undefeated Boo goes back to its home. */
-        if ((IsAreaShowing(mAreaIdx) == 0) || (func_ov063_02116190() != 0)) {
+        if ((IsAreaShowing(mAreaIdx) == 0) || (IsPlayerBeyondLimit() != 0)) {
             if (mBooFlags.defeated == 0) {
                 prev = &mPrevAngle;
                 mPos.x = mHomePos.x;
@@ -2744,13 +2745,13 @@ int daTrs_c::Behavior()
         UpdateBoo();
         break;
     case 3:
-        func_ov063_02116bf4();
+        UpdateChildSpawner();
         break;
     case 4:
-        func_ov063_02116a1c();
+        UpdateStarGatedPathBoo();
         break;
     case 5:
-        func_ov063_02116d38();
+        UpdateCageBoo();
         break;
     case 6:
     case 10:
@@ -2762,10 +2763,10 @@ int daTrs_c::Behavior()
     case 12:
     case 13:
     case 14:
-        func_ov063_021189f4();
+        UpdateBigBoo();
         break;
     case 15:
-        func_ov063_021172a8();
+        UpdateKeyBigBoo();
         break;
     case 8:
         func_ov063_02119274();
@@ -2774,7 +2775,7 @@ int daTrs_c::Behavior()
         UpdateBoo();
         break;
     case 11:
-        func_ov063_02116fac();
+        UpdateScriptedPathBoo();
     }
 
     if (mBooFlags.followHeading != 0)
@@ -3073,11 +3074,11 @@ int daTrs_c::InitResources()
     } else if (mVariant == 0 || mVariant == 1 || mVariant == 2 || mVariant == 6 || (unsigned)(unsigned char)(mVariant + 0xf8) <= 3) {
         unsigned short t = mCarriedID;
         if (t == TRS_ID_BLUE_COIN) {
-            mCarriedModel.SetFile((BMD_File *)data_ov002_0210d9c8.filePtr, 1, -1);
+            mCarriedModel.SetFile((BMD_File *)gCoinBluePoly32ModelFile.filePtr, 1, -1);
         } else if (t == TRS_ID_RED_COIN) {
-            mCarriedModel.SetFile((BMD_File *)data_ov002_0210d9f8.filePtr, 1, -1);
+            mCarriedModel.SetFile((BMD_File *)gCoinRedPoly32ModelFile.filePtr, 1, -1);
         } else {
-            mCarriedModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, -1);
+            mCarriedModel.SetFile((BMD_File *)gCoinYellowPoly32ModelFile.filePtr, 1, -1);
         }
         if (mVariant == 0xb) {
             mAreaId = -1;
@@ -3107,11 +3108,11 @@ int daTrs_c::InitResources()
     mClsnBase.x = 0;
     mClsnBase.y = 0;
     mClsnBase.z = 0;
-    Matrix4x3_FromTranslation(&data_020a0e68, mPos.x, mPos.y, mPos.z);
-    MTX_Concat43(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
-    mClsnBase.x = data_020a0e68.t.x;
-    mClsnBase.y = data_020a0e68.t.y;
-    mClsnBase.z = data_020a0e68.t.z;
+    Matrix4x3_FromTranslation(&gScratchMtx, mPos.x, mPos.y, mPos.z);
+    MTX_Concat43(this->mAnmModel.data.transforms, &gScratchMtx, &gScratchMtx);
+    mClsnBase.x = gScratchMtx.t.x;
+    mClsnBase.y = gScratchMtx.t.y;
+    mClsnBase.z = gScratchMtx.t.z;
     VEC_Subtract(&mClsnBase, &mPos, &mClsnBase);
     mTalkStep = 0;
     mTargetAngleY = mPrevAngle.y;

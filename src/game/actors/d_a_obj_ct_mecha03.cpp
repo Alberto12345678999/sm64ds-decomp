@@ -63,7 +63,7 @@ struct Mecha03ClsnFilePtr : SharedFilePtr {
 };
 
 extern u8 data_0209f2c0;
-extern const s16 data_ov065_0211c0b0[4] = {
+extern const s16 sTTCPendulumInitialAccels[4] = {
     13,
     22,
     13,
@@ -86,7 +86,7 @@ int daObjCtMecha03_c::InitResources() {
     mShadowModel.InitCuboid();
 
     mSwingDir = 1;
-    mSwingAccel = data_ov065_0211c0b0[data_0209f2c0];
+    mSwingAccel = sTTCPendulumInitialAccels[data_0209f2c0];
     mSwingAngle = 0x1964;
     mAngle.z = mSwingAngle;
 
@@ -185,8 +185,8 @@ void daObjCtMecha03_c::UpdateShadow() {
     bobPos.z = 0;
     armOffset.x = 0;
     armOffset.z = 0;
-    Matrix4x3_FromRotationZXYExt(&data_020a0e68, mAngle.x, mAngle.y, mAngle.z);
-    MTX_MultVec43(&armOffset, &data_020a0e68, &bobPos);
+    Matrix4x3_FromRotationZXYExt(&gScratchMtx, mAngle.x, mAngle.y, mAngle.z);
+    MTX_MultVec43(&armOffset, &gScratchMtx, &bobPos);
     VEC_Add(&bobPos, &mPos, &bobPos);
     {
         int bobY = bobPos.y;
