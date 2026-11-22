@@ -238,11 +238,9 @@ extern s32 IsStarCollected(s32 level, s32 idx);
  * one this file is bound to. The deallocation is an inline operator delete --
  * dEnemyBase_c's, reached because dEnemyBase_c is this class's IMMEDIATE base.
  */
-#ifndef _MSC_VER
 daStar_c::~daStar_c()
 {
 }
-#endif
 
 #pragma defer_codegen on
 
@@ -1170,7 +1168,7 @@ void daStar_c::StateCollectBegin() {
             Sound::ChangeMusicVolume(0, 0x7f000);
         }
     } else {
-        if (func_ov002_020ca0f4(common) != 0) {
+        if ((common)->func_ov002_020ca0f4() != 0) {
             int *s = &mPlayer->mPos.x;
             mPos.x = s[0];
             mPos.y = s[1];

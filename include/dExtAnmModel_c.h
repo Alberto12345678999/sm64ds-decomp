@@ -86,11 +86,9 @@ struct dExtAnmModel_c : dExtSimpleModel_c, dExtFrameCtrl_c {
     dExtAnmModel_c();
     void SetAnim(BCA_File *animFile, int flags, fx32 speed, u16 startFrame);
     void Copy(const dExtAnmModel_c &src, char *newFile);
+    void func_020167a4();
 };
 
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char dExtAnmModel_c_size_must_be_0x64[sizeof(dExtAnmModel_c) == 0x64 ? 1 : -1];
-#endif
 
 #endif /* DEXTANMMODEL_C_H */

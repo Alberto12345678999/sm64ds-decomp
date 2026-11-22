@@ -58,11 +58,9 @@ struct dThIcon_c {
     virtual void Behavior();
     virtual void Render();
     void Press();
+    int TouchArea_Update(int);
 };
 
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char dThIcon_c_size_must_be_0x24[sizeof(dThIcon_c) == 0x24 ? 1 : -1];
-#endif
 
 #endif

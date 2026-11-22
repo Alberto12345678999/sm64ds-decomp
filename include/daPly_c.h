@@ -1388,6 +1388,36 @@ struct daPly_c : dActor_c {
     void func_ov002_020e63a4();
     void func_ov002_020e640c();
     void func_ov002_020e6780();
+
+    void func_ov002_020bcdf0();
+    int func_ov002_020bec84(unsigned int);
+    void func_ov002_020c3dbc();
+    void func_ov002_020c3e8c();
+    void func_ov002_020c3f2c();
+    int func_ov002_020c51d0(Vector3 *);
+    int func_ov002_020c56f0(unsigned char);
+    int func_ov002_020ca0f4();
+    int func_ov002_020ca78c();
+    int func_ov002_020cc16c(daShl_c *);
+    void func_ov002_020cd190();
+    int func_ov002_020cd28c();
+    int func_ov002_020cf700();
+    void func_ov002_020d2e74();
+    int func_ov002_020d5ab4();
+    int func_ov002_020d5cec();
+    int func_ov002_020d600c();
+    int func_ov002_020d85fc(daPly_c *, int);
+    void func_ov002_020d8838();
+    int func_ov002_020d9298();
+    void func_ov002_020db54c(int, int, short);
+    int func_ov002_020db5f4(dActor_c *);
+    int func_ov002_020db674(int, int, int);
+    void func_ov002_020dc09c();
+    int func_ov002_020de328();
+    int func_ov002_020df7f4();
+    void func_ov002_020df8f0();
+    int func_ov002_020e10a8();
+    void func_ov002_020e25d4();
 };
 
 /* Hold both claims with the compiler rather than a comment. State's 0x18 is
@@ -1395,12 +1425,9 @@ struct daPly_c : dActor_c {
    if this toolchain represented a pmf any other way the offsets above --
    +0x00, +0x08, +0x10, read straight off ChangeState and Behavior -- would
    not line up and this would refuse to compile. */
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char Player_size_must_be_0x768[sizeof(struct daPly_c) == 0x768 ? 1 : -1];
 typedef char Player_Models_size_must_be_0x1d0[sizeof(daPly_c::Models) == 0x1d0 ? 1 : -1];
 typedef char Player_State_size_must_be_0x18[sizeof(daPly_c::State) == 0x18 ? 1 : -1];
-#endif
 
 /* Offsets seen through this-pointer but far outside the object (sizeof(daPly_c)
  * is 0x768). These are NOT daPly_c fields and must not be typed as such.

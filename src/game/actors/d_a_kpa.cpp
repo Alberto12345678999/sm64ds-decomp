@@ -342,18 +342,14 @@ extern unsigned char NumStars(void);
 
 /* Empty body: the member/base teardown and the D1/D0 pair are compiler-
  * generated. */
-#ifndef _MSC_VER
 daKpa_c::~daKpa_c()
 {
 }
-#endif
 
 /* Empty body, as for Bowser's. */
-#ifndef _MSC_VER
 daKpaTail_c::~daKpaTail_c()
 {
 }
-#endif
 
 #pragma defer_codegen on
 
@@ -1546,7 +1542,7 @@ int daKpa_c::BowserLand() {
         if(this->mVariantID == 0){
             b = (this->mDistToTarget >= 0x352000);
             if (!this->mTargetPlayer->IsInAir())
-                func_ov002_020c56f0(this->mTargetPlayer, b);
+                (this->mTargetPlayer)->func_ov002_020c56f0(b);
         }
         return 1;
     }

@@ -112,6 +112,8 @@ struct dCc_c {
        by the prev/next rewiring; the original member spelling is not. */
     void Unlink();
     void Update();
+    /* Offer the collider to the player when the hit owner is the player. */
+    void func_02014f5c(u32);
     static void Process();
 
     /* The head of the active collider list (arm9 .bss 0x0209cee8). Update()
@@ -122,9 +124,6 @@ struct dCc_c {
     static dCc_c *listHead;
 };
 
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char dCc_c_size_must_be_0x30[sizeof(dCc_c) == 0x30 ? 1 : -1];
-#endif
 
 #endif /* DCC_C_H */
