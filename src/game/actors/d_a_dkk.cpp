@@ -24,6 +24,7 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daDkk_c_AssetId { ASSET_DONKAKU_BMD = 0x02dc, ASSET_DONKAKU_KCL = 0x02dd };
 
+#include "CLPS.h"
 #include "daDkk_c.h"
 #include "common.h"
 #include "decl_common.h"
@@ -34,9 +35,9 @@ enum daDkk_c_AssetId { ASSET_DONKAKU_BMD = 0x02dc, ASSET_DONKAKU_KCL = 0x02dd };
 #include "Particle__System.h"
 #include "ParticleIds.h"
 
-/* The model handle constructs through func_02017acc and destroys through
- * func_02017ab4. The collision handle constructs through func_02017b4c and
- * destroys through SharedFilePtr_Destruct_Clsn. data_ov025_02113814 is
+/* The model handle constructs through ModelFile::ModelFile and destroys through
+ * ModelFile::~ModelFile. The collision handle constructs through ClsnFile::ClsnFile and
+ * destroys through ClsnFile::~ClsnFile. data_ov025_02113814 is
  * the file table (DsnBaseFileTable, daDsnBase_c.h). */
 struct DkkModelFilePtr : SharedFilePtr {
     DkkModelFilePtr(unsigned int fileId);
@@ -200,12 +201,9 @@ DkkModelFilePtr gDonkakuModelFile(ASSET_DONKAKU_BMD);
 DkkClsnFileHandler gDonkakuCollisionFile(ASSET_DONKAKU_KCL);
 
 /* Grindel's collision-property block and the resource table that names it. */
-struct CLPS_Block {
-    u32 words[8];
-};
 
-CLPS_Block data_ov025_02112d28 = {0x53504c43, 0x00010008, 0x01000fc0, 0x000000ff,
-                                  0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+extern CLPS_Block data_ov025_02112d28;
+
 DsnBaseFileTable data_ov025_02113814 = {
     &gDonkakuModelFile, &gDonkakuCollisionFile, &data_ov025_02112d28, 0, 0x1a0000, 0x170000,
 };

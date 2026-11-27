@@ -29,6 +29,7 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daDpLift_c_AssetId { ASSET_DP_LIFT_BMD = 0x05e1, ASSET_DP_LIFT_KCL = 0x05e2 };
 
+#include "CLPS.h"
 #include "daDpLift_c.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
@@ -37,8 +38,8 @@ enum daDpLift_c_AssetId { ASSET_DP_LIFT_BMD = 0x05e1, ASSET_DP_LIFT_KCL = 0x05e2
 
 #pragma defer_codegen off
 
-/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
- * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+/* 8-byte file handles. The model uses ModelFile::ModelFile / ModelFile::~ModelFile and the
+ * collision file ClsnFile::ClsnFile / ClsnFile::~ClsnFile. The spellings
  * are local; the manifest aliases the generated names to those ROM symbols. */
 struct DpLiftModelFilePtr : SharedFilePtr {
     DpLiftModelFilePtr(u32 fileID);
@@ -57,12 +58,7 @@ extern DpLiftModelFilePtr data_ov025_02113ae0;
 extern SharedFilePtr data_ov002_0210d9f0;
 extern DpLiftCollisionFilePtr data_ov025_02113ad8;
 
-struct CLPS_Block {
-    u32 words[8];
-};
-
-CLPS_Block data_ov025_02112d08 = {0x53504c43, 0x00010008, 0x00000fc4, 0x000000ff,
-                                  0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+extern CLPS_Block data_ov025_02112d08;
 
 daDpLift_c::~daDpLift_c() {}
 

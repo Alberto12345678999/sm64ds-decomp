@@ -15,8 +15,8 @@ enum daObjTtFuta_c_AssetId { ASSET_TT_OBJ_FUTA_BMD = 0x06c5, ASSET_TT_OBJ_FUTA_K
 #include "Particle__System.h"
 #include "ParticleIds.h"
 
-/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
- * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+/* 8-byte file handles. The model uses ModelFile::ModelFile / ModelFile::~ModelFile and the
+ * collision file ClsnFile::ClsnFile / ClsnFile::~ClsnFile. The spellings
  * are local; the manifest aliases the generated names to those ROM symbols. */
 struct TtFutaModelFilePtr : SharedFilePtr {
     TtFutaModelFilePtr(u32 fileID);
@@ -33,7 +33,7 @@ struct TtFutaCollisionFilePtr : SharedFilePtr {
 extern TtFutaModelFilePtr data_ov033_021124c8;
 extern TtFutaCollisionFilePtr data_ov033_021124c0;
 
-extern char data_ov033_02111bfc[16];
+extern CLPS_Block data_ov033_02111bfc;
 
 /* Emission order is ROM order: the destructor pair must stay first.
  * Do not reorder. */
@@ -79,9 +79,7 @@ s32 daObjTtFuta_c::InitResources() {
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     KCL_File *k = dBgW_Kc::LoadFile(data_ov033_021124c0);
-    /* Kept (#821 r76): genuine; this TU defines the CLPS block as its bytes and CLPS_Block is
-       opaque (CLPS.h). */
-    mMeshCollider.SetFile(k, mClsnMat, 0x199, mAngle.y, *(CLPS_Block *)&data_ov033_02111bfc);
+    mMeshCollider.SetFile(k, mClsnMat, 0x199, mAngle.y, data_ov033_02111bfc);
     return Event::GetBit(0xe) == 0;
 }
 
@@ -95,6 +93,3 @@ daObjTtFuta_c *daObjTtFuta_c_classInit() {
  * destructors; the registration nodes are compiler temporaries. */
 TtFutaModelFilePtr data_ov033_021124c8(ASSET_TT_OBJ_FUTA_BMD);
 TtFutaCollisionFilePtr data_ov033_021124c0(ASSET_TT_OBJ_FUTA_KCL);
-char data_ov033_02111bfc[16] = {
-    0x43, 0x4c, 0x50, 0x53, 0x08, 0x00, 0x01, 0x00, 0xc4, 0x0f, 0x04, 0x00, 0xff, 0x00, 0x00, 0x00,
-};

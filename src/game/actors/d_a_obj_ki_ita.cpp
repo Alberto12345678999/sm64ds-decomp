@@ -21,8 +21,8 @@ extern "C" daObjFloatBoard_c_Resources data_ov016_02114b8c;
 
 /* File 1601 / 1602 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
- * func_02017acc / func_02017ab4 and func_02017b4c /
- * SharedFilePtr_Destruct_Clsn. */
+ * ModelFile::ModelFile / ModelFile::~ModelFile and ClsnFile::ClsnFile /
+ * ClsnFile::~ClsnFile. */
 struct KiItaModelFilePtr : SharedFilePtr {
     KiItaModelFilePtr(u32 fileID);
     ~KiItaModelFilePtr();
@@ -58,7 +58,7 @@ int daObjKi_Ita_c::InitResources() {
 KiItaModelFilePtr data_ov016_02114e44(1601);
 KiItaCollisionFilePtr data_ov016_02114e4c(1602);
 
-extern CLPS_Block data_ov016_02113bec;
+extern struct CLPS_Block data_ov016_02113bec;
 daObjFloatBoard_c_Resources data_ov016_02114b8c = {
     &data_ov016_02114e44,
     &data_ov016_02114e4c,
@@ -67,14 +67,3 @@ daObjFloatBoard_c_Resources data_ov016_02114b8c = {
 
 /* CLPS property block for the floating plank: the 'CLPS' tag, the 8-byte
  * stride header with one entry, then the default entries. */
-struct CLPS_Block {
-    u32 tag;
-    u32 header;
-    u32 entries[6];
-};
-
-CLPS_Block data_ov016_02113bec = {
-    0x53504c43,
-    0x00010008,
-    {0x01000fc5, 0x000000ff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff},
-};

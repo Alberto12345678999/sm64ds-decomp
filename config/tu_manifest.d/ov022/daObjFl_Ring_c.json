@@ -32,14 +32,8 @@
       "end": "0x021130fc"
     },
     {
-      "name": ".data.data_ov022_02113140",
-      "input_section": ".data",
-      "start": "0x02113140",
-      "end": "0x02113cd4"
-    },
-    {
       "name": ".data",
-      "start": "0x02113cd4",
+      "start": "0x02113cc8",
       "end": "0x02113d98"
     },
     {
@@ -115,11 +109,11 @@
   ],
   "data": [
     {
-      "symbol": "data_ov022_02113140",
-      "address": "0x02113140",
-      "size": "0xb94",
+      "symbol": "data_ov022_02113cc8",
+      "address": "0x02113cc8",
+      "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "course data run that ends at this class's typeinfo; its last three words are the file table"
+      "evidence": "actor-owned file table: model SharedFilePtr, collision SharedFilePtr, ov064 CLPS block"
     },
     {
       "symbol": "_ZTI14daObjFl_Ring_c",
@@ -183,7 +177,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov022_02113cc8' differs between the legacy file that used to hold _ZN14daObjFl_Ring_c16CleanupResourcesEv and the one that held _ZN14daObjFl_Ring_c13InitResourcesEv; kept the first, the other is commented out for review. RESOLVED by dropping BOTH local declarations rather than keeping either: CleanupResources spelled it `void *` and cast its way to the first two words, InitResources spelled it as a file-local three-pointer typedef. The merged TU declares it once, as a named three-member struct, which is what the ROM says it is -- ov022 relocs.txt resolves the three words at 0x02113cc8/0x02113ccc/0x02113cd0 to ov022:0x02114500, ov022:0x02114508 and ov064:0x0211bbac, i.e. the model SharedFilePtr, the collision SharedFilePtr and the CLPS block SetFile is handed. No TUBUILD CONFLICT marker survives in the merged source.",
     "The file table's CLPS target data_ov064_0211bbac stays an unnamed row in ov064. The two ov022 handles are this TU's own .bss.",
     "STYLE ORACLE: src/game/actors/d_a_obj_fl_uki_ki.cpp -- same overlay, same base, same inline-empty-destructor shape, same deadstrip-data RTTI licensing, member for member the same four slots.",
-    "Folded __sinit_ov022_02112ca8 into this TU: the RingModelFilePtr/RingCollisionFilePtr file-scope objects (files 1550 and 1551) make mwcc emit __sinit_d_a_obj_fl_ring.cpp itself -- the same 0x6c-byte initializer with the same four call sites and literal pool. The two destructor-registration nodes emit as @602/@442, free fleet-wide on this main. The wrapper names are local; the manifest aliases their ctor/dtor mangled names to the ROM resource-family functions (func_02017acc/func_02017ab4 model, func_02017b4c/SharedFilePtr_Destruct_Clsn collision, __register_global_object->func_020731dc), exactly as daObjFl_Block_c does. No new data was added.",
+    "Folded __sinit_ov022_02112ca8 into this TU: the RingModelFilePtr/RingCollisionFilePtr file-scope objects (files 1550 and 1551) make mwcc emit __sinit_d_a_obj_fl_ring.cpp itself -- the same 0x6c-byte initializer with the same four call sites and literal pool. The two destructor-registration nodes emit as @602/@442, free fleet-wide on this main. The wrapper names are local; the manifest aliases their ctor/dtor mangled names to the ROM resource-family functions (_ZN9ModelFileC1Ej/_ZN9ModelFileD1Ev model, _ZN8ClsnFileC1Ej/_ZN8ClsnFileD1Ev collision, __register_global_object->func_020731dc), exactly as daObjFl_Block_c does. No new data was added.",
     "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); rom.sha256 above records the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
     "Collision property member calls replace local helper declarations. Reconciled 2 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (27 sections, 106 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
@@ -299,15 +293,8 @@
           "comparison": "NOBITS -- symbol/module gates"
         },
         {
-          "section": ".data.data_ov022_02113140",
-          "start": "0x02113140",
-          "end": "0x02113cd4",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
           "section": ".data",
-          "start": "0x02113cd4",
+          "start": "0x02113cc8",
           "end": "0x02113d98",
           "differingBytes": 0,
           "firstDiff": null
@@ -486,28 +473,28 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN16RingModelFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and the model wrapper constructor exact PC24 relocation"
     },
     {
       "symbol": "_ZN16RingModelFilePtrD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor-registration argument and the model wrapper destructor exact ABS32 relocation"
     },
     {
       "symbol": "_ZN20RingCollisionFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call destination and the collision wrapper constructor exact PC24 relocation"
     },
     {
       "symbol": "_ZN20RingCollisionFilePtrD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor-registration argument and the collision wrapper destructor exact ABS32 relocation"
@@ -545,7 +532,7 @@
       "source": "0x02112cb8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -565,7 +552,7 @@
       "source": "0x02112cd4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -595,7 +582,7 @@
       "source": "0x02112cfc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -625,7 +612,7 @@
       "source": "0x02112d0c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"
@@ -1021,297 +1008,7 @@
       "target_address": "0x021111a0"
     },
     {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211314c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113360",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113360"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113164",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113318",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113318"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211317c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113160",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113160"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113180",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021131f8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021131f8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x021131fc",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02112954",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02112954"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113200",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02112950",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02112950"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113204",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02112974",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02112974"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211320c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02112958",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02112958"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113228",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113298",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113298"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211322c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113148",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113148"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113238",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_0211317c",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x0211317c"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211331c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021136f8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021136f8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113324",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021133a8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021133a8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211332c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021131a8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021131a8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113334",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021131b8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021131b8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211333c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113150",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113150"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113344",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021131c8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021131c8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211334c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113158",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113158"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113354",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021131d8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021131d8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211335c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113260",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113260"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113364",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113210",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113210"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211336c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113170",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113170"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113374",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113244",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113244"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211337c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113140",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113140"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113384",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021132d8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021132d8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211338c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_021131e8",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x021131e8"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x02113394",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113198",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113198"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x0211339c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113144",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113144"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
-      "source": "0x021133a4",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov022_02113188",
-      "addend": 0,
-      "target_module": "ov022",
-      "target_address": "0x02113188"
-    },
-    {
-      "section": ".data.data_ov022_02113140",
+      "section": ".data",
       "source": "0x02113cc8",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -1321,7 +1018,7 @@
       "target_address": "0x02114500"
     },
     {
-      "section": ".data.data_ov022_02113140",
+      "section": ".data",
       "source": "0x02113ccc",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -1331,7 +1028,7 @@
       "target_address": "0x02114508"
     },
     {
-      "section": ".data.data_ov022_02113140",
+      "section": ".data",
       "source": "0x02113cd0",
       "type": "R_ARM_ABS32",
       "kind": "load",

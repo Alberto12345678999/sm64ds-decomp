@@ -31,6 +31,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import asset_catalog as AC  # noqa: E402
 import relocs as R  # noqa: E402
 import srcpath as SP  # noqa: E402
 
@@ -50,16 +51,29 @@ SIZE_RE = re.compile(r"(?:^|,)size=0x([0-9a-fA-F]+)")
 REGISTER_CALL_RE = re.compile(
     r"(?:func_020731dc|__register_global_object)\s*\(\s*&?([A-Za-z_]\w*)"
 )
+# A handle constructor called as a free function, (this, file ID).  A real-class
+# handle is defined instead, `ModelFile data_x(0x40a);`, and the compiler's
+# initializer makes the call: see asset_catalog.handle_definitions.
+HANDLE_CONSTRUCTOR_CALLS = "(?:" + "|".join(AC.HANDLE_CONSTRUCTOR_CALLS) + ")"
 ASSET_CALL_RE = re.compile(
-    r"(?:func_02017acc|func_02017b4c|_ZN13SharedFilePtr9ConstructEj)"
-    r"\s*\([^,]+,\s*(0x[0-9a-fA-F]+|\d+)"
+    HANDLE_CONSTRUCTOR_CALLS + r"\s*\([^,]+,\s*(0x[0-9a-fA-F]+|\d+)"
 )
+# The assigned global and an optional member/index tail, all on one line: a
+# comment ending in `.` must not run on into the next definition and claim
+# its `=` for the comment's last word.
 ASSIGN_LHS_RE = re.compile(
-    r"\b([A-Za-z_]\w*)(?:\s*(?:\.|->|\[)[^=;]*)?\s*=(?!=)"
+    r"\b([A-Za-z_]\w*)(?:\s*(?:\.|->|\[)[^=;\n]*)?\s*=(?!=)"
 )
 KNOWN_INIT_FIRST_ARG_RE = re.compile(
-    r"(?:func_02017acc|func_02017b4c|_ZN13SharedFilePtr9ConstructEj)"
-    r"\s*\(\s*&?([A-Za-z_]\w*)"
+    HANDLE_CONSTRUCTOR_CALLS + r"\s*\(\s*&?([A-Za-z_]\w*)"
+)
+# A file-scope object defined with constructor arguments, `T name(args);`,
+# which the compiler's initializer constructs.  Function prototypes have the
+# same shape; the caller keeps only names the initializer's relocations touch.
+CONSTRUCTED_DEFINITION_RE = re.compile(
+    r"^(?:static[ \t]+)?[A-Za-z_][\w:]*(?:<[^<>;\n]*>)?[ \t]+"
+    r"([A-Za-z_]\w*)[ \t]*\([^;{}]*\)[ \t]*;",
+    re.M,
 )
 
 
@@ -223,6 +237,16 @@ def is_destructor(symbol: str) -> bool:
     return symbol.startswith("_ZN") and bool(re.search(r"D[012]E", symbol))
 
 
+def asset_handles(text: str) -> list[int]:
+    """Literal file IDs passed to a handle constructor, called or defined."""
+    values = set(ASSET_CALL_RE.findall(text))
+    for _cls, _name, _offset, raw_arg in AC.handle_definitions(text):
+        value = AC._integer_literal(raw_arg)
+        if value is not None:
+            values.add(str(value))
+    return sorted({int(value, 0) for value in values})
+
+
 def initializer_cause(size: int, calls: list[str], globals_: list[str], text: str) -> list[str]:
     causes = []
     if size <= 4:
@@ -233,7 +257,7 @@ def initializer_cause(size: int, calls: list[str], globals_: list[str], text: st
         causes.append("destructor-registration")
     if globals_:
         causes.append("dynamic-global-data")
-    if ASSET_CALL_RE.search(text):
+    if asset_handles(text):
         causes.append("resource-handle-initialization")
     return causes or ["unclassified-generated-init"]
 
@@ -244,7 +268,9 @@ def infer_ownership_globals(text: str, globals_: list[str],
     known = set(globals_)
     owners = set(REGISTER_CALL_RE.findall(text))
     owners.update(KNOWN_INIT_FIRST_ARG_RE.findall(text))
+    owners.update(name for _cls, name, _offset, _arg in AC.handle_definitions(text))
     owners.update(ASSIGN_LHS_RE.findall(text))
+    owners.update(CONSTRUCTED_DEFINITION_RE.findall(text))
     for constructor in constructors:
         pattern = re.compile(
             re.escape(constructor) + r"\s*\(\s*&?([A-Za-z_]\w*)"
@@ -300,7 +326,7 @@ def inventory_initializers(modules: dict, by_home: dict, by_name: dict,
             constructors = sorted(call for call in calls if is_constructor(call))
             destructors = sorted(call for call in calls if is_destructor(call))
             registered = sorted(set(REGISTER_CALL_RE.findall(text)))
-            assets = sorted({int(value, 0) for value in ASSET_CALL_RE.findall(text)})
+            assets = asset_handles(text)
             ownership_globals = infer_ownership_globals(text, globals_list, constructors)
             rows.append({
                 "module": module,

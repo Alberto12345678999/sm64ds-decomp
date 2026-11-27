@@ -23,13 +23,13 @@ A lot of people have put real time into this. Thank you to everyone in [CREDITS.
 ```
 MATCHED    ██████████████████████████████  100.0%   11,389 / 11,389 functions
            of which 113 are byte-exact assembly (hand-written in the original, not C)
-LINKED     ██████████████████████████████  99.9%   11,372 / 11,388 functions
+LINKED     ██████████████████████████████  100.0%   11,388 / 11,388 functions
 ```
 <!-- tiers:end -->
 
 <!-- data:start -->
 ```
-DATA       █████████████████████░░░░░░░░░  71.1%   14,161 / 19,918
+DATA       ████████████████████████░░░░░░  78.6%   15,643 / 19,901
 ```
 
 Data progress: [notes/data-tracking.md](notes/data-tracking.md).

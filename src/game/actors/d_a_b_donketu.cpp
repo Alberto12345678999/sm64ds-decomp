@@ -5,8 +5,7 @@
  * (_ZTV12daBDonketu_c at 0x0211b978). Source order is the reverse of the ROM.
  * Do not reorder. The factory is `new daBDonketu_c()` (was BigBully_Spawn).
  */
-/* Notes: UpdateRunState returns a pointer cast to int on the timer path;
- * that shape is what matches. TurnTowardPlayer, func_ov064_0211616c and
+/* Notes: TurnTowardPlayer, func_ov064_0211616c and
  * UpdateModelAndShadow are daOts_c members (d_a_ots.cpp); 0211616c is
  * still named by address. InitResources leaves spawnPos.y unset when
  * DetectClsn misses, as the ROM does.
@@ -30,9 +29,9 @@ enum daBDonketu_c_AssetId {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx_trig.h"
 
-/* One model handle constructs through func_02017acc and destroys through
- * func_02017ab4. Four animation handles construct through
- * SharedFilePtr::Construct and destroy through SharedFilePtr_Destruct_Anim.
+/* One model handle constructs through ModelFile::ModelFile and destroys through
+ * ModelFile::~ModelFile. Four animation handles construct through
+ * AnimFile::AnimFile and destroy through AnimFile::~AnimFile.
  * The file table stays ROM data. */
 struct DonketuModelFilePtr : SharedFilePtr {
     DonketuModelFilePtr(unsigned int fileId);
@@ -173,24 +172,18 @@ void daBDonketu_c::UpdateDeathState() {
 }
 
 /* Charge timer, then run. Key function: the inline destructor emits no vtable. */
-int daBDonketu_c::UpdateRunState() {
+void daBDonketu_c::UpdateRunState() {
     if (mStateTimer < 10) {
         mHorzSpeed = 0;
-        int result = TurnTowardPlayer(0x700);
-        if (result != 0)
-            return result;
-        u16 *timer = &mStateTimer;
-        if (*timer == 9)
-            *timer = 0;
-        return (int)timer;
+        if (TurnTowardPlayer(0x700))
+            return;
+        if (mStateTimer == 9)
+            mStateTimer = 0;
+    } else {
+        mHorzSpeed = 0x14000;
+        if (mStateTimer > 0x23)
+            mStateTimer = 0;
     }
-    mHorzSpeed = 0x14000;
-    u32 value = mStateTimer;
-    if (value > 0x23) {
-        value = 0;
-        mStateTimer = 0;
-    }
-    return value;
 }
 
 /* Retail construction order. mwcc emits __sinit_d_a_b_donketu.cpp. */

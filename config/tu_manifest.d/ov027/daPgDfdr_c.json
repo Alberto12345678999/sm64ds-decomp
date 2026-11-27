@@ -32,22 +32,14 @@
       "end": "0x02113d04"
     },
     {
-      "name": ".rodata.dfdrTable",
+      "name": ".rodata",
       "start": "0x02112ca4",
-      "end": "0x02112cb0",
-      "input_section": ".rodata"
+      "end": "0x02112cb0"
     },
     {
-      "name": ".data.pgDfdrClps",
-      "start": "0x021130e8",
-      "end": "0x02113108",
-      "input_section": ".data"
-    },
-    {
-      "name": ".data.dfdrDesc",
+      "name": ".data",
       "start": "0x021139c4",
-      "end": "0x021139e4",
-      "input_section": ".data"
+      "end": "0x021139e4"
     }
   ],
   "functions": [
@@ -184,13 +176,6 @@
   ],
   "data": [
     {
-      "symbol": "data_ov027_021130e8",
-      "address": "0x021130e8",
-      "size": "0x20",
-      "binding": "STB_GLOBAL",
-      "evidence": "the penguin's collision-property block handed to dBgW_KcMbg::SetFile"
-    },
-    {
       "symbol": "data_ov027_021139c4",
       "address": "0x021139c4",
       "size": "0x8",
@@ -315,56 +300,56 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN15PgDfdrModelFileC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and the model wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN15PgDfdrModelFileD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination and the model wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN22PgDfdrAnimationFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_symbol": "_ZN8AnimFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x0201799c",
       "evidence": "retail initializer call destination and the animation wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN22PgDfdrAnimationFilePtrD1Ev",
-      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_symbol": "_ZN8AnimFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017984",
       "evidence": "retail destructor registration destination and the animation wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN24PgDfdrTexSequenceFilePtrC1Ej",
-      "canonical_symbol": "SharedFilePtr_Construct_TexSeq",
+      "canonical_symbol": "_ZN10TexSeqFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017934",
       "evidence": "retail initializer call destination and the texture-sequence wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN24PgDfdrTexSequenceFilePtrD1Ev",
-      "canonical_symbol": "SharedFilePtr_Destruct_TexSeq",
+      "canonical_symbol": "_ZN10TexSeqFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x0201791c",
       "evidence": "retail destructor registration destination and the texture-sequence wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN22PgDfdrCollisionFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call destination and the collision wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN22PgDfdrCollisionFilePtrD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination and the collision wrapper destructor's exact ABS32 relocation"
@@ -450,7 +435,7 @@
       "source": "0x02112e08",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -470,7 +455,7 @@
       "source": "0x02112e24",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -490,7 +475,7 @@
       "source": "0x02112e40",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -510,7 +495,7 @@
       "source": "0x02112e5c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -530,7 +515,7 @@
       "source": "0x02112e78",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "SharedFilePtr_Construct_TexSeq",
+      "symbol": "_ZN10TexSeqFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017934"
@@ -550,7 +535,7 @@
       "source": "0x02112e94",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -580,7 +565,7 @@
       "source": "0x02112f10",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -610,7 +595,7 @@
       "source": "0x02112f20",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "SharedFilePtr_Destruct_Anim",
+      "symbol": "_ZN8AnimFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017984"
@@ -680,7 +665,7 @@
       "source": "0x02112f48",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "SharedFilePtr_Destruct_TexSeq",
+      "symbol": "_ZN10TexSeqFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x0201791c"
@@ -710,7 +695,7 @@
       "source": "0x02112f54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"
@@ -786,7 +771,7 @@
       "target_address": "0x02112df8"
     },
     {
-      "section": ".rodata.dfdrTable",
+      "section": ".rodata",
       "source": "0x02112ca4",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -796,7 +781,7 @@
       "target_address": "0x02113c84"
     },
     {
-      "section": ".rodata.dfdrTable",
+      "section": ".rodata",
       "source": "0x02112ca8",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -806,7 +791,7 @@
       "target_address": "0x02113c74"
     },
     {
-      "section": ".rodata.dfdrTable",
+      "section": ".rodata",
       "source": "0x02112cac",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -816,7 +801,7 @@
       "target_address": "0x02113c8c"
     },
     {
-      "section": ".data.dfdrDesc",
+      "section": ".data",
       "source": "0x021139c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -826,7 +811,7 @@
       "target_address": "0x02111a28"
     },
     {
-      "section": ".data.dfdrDesc",
+      "section": ".data",
       "source": "0x021139cc",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -836,7 +821,7 @@
       "target_address": "0x02111c48"
     },
     {
-      "section": ".data.dfdrDesc",
+      "section": ".data",
       "source": "0x021139d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -846,7 +831,7 @@
       "target_address": "0x02111ca8"
     },
     {
-      "section": ".data.dfdrDesc",
+      "section": ".data",
       "source": "0x021139dc",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -991,21 +976,14 @@
           "comparison": "NOBITS -- symbol/module gates"
         },
         {
-          "section": ".rodata.dfdrTable",
+          "section": ".rodata",
           "start": "0x02112ca4",
           "end": "0x02112cb0",
           "differingBytes": 0,
           "firstDiff": null
         },
         {
-          "section": ".data.pgDfdrClps",
-          "start": "0x021130e8",
-          "end": "0x02113108",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
-          "section": ".data.dfdrDesc",
+          "section": ".data",
           "start": "0x021139c4",
           "end": "0x021139e4",
           "differingBytes": 0,
@@ -1074,7 +1052,7 @@
             ]
           },
           {
-            "section": ".rodata.dfdrTable",
+            "section": ".rodata",
             "original": [
               24
             ],
@@ -1083,16 +1061,7 @@
             ]
           },
           {
-            "section": ".data.pgDfdrClps",
-            "original": [
-              43
-            ],
-            "desired": [
-              43
-            ]
-          },
-          {
-            "section": ".data.dfdrDesc",
+            "section": ".data",
             "original": [
               10,
               12,
@@ -1158,7 +1127,7 @@
               ]
             },
             {
-              "section": ".data.dfdrDesc",
+              "section": ".data",
               "original": [
                 10,
                 12,

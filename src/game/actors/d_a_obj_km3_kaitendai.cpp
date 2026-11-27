@@ -11,8 +11,8 @@
  * dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. This TU's static
  * initializer constructs those SharedFilePtrs as file IDs 1661 / 1662.
  *
- * This TU defines the rotation increments, two-entry collision-property
- * block, and three-pointer resource descriptor. The data names describe
+ * This TU defines the rotation increments and three-pointer resource
+ * descriptor. The collision-property block is stage-map data. The data names describe
  * measured consumers; their original source spellings are not recovered.
  *
  * daObjKm3_Kaitendai_c_classInit is reconstructed (RTTI
@@ -33,8 +33,8 @@ enum d_a_obj_km3_kaitendai_AssetId {
 #include "SharedFilePtr.h"
 #include "CLPS.h"
 
-/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
- * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+/* 8-byte file handles. The model uses ModelFile::ModelFile / ModelFile::~ModelFile and the
+ * collision file ClsnFile::ClsnFile / ClsnFile::~ClsnFile. The spellings
  * are local; the manifest aliases the generated names to those ROM symbols. */
 struct Km3KaitendaiModelFilePtr : SharedFilePtr {
     Km3KaitendaiModelFilePtr(unsigned int fileID);
@@ -50,28 +50,16 @@ typedef char
     Km3KaitendaiModelFilePtr_size_must_be_8[sizeof(Km3KaitendaiModelFilePtr) == 8 ? 1 : -1];
 typedef char Km3KaitendaiClsnFilePtr_size_must_be_8[sizeof(Km3KaitendaiClsnFilePtr) == 8 ? 1 : -1];
 
-struct Km3KaitendaiClpsBlock {
-    char magic[4];
-    u16 entrySize;
-    u16 entryCount;
-    CLPS entries[2];
-};
-typedef char
-    Km3KaitendaiClpsBlock_size_must_be_0x18[sizeof(Km3KaitendaiClpsBlock) == 0x18 ? 1 : -1];
-
 #include "ResourceDescriptor.h"
 
 extern Km3KaitendaiModelFilePtr data_ov047_02112610;
 extern Km3KaitendaiClsnFilePtr data_ov047_02112608;
-/* KCL prism attributes index these two entries. The following ROM bytes
- * have no established type or ownership and are not part of this block. */
-extern const Km3KaitendaiClpsBlock gKm3KaitendaiClps = {
-    {'C', 'L', 'P', 'S'}, 8, 2, {{0x00000fc0, 0x000000ff}, {0x00000fc4, 0x000000ff}}};
+
+extern CLPS_Block gKm3KaitendaiClps;
 
 /* Defined here because this TU owns the descriptor in overlay .data. */
-ResourceDescriptor data_ov047_02112334 = {
-    &data_ov047_02112610, &data_ov047_02112608,
-    reinterpret_cast<CLPS_Block *>(const_cast<Km3KaitendaiClpsBlock *>(&gKm3KaitendaiClps))};
+ResourceDescriptor data_ov047_02112334 = {&data_ov047_02112610, &data_ov047_02112608,
+                                          &gKm3KaitendaiClps};
 
 #include "daObjKm3_Kaitendai_c.h"
 #include "SpawnInfo.h"

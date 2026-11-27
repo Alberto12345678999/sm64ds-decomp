@@ -28,12 +28,6 @@
       "end": "0x021119cc"
     },
     {
-      "name": ".rodata.kaitendai",
-      "input_section": ".rodata",
-      "start": "0x02111bf4",
-      "end": "0x02111c0c"
-    },
-    {
       "name": ".data",
       "start": "0x02112320",
       "end": "0x021123fc"
@@ -127,14 +121,7 @@
       "evidence": "compiler storage includes the two-word vtable preamble at 0x02112374; the configured public address point is eight bytes later and all 32 slot relocations match without inventing a second name for the ABI preamble"
     }
   ],
-  "rodata": [
-    {
-      "symbol": "gKm3KaitendaiClps",
-      "address": "0x02111bf4",
-      "size": "0x18",
-      "evidence": "Native CLPS header plus two eight-byte entries. Header entryCount=2 and all 44 KCL prisms use indices 0 or 1; the following eight FF bytes are excluded, not asserted to be padding."
-    }
-  ],
+  "rodata": [],
   "bss": [
     {
       "symbol": "data_ov047_02112608",
@@ -571,7 +558,7 @@
       "source": "0x02111758",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -591,7 +578,7 @@
       "source": "0x02111774",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -621,7 +608,7 @@
       "source": "0x0211179c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -651,7 +638,7 @@
       "source": "0x021117ac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"
@@ -999,13 +986,6 @@
           "firstDiff": null
         },
         {
-          "section": ".rodata.kaitendai",
-          "start": "0x02111bf4",
-          "end": "0x02111c0c",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
           "section": ".data",
           "start": "0x02112320",
           "end": "0x021123fc",
@@ -1045,15 +1025,6 @@
             ],
             "desired": [
               50
-            ]
-          },
-          {
-            "section": ".rodata.kaitendai",
-            "original": [
-              31
-            ],
-            "desired": [
-              31
             ]
           },
           {
@@ -1983,28 +1954,28 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN24Km3KaitendaiModelFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and the model wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN24Km3KaitendaiModelFilePtrD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination and the model wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN23Km3KaitendaiClsnFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call destination and the collision wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN23Km3KaitendaiClsnFilePtrD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination and the collision SharedFilePtr family identity"

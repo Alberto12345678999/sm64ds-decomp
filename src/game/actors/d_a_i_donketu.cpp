@@ -5,17 +5,11 @@
  * profile proves the registry slot. The tree used to call it `ChillBully`,
  * which is coined.
  *
- * Two load-bearing spellings, both measured:
+ * One load-bearing spelling, measured:
  *
  *   Function order is the REVERSE of the ROM's -- mwccarm emits one .text
  *   section per function in reverse source order. Do not reorder (the
  *   destructor D0/D1/D2 group is the only exception).
- *
- *   UpdateRunState reads its timer unsigned: the member is s16 and the ROM
- *   compares with blo, not blt, so the guard and the wrap convert it to u16.
- *   The wind-up arm keeps a u16 pointer to the timer, whose address the
- *   cartridge leaves in r0 as the return value; with plain member access
- *   the compiler moves the address out of r0 (5 words differ).
  *
  * Notes:
  * - The TU claims .text and the .data resource block data_ov027_021138f4;
@@ -44,8 +38,8 @@ enum d_a_i_donketu_AssetId {
 #include "SharedFilePtr.h"
 
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
- * veneer pairs (func_02017acc / func_02017ab4 for the model,
- * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim for the four
+ * veneer pairs (ModelFile::ModelFile / ModelFile::~ModelFile for the model,
+ * AnimFile::AnimFile / AnimFile::~AnimFile for the four
  * animation handles), spelled through declared-only subclasses so the
  * static initializer names the real entry points. The code reaches them
  * through the data_ov027_021138f4 resource block. */
@@ -135,26 +129,19 @@ void daIDonketu_c::UpdateDeathState() {
 
 /* -------------------------------------------------------------------------- */
 /* daIDonketu_c::UpdateRunState -- vtable slot 31, daOts_c's state-1 hook.
- * Hold still while the wind-up plays out over the first ten frames, then run.
- * The first arm returns the timer's address. */
-int daIDonketu_c::UpdateRunState() {
+ * Hold still while the wind-up plays out over the first ten frames, then run. */
+void daIDonketu_c::UpdateRunState() {
     if (mStateTimer < 10) {
         mHorzSpeed = 0;
-        int result = TurnTowardPlayer(0x700);
-        if (result != 0)
-            return result;
-        u16 *timer = &mStateTimer;
-        if (*timer == 9)
-            *timer = 0;
-        return (int)timer;
+        if (TurnTowardPlayer(0x700))
+            return;
+        if (mStateTimer == 9)
+            mStateTimer = 0;
+    } else {
+        mHorzSpeed = 0x14000;
+        if (mStateTimer > 35)
+            mStateTimer = 0;
     }
-    mHorzSpeed = 0x14000;
-    u16 timer = mStateTimer;
-    if (timer > 35) {
-        timer = 0;
-        mStateTimer = 0;
-    }
-    return timer;
 }
 /* D1/D0 emit from the header's inline destructor: written out-of-line here
  * it would produce D0 before D1 and a homeless D2. The empty body still

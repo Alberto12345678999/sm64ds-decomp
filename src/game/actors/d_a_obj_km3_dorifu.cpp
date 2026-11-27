@@ -39,9 +39,9 @@ enum d_a_obj_km3_dorifu_AssetId {
 #include "daObjKm3_Dorifu_c.h"
 #include "SharedFilePtr.h"
 
-/* Five model handles construct through func_02017acc and destroy through
- * func_02017ab4. Five collision handles construct through func_02017b4c and
- * destroy through SharedFilePtr_Destruct_Clsn. The five-plank table stays
+/* Five model handles construct through ModelFile::ModelFile and destroy through
+ * ModelFile::~ModelFile. Five collision handles construct through ClsnFile::ClsnFile and
+ * destroy through ClsnFile::~ClsnFile. The five-plank table stays
  * ROM data. */
 struct DorifuModelFilePtr : SharedFilePtr {
     DorifuModelFilePtr(unsigned int fileId);
@@ -54,28 +54,9 @@ struct DorifuClsnFileHandle : SharedFilePtr {
 typedef char DorifuModelFilePtr_size_must_be_8[sizeof(DorifuModelFilePtr) == 8 ? 1 : -1];
 typedef char DorifuClsnFileHandle_size_must_be_8[sizeof(DorifuClsnFileHandle) == 8 ? 1 : -1];
 
-/* Collision properties, one block per group of planks: the 'CLPS' tag, the
- * 8-byte stride header with two entries, then the default entries. */
-struct CLPS_Block {
-    u32 tag;
-    u32 header;
-    u32 entries[6];
-};
-CLPS_Block data_ov047_02111a74 = {
-    0x53504c43,
-    0x00020008,
-    {0x00000fc0, 0x000000ff, 0x00004fc0, 0x000000ff, 0xffffffff, 0xffffffff},
-};
-CLPS_Block data_ov047_02111a94 = {
-    0x53504c43,
-    0x00020008,
-    {0x00000fc0, 0x000000ff, 0x00004fc0, 0x000000ff, 0xffffffff, 0xffffffff},
-};
-CLPS_Block data_ov047_02111bb4 = {
-    0x53504c43,
-    0x00020008,
-    {0x00000fc0, 0x000000ff, 0x00002fc0, 0x000000ff, 0xffffffff, 0xffffffff},
-};
+extern CLPS_Block data_ov047_02111a74;
+extern CLPS_Block data_ov047_02111a94;
+extern CLPS_Block data_ov047_02111bb4;
 /* Forty bytes: three resource rows and the next row's model pointer.
    The following twenty bytes are the next symbol. */
 extern SharedFilePtr *data_ov047_02112508[10];

@@ -23,14 +23,15 @@ enum daObjWlKoopaShutter_c_AssetId {
     ASSET_WL_KUPA_SHUTTER_KCL = 0x06da
 };
 
+#include "CLPS.h"
 #include "SpawnInfo.h"
 #include "daObjWlKoopaShutter_c.h"
 #include "SharedFilePtr.h"
 #include "SaveBlock.h"
 
 /* BSS file homes (symbols.txt); Init loads them, Cleanup releases them.
- * The ctor/dtor are the ROM's SharedFilePtr veneer pairs (func_02017acc /
- * func_02017ab4 for the model, func_02017b4c / SharedFilePtr_Destruct_Clsn
+ * The ctor/dtor are the ROM's SharedFilePtr veneer pairs (ModelFile::ModelFile /
+ * ModelFile::~ModelFile for the model, ClsnFile::ClsnFile / ClsnFile::~ClsnFile
  * for the collision), spelled through declared-only subclasses so the
  * static initializer names the real entry points. */
 struct KoopaShutterModelFilePtr : SharedFilePtr {
@@ -46,8 +47,7 @@ extern KoopaShutterCollisionFilePtr BowserShutter_ClsnFile;
 
 /* The shutter's own collision block in the stage-map TU, fed to the mesh
  * collider by InitResources. Its entries are sized there. */
-struct Clps_02112f74;
-extern Clps_02112f74 data_ov026_02112f74;
+extern CLPS_Block data_ov026_02112f74;
 
 /* Emission order is ROM order: the destructor pair must stay first.
  * Do not reorder. */
@@ -83,8 +83,7 @@ s32 daObjWlKoopaShutter_c::InitResources() {
     UpdateClsnPosAndRot();
     {
         KCL_File *k = dBgW_Kc::LoadFile(BowserShutter_ClsnFile);
-        mMeshCollider.SetFile(k, mClsnMat, 0x199, mAngle.y,
-                              *reinterpret_cast<CLPS_Block *>(&data_ov026_02112f74));
+        mMeshCollider.SetFile(k, mClsnMat, 0x199, mAngle.y, data_ov026_02112f74);
     }
     if (gSaveBlock.file.flags1 & 0x204)
         return 0;

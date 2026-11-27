@@ -112,6 +112,54 @@ class SinitOwnersTests(unittest.TestCase):
             ["data_copy", "data_object"],
         )
 
+    def test_handle_class_definitions_are_owned_resource_handles(self):
+        # The initializer of a TU that defines real-class handles constructs
+        # each one; the old free-function veneer spelling still counts.
+        text = (
+            "TexSeqFile data_tex(0x8021);\n"
+            "AnimFile data_anim(ASSET_SOME_BCA);\n"
+            "func_02017acc(&data_model, 0x40a);\n"
+            "extern ModelFile data_elsewhere;\n"
+        )
+        known = ["data_tex", "data_anim", "data_model", "data_elsewhere"]
+        self.assertEqual(
+            SO.infer_ownership_globals(text, known, []),
+            ["data_anim", "data_model", "data_tex"],
+        )
+        self.assertEqual(SO.asset_handles(text), [0x40A, 0x8021])
+        self.assertIn(
+            "resource-handle-initialization",
+            SO.initializer_cause(0x40, [], known, "ModelFile data_m(0x25c);"),
+        )
+
+    def test_an_assignment_does_not_run_across_lines(self):
+        # A comment ending in `.` used to swallow the next definition, and a
+        # read such as `x[i]) {` used to claim a later line's `=`.
+        text = (
+            "/* The table the actor framework reads from data_read[PLAYER]. */\n"
+            "Profile data_profile = {0};\n"
+            "if (mId == data_lookup[i]) {\n"
+            "    local = 1;\n"
+            "}\n"
+        )
+        known = ["data_read", "data_profile", "data_lookup"]
+        self.assertEqual(SO.infer_ownership_globals(text, known, []), ["data_profile"])
+
+    def test_definitions_with_constructor_arguments_are_owned(self):
+        # A coined handle wrapper is constructed by the initializer just as a
+        # real handle class is; a prototype is never a known global.
+        text = (
+            "BmbAnimFile gBmbWalkAnimFile(ASSET_BOMBHEI_WALK_BCA);\n"
+            "static Fix<int> sScale(0x1000);\n"
+            "void LoadThings(int id);\n"
+            "extern BmbAnimFile gBmbOtherAnimFile;\n"
+        )
+        known = ["gBmbWalkAnimFile", "sScale", "gBmbOtherAnimFile"]
+        self.assertEqual(
+            SO.infer_ownership_globals(text, known, []),
+            ["gBmbWalkAnimFile", "sScale"],
+        )
+
     def test_consumer_coverage_does_not_count_unconsumed_globals_as_mapped(self):
         mapped, unconsumed = SO.consumer_coverage(
             {

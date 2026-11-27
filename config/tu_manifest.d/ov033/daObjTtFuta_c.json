@@ -29,12 +29,6 @@
       "end": "0x02111ac4"
     },
     {
-      "name": ".data.clps",
-      "input_section": ".data",
-      "start": "0x02111bfc",
-      "end": "0x02111c0c"
-    },
-    {
       "name": ".bss",
       "start": "0x021124c0",
       "end": "0x021124e8"
@@ -98,15 +92,7 @@
       "ordinal": 7
     }
   ],
-  "data": [
-    {
-      "symbol": "data_ov033_02111bfc",
-      "address": "0x02111bfc",
-      "size": "0x10",
-      "binding": "STB_GLOBAL",
-      "evidence": "CLPS header plus one entry; the following 0xFF bytes stay unclaimed"
-    }
-  ],
+  "data": [],
   "bss": [
     {
       "symbol": "data_ov033_021124c0",
@@ -256,13 +242,6 @@
           "section": ".ctor",
           "start": "0x02111ac0",
           "end": "0x02111ac4",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
-          "section": ".data.clps",
-          "start": "0x02111bfc",
-          "end": "0x02111c0c",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -483,28 +462,28 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN18TtFutaModelFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and the model wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN18TtFutaModelFilePtrD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination and the model wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN22TtFutaCollisionFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call destination and the collision wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN22TtFutaCollisionFilePtrD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination and the collision SharedFilePtr family identity"
@@ -542,7 +521,7 @@
       "source": "0x021119f8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -562,7 +541,7 @@
       "source": "0x02111a14",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -592,7 +571,7 @@
       "source": "0x02111a3c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -622,7 +601,7 @@
       "source": "0x02111a4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"

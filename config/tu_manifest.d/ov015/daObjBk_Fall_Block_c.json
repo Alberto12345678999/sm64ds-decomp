@@ -18,11 +18,6 @@
       "end": "0x02112e0c"
     },
     {
-      "name": ".rodata",
-      "start": "0x02112e0c",
-      "end": "0x02112f9c"
-    },
-    {
       "name": ".init",
       "start": "0x021133a8",
       "end": "0x02113410"
@@ -33,15 +28,10 @@
       "end": "0x0211342c"
     },
     {
-      "name": ".data.fb_clps",
-      "input_section": ".data",
-      "start": "0x021136b4",
-      "end": "0x021136d4"
-    },
-    {
-      "name": ".data",
+      "name": ".data.post",
       "start": "0x02114868",
-      "end": "0x02114880"
+      "end": "0x02114880",
+      "input_section": ".data"
     },
     {
       "name": ".data.fb_res",
@@ -94,13 +84,6 @@
   ],
   "data": [
     {
-      "symbol": "data_ov015_021136b4",
-      "address": "0x021136b4",
-      "size": "0x20",
-      "binding": "STB_GLOBAL",
-      "evidence": "falling-block CLPS block"
-    },
-    {
       "symbol": "_ZTI20daObjBk_Fall_Block_c",
       "address": "0x02114868",
       "size": "0xc",
@@ -120,15 +103,7 @@
       "evidence": "model, collision, and CLPS descriptor"
     }
   ],
-  "rodata": [
-    {
-      "symbol": "data_ov015_02112e0c",
-      "address": "0x02112e0c",
-      "size": "0x190",
-      "binding": "STB_GLOBAL",
-      "evidence": "read-only table that begins where this class's code ends"
-    }
-  ],
+  "rodata": [],
   "bss": [
     {
       "symbol": "gBkDownBCollisionFile",
@@ -157,8 +132,7 @@
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node"
-    }
-  ,
+    },
     {
       "symbol": "data_ov015_02114afc",
       "address": "0x02114afc",
@@ -287,13 +261,6 @@
           "firstDiff": null
         },
         {
-          "section": ".rodata",
-          "start": "0x02112e0c",
-          "end": "0x02112f9c",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
           "section": ".init",
           "start": "0x021133a8",
           "end": "0x02113410",
@@ -308,14 +275,7 @@
           "firstDiff": null
         },
         {
-          "section": ".data.fb_clps",
-          "start": "0x021136b4",
-          "end": "0x021136d4",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
-          "section": ".data",
+          "section": ".data.post",
           "start": "0x02114868",
           "end": "0x02114880",
           "differingBytes": 0,
@@ -540,28 +500,28 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN21FallBlockModelFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination for the model handle"
     },
     {
       "symbol": "_ZN21FallBlockModelFilePtrD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination for the model handle"
     },
     {
       "symbol": "_ZN23FallBlockClsnFileHandleC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call destination for the collision handle"
     },
     {
       "symbol": "_ZN23FallBlockClsnFileHandleD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination for the collision handle"
@@ -611,7 +571,7 @@
       "source": "0x021133b8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -631,7 +591,7 @@
       "source": "0x021133d4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -661,7 +621,7 @@
       "source": "0x021133fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -691,7 +651,7 @@
       "source": "0x02113408",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"
@@ -747,7 +707,7 @@
       "target_address": "0x021136b4"
     },
     {
-      "section": ".data",
+      "section": ".data.post",
       "source": "0x02114868",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -757,7 +717,7 @@
       "target_address": "0x0209a764"
     },
     {
-      "section": ".data",
+      "section": ".data.post",
       "source": "0x0211486c",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -767,7 +727,7 @@
       "target_address": "0x021148a0"
     },
     {
-      "section": ".data",
+      "section": ".data.post",
       "source": "0x02114870",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -777,7 +737,7 @@
       "target_address": "0x02114874"
     },
     {
-      "section": ".data",
+      "section": ".data.post",
       "source": "0x02114874",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -787,7 +747,7 @@
       "target_address": "0x0209a764"
     },
     {
-      "section": ".data",
+      "section": ".data.post",
       "source": "0x02114878",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -797,7 +757,7 @@
       "target_address": "0x0211488c"
     },
     {
-      "section": ".data",
+      "section": ".data.post",
       "source": "0x0211487c",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -805,16 +765,6 @@
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021089ec"
-    },
-    {
-      "section": ".rodata",
-      "source": "0x02112e18",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov015_02113458",
-      "addend": 0,
-      "target_module": "ov015",
-      "target_address": "0x02113458"
     }
   ]
 }

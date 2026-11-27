@@ -17,6 +17,7 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjSlIceBlock_c_AssetId { ASSET_SL_ICE_BROCK_BMD = 0x06b1, ASSET_SL_ICE_BROCK_KCL = 0x06b2 };
 
+#include "CLPS.h"
 #include "daObjSlIceBlock_c.h"
 #include "daPly_c.h"
 #include "SharedFilePtr.h"
@@ -27,16 +28,12 @@ enum daObjSlIceBlock_c_AssetId { ASSET_SL_ICE_BROCK_BMD = 0x06b1, ASSET_SL_ICE_B
 #include "math/CalcLib.h"
 
 /* The sliding ice block's collision-property block handed to dBgW_KcMbg::SetFile. */
-struct CLPS_Block {
-    u32 words[8];
-};
 
-CLPS_Block data_ov027_02113108 = {0x53504c43, 0x00020008, 0x00004fc7, 0x000000ff,
-                                  0x04004fc7, 0x000000ff, 0xffffffff, 0xffffffff};
+extern CLPS_Block data_ov027_02113108;
 
-/* dExtSimpleModel_c handles construct through func_02017acc and destroy through
- * func_02017ab4; collision handles construct through func_02017b4c and destroy
- * through SharedFilePtr_Destruct_Clsn. The manifest aliases those undefined
+/* dExtSimpleModel_c handles construct through ModelFile::ModelFile and destroy through
+ * ModelFile::~ModelFile; collision handles construct through ClsnFile::ClsnFile and destroy
+ * through ClsnFile::~ClsnFile. The manifest aliases those undefined
  * member spellings onto the real ROM functions; each handle is the base plus
  * the two words that family actually stores. */
 struct SlIceBlockModelFilePtr : SharedFilePtr {

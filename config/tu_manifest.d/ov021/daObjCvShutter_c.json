@@ -27,8 +27,7 @@
       "end": "0x02113740"
     },
     {
-      "name": ".data.cvres",
-      "input_section": ".data",
+      "name": ".data",
       "start": "0x021148d0",
       "end": "0x021148dc"
     },
@@ -36,12 +35,6 @@
       "name": ".bss",
       "start": "0x02114a64",
       "end": "0x02114aa0"
-    },
-    {
-      "name": ".data.cvShutterClps",
-      "input_section": ".data",
-      "start": "0x02113a00",
-      "end": "0x02113a20"
     }
   ],
   "functions": [
@@ -95,13 +88,6 @@
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "model, collision, and CLPS handles InitResourcesFrom loads"
-    },
-    {
-      "symbol": "data_ov021_02113a00",
-      "address": "0x02113a00",
-      "size": "0x20",
-      "binding": "STB_GLOBAL",
-      "evidence": "one entry: floor 0x01000fc0, the shutter's collision surface"
     }
   ],
   "bss": [
@@ -130,8 +116,7 @@
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated collision resource destructor-registration node"
-    }
-  ,
+    },
     {
       "symbol": "data_ov021_02114a8c",
       "address": "0x02114a8c",
@@ -272,7 +257,7 @@
           "firstDiff": null
         },
         {
-          "section": ".data.cvres",
+          "section": ".data",
           "start": "0x021148d0",
           "end": "0x021148dc",
           "differingBytes": 0,
@@ -283,13 +268,6 @@
           "start": "0x02114a64",
           "end": "0x02114aa0",
           "comparison": "NOBITS -- symbol/module gates"
-        },
-        {
-          "section": ".data.cvShutterClps",
-          "start": "0x02113a00",
-          "end": "0x02113a20",
-          "differingBytes": 0,
-          "firstDiff": null
         }
       ],
       "objectAudit": {
@@ -321,7 +299,7 @@
             ]
           },
           {
-            "section": ".data.cvres",
+            "section": ".data",
             "original": [
               12
             ],
@@ -523,28 +501,28 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN21CvShutterModelFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and the model wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN21CvShutterModelFilePtrD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination and the model wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN25CvShutterCollisionFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call destination and the collision wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN25CvShutterCollisionFilePtrD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail destructor registration destination and the collision wrapper destructor's exact ABS32 relocation"
@@ -588,7 +566,7 @@
       "target_address": "0x021136c8"
     },
     {
-      "section": ".data.cvres",
+      "section": ".data",
       "source": "0x021148d0",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -598,7 +576,7 @@
       "target_address": "0x02114a6c"
     },
     {
-      "section": ".data.cvres",
+      "section": ".data",
       "source": "0x021148d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -608,7 +586,7 @@
       "target_address": "0x02114a64"
     },
     {
-      "section": ".data.cvres",
+      "section": ".data",
       "source": "0x021148d8",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -622,7 +600,7 @@
       "source": "0x021136d8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -642,7 +620,7 @@
       "source": "0x021136f4",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -672,7 +650,7 @@
       "source": "0x0211371c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -702,7 +680,7 @@
       "source": "0x0211372c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"

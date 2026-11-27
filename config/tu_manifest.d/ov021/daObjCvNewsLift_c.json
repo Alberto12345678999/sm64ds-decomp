@@ -29,25 +29,8 @@
       "end": "0x02113738"
     },
     {
-      "name": ".data.cvLiftClps",
-      "input_section": ".data",
-      "start": "0x02113a60",
-      "end": "0x02113a70"
-    },
-    {
-      "name": ".data.cvLiftPlatClps",
-      "input_section": ".data",
-      "start": "0x02113a80",
-      "end": "0x02113a90"
-    },
-    {
-      "name": ".rodata",
-      "start": "0x02114740",
-      "end": "0x02114748"
-    },
-    {
       "name": ".data",
-      "start": "0x02114748",
+      "start": "0x02114740",
       "end": "0x0211480c"
     },
     {
@@ -193,18 +176,11 @@
   ],
   "data": [
     {
-      "symbol": "data_ov021_02113a60",
-      "address": "0x02113a60",
-      "size": "0x10",
+      "symbol": "sNewsLiftPlatformYaws",
+      "address": "0x02114740",
+      "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "CLPS block the main mesh collider takes: CLPS header with stride 8 and one entry (0xfc0, 0xff), read by dBgW_Kc::SetFile"
-    },
-    {
-      "symbol": "data_ov021_02113a80",
-      "address": "0x02113a80",
-      "size": "0x10",
-      "binding": "STB_GLOBAL",
-      "evidence": "CLPS block the four platform colliders take: CLPS header with stride 8 and one entry (0x1fc0, 0xff)"
+      "evidence": "Native compiler output and all module-qualified relocation destinations reproduce retail; see owned experiment."
     },
     {
       "symbol": "_ZTI17daObjCvNewsLift_c",
@@ -243,28 +219,28 @@
       "address": "0x021149a0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with id 0x5d7 and registered with func_02017ab4, as in retail; InitResources loads the main mesh model from it"
+      "evidence": "model resource handle constructed with id 0x5d7 and registered with _ZN9ModelFileD1Ev, as in retail; InitResources loads the main mesh model from it"
     },
     {
       "symbol": "gCvNewsLiftCollisionFile",
       "address": "0x021149a8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "collision resource handle constructed with id 0x5d8 through func_02017b4c and registered with SharedFilePtr_Destruct_Clsn, as in retail; InitResources loads the main mesh collider from it"
+      "evidence": "collision resource handle constructed with id 0x5d8 through _ZN8ClsnFileC1Ej and registered with _ZN8ClsnFileD1Ev, as in retail; InitResources loads the main mesh collider from it"
     },
     {
       "symbol": "gCvLiftButtonModelFile",
       "address": "0x021149b0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with id 0x5d5 and registered with func_02017ab4, as in retail; InitResources loads the four platform models from it"
+      "evidence": "model resource handle constructed with id 0x5d5 and registered with _ZN9ModelFileD1Ev, as in retail; InitResources loads the four platform models from it"
     },
     {
       "symbol": "gCvLiftButtonCollisionFile",
       "address": "0x021149b8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "collision resource handle constructed with id 0x5d6 through func_02017b4c and registered with SharedFilePtr_Destruct_Clsn, as in retail; InitResources loads the four platform colliders from it"
+      "evidence": "collision resource handle constructed with id 0x5d6 through _ZN8ClsnFileC1Ej and registered with _ZN8ClsnFileD1Ev, as in retail; InitResources loads the four platform colliders from it"
     },
     {
       "symbol": "data_ov021_021149c0",
@@ -429,13 +405,6 @@
           "firstDiff": null
         },
         {
-          "section": ".rodata",
-          "start": "0x02114740",
-          "end": "0x02114748",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
           "section": ".init",
           "start": "0x02113500",
           "end": "0x02113688",
@@ -451,7 +420,7 @@
         },
         {
           "section": ".data",
-          "start": "0x02114748",
+          "start": "0x02114740",
           "end": "0x0211480c",
           "differingBytes": 0,
           "firstDiff": null
@@ -461,20 +430,6 @@
           "start": "0x021149a0",
           "end": "0x02114a50",
           "comparison": "NOBITS -- symbol/module gates"
-        },
-        {
-          "section": ".data.cvLiftClps",
-          "start": "0x02113a60",
-          "end": "0x02113a70",
-          "differingBytes": 0,
-          "firstDiff": null
-        },
-        {
-          "section": ".data.cvLiftPlatClps",
-          "start": "0x02113a80",
-          "end": "0x02113a90",
-          "differingBytes": 0,
-          "firstDiff": null
         }
       ],
       "objectAudit": {
@@ -704,15 +659,7 @@
       "reason": "Vague-linkage type-name string for the inherited base dBgActor_c, re-emitted by every TU that names the derived class's RTTI. The cartridge's own copy lives at ov002:0x02108a04, outside every range this entry claims, so dsd delinks it from the image whatever this object does; rombuild proves this copy's relocation-resolved words against those cartridge bytes before isolation discards them."
     }
   ],
-  "rodata": [
-    {
-      "symbol": "sNewsLiftPlatformYaws",
-      "address": "0x02114740",
-      "size": "0x8",
-      "binding": "STB_GLOBAL",
-      "evidence": "Native compiler output and all module-qualified relocation destinations reproduce retail; see owned experiment."
-    }
-  ],
+  "rodata": [],
   "relocations": [
     {
       "section": ".data",
@@ -1089,7 +1036,7 @@
       "source": "0x02113510",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -1109,7 +1056,7 @@
       "source": "0x0211352c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -1129,7 +1076,7 @@
       "source": "0x02113548",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -1149,7 +1096,7 @@
       "source": "0x02113564",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "symbol": "_ZN8ClsnFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017b4c"
@@ -1219,7 +1166,7 @@
       "source": "0x02113634",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -1249,7 +1196,7 @@
       "source": "0x02113644",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "symbol": "_ZN8ClsnFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017b34"
@@ -1531,28 +1478,28 @@
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN19CvNewsLiftModelFileC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call/load destination at this exact relocation site"
     },
     {
       "symbol": "_ZN23CvNewsLiftCollisionFileC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017b4cEj",
+      "canonical_symbol": "_ZN8ClsnFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b4c",
       "evidence": "retail initializer call/load destination at this exact relocation site"
     },
     {
       "symbol": "_ZN19CvNewsLiftModelFileD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail initializer call/load destination at this exact relocation site"
     },
     {
       "symbol": "_ZN23CvNewsLiftCollisionFileD1Ev",
-      "canonical_symbol": "_Z27SharedFilePtr_Destruct_Clsni",
+      "canonical_symbol": "_ZN8ClsnFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017b34",
       "evidence": "retail initializer call/load destination at this exact relocation site"

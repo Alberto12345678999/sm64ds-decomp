@@ -20,6 +20,7 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjFl_KomaU_c_AssetId { ASSET_FL_KOMA_U_BMD = 0x05f7, ASSET_FL_KOMA_U_KCL = 0x05f8 };
 
+#include "CLPS.h"
 #include "daObjFl_KomaU_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -29,8 +30,8 @@ enum daObjFl_KomaU_c_AssetId { ASSET_FL_KOMA_U_BMD = 0x05f7, ASSET_FL_KOMA_U_KCL
 #include "math/MtxStack.h"
 #include "math/CalcLib.h"
 
-/* The ctor/dtor pairs are the ROM's SharedFilePtr veneers (func_02017acc /
- * func_02017ab4 for the model, func_02017b4c / SharedFilePtr_Destruct_Clsn
+/* The ctor/dtor pairs are the ROM's SharedFilePtr veneers (ModelFile::ModelFile /
+ * ModelFile::~ModelFile for the model, ClsnFile::ClsnFile / ClsnFile::~ClsnFile
  * for the collision); the subclasses exist to spell those entry points.
  * data_ov064_0211adbc stays the file table. */
 struct KomaUModelFilePtr : SharedFilePtr {
@@ -45,10 +46,6 @@ typedef char KomaUModelFilePtr_size_must_be_8[sizeof(KomaUModelFilePtr) == 8 ? 1
 typedef char KomaUClsnFileHandle_size_must_be_8[sizeof(KomaUClsnFileHandle) == 8 ? 1 : -1];
 
 #pragma defer_codegen off
-
-struct CLPS_Block {
-    u32 words[8];
-};
 
 struct FileTable {
     SharedFilePtr *model;
@@ -167,7 +164,10 @@ KomaUModelFilePtr gFlKomaUModelFile(ASSET_FL_KOMA_U_BMD);
 KomaUClsnFileHandle gFlKomaUCollisionFile(ASSET_FL_KOMA_U_KCL);
 
 CLPS_Block data_ov064_0211bdac = {
-    0x53504c43, 0x00010008, 0x00000fc0, 0x000000ff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+    0x53504c43,
+    0x0008,
+    0x0001,
+    {{0x00000fc0, 0x000000ff}, {0xffffffff, 0xffffffff}, {0xffffffff, 0xffffffff}},
 };
 
 extern const FileTable data_ov064_0211adbc = {&gFlKomaUModelFile, &gFlKomaUCollisionFile,

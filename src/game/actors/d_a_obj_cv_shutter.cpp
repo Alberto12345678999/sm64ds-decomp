@@ -32,8 +32,8 @@ extern ResourceDescriptor data_ov021_021148d0;
 
 /* File 1497 / 1498 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
- * func_02017acc / func_02017ab4 and func_02017b4c /
- * SharedFilePtr_Destruct_Clsn. */
+ * ModelFile::ModelFile / ModelFile::~ModelFile and ClsnFile::ClsnFile /
+ * ClsnFile::~ClsnFile. */
 struct CvShutterModelFilePtr : SharedFilePtr {
     CvShutterModelFilePtr(u32 fileID);
     ~CvShutterModelFilePtr();
@@ -83,16 +83,8 @@ CvShutterModelFilePtr gCvShutterModelFile(ASSET_CV_SHUTTER_BMD);
 CvShutterCollisionFilePtr gCvShutterCollisionFile(ASSET_CV_SHUTTER_KCL);
 /* Collision properties: the 'CLPS' tag, the 8-byte stride header with one
  * entry, then the default entries. */
-struct CLPS_Block {
-    u32 tag;
-    u32 header;
-    u32 entries[6];
-};
-CLPS_Block data_ov021_02113a00 = {
-    0x53504c43,
-    0x00010008,
-    {0x01000fc0, 0x000000ff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff},
-};
+extern struct CLPS_Block data_ov021_02113a00;
+
 ResourceDescriptor data_ov021_021148d0 = {
     &gCvShutterModelFile,
     &gCvShutterCollisionFile,

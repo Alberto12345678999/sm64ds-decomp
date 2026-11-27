@@ -33,10 +33,9 @@
       "end": "0x02113c6c"
     },
     {
-      "name": ".data.donketu",
+      "name": ".data",
       "start": "0x021138f4",
-      "end": "0x02113928",
-      "input_section": ".data"
+      "end": "0x02113928"
     }
   ],
   "functions": [
@@ -305,7 +304,7 @@
           "comparison": "NOBITS -- symbol/module gates"
         },
         {
-          "section": ".data.donketu",
+          "section": ".data",
           "start": "0x021138f4",
           "end": "0x02113928",
           "differingBytes": 0,
@@ -368,7 +367,7 @@
             ]
           },
           {
-            "section": ".data.donketu",
+            "section": ".data",
             "original": [
               33
             ],
@@ -539,56 +538,56 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@419",
+      "from": "@417",
       "to": "@72",
-      "evidence": "emitted destructor-registration node name collides with the configured @463 on ov100 on main; @72 is unused everywhere and shorter than the original; Re-keyed from @469 to @468 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @468 to @414 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @417 to @419 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name)."
+      "evidence": "emitted destructor-registration node name collides with the configured @463 on ov100 on main; @72 is unused everywhere and shorter than the original; Re-keyed from @469 to @468 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @468 to @414 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @417 to @419 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @419 to @417 when UpdateRunState's return type was corrected to void (measured from the compiled object)."
+    },
+    {
+      "from": "@419",
+      "to": "@73",
+      "evidence": "emitted destructor-registration node name collides with the configured @465 on ov100 on main; @73 is unused everywhere and shorter than the original; Re-keyed from @471 to @470 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @470 to @416 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @419 to @421 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @421 to @419 when UpdateRunState's return type was corrected to void (measured from the compiled object)."
     },
     {
       "from": "@421",
-      "to": "@73",
-      "evidence": "emitted destructor-registration node name collides with the configured @465 on ov100 on main; @73 is unused everywhere and shorter than the original; Re-keyed from @471 to @470 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @470 to @416 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @419 to @421 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name)."
+      "to": "@74",
+      "evidence": "emitted destructor-registration node name collides with the configured @467 on ov100 on main; @74 is unused everywhere and shorter than the original; Re-keyed from @473 to @472 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @472 to @418 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @421 to @423 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @423 to @421 when UpdateRunState's return type was corrected to void (measured from the compiled object)."
     },
     {
-      "from": "@423",
-      "to": "@74",
-      "evidence": "emitted destructor-registration node name collides with the configured @467 on ov100 on main; @74 is unused everywhere and shorter than the original; Re-keyed from @473 to @472 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @472 to @418 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @421 to @423 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name)."
+      "from": "@418",
+      "to": "@601",
+      "evidence": "batch-5 atdup: @464 collides cross-module (temps are fleet-global); renumber to unused same-length @601; Re-keyed from @470 to @469 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @469 to @415 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @418 to @420 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @420 to @418 when UpdateRunState's return type was corrected to void (measured from the compiled object)."
     },
     {
       "from": "@420",
-      "to": "@601",
-      "evidence": "batch-5 atdup: @464 collides cross-module (temps are fleet-global); renumber to unused same-length @601; Re-keyed from @470 to @469 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @469 to @415 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @418 to @420 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name)."
-    },
-    {
-      "from": "@422",
       "to": "@598",
-      "evidence": "batch-5 atdup: @466 collides cross-module (temps are fleet-global); renumber to unused same-length @598; Re-keyed from @472 to @471 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @471 to @417 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @420 to @422 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name)."
+      "evidence": "batch-5 atdup: @466 collides cross-module (temps are fleet-global); renumber to unused same-length @598; Re-keyed from @472 to @471 when UpdateRunState's guard and wrap read mStateTimer through u16 value conversions (#821). Re-keyed from @471 to @417 when the class-scope operator delete members that forwarded to Memory::operator_delete2 gave way to the global operator delete at its real address (include/ headers lost their inline bodies) (measured from the compiled object). Re-keyed from @420 to @422 when Matrix4x3 became a union of its twelve words and its r/t rows (#821) (measured from the compiled object: same section, value, size and de-numbered name). Re-keyed from @422 to @420 when UpdateRunState's return type was corrected to void (measured from the compiled object)."
     }
   ],
   "undefined_symbol_aliases": [
     {
       "symbol": "_ZN20IDonketuModelFilePtrC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "canonical_symbol": "_ZN9ModelFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x02017acc",
       "evidence": "retail initializer call destination and the model wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN20IDonketuModelFilePtrD1Ev",
-      "canonical_symbol": "_Z13func_02017ab4i",
+      "canonical_symbol": "_ZN9ModelFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017ab4",
       "evidence": "retail destructor registration destination and the model wrapper destructor's exact ABS32 relocation"
     },
     {
       "symbol": "_ZN27IDonketuAnimationFileHandleC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_symbol": "_ZN8AnimFileC1Ej",
       "canonical_module": "arm9",
       "canonical_address": "0x0201799c",
       "evidence": "retail initializer call destination and the animation wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN27IDonketuAnimationFileHandleD1Ev",
-      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_symbol": "_ZN8AnimFileD1Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x02017984",
       "evidence": "retail destructor registration destination and the animation wrapper destructor's exact ABS32 relocation"
@@ -644,7 +643,7 @@
       "source": "0x02112d2c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr13func_02017accEj",
+      "symbol": "_ZN9ModelFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x02017acc"
@@ -664,7 +663,7 @@
       "source": "0x02112d48",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -684,7 +683,7 @@
       "source": "0x02112d64",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -704,7 +703,7 @@
       "source": "0x02112d80",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -724,7 +723,7 @@
       "source": "0x02112d9c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "symbol": "_ZN8AnimFileC1Ej",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x0201799c"
@@ -754,7 +753,7 @@
       "source": "0x02112dc0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_Z13func_02017ab4i",
+      "symbol": "_ZN9ModelFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017ab4"
@@ -784,7 +783,7 @@
       "source": "0x02112dd0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "SharedFilePtr_Destruct_Anim",
+      "symbol": "_ZN8AnimFileD1Ev",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x02017984"
@@ -870,7 +869,7 @@
       "target_address": "0x02112d1c"
     },
     {
-      "section": ".data.donketu",
+      "section": ".data",
       "source": "0x021138f4",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -880,7 +879,7 @@
       "target_address": "0x02113c10"
     },
     {
-      "section": ".data.donketu",
+      "section": ".data",
       "source": "0x021138f8",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -890,7 +889,7 @@
       "target_address": "0x02113c18"
     },
     {
-      "section": ".data.donketu",
+      "section": ".data",
       "source": "0x021138fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -900,7 +899,7 @@
       "target_address": "0x02113c08"
     },
     {
-      "section": ".data.donketu",
+      "section": ".data",
       "source": "0x02113900",
       "type": "R_ARM_ABS32",
       "kind": "load",
@@ -910,7 +909,7 @@
       "target_address": "0x02113c20"
     },
     {
-      "section": ".data.donketu",
+      "section": ".data",
       "source": "0x02113904",
       "type": "R_ARM_ABS32",
       "kind": "load",

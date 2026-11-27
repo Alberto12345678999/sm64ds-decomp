@@ -41,6 +41,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "types.h"
 #include "nitro/gx/gx_bgcnt.h"
 #include "private/controller_input.h"
+#include "LinkSettings.h"
 #include "dFdBrightness_c.h"
 #include "dFdColor_c.h"
 #include "dScStage_c.h"
@@ -327,7 +328,7 @@ static u8 sMenuHighlightDelay;
 /* The pause page shown, the switch PS_Update runs. */
 static u8 sPauseState;
 static u8 sCheckpointEntranceId;
-/* This console's player: InitResources stores func_0203da9c(), the local
+/* This console's player: InitResources stores GetLocalPlayerId(), the local
    player number, so the HUD, the pause screen and the camera index the
    per-player arrays (gPlayers, gPlayerHealth, gNumStageStars) by it. */
 u8 gLocalPlayerId;
@@ -460,6 +461,15 @@ static StageArea *data_0209f314;
 /* The stage's camera: LoadEntranceObjects spawns it (profile 0x14c) once the
    players are placed, and CleanupResources clears it. */
 dCamera_c *gCamera;
+struct FogObjEntry {
+    u8 enabled;
+    u8 red;
+    u8 green;
+    u8 blue;
+    u16 nearv;
+    u16 farv;
+};
+
 static char *sFogObjs;
 /* The level model's components, kept by LoadModel and cleared by
    CleanupResources; CopyTexPalFromLevelModel reads it. */
@@ -3889,19 +3899,18 @@ void dScStage_c::LoadFog() {
         return;
     }
     {
-        unsigned char *fogRecord = (unsigned char *)sFogObjs;
+        FogObjEntry *fogRecord = (FogObjEntry *)sFogObjs;
         Fog *fog = mFog;
         int fogIndex;
         for (fogIndex = 0; fogIndex < sNumFogObjs; fogIndex++) {
-            if (fogRecord[0] != 1) {
+            if (fogRecord->enabled != 1) {
                 fog->mEnabled = 0;
             } else {
-                unsigned short color = ((fogRecord[1] >> 3) | ((fogRecord[2] >> 3) << 5)) |
-                                       ((fogRecord[3] >> 3) << 10);
-                fog->Init(color, *((unsigned short *)(fogRecord + 4)),
-                          *((unsigned short *)(fogRecord + 6)));
+                unsigned short color = ((fogRecord->red >> 3) | ((fogRecord->green >> 3) << 5)) |
+                                       ((fogRecord->blue >> 3) << 10);
+                fog->Init(color, fogRecord->nearv, fogRecord->farv);
             }
-            fogRecord += 8;
+            fogRecord++;
             fog++;
         }
     }
@@ -3932,7 +3941,6 @@ void dScStage_c::OnPendingDestroy() {
 void func_020391f0(void);
 extern "C" void func_0203083c(void);
 void func_ov001_020aaf40(void);
-extern "C" void func_0203db3c(int i, int v);
 int dScStage_c::Render() {
     if (((gVsExitScreenActive | (gGamePaused | data_0209f20c)) & 0xff) == 0) {
         StageArea *area = mAreas;
@@ -3974,20 +3982,23 @@ int dScStage_c::Render() {
     func_ov001_020aaf40();
     {
         int positionXor = 0;
-        int playerFlagBits = 0;
+        int wingBits = 0;
         int playerIndex = 0;
         int playerCount = gNumPlayers;
         for (; playerIndex < playerCount; playerIndex++) {
             daPly_c *player = gPlayers[playerIndex];
             if (player != 0) {
-                u8 playerFlags = player->mHasWings;
-                int *position = (&player->mPos.x);
-                positionXor ^= (u8)(position[2] ^ (position[0] ^ position[1]));
-                playerFlagBits |= (u8)((playerFlags & 1) << playerIndex);
+                u8 hasWings = player->mHasWings;
+                Vector3 *position = &player->mPos;
+                positionXor ^= (u8)(position->z ^ (position->x ^ position->y));
+                wingBits |= (u8)((hasWings & 1) << playerIndex);
             }
         }
-        func_0203db3c(0x10, positionXor);
-        func_0203db3c(0x10, playerFlagBits);
+        /* The link's desync check (LinkSettings.h). Both indices are
+           the same byte on the cartridge, so the wing bits overwrite the
+           position XOR before it is ever sent. */
+        SetLinkByte(LINK_BYTE_SYNC_POSITION, positionXor);
+        SetLinkByte(LINK_BYTE_SYNC_WINGS, wingBits);
     }
     if (gGamePaused != 0) {
         PS_Render();
@@ -4361,8 +4372,6 @@ void SetTouchScreenDelay(void) {
     }
 }
 
-extern "C" u8 GetControllerMode(int a0);
-
 void ResetInput(void) {
     ControllerInput *p = data_0209f498;
     int i;
@@ -4504,7 +4513,6 @@ int GetSoundGroupID(int level, int mode);
 extern "C" void LoadDebugFont(void);
 int IsLevelInsideCastle(int level);
 int IsLevelTinyHugeIslandOutside(int level);
-extern "C" int func_0203da9c(void);
 extern "C" int func_0203da3c(void);
 extern "C" u32 func_0203dad4(void);
 extern "C" {
@@ -4529,7 +4537,7 @@ int dScStage_c::InitResources() {
         dScene_c::Initialise3dGraphics();
         Enable3dEngines();
         gNumPlayers = data_0208a0e0;
-        gLocalPlayerId = func_0203da9c();
+        gLocalPlayerId = GetLocalPlayerId();
         ResetInput();
         gGamePaused = 0;
 

@@ -37,18 +37,17 @@ enum daObjSm_Lift_c_AssetId { ASSET_SM_LIFT_BMD = 0x06b3, ASSET_SM_LIFT_KCL = 0x
 #include "nitro/fx/fx_cp.h"
 #include "nitro/fx/fx_trig.h"
 
-/* CLPS block the lift hands to its collider, through the all-ones tail. */
-int data_ov018_02112f48[8] = {0x53504c43, 0x00020008, 0x00000fc5, 0x000000ff,
-                              0x01000fc5, 0x000000ff, 0xffffffff, 0xffffffff};
+/* CLPS block the lift hands to its collider; the stage-map TU owns it. */
+extern CLPS_Block data_ov018_02112f48;
 
 extern "C" {
 int AngleDiff(int, int);
 int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 }
 
-/* dExtSimpleModel_c handles construct through func_02017acc and destroy through
- * func_02017ab4; collision handles construct through func_02017b4c and destroy
- * through SharedFilePtr_Destruct_Clsn. The manifest aliases those undefined
+/* dExtSimpleModel_c handles construct through ModelFile::ModelFile and destroy through
+ * ModelFile::~ModelFile; collision handles construct through ClsnFile::ClsnFile and destroy
+ * through ClsnFile::~ClsnFile. The manifest aliases those undefined
  * member spellings onto the real ROM functions; each handle is the base plus
  * the two words that family actually stores. */
 struct SmLiftModelFilePtr : SharedFilePtr {
@@ -217,7 +216,7 @@ s32 daObjSm_Lift_c::InitResources() {
     UpdateModelTransform();
     UpdateClsnPosAndRot();
     KCL_File *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);
-    mMeshCollider.SetFile(kf, mClsnMat, 0x1000, mAngle.y, *(CLPS_Block *)data_ov018_02112f48);
+    mMeshCollider.SetFile(kf, mClsnMat, 0x1000, mAngle.y, *(CLPS_Block *)&data_ov018_02112f48);
     mMeshCollider.SetBeforeClsnCallback(&dBgW::UpdatePosWithTransform);
     mMeshCollider.SetStoodOnCallback(&StoodOnCallback);
     mPauseTimer = 60;

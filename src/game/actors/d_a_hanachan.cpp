@@ -73,13 +73,14 @@ enum daHanachan_c_AssetId {
 #include "math/CalcLib.h"
 #include "math/MtxStack.h"
 #include "LVL_Overlay.h"
+#include "SpawnInfo.h"
 #include "CLPS.h"
 
 /* The file-scope resource handles. The model five use the plain SharedFilePtr
- * pair (func_02017acc / func_02017ab4), the animation twenty-five use
- * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim, and the texture
- * sequence five use SharedFilePtr_Construct_TexSeq /
- * SharedFilePtr_Destruct_TexSeq. */
+ * pair (ModelFile::ModelFile / ModelFile::~ModelFile), the animation twenty-five use
+ * AnimFile::AnimFile / AnimFile::~AnimFile, and the texture
+ * sequence five use TexSeqFile::TexSeqFile /
+ * TexSeqFile::~TexSeqFile. */
 struct HanachanModelFilePtr : SharedFilePtr {
     HanachanModelFilePtr(u32 fileID);
     ~HanachanModelFilePtr();
@@ -116,13 +117,10 @@ extern dCamera_c *gCamera;
 
 /* Destroys the eight per-segment arrays in reverse declaration order, then
  * the dEnemyBase_c base. D0 frees through the inherited operator delete. */
-daHanachan_c::~daHanachan_c()
-{
-}
+daHanachan_c::~daHanachan_c() {}
 
 /* DAMAGE_START: stagger the animation change down the body, then MOVE. */
-void daHanachan_c::StateDamageStartMain()
-{
+void daHanachan_c::StateDamageStartMain() {
     int i;
 
     for (i = 2; i < 5; i++) {
@@ -155,30 +153,26 @@ void daHanachan_c::StateDamageStartMain()
 }
 
 /* DAMAGE_START entry. */
-void daHanachan_c::StateDamageStartInit()
-{
+void daHanachan_c::StateDamageStartInit() {
     mStateTimer = 0;
     mAnmModels[0].SetAnim((BCA_File *)data_ov034_02113888[0]->filePtr, 0x40000000, 0x1000, 0);
     mAnmModels[1].SetAnim((BCA_File *)data_ov034_02113888[1]->filePtr, 0x40000000, 0x1000, 0);
 }
 
 /* DAMAGE_WAIT: wait out the timer, then DAMAGE_START. */
-void daHanachan_c::StateDamageWaitMain()
-{
+void daHanachan_c::StateDamageWaitMain() {
     if (DecIfAbove0_Byte(&mStateTimer))
         return;
     SetState(10);
 }
 
 /* DAMAGE_WAIT entry: 90 frames. */
-void daHanachan_c::StateDamageWaitInit()
-{
+void daHanachan_c::StateDamageWaitInit() {
     mStateTimer = 90;
 }
 
 /* DAMAGE_STOP: brake, stagger the animation change down the body, then DAMAGE_WAIT. */
-void daHanachan_c::StateDamageStopMain()
-{
+void daHanachan_c::StateDamageStopMain() {
     int i;
 
     ApproachLinear(mHorzSpeed, 0, 0x1000);
@@ -213,16 +207,14 @@ void daHanachan_c::StateDamageStopMain()
 }
 
 /* DAMAGE_STOP entry. */
-void daHanachan_c::StateDamageStopInit()
-{
+void daHanachan_c::StateDamageStopInit() {
     mStateTimer = 0;
     mAnmModels[0].SetAnim((BCA_File *)data_ov034_0211389c[0]->filePtr, 0x40000000, 0x1000, 0);
     mAnmModels[1].SetAnim((BCA_File *)data_ov034_0211389c[1]->filePtr, 0x40000000, 0x1000, 0);
 }
 
 /* DEAD: poof one segment every five frames while the scales settle, then spawn the star and go to MOVE_START. */
-void daHanachan_c::StateDeadMain()
-{
+void daHanachan_c::StateDeadMain() {
     /* starPos is written and never read; removing it changes StateDeadMain's bytes. */
     Vector3 starPos;
     Vector3 v;
@@ -247,7 +239,9 @@ void daHanachan_c::StateDeadMain()
             break;
         mSegmentScale[i].z = mSegmentScale[i].x;
         mSegmentScale[i].y = mSegmentScale[i].z;
-        a = Math_Function_0203b14c(&mSegmentSpacing[i], data_ov034_021138c4[i] >> 1, 0x800, 0x20000, 0x200) & 0xff;
+        a = Math_Function_0203b14c(&mSegmentSpacing[i], data_ov034_021138c4[i] >> 1, 0x800, 0x20000,
+                                   0x200) &
+            0xff;
         b = Math_Function_0203b14c(&mSegmentScale[i], 0x800, 0x800, 0x2000, 0x200) & 0xff;
     }
 
@@ -275,8 +269,7 @@ void daHanachan_c::StateDeadMain()
 }
 
 /* DEAD entry. */
-void daHanachan_c::StateDeadInit()
-{
+void daHanachan_c::StateDeadInit() {
     mDeathDelay = 0;
     mDeathSegment = 0;
     mDefeated = 1;
@@ -285,8 +278,7 @@ void daHanachan_c::StateDeadInit()
 }
 
 /* DAMAGETALK: once the message is done, MOVE_START while health remains, else DEAD. */
-void daHanachan_c::StateDamageTalkMain()
-{
+void daHanachan_c::StateDamageTalkMain() {
     ApproachLinear(mHorzSpeed, 0, 0x1000);
     if (mPlayer->GetTalkState() != 2)
         return;
@@ -298,16 +290,14 @@ void daHanachan_c::StateDamageTalkMain()
 }
 
 /* DAMAGETALK entry. */
-void daHanachan_c::StateDamageTalkInit()
-{
+void daHanachan_c::StateDamageTalkInit() {
     int i;
     for (i = 0; i < 5; i++)
         mAnmModels[i].SetAnim((BCA_File *)data_ov034_02113860[i]->filePtr, 0, 0x1000, 0);
 }
 
 /* DAMAGE: stop, face the player and start the hurt message, then DAMAGETALK. */
-void daHanachan_c::StateDamageMain()
-{
+void daHanachan_c::StateDamageMain() {
     Vector3 st;
     daPly_c *talk;
 
@@ -345,8 +335,7 @@ void daHanachan_c::StateDamageMain()
 }
 
 /* DAMAGE entry: hurt animation, flag 4 on the first cylinder set, one health lost. */
-void daHanachan_c::StateDamageInit()
-{
+void daHanachan_c::StateDamageInit() {
     mParticle = 0;
     for (int i = 0; i < 5; i++) {
         mAnmModels[i].SetAnim((BCA_File *)data_ov034_021138b0[i]->filePtr, 0x40000000, 0x1000, 0);
@@ -364,8 +353,7 @@ static inline int LevelRandom() {
 }
 
 /* MOVE: wander and keep near home, checking player contact. Once defeated, fall away when a player comes near. */
-void daHanachan_c::StateMoveMain()
-{
+void daHanachan_c::StateMoveMain() {
     int len;
     int rnd;
     Vector3 v;
@@ -422,16 +410,14 @@ void daHanachan_c::StateMoveMain()
 }
 
 /* MOVE entry. */
-void daHanachan_c::StateMoveInit()
-{
+void daHanachan_c::StateMoveInit() {
     mPlayer = 0;
     if (mDefeated != 0)
         mStateTimer = 150;
 }
 
 /* MOVE_START: stagger the walk animation down the body; when the talk ends, hop by remaining health and enter MOVE. */
-void daHanachan_c::StateMoveStartMain()
-{
+void daHanachan_c::StateMoveStartMain() {
     int i;
     unsigned health;
     daPly_c *player;
@@ -482,8 +468,7 @@ void daHanachan_c::StateMoveStartMain()
 }
 
 /* MOVE_START entry: clear flag 4 on the first cylinder set. */
-void daHanachan_c::StateMoveStartInit()
-{
+void daHanachan_c::StateMoveStartInit() {
     int i;
     for (i = 0; i < 5; i++)
         mdCc_cs1[i].flags &= ~4;
@@ -493,8 +478,7 @@ void daHanachan_c::StateMoveStartInit()
 }
 
 /* MOVE_STOP: when the intro talk ends, start the music and enter MOVE_START. */
-void daHanachan_c::StateMoveStopMain()
-{
+void daHanachan_c::StateMoveStopMain() {
     int i;
     daPly_c *player;
 
@@ -542,15 +526,13 @@ void daHanachan_c::StateMoveStopMain()
 }
 
 /* MOVE_STOP entry. */
-void daHanachan_c::StateMoveStopInit()
-{
+void daHanachan_c::StateMoveStopInit() {
     mStateTimer = 0;
     mIntroDone = 1;
 }
 
 /* DEMOCALL: show the intro message, then MOVE_STOP. */
-void daHanachan_c::StateDemoCallMain()
-{
+void daHanachan_c::StateDemoCallMain() {
     Vector3 v;
     daPly_c *player = mPlayer;
     v.x = mSegmentPos[0].x;
@@ -567,14 +549,12 @@ void daHanachan_c::StateDemoCallMain()
 }
 
 /* DEMOCALL entry: remember the closest player. */
-void daHanachan_c::StateDemoCallInit()
-{
+void daHanachan_c::StateDemoCallInit() {
     mPlayer = ClosestPlayer();
 }
 
 /* DEMOWAIT: wander near home until a player is 0x12c000 above, then DEMOCALL. */
-void daHanachan_c::StateDemoWaitMain()
-{
+void daHanachan_c::StateDemoWaitMain() {
     Vector3 v;
     int len;
     daPly_c *player;
@@ -605,8 +585,7 @@ void daHanachan_c::StateDemoWaitMain()
 }
 
 /* DEMOWAIT entry: lay the body out in a line behind the head. */
-void daHanachan_c::StateDemoWaitInit()
-{
+void daHanachan_c::StateDemoWaitInit() {
     int seg;
     Vector3 in;
     Vector3 out;
@@ -640,21 +619,18 @@ void daHanachan_c::StateDemoWaitInit()
 }
 
 /* Enters a state and runs its Init. */
-void daHanachan_c::SetState(int state)
-{
+void daHanachan_c::SetState(int state) {
     mState = state;
     (this->*data_ov034_02114538[mState].mInit)();
 }
 
 /* Runs the current state's Main. */
-void daHanachan_c::ExecState()
-{
+void daHanachan_c::ExecState() {
     (this->*data_ov034_02114538[mState].mMain)();
 }
 
 /* True when the actor is falling onto the cylinder from above. */
-int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor)
-{
+int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor) {
     Vector3 push = cyl->pushback;
     if (actor->mSpeed.y < 0 && push.y < 0 && push.y > actor->mSpeed.y)
         return 1;
@@ -662,8 +638,7 @@ int daHanachan_c::IsStompedBy(dCcAcPos_c *cyl, dActor_c *actor)
 }
 
 /* Players stomping a segment bounce off it; the head also hurts on contact. The second cylinder set only hurts. */
-void daHanachan_c::HandlePlayerHits()
-{
+void daHanachan_c::HandlePlayerHits() {
     int i;
     dActor_c *a;
     dCcAcPos_c *cyl;
@@ -730,8 +705,7 @@ void daHanachan_c::HandlePlayerHits()
 }
 
 /* Pulls each segment to its spacing behind the one ahead, sets it on the ground and moves its cylinders. */
-void daHanachan_c::UpdateSegments()
-{
+void daHanachan_c::UpdateSegments() {
     Vector3 diff;
     Vector3 castPos;
     Vector3 sum;
@@ -764,8 +738,7 @@ void daHanachan_c::UpdateSegments()
 }
 
 /* Copies each segment's rotation and position into its model matrix. */
-void daHanachan_c::UpdateSegmentModels()
-{
+void daHanachan_c::UpdateSegmentModels() {
     /* The rotation call takes its matrix through a model pointer (the ROM
        steps &mAnmModels[i] and adds 0x1c at the call); the translation stores
        index the array. Spelling the call as &mAnmModels[i].mat4x3 folds the
@@ -782,8 +755,7 @@ void daHanachan_c::UpdateSegmentModels()
 }
 
 /* Releases all five entries of each of the seven file tables. */
-int daHanachan_c::CleanupResources()
-{
+int daHanachan_c::CleanupResources() {
     int i;
     for (i = 0; i < 5; i++) {
         data_ov034_02113838[i]->Release();
@@ -798,8 +770,7 @@ int daHanachan_c::CleanupResources()
 }
 
 /* Animates each segment's texture and draws the segment at its scale. */
-int daHanachan_c::Render()
-{
+int daHanachan_c::Render() {
     for (int i = 0; i < 5; i++) {
         dExtAnmModel_c &model = mAnmModels[i];
         mTextureSequences[i].Update(model.data);
@@ -811,8 +782,7 @@ int daHanachan_c::Render()
 /* vtable slot 6. Runs the state, advances the segment animations and the
  * stomp bounce, then moves the body, its cylinders and, while mDriveCamera is
  * set, the camera. */
-int daHanachan_c::Behavior()
-{
+int daHanachan_c::Behavior() {
     SharedFilePtr *animFile;
     s32 i;
     Vector3 head;
@@ -864,9 +834,11 @@ int daHanachan_c::Behavior()
     for (i = 0; i < 5; i++) {
         u16 n = 4 - mHealth;
         bool ok;
-        if (n >= 3) n = 0;
-        ok = false;     /* after the clamp: the ROM keeps two separate zero slots */
-        if (n <= 2) ok = true;
+        if (n >= 3)
+            n = 0;
+        ok = false; /* after the clamp: the ROM keeps two separate zero slots */
+        if (n <= 2)
+            ok = true;
         if (ok)
             mTextureSequences[i].currFrame = n << 12;
 
@@ -940,14 +912,22 @@ int daHanachan_c::Behavior()
 
     if (mDriveCamera != 0) {
         dCamera_c *cam = gCamera;
-        camA.x = 0; camA.y = 0x80000; camA.z = 0;
-        camB.x = 0; camB.y = 0x80000; camB.z = 0x1f4000;
-        scratch.x = 0; scratch.y = 0; scratch.z = 0;
+        camA.x = 0;
+        camA.y = 0x80000;
+        camA.z = 0;
+        camB.x = 0;
+        camB.y = 0x80000;
+        camB.z = 0x1f4000;
+        scratch.x = 0;
+        scratch.y = 0;
+        scratch.z = 0;
         Matrix4x3_FromRotationY(&gScratchMtx, mSegmentRot[0].y);
         MTX_MultVec43(&camA, &gScratchMtx, &scratch);
         Vec3_Add(&t0, &mPos, &scratch);
         camA = t0;
-        scratch.x = 0; scratch.y = 0; scratch.z = 0;
+        scratch.x = 0;
+        scratch.y = 0;
+        scratch.z = 0;
         MTX_MultVec43(&camB, &gScratchMtx, &scratch);
         Vec3_Add(&t1, &mPos, &scratch);
         camB = t1;
@@ -958,8 +938,7 @@ int daHanachan_c::Behavior()
     return 1;
 }
 
-int daHanachan_c::InitResources()
-{
+int daHanachan_c::InitResources() {
     /* Kept (#821 r73): every row as mSegmentPos[i] / mSegmentRot[i] /
        mSegmentScale[i] / mTextureSequences[i] / mSegmentRot[prev] is 0x468
        but 42 words off: the strength-reduced rows rank below segPos.
@@ -1065,7 +1044,8 @@ int daHanachan_c::InitResources()
             ((daHanachan_c *)posRow)->mSegmentPos[0].x = out.x;
             ((daHanachan_c *)posRow)->mSegmentPos[0].y = out.y;
             ((daHanachan_c *)posRow)->mSegmentPos[0].z = out.z;
-            ((daHanachan_c *)rotRow)->mSegmentRot[0].y = ((daHanachan_c *)(c + prev * 6))->mSegmentRot[0].y;
+            ((daHanachan_c *)rotRow)->mSegmentRot[0].y =
+                ((daHanachan_c *)(c + prev * 6))->mSegmentRot[0].y;
         }
         ((daHanachan_c *)posRow)->mSegmentScale[0].x = 0x1000;
         ((daHanachan_c *)posRow)->mSegmentScale[0].y = 0x1000;
@@ -1102,7 +1082,6 @@ int daHanachan_c::InitResources()
     return 1;
 }
 
-
 /* Reconstructed source-style name: SM64DS proves daHanachan_c through RTTI,
  * allocation size, vtable identity, and the HANACHAN registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -1111,6 +1090,15 @@ int daHanachan_c::InitResources()
 daHanachan_c *daHanachan_c_classInit() {
     return new daHanachan_c;
 }
+
+SpawnInfo<daHanachan_c> g_profile_HANACHAN = {daHanachan_c_classInit,
+                                              0x00f8,
+                                              0x006a,
+                                              0x00000006,
+                                              0x00100000,
+                                              0x00800000,
+                                              0x01000000,
+                                              0x01000000};
 
 HanachanModelFilePtr gHanachanHeadModelFile(ASSET_HANACHAN_HEAD_BMD);
 HanachanModelFilePtr gHanachanBody01ModelFile(ASSET_HANACHAN_BODY01_BMD);
@@ -1123,10 +1111,14 @@ HanachanAnimationFileHandle gHanachanBody02WalkAnimationFile(ASSET_HANACHAN_BODY
 HanachanAnimationFileHandle gHanachanBody03WalkAnimationFile(ASSET_HANACHAN_BODY03_WALK_BCA);
 HanachanAnimationFileHandle gHanachanBody04WalkAnimationFile(ASSET_HANACHAN_BODY04_WALK_BCA);
 HanachanAnimationFileHandle gHanachanHeadWalkStartAnimationFile(ASSET_HANACHAN_HEAD_WALK_START_BCA);
-HanachanAnimationFileHandle gHanachanBody01WalkStartAnimationFile(ASSET_HANACHAN_BODY01_WALK_START_BCA);
-HanachanAnimationFileHandle gHanachanBody02WalkStartAnimationFile(ASSET_HANACHAN_BODY02_WALK_START_BCA);
-HanachanAnimationFileHandle gHanachanBody03WalkStartAnimationFile(ASSET_HANACHAN_BODY03_WALK_START_BCA);
-HanachanAnimationFileHandle gHanachanBody04WalkStartAnimationFile(ASSET_HANACHAN_BODY04_WALK_START_BCA);
+HanachanAnimationFileHandle
+    gHanachanBody01WalkStartAnimationFile(ASSET_HANACHAN_BODY01_WALK_START_BCA);
+HanachanAnimationFileHandle
+    gHanachanBody02WalkStartAnimationFile(ASSET_HANACHAN_BODY02_WALK_START_BCA);
+HanachanAnimationFileHandle
+    gHanachanBody03WalkStartAnimationFile(ASSET_HANACHAN_BODY03_WALK_START_BCA);
+HanachanAnimationFileHandle
+    gHanachanBody04WalkStartAnimationFile(ASSET_HANACHAN_BODY04_WALK_START_BCA);
 HanachanAnimationFileHandle gHanachanHeadWalkEndAnimationFile(ASSET_HANACHAN_HEAD_WALK_END_BCA);
 HanachanAnimationFileHandle gHanachanBody01WalkEndAnimationFile(ASSET_HANACHAN_BODY01_WALK_END_BCA);
 HanachanAnimationFileHandle gHanachanBody02WalkEndAnimationFile(ASSET_HANACHAN_BODY02_WALK_END_BCA);
@@ -1147,8 +1139,6 @@ HanachanTextureSeqFileHandle gHanachanBody01TextureSequenceFile(ASSET_HANACHAN_B
 HanachanTextureSeqFileHandle gHanachanBody02TextureSequenceFile(ASSET_HANACHAN_BODY02_BTP);
 HanachanTextureSeqFileHandle gHanachanBody03TextureSequenceFile(ASSET_HANACHAN_BODY03_BTP);
 HanachanTextureSeqFileHandle gHanachanBody04TextureSequenceFile(ASSET_HANACHAN_BODY04_BTP);
-
-typedef void (daHanachan_c::*HanachanStatePmf)();
 
 /* Tables the body-segment code indexes by part: talk message ids, particle
  * ids, the model/texture-sequence/animation handles, segment spacing and clip
@@ -1192,277 +1182,24 @@ SharedFilePtr *const data_ov034_021138b0[5] = {
 const int data_ov034_021138c4[5] = {0, 0x00057b2b, 0x000858c9, 0x0007afaf, 0x00081a98};
 const s32 data_ov034_021138d8[5] = {0x0004399a, 0x0003e666, 0x0004b666, 0x0003e666, 0x0004b666};
 
-/* Sublevel 26's level overlay, the record data_02092208[26] publishes as
- * data_0209f340. dScStage_c reads the CLPS block, the level object table,
- * the model/kcl/minimap file ids, the area table and the skybox word.
- * A symbol boundary falls inside a few rows because a later word of that
- * row is its own label; the pieces are still one table in address order. */
-struct HanachanObj {
-    u16 raw;
-    s16 x;
-    s16 y;
-    s16 z;
-    s16 rotX;
-    s16 rotY;
-    s16 rotZ;
-    u16 param;
-};
-struct HanachanFog {
-    u8 enabled;
-    u8 colorR;
-    u8 colorG;
-    u8 colorB;
-    u16 nearDist;
-    u16 farDist;
-};
-struct HanachanViewHead {
-    u8 type;
-    u8 param;
-    s16 x;
-    s16 y;
-    s16 z;
-};
-struct HanachanViewTail {
-    u8 pad[2];
-    s16 angleY;
-    u16 pad_c;
-    u16 pad_e;
-};
-struct HanachanExit {
-    LVL_Overlay::ExitEntry entry;
-    u16 pad;
-};
-struct HanachanAreaObjsHead {
-    LVL_Overlay::ObjSubTable standard;
-    u8 simpleCategory;
-    u8 simpleCount;
-    u8 pad[2];
-};
-struct HanachanSimpleHead {
-    LVL_Overlay::SimpleEntry objs[4];
-    u16 fifthRaw;
-    s16 fifthX;
-};
-struct HanachanAreaObjsTail {
-    HanachanSimpleHead *simpleEntries;
-    u8 starCategory;
-    u8 starCount;
-    u8 pad[2];
-    HanachanObj *starEntries;
-};
-struct HanachanLevelHead {
-    CLPS_Block *clps;
-    LVL_Overlay::ObjTable *objTable;
-    u16 modelFileId;
-    u16 kclFileId;
-    u16 minimapTilesFile;
-    u16 minimapPaletteFile;
-};
-struct HanachanLevelTail {
-    LVL_Overlay::Area *areas;
-    u8 areaCount;
-    u8 cameraFlags;
-    s16 minimapScale;
-    u32 skyboxWord;
-};
-struct HanachanSimpleTail {
-    s16 fifthY;
-    s16 fifthZ;
-    LVL_Overlay::SimpleEntry objs[19];
-};
-struct CLPS_Block {
-    u32 tag;
-    u16 stride;
-    u16 count;
-    CLPS entries[15];
-};
-
-extern u16 data_ov034_02114080[2];
-extern u32 data_ov034_02114084;
-extern s16 data_ov034_02114088[2];
-extern LVL_Overlay::ObjTable data_ov034_0211408c;
-extern LVL_Overlay::ObjTable data_ov034_02114094;
-extern HanachanFog data_ov034_0211409c;
-extern LVL_Overlay::Area data_ov034_021140a4;
-extern HanachanViewHead data_ov034_021140b0;
-extern HanachanViewTail data_ov034_021140b8;
-extern HanachanExit data_ov034_021140c0;
-extern HanachanObj data_ov034_021140d0;
-extern HanachanAreaObjsHead data_ov034_021140e0;
-extern HanachanAreaObjsTail data_ov034_021140ec;
-extern HanachanLevelHead data_ov034_021140f8;
-extern HanachanLevelTail data_ov034_02114108;
-extern LVL_Overlay::ObjSubTable data_ov034_02114114[7];
-extern HanachanObj data_ov034_0211414c[5];
-extern HanachanObj data_ov034_0211419c[3];
-extern HanachanObj data_ov034_021141cc[3];
-extern CLPS_Block data_ov034_021141fc;
-extern HanachanSimpleHead data_ov034_0211427c;
-extern HanachanSimpleTail data_ov034_021142a0;
-
-/* Minimap tile file ids, the star-camera nibble word, minimap scales. */
-u16 data_ov034_02114080[2] = {0x07e2, 0x07e3};
-u32 data_ov034_02114084 = 0x03033334;
-s16 data_ov034_02114088[2] = {0x0ce4, 0x0ce4};
-
-/* Area object table (3 sub-tables) and the level-wide object table (7). */
-LVL_Overlay::ObjTable data_ov034_0211408c = {3, {0, 0}, &data_ov034_021140e0};
-LVL_Overlay::ObjTable data_ov034_02114094 = {7, {0, 0}, &data_ov034_02114114};
-HanachanFog data_ov034_0211409c = {1, 0, 0, 0, 0x36b0, 0x7e2c};
-LVL_Overlay::Area data_ov034_021140a4 = {&data_ov034_0211408c, 0, 1, {0x01, 0x48, 0x0d}};
-
-/* One 0xe-byte view (type 2) plus the two zero bytes before the next row. */
-HanachanViewHead data_ov034_021140b0 = {2, 0xff, 0x03e8, 0x0496, 0x06a4};
-HanachanViewTail data_ov034_021140b8 = {{0, 0}, (s16)0xc000, 0, 0};
-HanachanExit data_ov034_021140c0 = {
-    {0x01f4, 0x03e8, 0x0884, 0, (s16)0x8000, {0x18, 0x04, 0xff, 0x11}}, 0};
-/* Star-filtered standard object (category byte 0xa0, count 1). */
-HanachanObj data_ov034_021140d0 = {0x0014, 0x02ee, 0x03e8, 0x053c, 3, (s16)0xc000, 0, 0xffff};
-
-/* Area sub-tables: 6 standard objects, 24 simple objects, then the star row. */
-HanachanAreaObjsHead data_ov034_021140e0 = {{0, 6, {0, 0}, &data_ov034_0211419c}, 5, 24, {0, 0}};
-HanachanAreaObjsTail data_ov034_021140ec = {
-    &data_ov034_0211427c, 0xa0, 1, {0, 0}, &data_ov034_021140d0};
-
-HanachanLevelHead data_ov034_021140f8 = {
-    &data_ov034_021141fc, &data_ov034_02114094, 0x07e5, 0x07e1, 0x07e6, 0x07e7};
-/* areaCount 1, StartWithFarCamera, minimap scale, skybox word (id in bits 4..8). */
-HanachanLevelTail data_ov034_02114108 = {&data_ov034_021140a4, 1, 0x1, 0x01f4, 0x0000000f};
-
-LVL_Overlay::ObjSubTable data_ov034_02114114[7] = {
-    {4, 1, {0, 0}, &data_ov034_021140b0},  /* views */
-    {11, 2, {0, 0}, &data_ov034_02114080}, /* minimap tiles */
-    {1, 5, {0, 0}, &data_ov034_0211414c},  /* entrances */
-    {8, 1, {0, 0}, &data_ov034_0211409c},  /* fog */
-    {12, 2, {0, 0}, &data_ov034_02114088}, /* minimap scales */
-    {14, 1, {0, 0}, &data_ov034_02114084}, /* star camera */
-    {10, 1, {0, 0}, &data_ov034_021140c0}, /* exits */
-};
-
-HanachanObj data_ov034_0211414c[5] = {
-    {0, 0x01f4, 0x03e8, 0x076c, 0, (s16)0x8000, 0, 0},
-    {0, 0x01f4, 0x03e8, 0x06a4, 0, (s16)0x8000, 0, 0},
-    {0, 0x01f4, 0x03e8, 0x05dc, 0, (s16)0x8000, 0, 0},
-    {0, 0x01f4, 0x03e8, 0x0514, 0, (s16)0x8000, 0, 0},
-    {0, 0, 0x0b86, 0, 0, 0, 0, 0x0278},
-};
-HanachanObj data_ov034_0211419c[3] = {
-    {0x0031, (s16)0xf934, 0x076c, (s16)0xfe70, 0, 0, 0, 0x00f3},
-    {0x0118, 0x018c, 0x0708, 0, 0, 0, 0, 0xff06},
-    {0x0131, (s16)0xfbb4, 0x0514, 0x0546, 0, 0, 0, 0xff00},
-};
-HanachanObj data_ov034_021141cc[3] = {
-    {0x00a1, (s16)0xfe70, 0x0578, 0x0352, 0, 0, 0, 0xffff},
-    {0x001e, (s16)0xf8f8, 0x060e, 0x0708, 0, 0, 0, 0xff06},
-    {0x002c, (s16)0xf9f2, 0x0514, 0x0708, 0, 0, 0, 0x3c07},
-};
-
-CLPS_Block data_ov034_021141fc = {0x53504c43,
-                                  8,
-                                  15,
-                                  {{0x00030fc4, 0x000000ff},
-                                   {0x00240fc0, 0x000000ff},
-                                   {0x001c0fcc, 0x000000ff},
-                                   {0x01000fc4, 0x000000ff},
-                                   {0x00000fc0, 0x000000ff},
-                                   {0x01030fc4, 0x000000ff},
-                                   {0x01002fc4, 0x000000ff},
-                                   {0x00040fc4, 0x000000ff},
-                                   {0x00030fc2, 0x000000ff},
-                                   {0x00030fcc, 0x000000ff},
-                                   {0x00032fc2, 0x000000ff},
-                                   {0x01042fcc, 0x000000ff},
-                                   {0x01040fcc, 0x000000ff},
-                                   {0x00052fc2, 0x000000ff},
-                                   {0x01052fc4, 0x000000ff}}};
-
-/* 24 simple objects. The fifth entry is split across the two labels. */
-HanachanSimpleHead data_ov034_0211427c = {{{0xa226, 0x0384, 0x03e8, 0x03e8},
-                                           {0xa226, 0x05e3, 0x03e8, 0x00b0},
-                                           {0xa226, 0x0334, 0x03e8, (s16)0xfc8e},
-                                           {0xa226, (s16)0xfdef, 0x02ee, (s16)0xfdef}},
-                                          0xa226,
-                                          (s16)0xff30};
-HanachanSimpleTail data_ov034_021142a0 = {0x03e8,
-                                          (s16)0xfabd,
-                                          {{0xa226, (s16)0xf8d0, 0x05dc, (s16)0xfbb4},
-                                           {0xa226, (s16)0xf90c, 0x03e8, 0x0110},
-                                           {0xa226, (s16)0xfe84, 0x0514, 0x044c},
-                                           {0x4c3f, 0, 0x073a, 0},
-                                           {0xe225, (s16)0xfc7c, 0x074f, (s16)0xfc7c},
-                                           {0xe225, (s16)0xfc18, 0x0766, (s16)0xfc18},
-                                           {0xe225, (s16)0xfbb4, 0x077d, (s16)0xfbb4},
-                                           {0xe225, (s16)0xfb50, 0x0794, (s16)0xfb50},
-                                           {0xe225, (s16)0xfaec, 0x07ab, (s16)0xfaec},
-                                           {0xe225, 0x0384, 0x074f, 0x0384},
-                                           {0xe225, 0x03e8, 0x0766, 0x03e8},
-                                           {0xe225, 0x044c, 0x077d, 0x044c},
-                                           {0xe225, 0x04b0, 0x0794, 0x04b0},
-                                           {0xe225, 0x0514, 0x07ab, 0x0514},
-                                           {0x0a3f, (s16)0xf8f8, 0x0226, (s16)0xfa56},
-                                           {0xe1ff, 0, 0x06f2, 0},
-                                           {0x0227, (s16)0xfcae, 0x0514, 0x04ce},
-                                           {0x0227, (s16)0xfcae, 0x0514, 0x05fa},
-                                           {0xce3f, (s16)0xf8b7, 0x062c, (s16)0xf8d0}}};
-
-/* Per-health state timer and the state-name strings the state table's name
- * pointers reference. */
+/* Per-health state timer. */
 unsigned char data_ov034_0211433c[4] = {0x5e, 0x40, 0x22, 0x5e};
-char data_ov034_02114340[8] = "DEAD";
-char data_ov034_02114348[8] = "MOVE";
-char data_ov034_02114350[8] = "DAMAGE";
 
-/* The 8-byte {handler, this-adjust} records the static initializer copies into
- * the table rows, in table order. b56 emits a named HanachanStatePmf object as
- * .bss plus an __sinit copy, never as an initialized .data record, so these
- * stay ROM-owned. */
-extern "C" HanachanStatePmf data_ov034_02114370; /* StateDemoWaitInit */
-extern "C" HanachanStatePmf data_ov034_021143b0; /* StateDemoWaitMain */
-extern "C" HanachanStatePmf data_ov034_021143c0; /* StateDemoCallInit */
-extern "C" HanachanStatePmf data_ov034_02114360; /* StateDemoCallMain */
-extern "C" HanachanStatePmf data_ov034_02114378; /* StateMoveStopInit */
-extern "C" HanachanStatePmf data_ov034_021143d8; /* StateMoveStopMain */
-extern "C" HanachanStatePmf data_ov034_021143e8; /* StateMoveStartInit */
-extern "C" HanachanStatePmf data_ov034_02114380; /* StateMoveStartMain */
-extern "C" HanachanStatePmf data_ov034_02114390; /* StateMoveInit */
-extern "C" HanachanStatePmf data_ov034_02114368; /* StateMoveMain */
-extern "C" HanachanStatePmf data_ov034_02114388; /* StateDamageInit */
-extern "C" HanachanStatePmf data_ov034_02114400; /* StateDamageMain */
-extern "C" HanachanStatePmf data_ov034_021143f8; /* StateDamageTalkInit */
-extern "C" HanachanStatePmf data_ov034_021143f0; /* StateDamageTalkMain */
-extern "C" HanachanStatePmf data_ov034_021143e0; /* StateDeadInit */
-extern "C" HanachanStatePmf data_ov034_021143b8; /* StateDeadMain */
-extern "C" HanachanStatePmf data_ov034_021143c8; /* StateDamageStopInit */
-extern "C" HanachanStatePmf data_ov034_021143a8; /* StateDamageStopMain */
-extern "C" HanachanStatePmf data_ov034_02114358; /* StateDamageWaitInit */
-extern "C" HanachanStatePmf data_ov034_021143d0; /* StateDamageWaitMain */
-extern "C" HanachanStatePmf data_ov034_021143a0; /* StateDamageStartInit */
-extern "C" HanachanStatePmf data_ov034_02114398; /* StateDamageStartMain */
-
-/* State names the table's name pointers reference. */
-char data_ov034_02114408[12] = "DEMOWAIT";
-char data_ov034_02114414[12] = "DEMOCALL";
-char data_ov034_02114420[12] = "MOVE_STOP";
-char data_ov034_0211442c[12] = "DAMAGETALK";
-char data_ov034_02114438[12] = "MOVE_START";
-char data_ov034_02114444[12] = "DAMAGE_STOP";
-char data_ov034_02114450[12] = "DAMAGE_WAIT";
-char data_ov034_02114468[16] = "DAMAGE_START";
 /* Per-segment walk speed targets (20.12: 16.0, 20.0, 24.0, 4.0). */
 int data_ov034_02114488[4] = {0x10000, 0x14000, 0x18000, 0x4000};
 
 daHanachan_c::State data_ov034_02114538[11] = {
-    { data_ov034_02114370, data_ov034_021143b0, data_ov034_02114408 },   /* DEMOWAIT */
-    { data_ov034_021143c0, data_ov034_02114360, data_ov034_02114414 },   /* DEMOCALL */
-    { data_ov034_02114378, data_ov034_021143d8, data_ov034_02114420 },   /* MOVE_STOP */
-    { data_ov034_021143e8, data_ov034_02114380, data_ov034_02114438 },   /* MOVE_START */
-    { data_ov034_02114390, data_ov034_02114368, data_ov034_02114348 },   /* MOVE */
-    { data_ov034_02114388, data_ov034_02114400, data_ov034_02114350 },   /* DAMAGE */
-    { data_ov034_021143f8, data_ov034_021143f0, data_ov034_0211442c },   /* DAMAGETALK */
-    { data_ov034_021143e0, data_ov034_021143b8, data_ov034_02114340 },   /* DEAD */
-    { data_ov034_021143c8, data_ov034_021143a8, data_ov034_02114444 },   /* DAMAGE_STOP */
-    { data_ov034_02114358, data_ov034_021143d0, data_ov034_02114450 },   /* DAMAGE_WAIT */
-    { data_ov034_021143a0, data_ov034_02114398, data_ov034_02114468 },   /* DAMAGE_START */
+    {&daHanachan_c::StateDemoWaitInit, &daHanachan_c::StateDemoWaitMain, "DEMOWAIT"},
+    {&daHanachan_c::StateDemoCallInit, &daHanachan_c::StateDemoCallMain, "DEMOCALL"},
+    {&daHanachan_c::StateMoveStopInit, &daHanachan_c::StateMoveStopMain, "MOVE_STOP"},
+    {&daHanachan_c::StateMoveStartInit, &daHanachan_c::StateMoveStartMain, "MOVE_START"},
+    {&daHanachan_c::StateMoveInit, &daHanachan_c::StateMoveMain, "MOVE"},
+    {&daHanachan_c::StateDamageInit, &daHanachan_c::StateDamageMain, "DAMAGE"},
+    {&daHanachan_c::StateDamageTalkInit, &daHanachan_c::StateDamageTalkMain, "DAMAGETALK"},
+    {&daHanachan_c::StateDeadInit, &daHanachan_c::StateDeadMain, "DEAD"},
+    {&daHanachan_c::StateDamageStopInit, &daHanachan_c::StateDamageStopMain, "DAMAGE_STOP"},
+    {&daHanachan_c::StateDamageWaitInit, &daHanachan_c::StateDamageWaitMain, "DAMAGE_WAIT"},
+    {&daHanachan_c::StateDamageStartInit, &daHanachan_c::StateDamageStartMain, "DAMAGE_START"},
 };
 
 extern "C" {

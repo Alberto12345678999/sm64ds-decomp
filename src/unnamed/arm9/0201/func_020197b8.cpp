@@ -5,6 +5,7 @@
 #include "dScene_c.h"
 #include "nitro/hw/registers.h"
 #include "private/controller_input.h"
+#include "Link.h"
 
 extern int data_0209d50c;
 extern unsigned char data_0209d4e8;
@@ -44,7 +45,6 @@ void func_0201ffcc(void);
 }
 
 extern "C" void func_020132d8(void);
-extern "C" unsigned short func_0203da80(unsigned short);
 extern "C" {
 
 int func_02030e4c(void);
@@ -95,7 +95,7 @@ void func_020197b8(void) {
         data_0209d50c = 9;
         if (gSoundInitialized != 0)
             func_020132d8();
-        if (data_0209e64c != 0 || func_0203da80(0x9d) != 0)
+        if (data_0209e64c != 0 || GetLinkStatus(0x9d) != 0)
             func_02030e4c();
     } while (1);
 }

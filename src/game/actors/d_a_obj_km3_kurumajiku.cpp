@@ -10,8 +10,8 @@
  * in mMountedActorIds. ov047 sinit constructs those SharedFilePtrs as
  * runtime handles 1665 / 1666; their stored file IDs are resolved at construction.
  *
- * The resource descriptor and single-entry collision-property block are
- * defined here. Retail .data order is typeinfo, descriptor, type-name,
+ * The resource descriptor is defined here; the collision-property block is
+ * stage-map data. Retail .data order is typeinfo, descriptor, type-name,
  * profile, vtable.
  *
  * daObjKm3_Kurumajiku_c_classInit is reconstructed (RTTI
@@ -32,8 +32,8 @@ enum d_a_obj_km3_kurumajiku_AssetId {
 #include "daObjKurumajiku_c.h"
 
 /* The constructor resolves each runtime asset handle to the stored ID.
- * The model uses func_02017acc / func_02017ab4 and the
- * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * The model uses ModelFile::ModelFile / ModelFile::~ModelFile and the
+ * collision file ClsnFile::ClsnFile / ClsnFile::~ClsnFile. The spellings
  * are local; the manifest aliases the generated names to those ROM symbols. */
 struct Km3KurumajikuModelFilePtr : SharedFilePtr {
     Km3KurumajikuModelFilePtr(unsigned int fileID);
@@ -50,26 +50,15 @@ typedef char
 typedef char
     Km3KurumajikuClsnFilePtr_size_must_be_8[sizeof(Km3KurumajikuClsnFilePtr) == 8 ? 1 : -1];
 
-struct Km3KurumajikuClpsBlock {
-    char magic[4];
-    unsigned short entrySize;
-    unsigned short entryCount;
-    CLPS entries[1];
-};
-typedef char Km3KurumajikuClpsBlock_size_must_be_16[sizeof(Km3KurumajikuClpsBlock) == 16 ? 1 : -1];
-
 extern Km3KurumajikuModelFilePtr gKm3KurumajikuModelFile;
 extern Km3KurumajikuClsnFilePtr gKm3KurumajikuCollisionFile;
-/* All sixteen real KCL prisms use entry zero. The following sixteen FF
- * bytes are outside this native block and remain ROM-owned. */
-extern const Km3KurumajikuClpsBlock gKm3KurumajikuClps = {
-    {'C', 'L', 'P', 'S'}, 8, 1, {{0x00000fc0, 0x000000ff}}};
+extern CLPS_Block gKm3KurumajikuClps;
 
 /* Retail data order: own typeinfo, this descriptor, type name, profile, vtable. */
 daObjKurumajiku_c::Resources gKm3KurumajikuResources = {
     &gKm3KurumajikuModelFile, &gKm3KurumajikuCollisionFile,
     /* The legacy SetFile API retains this read-only collision-property block. */
-    (CLPS_Block *)&gKm3KurumajikuClps};
+    &gKm3KurumajikuClps};
 
 #include "daObjKm3_Kurumajiku_c.h"
 #include "SpawnInfo.h"

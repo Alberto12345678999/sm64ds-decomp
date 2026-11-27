@@ -25,9 +25,9 @@ enum d_a_obj_km2_fall_block_AssetId {
 #include "daObjKm2_Fall_Block_c.h"
 #include "SharedFilePtr.h"
 
-/* The model handle constructs through func_02017acc and destroys through
- * func_02017ab4. The collision handle constructs through func_02017b4c and
- * destroys through SharedFilePtr_Destruct_Clsn. The descriptor stays ROM data. */
+/* The model handle constructs through ModelFile::ModelFile and destroys through
+ * ModelFile::~ModelFile. The collision handle constructs through ClsnFile::ClsnFile and
+ * destroys through ClsnFile::~ClsnFile. The descriptor stays ROM data. */
 struct Km2FallModelFilePtr : SharedFilePtr {
     Km2FallModelFilePtr(unsigned int fileId);
     ~Km2FallModelFilePtr();
@@ -43,18 +43,7 @@ typedef char Km2FallClsnFileHandle_size_must_be_8[sizeof(Km2FallClsnFileHandle) 
 
 extern Km2FallModelFilePtr gKm2KuzureModelFile;
 extern Km2FallClsnFileHandle gKm2KuzureCollisionFile;
-/* Collision properties: the 'CLPS' tag, the 8-byte stride header with one
- * entry, then the default entries. */
-struct CLPS_Block {
-    u32 tag;
-    u32 header;
-    u32 entries[6];
-};
-CLPS_Block data_ov045_021125f0 = {
-    0x53504c43,
-    0x00010008,
-    {0x00000fc0, 0x000000ff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff},
-};
+extern CLPS_Block data_ov045_021125f0;
 
 ResourceDescriptor data_ov045_021130ac = {
     &gKm2KuzureModelFile,
